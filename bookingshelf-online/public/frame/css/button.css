@@ -1,0 +1,99 @@
+.color39434F {
+  --border: rgba(57, 67, 79, 0.8);
+  --color: rgba(57, 67, 79, 1); }
+
+.colorEA3E3E {
+  --border: rgba(234, 62, 62, 0.8);
+  --color: rgba(234, 62, 62, 1); }
+
+.color2f84 {
+  --border: rgba(0, 47, 132, 0.8);
+  --color: rgba(0, 47, 132, 1); }
+
+.colorA300B7 {
+  --border: rgba(163, 0, 183, 0.8);
+  --color: rgba(163, 0, 183, 1); }
+
+.color14A736 {
+  --border: rgba(20, 167, 54, 0.8);
+  --color: rgba(20, 167, 54, 1); }
+
+.colorFEC81D {
+  --border: rgba(254, 200, 29, 0.8);
+  --color: rgba(254, 200, 29, 1); }
+
+.color0 {
+  --border: rgba(0, 0, 0, 0.8);
+  --color: rgba(0, 0, 0, 1); }
+
+.color5B88A8 {
+  --border: rgba(91, 136, 168, 0.8);
+  --color: rgba(91, 136, 168, 1); }
+
+.color7A7A7A {
+  --border: rgba(122, 122, 122, 0.8);
+  --color: rgba(122, 122, 122, 1); }
+
+.color23D2CC {
+  --border: rgba(35, 210, 204, 0.8);
+  --color: rgba(35, 210, 204, 1); }
+
+#online-booking {
+    top: 0;
+    transition: width ease-in-out 0.3s;
+    max-width: 628px;
+    border: 0px;
+    width: 0%;
+    position: fixed;
+    right: 0;
+    z-index: 1001;
+    height: 100%;
+}
+#popup-shadow{
+  z-index: 1000;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(51, 51, 51, 0.5);
+  height: 100%;
+}
+.closer-modal{
+  display: none;
+    width: 35px;
+    height: 35px;
+  text-align: center;
+  border: 2px solid #3b4b5c;
+  border-radius: 50%;
+  line-height: 27px;
+  font-size: 25px;
+  position: fixed;
+  top: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  z-index: 1003;
+  right: 912px;
+}
+@media screen and (max-width: 1650px){
+  .closer-modal{
+    right: 634px;
+  }
+}
+@media screen and (max-width: 720px){
+  .closer-modal {
+    right: 2px;
+    top: 2px;
+  }
+}
+.closer-modal:hover{
+  opacity: 0.7;
+}
+
+#bb:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+
+/*# sourceMappingURL=color.css.map */

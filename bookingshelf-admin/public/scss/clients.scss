@@ -1,0 +1,323 @@
+@import "styles-group";
+.clients-page {
+    .clients {
+        margin-bottom: 0;
+        border-bottom: none;
+        padding: 15px 0;
+        @media screen and(max-width: $tablet-width) {
+            padding: 4px 0;
+        }
+
+        .search {
+            height: 35px;
+            @media screen and(max-width: $tablet-width) {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            input {
+                border-bottom: none;
+                margin: 0;
+                padding: 4px 0 0 40px;
+            }
+        }
+
+        button {
+            margin: auto 10px;
+        }
+
+        .arrow-dropdown {
+            background-image: url(../img/arrow_down_w.png);
+            background-repeat: no-repeat;
+            background-size: 15px 7px;
+            background-position: 92% center;
+            padding-right: 25px;
+        }
+
+        .dropdown {
+            @media screen and(max-width: $tablet-width) {
+                display: none;
+            }
+
+            &.show {
+
+                .arrow-dropdown {
+                    background-image: url(../img/arrow_up_w.png);
+                }
+            }
+        }
+
+        .download-buttons {
+
+            .file-upload {
+                width: 100%;
+                height: auto;
+                border-radius: 6px;
+                color: #fff;
+                text-align: center;
+                background-color: #fff;
+
+                label {
+                    display: block;
+                    cursor: pointer;
+                    background-color: #264e86;
+                    border-radius: 6px;
+                    height: 50px;
+                    padding: 8px 0;
+
+                    @media screen and(max-width: $laptop-width) {
+                        height: 35px;
+                    }
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+
+                    input[type="file"] {
+                        display: none;
+                    }
+
+                    span {
+                        color: #fff;
+                    }
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+            &.import-button {
+                display: block;
+                position: relative;
+                float: right;
+                top: 0;
+                right: 0;
+                width: auto;
+                min-width: 120px;
+                border: none;
+
+                @media screen and(max-width: $tablet-width) {
+                    width: 35px;
+                    padding: 0;
+                    height: 35px;
+                    min-width: 0;
+                    text-indent: 200px;
+                    overflow: hidden;
+                }
+
+                label {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    input[type="file"] {
+                        display: none;
+                    }
+
+                    span {
+                        color: #fff;
+                    }
+
+                    &:hover {
+                        opacity: 0.7;
+                    }
+                }
+            }
+        }
+    }
+
+    .tab-content-list {
+        justify-content: space-between;
+        display: flex;
+        margin-bottom: 5px;
+        position: relative;
+
+        @media screen and(max-width: 720px) {
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+            padding: 5px 0;
+            background-color: #fff;
+        }
+
+        div {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 23%;
+            margin-right: 3px;
+            overflow: hidden;
+            padding: 5px 5px;
+            @media screen and(max-width: 1000px) {
+                font-size: 12px;
+            }
+            @media screen and(max-width: $tablet-width) {
+                width: 30%;
+                padding-left: 5px;
+                font-size: 11px;
+            }
+            @media screen and(max-width: 720px) {
+                display: block;
+                width: 100%;
+                overflow: visible;
+                padding: 0 40px 0 67px;
+                font-size: 11px;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            &:first-of-type {
+                justify-content: flex-start;
+                width: 30%;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                @media screen and(max-width: 720px) {
+                    width: 100%;
+                }
+
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+
+            p {
+                margin-bottom: 0;
+                font-weight: bold;
+                line-height: normal;
+                padding-left: 60px;
+            }
+
+            a {
+                display: flex;
+                width: 100%;
+                justify-content: flex-start;
+                align-items: center;
+                cursor: pointer;
+                padding: 10px 0;
+
+                @media screen and(max-width: $tablet-width) {
+                    display: block;
+                    p {
+                        text-align: center;
+                    }
+                }
+                @media screen and(max-width: 720px) {
+                    padding: 0;
+                    p {
+                        text-align: left;
+                        padding: 0;
+                    }
+                }
+            }
+
+        }
+
+        .img-container {
+            height: 40px;
+            width: 40px;
+            display: block;
+            float: left;
+            margin: 0 4% 0 5%;
+
+            @media screen and(max-width: $tablet-width) {
+                float: none;
+                margin: auto;
+            }
+
+            @media screen and(max-width: 720px) {
+                float: none;
+                margin: auto;
+                position: absolute;
+                left: 15px;
+                bottom: 0;
+                top: 0;
+            }
+
+            img {
+                max-height: 40px;
+                border: solid 1px;
+                border-color: $border;
+            }
+        }
+
+
+
+        .delete {
+            text-align: center;
+            width: 80px;
+            overflow: visible;
+
+            @media screen and(max-width: $tablet-width) {
+                width: 50px;
+
+                .delete-icon {
+                    display: flex;
+                }
+            }
+            @media screen and(max-width: 720px) {
+                width: 50px;
+                position: absolute;
+                width: 40px;
+                height: 40px;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                padding: 0;
+            }
+
+            .delete-icon {
+                justify-content: center;
+                padding: 0;
+                height: auto;
+            }
+
+            .dropdown-menu {
+                width: auto;
+                display: none;
+                border-radius: 4px;
+
+                &:hover {
+                    opacity: 1 !important;
+                }
+
+                &.show {
+                    display: block;
+                }
+            }
+        }
+
+        &.hide {
+            right: 100%;
+            transition: right ease-in-out 0s;
+            display: none;
+        }
+    }
+    .no-holiday{
+        @include border-style();
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 82px;
+
+        span{
+            font-size: 20px;
+
+            .button{
+                display: block;
+                margin: auto;
+                font-size: 15px;
+                height: auto;
+                width: auto;
+            }
+
+        }
+
+    }
+}

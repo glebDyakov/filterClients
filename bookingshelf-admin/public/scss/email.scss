@@ -1,0 +1,213 @@
+@import "styles-group";
+.emailPage {
+
+    .tab-pane {
+        overflow: hidden;
+    }
+    .auto_notification_page {
+        justify-content: space-between;
+        @include border-style;
+    }
+
+    .editable {
+        min-height: 100px;
+        overflow: auto;
+        resize: none;
+        height: 50px;
+        border-radius: 4px;
+        background-color: #fff;
+        border: solid 1px rgba(172, 172, 172, 0.5);
+        padding: 11px 12px 10px;
+        width: 100%;
+        color: #264e86;
+        font-size: 13px;
+    }
+
+    .codeparam::before {
+        font-family: inherit;
+        font-weight: inherit;
+        background: #97c1fb70;
+        padding: 2px 4px;
+        display: inline-block;
+        border-radius: 8px;
+        font-size: 12px;
+    }
+
+    .codeButton .codeparam {
+        margin-left: 5px;
+    }
+
+    .codeButton .codeparam:hover {
+        cursor: pointer;
+        opacity: 0.6;
+    }
+
+    .codeparam.paramtime::before {
+        content: "время"
+    }
+
+    .codeparam.paramdate::before {
+        content: "дата"
+    }
+
+    .codeparam.paramservice::before {
+        content: "услуга"
+    }
+
+    .codeparam.paramurl::before {
+        content: "ссылка на запись"
+    }
+
+    .clients-list {
+        display: flex;
+        position: relative;
+        padding-left: 65px;
+        align-items: center;
+    }
+
+    .sms-table {
+
+        tr {
+            right: 0;
+            position: relative;
+
+            &:first-of-type {
+                border-top: none;
+            }
+
+            th {
+                border-bottom: 1px solid #dee2e6;
+
+                &:first-of-type {
+                    border-right: 1px solid #dee2e6;
+                    text-align: center;
+                }
+            }
+
+            td {
+                border-bottom: 1px solid #dee2e6;
+
+                &:first-of-type {
+                    border-right: 1px solid #dee2e6;
+                    border-bottom: 1px solid #dee2e6;
+                    text-align: center;
+                }
+
+                &.delete {
+                    text-align: right;
+
+                    a {
+                        cursor: pointer;
+
+                        &:hover {
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
+
+            &.hide {
+                right: 1000px;
+                transition: right ease-in-out 0.2s;
+            }
+        }
+
+    }
+
+    #template_email,
+    #template_sms,
+    #newsletter-templates,
+    #email_tab2,
+    #email_tab {
+
+        &.content-pages-bg {
+            border: none;
+        }
+    }
+
+
+    .block-style2 {
+        height: auto;
+
+        .list-block-right {
+            border-radius: 0;
+            background-color: #ffffff;
+            box-shadow: none;
+            max-height: 100%;
+            border-left: 1px solid rgba(146, 146, 146, 0.3);
+
+            ul {
+                overflow-x: hidden;
+                max-height: 42vh;
+                overflow-y: auto;
+                padding: 5px 0;
+            }
+
+            .dropdown-menu {
+                margin: auto;
+                .dropdown-item {
+                    border-radius: 0px!important;
+                }
+            }
+        }
+
+        .list-style2 {
+            @include border-style();
+            max-height: auto;
+        }
+
+        .abbreviation {
+            line-height: 1rem;
+        }
+
+        .img-container {
+            position: absolute;
+            left: 15px;
+
+            img {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        label {
+
+            span {
+                background: rgba(32, 93, 216, 0.15) url(../img/plus_blue.png) no-repeat 10px center;
+                border-radius: 20px;
+                padding: 12px 0 11px 35px;
+                width: 120px;
+                font-size: 14px;
+                display: block;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                cursor: pointer;
+            }
+
+            input {
+                display: none;
+
+                + span + span {
+                    display: none;
+                    background: rgba(25, 255, 175, 0.15) url(../img/selected2.png) no-repeat 10px center;
+                    color: #47b598;
+                }
+            }
+
+            input[type="checkbox"]:checked + span {
+
+                + span {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .selects-block {
+        width: 100%;
+    }
+}

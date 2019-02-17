@@ -1,0 +1,184 @@
+
+/*datapicker*/
+
+.DayPicker {
+    width: 100%;
+    margin-top: 10px;
+}
+.DayPicker,
+.DayPicker *:focus{
+    outline: none;
+}
+.DayPicker-Month {
+    width: 100%;
+}
+.DayPicker-Caption > div{
+    font-family: 'helvetica_medium';
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: -0.2px;
+    text-align: center;
+    padding: 10px 0 0;
+    text-transform: capitalize;
+}
+.DayPicker-Weekdays {
+    display: flex;
+    margin-top: 0;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+.DayPicker-Week {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 56px;
+    margin-bottom: 22px;
+    align-items: center;
+}
+.DayPicker-Weekday {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.DayPicker-Body {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.DayPicker-WeekdaysRow {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.DayPicker-Caption {
+    height: 55px;
+    border-bottom: none;
+}
+.DayPicker-Weekday abbr[title] {
+    border-bottom: none;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'helvetica_medium';
+    text-align: center;
+    text-transform: capitalize;
+}
+.DayPicker-Day {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    justify-content: center;
+}
+.DayPicker-Day:hover{
+    background-color: rgba(38, 78, 134, 0.09);
+    font-weight: bold;
+}
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+    background-color: rgba(38, 78, 134, 0.09) !important;
+    color: #3b4b5c;
+}
+.DayPicker-NavButton:hover {
+    opacity: 0.8;
+}
+
+.arrow-right {
+
+    background-image: url(../img/icons/next.svg);
+    left: auto;
+    background-size: 24px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: block;
+    background-repeat: no-repeat;
+    right: 30px;
+    cursor: pointer;
+}
+.arrow-left {
+    margin-right: 0;
+    right: auto;
+    background-image: url(../img/icons/next.svg);
+    width: 30px;
+    height: 30px;
+    background-size: 24px;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    left: 30px;
+}
+
+.arrow-left{
+    transform: rotate(180deg);
+}
+
+.DayPicker-NavButton--interactionDisabled {
+    display: none;
+}
+.DayPicker-Day--outside, .DayPicker-Day--disabled {
+    color: rgba(65, 76, 88, 0.47);
+    cursor: default;
+}
+
+.DayPicker-Day--outside:hover, .DayPicker-Day--disabled:hover {
+    background-color: unset;
+    font-weight: 400;
+}
+.DayPicker-Day--outside:hover,
+.DayPicker-Day--outside:focus{
+    background: none;
+    cursor: default;
+
+}
+.DayPicker-Day--today {
+    font-weight: 700;
+    border: 1px solid;
+}
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover,
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus{
+    background-color: rgba(38, 78, 134, 0.09) !important;
+    outline: none;
+}
+
+@media screen and (max-width: 1650px){
+
+    .DayPicker-Caption > div,
+    .DayPicker-Weekday abbr[title],
+    .DayPicker-Day--outside{
+        font-size: 20px;
+    }
+    .DayPicker-Day {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    .DayPicker-Week {
+        height: 50px;
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width: 720px){
+    .DayPicker-Week {
+        font-size: 24px;
+    }
+}
+@media screen and (max-width: 520px){
+    .DayPicker-Day,
+    .DayPicker-Weekday abbr[title]{
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+    .DayPicker-Week {
+        height: 30px;
+    }
+}

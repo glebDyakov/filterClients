@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="239px" height="48px" viewBox="0 0 239 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>@2xlogo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1920" transform="translate(-120.000000, -33.000000)">
+            <g id="logo" transform="translate(120.000000, 32.000000)">
+                <text id="ОНЛАЙН-ЗАПИСЬ" font-family="Helvetica-Bold, Helvetica" font-size="26" font-weight="bold" letter-spacing="-0.479999989">
+                    <tspan x="12" y="25" fill="#FF1E00">ОНЛАЙН-</tspan>
+                    <tspan x="131.365586" y="25" fill="#264E86">ЗАПИС</tspan>
+                    <tspan x="221.590586" y="25" fill="#264E86">Ь</tspan>
+                </text>
+                <rect id="Rectangle-20" fill="#FF1E00" x="0" y="6" width="3" height="40"></rect>
+                <text id="Онлайн-запись,-учет," font-family="Helvetica" font-size="15" font-weight="normal" letter-spacing="-0.109615318" fill="#264E86">
+                    <tspan x="13" y="45">Онлайн-запись, учет, маркетинг</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

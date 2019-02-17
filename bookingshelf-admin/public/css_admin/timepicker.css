@@ -1,0 +1,197 @@
+.react-date-picker *,
+                      .react-daterange-picker *,
+                      .react-datetime-picker *,
+                      .react-datetimerange-picker *,
+                      .react-time-picker * {
+                          font-family: inherit;
+                      }
+.react-date-picker--open,
+.react-daterange-picker--open,
+.react-datetime-picker--open,
+.react-datetimerange-picker--open,
+.react-time-picker--open {
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.react-date-picker--open .react-date-picker__button,
+.react-daterange-picker--open .react-date-picker__button,
+.react-datetime-picker--open .react-date-picker__button,
+.react-datetimerange-picker--open .react-date-picker__button,
+.react-time-picker--open .react-date-picker__button {
+    border-radius: 4px 4px 0 0 !important;
+}
+.react-date-picker--closed,
+.react-daterange-picker--closed,
+.react-datetime-picker--closed,
+.react-datetimerange-picker--closed,
+.react-time-picker--closed {
+    border-radius: 4px;
+}
+.react-date-picker--closed .react-date-picker__button,
+.react-daterange-picker--closed .react-date-picker__button,
+.react-datetime-picker--closed .react-date-picker__button,
+.react-datetimerange-picker--closed .react-date-picker__button,
+.react-time-picker--closed .react-date-picker__button {
+    border-radius: 4px;
+}
+.react-date-picker__button,
+.react-daterange-picker__button,
+.react-datetime-picker__button,
+.react-datetimerange-picker__button,
+.react-time-picker__button {
+    background: white;
+    border: 0;
+    border-radius: 4px;
+    font-size: 1.5em;
+}
+.react-date-picker__button__input,
+.react-daterange-picker__button__input,
+.react-datetime-picker__button__input,
+.react-datetimerange-picker__button__input,
+.react-time-picker__button__input {
+    min-width: calc(4px + (4px * 3) +  0.54em * 8  +  0.217em * 2);
+    flex-grow: 1;
+    display: flex;
+    padding: 2px;
+    align-items: baseline;
+}
+.react-date-picker__button__input__divider,
+.react-daterange-picker__button__input__divider,
+.react-datetime-picker__button__input__divider,
+.react-datetimerange-picker__button__input__divider,
+.react-time-picker__button__input__divider {
+    padding: 1px;
+}
+.react-date-picker__button__input__input,
+.react-daterange-picker__button__input__input,
+.react-datetime-picker__button__input__input,
+.react-datetimerange-picker__button__input__input,
+.react-time-picker__button__input__input {
+    min-width: calc(4px +  0.54em);
+    height: 100%;
+    position: relative;
+    padding: 1px;
+    border: 0;
+    background: none;
+    font-size: inherit;
+    -moz-appearance: textfield;
+}
+.react-date-picker__button__input__input::-webkit-outer-spin-button,
+.react-daterange-picker__button__input__input::-webkit-outer-spin-button,
+.react-datetime-picker__button__input__input::-webkit-outer-spin-button,
+.react-datetimerange-picker__button__input__input::-webkit-outer-spin-button,
+.react-time-picker__button__input__input::-webkit-outer-spin-button,
+.react-date-picker__button__input__input::-webkit-inner-spin-button,
+.react-daterange-picker__button__input__input::-webkit-inner-spin-button,
+.react-datetime-picker__button__input__input::-webkit-inner-spin-button,
+.react-datetimerange-picker__button__input__input::-webkit-inner-spin-button,
+.react-time-picker__button__input__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.react-date-picker__button__input__input:invalid,
+.react-daterange-picker__button__input__input:invalid,
+.react-datetime-picker__button__input__input:invalid,
+.react-datetimerange-picker__button__input__input:invalid,
+.react-time-picker__button__input__input:invalid {
+    background: rgba(255, 0, 0, 0.1);
+}
+.react-date-picker__button__input__input--hasLeadingZero,
+.react-daterange-picker__button__input__input--hasLeadingZero,
+.react-datetime-picker__button__input__input--hasLeadingZero,
+.react-datetimerange-picker__button__input__input--hasLeadingZero,
+.react-time-picker__button__input__input--hasLeadingZero {
+    min-width: calc(4px +  2 * 0.54em);
+    margin-left: -0.54em;
+    padding-left: calc(1px +  0.54em);
+}
+.react-date-picker__calendar,
+.react-daterange-picker__calendar,
+.react-datetime-picker__calendar,
+.react-datetimerange-picker__calendar,
+.react-time-picker__calendar {
+    border-radius: 4px;
+    box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+}
+.react-date-picker__calendar .react-calendar,
+.react-daterange-picker__calendar .react-calendar,
+.react-datetime-picker__calendar .react-calendar,
+.react-datetimerange-picker__calendar .react-calendar,
+.react-time-picker__calendar .react-calendar {
+    border-radius: 4px;
+    font-family: inherit;
+    border: 0;
+    border-top-left-radius: 0;
+}
+.react-date-picker__clock,
+.react-daterange-picker__clock,
+.react-datetime-picker__clock,
+.react-datetimerange-picker__clock,
+.react-time-picker__clock {
+    border-radius: 4px;
+    box-shadow: 0 30px 40px 0 rgba(16, 36, 94, 0.2);
+    font-family: inherit;
+    width: 220px;
+    height: 220px;
+    padding: 20px;
+    border: 0;
+    border-top-left-radius: 0;
+}
+.react-date-picker__clock .react-clock__second-hand,
+.react-daterange-picker__clock .react-clock__second-hand,
+.react-datetime-picker__clock .react-clock__second-hand,
+.react-datetimerange-picker__clock .react-clock__second-hand,
+.react-time-picker__clock .react-clock__second-hand {
+    transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+}
+.react-date-picker__clock .react-clock__second-hand__body:before,
+.react-daterange-picker__clock .react-clock__second-hand__body:before,
+.react-datetime-picker__clock .react-clock__second-hand__body:before,
+.react-datetimerange-picker__clock .react-clock__second-hand__body:before,
+.react-time-picker__clock .react-clock__second-hand__body:before {
+    width: 5px;
+    height: 5px;
+}
+.react-date-picker__clock .react-clock__second-hand__body:after,
+.react-daterange-picker__clock .react-clock__second-hand__body:after,
+.react-datetime-picker__clock .react-clock__second-hand__body:after,
+.react-datetimerange-picker__clock .react-clock__second-hand__body:after,
+.react-time-picker__clock .react-clock__second-hand__body:after {
+    width: 15px;
+    height: 15px;
+}
+.react-clock {
+    background-color: white;
+    border-radius: 50%;
+}
+.react-clock__face {
+    border: 3px solid white;
+}
+.react-clock__second-hand {
+    transition: transform cubic-bezier(0.68, 0, 0.27, 1.55) 0.2s;
+}
+.react-clock__second-hand__body:before {
+    content: '';
+    display: block;
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    background-color: red;
+    border-radius: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.react-clock__second-hand__body:after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background-color: red;
+    border-radius: 50%;
+    transform: translateX(-50%);
+}

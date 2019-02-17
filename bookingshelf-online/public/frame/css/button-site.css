@@ -1,0 +1,40 @@
+.button-site {
+    border-radius: 0%;
+    border-radius: 6px;
+    min-width: 140px;
+    font-size: 16px;
+    min-height: 50px;
+    padding: 15px 15px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--color);
+    line-height: 18px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    outline: none;
+    border: 0px;
+
+     -webkit-animation: 1s cubic-bezier(0.37, 0, 0.8, 0.77) infinite wave-stroke2;
+  -moz-animation: 1s cubic-bezier(0.37, 0, 0.8, 0.77) infinite wave-stroke2;
+  -o-animation: 1s cubic-bezier(0.37, 0, 0.8, 0.77) infinite wave-stroke2;
+  animation: 1s cubic-bezier(0.37, 0, 0.8, 0.77) infinite wave-stroke2;
+  transform: scale(1); }
+
+@keyframes wave-stroke2 {
+  0% {
+    transform: scale(1); }
+  50% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+@-webkit-keyframes wave-stroke {
+  0% {
+    transform: scale(1); }
+  50% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+.button-site:focus{
+    outline: none;
+}

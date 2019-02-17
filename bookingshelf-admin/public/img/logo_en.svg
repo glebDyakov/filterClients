@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="204px" height="42px" viewBox="0 0 204 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>@2xlogo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1920-(english)" transform="translate(-120.000000, -38.000000)">
+            <g id="logo" transform="translate(120.000000, 33.000000)">
+                <text id="BOOKINGSHELF" font-family="Helvetica-Bold, Helvetica" font-size="23" font-weight="bold" letter-spacing="0.529999971">
+                    <tspan x="13" y="23" fill="#FF1E00">BOOKING</tspan>
+                    <tspan x="126.600137" y="23" fill="#264E86">SHEL</tspan>
+                    <tspan x="190.060957" y="23" fill="#264E86">F</tspan>
+                </text>
+                <rect id="Rectangle-20" fill="#FF1E00" x="0" y="5" width="4" height="40"></rect>
+                <text id="Smarter-Online-Sched" font-family="Helvetica" font-size="13" font-weight="normal" letter-spacing="-0.59" fill="#264E86">
+                    <tspan x="13" y="44">Smarter Online Scheduling Software </tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
