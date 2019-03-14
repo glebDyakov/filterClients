@@ -23,8 +23,11 @@ class UserSettings extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
-            this.setState({...this.state, authentication: newProps.authentication })
+
+                this.setState({...this.state, authentication: newProps.authentication })
         }
+
+
 
         if ( JSON.stringify(this.props.users) !==  JSON.stringify(newProps.users)) {
             this.setState({users:newProps.users});
@@ -49,7 +52,9 @@ class UserSettings extends React.Component {
         const { name, value } = e.target;
         const { authentication } = this.state;
 
-        this.setState({...this.state,  authentication: {...authentication, user: {...authentication.user, profile: {...authentication.user.profile, [name]: value }}}});
+
+
+        this.setState({...this.state, submitted: false, authentication: {...authentication, errorPass: false, user: {...authentication.user, profile: {...authentication.user.profile, [name]: value }}}});
     }
 
     handleSubmit(e) {
@@ -75,6 +80,9 @@ class UserSettings extends React.Component {
                 }
             }
 
+
+
+
             dispatch(
                 userActions.updateProfile(JSON.stringify(profile))
             );
@@ -89,6 +97,9 @@ class UserSettings extends React.Component {
         const { firstName, lastName, email, phone, newPassword, newPasswordRepeat, password, users } = this.state.authentication && this.state.authentication.user && this.state.authentication.user.profile;
 
         const {authentication, submitted} = this.state;
+
+        console.log(authentication)
+
 
         return (
 
@@ -130,26 +141,32 @@ class UserSettings extends React.Component {
                                     <div className="col-xl-12">
                                         <p>Текущий пароль</p>
                                         <p>
-                                            <input data-toggle="password" data-placement="after" type="password"
-                                                   placeholder="" data-eye-class="material-icons"
-                                                   data-eye-open-class="visibility"
-                                                   data-eye-close-class="visibility_off"
-                                                   data-eye-class-position-inside="true" name="password" onChange={this.handleChange}  className={'' + (submitted && !password || authentication.errorPass ? ' redBorder' : '')}/>
+                                            <input name="passwd" type="password" style={{display:'none'}}/>
+
+                                            <input type="password"
+                                                   placeholder=""
+                                                   autoComplete="new-password"
+                                                   value={authentication.user.profile.password && authentication.user.profile.password}
+                                                   name="password" onChange={this.handleChange}/>
+
                                         </p>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="calendar col-xl-6">
                                         <p>Новый пароль</p>
-                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} onChange={this.handleChange} placeholder=""/>
+                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && authentication.user.profile.newPassword && authentication.user.profile.newPassword} onChange={this.handleChange} placeholder=""/>
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Повторить пароль</p>
-                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} onChange={this.handleChange} placeholder=""/>
+                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && authentication.user.profile.newPasswordRepeat && authentication.user.profile.newPasswordRepeat} onChange={this.handleChange} placeholder=""/>
                                     </div>
                                 </div>
                                 {authentication && authentication.status === 200 &&
                                 <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                }
+                                {authentication && authentication.status=== 406 && authentication.errorPass  &&
+                                <p className="alert-danger p-1 rounded pl-3 mb-2">Старый пароль введен неверно</p>
                                 }
                                 {authentication && authentication.adding &&
                                 <img style={{width: "57px"}}

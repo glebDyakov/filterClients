@@ -4,7 +4,8 @@ import {notificationService} from '../_services';
 export const notificationActions = {
     getSMS_EMAIL,
     updateSMS_EMAIL,
-    setSMS
+    setSMS,
+    getBalance
 };
 
 function getSMS_EMAIL() {
@@ -16,6 +17,20 @@ function getSMS_EMAIL() {
     };
 
     function success(notification) { return { type: notificationConstants.GET_SMS_RECORD_SUCCESS, notification } }
+}
+
+
+function getBalance() {
+    return dispatch => {
+        notificationService.getBalance()
+            .then(
+                balance => {
+                    dispatch(success(balance));
+                }
+            );
+    };
+
+    function success(balance) { return { type: notificationConstants.GET_SMS_EMAIL_BALANCE, balance } }
 }
 
 function updateSMS_EMAIL(params) {
@@ -36,7 +51,8 @@ function setSMS(params) {
         notificationService.setSMS(params)
             .then(
                 notification => dispatch(success(notification)),
-                setTimeout(()=>dispatch(success_time(0)), 2000)
+                setTimeout(()=>dispatch(success_time(0)), 2000),
+                dispatch(notificationActions.getBalance())
     );
     };
 

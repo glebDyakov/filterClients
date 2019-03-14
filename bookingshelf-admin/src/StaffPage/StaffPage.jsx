@@ -324,13 +324,14 @@ class StaffPage extends Component {
                                     </div>
                                     <div className={"tab-pane staff-list-tab"+(activeTab==='staff'?' active':'')} id="tab2">
                                         <div className=" content tabs-container" >
-                                            { staff.staff && staff.staff.map((staff_user, i) =>
+                                            { staff.costaff && staff.costaff.map((staffGroup, i1) =>
+                                                staffGroup && staffGroup.map((staff_user, i) =>
                                                 <div className="tab-content-list" key={i}>
+                                                    {staffGroup.length>i+1 && <span className="line_connect"/>}
                                                     <div>
                                                         <a  data-toggle="modal" data-target=".bd-example-modal-lg" key={i} onClick={(e)=>this.handleClick(staff_user.staffId, e, this)}>
                                                     <span className="img-container">
-                                                        <img className="rounded-circle"
-                                                             src={staff_user.imageBase64?"data:image/png;base64,"+staff_user.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                                                        <img className="rounded-circle" src={staff_user.imageBase64?"data:image/png;base64,"+staff_user.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                                                     </span>
                                                             <p>{staff_user.firstName} {staff_user.lastName}</p>
                                                         </a>
@@ -368,7 +369,8 @@ class StaffPage extends Component {
                                                                 }
                                                         </div>
                                                 </div>
-                                            )}
+
+                                                ))}
                                         </div>
                                     </div>
                                     <div className={"tab-pane"+(activeTab==='holidays'?' active':'')}  id="tab3">
@@ -422,7 +424,7 @@ class StaffPage extends Component {
                                                     </span>
                                                             <span>
                                                         Количество дней
-                                                        <strong>{Math.round((item.endDateMillis-item.startDateMillis)/(1000*60*60*24))}</strong>
+                                                        <strong>{Math.round((item.endDateMillis-item.startDateMillis)/(1000*60*60*24))+1}</strong>
                                                     </span>
                                                             <span>
                                                         Описание

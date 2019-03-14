@@ -126,12 +126,12 @@ class ServicesPage extends Component {
                                                         <p className="gray-text">
                                                             {item2.name} {item2.details.length!==0 && "("+item2.details+")"}
                                                             <span className="hide-item">
-                                                        <span>{item2.price} {item2.currency}</span>
+                                                        <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
                                                         <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
                                                     </span>
                                                         </p>
                                                         <div className="list-inner">
-                                                            <span>{item2.price} {item2.currency}</span>
+                                                            <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
                                                             <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
                                                             <a className="edit_service" href="#" data-toggle="modal"
                                                                data-target=".new-service-modal"  onClick={(e)=>this.newService(item2, item, e, this)}/>

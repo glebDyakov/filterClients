@@ -11,7 +11,9 @@ class VisitPage extends React.Component {
         super(props);
         this.state = {
             info: props.staff.info,
-            screen: 1
+            screen: 1,
+            approveF: false
+
         };
 
         this._delete = this._delete.bind(this);
@@ -56,7 +58,7 @@ class VisitPage extends React.Component {
     }
 
     render() {
-        const {appointment, info, screen }=this.state;
+        const {appointment, info, screen, approveF }=this.state;
 
         return (
 
@@ -95,7 +97,7 @@ class VisitPage extends React.Component {
                             {appointment.serviceId &&
                             <div className="service_item">
                                 <p>{appointment.serviceName}</p>
-                                <p><strong>{appointment.price} </strong> <span>{appointment.currency}</span></p>
+                                <p className={appointment.priceFrom!==appointment.priceTo && 'sow'}><strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo} </strong> <span>{appointment.currency}</span></p>
                                 <span className="runtime"><strong>{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                             </div>
                             }
@@ -110,7 +112,14 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>appointment.customId && this._delete(appointment.customId)}/>
+                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>this.setState({...this.state, approveF: true})}/>
+                        {approveF && <div className="approveF" >
+                            <button className="approveFYes" onClick={()=>appointment.customId && this._delete(appointment.customId)}>Да
+                            </button>
+                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
+                            </button>
+                        </div>
+                        }
                         <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
 
                     </div>

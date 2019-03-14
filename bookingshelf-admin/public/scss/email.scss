@@ -1,6 +1,61 @@
 @import "styles-group";
 .emailPage {
+    .start-modal{
 
+        .modal-content {
+            width: 300px;
+            margin: auto;
+
+            .modal-header {
+                padding: 5px 0;
+
+                .modal-title {
+                    font-size: 14px;
+                }
+            }
+
+            button {
+                min-width: 0;
+                width: 45%;
+                float: right;
+                height: auto;
+                padding: 0;
+                min-height: 25px;
+
+                &.gray-button {
+                    float: right;
+                }
+            }
+        }
+    }
+    .start-modal-sms{
+
+        .modal-content {
+            width: 300px;
+            margin: auto;
+
+            .modal-header {
+                padding: 5px 0;
+
+                .modal-title {
+                    font-size: 14px;
+                }
+            }
+
+            button {
+                min-width: 0;
+                width: 45%;
+                float: right;
+                height: auto;
+                padding: 0;
+                min-height: 25px;
+
+                &.gray-button {
+                    float: right;
+                }
+            }
+        }
+    }
     .tab-pane {
         overflow: hidden;
     }

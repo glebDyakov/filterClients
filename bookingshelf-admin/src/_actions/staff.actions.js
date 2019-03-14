@@ -32,6 +32,7 @@ function add(params) {
                 staff => {
                     dispatch(success(staff));
                     setTimeout(()=>dispatch(successTime(0)), 500);
+                    dispatch(staffActions.get());
 
                 },
                 error => {
@@ -58,6 +59,8 @@ function addUSerByEmail(params) {
                 staff => {
                     dispatch(success(staff));
                     setTimeout(()=>dispatch(successTime(0)), 500);
+                    dispatch(staffActions.get());
+
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -135,6 +138,7 @@ function update(params) {
                     }
 
                     setTimeout(()=>dispatch(successTime(0)), 500);
+                    dispatch(staffActions.get());
 
                 },
                 error => {
@@ -172,11 +176,11 @@ function get() {
     return dispatch => {
         staffService.get()
             .then(
-                staff => dispatch(success(staff)),
+                staff => dispatch(success(staff, staff)),
             );
     };
 
-    function success(staff) { return { type: staffConstants.GET_SUCCESS, staff } }
+    function success(staff, st) { return { type: staffConstants.GET_SUCCESS, staff, st } }
 }
 
 function getAccessList() {
@@ -286,7 +290,10 @@ function deleteStaff(id) {
     return dispatch => {
         staffService.deleteStaff(id)
             .then(
-                closedDates => dispatch(success(id)),
+                closedDates => {dispatch(success(id))
+                    dispatch(staffActions.get());
+
+                },
                 error => dispatch(failure(id, error.toString()))
             );
     };

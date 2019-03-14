@@ -36,6 +36,7 @@ class ClientsPage extends Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.downloadFile = this.downloadFile.bind(this);
     }
 
     componentDidMount() {
@@ -76,49 +77,35 @@ class ClientsPage extends Component {
                                     <div className="col-5 d-flex justify-content-end">
                                         {access(5) &&
                                         <div className="dropdown">
-                                            <button type="button" className="button arrow-dropdown client-download"
-                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="true">Загрузить
-                                            </button>
-                                            <div className="hide dropdown-menu download-buttons">
-                                                <div className="p-2 file-upload dropdown-item">
-                                                    <label>
-                                                        <input type="file" className="button"
-                                                               accept=".csv, application/csvm+json"/>
-                                                        <span>Загрузить CSV</span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="file" className="button"
-                                                               accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>
-                                                        <span>Загрузить XLS</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        }
-                                        {access(6) &&
-                                        <div className="dropdown">
-                                            <button type="button" className="button arrow-dropdown client-upload"
-                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="true">Выгрузить
-                                            </button>
-                                            <div className="hide dropdown-menu download-buttons">
-                                                <div className="p-2 file-upload dropdown-item">
-                                                    <label>
-                                                        <input type="file" className="button"
-                                                               accept=".csv, application/csvm+json"/>
-                                                        <span>Выгрузить CSV</span>
-                                                    </label>
-                                                    <label>
-                                                        <input type="file" className="button"
-                                                               accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>
-                                                        <span>Выгрузить XLS</span>
-                                                    </label>
-                                                </div>
-                                            </div>
 
+                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                               >Экспорт в CSV
+                                            </button>
                                         </div>
                                         }
+                                        {/*{access(6) &&*/}
+                                        {/*<div className="dropdown">*/}
+                                            {/*<button type="button" className="button arrow-dropdown client-upload"*/}
+                                                    {/*data-toggle="dropdown" aria-haspopup="true"*/}
+                                                    {/*aria-expanded="true">Выгрузить*/}
+                                            {/*</button>*/}
+                                            {/*<div className="hide dropdown-menu download-buttons">*/}
+                                                {/*<div className="p-2 file-upload dropdown-item">*/}
+                                                    {/*<label>*/}
+                                                        {/*<input type="file" className="button"*/}
+                                                               {/*accept=".csv, application/csvm+json"/>*/}
+                                                        {/*<span>Выгрузить CSV</span>*/}
+                                                    {/*</label>*/}
+                                                    {/*<label>*/}
+                                                        {/*<input type="file" className="button"*/}
+                                                               {/*accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>*/}
+                                                        {/*<span>Выгрузить XLS</span>*/}
+                                                    {/*</label>*/}
+                                                {/*</div>*/}
+                                            {/*</div>*/}
+
+                                        {/*</div>*/}
+                                        {/*}*/}
                                     </div>
                                 </div>
                                 )}
@@ -250,6 +237,12 @@ class ClientsPage extends Component {
         const { dispatch } = this.props;
 
         dispatch(clientActions.deleteClient(id));
+    }
+
+    downloadFile (){
+        const { dispatch } = this.props;
+
+        dispatch(clientActions.downloadFile());
     }
 }
 

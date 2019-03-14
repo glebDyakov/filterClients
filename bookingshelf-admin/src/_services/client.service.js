@@ -1,12 +1,14 @@
 import config from 'config';
 import { authHeader, handleResponse } from '../_helpers';
+import FileSaver from 'file-saver';
 
 export const clientService = {
     addClient,
     updateClient,
     getClient,
     deleteClient,
-    getClientWithInfo
+    getClientWithInfo,
+    downloadFile
 };
 
 function addClient(params) {
@@ -61,6 +63,25 @@ function getClient() {
     };
 
     return fetch(`${config.apiUrl}/clients`, requestOptions).then(handleResponse);
+}
+
+
+function downloadFile() {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/clients/download`, requestOptions).then(function(response) {
+        return response.blob();
+    }).then(function(blob) {
+        FileSaver.saveAs(blob, 'clients.csv');
+    })
 }
 
 function getClientWithInfo() {

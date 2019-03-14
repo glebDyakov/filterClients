@@ -133,16 +133,21 @@ export function authentication(state = initialState, action) {
             };
         case userConstants.UPDATE_PROFILE_SUCCESS:
 
+            console.log(action.error)
             let profile = state.user
 
-            let unify = {...profile, profile: action.user}
+            let user = {...action.user,  password:'',
+                newPasswordRepeat: '',
+                newPassword: ''}
+
+            let unify = {...profile, profile: user}
 
             localStorage.setItem('user', JSON.stringify(unify))
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    profile: action.user
+                    profile: user
                 },
                 status: 200,
                 adding: false
@@ -152,6 +157,7 @@ export function authentication(state = initialState, action) {
             return {
                 ...state,
                 errorPass: true,
+                status: 406,
                 adding: false
             };
         case userConstants.LOGIN_SUCCESS:
@@ -161,14 +167,18 @@ export function authentication(state = initialState, action) {
                 action.user.companyTimetables = times
             }
 
+            let user4 = {...action.user,  password:'',
+                newPasswordRepeat: '',
+                newPassword: ''}
+
             localStorage.setItem('menu', JSON.stringify(menuList));
-            localStorage.setItem('user', JSON.stringify(action.user));
+            localStorage.setItem('user', JSON.stringify(user4));
 
             return {
                 ...state,
                 loggedIn: true,
                 loggingIn: false,
-                user: action.user,
+                user: user4,
                 menu: menuList,
                 error: -1,
                 step: Math.random()

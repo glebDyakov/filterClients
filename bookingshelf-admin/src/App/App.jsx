@@ -35,6 +35,7 @@ import {NoPagePrivate} from "../NoPagePrivate";
 import {MainIndex} from "../MainIndex";
 import {CalendarPrePage} from "../CalendarPrePage";
 import {FaqPage} from "../FaqPage";
+import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
 
 class App extends React.Component {
     constructor(props) {
@@ -119,7 +120,9 @@ class App extends React.Component {
                         <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
 
                         <PublicRoute path="/register" component={RegisterPage} />
-                        <PublicRoute path="/activation/:company" component={ActivationPage} />
+                        <PublicRoute path="/activation/company/:company" component={ActivationPage} />
+                        <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
+                        <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
                         <PublicRoute path="/login" component={LoginPage} />
                         <PrivateRoute path="/logout" component={LogoutPage} />
                         <PrivateRoute path="/denied" component={NoPageDenied} />

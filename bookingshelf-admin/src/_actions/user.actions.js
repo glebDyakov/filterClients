@@ -12,7 +12,8 @@ export const userActions = {
     forgotPass,
     delete: _delete,
     updateProfile,
-    activate
+    activate,
+    activateStaff
 };
 
 function login(login, password) {
@@ -41,8 +42,31 @@ function login(login, password) {
 
 function activate(id) {
     return dispatch => {
-
+        userService.logout()
         userService.activate(id)
+            .then(
+                user => {
+                    dispatch(success(user));
+                    history.push('/calendar');
+                },
+                error => {
+
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function activateStaff(id) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('menu');
+    localStorage.clear();
+    return dispatch => {
+        userService.activateStaff(id)
             .then(
                 user => {
                     dispatch(success(user));
@@ -67,7 +91,7 @@ function updateProfile(userProfile) {
         userService.updateProfile(userProfile)
             .then(
                 user => {
-                    dispatch(success(JSON.parse(userProfile)));
+                    dispatch(success(JSON.parse(userProfile), user));
                     dispatch(staffActions.get());
                     dispatch(staffActions.getTimetable(moment().startOf('day').format('x'), moment().add('7').endOf('day').format('x')));
                     setTimeout(()=>dispatch(successTime(0)), 3000);
@@ -83,7 +107,7 @@ function updateProfile(userProfile) {
     function request(id) { return { type: userConstants.UPDATE_PROFILE_REQUEST, id } }
     function successTime(id) { return { type: userConstants.UPDATE_PROFILE_SUCCESS_TIME, id } }
 
-    function success(user) { return { type: userConstants.UPDATE_PROFILE_SUCCESS, user } }
+    function success(user, error) { return { type: userConstants.UPDATE_PROFILE_SUCCESS, user, error } }
     function failure(error) { return { type: userConstants.UPDATE_PROFILE_FAILURE, error } }
 }
 

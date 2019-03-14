@@ -23,7 +23,7 @@ function get(id) {
             );
     };
 
-    function success(staff) { return { type: staffConstants.GET_SUCCESS, staff } }
+    function success(staff) { return { type: staffConstants.GET_SUCCESS, staff, } }
 }
 
 function getInfo(id) {

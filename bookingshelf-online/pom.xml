@@ -11,6 +11,7 @@
     <properties>
       <project.workingDirectory>${project.basedir}</project.workingDirectory>
       <npm.executable>npm</npm.executable>
+      <npm.build>build</npm.build>
     </properties>
     <profiles>
         <profile>
@@ -33,6 +34,12 @@
             </activation>
             <properties>
                 <script.extension></script.extension>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <npm.build>dev</npm.build>
             </properties>
         </profile>
     </profiles>
@@ -65,7 +72,7 @@
                     <executable>${npm.executable}${script.extension}</executable>
                     <arguments>
 			<argument>run</argument>
-                        <argument>build</argument>
+                        <argument>${npm.build}</argument>
                     </arguments>
                 </configuration>
                 <goals>

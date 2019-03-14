@@ -23,7 +23,8 @@ class IndexPage extends React.Component {
             info: props.staff.info,
             month: moment().utc().toDate(),
             selectedDay: undefined,
-            newAppointment: false
+            newAppointment: false,
+            approveF: false
         };
 
 
@@ -152,7 +153,7 @@ class IndexPage extends React.Component {
     }
 
     render() {
-        const {selectedStaff, selectedService, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+        const {selectedStaff, selectedService, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
 
 
         return (
@@ -202,7 +203,7 @@ class IndexPage extends React.Component {
                                                 time.staffId===staff.staffId && time.availableDays.length!==0 &&
                                                     <div className="mobile_block" key={'time'+id}>
                                                                 <span>Ближайшая запись</span>
-                                                        <div className="stars" style={{textTransform: 'capitalize'}}>{moment(time.availableDays[0].availableTimes[0].startTimeMillis, 'x').locale('ru').format('dddd, HH')+':'+moment(this.roundDown(parseInt(moment(time.availableDays[0].availableTimes[0].startTimeMillis, 'x').locale('ru').format('m'))), 'm').format('mm')}</div>
+                                                        <div className="stars" style={{textTransform: 'capitalize'}}>{this.roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                                             </div>
 
                                             )}
@@ -259,7 +260,7 @@ class IndexPage extends React.Component {
                             >
                                 <a className="service_item" href="#">
                                     <p>{service.name}</p>
-                                    <p><strong>{service.price} </strong> <span>{service.currency}</span></p>
+                                    <p><strong>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo} </strong> <span>{service.currency}</span></p>
                                     <span
                                         className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                                 </a>
@@ -300,7 +301,7 @@ class IndexPage extends React.Component {
                         {selectedService.serviceId &&
                         <div className="service_item">
                             <p>{selectedService.name}</p>
-                            <p><strong>{selectedService.price} </strong> <span>{selectedService.currency}</span></p>
+                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
                             <span
                                 className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                         </div>
@@ -362,7 +363,7 @@ class IndexPage extends React.Component {
                         {selectedService.serviceId &&
                         <div className="service_item">
                             <p>{selectedService.name}</p>
-                            <p><strong>{selectedService.price} </strong> <span>{selectedService.currency}</span></p>
+                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
                             <span
                                 className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                         </div>
@@ -416,7 +417,7 @@ class IndexPage extends React.Component {
                         {selectedService.serviceId &&
                         <div className="service_item">
                             <p>{selectedService.name}</p>
-                            <p><strong>{selectedService.price} </strong> <span>{selectedService.currency}</span></p>
+                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
                             <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                         </div>
                         }
@@ -491,7 +492,7 @@ class IndexPage extends React.Component {
                             {selectedService.serviceId &&
                             <div className="service_item">
                                 <p>{selectedService.name}</p>
-                                <p><strong>{selectedService.price} </strong> <span>{selectedService.currency}</span></p>
+                                <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
                                 <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                             </div>
                             }
@@ -506,7 +507,14 @@ class IndexPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}/>
+                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>this.setState({...this.state, approveF: true})}/>
+                        {approveF && <div className="approveF" >
+                            <button className="approveFYes"  onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}>Да
+                            </button>
+                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
+                            </button>
+                        </div>
+                        }
                         <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
 
                     </div>
@@ -593,7 +601,15 @@ class IndexPage extends React.Component {
     }
 
     roundDown(number, precision) {
-        return Math.ceil(number / 15) * 15;
+        let date=moment(number, 'x').locale('ru')
+        let time = Math.ceil((parseInt(moment(number, 'x').locale('ru').format('m')))/ 15) * 15
+
+        if(time===60){
+            return date.add(1, 'hour').format('dddd, HH')+":00";
+
+        }else {
+            return date.format('dddd, HH')+":"+moment(time, 'm').format('mm')
+        }
     }
 
 }
