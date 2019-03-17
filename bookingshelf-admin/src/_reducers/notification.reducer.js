@@ -8,6 +8,12 @@ export function notification(state= {}, action) {
             notification: action.notification,
             sr: Math.random()
     };
+    case notificationConstants.GET_SMS_EMAIL_BALANCE:
+        return {
+            ...state,
+            balance: action.balance,
+            sr: Math.random()
+    };
       case notificationConstants.SMS_LETTER_SUCCESS_TIME:
           return {
               ...state,

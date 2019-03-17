@@ -9,7 +9,8 @@ class AddService extends React.Component {
             service: {
                 "name":"",
                 "details":"",
-                "price":'',
+                "priceFrom":'',
+                "priceTo":'',
                 "duration":900,
                 "specialPrice":0,
                 "specialDescription":"",
@@ -20,7 +21,8 @@ class AddService extends React.Component {
             newGroup: {
                 "name":"",
                 "details":"",
-                "price":'',
+                "priceFrom":'',
+                "priceTo":'',
                 "duration":900,
                 "specialPrice":0,
                 "specialDescription":"",
@@ -36,6 +38,7 @@ class AddService extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangePrice = this.handleChangePrice.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateService = this.updateService.bind(this);
         this.addService = this.addService.bind(this);
@@ -97,7 +100,7 @@ class AddService extends React.Component {
                                     }
                                     <p>Название услуги</p>
                                     <input type="text" placeholder="" name="name"
-                                           value={service.name} onChange={this.handleChange} className={((service.price || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
+                                           value={service.name} onChange={this.handleChange} className={((service.priceFrom || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
                                     <div className="row">
                                         <div className="col-xl-6">
                                             <p>Детали услуги</p>
@@ -138,9 +141,13 @@ class AddService extends React.Component {
                                         <option value="12700">3 ч 30 мин</option>
                                         <option value="13600">4 ч 00 мин</option>
                                     </select>
-                                    <p>Цена</p>
-                                    <input type="number" placeholder="" name="price"
-                                           value={service.price} onChange={this.handleChange} className={(service.specialPrice && service.price===''? ' redBorder' : '')}/>
+                                    <p>Цена от</p>
+                                    <input type="number" placeholder="" name="priceFrom"
+                                           value={service.priceFrom} onChange={this.handleChangePrice} className={(service.specialPrice && service.priceFrom===''? ' redBorder' : '')}/>
+                                    <p>Цена до</p>
+                                    <input type="number" placeholder="" name="priceTo"
+                                           value={service.priceTo} onChange={this.handleChange} className={(service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo<service.priceFrom? ' redBorder' : '')}/>
+
                                     <p>Специальная цена</p>
                                     <input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"
                                            value={service.specialPrice===0?'':service.specialPrice}
@@ -171,7 +178,7 @@ class AddService extends React.Component {
                                 <div className="col-lg-5">
                                     <div className="block-style2 container">
                                         <div className="row">
-                                            <div className="col-sm-12"><p className="title mb-2">Сотрудники</p></div>
+                                             <div className="col-sm-12"><p className="title mb-2">Сотрудники, оказывающие услугу</p></div>
                                         </div>
                                         {allStaffs && allStaffs.length > 0 &&
                                         <div className="search dropdown row">
@@ -219,8 +226,8 @@ class AddService extends React.Component {
                                     </div>
                                 </div>
 
-                                <button className={services.adding || service.name==='' || service.price==='' || (service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
-                                        onClick={!services.adding && service.name!=='' && service.price!=='' && service.staffs && service.staffs.length!==0&&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
+                                <button className={services.adding || service.name==='' || (service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo<service.priceFrom) || !service.staffs ||(service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
+                                        onClick={!services.adding && service.name!=='' && service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo>=service.priceFrom && service.staffs && service.staffs.length!==0&&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
                             </div>
                         </div>
                     </div>
@@ -240,6 +247,13 @@ class AddService extends React.Component {
             this.setState({service:{...service, [name]: name==='specialPrice' && value==='' ? 0 : value}});
 
 
+    }
+
+    handleChangePrice(e) {
+        const { name, value } = e.target;
+        const { service } = this.state;
+
+        this.setState({service:{...service, priceFrom: value, priceTo:value}});
     }
 
     toggleChange () {
@@ -268,12 +282,20 @@ class AddService extends React.Component {
         const { dispatch } = this.props;
 
         const staffs = service.staffs;
-        let deleteFunc = staffs.map(function(o) { return o.staffId; }).indexOf(staff);
+
+        if(!staffs){
+            this.setState({service:{...service, staffs: [{staffId:staff}]}});
+        }else {
+
+            let deleteFunc = staffs.map(function (o) {
+                return o.staffId;
+            }).indexOf(staff);
 
 
-        deleteFunc!==-1 ? staffs.splice(deleteFunc, 1) : staffs.push({staffId:staff})
+            deleteFunc !== -1 ? staffs.splice(deleteFunc, 1) : staffs.push({staffId: staff})
 
-        this.setState({service:{...service, staffs: staffs}});
+            this.setState({service: {...service, staffs: staffs}});
+        }
     }
 
     handleSearch () {

@@ -229,10 +229,10 @@ class AddAppointment extends React.Component {
 
                                                 {
                                                     serviceCurrent && serviceCurrent.id!==-1 ?
-                                                        <a className={serviceCurrent.service.color.toLowerCase() + " "+'select-button dropdown-toggle'}
+                                                        <a className={serviceCurrent.service.color && serviceCurrent.service.color.toLowerCase() + " "+'select-button dropdown-toggle'}
                                                            data-toggle={"dropdown"} href="#" ><span
-                                                            className={serviceCurrent.service.color.toLowerCase() + " "+'color-circle'}/><span
-                                                            className="yellow"><span className="items-color"><span>{serviceCurrent.service.name}</span>    <span>{serviceCurrent.service.price} {serviceCurrent.service.currency}</span>  <span>
+                                                            className={serviceCurrent.service.color && serviceCurrent.service.color.toLowerCase() + " "+'color-circle'}/><span
+                                                            className="yellow"><span className="items-color"><span>{serviceCurrent.service.name}</span>    <span>{serviceCurrent.service.priceFrom} {serviceCurrent.service.priceFrom!==serviceCurrent.service.priceTo && " - "+serviceCurrent.service.priceTo} {serviceCurrent.service.currency}</span>  <span>
                                                             {moment.duration(parseInt(serviceCurrent.service.duration), "seconds").format("h[ ч] m[ мин]")}
                                                             </span></span></span>
                                                         </a>
@@ -246,10 +246,11 @@ class AddAppointment extends React.Component {
                                                 <ul className="dropdown-menu">
                                                     {
                                                         services.servicesList && services.servicesList.map((service, key)=>
+                                                            staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId) &&
                                                             parseInt(service.duration)/60<=parseInt(timeArrange) &&
                                                             <li className="dropdown-item"  key={key}><a  onClick={()=>this.setService(service.serviceId, service)}><span
-                                                                className={service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color.toLowerCase()}><span
-                                                                className="items-color"><span>{service.name}</span>    <span>{service.price} {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
+                                                                className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}><span
+                                                                className="items-color"><span>{service.name}</span>    <span>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo}  {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
                                                             </li>
                                                         )
                                                     }
@@ -396,7 +397,7 @@ class AddAppointment extends React.Component {
                                                             </p>
                                                         </div>
                                                         <div className="col-3">
-                                                            <strong>{appointment.price} {appointment.currency}</strong>
+                                                            <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo} {appointment.currency}</strong>
                                                         </div>
                                                     </div>
                                                 )}

@@ -64,7 +64,7 @@ class ClientDetails extends React.Component {
                                         </p>
                                     </div>
                                     <div className="col-3">
-                                        <strong>{appointment.price} {appointment.currency}</strong>
+                                        <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
                                     </div>
                                 </div>
                             )}

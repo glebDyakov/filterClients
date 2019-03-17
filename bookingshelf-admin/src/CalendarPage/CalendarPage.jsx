@@ -129,6 +129,8 @@ class CalendarPage extends Component {
             isLoading: true,
             hoverRange: undefined,
             opacity: false,
+            closedDates: {},
+
             selectedDay: dateFrom,
             selectedDayMoment: dateFr,
             type: dateToType,
@@ -187,6 +189,8 @@ class CalendarPage extends Component {
         this.props.dispatch(staffActions.get());
         this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(servicesActions.getServices());
+        this.props.dispatch(staffActions.getClosedDates());
+
 
         if(type==='day'){
             this.props.dispatch(staffActions.getTimetableStaffs(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
@@ -507,6 +511,8 @@ class CalendarPage extends Component {
             services, clickedTime, hoverRange, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
             selectedDay, type, selectedDays, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment} = this.state;
 
+        console.log(selectedDays)
+
         const daysAreSelected = selectedDays && selectedDays.length > 0;
 
         const modifiers = {
@@ -520,6 +526,12 @@ class CalendarPage extends Component {
             selectedRangeStart: daysAreSelected && selectedDays[0],
             selectedRangeEnd: daysAreSelected && selectedDays[6],
         };
+
+
+        let clDates = staffAll.closedDates && staffAll.closedDates.some((st) =>
+            parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(selectedDays[0]).startOf('day').format("x")) &&
+            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(selectedDays[0]).endOf('day').format("x")))
+
 
         return (
             <div className="calendar" ref={node => { this.node = node; }}>
@@ -596,7 +608,8 @@ class CalendarPage extends Component {
                                                 <div className="button-calendar" >
 
                                                         <span
-                                                            className="dates-full-width date-num" style={{textTransform: 'capitalize'}}  onClick={()=>this.showCalendar(true)}>{moment(selectedDay).format('dd, DD MMMM')}</span>
+                                                            className="dates-full-width date-num" style={{textTransform: 'capitalize'}}  onClick={()=>this.showCalendar(true)}>{moment(selectedDay).format('dd, DD MMMM ')} {clDates ?
+                                                            <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span> : ''}</span>
                                                     <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
                                                         <i className="datepicker--pointer"></i>
                                                         <DayPicker
@@ -654,14 +667,22 @@ class CalendarPage extends Component {
                                             <div className="tab-content-list">
                                                 <div className="hours"><span></span></div>
 
-                                                {workingStaff.availableTimetable && workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) =>
-                                                    <div>
+                                                {workingStaff.availableTimetable && workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
+
+                                                        let clDate = staffAll.closedDates && staffAll.closedDates.some((st) =>
+                                                            parseInt(st.startDateMillis) <= parseInt(moment(selectedDays[0]).format("x")) &&
+                                                            parseInt(st.endDateMillis) >= parseInt(moment(selectedDays[0]).format("x")))
+
+                                                        return <div>
+
                                                                      <span className="img-container">
                                                                          <img className="rounded-circle"
-                                                                              src={workingStaffElement.imageBase64?"data:image/png;base64,"+workingStaffElement.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                              src={workingStaffElement.imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                              alt=""/>
                                                                      </span>
-                                                        <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName}</p>
-                                                    </div>
+                                                            <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName}</p>
+                                                        </div>
+                                                    }
                                                 )
                                                 }
                                             </div>
@@ -673,10 +694,18 @@ class CalendarPage extends Component {
                                                 <div className="hours"><span></span></div>
 
                                                 {
-                                                    selectedDays.length>1 && selectedDays.map((item, weekKey)=>
-                                                        <div key={weekKey} className={parseInt(moment(item).format("DD"))<=parseInt(moment().format("DD"))&&''}>
-                                                            <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span>{moment(item).format("DD/MM")}</span></p>
-                                                        </div>
+                                                    selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
+
+                                                        let clDate=staffAll.closedDates &&staffAll.closedDates.some((st) =>
+                                                            parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
+                                                            parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")))
+
+                                                            return <div key={weekKey}
+                                                                 >
+                                                                <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD/MM")}</span>
+                                                                </p>
+                                                            </div>
+                                                        }
                                                     )
                                                 }
                                             </div>
@@ -731,6 +760,10 @@ class CalendarPage extends Component {
                                                             appointment = appointment && appointment.filter(Boolean)
                                                             reservedTime = reservedTime && reservedTime.filter(Boolean)
 
+                                                        let clDate = staffAll.closedDates && staffAll.closedDates.some((st) =>
+                                                            parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+                                                            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+
 
                                                         let workingTimeEnd=null;
                                                         let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
@@ -743,6 +776,12 @@ class CalendarPage extends Component {
                                                                         currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))}
 
                                                                 ));
+
+                                                        console.log('clDate');
+                                                        console.log(staffAll.closedDates);
+                                                        console.log(day);
+                                                        console.log(moment(day).startOf('day').format("x"));
+                                                        console.log(moment(day).endOf('day').format("x"));
 
                                                             return (appointment && appointment[0] && appointment[0].length > 0 ? <div
                                                                         className={currentTime<=moment().format("x")
@@ -796,7 +835,7 @@ class CalendarPage extends Component {
                                                                                         <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
                                                                                             {moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('HH:mm')}</p>
                                                                                         <p>{workingStaffElement.firstName} {workingStaffElement.lastName}</p>
-                                                                                       
+
                                                                                         <a
                                                                                            className="a-client-info"
                                                                                            data-target=".client-detail"
@@ -845,7 +884,8 @@ class CalendarPage extends Component {
                                                                         className={`col-tab ${currentTime<=moment().format("x")
                                                                             && currentTime>=moment().subtract(15, "minutes").format("x") ? 'present-time ':''}
                                                                             ${currentTime<parseInt(moment().format("x"))?'':""}
-                                                                            ${notExpired?'':"expired"}`}
+                                                                            ${notExpired?'':"expired"}
+                                                                            ${clDate?'closedDateTick':""}`}
                                                                         data-toggle={notExpired?"modal":''}
                                                                         data-target=".new_appointment"
                                                                         time={currentTime}

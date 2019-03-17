@@ -11,7 +11,8 @@ export const userService = {
     update,
     updateProfile,
     delete: _delete,
-    activate
+    activate,
+    activateStaff
 };
 
 function login(login, password) {
@@ -41,7 +42,7 @@ function activate(activationCode) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/staff/activation/${activationCode}`,  requestOptions)
+    return fetch(`${config.apiUrl}/activation/company/${activationCode}`,  requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -51,6 +52,23 @@ function activate(activationCode) {
         });
 }
 
+function activateStaff(activationCode) {
+    const requestOptions = {
+        method: 'PUT',
+        crossDomain: true,
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/activation/staff/${activationCode}`,  requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            // login successful if there's a jwt token in the response
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('user', JSON.stringify(user));
+            return user;
+        });
+}
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');

@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpack.config.js",
-    "build": "cross-env CONTEXT=/online/ webpack --config webpack.config.js"
+    "build": "cross-env CONTEXT=/online/ webpack --config webpack.config.js",
+    "dev": "cross-env CONTEXT=/online/ webpack --config webpackDev.config.js"
   },
   "dependencies": {
     "compression-webpack-plugin": "^1.1.12",
@@ -14,6 +15,7 @@
     "moment": "2.22.2",
     "moment-duration-format": "^2.2.2",
     "moment-timezone": "^0.5.21",
+    "preact-compat": "^3.18.4",
     "react": "^16.7.0",
     "react-date-picker": "^7.0.0",
     "react-dom": "^16.7.0",

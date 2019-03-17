@@ -10,6 +10,8 @@ import 'react-day-picker/lib/style.css';
 import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../../public/css_admin/date.css'
 import moment from "moment";
+import Select from 'react-select';
+import makeAnimated from 'react-select/lib/animated';
 
 class NewStaff extends React.Component {
     constructor(props) {
@@ -25,7 +27,8 @@ class NewStaff extends React.Component {
                 "workStartMilis":moment().format('x'),
                 "workEndMilis":1000000000000,
                 "onlineBooking":true,
-                "imageBase64":''
+                "imageBase64":'',
+                'costaffs':[]
             },
             newStaff: {
                 "firstName":"",
@@ -36,11 +39,13 @@ class NewStaff extends React.Component {
                 "workStartMilis":moment().format('x'),
                 "workEndMilis":1000000000000,
                 "onlineBooking":true,
-                "imageBase64":''
+                "imageBase64":'',
+                'costaffs':[]
             },
 
             edit: props.edit,
-            preview: null
+            preview: null,
+            selectedItems: []
 
         };
 
@@ -51,8 +56,10 @@ class NewStaff extends React.Component {
         this.getFiles = this.getFiles.bind(this);
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
+        this.handleChangeMultiple = this.handleChangeMultiple.bind(this)
         this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
         this.handleDayClick = this.handleDayClick.bind(this)
+        this.handleChangeCoStaff = this.handleChangeCoStaff.bind(this)
     }
 
     onClose() {
@@ -84,10 +91,44 @@ class NewStaff extends React.Component {
         }
     }
 
+    componentDidMount() {
+    }
+
+    handleChangeMultiple(value, { action, removedValue }) {
+        const { staff } = this.state;
+
+        let st=[];
+
+        value.map(m=>m.value && st.push({'staffId': m.value}));
+
+        this.setState({ staff: {...staff, 'costaffs': st }});
+    }
+
     render() {
-        const {staff, edit, preview, emailIsValid, staffs}=this.state;
+        const {staff, edit, preview, emailIsValid, staffs, selectedItems}=this.state;
 
         console.log(this.state)
+
+        const options = [];
+        let option = [];
+
+        staffs && staffs.staff && staffs.staff.map(staffr=>{
+
+            staff.staffId !== staffr.staffId && options.push({value: staffr.staffId, label: staffr.firstName+" "+staffr.lastName});
+
+        });
+
+        staff && staff.costaffs && staff.costaffs.map(st=>
+            staffs && staffs.staff && staffs.staff.map(staffr=>{
+                st.staffId===staffr.staffId && option.push({value: staffr.staffId, label: staffr.firstName+" "+staffr.lastName})
+            })
+        )
+
+        console.log(
+
+        )
+
+        console.log(option)
 
         return (
             <div className="modal fade new-staff-modal bd-example-modal-lg" tabIndex="-1" role="dialog"
@@ -137,6 +178,20 @@ class NewStaff extends React.Component {
                                                             <option value="2">Средний</option>
                                                             <option value="3">Админ</option>
                                                         </select>
+                                                        <p>Напарник</p>
+                                                        {/*<select className="custom-select" value={staff.costaffs && staff.costaffs[0] && staff.costaffs[0].staffId} name="costaffs" onChange={this.handleChangeCoStaff}>*/}
+                                                            {/*<option value="">-</option>*/}
+                                                            {/*{ staffs && staffs.staff && staffs.staff.map((st)=>(!staff.staffId || (staff.staffId && staff.staffId !== st.staffId)) && <option value={st.staffId}>{st.lastName} {st.firstName}</option>)}*/}
+                                                        {/*</select>*/}
+                                                       <Select
+                                                            closeMenuOnSelect={false}
+                                                            components={makeAnimated()}
+                                                            value={ option}
+                                                            isMulti={true}
+                                                            onChange={this.handleChangeMultiple}
+                                                            placeholder=""
+                                                            options={options}
+                                                        />
                                                         <p>Начало работы</p>
                                                         <div className="button-calendar button-calendar-inline">
                                                             <DayPicker
@@ -259,6 +314,15 @@ class NewStaff extends React.Component {
         this.setState({ staff: {...staff, [name]: value }});
     }
 
+    handleChangeCoStaff(e) {
+        const { name, value } = e.target;
+        const { staff } = this.state;
+
+            this.setState({ staff: {...staff, 'costaffs': [{'staffId':value}] }});
+
+
+    }
+
     isValidEmailAddress(address) {
         return !! address.match(/.+@.+/);
     }
@@ -285,8 +349,10 @@ class NewStaff extends React.Component {
         const {updateStaff} = this.props;
         const {staff} = this.state;
 
-
-
+        console.log(staff)
+        if(staff.costaffs && staff.costaffs.length===0) {
+            delete staff.costaffs;
+        }
         return updateStaff(staff);
     };
 

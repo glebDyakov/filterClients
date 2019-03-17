@@ -54,6 +54,51 @@ q:before, q:after { content:''; }
     overflow: auto;
 }
 
+.sow {
+    position: absolute;
+    right: 45px;
+}
+
+.sow strong{
+    display: block;
+}
+
+.approveF {
+    border: 1px solid #80808061;
+    padding: 23px;
+    text-align: center;
+    display: flex;
+    margin: 0px auto;
+    margin-top: 21px;
+    color: white;
+}
+
+.approveFYes {
+    float: left;
+    border-radius: 5px;
+    background-color: #39434f;
+    border: none;
+    margin: auto;
+    display: block;
+    color: #fff!important;
+    font-size: 15px;
+    padding: 12px;
+    width: 27%;
+}
+
+.approveFNo {
+    float: left;
+    border-radius: 5px;
+    background-color: #39434fb3;
+    border: none;
+    margin: auto;
+    display: block;
+    color: #fff!important;
+    font-size: 15px;
+    padding: 12px;
+    width: 27%;
+}
+
 .container_popups *{
     font-family: 'helvetica_roman';
     font-size: 16px;

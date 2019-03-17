@@ -7,7 +7,8 @@ export const clientActions = {
     updateClient,
     getClient,
     deleteClient,
-    getClientWithInfo
+    getClientWithInfo,
+    downloadFile
 };
 
 function addClient(params) {
@@ -65,6 +66,16 @@ function getClient() {
     };
 
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
+}
+
+
+function downloadFile() {
+    return dispatch => {
+        clientService.downloadFile()
+            .then(
+                // client => dispatch(success(client)),
+            );
+    };
 }
 
 function getClientWithInfo() {

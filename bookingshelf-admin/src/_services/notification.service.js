@@ -4,7 +4,8 @@ import { authHeader, handleResponse } from '../_helpers';
 export const notificationService = {
     getSMS_EMAIL,
     updateSMS_EMAIL,
-    setSMS
+    setSMS,
+    getBalance
 };
 
 function updateSMS_EMAIL(params) {
@@ -57,4 +58,18 @@ function getSMS_EMAIL() {
     };
 
     return fetch(`${config.apiUrl}/notifications`, requestOptions).then(handleResponse);
+}
+
+function getBalance() {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/notifications/balances`, requestOptions).then(handleResponse);
 }

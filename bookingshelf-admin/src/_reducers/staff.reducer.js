@@ -5,6 +5,7 @@ export function staff(state= {}, action) {
     switch (action.type) {
         case staffConstants.STAFF_SUCCESS_TIME:
             setTimeout(()=>$('.new-mail').modal('hide'), 100)
+            setTimeout(()=>$('.new-staff-modal').modal('hide'), 100)
 
             return {
                 ...state,
@@ -69,20 +70,19 @@ export function staff(state= {}, action) {
                 timetable: timetableCurrent2
             };
         case staffConstants.UPDATE_SUCCESS:
-            const staff=state.staff;
-
-            staff.find((item, key)=>{
-                if(item.staffId===action.staff.staffId){
-                    staff[key]=action.staff;
-                }
-            });
+            // const staff=state.staff;
+            //
+            // staff.find((item, key)=>{
+            //     if(item.staffId===action.staff.staffId){
+            //         staff[key]=action.staff;
+            //     }
+            // });
 
 
             return {
                 ...state,
                 status: 200,
-                adding: false,
-                staff: staff
+                adding: false
             };
         case staffConstants.UPDATE_ACCESS_SUCCESS:
             return {
@@ -104,13 +104,44 @@ export function staff(state= {}, action) {
                 status: 209
             };
         case staffConstants.UPDATE_FAILURE:
-            return state;
+            return {
+                ...state,
+                status: 209
+            };
         case staffConstants.UPDATE_ACCESS_FAILURE:
             return state;
         case staffConstants.GET_SUCCESS:
+
+            let costaffs=[];
+            let st2=[];
+            let staffs=action.staff;
+
+
+
+            staffs.map(st1=>
+                st2.push(st1)
+            );
+
+            console.log('st')
+            console.log(st2)
+
+            staffs.map(st=> {
+                let costaffOne=[st];
+                st.costaffs && st.costaffs.map(costaff=>
+                    staffs.map((staff, key)=> {
+                        if(costaff.staffId===staff.staffId){
+                            costaffOne.push(staff);
+                            delete staffs[key];
+                        }
+                    })
+                )
+                costaffs.push(costaffOne)
+            });
+
             return {
                 ...state,
-                staff: action.staff,
+                staff: st2,
+                costaff: costaffs,
                 code: Math.random()
             };
         case staffConstants.GET_ACCESS_SUCCESS:
