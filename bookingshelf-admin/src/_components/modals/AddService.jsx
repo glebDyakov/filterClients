@@ -91,11 +91,11 @@ class AddService extends React.Component {
                                     <p className="title mb-2">Общая информация</p>
                                     {group &&
                                     <div className="select-color mb-3 border-color">
-                                            <li><a><span
-                                                className={group.color.toLowerCase() + " " + 'color-circle ml-0'}/><span
-                                                className={group.color.toLowerCase()}><span
-                                                className="items-color"><span>{group.name}</span></span></span></a>
-                                            </li>
+                                        <li><a><span
+                                            className={group.color.toLowerCase() + " " + 'color-circle ml-0'}/><span
+                                            className={group.color.toLowerCase()}><span
+                                            className="items-color"><span>{group.name}</span></span></span></a>
+                                        </li>
                                     </div>
                                     }
                                     <p>Название услуги</p>
@@ -146,7 +146,7 @@ class AddService extends React.Component {
                                            value={service.priceFrom} onChange={this.handleChangePrice} className={(service.specialPrice && service.priceFrom===''? ' redBorder' : '')}/>
                                     <p>Цена до</p>
                                     <input type="number" placeholder="" name="priceTo"
-                                           value={service.priceTo} onChange={this.handleChange} className={(service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo<service.priceFrom? ' redBorder' : '')}/>
+                                           value={service.priceTo} onChange={this.handleChange} className={(service.priceFrom && service.priceFrom!==0 && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)? ' redBorder' : '')}/>
 
                                     <p>Специальная цена</p>
                                     <input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"
@@ -178,7 +178,7 @@ class AddService extends React.Component {
                                 <div className="col-lg-5">
                                     <div className="block-style2 container">
                                         <div className="row">
-                                             <div className="col-sm-12"><p className="title mb-2">Сотрудники, оказывающие услугу</p></div>
+                                            <div className="col-sm-12"><p className="title mb-2">Сотрудники, оказывающие услугу</p></div>
                                         </div>
                                         {allStaffs && allStaffs.length > 0 &&
                                         <div className="search dropdown row">
@@ -226,8 +226,8 @@ class AddService extends React.Component {
                                     </div>
                                 </div>
 
-                                <button className={services.adding || service.name==='' || (service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo<service.priceFrom) || !service.staffs ||(service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
-                                        onClick={!services.adding && service.name!=='' && service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && service.priceTo>=service.priceFrom && service.staffs && service.staffs.length!==0&&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
+                                <button className={services.adding || service.name==='' || (service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)) || !service.staffs ||(service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
+                                        onClick={!services.adding && service.name!=='' && service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)>=parseInt(service.priceFrom) && service.staffs && service.staffs.length!==0&&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
                             </div>
                         </div>
                     </div>
@@ -244,7 +244,7 @@ class AddService extends React.Component {
         const { service } = this.state;
 
 
-            this.setState({service:{...service, [name]: name==='specialPrice' && value==='' ? 0 : value}});
+        this.setState({service:{...service, [name]: name==='specialPrice' && value==='' ? 0 : value}});
 
 
     }

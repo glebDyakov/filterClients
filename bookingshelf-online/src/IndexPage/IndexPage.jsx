@@ -179,7 +179,7 @@ class IndexPage extends React.Component {
 
 
                 {screen === 1 && <div className="service_selection screen1">
-                    <div className="title_block">
+                    <div className="title_block n">
                         <p className="modal_title">Выбор сотрудника</p>
                         {selectedStaff.staffId &&
                         <span className="next_block" onClick={() => this.setScreen(2)}>Вперед</span>}
@@ -199,14 +199,14 @@ class IndexPage extends React.Component {
                                     </div>
 
 
-                                            {nearestTime && nearestTime.map((time, id)=>
-                                                time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                                    <div className="mobile_block" key={'time'+id}>
-                                                                <span>Ближайшая запись</span>
-                                                        <div className="stars" style={{textTransform: 'capitalize'}}>{this.roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                                            </div>
+                                    {nearestTime && nearestTime.map((time, id)=>
+                                        time.staffId===staff.staffId && time.availableDays.length!==0 &&
+                                        <div className="mobile_block" key={'time'+id}>
+                                            <span>Ближайшая запись</span>
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{this.roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                        </div>
 
-                                            )}
+                                    )}
 
                                     {nearestTime && !nearestTime.some((time, id)=>
                                         time.staffId===staff.staffId && time.availableDays.length!==0
@@ -242,19 +242,20 @@ class IndexPage extends React.Component {
                                 <span>{selectedStaff.firstName} <br/>{selectedStaff.lastName}</span>
                             </p>
                             {/*<div className="mobile_block">*/}
-                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                                {/*<div className="stars">*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                {/*</div>*/}
+                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                            {/*<div className="stars">*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*</div>*/}
                             {/*</div>*/}
                         </div>
                     </div>}
                     <ul className="service_list">
                         {services && services.map((service, serviceKey) =>
+                            selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) &&
                             <li onClick={() => this.selectService(service)}
                                 className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                             >
@@ -287,14 +288,14 @@ class IndexPage extends React.Component {
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
                             </p>
                             {/*<div className="mobile_block">*/}
-                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                                {/*<div className="stars">*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                {/*</div>*/}
+                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                            {/*<div className="stars">*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*</div>*/}
                             {/*</div>*/}
                         </div>
                         }
@@ -349,14 +350,14 @@ class IndexPage extends React.Component {
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
                             </p>
                             {/*<div className="mobile_block">*/}
-                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                                {/*<div className="stars">*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                {/*</div>*/}
+                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                            {/*<div className="stars">*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*</div>*/}
                             {/*</div>*/}
                         </div>
                         }
@@ -376,21 +377,21 @@ class IndexPage extends React.Component {
                     </div>
                     <div className="choise_time">
 
-                            {workingStaff && workingStaff.map((workingStaffElement, i) =>
-                                parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
-                                        workingStaffElement.availableTimes.map((workingTime) =>
-                                            workingTime.startTimeMillis >= parseInt(moment().format("x")) &&
-                                            <div key={i} onClick={() => this.setTime(workingTime.startTimeMillis)}>
-                                                <span>{moment(workingTime.startTimeMillis, 'x').format('HH:mm')}</span></div>
-                                        )
+                        {workingStaff && workingStaff.map((workingStaffElement, i) =>
+                            parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
+                            workingStaffElement.availableTimes.map((workingTime) =>
+                                workingTime.startTimeMillis >= parseInt(moment().format("x")) &&
+                                <div key={i} onClick={() => this.setTime(workingTime.startTimeMillis)}>
+                                    <span>{moment(workingTime.startTimeMillis, 'x').format('HH:mm')}</span></div>
+                            )
 
-                                )
-                                }
+                        )
+                        }
                     </div>
                 </div>
                 }
                 {screen === 5 &&
-                    <div className="service_selection screen5">
+                <div className="service_selection screen5">
                     <div className="title_block">
                         <span className="prev_block" onClick={()=>this.setScreen(4)}>Назад</span>
                         <p className="modal_title">Запись</p>
@@ -403,14 +404,14 @@ class IndexPage extends React.Component {
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
                             </p>
                             {/*<div className="mobile_block">*/}
-                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                                {/*<div className="stars">*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                    {/*<span></span>*/}
-                                {/*</div>*/}
+                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                            {/*<div className="stars">*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*</div>*/}
                             {/*</div>*/}
                         </div>
                         }
@@ -427,15 +428,15 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedTime &&
-                            <div className="date_item_popup">
-                                <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
-                            </div>
+                        <div className="date_item_popup">
+                            <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
+                        </div>
                         }
                     </div>
                     <p>Имя</p>
                     <input type="text" placeholder="Введите имя" name="clientName" onChange={this.handleChange}
                            value={group.clientName && group.clientName}
-                        className={((group.phone && !group.clientName) ? ' redBorder' : '')}
+                           className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
                     <p>Телефон</p>
                     <div className="phones_country">
@@ -447,7 +448,7 @@ class IndexPage extends React.Component {
                         />
 
                     </div>
-                        <br/>
+                    <br/>
                     <p>Email</p>
                     <input type="text" placeholder="Введите email" name="email" onChange={this.handleChange}
                            onKeyUp={() => this.setState({
@@ -463,61 +464,61 @@ class IndexPage extends React.Component {
                     <input className={((!selectedStaff.staffId || !selectedService.serviceId || !selectedDay || (group.phone && !isValidNumber(group.phone)) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value="ЗАПИСАТЬСЯ" onClick={
                         ()=>(selectedStaff.staffId && selectedService.serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && this.handleSave()}/>
                 </div>
-                    }
+                }
 
                 {screen === 6 &&
-                    <div className="service_selection final-screen">
-                        <div className="final-book">
-                            <p>Запись успешно создана</p>
-                        </div>
-                        <div className="specialist">
-                            {selectedStaff.staffId &&
-                            <div>
-                                <p className="img_container">
-                                    <img src={selectedStaff.imageBase64?"data:image/png;base64,"+selectedStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
-                                    <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                                </p>
-                                {/*<div className="mobile_block">*/}
-                                    {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                                    {/*<div className="stars">*/}
-                                        {/*<span></span>*/}
-                                        {/*<span></span>*/}
-                                        {/*<span></span>*/}
-                                        {/*<span></span>*/}
-                                        {/*<span></span>*/}
-                                    {/*</div>*/}
-                                {/*</div>*/}
-                            </div>
-                            }
-                            {selectedService.serviceId &&
-                            <div className="service_item">
-                                <p>{selectedService.name}</p>
-                                <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
-                                <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
-                            </div>
-                            }
-                            {selectedDay &&
-                            <div className="date_item_popup">
-                                <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
-                            </div>
-                            }
-                            {selectedTime &&
-                            <div className="date_item_popup">
-                                <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
-                            </div>
-                            }
-                        </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>this.setState({...this.state, approveF: true})}/>
-                        {approveF && <div className="approveF" >
-                            <button className="approveFYes"  onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}>Да
-                            </button>
-                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
-                            </button>
+                <div className="service_selection final-screen">
+                    <div className="final-book">
+                        <p>Запись успешно создана</p>
+                    </div>
+                    <div className="specialist">
+                        {selectedStaff.staffId &&
+                        <div>
+                            <p className="img_container">
+                                <img src={selectedStaff.imageBase64?"data:image/png;base64,"+selectedStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                            </p>
+                            {/*<div className="mobile_block">*/}
+                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                            {/*<div className="stars">*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*<span></span>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
                         </div>
                         }
-                        <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
-
+                        {selectedService.serviceId &&
+                        <div className="service_item">
+                            <p>{selectedService.name}</p>
+                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
+                            <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                        </div>
+                        }
+                        {selectedDay &&
+                        <div className="date_item_popup">
+                            <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                        </div>
+                        }
+                        {selectedTime &&
+                        <div className="date_item_popup">
+                            <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
+                        </div>
+                        }
                     </div>
+                    <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>this.setState({...this.state, approveF: true})}/>
+                    {approveF && <div className="approveF" >
+                        <button className="approveFYes"  onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}>Да
+                        </button>
+                        <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
+                        </button>
+                    </div>
+                    }
+                    <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
+
+                </div>
                 }
                 {screen === 7 &&
                 <div className="service_selection final-screen">
