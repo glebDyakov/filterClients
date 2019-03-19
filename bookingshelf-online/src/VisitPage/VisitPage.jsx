@@ -32,7 +32,7 @@ class VisitPage extends React.Component {
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
             if(newProps.staff.info) {
-                document.title = newProps.staff.info.companyName + " | Онлайн-запись";
+                document.title = newProps.staff.info.companyName + " | Онлайн-запись ";
             }
             newProps.staff.info && newProps.staff.info.timezoneId && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
