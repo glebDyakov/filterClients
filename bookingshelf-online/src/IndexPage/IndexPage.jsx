@@ -255,7 +255,7 @@ class IndexPage extends React.Component {
                     </div>}
                     <ul className="service_list">
                         {services && services.map((service, serviceKey) =>
-                            selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) &&
+                            selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) ?
                             <li onClick={() => this.selectService(service)}
                                 className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                             >
@@ -266,6 +266,7 @@ class IndexPage extends React.Component {
                                         className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                                 </a>
                             </li>
+                                : <li>Нет доступных услуг</li>
                         )}
                     </ul>
                 </div>
