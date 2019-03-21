@@ -10,49 +10,56 @@ export function menu(state = {}, action) {
     case menuConstants.GET_MENU_LIST_SUCCESS:
         return {
             ...state,
-            menuList: {
-              "company_menu_id":{
-                "url":"/",
-                "icon":"10.svg",
-                "name":"Настройки компании",
-              },
-              "calendar_menu_id":{
+            menuList: [
+              {
+                  "id":"calendar_menu_id",
                   "url":"/calendar",
                   "icon":"1.svg",
                   "name":"Журнал записи",
               },
-              "clients_menu_id":{
+              {
+                  "id":"clients_menu_id",
                   "url":"/clients",
                   "icon":"4.svg",
                   "name":"Клиенты",
               },
-              "staff_menu_id":{
+              {
+                  "id":"staff_menu_id",
                   "url":"/staff",
                   "icon":"5.svg",
                   "name":"Сотрудники",
               },
-              "services_menu_id":{
+              {
+                  "id":"services_menu_id",
                   "url":"/services",
                   "icon":"6.svg",
                   "name":"Услуги",
               },
-              "email_menu_id":{
+              {
+                  "id":"email_menu_id",
                   "url":"/email_sms",
                   "icon":"7.svg",
                   "name":"Email и SMS",
               },
-              "analytics_menu_id":{
+              {
+                  "id":"analytics_menu_id",
                   "url":"/analytics",
                   "icon":"8.svg",
                   "name":"Аналитика",
               },
-              "booking_menu_id":{
+              {
+                  "id":"booking_menu_id",
                   "url":"/online_booking",
                   "icon":"9.svg",
                   "name":"Онлайн-запись"
               },
-            }
-        };
+                {
+                    "id":"company_menu_id",
+                    "url":"/settings",
+                    "icon":"10.svg",
+                    "name":"Настройки компании",
+                }]
+            };
       default:
           return state
   }

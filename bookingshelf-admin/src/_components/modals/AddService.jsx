@@ -226,7 +226,7 @@ class AddService extends React.Component {
                                     </div>
                                 </div>
 
-                                <button className={services.adding || service.name==='' || (service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)) || !service.staffs ||(service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
+                                <button className={services.adding || service.name==='' || service.priceFrom==='' || (service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)) || !service.staffs ||(service.staffs && service.staffs.length===0)?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
                                         onClick={!services.adding && service.name!=='' && service.priceFrom && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)>=parseInt(service.priceFrom) && service.staffs && service.staffs.length!==0&&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
                             </div>
                         </div>

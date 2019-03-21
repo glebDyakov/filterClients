@@ -111,7 +111,17 @@ class AddGroup extends React.Component {
                         </div>
                         <div className="modal-inner pl-4 pr-4 pb-4">
                             <p>Название группы</p>
-                            <input type="text" placeholder="Например: Отбеливание"  name="name" value={group.name} onChange={this.handleChange}/>
+                            <div  style={{position: 'relative'}}>
+                                <input type="text" placeholder="Например: Отбеливание"  name="name" value={group.name} onChange={this.handleChange}/>
+                                <span style={{
+                                    position: 'absolute',
+                                    right: '12px',
+                                    bottom: '17px',
+                                    opacity: '0.7'
+                                }}>
+                                    {group.name.length}/60
+                                </span>
+                            </div>
                             <p>Цвет группы</p>
 
                             <div className="select-color dropdown mb-3 color-radius">
@@ -151,7 +161,17 @@ class AddGroup extends React.Component {
                                 </ul>
                             </div>
                             <p>Описание</p>
-                            <textarea className="comments mb-3" placeholder="Например: Офисное отбеливание" name="description" value={group.description}  onChange={this.handleChange}/>
+                            <div  className="mb-3" style={{position: 'relative'}}>
+                                <textarea className="comments" placeholder="Например: Офисное отбеливание" name="description" value={group.description}  onChange={this.handleChange}/>
+                                <span style={{
+                                    position: 'absolute',
+                                    right: '12px',
+                                    bottom: '6px',
+                                    opacity: '0.7'
+                                }}>
+                                    {group.description.length}/120
+                                </span>
+                            </div>
                             {services && services.status === 200 &&
                             <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                             }
@@ -173,6 +193,14 @@ class AddGroup extends React.Component {
     handleChange(e) {
         const { name, value } = e.target;
         const { group } = this.state;
+
+        if(name==='description' && value.length>120){
+            return false;
+        }
+
+        if(name==='name' && value.length>60){
+            return false;
+        }
 
         this.setState({ group: {...group, [name]: value }});
     }
