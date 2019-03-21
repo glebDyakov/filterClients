@@ -47,7 +47,7 @@ class HeaderMain extends React.Component {
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
 
-                <div className="col-1 mob-menu">
+                <div className="col-1 mob-menu b">
                     <div>
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
