@@ -112,7 +112,7 @@ class RegisterPage extends React.Component {
                             <form name="form" onSubmit={this.handleSubmit}>
                                 <p>Зарегистрируйте и получите бесплатный пробный период 30 дней</p>
                                 <span>Название компании</span>
-                                <input type="text" className={'' + (user.email && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
+                                <input type="text" className={'' + (user.countryCode && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
 
                                 <span>Введите email</span>
                                 <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
@@ -123,7 +123,7 @@ class RegisterPage extends React.Component {
 
                                 <span>Cтрана</span>
                                 <div className="">
-                                    <select className={"custom-select"+((user.email && user.countryCode===''  ? ' redBorder' : ''))} value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
+                                    <select className={"custom-select"+((user.countryCode && user.countryCode===''  ? ' redBorder' : ''))} value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
                                         <option value=''></option>
                                         <option value='BLR'>Беларусь</option>
                                         <option value='UKR'>Украина</option>
@@ -133,7 +133,7 @@ class RegisterPage extends React.Component {
                                 <span>Таймзона</span>
                                 <div className="">
                                     {user.countryCode === '' &&
-                                    <select className={"disabledField custom-select"+((user.email && user.timezoneId===''  ? ' redBorder' : ''))} value={user.timezoneId}
+                                    <select className={"disabledField custom-select"+((user.countryCode && user.timezoneId===''  ? ' redBorder' : ''))} value={user.timezoneId}
                                             name="timezoneId">
                                     </select>
                                     }
@@ -187,13 +187,13 @@ class RegisterPage extends React.Component {
                                 </div>
 
                                 <span>Пароль</span>
-                                <input type="password" className={'' + ((user.email || user.companyName) && !user.password ? ' redBorder' : '')} name="password" value={user.password} onChange={this.handleChange} />
+                                <input type="password" className={'' + ((user.countryCode || user.companyName) && !user.password ? ' redBorder' : '')} name="password" value={user.password} onChange={this.handleChange} />
 
                                 {/*<span>Подтвердите пароль</span>*/}
                                 {/*<input type="password"  className={'' + (user.password && !user.password_repeated || (user.password_repeated && user.password!==user.password_repeated) ? ' redBorder' : '')} name="password_repeated" value={user.password_repeated} onChange={this.handleChange} />*/}
                                 <label>
                                     <input type="checkbox" onChange={()=>this.setState({...this.state, agreed: !agreed})} checked={agreed}/>
-                                    <span className={'' + ((user.email || user.companyName) && !agreed ? ' redBorder' : '')}/>
+                                    <span className={'' + ((user.countryCode || user.companyName) && !agreed ? ' redBorder' : '')}/>
                                     Регистрируясь, вы принимаете условия <a href="#">публичного
                                     договора</a>
                                 </label>

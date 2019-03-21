@@ -155,6 +155,11 @@ class IndexPage extends React.Component {
     render() {
         const {selectedStaff, selectedService, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
 
+        let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
+            return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
+        });
+
+        console.log(servicesForStaff);
 
         return (
 
@@ -267,6 +272,12 @@ class IndexPage extends React.Component {
                                 </a>
                             </li>
                         )}
+                        {
+                            !servicesForStaff &&  <div className="final-book">
+                                <p>Нет доступных услуг</p>
+                            </div>
+                        }
+
                     </ul>
                 </div>
                 }
@@ -307,6 +318,7 @@ class IndexPage extends React.Component {
                                 className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
                         </div>
                         }
+
                     </div>
                     <div className="calendar_modal">
                         {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={this.showPrevWeek}/>}
