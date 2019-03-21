@@ -88,19 +88,22 @@ class SidebarMain extends Component {
 
                 <li className="arrow_collapse sidebar_list_collapse" onClick={()=>localStorage.setItem('collapse', 'true')} style={{'display':localStorage.getItem('collapse')=='true'?'none':'block'}}/>
                 <li className="arrow_collapse sidebar_list_collapse-out" onClick={()=>localStorage.setItem('collapse', 'false')} style={{'display':localStorage.getItem('collapse')!='true'?'none':'block'}}/>
-                {authentication && authentication.menu && authentication.user && authentication.user.menu && authentication.user.menu.map((item, keyStore)=>
-                    menu && menu.menuList && menu.menuList[item.id] &&
-                    access(authentication.menu[0][item.id].permission) &&
-                            <li className={path === authentication.menu[0][item.id].url ? 'active' : ''}
-                                key={keyStore}>
-                                <a onClick={() => this.handleClick(authentication.menu[0][item.id].url)}>
-                                    <img
-                                        src={`${process.env.CONTEXT}public/img/icons/` + authentication.menu[0][item.id].icon}
-                                        alt=""/>
-                                    <span>{authentication.menu[0][item.id].name}</span>
-                                    {keyStore===0 && count>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{count}</span>}
-                                </a>
-                            </li>
+                {authentication && authentication.menu && authentication.user && authentication.user.menu &&
+                menu && menu.menuList && menu.menuList.map((item, keyStore)=>
+                    authentication.user.menu.map(localItem=>
+                        localItem.id===item.id &&
+                    <li className={path === item.url ? 'active' : ''}
+                        key={keyStore}>
+                        <a onClick={() => this.handleClick(item.url)}>
+                            <img
+                                src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
+                                alt=""/>
+                            <span>{item.name}</span>
+                            {keyStore===0 && count>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{count}</span>}
+                        </a>
+                    </li>
+                    )
+
                 )}
 
                 <li className="mob-menu-closer">
