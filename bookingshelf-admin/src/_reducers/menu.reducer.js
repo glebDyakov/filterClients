@@ -10,12 +10,7 @@ export function menu(state = {}, action) {
     case menuConstants.GET_MENU_LIST_SUCCESS:
         return {
             ...state,
-            menuList: [{
-                "id":"company_menu_id",
-                "url":"/",
-                "icon":"10.svg",
-                "name":"Настройки компании",
-              },
+            menuList: [
               {
                   "id":"calendar_menu_id",
                   "url":"/calendar",
@@ -57,7 +52,13 @@ export function menu(state = {}, action) {
                   "url":"/online_booking",
                   "icon":"9.svg",
                   "name":"Онлайн-запись"
-              }]
+              },
+                {
+                    "id":"company_menu_id",
+                    "url":"/settings",
+                    "icon":"10.svg",
+                    "name":"Настройки компании",
+                }]
             };
       default:
           return state
