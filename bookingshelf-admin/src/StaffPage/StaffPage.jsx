@@ -398,7 +398,7 @@ class StaffPage extends Component {
                                                     </div>
                                                     <div className="description col-sm-6">
                                                         <p>Описание</p>
-                                                        <textarea className="form-control" rows="3" name="description" onChange={this.handleClosedDate}/>
+                                                        <textarea className="form-control" rows="3" name="description" value={closedDates.description} onChange={this.handleClosedDate}/>
                                                         <div className="float-right mt-3">
                                                             <div className="buttons">
                                                                 <button className="small-button gray-button close-holiday"
@@ -462,7 +462,7 @@ class StaffPage extends Component {
                                                 <div>Владелец</div>
                                             </div>
                                             {
-                                                staff.accessList && staff.accessList.map((itemList) =>
+                                                staff.accessList && staff.accessList.map((itemList, index) =>
                                                     <div className="tab-content-list" key={itemList.permissionCode}>
                                                         <div>
                                                             {itemList.name}
@@ -480,7 +480,7 @@ class StaffPage extends Component {
                                                                                 <input
                                                                                     className="form-check-input"
                                                                                     checked={checkedPermission !== undefined}
-                                                                                    disabled={item.roleCode === 4}
+                                                                                    disabled={item.roleCode === 4 || index===0}
                                                                                     type="checkbox"
                                                                                     onChange={() => this.toggleChange(item.roleCode, itemList.permissionCode)}/>
                                                                                 <span className="check"></span>
@@ -652,9 +652,19 @@ class StaffPage extends Component {
         const { closedDates, from, to } = this.state;
 
         closedDates.startDateMillis=moment(from).format('x');
-        closedDates.endDateMillis=moment(to===null?moment(from).add(1, 'day'):to).format('x');
+        closedDates.endDateMillis=moment(to===null?moment(from):to).format('x');
 
         dispatch(staffActions.addClosedDates(JSON.stringify(closedDates)));
+
+        this.setState({
+            ...this.state,
+            from: null,
+            to: null,
+            enteredTo: null,
+            closedDates: {
+                description: ''
+            }
+        });
     };
 
     toggleChange (roleCode, permissionCode) {
@@ -799,7 +809,7 @@ class StaffPage extends Component {
                 ...this.state,
                 from: day,
                 to: null,
-                enteredTo: null,
+                enteredTo: day,
             });
         } else {
             this.setState({

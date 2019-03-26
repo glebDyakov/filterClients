@@ -56,7 +56,7 @@ q:before, q:after { content:''; }
 
 .sow {
     position: absolute;
-    right: 45px;
+    right: 20px;
 }
 
 .sow strong{
@@ -295,6 +295,7 @@ q:before, q:after { content:''; }
 }
 .specialist div:nth-child(2n+2){
     margin-right: 0;
+    position: relative;
 }
 .specialist{
     display: inline-block;
@@ -340,7 +341,7 @@ q:before, q:after { content:''; }
 }
 
 .service_item p:first-of-type{
-    max-width: 180px;
+    max-width: 167px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
