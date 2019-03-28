@@ -33,8 +33,8 @@ class EmailPage extends Component {
         ){
             props.history.push('/nopage')
         }
-
-        if(props.match.params.activeTab==='auto_notification') {document.title = "Авто уведомления | Онлайн-запись";}
+        
+        if(!props.match.params.activeTab || props.match.params.activeTab==='auto_notification') {document.title = "Авто уведомления | Онлайн-запись";}
         if(props.match.params.activeTab==='smsletter'){document.title = "SMS Рассылка | Онлайн-запись"}
         if(props.match.params.activeTab==='newsletter'){document.title = "Email Рассылка | Онлайн-запись"}
         if(props.match.params.activeTab==='balance'){document.title = "Баланс Email/SMS | Онлайн-запись"}

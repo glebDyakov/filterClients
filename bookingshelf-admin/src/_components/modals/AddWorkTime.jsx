@@ -201,7 +201,13 @@ class AddWorkTime extends React.Component {
 
     onChangeTime(field, key, time) {
         const {times, repeat, staff, date} = this.state;
-        this.setState({times:Object.assign(times,{[key]: {...times[key], [field]: moment(date +' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')}})});
+        let timeVar=moment(date +' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm')
+
+        if(timeVar.minute()===0){
+            timeVar=timeVar.add(15 - (timeVar.minute() % 15), 'minutes')
+        }
+
+        this.setState({times:Object.assign(times,{[key]: {...times[key], [field]: timeVar.format('x')}})});
     }
 
     onSaveTime() {

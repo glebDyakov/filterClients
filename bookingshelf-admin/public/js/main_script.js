@@ -85,9 +85,9 @@ function initializeJs() {
         $('.modal_user_setting').modal('show');
     });
 
-    $('.holiday-list .delete-tab').click(function () {
-        $(this).parents('.holiday-list').toggleClass('hide', 300);
-    });
+    // $('.holiday-list .delete-tab').click(function () {
+    //     $(this).parents('.holiday-list').toggleClass('hide', 300);
+    // });
     $('.templates-list .delete-tab').click(function () {
         $(this).parents('.templates-list').toggleClass('hide', 300);
     });
@@ -95,9 +95,9 @@ function initializeJs() {
         $(this).parents('tr').toggleClass('hide', 300);
     });
 
-    $('.delete-tab').click(function () {
-        $(this).parents('.services_items').toggleClass('hide', 300);
-    });
+    // $('.delete-tab').click(function () {
+    //     $(this).parents('.services_items').toggleClass('hide', 300);
+    // });
 
 
     var $dropzone = $('.image_picker'),
