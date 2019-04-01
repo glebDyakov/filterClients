@@ -22,11 +22,14 @@ class UserSettings extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
+        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication) || newProps.randNum !== this.props.randNum) {
 
                 this.setState({...this.state, authentication: newProps.authentication })
         }
+        if ( newProps.randNum !== this.props.randNum) {
 
+            this.setState({...this.state, authentication: newProps.authentication })
+        }
 
 
         if ( JSON.stringify(this.props.users) !==  JSON.stringify(newProps.users)) {
@@ -190,7 +193,7 @@ function mapStateToProps(state) {
 }
 
 UserSettings.propTypes ={
-    keys: PropTypes.object
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(UserSettings);

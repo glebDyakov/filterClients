@@ -235,7 +235,9 @@ class OnlinePage extends Component {
 
 
                 </div>
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
 
                 <UserPhoto/>
             </div>

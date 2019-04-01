@@ -928,6 +928,7 @@ class CalendarPage extends Component {
                 <AddAppointment
                     clients={clients}
                     staffs={staffAll}
+                    randNum={Math.random()}
                     addAppointment={this.newAppointment}
                     editAppointment={this.editAppointment}
                     appointments={calendar && calendar}
@@ -942,6 +943,7 @@ class CalendarPage extends Component {
                 />
                 <ReservedTime
                     staffs={staffAll}
+                    randNum={Math.random()}
                     minutesReservedtime={minutesReservedtime}
                     getHours={this.changeReservedTime}
                     newReservedTime={this.newReservedTime}
@@ -955,13 +957,14 @@ class CalendarPage extends Component {
                     edit={editClient}
                     updateClient={this.updateClient}
                     addClient={this.addClient}
+                    randNum={Math.random()}
                 />
                 <ClientDetails
                     client={infoClient}
                     editClient={this.handleEditClient}
                 />
                 <UserSettings
-                    keys={{int:Math.random()}}
+                    randNum={Math.random()}
                 />
                 <UserPhoto/>
                 <ApproveAppointment

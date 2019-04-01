@@ -72,16 +72,22 @@ class NewStaff extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        console.log(newProps.randNum)
+        console.log(this.props.randNum)
 
-        if ( JSON.stringify(this.props.staff_working) !==  JSON.stringify(newProps.staff_working)) {
+        if ( JSON.stringify(this.props.staff_working) !==  JSON.stringify(newProps.staff_working) || newProps.randNum !== this.props.randNum) {
             const {edit, staff_working} = newProps;
             const {newStaff} = this.state;
 
             this.setState({edit:edit});
-
+            console.log("newStaff")
+            console.log(newStaff)
             if(edit){
+
+
                 this.setState({staff:staff_working, emailIsValid: true})
             } else {
+
                 this.setState({staff:newStaff, emailIsValid: false})
             }
         }
@@ -383,7 +389,8 @@ NewStaff.propTypes ={
     staff_working: PropTypes.object,
     edit: PropTypes.bool.isRequired,
     updateStaff: PropTypes.func,
-    addStaff: PropTypes.func
+    addStaff: PropTypes.func,
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(NewStaff);

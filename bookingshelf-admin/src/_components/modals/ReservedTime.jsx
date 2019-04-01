@@ -42,7 +42,7 @@ class ReservedTime extends React.Component {
 
     componentWillReceiveProps(newProps) {
 
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
+        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps) || newProps.randNum !== this.props.randNum) {
             this.setState({...this.state, staffs:newProps.staffs,
                 minutesReservedtime: newProps.minutesReservedtime,
                 reservedTime: newProps.reservedTime!=null ? {startTimeMillis:newProps.reservedTime.startTimeMillis,
@@ -256,7 +256,8 @@ ReservedTime.propTypes ={
     getHours: PropTypes.func,
     newReservedTime: PropTypes.func,
     reservedTime:  PropTypes.object,
-    reservedStuffId: PropTypes.number
+    reservedStuffId: PropTypes.number,
+    randNum:PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(ReservedTime);

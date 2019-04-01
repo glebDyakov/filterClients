@@ -164,8 +164,11 @@ class ClientsPage extends Component {
                     edit={edit}
                     updateClient={this.updateClient}
                     addClient={this.addClient}
+                    randNum={Math.random()}
                 />
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
                 <UserPhoto/>
             </div>
         );
