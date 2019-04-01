@@ -33,7 +33,7 @@ class EmailPage extends Component {
         ){
             props.history.push('/nopage')
         }
-        
+
         if(!props.match.params.activeTab || props.match.params.activeTab==='auto_notification') {document.title = "Авто уведомления | Онлайн-запись";}
         if(props.match.params.activeTab==='smsletter'){document.title = "SMS Рассылка | Онлайн-запись"}
         if(props.match.params.activeTab==='newsletter'){document.title = "Email Рассылка | Онлайн-запись"}
@@ -631,7 +631,9 @@ class EmailPage extends Component {
 
                 </div>
 
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
                 <UserPhoto/>
                 <div className="modal fade start-modal">
                     <div className="modal-dialog modal-lg modal-dialog-centered">

@@ -19,6 +19,9 @@ class NewStaffByMail extends React.Component {
         if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
             this.setState({staffs:newProps.staff, emailNew:newProps.staff.status === 200 ? '':this.state.emailNew});
         }
+        if (newProps.randNum !== this.props.randNum) {
+            this.setState({emailNew:''});
+        }
     }
 
     render() {
@@ -96,7 +99,8 @@ function mapStateToProps(state) {
 }
 
 NewStaffByMail.propTypes ={
-    addStaffEmail: PropTypes.func
+    addStaffEmail: PropTypes.func,
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(NewStaffByMail);

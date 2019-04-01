@@ -201,9 +201,13 @@ class AddWorkTime extends React.Component {
 
     onChangeTime(field, key, time) {
         const {times, repeat, staff, date} = this.state;
-        let timeVar=moment(date +' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm')
+        let timeVar=moment(date +' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm');
 
-        if(timeVar.minute()===0){
+        if(timeVar.minute()!==0 &&
+            timeVar.minute()!==15 &&
+            timeVar.minute()!==30 &&
+            timeVar.minute()!==45
+        ){
             timeVar=timeVar.add(15 - (timeVar.minute() % 15), 'minutes')
         }
 

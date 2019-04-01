@@ -60,7 +60,16 @@ class AddService extends React.Component {
                 this.setState({service:newGroup})
             }
         }
+        if (newProps.randNum !== this.props.randNum) {
+            const {editServiceItem, group_working} = newProps;
+            const {newGroup} = this.state;
 
+            if(editServiceItem){
+                this.setState({service:group_working})
+            } else {
+                this.setState({service:newGroup})
+            }
+        }
 
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({services:newProps.services});
@@ -335,7 +344,8 @@ AddService.propTypes ={
     editServiceItem: PropTypes.bool.isRequired,
     updateService: PropTypes.func,
     addService: PropTypes.func,
-    group: PropTypes.object
+    group: PropTypes.object,
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(AddService);

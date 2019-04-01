@@ -296,6 +296,7 @@ q:before, q:after { content:''; }
 .specialist div:nth-child(2n+2){
     margin-right: 0;
     position: relative;
+    float: right;
 }
 .specialist{
     display: inline-block;
