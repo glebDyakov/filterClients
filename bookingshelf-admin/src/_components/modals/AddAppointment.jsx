@@ -73,8 +73,9 @@ class AddAppointment extends React.Component {
                 
 
 
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)
-            && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)
+        if ( (JSON.stringify(this.props) !==  JSON.stringify(newProps)
+            && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)) ||
+            newProps.randNum !== this.props.randNum
      
         ) {
             this.setState({
@@ -556,7 +557,8 @@ AddAppointment.propTypes ={
     minutes: PropTypes.array,
     staffId: PropTypes.object,
     appointments: PropTypes.object,
-    appointmentEdited: PropTypes
+    appointmentEdited: PropTypes,
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(AddAppointment);

@@ -59,6 +59,16 @@ class NewClient extends React.Component {
                 this.setState({client:this.state.client && newProps.client && newProps.client.error!==null ?this.state.client:newClient})
             }
         }
+
+        if (newProps.randNum !== this.props.randNum) {
+            const {edit, client_working} = newProps;
+            const {newClient} = this.state;
+            if(edit){
+                this.setState({client:newProps.client ? newProps.client.client && newProps.client.client.filter((cl)=>client_working.clientId===cl.clientId)[0]:client_working, emailIsValid:true})
+            } else {
+                this.setState({client: newClient})
+            }
+        }
         if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
             this.setState({alert:newProps.alert});
             setTimeout(() => {
@@ -217,7 +227,8 @@ NewClient.propTypes ={
     client_working: PropTypes.object,
     edit: PropTypes.bool.isRequired,
     updateClient: PropTypes.func,
-    addClient: PropTypes.func
+    addClient: PropTypes.func,
+    randNum: PropTypes.number
 };
 
 const connectedApp = connect(mapStateToProps)(NewClient);

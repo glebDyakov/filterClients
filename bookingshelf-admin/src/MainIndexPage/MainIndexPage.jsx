@@ -401,7 +401,9 @@ class MainIndexPage extends Component {
 
                 </div>
                 {authentication && authentication.user &&
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
                 }
                 <UserPhoto/>
             </div>

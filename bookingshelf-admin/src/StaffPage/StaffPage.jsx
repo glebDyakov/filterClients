@@ -528,10 +528,14 @@ class StaffPage extends Component {
                     edit={edit}
                     updateStaff={this.updateStaff}
                     addStaff={this.addStaff}
+                    randNum={Math.random()}
                 />
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
                 <NewStaffByMail
                     addStaffEmail={this.addStaffEmail}
+                    randNum={Math.random()}
                 />
                 <UserPhoto/>
             </div>

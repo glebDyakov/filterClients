@@ -202,6 +202,7 @@ class ServicesPage extends Component {
                     addService={this.addService}
                     staffs={staff.staff}
                     group={idGroupEditable}
+                    randNum={Math.random()}
                 />
                 <CreatedService
                     services={services}
@@ -209,7 +210,9 @@ class ServicesPage extends Component {
                     newServiceFromGroup={this.newService}
                     serviceCurrent={this.state.newSetElement}
                 />
-                <UserSettings/>
+                <UserSettings
+                    randNum={Math.random()}
+                />
                 <UserPhoto/>
             </div>
         );
