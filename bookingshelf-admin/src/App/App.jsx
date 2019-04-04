@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
-import {alertActions, staffActions, socketActions} from '../_actions';
+import {alertActions, staffActions} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -75,7 +75,7 @@ class App extends React.Component {
     componentDidMount() {
         const {authentication} = this.state;
 
-        this.props.dispatch(socketActions.INCREMENT_CONNECT('localhost', 44500));
+        // this.props.dispatch(socketActions.INCREMENT_CONNECT('online-zapis.com', 44500));
 
         if (authentication && authentication.user && authentication.menu && authentication.loggedIn) {
             this.notifications();
