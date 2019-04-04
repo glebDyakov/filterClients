@@ -75,6 +75,8 @@ class App extends React.Component {
     componentDidMount() {
         const {authentication} = this.state;
 
+        // this.props.dispatch(socketActions.INCREMENT_CONNECT('online-zapis.com', 44500));
+
         if (authentication && authentication.user && authentication.menu && authentication.loggedIn) {
             this.notifications();
 
@@ -89,7 +91,7 @@ class App extends React.Component {
         this.props.dispatch(companyActions.getNewAppointments());
 
 
-        setTimeout(()=>this.notifications(), 20000)
+        // setTimeout(()=>this.notifications(), 20000)
     }
 
 
