@@ -1,24 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Modal from "@trendmicro/react-modal";
 
 class CreatedService extends React.Component {
     constructor(props) {
         super(props);
         this.state= {
             service: null,
-            services: props.services,
-            serviceCurrent: props.serviceCurrent
+            services: props.services && props.services,
+            serviceCurrent: props.serviceCurrent && props.serviceCurrent
         }
 
         this.newService=this.newService.bind(this)
         this.setService=this.setService.bind(this)
         this.newGroup=this.newGroup.bind(this)
+        this.closeModal = this.closeModal.bind(this);
+
     }
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, services: newProps.services, serviceCurrent: newProps.serviceCurrent })
+            this.setState({...this.state, services: newProps.services })
         }
     }
 
@@ -28,59 +31,58 @@ class CreatedService extends React.Component {
         let serviceSet=service || serviceCurrent
 
         return (
-            
-            <div className="modal fade modal_add_service_by_list_group" tabIndex="-1" role="dialog" aria-hidden="true">
-                <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div className="modal-content visibleDropdown">
-                        <div className="modal-header">
-                            <h4 className="modal-title">Выберите группу услуг</h4>
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div className="modal-inner pl-4 pr-4 pb-4">
-                            <div className="select-color dropdown mb-3 border-color">
-                                {
-                                    serviceCurrent || service ?
-                                        <a className={serviceSet.color.toLowerCase() + " "+'select-button dropdown-toggle'}
-                                           data-toggle="dropdown" href="#" ><span
-                                            className={serviceSet.color.toLowerCase() + " "+'color-circle'}/><span
-                                            className="yellow"><span className="items-color"><span>{serviceSet.name}</span></span></span>
-                                        </a>
+            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
 
-                                        : <a className="select-button dropdown-toggle yellow"
-                                             data-toggle="dropdown" href="#"><span
-                                            className="color-circle yellow"/><span
-                                            className="yellow"><span className="items-color"><span>Выберите группу услуг</span> </span></span>
-                                        </a>
-                                }
-                                <ul className="dropdown-menu">
+                <div className="modal_add_service_by_list_group" tabIndex="-1" role="dialog" aria-hidden="true">
+                    <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div className="modal-content visibleDropdown">
+                            <div className="modal-header">
+                                <h4 className="modal-title">Выберите группу услуг</h4>
+                                <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                            </div>
+                            <div className="modal-inner pl-4 pr-4 pb-4">
+                                <div className="select-color dropdown mb-3 border-color">
                                     {
-                                        services.services && services.services.map((service)=>
-                                            <li className="dropdown-item"><a onClick={()=>this.setService(service)}><span
-                                                className={service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color.toLowerCase()}>{service.name}</span></a>
-                                            </li>
-                                        )
+                                        serviceCurrent || service ?
+                                            <a className={serviceSet.color.toLowerCase() + " "+'select-button dropdown-toggle'}
+                                               data-toggle="dropdown" href="#" ><span
+                                                className={serviceSet.color.toLowerCase() + " "+'color-circle'}/><span
+                                                className="yellow"><span className="items-color"><span>{serviceSet.name}</span></span></span>
+                                            </a>
+
+                                            : <a className="select-button dropdown-toggle yellow"
+                                                 data-toggle="dropdown" href="#"><span
+                                                className="color-circle yellow"/><span
+                                                className="yellow"><span className="items-color"><span>Выберите группу услуг</span> </span></span>
+                                            </a>
                                     }
-                                </ul>
+                                    <ul className="dropdown-menu">
+                                        {
+                                            services.services && services.services.map((service)=>
+                                                <li className="dropdown-item"><a onClick={()=>this.setService(service)}><span
+                                                    className={service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color.toLowerCase()}>{service.name}</span></a>
+                                                </li>
+                                            )
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <button type="button" className="button" onClick={(e)=>this.newGroup()}>Новая группа услуг
+                                    </button>
+                                    <button type="button" className="button float-right" onClick={(e)=>this.newService(e)}>Далее
+                                    </button>
+                                    {/*<span className="ellipsis">*/}
+                                    {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
+                                    {/*</span>*/}
+
+                                </div>
+
                             </div>
-
-                            <div>
-                                <button type="button" data-toggle="modal" data-target=".modal_add_group"  data-dismiss="modal"
-                                        className="button" onClick={(e)=>this.newGroup()}>Новая группа услуг
-                                </button>
-                                <button type="button" data-toggle="modal"
-                                        data-target=".new-service-modal"  data-dismiss="modal"
-                                        className="button float-right" onClick={(e)=>this.newService(e)}>Далее
-                                </button>
-                                {/*<span className="ellipsis">*/}
-                                {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
-                                {/*</span>*/}
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
+            </Modal>
 
         )
     }
@@ -105,6 +107,12 @@ class CreatedService extends React.Component {
         this.setState({...this.state, service: service, serviceCurrent: null})
     }
 
+    closeModal () {
+        const {onClose} = this.props;
+
+        return onClose()
+    }
+
 }
 
 
@@ -120,7 +128,8 @@ CreatedService.propTypes ={
     services: PropTypes.object,
     newServiceGroup: PropTypes.func,
     newServiceFromGroup: PropTypes.func,
-    serviceCurrent: PropTypes.object
+    serviceCurrent: PropTypes.object,
+    onClose: PropTypes.func
 
 };
 

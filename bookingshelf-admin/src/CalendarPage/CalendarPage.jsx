@@ -952,13 +952,13 @@ class CalendarPage extends Component {
                     clickedTime={clickedTime}
                     reservedStuffId={reservedStuffId}
                 />
-                <NewClient
-                    client_working={client_working}
-                    edit={editClient}
-                    updateClient={this.updateClient}
-                    addClient={this.addClient}
-                    randNum={Math.random()}
-                />
+                {/*<NewClient*/}
+                    {/*client_working={client_working}*/}
+                    {/*edit={editClient}*/}
+                    {/*updateClient={this.updateClient}*/}
+                    {/*addClient={this.addClient}*/}
+                    {/*randNum={Math.random()}*/}
+                {/*/>*/}
                 <ClientDetails
                     client={infoClient}
                     editClient={this.handleEditClient}
