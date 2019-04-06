@@ -3,23 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactPhoneInput from "react-phone-input-2";
 import { isValidNumber } from 'libphonenumber-js'
-
+import '@trendmicro/react-modal/dist/react-modal.css';
+import Modal from '@trendmicro/react-modal';
 
 class NewClient extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: {
-                "firstName": "",
-                "lastName": "",
-                "email": "",
-                "phone": "",
-                "country": "",
-                "city": "",
-                "province": "",
-                "acceptNewsletter": true
-            },
-            newClient: {
+            client: props.client_working && this.props.edit ?props.client_working: {
                 "firstName": "",
                 "lastName": "",
                 "email": "",
@@ -38,41 +29,16 @@ class NewClient extends React.Component {
         this.toggleChange = this.toggleChange.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
     }
 
     componentWillReceiveProps(newProps) {
-
-        if ( JSON.stringify(this.props.client_working) !==  JSON.stringify(newProps.client_working)) {
-            const {edit, client_working} = newProps;
-            const {newClient} = this.state;
-
-            this.setState({edit:edit});
-
-            console.log("newProps.client")
-            console.log(newProps.client)
-
-            if(edit){
-                this.setState({client:newProps.client ? newProps.client.client && newProps.client.client.filter((cl)=>client_working.clientId===cl.clientId)[0]:client_working, emailIsValid:true})
-            } else {
-
-                this.setState({client:this.state.client && newProps.client && newProps.client.error!==null ?this.state.client:newClient})
-            }
-        }
-
-        if (newProps.randNum !== this.props.randNum) {
-            const {edit, client_working} = newProps;
-            const {newClient} = this.state;
-            if(edit){
-                this.setState({client:newProps.client ? newProps.client.client && newProps.client.client.filter((cl)=>client_working.clientId===cl.clientId)[0]:client_working, emailIsValid:true})
-            } else {
-                this.setState({client: newClient})
-            }
-        }
         if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
             this.setState({alert:newProps.alert});
             setTimeout(() => {
                 this.setState({...this.state, alert: [] });
+                this.props.onClose()
             }, 3000)
         }
 
@@ -82,13 +48,11 @@ class NewClient extends React.Component {
     }
 
     render() {
-        const {client, edit, emailIsValid, alert, clients}=this.state;
-
-        console.log('c.time')
-        console.log(this.state)
+        const {client, edit, alert, clients}=this.state;
 
         return (
-            <div className="modal fade new-client">
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+                <div className="">
                 {client  &&
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                     <div className="modal-content">
@@ -96,7 +60,7 @@ class NewClient extends React.Component {
                             {!edit ? <h4 className="modal-title">Новый клиент</h4>
                                 : <h4 className="modal-title">Редактирование клиента</h4>
                             }
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <button type="button" className="close" onClick={this.closeModal}>&times;</button>
                         </div>
                         <div className="form-group mr-3 ml-3">
                             <p className="title mb-2">Общая информация</p>
@@ -179,6 +143,7 @@ class NewClient extends React.Component {
                 </div>
                 }
             </div>
+            </Modal>
         )
     }
 
@@ -214,6 +179,12 @@ class NewClient extends React.Component {
 
         return addClient(client);
     };
+
+    closeModal () {
+        const {onClose} = this.props;
+
+        return onClose()
+    }
 }
 
 function mapStateToProps(state) {
@@ -228,7 +199,7 @@ NewClient.propTypes ={
     edit: PropTypes.bool.isRequired,
     updateClient: PropTypes.func,
     addClient: PropTypes.func,
-    randNum: PropTypes.number
+    onClose: PropTypes.func
 };
 
 const connectedApp = connect(mapStateToProps)(NewClient);

@@ -12,6 +12,8 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 
+
+
 class ClientsPage extends Component {
     constructor(props) {
         super(props);
@@ -28,13 +30,15 @@ class ClientsPage extends Component {
             client_working: {},
             search: false,
             defaultClientsList:  props.client,
-            isLoading: true
+            isLoading: true,
+            openedModal: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
     }
@@ -49,14 +53,14 @@ class ClientsPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-            this.setState({...this.state, client: newProps.client, defaultClientsList:  newProps.client })
+            this.setState({...this.state, openedModal: newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
         }
     }
 
 
 
     render() {
-        const { client, client_working, edit, defaultClientsList, isLoading } = this.state;
+        const { client, client_working, edit, defaultClientsList, isLoading, openedModal } = this.state;
 
         return (
             <div className="clients-page">
@@ -83,36 +87,13 @@ class ClientsPage extends Component {
                                             </button>
                                         </div>
                                         }
-                                        {/*{access(6) &&*/}
-                                        {/*<div className="dropdown">*/}
-                                            {/*<button type="button" className="button arrow-dropdown client-upload"*/}
-                                                    {/*data-toggle="dropdown" aria-haspopup="true"*/}
-                                                    {/*aria-expanded="true">Выгрузить*/}
-                                            {/*</button>*/}
-                                            {/*<div className="hide dropdown-menu download-buttons">*/}
-                                                {/*<div className="p-2 file-upload dropdown-item">*/}
-                                                    {/*<label>*/}
-                                                        {/*<input type="file" className="button"*/}
-                                                               {/*accept=".csv, application/csvm+json"/>*/}
-                                                        {/*<span>Выгрузить CSV</span>*/}
-                                                    {/*</label>*/}
-                                                    {/*<label>*/}
-                                                        {/*<input type="file" className="button"*/}
-                                                               {/*accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"/>*/}
-                                                        {/*<span>Выгрузить XLS</span>*/}
-                                                    {/*</label>*/}
-                                                {/*</div>*/}
-                                            {/*</div>*/}
-
-                                        {/*</div>*/}
-                                        {/*}*/}
                                     </div>
                                 </div>
                                 )}
                             { client.client && client.client.map((client_user, i) =>
                                 <div className="tab-content-list mb-2" key={i}>
                                     <div>
-                                        <a data-toggle="modal" data-target=".new-client"  onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
+                                        <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                             <p> {client_user.firstName} {client_user.lastName}</p>
                                         </a>
@@ -143,7 +124,7 @@ class ClientsPage extends Component {
                                                 <span>
                                                     Клиенты не добавлены
                                                     <button type="button"
-                                                            className="button mt-3 p-3" data-toggle="modal" data-target=".new-client">Добавить нового клиента</button>
+                                                            className="button mt-3 p-3" >Добавить нового клиента</button>
                                                 </span>
                                 </div>
                             }
@@ -151,7 +132,7 @@ class ClientsPage extends Component {
                             <a className="add"/>
                             <div className="hide buttons-container">
                                 <div className="p-4">
-                                    <button type="button" className="button" data-toggle="modal" data-target=".new-client"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>
+                                    <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>
                                 </div>
                                 <div className="arrow"/>
                             </div>
@@ -159,13 +140,15 @@ class ClientsPage extends Component {
                     </div>
 
                 </div>
-                <NewClient
-                    client_working={client_working}
-                    edit={edit}
-                    updateClient={this.updateClient}
-                    addClient={this.addClient}
-                    randNum={Math.random()}
-                />
+                {openedModal &&
+                    <NewClient
+                        client_working={client_working}
+                        edit={edit}
+                        updateClient={this.updateClient}
+                        addClient={this.addClient}
+                        onClose={this.onClose}
+                    />
+                }
                 <UserSettings
                     randNum={Math.random()}
                 />
@@ -212,15 +195,19 @@ class ClientsPage extends Component {
         }
     }
 
+    onClose(){
+        this.setState({...this.state, openedModal: false});
+    }
+
     handleClick(id) {
         const { client } = this.state;
 
         if(id!=null) {
             const client_working = client.client.find((item) => {return id === item.clientId});
 
-            this.setState({...this.state, edit: true, client_working: client_working});
+            this.setState({...this.state, openedModal: true, edit: true, client_working: client_working});
         } else {
-            this.setState({...this.state, edit: false, client_working: {}});
+            this.setState({...this.state, openedModal: true, edit: false, client_working: {}});
         }
     }
 

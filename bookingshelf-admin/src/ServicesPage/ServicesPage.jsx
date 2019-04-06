@@ -32,7 +32,10 @@ class ServicesPage extends Component {
             isLoading: true,
             collapse: localStorage.getItem('services')?JSON.parse(localStorage.getItem('services')):[],
             newSet: false,
-            newSetElement: null
+            newSetElement: null,
+            addService: false,
+            addGroup: false,
+            createdService: false
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -44,6 +47,7 @@ class ServicesPage extends Component {
         this.deleteService = this.deleteService.bind(this);
         this.onCollapse = this.onCollapse.bind(this);
         this.newService = this.newService.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
@@ -57,7 +61,11 @@ class ServicesPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, services: newProps.services, staff: newProps.staff })
+            this.setState({...this.state, services: newProps.services,
+                addService: newProps.services.status && newProps.services.status===209 ? false : this.state.addService,
+                addGroup: newProps.services.status && newProps.services.status===209 ? false : this.state.addGroup,
+                createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
+                staff: newProps.staff })
         }
     }
 
@@ -78,7 +86,7 @@ class ServicesPage extends Component {
     }
 
     render() {
-        const { services, edit, group_working, staff, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading  } = this.state;
+        const { services, edit, group_working, staff, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService  } = this.state;
 
         return (
             <div>
@@ -104,8 +112,7 @@ class ServicesPage extends Component {
                                                     <p className="title_block mt-1">{item.name} {item.description.length===0 ?"": ("("+item.description+")")}</p>
                                                 </div>
                                                 <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
-                                                    <a className="edit_service" href="#" data-toggle="modal"
-                                                       data-target=".modal_add_group"  onClick={(e)=>this.handleClick(item.serviceGroupId, false, e, this)}/>
+                                                    <a className="edit_service"   onClick={(e)=>this.handleClick(item.serviceGroupId, false, e, this)}/>
                                                     <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
                                                        aria-haspopup="true" aria-expanded="false">
                                                         <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
@@ -113,8 +120,7 @@ class ServicesPage extends Component {
                                                     <div className="dropdown-menu delete-menu p-3">
                                                         <button type="button" className="button delete-tab"  onClick={()=>this._delete(item.serviceGroupId)}>Удалить</button>
                                                     </div>
-                                                    <a href="" data-toggle="modal" data-target=".new-service-modal"
-                                                       className="new-service"  onClick={(e)=>this.newService(null, item, e, this)}>Новая услуга</a>
+                                                    <a className="new-service"  onClick={(e)=>this.newService(null, item, e, this)}>Новая услуга</a>
                                                     {/*<span className="ellipsis">*/}
                                                         {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
                                                     {/*</span>*/}
@@ -133,8 +139,7 @@ class ServicesPage extends Component {
                                                         <div className="list-inner">
                                                             <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
                                                             <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                            <a className="edit_service" href="#" data-toggle="modal"
-                                                               data-target=".new-service-modal"  onClick={(e)=>this.newService(item2, item, e, this)}/>
+                                                            <a className="edit_service"  onClick={(e)=>this.newService(item2, item, e, this)}/>
                                                             <a className="delete-icon" id="menu-delete6633"
                                                                data-toggle="dropdown"
                                                                aria-haspopup="true" aria-expanded="false">
@@ -159,13 +164,13 @@ class ServicesPage extends Component {
                                         )
                                     }
                                 </div>
-                                <a className="add" href="#"></a>
+                                <a className="add"></a>
                                 <div className="hide buttons-container">
                                     <div className="p-4">
-                                        <button type="button" data-toggle="modal" data-target=".modal_add_group"
+                                        <button type="button"
                                                 className="button" onClick={(e)=>this.handleClick(null, false, e)}>Новая группа услуг
                                         </button>
-                                        <button type="button"  data-toggle="modal" data-target=".modal_add_service_by_list_group"
+                                        <button type="button" onClick={()=>this.setState({...this.state, createdService: true})}
                                                 className="button">Новая услуга
                                         </button>
                                     </div>
@@ -179,7 +184,7 @@ class ServicesPage extends Component {
                                                 <span>
                                                     Услуги не добавлены
                                                     <button type="button"
-                                                            className="button mt-3 p-3" data-toggle="modal" data-target=".modal_add_group" onClick={(e)=>this.handleClick(null, false, e)}>Добавить услугу</button>
+                                                            className="button mt-3 p-3" onClick={(e)=>this.handleClick(null, false, e)}>Добавить услугу</button>
                                                 </span>
                                     </div>
                                 }
@@ -188,28 +193,37 @@ class ServicesPage extends Component {
                     </div>
 
                 </div>
-                <AddGroup
-                    group_workingGroup={group_workingGroup}
-                    edit={edit}
-                    update={this.update}
-                    add={this.add}
-                    newSet={newSet}
-                />
-                <AddService
-                    group_working={group_working}
-                    editServiceItem={editServiceItem}
-                    updateService={this.updateService}
-                    addService={this.addService}
-                    staffs={staff.staff}
-                    group={idGroupEditable}
-                    randNum={Math.random()}
-                />
-                <CreatedService
-                    services={services}
-                    newServiceGroup={this.handleClick}
-                    newServiceFromGroup={this.newService}
-                    serviceCurrent={this.state.newSetElement}
-                />
+                { addGroup &&
+                    <AddGroup
+                        group_workingGroup={group_workingGroup}
+                        edit={edit}
+                        update={this.update}
+                        add={this.add}
+                        newSet={newSet}
+                        onClose={this.onClose}
+                    />
+                }
+
+                { addService &&
+                    <AddService
+                        group_working={group_working}
+                        editServiceItem={editServiceItem}
+                        updateService={this.updateService}
+                        addService={this.addService}
+                        staffs={staff.staff}
+                        group={idGroupEditable}
+                        onClose={this.onClose}
+                    />
+                }
+                {createdService &&
+                    <CreatedService
+                        services={services}
+                        newServiceGroup={this.handleClick}
+                        newServiceFromGroup={this.newService}
+                        serviceCurrent={this.state.newSetElement}
+                        onClose={this.onClose}
+                    />
+                }
                 <UserSettings
                     randNum={Math.random()}
                 />
@@ -225,18 +239,18 @@ class ServicesPage extends Component {
         if(id!=null) {
             const group_workingGroup = services.services.find((item) => {return id === item.serviceGroupId});
 
-            this.setState({...this.state, edit: true, group_workingGroup: group_workingGroup});
+            this.setState({...this.state, edit: true, addGroup: true, group_workingGroup: group_workingGroup});
         } else {
-            this.setState({...this.state, edit: false, group_workingGroup: {}, newSet: newSet});
+            this.setState({...this.state, edit: false, addGroup: true, group_workingGroup: {}, newSet: newSet});
         }
     }
 
     newService(item2, id2) {
         if(item2!=null) {
-            this.setState({...this.state, editServiceItem: true, group_working: item2, idGroupEditable: id2});
+            this.setState({...this.state, editServiceItem: true, addService: true, group_working: item2, idGroupEditable: id2});
 
         } else {
-            this.setState({...this.state, editServiceItem: false, group_working: {}, idGroupEditable: id2});
+            this.setState({...this.state, editServiceItem: false, addService: true, group_working: {}, idGroupEditable: id2});
         }
     }
 
@@ -298,6 +312,10 @@ class ServicesPage extends Component {
         const { dispatch } = this.props;
 
         dispatch(servicesActions.deleteService(groupId, idService));
+    }
+
+    onClose(){
+        this.setState({...this.state, addService: false, addGroup: false, createdService: false});
     }
 }
 

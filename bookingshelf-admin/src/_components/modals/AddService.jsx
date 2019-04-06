@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '@trendmicro/react-modal/dist/react-modal.css';
+import Modal from '@trendmicro/react-modal';
 
 class AddService extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            service: {
+            service: props.group_working && props.editServiceItem ? props.group_working:{
                 "name":"",
                 "details":"",
                 "priceFrom":'',
@@ -18,59 +20,24 @@ class AddService extends React.Component {
                 "onlineBooking":true,
                 "staffs":[{}]
             },
-            newGroup: {
-                "name":"",
-                "details":"",
-                "priceFrom":'',
-                "priceTo":'',
-                "duration":900,
-                "specialPrice":0,
-                "specialDescription":"",
-                "currency":"BYN",
-                "onlineBooking":true,
-                "staffs":[]
-            },
             editServiceItem: props.editServiceItem,
-            staffs: props.staffs,
-            allStaffs: props.staffs,
-            group: props.group,
-            services: props.services
+            staffs: props.staffs && props.staffs,
+            allStaffs: props.staffs && props.staffs,
+            group: props.group && props.group,
+            services: props.services && props.services
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleChangePrice = this.handleChangePrice.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateService = this.updateService.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.addService = this.addService.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
 
     }
 
     componentWillReceiveProps(newProps) {
-
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            const {editServiceItem, group_working} = newProps;
-            const {newGroup} = this.state;
-
-            this.setState({editServiceItem:editServiceItem, staffs: newProps.staffs, allStaffs: newProps.staffs, group: newProps.group});
-
-            if(editServiceItem){
-                this.setState({service:group_working})
-            } else {
-                this.setState({service:newGroup})
-            }
-        }
-        if (newProps.randNum !== this.props.randNum) {
-            const {editServiceItem, group_working} = newProps;
-            const {newGroup} = this.state;
-
-            if(editServiceItem){
-                this.setState({service:group_working})
-            } else {
-                this.setState({service:newGroup})
-            }
-        }
-
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({services:newProps.services});
         }
@@ -82,7 +49,8 @@ class AddService extends React.Component {
         console.log(this.state)
 
         return (
-            <div className="modal fade new-service-modal">
+            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
+                <div className="new-service-modal">
                 {service &&
                 <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
                     <div className="modal-content">
@@ -92,7 +60,7 @@ class AddService extends React.Component {
                                     : <h4 className="modal-title">Новая услуга</h4>
 
                             }
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <button type="button" className="close" onClick={this.closeModal}>&times;</button>
                         </div>
                         <div className="form-group pl-4 pr-4">
                             <div className="row">
@@ -243,6 +211,7 @@ class AddService extends React.Component {
                 </div>
                 }
             </div>
+            </Modal>
 
 
         )
@@ -329,6 +298,12 @@ class AddService extends React.Component {
 
 
     }
+
+    closeModal () {
+        const {onClose} = this.props;
+
+        return onClose()
+    }
 }
 
 function mapStateToProps(state) {
@@ -344,8 +319,8 @@ AddService.propTypes ={
     editServiceItem: PropTypes.bool.isRequired,
     updateService: PropTypes.func,
     addService: PropTypes.func,
-    group: PropTypes.object,
-    randNum: PropTypes.number
+    onClose: PropTypes.func,
+    group: PropTypes.object
 };
 
 const connectedApp = connect(mapStateToProps)(AddService);
