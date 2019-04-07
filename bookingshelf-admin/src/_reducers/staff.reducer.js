@@ -4,9 +4,6 @@ import {store} from '../_helpers/store';
 export function staff(state= {}, action) {
     switch (action.type) {
         case staffConstants.STAFF_SUCCESS_TIME:
-            setTimeout(()=>$('.new-mail').modal('hide'), 100)
-            setTimeout(()=>$('.new-staff-modal').modal('hide'), 100)
-
             return {
                 ...state,
                 status: 209
@@ -40,6 +37,7 @@ export function staff(state= {}, action) {
             return {
                 ...state,
                 status: 200,
+                adding: false,
                 timetable: timetableCurrent
             };
         case staffConstants.UPDATE_WORKING_HOURS_SUCCESS:
@@ -67,6 +65,7 @@ export function staff(state= {}, action) {
             return {
                 ...state,
                 status: 200,
+                adding: false,
                 timetable: timetableCurrent2
             };
         case staffConstants.UPDATE_SUCCESS:
