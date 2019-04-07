@@ -3506,8 +3506,23 @@ textarea {
     }
 }
 .mod {
+    max-width: 65%!important;
+    width: 100%!important;
+    min-width: unset!important;
     background-color: unset!important;
     border: unset!important;
     -webkit-box-shadow: unset!important;
     box-shadow: unset!important;
+}
+
+@media screen and (max-width: 700px){
+    .mod {
+        max-width: 100%!important;
+        width: 100%!important;
+        min-width: unset!important;
+        background-color: unset!important;
+        border: unset!important;
+        -webkit-box-shadow: unset!important;
+        box-shadow: unset!important;
+    }
 }

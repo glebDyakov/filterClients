@@ -49,7 +49,7 @@ class AddService extends React.Component {
         console.log(this.state)
 
         return (
-            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-service-modal">
                 {service &&
                 <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
