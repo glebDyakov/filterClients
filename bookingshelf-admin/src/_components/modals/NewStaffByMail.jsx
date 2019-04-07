@@ -109,7 +109,6 @@ function mapStateToProps(state) {
 
 NewStaffByMail.propTypes ={
     addStaffEmail: PropTypes.func,
-    randNum: PropTypes.number,
     onClose: PropTypes.func
 };
 
