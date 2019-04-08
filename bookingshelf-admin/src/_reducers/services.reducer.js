@@ -3,15 +3,11 @@ import {clientConstants, servicesConstants} from '../_constants';
 export function services(state= {}, action) {
     switch (action.type) {
         case servicesConstants.SERVICE_SUCCESS_TIME:
-            setTimeout(()=>$('.new-service-modal').modal('hide'), 100)
-
             return {
                 ...state,
                 status: 209
             };
         case servicesConstants.GROUP_SUCCESS_TIME:
-            setTimeout(()=>$('.modal_add_group').modal('hide'), 100)
-
             return {
                 ...state,
                 status: 209
