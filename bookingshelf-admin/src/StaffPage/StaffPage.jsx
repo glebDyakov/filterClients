@@ -87,7 +87,10 @@ class StaffPage extends Component {
             emailIsValid: false,            from: null,
             to: null,
             enteredTo: null,
-            activeTab: props.match.params.activeTab?props.match.params.activeTab:'workinghours'
+            activeTab: props.match.params.activeTab?props.match.params.activeTab:'workinghours',
+            addWorkTime: false,
+            newStaffByMail: false,
+            newStaff: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -119,6 +122,7 @@ class StaffPage extends Component {
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
         this.handleResetClick = this.handleResetClick.bind(this);
         this.setTab = this.setTab.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
@@ -140,7 +144,11 @@ class StaffPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, staff: newProps.staff })
+            this.setState({...this.state, staff: newProps.staff,
+                addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
+                newStaffByMail: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaffByMail,
+                newStaff: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaff,
+            })
         }
         if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
             this.setState({...this.state, alert: newProps.alert})
@@ -171,7 +179,7 @@ class StaffPage extends Component {
     }
 
     render() {
-        const { alert, staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab } = this.state;
+        const { alert, staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -295,16 +303,14 @@ class StaffPage extends Component {
 
                                                                      return (times.length===0 ?
                                                                          <div className="add-work-time-hover"
-                                                                            data-toggle="modal"
-                                                                            data-target=".modal_dates" key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
+                                                                          key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
                                                                              date:moment(day, "x").format('DD/MM'),
-                                                                             editWorkingHours:false, editing_object:null})
+                                                                             editWorkingHours:false, editing_object:null, addWorkTime: true})
                                                                          }/> :
                                                                      <div className="dates-container" key={dayKey}  onClick={()=>this.setState({...this.state, currentStaff:time,
                                                                          date:moment(day, "x").format('DD/MM'),
-                                                                         editWorkingHours:true, editing_object:times})} >
-                                                                         < a href="#" data-toggle="modal"
-                                                                             data-target=".modal_dates" >
+                                                                         editWorkingHours:true, editing_object:times, addWorkTime: true})} >
+                                                                         <a>
                                                                              {times.map(time=>
                                                                                 <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>
                                                                              )}
@@ -329,7 +335,7 @@ class StaffPage extends Component {
                                                 <div className="tab-content-list" key={i}>
                                                     {staffGroup.length>i+1 && <span className="line_connect"/>}
                                                     <div>
-                                                        <a  data-toggle="modal" data-target=".bd-example-modal-lg" key={i} onClick={(e)=>this.handleClick(staff_user.staffId, e, this)}>
+                                                        <a key={i} onClick={(e)=>this.handleClick(staff_user.staffId, false, e, this)}>
                                                     <span className="img-container">
                                                         <img className="rounded-circle" src={staff_user.imageBase64?"data:image/png;base64,"+staff_user.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                                                     </span>
@@ -504,8 +510,8 @@ class StaffPage extends Component {
                             {activeTab === 'staff' &&
                             <div className="hide buttons-container">
                                 <div className="p-4">
-                                    <button className="button new-staff" type="button" data-toggle="modal" data-target=".new-mail" onClick={(e)=>this.handleClick(null, e)}>Пригласить сотрудника по Email</button>
-                                    <button className="button new-staff" type="button" data-toggle="modal" data-target=".bd-example-modal-lg" onClick={(e)=>this.handleClick(null, e)}>Новый сотрудник</button>
+                                    <button className="button new-staff" type="button" onClick={(e)=>this.handleClick(null, true, e)}>Пригласить сотрудника по Email</button>
+                                    <button className="button new-staff" type="button"  onClick={(e)=>this.handleClick(null, false, e)}>Новый сотрудник</button>
 
                                 </div>
                                 <div className="arrow"/>
@@ -515,26 +521,33 @@ class StaffPage extends Component {
                     </div>
 
                 </div>
-                <AddWorkTime
-                    addWorkingHours={this.addWorkingHours}
-                    deleteWorkingHours={this.deleteWorkingHours}
-                    currentStaff={currentStaff}
-                    date={date}
-                    editWorkingHours={editWorkingHours}
-                    editing_object={editing_object}
-                />
-                <NewStaff
-                    staff_working={staff_working}
-                    edit={edit}
-                    updateStaff={this.updateStaff}
-                    addStaff={this.addStaff}
-                    randNum={Math.random()}
-                />
+                {addWorkTime &&
+                    <AddWorkTime
+                        addWorkingHours={this.addWorkingHours}
+                        deleteWorkingHours={this.deleteWorkingHours}
+                        currentStaff={currentStaff}
+                        date={date}
+                        editWorkingHours={editWorkingHours}
+                        editing_object={editing_object}
+                        onClose={this.onClose}
+                    />
+                }
+                {newStaff &&
+                    <NewStaff
+                        staff_working={staff_working}
+                        edit={edit}
+                        updateStaff={this.updateStaff}
+                        addStaff={this.addStaff}
+                        onClose={this.onClose}
+                    />
+                }
+                {newStaffByMail &&
+                    <NewStaffByMail
+                        addStaffEmail={this.addStaffEmail}
+                        onClose={this.onClose}
+                    />
+                }
                 <UserSettings
-                    randNum={Math.random()}
-                />
-                <NewStaffByMail
-                    addStaffEmail={this.addStaffEmail}
                     randNum={Math.random()}
                 />
                 <UserPhoto/>
@@ -593,15 +606,19 @@ class StaffPage extends Component {
 
     }
 
-    handleClick(id) {
+    handleClick(id, email) {
         const { staff } = this.state;
 
         if(id!=null) {
             const staff_working = staff.staff.find((item) => {return id === item.staffId});
 
-            this.setState({...this.state, edit: true, staff_working: staff_working});
+            this.setState({...this.state, edit: true, staff_working: staff_working, newStaff: true});
         } else {
-            this.setState({...this.state, edit: false, staff_working: {}});
+            if(email){
+                this.setState({...this.state, edit: false, staff_working: {}, newStaffByMail: true});
+            }else{
+                this.setState({...this.state, edit: false, staff_working: {}, newStaff: true});
+            }
         }
     }
 
@@ -837,6 +854,10 @@ class StaffPage extends Component {
         this.setState({...this.state, from: null,
             to: null,
             enteredTo: null});
+    }
+
+    onClose(){
+        this.setState({...this.state, addWorkTime: false, newStaffByMail: false, newStaff: false, createdService: false});
     }
 }
 

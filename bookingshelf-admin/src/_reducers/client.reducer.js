@@ -3,8 +3,6 @@ import {calendarConstants, clientConstants} from '../_constants';
 export function client(state= {}, action) {
   switch (action.type) {
       case clientConstants.CLIENT_SUCCESS_TIME:
-          setTimeout(()=>$('.new-client').modal('hide'), 100)
-
           return {
               ...state,
               status: 209

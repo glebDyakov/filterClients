@@ -79,38 +79,52 @@ function addUSerByEmail(params) {
 
 function addWorkingHours(timing, id) {
     return dispatch => {
+        dispatch(request(0));
+
         staffService.addWorkingHours(timing, id)
             .then(
                 timing => {
                     dispatch(success(timing, id));
+                    setTimeout(()=>dispatch(successTime(0)), 500);
+
                 },
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
+                    setTimeout(()=>dispatch(failureTime(0)), 500);
                 }
             );
     };
 
+    function request(id) { return { type: staffConstants.STAFF_REQUEST, id } }
+    function successTime(id) { return { type: staffConstants.STAFF_SUCCESS_TIME, id } }
+    function failureTime(id) { return { type: staffConstants.STAFF_FAILURE_TIME, id } }
     function success(timing, id) { return { type: staffConstants.ADD_WORKING_HOURS_SUCCESS, timing, id } }
     function failure(error) { return { type: staffConstants.ADD_WORKING_HOURS_FAILURE, error } }
 }
 
 function updateWorkingHours(timing, id) {
     return dispatch => {
+        dispatch(request(0));
+
         staffService.updateWorkingHours(timing, id)
             .then(
                 timing => {
                     dispatch(success(timing, id));
+                    setTimeout(()=>dispatch(successTime(0)), 500);
 
                 },
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
+                    setTimeout(()=>dispatch(failureTime(0)), 500);
                 }
             );
     };
 
-
+    function request(id) { return { type: staffConstants.STAFF_REQUEST, id } }
+    function successTime(id) { return { type: staffConstants.STAFF_SUCCESS_TIME, id } }
+    function failureTime(id) { return { type: staffConstants.STAFF_FAILURE_TIME, id } }
     function success(timing, id) { return { type: staffConstants.UPDATE_WORKING_HOURS_SUCCESS, timing, id } }
     function failure(error) { return { type: staffConstants.UPDATE_WORKING_HOURS_FAILURE, error } }
 }

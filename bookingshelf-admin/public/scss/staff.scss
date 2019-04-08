@@ -614,11 +614,20 @@
     }
 
     .new-staff-modal {
+        .modal-dialog {
+            width: 100%!important;
+            margin-left: 0!important;
+            margin-right: 0!important;
+            max-width: 100%!important;
+        }
 
         .modal-lg {
-            max-width: 1300px;
-            width: 90%;
-            margin: auto;
+            width: 100%!important;
+            margin-left: 0!important;
+            margin-right: 0!important;
+            max-width: 100%!important;
+            //max-width: 1300px;
+            //margin: auto;
 
             .modal-content {
                 max-width: 100%;
