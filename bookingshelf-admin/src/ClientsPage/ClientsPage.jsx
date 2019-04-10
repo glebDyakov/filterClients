@@ -124,7 +124,8 @@ class ClientsPage extends Component {
                                                 <span>
                                                     Клиенты не добавлены
                                                     <button type="button"
-                                                            className="button mt-3 p-3" >Добавить нового клиента</button>
+                                                            className="button mt-3 p-3"
+                                                            onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
                                                 </span>
                                 </div>
                             }

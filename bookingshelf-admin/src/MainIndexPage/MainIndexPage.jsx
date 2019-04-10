@@ -301,7 +301,10 @@ class MainIndexPage extends Component {
 
                                         <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail"
                                                value={company.settings.companyEmail} onChange={this.handleChange}/>
-                                        <p>Номер телефона</p>
+                                        <p className="phone_hint_wrapper">
+                                            <span>Номер телефона </span>
+                                            <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
+                                        </p>
                                         <ReactPhoneInput
                                             enableLongNumbers={true}
                                             // disableCountryCode={true}
