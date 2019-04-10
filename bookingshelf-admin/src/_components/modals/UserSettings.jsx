@@ -126,7 +126,7 @@ class UserSettings extends React.Component {
                                             regions={['america', 'europe']}
                                             disableAreaCodes={true}
                                             inputClass={(submitted && !isValidNumber(phone) ? ' redBorder' : '')} value={ phone } defaultCountry={'by'} onChange={phone => {
-                                            this.setState({authentication:{...authentication, user: {...authentication.user, profile: {...authentication.user.profile, phone: phone} }}});
+                                            this.setState({authentication:{...authentication, user: {...authentication.user, profile: {...authentication.user.profile, phone: phone.replace(/[() ]/g, '')} }}});
                                         }}/>
                                     </div>
                                 </div>
