@@ -326,7 +326,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone1: companyPhone1}
+                                                    settings: {...company.settings, companyPhone1: companyPhone1.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -345,7 +345,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone2: companyPhone2}
+                                                    settings: {...company.settings, companyPhone2: companyPhone2.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -362,7 +362,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone3: companyPhone3}
+                                                    settings: {...company.settings, companyPhone3: companyPhone3.replace(/[() ]/g, '')}
                                                 }
                                             });
 
