@@ -343,7 +343,7 @@ class EmailPage extends Component {
                                                                     <input className="form-check-input" checked={notifications && notifications.smsOn} onChange={()=>this.toggleChange('smsOn')}
                                                                            type="checkbox"/>
                                                                     <span className="check"></span>
-                                                                    Авто уведомления об успешной записи
+                                                                    Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                                 </label>
                                                             </div>
 
@@ -369,7 +369,7 @@ class EmailPage extends Component {
                                                                     <input className="form-check-input" checked={notifications && notifications.emailOn}  onChange={()=>this.toggleChange('emailOn')}
                                                                            type="checkbox"/>
                                                                     <span className="check"></span>
-                                                                    Авто уведомления об успешной записи
+                                                                    Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                                 </label>
                                                             </div>
 
