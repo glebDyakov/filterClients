@@ -139,7 +139,7 @@ class NewStaff extends React.Component {
                                                                 regions={['america', 'europe']}
                                                                 disableAreaCodes={true}
 
-                                                                inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone} })}
+                                                                inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone.replace(/[() ]/g, '')} })}
                                                                 />
 
                                                             <p>Доступ</p>

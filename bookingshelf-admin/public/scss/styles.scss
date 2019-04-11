@@ -1082,6 +1082,16 @@ input{
     .retreats{
         align-items: center;
 
+        .phone_hint_wrapper{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+
+            .phone_hint{
+                font-size: 10px;
+            }
+        }
+
     }
     .mob-menu{
         display: none;

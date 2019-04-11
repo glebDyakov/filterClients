@@ -456,7 +456,7 @@ class IndexPage extends React.Component {
                             regions={['america', 'europe']}
                             disableAreaCodes={true}
 
-                            inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => this.setState({ group: {...group, phone: phone} })}
+                            inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => this.setState({ group: {...group, phone: phone.replace(/[() ]/g, '')} })}
                         />
 
                     </div>

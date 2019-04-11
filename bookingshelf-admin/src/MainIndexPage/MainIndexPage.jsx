@@ -166,7 +166,7 @@ class MainIndexPage extends Component {
                                 <div className="row">
                                     <div className="col-sm-4">
                                         <p>Название компании</p>
-                                        <input type="text" placeholder="Например: Стоматология" name="companyName"
+                                        <input type="text" placeholder="Например: Стоматология" name="companyName" maxLength="40"
                                                value={company.settings.companyName} onChange={this.handleChange}/>
                                         <p>Адрес компании</p>
 
@@ -178,7 +178,7 @@ class MainIndexPage extends Component {
                                             </div>
 
                                             <input type="text" placeholder="" name="companyAddress1"
-                                                   value={company.settings.companyAddress1}  className="form-control" onChange={this.handleChange}/>
+                                                   value={company.settings.companyAddress1}  className="form-control" onChange={this.handleChange} maxLength="40"/>
                                         </div>
 
                                         <p>Адрес компании</p>
@@ -190,7 +190,7 @@ class MainIndexPage extends Component {
                                             </div>
 
                                             <input type="text" placeholder="" name="companyAddress2"
-                                                   value={company.settings.companyAddress2}  className="form-control" onChange={this.handleChange}/>
+                                                   value={company.settings.companyAddress2}  className="form-control" onChange={this.handleChange} maxLength="40"/>
                                         </div>
                                         <p>Адрес компании</p>
 
@@ -201,7 +201,7 @@ class MainIndexPage extends Component {
                                             </div>
 
                                             <input type="text" placeholder="" name="companyAddress3"
-                                                   value={company.settings.companyAddress3}  className="form-control" onChange={this.handleChange}/>
+                                                   value={company.settings.companyAddress3}  className="form-control" onChange={this.handleChange} maxLength="40"/>
                                         </div>
                                         {/*<p>Cтрана</p>*/}
                                         {/*<div className="">*/}
@@ -301,7 +301,10 @@ class MainIndexPage extends Component {
 
                                         <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail"
                                                value={company.settings.companyEmail} onChange={this.handleChange}/>
-                                        <p>Номер телефона</p>
+                                        <p className="phone_hint_wrapper">
+                                            <span>Номер телефона </span>
+                                            <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
+                                        </p>
                                         <ReactPhoneInput
                                             enableLongNumbers={true}
                                             // disableCountryCode={true}
@@ -314,7 +317,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone1: companyPhone1}
+                                                    settings: {...company.settings, companyPhone1: companyPhone1.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -333,7 +336,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone2: companyPhone2}
+                                                    settings: {...company.settings, companyPhone2: companyPhone2.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -350,7 +353,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone3: companyPhone3}
+                                                    settings: {...company.settings, companyPhone3: companyPhone3.replace(/[() ]/g, '')}
                                                 }
                                             });
 
