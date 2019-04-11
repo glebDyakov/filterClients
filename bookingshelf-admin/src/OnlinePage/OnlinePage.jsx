@@ -23,18 +23,23 @@ class OnlinePage extends Component {
         this.state = {
             booking: props.company && props.company.booking,
             isLoading: true,
-            urlButton: false
+            urlButton: false,
+            userSettings: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setType = this.setType.bind(this);
         this.copyToClipboard = this.copyToClipboard.bind(this);
+        this.onOpen = this.onOpen.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({ booking: newProps.company.booking })
+            this.setState({ booking: newProps.company.booking,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+            })
         }
     }
 
@@ -93,7 +98,7 @@ class OnlinePage extends Component {
     };
 
     render() {
-        const { booking, submitted, isLoading, urlButton } = this.state;
+        const { booking, submitted, isLoading, urlButton, userSettings } = this.state;
 
         return (
             <div>
@@ -103,7 +108,9 @@ class OnlinePage extends Component {
 
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
                             {booking &&
                             <div className="pages-content container-fluid">
                                 <div className="row justify-content-between">
@@ -235,21 +242,30 @@ class OnlinePage extends Component {
 
 
                 </div>
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
-
+                }
                 <UserPhoto/>
             </div>
 
         );
     }
+    onClose(){
+        this.setState({...this.state, userSettings: false});
+    }
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
+    }
 }
 
 function mapStateToProps(state) {
-    const { alert, company } = state;
+    const { alert, company, authentication } = state;
     return {
-        alert, company
+        alert, company, authentication
     };
 }
 

@@ -35,7 +35,8 @@ class MainIndexPage extends Component {
             isLoading: true,
             activeDay: 1,
             status: {},
-            submitted: false
+            submitted: false,
+            userSettings: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -45,6 +46,8 @@ class MainIndexPage extends Component {
         this.handleWeekPicker = this.handleWeekPicker.bind(this);
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
+        this.onOpen = this.onOpen.bind(this);
+        this.onClose2 = this.onClose2.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -52,7 +55,11 @@ class MainIndexPage extends Component {
 
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
 
-            this.setState({...this.state, authentication: newProps.authentication })
+            this.setState({...this.state, authentication: newProps.authentication,
+
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+
+            })
         }
 
         if ( JSON.stringify(this.props.company.settings) !==  JSON.stringify(newProps.company.settings)) {
@@ -150,7 +157,7 @@ class MainIndexPage extends Component {
 
 
     render() {
-        const { authentication, submitted, isLoading, activeDay, status, company } = this.state;
+        const { authentication, submitted, isLoading, activeDay, status, company, userSettings } = this.state;
 
         return (
             <div>
@@ -160,7 +167,9 @@ class MainIndexPage extends Component {
                     {company && company.settings &&
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
 
                             <form className="content retreats" name="form">
                                 <div className="row">
@@ -400,15 +409,25 @@ class MainIndexPage extends Component {
                     }
 
                 </div>
-                {authentication && authentication.user &&
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose2}
                 />
                 }
                 <UserPhoto/>
             </div>
 
         );
+    }
+
+
+    onClose2(){
+        this.setState({...this.state, userSettings: false});
+    }
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
     }
 }
 

@@ -90,7 +90,8 @@ class StaffPage extends Component {
             activeTab: props.match.params.activeTab?props.match.params.activeTab:'workinghours',
             addWorkTime: false,
             newStaffByMail: false,
-            newStaff: false
+            newStaff: false,
+            userSettings: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -122,6 +123,7 @@ class StaffPage extends Component {
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
         this.handleResetClick = this.handleResetClick.bind(this);
         this.setTab = this.setTab.bind(this);
+        this.onOpen = this.onOpen.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
@@ -145,6 +147,8 @@ class StaffPage extends Component {
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, staff: newProps.staff,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
+
                 addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
                 newStaffByMail: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaffByMail,
                 newStaff: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaff,
@@ -179,7 +183,7 @@ class StaffPage extends Component {
     }
 
     render() {
-        const { alert, staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { alert, staff, emailNew, emailIsValid, userSettings, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -208,7 +212,9 @@ class StaffPage extends Component {
 
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
 
                             <div className="row retreats content-inner page_staff">
                                 <div className="flex-content col-xl-12">
@@ -547,9 +553,11 @@ class StaffPage extends Component {
                         onClose={this.onClose}
                     />
                 }
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
+                }
                 <UserPhoto/>
             </div>
         );
@@ -857,15 +865,21 @@ class StaffPage extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, addWorkTime: false, newStaffByMail: false, newStaff: false, createdService: false});
+        this.setState({...this.state, addWorkTime: false, newStaffByMail: false, newStaff: false, createdService: false, userSettings: false});
+    }
+
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
     }
 }
 
 function mapStateToProps(store) {
-    const {staff, timetable, alert}=store;
+    const {staff, timetable, alert, authentication}=store;
 
     return {
-        staff, timetable, alert
+        staff, timetable, alert, authentication
     };
 }
 

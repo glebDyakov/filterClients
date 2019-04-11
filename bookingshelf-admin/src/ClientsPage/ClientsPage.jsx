@@ -31,7 +31,9 @@ class ClientsPage extends Component {
             search: false,
             defaultClientsList:  props.client,
             isLoading: true,
-            openedModal: false
+            openedModal: false,
+            userSettings: false
+
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,6 +43,7 @@ class ClientsPage extends Component {
         this.onClose = this.onClose.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
+        this.onOpen = this.onOpen.bind(this);
     }
 
     componentDidMount() {
@@ -55,12 +58,19 @@ class ClientsPage extends Component {
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
             this.setState({...this.state, openedModal: newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
         }
+
+        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+            this.setState({
+                ...this.state,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+            });
+        }
     }
 
 
 
     render() {
-        const { client, client_working, edit, defaultClientsList, isLoading, openedModal } = this.state;
+        const { client, client_working, edit, defaultClientsList, isLoading, openedModal, userSettings } = this.state;
 
         return (
             <div className="clients-page">
@@ -69,7 +79,9 @@ class ClientsPage extends Component {
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
                             {
                                 (defaultClientsList.client && defaultClientsList!=="" &&
                                 <div className="row align-items-center content clients mb-2">
@@ -149,9 +161,11 @@ class ClientsPage extends Component {
                         onClose={this.onClose}
                     />
                 }
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
+                }
                 <UserPhoto/>
             </div>
         );
@@ -196,7 +210,13 @@ class ClientsPage extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, openedModal: false});
+        this.setState({...this.state, openedModal: false, userSettings: false});
+    }
+
+    onOpen(){
+        console.log("onOpen")
+
+        this.setState({...this.state, userSettings: true});
     }
 
     handleClick(id) {

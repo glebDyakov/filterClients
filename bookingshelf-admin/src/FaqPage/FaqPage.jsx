@@ -28,8 +28,12 @@ class FaqPage extends Component {
 
         this.state = {
             isLoading: true,
-            activeTab: props.match.params.activeTab?props.match.params.activeTab:'email_sms'
+            activeTab: props.match.params.activeTab?props.match.params.activeTab:'email_sms',
+            userSettings: false
         };
+
+        this.onOpen = this.onOpen.bind(this);
+        this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
@@ -42,6 +46,12 @@ class FaqPage extends Component {
 
     componentWillReceiveProps(newProps) {
 
+        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+            this.setState({
+                ...this.state,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+            });
+        }
     }
 
     setTab(tab){
@@ -58,7 +68,7 @@ class FaqPage extends Component {
     }
 
     render() {
-        const {activeTab} = this.state;
+        const {activeTab, userSettings} = this.state;
 
         return (
             <div className="emailPage">
@@ -67,7 +77,9 @@ class FaqPage extends Component {
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
                             <div className="retreats">
                                 <div className="flex-content col-sm-12">
                                     <ul className="nav nav-tabs">
@@ -236,16 +248,23 @@ class FaqPage extends Component {
 
                 </div>
 
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
+                }
                 <UserPhoto/>
             </div>
         );
     }
 
-    handleSubmit(e) {
+    onClose(){
+        this.setState({...this.state, userSettings: false});
+    }
 
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
     }
 }
 

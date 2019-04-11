@@ -35,7 +35,8 @@ class ServicesPage extends Component {
             newSetElement: null,
             addService: false,
             addGroup: false,
-            createdService: false
+            createdService: false,
+            userSettings: false
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -48,6 +49,7 @@ class ServicesPage extends Component {
         this.onCollapse = this.onCollapse.bind(this);
         this.newService = this.newService.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.onOpen = this.onOpen.bind(this);
     }
 
     componentDidMount() {
@@ -62,6 +64,7 @@ class ServicesPage extends Component {
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, services: newProps.services,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 addService: newProps.services.status && newProps.services.status===209 ? false : this.state.addService,
                 addGroup: newProps.services.status && newProps.services.status===209 ? false : this.state.addGroup,
                 createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
@@ -86,7 +89,7 @@ class ServicesPage extends Component {
     }
 
     render() {
-        const { services, edit, group_working, staff, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService  } = this.state;
+        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService  } = this.state;
 
         return (
             <div>
@@ -96,7 +99,9 @@ class ServicesPage extends Component {
                     {/*<SidebarMain/>*/}
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
 
                             <div className="pages-content container-fluid">
 
@@ -224,9 +229,11 @@ class ServicesPage extends Component {
                         onClose={this.onClose}
                     />
                 }
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
+                }
                 <UserPhoto/>
             </div>
         );
@@ -315,16 +322,22 @@ class ServicesPage extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, addService: false, addGroup: false, createdService: false});
+        this.setState({...this.state, addService: false, addGroup: false, createdService: false, userSettings: false});
+    }
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
     }
 }
 
 function mapStateToProps(store) {
-    const {services, staff}=store;
+    const {services, staff, authentication}=store;
 
     return {
         services,
-        staff
+        staff,
+        authentication
     };
 }
 

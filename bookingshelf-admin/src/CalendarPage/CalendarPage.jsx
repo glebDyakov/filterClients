@@ -143,7 +143,10 @@ class CalendarPage extends Component {
             pressedDragAndDrop: true,
             scroll: true,
             reservedTime: null,
-            reservedStuffId: null
+            reservedStuffId: null,
+            userSettings: false,
+            reserved: false,
+            appointmentModal: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -174,6 +177,8 @@ class CalendarPage extends Component {
         this.deleteReserve = this.deleteReserve.bind(this);
         this.approveAppointmentSetter = this.approveAppointmentSetter.bind(this);
         this.updateCalendar = this.updateCalendar.bind(this);
+        this.onClose = this.onClose.bind(this);
+        this.onOpen = this.onOpen.bind(this);
     }
 
     componentDidMount() {
@@ -417,10 +422,11 @@ class CalendarPage extends Component {
 
             } else {
                 if(start!==$(this).attr('time') && !$(this).hasClass('expired') && $(this).hasClass('col-tab')) {
-                    $('.modal_calendar').modal('show');
+
 
                     _state.setState({
                         ..._state.state,
+                        reserved: true,
                         reservedTime: {
                             startTimeMillis: start,
                             endTimeMillis: $(this).attr('time'),
@@ -470,6 +476,9 @@ class CalendarPage extends Component {
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
                 ...this.state,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
+                reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
+                appointmentModal: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.appointmentModal,
                 calendar: newProps.calendar,
                 clients: newProps.client,
                 services: newProps.services
@@ -507,9 +516,9 @@ class CalendarPage extends Component {
 
     render() {
 
-        const {approvedId, staffAll, clients, calendar, workingStaff, appointmentEdited,
+        const {approvedId, staffAll, clients, calendar, workingStaff, appointmentEdited, reserved,
             services, clickedTime, hoverRange, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
-            selectedDay, type, selectedDays, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment} = this.state;
+            selectedDay, type, appointmentModal, selectedDays, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
 
         console.log(selectedDays)
 
@@ -541,7 +550,9 @@ class CalendarPage extends Component {
 
                     <div className={"content-wrapper  full-container "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
 
                             <div className="row content calendar-container">
                                 <div className="staff_choise col-3">
@@ -886,8 +897,6 @@ class CalendarPage extends Component {
                                                                             ${currentTime<parseInt(moment().format("x"))?'':""}
                                                                             ${notExpired?'':"expired"}
                                                                             ${clDate?'closedDateTick':""}`}
-                                                                        data-toggle={notExpired?"modal":''}
-                                                                        data-target=".new_appointment"
                                                                         time={currentTime}
                                                                         timeEnd={workingTimeEnd}
                                                                         staff={workingStaffElement.staffId}
@@ -911,11 +920,11 @@ class CalendarPage extends Component {
                             <a className="add" href="#"/>}
                             <div className="hide buttons-container">
                                 <div className="p-4">
-                                    <button type="button" data-toggle="modal" data-target=".new_appointment"
+                                    <button type="button"
                                             onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], numbers)}
                                             className="button">Новая запись
                                     </button>
-                                    <button type="button" data-toggle="modal" data-target=".modal_calendar"
+                                    <button type="button"
                                             onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], null)}
                                             className="button">Зарезервированное время
                                     </button>
@@ -925,6 +934,7 @@ class CalendarPage extends Component {
                         </div>
                     </div>
                 </div>
+                {appointmentModal &&
                 <AddAppointment
                     clients={clients}
                     staffs={staffAll}
@@ -940,10 +950,13 @@ class CalendarPage extends Component {
                     appointmentEdited={appointmentEdited}
                     getHours={this.changeTime}
                     edit_appointment={edit_appointment}
+                    onClose={this.onClose}
+
                 />
+                }
+                {reserved &&
                 <ReservedTime
                     staffs={staffAll}
-                    randNum={Math.random()}
                     minutesReservedtime={minutesReservedtime}
                     getHours={this.changeReservedTime}
                     newReservedTime={this.newReservedTime}
@@ -951,7 +964,9 @@ class CalendarPage extends Component {
                     reservedTime={reservedTime}
                     clickedTime={clickedTime}
                     reservedStuffId={reservedStuffId}
+                    onClose={this.onClose}
                 />
+                }
                 {/*<NewClient*/}
                     {/*client_working={client_working}*/}
                     {/*edit={editClient}*/}
@@ -959,12 +974,15 @@ class CalendarPage extends Component {
                     {/*addClient={this.addClient}*/}
                     {/*randNum={Math.random()}*/}
                 {/*/>*/}
+
+                {userSettings &&
+                    <UserSettings
+                        onClose={this.onClose}
+                    />
+                }
                 <ClientDetails
                     client={infoClient}
                     editClient={this.handleEditClient}
-                />
-                <UserSettings
-                    randNum={Math.random()}
                 />
                 <UserPhoto/>
                 <ApproveAppointment
@@ -982,6 +1000,17 @@ class CalendarPage extends Component {
                 />
             </div>
         );
+    }
+
+
+    onClose(){
+        this.setState({...this.state, userSettings: false, reserved: false, appointmentModal:false});
+    }
+
+    onOpen(){
+        console.log("onOpen")
+
+        this.setState({...this.state, userSettings: true});
     }
 
     newAppointment(appointment, serviceId, staffId, clientId) {
@@ -1062,14 +1091,14 @@ class CalendarPage extends Component {
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
-        this.setState({...this.state, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment});
+        this.setState({...this.state, appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment});
     }
 
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
         const {selectedDays, type, selectedDayMoment} = this.state;
 
         if(newTime===null) {
-            this.setState({...this.state, clickedTime: minutesReservedtime});
+            this.setState({...this.state, clickedTime: minutesReservedtime, reserved: true});
 
         }
 
