@@ -174,9 +174,9 @@ class MainIndexPage extends Component {
                             <form className="content retreats" name="form">
                                 <div className="row">
                                     <div className="col-sm-4 company_fields">
-                                        <p>Название компании</p>
+                                        <p >Название компании</p>
                                         <div className="name_company_wrapper form-control">
-                                            <textarea className="name_company" placeholder="Например: Стоматология" name="companyName" maxLength="40"
+                                            <input type="text" className="name_company" placeholder="Например: Стоматология" name="companyName" maxLength="40"
                                                    value={company.settings.companyName} onChange={this.handleChange}/>
                                             <span className="company_counter">
                                                 {company.settings.companyName.length}/40
@@ -189,7 +189,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress1" disabled={!company.settings.companyAddress1}  checked={company.settings.defaultAddress===1} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <textarea placeholder="" name="companyAddress1" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress1" className="company_address"
                                                    value={company.settings.companyAddress1} onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress1.length}/40</span>
                                         </div>
@@ -200,7 +200,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress2" disabled={!company.settings.companyAddress2} checked={company.settings.defaultAddress===2} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <textarea placeholder="" name="companyAddress2" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress2" className="company_address"
                                                    value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress2.length}/40</span>
                                         </div>
@@ -211,7 +211,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress3" disabled={!company.settings.companyAddress3} checked={company.settings.defaultAddress===3} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <textarea placeholder="" name="companyAddress3" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress3" className="company_address"
                                                    value={company.settings.companyAddress3} onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress3.length}/40</span>
                                         </div>
