@@ -258,10 +258,10 @@ class ClientsPage extends Component {
 }
 
 function mapStateToProps(store) {
-    const {client}=store;
+    const {client, authentication}=store;
 
     return {
-        client
+        client, authentication
     };
 }
 
