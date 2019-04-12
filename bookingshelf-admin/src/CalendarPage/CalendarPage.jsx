@@ -1247,7 +1247,7 @@ class CalendarPage extends Component {
                 types=3
             }
             let weeks = getWeekDays(getWeekRange(moment().format()).from);
-            this.setState({...this.state, workingStaff: {...workingStaff, availableTimetable:[]}, typeSelected: types, staffFromUrl:JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId, selectedStaff: selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]), type: 'week', scroll: true, selectedDays: weeks});
+            this.setState({...this.state, workingStaff: {...workingStaff, availableTimetable:[]}, typeSelected: types, staffFromUrl:JSON.parse(selectedStaff && selectedStaff.availableDays && selectedStaff.availableDays.length ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId, selectedStaff: selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]), type: 'week', scroll: true, selectedDays: weeks});
 
             this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'),
                 moment(weeks[6]).endOf('day').format('x')));
@@ -1256,7 +1256,7 @@ class CalendarPage extends Component {
             this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'),
                 moment(weeks[6]).endOf('day').format('x')));
 
-                history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'));
+                history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff && selectedStaff.availableDays && selectedStaff.availableDays.length ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'));
 
         }
     }

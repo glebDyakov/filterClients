@@ -34,10 +34,10 @@ class AddAppointment extends React.Component {
             timeNow:props.clickedTime===0?moment().format('x'):props.clickedTime,
             staffCurrent: props.staffId?props.staffId:{id:-1},
             edit_appointment: props.edit_appointment,
-            appointment: {appointmentTimeMillis:props.clickedTime!==0?props.clickedTime:this.state.appointment.clickedTime,
-                duration: props.appointmentEdited?props.appointmentEdited[0][0].duration:this.state.appointment.duration,
-                description: props.appointmentEdited?props.appointmentEdited[0][0].description:this.state.appointment.description,
-                customId: props.appointmentEdited?props.appointmentEdited[0][0].customId:this.state.appointment.customId},
+            appointment: {appointmentTimeMillis:props.clickedTime!==0?props.clickedTime:'',
+                duration: props.appointmentEdited?props.appointmentEdited[0][0].duration:'',
+                description: props.appointmentEdited?props.appointmentEdited[0][0].description:'',
+                customId: props.appointmentEdited?props.appointmentEdited[0][0].customId:''},
             editedElement: props.appointmentEdited
         };
 
@@ -96,9 +96,9 @@ class AddAppointment extends React.Component {
                 staffCurrent: newProps.staffId?newProps.staffId:{id:-1},
                 edit_appointment: newProps.edit_appointment,
                 appointment: {appointmentTimeMillis:newProps.clickedTime!==0?newProps.clickedTime:this.state.appointment.clickedTime,
-                                        duration: newProps.appointmentEdited?newProps.appointmentEdited[0][0].duration:this.state.appointment.duration,
-                                    description: newProps.appointmentEdited?newProps.appointmentEdited[0][0].description:this.state.appointment.description,
-                                   customId: newProps.appointmentEdited?newProps.appointmentEdited[0][0].customId:this.state.appointment.customId},
+                    duration: newProps.appointmentEdited?newProps.appointmentEdited[0][0].duration:this.state.appointment.duration,
+                    description: newProps.appointmentEdited?newProps.appointmentEdited[0][0].description:this.state.appointment.description,
+                    customId: newProps.appointmentEdited?newProps.appointmentEdited[0][0].customId:this.state.appointment.customId},
                 editedElement: newProps.appointmentEdited
             });
             newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
@@ -413,7 +413,7 @@ class AddAppointment extends React.Component {
                                                     )}
                                                     </div>
                                                     <hr/>
-                                                    <div className="buttons p-4">
+                                                    <div className="buttons p-4 justify-content-between">
                                                         <button type="button" className="button" onClick={this.removeCheckedUser}>Удалить из встречи</button>
                                                         <button type="button" className="button" data-toggle="modal"
                                                                 data-target=".new-client"  onClick={()=>this.editClient(cl.clientId)}>Редактировать

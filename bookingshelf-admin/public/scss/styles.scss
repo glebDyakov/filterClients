@@ -278,6 +278,28 @@ input{
         }
     }
 }
+.company_fields{
+    .input-text2, input{
+        height: 100%;
+    }
+    .company_counter {
+        position: absolute;
+        right: 5px;
+        bottom: 6px;
+        opacity: 0.7;
+    }
+    .company_address, .name_company {
+        border: none;
+        height: 100%;
+        overflow-y: hidden;
+        padding-right: 40px;
+    }
+    .check-box-group2, .name_company_wrapper {
+        position: relative;
+        margin-bottom: 10px;
+        padding: 0;
+    }
+}
 .day-picker{
     display: flex;
     justify-content: space-between;
