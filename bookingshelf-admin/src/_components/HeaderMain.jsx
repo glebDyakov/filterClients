@@ -14,6 +14,9 @@ class HeaderMain extends React.Component {
             authentication: props.authentication,
             company: props.company
         }
+        this.openModal = this.openModal.bind(this);
+
+
     }
 
     componentDidMount() {
@@ -116,8 +119,8 @@ class HeaderMain extends React.Component {
                 <div className="col right_elements">
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
                     <span className="notification"/>
-                    <a className="setting" data-toggle="modal" data-target=".modal_user_setting"/>
-                    <a className="firm-name" href="#"  data-toggle="modal" data-target=".modal_user_setting">{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}</a>
+                    <a className="setting" onClick={this.openModal}/>
+                    <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}</a>
                     <div className="img-container" data-toggle="modal" data-target=".modal_photo">
                         <img src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
@@ -131,6 +134,15 @@ class HeaderMain extends React.Component {
             </div>
         );
     }
+
+
+    openModal() {
+        const {onOpen} = this.props;
+
+        console.log('onOpen1')
+
+        return onOpen();
+    }
 }
 
 function mapStateToProps(state) {
@@ -142,6 +154,7 @@ function mapStateToProps(state) {
 
 HeaderMain.proptypes = {
     location: PropTypes.object.isRequired,
+    onOpen: PropTypes.func
 };
 
 const connectedApp = connect(mapStateToProps)(withRouter(HeaderMain));

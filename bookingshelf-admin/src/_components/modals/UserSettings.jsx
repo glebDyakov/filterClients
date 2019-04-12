@@ -6,6 +6,8 @@ import { isValidNumber } from 'libphonenumber-js'
 import {userActions} from "../../_actions";
 import ReactPhoneInput from "react-phone-input-2";
 import PropTypes from "prop-types";
+import '@trendmicro/react-modal/dist/react-modal.css';
+import Modal from "@trendmicro/react-modal";
 
 class UserSettings extends React.Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class UserSettings extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -26,11 +29,6 @@ class UserSettings extends React.Component {
 
                 this.setState({...this.state, authentication: newProps.authentication })
         }
-        if ( newProps.randNum !== this.props.randNum) {
-
-            this.setState({...this.state, authentication: newProps.authentication })
-        }
-
 
         if ( JSON.stringify(this.props.users) !==  JSON.stringify(newProps.users)) {
             this.setState({users:newProps.users});
@@ -105,6 +103,7 @@ class UserSettings extends React.Component {
 
 
         return (
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
 
             <div className="modal fade modal_user_setting">
                 <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
@@ -181,7 +180,15 @@ class UserSettings extends React.Component {
                     </div>
                 </div>
             </div>
+            </Modal>
         )
+    }
+
+
+    closeModal () {
+        const {onClose} = this.props;
+
+        return onClose()
     }
 }
 
@@ -193,7 +200,7 @@ function mapStateToProps(state) {
 }
 
 UserSettings.propTypes ={
-    randNum: PropTypes.number
+    onClose: PropTypes.func
 };
 
 const connectedApp = connect(mapStateToProps)(UserSettings);
