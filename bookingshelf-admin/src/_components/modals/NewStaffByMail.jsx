@@ -32,9 +32,9 @@ class NewStaffByMail extends React.Component {
 
 
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="md" style={{maxWidth: '20%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-mail">
-                    <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
+                    <div>
                         <div className="modal-content">
                             <div className="form-group">
                                 <div className="modal-header">

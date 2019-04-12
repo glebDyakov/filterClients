@@ -366,8 +366,7 @@ class AddAppointment extends React.Component {
                                                                 </li>
                                                         )}
                                                     </ul>
-                                                    <button className="button text-center button-absolute float-right"
-                                                            data-toggle="modal" data-target=".new-client" type="button"  onClick={(e)=>this.newClient(null, e)}>Создать
+                                                    <button className="button text-center button-absolute float-right" type="button"  onClick={(e)=>this.newClient(null, e)}>Создать
                                                         клиента
                                                     </button>
                                                 </div>
@@ -415,8 +414,7 @@ class AddAppointment extends React.Component {
                                                     <hr/>
                                                     <div className="buttons p-4 justify-content-between">
                                                         <button type="button" className="button" onClick={this.removeCheckedUser}>Удалить из встречи</button>
-                                                        <button type="button" className="button" data-toggle="modal"
-                                                                data-target=".new-client"  onClick={()=>this.editClient(cl.clientId)}>Редактировать
+                                                        <button type="button" className="button" onClick={()=>this.editClient(cl.clientId)}>Редактировать
                                                         </button>
                                                     </div>
 

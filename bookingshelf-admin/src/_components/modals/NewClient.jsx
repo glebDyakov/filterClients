@@ -54,7 +54,7 @@ class NewClient extends React.Component {
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="">
                 {client  &&
-                <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div>
                     <div className="modal-content">
                         <div className="modal-header">
                             {!edit ? <h4 className="modal-title">Новый клиент</h4>

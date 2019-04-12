@@ -121,10 +121,10 @@ class ReservedTime extends React.Component {
         const {staffs, edit_reservedTime, staffCurrent, reservedTime, reservedStuffId, timeNow, calendar}=this.state;
 
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="md" style={{maxWidth: '30%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="modal_calendar" tabIndex="-1" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div>
                         <div className="modal-content">
                             <div className="modal-header p-1">
 
