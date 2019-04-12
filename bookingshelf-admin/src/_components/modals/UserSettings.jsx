@@ -105,13 +105,13 @@ class UserSettings extends React.Component {
         return (
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
 
-            <div className="modal fade modal_user_setting">
+            <div className="modal_user_setting">
                 <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
                     <div className="modal-content">
                         <div className="form-group">
                             <div className="modal-header">
                                 <h4 className="modal-title">Настройки профиля</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close" onClick={this.closeModal}>&times;</button>
                             </div>
                             <form className="form-group mr-3 ml-3"  name="form">
                                 <div className="row">
