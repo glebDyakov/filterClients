@@ -21,8 +21,8 @@ class NewClient extends React.Component {
                 "acceptNewsletter": true
             },
             edit: props.edit,
-            clients: props.client
-
+            clients: props.client,
+            isUserEditedPhone: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -54,7 +54,7 @@ class NewClient extends React.Component {
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="">
                 {client  &&
-                <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div>
                     <div className="modal-content">
                         <div className="modal-header">
                             {!edit ? <h4 className="modal-title">Новый клиент</h4>
@@ -73,14 +73,17 @@ class NewClient extends React.Component {
                                     <ReactPhoneInput
                                         regions={['america', 'europe']}
                                         disableAreaCodes={true}
-                                        inputClass={(!isValidNumber(client.phone) ? ' redBorder' : '')}
+                                        inputClass={((!isValidNumber(client.phone) && this.state.isUserEditedPhone) ? ' redBorder' : '')}
                                                      value={client.phone} required="true" defaultCountry={'by'}
-                                                     onChange={phone => this.setState({
-                                                         client: {
-                                                             ...client,
-                                                             phone: phone
-                                                         }
-                                                     })}/>
+                                                     onChange={phone =>
+                                                         this.setState({
+                                                             client: {
+                                                                 ...client,
+                                                                 phone: phone.replace(/[() ]/g, '')
+                                                             },
+                                                             isUserEditedPhone: true
+                                                         })
+                                                     }/>
                                 </div>
                                 <div className="col-sm-6">
                                     <p className="title_block">Фамилия</p>
@@ -134,8 +137,8 @@ class NewClient extends React.Component {
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
 
-                            <button className={((clients.adding || !client.firstName || !client.lastName || !isValidNumber(client.phone)) ? 'disabledField': '')+' button'} type="button"
-                                    onClick={!clients.adding && client.firstName && client.lastName && isValidNumber(client.phone) && (edit ? this.updateClient : this.addClient)}
+                            <button className={((clients.adding || !client.firstName || !isValidNumber(client.phone)) ? 'disabledField': '')+' button'} type="button"
+                                    onClick={!clients.adding && client.firstName && isValidNumber(client.phone) && (edit ? this.updateClient : this.addClient)}
                             >Сохранить
                             </button>
                         </div>

@@ -100,6 +100,8 @@ function updateProfile(userProfile) {
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
+                    setTimeout(()=>dispatch(successTime(0)), 3000);
+
                 }
             );
     };

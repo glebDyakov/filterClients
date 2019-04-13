@@ -100,9 +100,9 @@ class NewStaff extends React.Component {
         console.log(option)
 
         return (
-            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="lg" style={{maxWidth: '65%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
-                <div className="new-staff-modal bd-example-modal-lg" tabIndex="-1" role="dialog"
+                <div className="new-staff-modal" tabIndex="-1" role="dialog"
                      aria-hidden="true">
                     { staff &&
                             <div className="" role="document">
@@ -139,7 +139,7 @@ class NewStaff extends React.Component {
                                                                 regions={['america', 'europe']}
                                                                 disableAreaCodes={true}
 
-                                                                inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone} })}
+                                                                inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone.replace(/[() ]/g, '')} })}
                                                                 />
 
                                                             <p>Доступ</p>

@@ -77,7 +77,8 @@ class EmailPage extends Component {
                 "title": "",
                 "description": ""
             },
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createEmpty(),
+            userSettings: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -99,6 +100,9 @@ class EmailPage extends Component {
         this.isKr = this.isKr.bind(this)
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
+        this.onOpen = this.onOpen.bind(this);
+        this.onClose = this.onClose.bind(this);
+
 
     }
 
@@ -121,7 +125,8 @@ class EmailPage extends Component {
                 services:newProps.services,
                 client:newProps.client,
                 staff:newProps.staff,
-                notification:newProps.notification
+                notification:newProps.notification,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
             })
         }
     }
@@ -136,7 +141,7 @@ class EmailPage extends Component {
         this.setState({
             ...this.state,
             activeTab: tab
-        })
+        });
 
         if(tab==='auto_notification') {document.title = "Авто уведомления | Онлайн-запись";}
         if(tab==='smsletter'){document.title = "SMS Рассылка | Онлайн-запись"}
@@ -294,7 +299,7 @@ class EmailPage extends Component {
 
 
     render() {
-        const {notification, activeTab, services, serviceCurrent, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
+        const {notification, userSettings, activeTab, services, serviceCurrent, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
 
         return (
             <div className="emailPage">
@@ -303,7 +308,9 @@ class EmailPage extends Component {
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
                             <div className="retreats">
                                 <div className="flex-content col-sm-12">
                                     <ul className="nav nav-tabs">
@@ -336,7 +343,7 @@ class EmailPage extends Component {
                                                                     <input className="form-check-input" checked={notifications && notifications.smsOn} onChange={()=>this.toggleChange('smsOn')}
                                                                            type="checkbox"/>
                                                                     <span className="check"></span>
-                                                                    Авто уведомления об успешной записи
+                                                                    Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                                 </label>
                                                             </div>
 
@@ -362,7 +369,7 @@ class EmailPage extends Component {
                                                                     <input className="form-check-input" checked={notifications && notifications.emailOn}  onChange={()=>this.toggleChange('emailOn')}
                                                                            type="checkbox"/>
                                                                     <span className="check"></span>
-                                                                    Авто уведомления об успешной записи
+                                                                    Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                                 </label>
                                                             </div>
 
@@ -631,9 +638,11 @@ class EmailPage extends Component {
 
                 </div>
 
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose}
                 />
+                }
                 <UserPhoto/>
                 <div className="modal fade start-modal">
                     <div className="modal-dialog modal-lg modal-dialog-centered">
@@ -694,13 +703,22 @@ class EmailPage extends Component {
     handleSubmit(e) {
 
     }
+
+    onClose(){
+        this.setState({...this.state, userSettings: false});
+    }
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
+    }
 }
 
 function mapStateToProps(store) {
-    const {notification, services, staff, client}=store;
+    const {notification, services, staff, client, authentication}=store;
 
     return {
-        notification, services, staff, client
+        notification, services, staff, client, authentication
     };
 }
 

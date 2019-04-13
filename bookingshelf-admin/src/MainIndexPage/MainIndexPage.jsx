@@ -35,7 +35,8 @@ class MainIndexPage extends Component {
             isLoading: true,
             activeDay: 1,
             status: {},
-            submitted: false
+            submitted: false,
+            userSettings: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -45,6 +46,8 @@ class MainIndexPage extends Component {
         this.handleWeekPicker = this.handleWeekPicker.bind(this);
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
+        this.onOpen = this.onOpen.bind(this);
+        this.onClose2 = this.onClose2.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -52,7 +55,11 @@ class MainIndexPage extends Component {
 
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
 
-            this.setState({...this.state, authentication: newProps.authentication })
+            this.setState({...this.state, authentication: newProps.authentication,
+
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+
+            })
         }
 
         if ( JSON.stringify(this.props.company.settings) !==  JSON.stringify(newProps.company.settings)) {
@@ -150,7 +157,7 @@ class MainIndexPage extends Component {
 
 
     render() {
-        const { authentication, submitted, isLoading, activeDay, status, company } = this.state;
+        const { authentication, submitted, isLoading, activeDay, status, company, userSettings } = this.state;
 
         return (
             <div>
@@ -160,48 +167,53 @@ class MainIndexPage extends Component {
                     {company && company.settings &&
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain/>
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
 
                             <form className="content retreats" name="form">
                                 <div className="row">
-                                    <div className="col-sm-4">
+                                    <div className="col-sm-4 company_fields">
                                         <p>Название компании</p>
-                                        <input type="text" placeholder="Например: Стоматология" name="companyName"
-                                               value={company.settings.companyName} onChange={this.handleChange}/>
-                                        <p>Адрес компании</p>
-
-
-                                        <div className="check-box-group2">
-                                            <div className="input-text2">
-
-                                            <input type="radio" aria-label="" name="defaultAddress1" disabled={!company.settings.companyAddress1}  checked={company.settings.defaultAddress===1} onChange={this.handleChangeAddress}/>
-                                            </div>
-
-                                            <input type="text" placeholder="" name="companyAddress1"
-                                                   value={company.settings.companyAddress1}  className="form-control" onChange={this.handleChange}/>
+                                        <div className="name_company_wrapper form-control">
+                                            <textarea className="name_company" placeholder="Например: Стоматология" name="companyName" maxLength="40"
+                                                   value={company.settings.companyName} onChange={this.handleChange}/>
+                                            <span className="company_counter">
+                                                {company.settings.companyName.length}/40
+                                            </span>
                                         </div>
 
                                         <p>Адрес компании</p>
+                                        <div className="check-box-group2 form-control">
+                                            <div className="input-text2">
+                                                <input type="radio" aria-label="" name="defaultAddress1" disabled={!company.settings.companyAddress1}  checked={company.settings.defaultAddress===1} onChange={this.handleChangeAddress}/>
+                                            </div>
 
+                                            <textarea placeholder="" name="companyAddress1" className="company_address"
+                                                   value={company.settings.companyAddress1} onChange={this.handleChange} maxLength="40"/>
+                                            <span className="company_counter">{company.settings.companyAddress1.length}/40</span>
+                                        </div>
 
-                                        <div className="check-box-group2">
+                                        <p>Адрес компании</p>
+                                        <div className="check-box-group2 form-control">
                                             <div className="input-text2">
                                                 <input type="radio" aria-label="" name="defaultAddress2" disabled={!company.settings.companyAddress2} checked={company.settings.defaultAddress===2} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress2"
-                                                   value={company.settings.companyAddress2}  className="form-control" onChange={this.handleChange}/>
+                                            <textarea placeholder="" name="companyAddress2" className="company_address"
+                                                   value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>
+                                            <span className="company_counter">{company.settings.companyAddress2.length}/40</span>
                                         </div>
+
                                         <p>Адрес компании</p>
-
-
-                                        <div className="check-box-group2">
+                                        <div className="check-box-group2 form-control">
                                             <div className="input-text2">
                                                 <input type="radio" aria-label="" name="defaultAddress3" disabled={!company.settings.companyAddress3} checked={company.settings.defaultAddress===3} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress3"
-                                                   value={company.settings.companyAddress3}  className="form-control" onChange={this.handleChange}/>
+                                            <textarea placeholder="" name="companyAddress3" className="company_address"
+                                                   value={company.settings.companyAddress3} onChange={this.handleChange} maxLength="40"/>
+                                            <span className="company_counter">{company.settings.companyAddress3.length}/40</span>
                                         </div>
                                         {/*<p>Cтрана</p>*/}
                                         {/*<div className="">*/}
@@ -301,7 +313,10 @@ class MainIndexPage extends Component {
 
                                         <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail"
                                                value={company.settings.companyEmail} onChange={this.handleChange}/>
-                                        <p>Номер телефона</p>
+                                        <p className="phone_hint_wrapper">
+                                            <span>Номер телефона </span>
+                                            <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
+                                        </p>
                                         <ReactPhoneInput
                                             enableLongNumbers={true}
                                             // disableCountryCode={true}
@@ -314,7 +329,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone1: companyPhone1}
+                                                    settings: {...company.settings, companyPhone1: companyPhone1.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -333,7 +348,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone2: companyPhone2}
+                                                    settings: {...company.settings, companyPhone2: companyPhone2.replace(/[() ]/g, '')}
                                                 }
                                             });
                                         }}/>
@@ -350,7 +365,7 @@ class MainIndexPage extends Component {
                                             this.setState({
                                                 company: {
                                                     ...company,
-                                                    settings: {...company.settings, companyPhone3: companyPhone3}
+                                                    settings: {...company.settings, companyPhone3: companyPhone3.replace(/[() ]/g, '')}
                                                 }
                                             });
 
@@ -400,15 +415,25 @@ class MainIndexPage extends Component {
                     }
 
                 </div>
-                {authentication && authentication.user &&
+                {userSettings &&
                 <UserSettings
-                    randNum={Math.random()}
+                    onClose={this.onClose2}
                 />
                 }
                 <UserPhoto/>
             </div>
 
         );
+    }
+
+
+    onClose2(){
+        this.setState({...this.state, userSettings: false});
+    }
+
+    onOpen(){
+
+        this.setState({...this.state, userSettings: true});
     }
 }
 

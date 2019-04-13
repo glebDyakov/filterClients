@@ -83,10 +83,10 @@ class AddGroup extends React.Component {
         const {group, edit, colors, newSet, services}=this.state;
 
         return (
-            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="sm" style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="modal_add_group" tabIndex="-1" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div className="" role="document">
                         <div className="modal-content visibleDropdown">
                             <div className="modal-header">
                                 {
@@ -101,7 +101,7 @@ class AddGroup extends React.Component {
                             <div className="modal-inner pl-4 pr-4 pb-4">
                                 <p>Название группы</p>
                                 <div  style={{position: 'relative'}}>
-                                    <input type="text" placeholder="Например: Отбеливание"  name="name" value={group.name} onChange={this.handleChange}/>
+                                    <input type="text"  name="name" value={group.name} onChange={this.handleChange}/>
                                     <span style={{
                                         position: 'absolute',
                                         right: '12px',
@@ -151,7 +151,7 @@ class AddGroup extends React.Component {
                                 </div>
                                 <p>Описание</p>
                                 <div  className="mb-3" style={{position: 'relative'}}>
-                                    <textarea className="comments" placeholder="Например: Офисное отбеливание" name="description" value={group.description}  onChange={this.handleChange}/>
+                                    <textarea className="comments"  name="description" value={group.description}  onChange={this.handleChange}/>
                                     <span style={{
                                         position: 'absolute',
                                         right: '12px',

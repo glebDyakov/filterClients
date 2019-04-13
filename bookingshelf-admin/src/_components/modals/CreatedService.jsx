@@ -31,10 +31,10 @@ class CreatedService extends React.Component {
         let serviceSet=service || serviceCurrent
 
         return (
-            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="lg"  style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="modal_add_service_by_list_group" tabIndex="-1" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div className="" role="document">
                         <div className="modal-content visibleDropdown">
                             <div className="modal-header">
                                 <h4 className="modal-title">Выберите группу услуг</h4>
