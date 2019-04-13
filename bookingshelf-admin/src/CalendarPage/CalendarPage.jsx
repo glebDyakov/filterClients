@@ -146,7 +146,8 @@ class CalendarPage extends Component {
             reservedStuffId: null,
             userSettings: false,
             reserved: false,
-            appointmentModal: false
+            appointmentModal: false,
+            newClientModal: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -178,6 +179,7 @@ class CalendarPage extends Component {
         this.approveAppointmentSetter = this.approveAppointmentSetter.bind(this);
         this.updateCalendar = this.updateCalendar.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.onCloseClient = this.onCloseClient.bind(this);
         this.onOpen = this.onOpen.bind(this);
     }
 
@@ -478,6 +480,7 @@ class CalendarPage extends Component {
                 ...this.state,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
+                newClientModal: newProps.client.status && newProps.client.status===209 ? false : this.state.newClientModal,
                 appointmentModal: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.appointmentModal,
                 calendar: newProps.calendar,
                 clients: newProps.client,
@@ -518,7 +521,7 @@ class CalendarPage extends Component {
 
         const {approvedId, staffAll, clients, calendar, workingStaff, appointmentEdited, reserved,
             services, clickedTime, hoverRange, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
-            selectedDay, type, appointmentModal, selectedDays, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
+            selectedDay, type, appointmentModal, selectedDays, newClientModal, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
 
         console.log(selectedDays)
 
@@ -955,25 +958,27 @@ class CalendarPage extends Component {
                 />
                 }
                 {reserved &&
-                <ReservedTime
-                    staffs={staffAll}
-                    minutesReservedtime={minutesReservedtime}
-                    getHours={this.changeReservedTime}
-                    newReservedTime={this.newReservedTime}
-                    reservedTimeEdited={reservedTimeEdited}
-                    reservedTime={reservedTime}
-                    clickedTime={clickedTime}
-                    reservedStuffId={reservedStuffId}
-                    onClose={this.onClose}
-                />
+                    <ReservedTime
+                        staffs={staffAll}
+                        minutesReservedtime={minutesReservedtime}
+                        getHours={this.changeReservedTime}
+                        newReservedTime={this.newReservedTime}
+                        reservedTimeEdited={reservedTimeEdited}
+                        reservedTime={reservedTime}
+                        clickedTime={clickedTime}
+                        reservedStuffId={reservedStuffId}
+                        onClose={this.onClose}
+                    />
                 }
-                {/*<NewClient*/}
-                    {/*client_working={client_working}*/}
-                    {/*edit={editClient}*/}
-                    {/*updateClient={this.updateClient}*/}
-                    {/*addClient={this.addClient}*/}
-                    {/*randNum={Math.random()}*/}
-                {/*/>*/}
+                {newClientModal &&
+                    <NewClient
+                        client_working={client_working}
+                        edit={editClient}
+                        updateClient={this.updateClient}
+                        addClient={this.addClient}
+                        onClose={this.onCloseClient}
+                    />
+                }
 
                 {userSettings &&
                     <UserSettings
@@ -1005,6 +1010,10 @@ class CalendarPage extends Component {
 
     onClose(){
         this.setState({...this.state, userSettings: false, reserved: false, appointmentModal:false});
+    }
+
+    onCloseClient(){
+        this.setState({...this.state, newClientModal: false});
     }
 
     onOpen(){
@@ -1362,9 +1371,9 @@ class CalendarPage extends Component {
         if(id!=null) {
             const client_working = clients.client.find((item) => {return id === item.clientId});
 
-            this.setState({...this.state, editClient: true, client_working: client_working});
+            this.setState({...this.state, editClient: true, client_working: client_working, newClientModal: true});
         } else {
-            this.setState({...this.state, editClient: false, client_working: {}});
+            this.setState({...this.state, editClient: false, client_working: {}, newClientModal: true});
         }
     }
 

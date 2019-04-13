@@ -408,18 +408,21 @@
                 }
             }
 
-            .button-absolute {
-                left: auto;
-                right: 15px;
-            }
+
         }
     }
 
 
-    #modal_calendar {
+    .calendar_modal {
 
         .modal-dialog {
             max-width: 600px;
+        }
+
+        .button-absolute {
+            left: auto;
+            position: absolute;
+            right: 17px!important;
         }
     }
 
@@ -1537,6 +1540,15 @@
         p {
             margin-bottom: 0;
             padding-bottom: 8px;
+        }
+    }
+    .list-block-right {
+        .button-absolute {
+            left: auto;
+            bottom: 0px;
+            position: absolute;
+            right: 17px !important;
+            left: auto;
         }
     }
 
