@@ -21,11 +21,10 @@ import {ClientDetails} from "../_components/modals/ClientDetails";
 import {ApproveAppointment} from "../_components/modals/ApproveAppointment";
 import {DeleteAppointment} from "../_components/modals/DeleteAppointment";
 import {DeleteReserve} from "../_components/modals/DeleteReserve";
+import {DatePicker} from "../_components/DatePicker";
 import Pace from "react-pace-progress";
 
 import 'react-day-picker/lib/style.css';
-import DayPicker from "react-day-picker";
-import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css'
 import {access} from "../_helpers/access";
 import * as ReactDOM from "react-dom";
@@ -127,7 +126,6 @@ class CalendarPage extends Component {
             editClient: false,
             client_working: {},
             isLoading: true,
-            hoverRange: undefined,
             opacity: false,
             closedDates: {},
 
@@ -157,14 +155,10 @@ class CalendarPage extends Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.handleEditClient = this.handleEditClient.bind(this);
-        this.showCalendar = this.showCalendar.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
-        this.handleDayEnter = this.handleDayEnter.bind(this);
-        this.handleDayLeave = this.handleDayLeave.bind(this);
         this.handleWeekClick = this.handleWeekClick.bind(this);
         this.selectType = this.selectType.bind(this);
-        this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this.scrollToMyRef = this.scrollToMyRef.bind(this);
@@ -250,14 +244,6 @@ class CalendarPage extends Component {
 
         if(scroll){
             this.scrollToMyRef()
-        }
-
-        if(this.state.opacity) {
-            console.log(this.state.opacity);
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            console.log(this.state.opacity);
-            document.removeEventListener('click', this.handleOutsideClick, false);
         }
 
 
@@ -520,30 +506,47 @@ class CalendarPage extends Component {
     render() {
 
         const {approvedId, staffAll, clients, calendar, workingStaff, appointmentEdited, reserved,
-            services, clickedTime, hoverRange, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
-            selectedDay, type, appointmentModal, selectedDays, newClientModal, opacity, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
+            services, clickedTime, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
+            selectedDay, type, appointmentModal, selectedDays, newClientModal, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
 
         console.log(selectedDays)
 
-        const daysAreSelected = selectedDays && selectedDays.length > 0;
+        let datePickerProps;
 
-        const modifiers = {
-            hoverRange,
-            selectedRange: daysAreSelected && {
-                from: selectedDays[0],
-                to: selectedDays[6],
-            },
-            hoverRangeStart: hoverRange && hoverRange.from,
-            hoverRangeEnd: hoverRange && hoverRange.to,
-            selectedRangeStart: daysAreSelected && selectedDays[0],
-            selectedRangeEnd: daysAreSelected && selectedDays[6],
-        };
+        if (type === 'day') {
+            const clDates = staffAll.closedDates && staffAll.closedDates.some((st) =>
+                parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(selectedDays[0]).startOf('day').format("x")) &&
+                parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(selectedDays[0]).endOf('day').format("x")));
 
-
-        let clDates = staffAll.closedDates && staffAll.closedDates.some((st) =>
-            parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(selectedDays[0]).startOf('day').format("x")) &&
-            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(selectedDays[0]).endOf('day').format("x")))
-
+            const selectedDaysText = (
+                <React.Fragment>
+                    {moment(selectedDay).format('dd, DD MMMM ')}
+                    {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
+                </React.Fragment>
+            );
+            datePickerProps = {
+                type,
+                selectedDaysText,
+                onLeftArrowClick: ()=>this.handleDayClick(moment(selectedDay).subtract(1, 'day'), {}),
+                onRightArrowClick: ()=>this.handleDayClick(moment(selectedDay).add(1, 'day'), {}),
+                onDayClick: this.handleDayClick,
+                selectedDays: selectedDay
+            };
+        } else {
+            const selectedDaysText = (
+                moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
+            );
+            datePickerProps = {
+                type,
+                selectedDaysText,
+                onLeftArrowClick: this.showPrevWeek,
+                onRightArrowClick: this.showNextWeek,
+                onDayClick: this.handleDayChange,
+                selectedDays: selectedDays,
+                onWeekClick: this.handleWeekClick,
+                getWeekRange
+            };
+        }
 
         return (
             <div className="calendar" ref={node => { this.node = node; }}>
@@ -614,54 +617,7 @@ class CalendarPage extends Component {
                                     }
                                 </div>
                                 <div className="calendar col-6">
-                                    <div className="select-date">
-
-
-                                        {type==='day'?<div className="select-inner">
-                                                <span className="arrow-left" onClick={()=>this.handleDayClick(moment(selectedDay).subtract(1, 'day'), {})}/>
-                                                <div className="button-calendar" >
-
-                                                        <span
-                                                            className="dates-full-width date-num" style={{textTransform: 'capitalize'}}  onClick={()=>this.showCalendar(true)}>{moment(selectedDay).format('dd, DD MMMM ')} {clDates ?
-                                                            <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span> : ''}</span>
-                                                    <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
-                                                        <i className="datepicker--pointer"></i>
-                                                        <DayPicker
-                                                            showOutsideDays
-                                                            selectedDays={selectedDay}
-                                                            onDayClick={this.handleDayClick}
-                                                            localeUtils={MomentLocaleUtils}
-                                                            locale={'ru'}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <span className="arrow-right" onClick={()=>this.handleDayClick(moment(selectedDay).add(1, 'day'), {})}/>
-                                            </div>
-                                            :<div className="select-inner">
-                                                <span className="arrow-left" onClick={this.showPrevWeek}/>
-
-                                                <div className="button-calendar" >
-
-                                                    <span
-                                                        className="dates-full-width text-capitalize date-num"  onClick={()=>this.showCalendar(true)}>{moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}</span>
-                                                    <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
-                                                        <i className="datepicker--pointer"></i>
-                                                        <DayPicker
-                                                            selectedDays={selectedDays}
-                                                            showOutsideDays
-                                                            modifiers={modifiers}
-                                                            onDayClick={this.handleDayChange}
-                                                            onDayMouseEnter={this.handleDayEnter}
-                                                            onDayMouseLeave={this.handleDayLeave}
-                                                            onWeekClick={this.handleWeekClick}
-                                                            localeUtils={MomentLocaleUtils}
-                                                            locale={'ru'}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <span className="arrow-right" onClick={this.showNextWeek}/>
-                                            </div>}
-                                    </div>
+                                    <DatePicker {...datePickerProps} />
                                 </div>
                                 <div className="tab-day-week tab-content col-3">
                                     <ul className="nav nav-tabs">
@@ -1116,36 +1072,19 @@ class CalendarPage extends Component {
 
     handleDayChange (date) {
         const {selectedStaff} = this.state;
-        this.showCalendar(false);
 
-        this.showCalendar(false);
-        let weeks = getWeekDays(getWeekRange(date).from)
+        let weeks = getWeekDays(getWeekRange(date).from);
         this.setState({
             ...this.state,
             selectedDays: weeks,
             timetableFrom: moment(weeks[0]).startOf('day').format('x'),
-            timetableTo:moment(weeks[6]).endOf('day').format('x'),
-            opacity: false
+            timetableTo:moment(weeks[6]).endOf('day').format('x')
         });
         this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
         this.props.dispatch(calendarActions.getAppointments(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
         this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
 
-    };
-
-    handleDayEnter (date) {
-        this.setState({
-            ...this.state,
-            hoverRange: getWeekRange(date),
-        });
-    };
-
-    handleDayLeave () {
-        this.setState({
-            ...this.state,
-            hoverRange: undefined,
-        });
     };
 
     handleWeekClick (weekNumber, days, e) {
@@ -1167,9 +1106,8 @@ class CalendarPage extends Component {
     };
 
     showPrevWeek (){
-
         const {selectedDays, workingStaff, selectedStaff} = this.state;
-        this.showCalendar(false);
+
         let weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).subtract(7, 'days')).from);
 
         this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
@@ -1180,7 +1118,7 @@ class CalendarPage extends Component {
             timetableFrom: moment(weeks[0]).startOf('day').format('x'),
             timetableTo:moment(weeks[6]).endOf('day').format('x'),
             workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]}, type: 'week',
-            scroll: true, opacity: false
+            scroll: true
         });
 
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
@@ -1189,7 +1127,7 @@ class CalendarPage extends Component {
 
     showNextWeek (){
         const {selectedDays, workingStaff, selectedStaff} = this.state;
-        this.showCalendar(false);
+
         let weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).add(7, 'days')).from);
 
         this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
@@ -1200,16 +1138,15 @@ class CalendarPage extends Component {
             timetableFrom: moment(weeks[0]).startOf('day').format('x'),
             timetableTo:moment(weeks[6]).endOf('day').format('x'),
             workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]}, type: 'week',
-            scroll: true, opacity: false
+            scroll: true
         });
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
 
     }
 
-    handleDayClick(day, { selected }) {
+    handleDayClick(day) {
         const {typeSelected, staffAll, workingStaff, selectedStaff} = this.state;
-        let daySelected=selected ? moment() : moment(day)
-        this.showCalendar(false);
+        let daySelected = moment(day);
 
         this.props.dispatch(staffActions.getTimetableStaffs(daySelected.startOf('day').format('x'), daySelected.endOf('day').format('x')));
         this.props.dispatch(calendarActions.getAppointments(daySelected.startOf('day').format('x'), daySelected.endOf('day').format('x')));
@@ -1221,9 +1158,8 @@ class CalendarPage extends Component {
             ...this.state,
             selectedDay: daySelected.utc().startOf('day').toDate(),
             selectedDayMoment: daySelected,
-            selectedDays: [getDayRange(moment(daySelected).format()).from],
-            opacity: false
-        })
+            selectedDays: [getDayRange(moment(daySelected).format()).from]
+        });
 
         typeSelected===1 && history.pushState(null, '', '/calendar/workingstaff/0/'+daySelected.startOf('day').format('DD-MM-YYYY'))
         typeSelected===2 && history.pushState(null, '', '/calendar/allstaff/0/'+daySelected.startOf('day').format('DD-MM-YYYY'))
@@ -1268,17 +1204,6 @@ class CalendarPage extends Component {
                 history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'));
 
         }
-    }
-
-    showCalendar(opacity) {
-
-        this.setState({...this.state,
-            opacity: opacity
-        });
-    }
-
-    handleOutsideClick(e) {
-        this.showCalendar(false);
     }
 
     setWorkingStaff(staffEl = null, typeSelected = null, staffAll = null) {
