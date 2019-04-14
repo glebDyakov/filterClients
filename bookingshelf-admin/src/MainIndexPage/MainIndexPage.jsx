@@ -174,7 +174,7 @@ class MainIndexPage extends Component {
                             <form className="content retreats" name="form">
                                 <div className="row">
                                     <div className="col-sm-4 company_fields">
-                                        <p >Название компании</p>
+                                        <p>Название компании</p>
                                         <div className="name_company_wrapper form-control">
                                             <input type="text" className="name_company" placeholder="Например: Стоматология" name="companyName" maxLength="40"
                                                    value={company.settings.companyName} onChange={this.handleChange}/>
