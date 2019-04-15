@@ -117,7 +117,7 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>{this.onCancelVisit}}/>
+                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
                         {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
                             <button className="approveFYes" onClick={()=>appointment.customId && this._delete(appointment.customId)}>Да
                             </button>
