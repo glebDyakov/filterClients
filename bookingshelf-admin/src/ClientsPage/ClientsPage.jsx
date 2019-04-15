@@ -56,13 +56,13 @@ class ClientsPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-            this.setState({...this.state, openedModal: newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
+            this.setState({...this.state, openedModal: newProps.client && newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
         }
 
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
                 ...this.state,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+                userSettings: newProps.authentication && newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
             });
         }
     }

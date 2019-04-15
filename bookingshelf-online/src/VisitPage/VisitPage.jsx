@@ -57,6 +57,11 @@ class VisitPage extends React.Component {
         })
     }
 
+    onCancelVisit () {
+        this.setState({...this.state, approveF: true});
+        this.approvedButtons.scrollIntoView({ behavior: "smooth" });
+    }
+
     render() {
         const {appointment, info, screen, approveF }=this.state;
 
@@ -112,11 +117,8 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>{
-                            this.setState({...this.state, approveF: true});
-                            document.location.href = document.location.pathname + "#approveButtons";
-                        }}/>
-                        {approveF && <div id="approveButtons" className="approveF" >
+                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>{this.onCancelVisit}}/>
+                        {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
                             <button className="approveFYes" onClick={()=>appointment.customId && this._delete(appointment.customId)}>Да
                             </button>
                             <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
