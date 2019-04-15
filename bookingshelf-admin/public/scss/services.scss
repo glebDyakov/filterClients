@@ -281,6 +281,32 @@
     overflow: hidden;
     outline: 0;
     overflow-y: auto;
+
+    .input_limited_wrapper_name{
+        position: relative;
+        input{
+            padding-right: 45px;
+        }
+    }
+    .input_limited_name{
+        position:absolute;
+        bottom: 16px;
+        right: 8px;
+    }
+    .input_limited_wrapper_description{
+        position:relative;
+       input{
+           padding-right:53px;
+       }
+    }
+    .input_limited_description{
+        position:absolute;
+        bottom: 16px;
+        right: 22px;
+    }
+
+
+
     .modal-dialog-lg{
         max-width: 100%;
         margin: auto;

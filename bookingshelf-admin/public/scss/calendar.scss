@@ -734,6 +734,11 @@
                             width: auto;
                             max-width: none !important;
                             padding: 10px !important;
+                            p{
+                                word-break: break-all;
+                                height: max-content;
+                                white-space: normal;
+                            }
 
                             .msg-inner{
                                 background: #fff;
@@ -759,7 +764,7 @@
                                     float: none;
                                     font-weight: normal;
                                     font-size: 14px;
-                                    height: 25px;
+                                    min-height: 25px;
                                     line-height: 25px;
                                     color: #555;
                                     border-bottom: 1px solid rgba(172, 172, 172, 0.5);
@@ -940,7 +945,7 @@
                         }
                     }
 
-                    &.dark-blue {
+                    &.dark_blue-color {
                         background: #264e86;
 
                         .notes-container {
