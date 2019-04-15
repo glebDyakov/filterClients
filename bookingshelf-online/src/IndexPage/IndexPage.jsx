@@ -152,6 +152,11 @@ class IndexPage extends React.Component {
         })
     }
 
+    onCancelVisit() {
+        this.setState({...this.state, approveF: true});
+        this.approvedButtons.scrollIntoView({ behavior: "smooth" });
+    }
+
     render() {
         const {selectedStaff, selectedService, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
 
@@ -520,8 +525,8 @@ class IndexPage extends React.Component {
                         </div>
                         }
                     </div>
-                    <input type="submit" className="cansel-visit" value="Отменить визит" onClick={()=>this.setState({...this.state, approveF: true})}/>
-                    {approveF && <div className="approveF" >
+                    <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                    {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                         <button className="approveFYes"  onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}>Да
                         </button>
                         <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
