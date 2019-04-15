@@ -75,15 +75,23 @@ class AddService extends React.Component {
                                         </li>
                                     </div>
                                     }
+                                    <div className="input_limited_wrapper_name">
                                     <p>Название услуги</p>
-                                    <input type="text" placeholder="" name="name"
-                                           value={service.name} onChange={this.handleChange} className={((service.priceFrom || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
+                                        <input type="text" placeholder="" name="name" maxLength="60"
+                                               value={service.name} onChange={this.handleChange} className={((service.priceFrom || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
+                                            <span className="input_limited_name">
+                                                {service.name.length}/60
+                                            </span>
+                                    </div>
                                     <div className="row">
-                                        <div className="col-xl-6">
+                                        <div className="col-xl-6 input_limited_wrapper_description">
                                             <p>Детали услуги</p>
-                                            <input type="text" placeholder=""
+                                            <input type="text" placeholder="" maxLength="120"
                                                    name="details" value={service.details}
                                                    onChange={this.handleChange}/>
+                                            <span className="input_limited_description">
+                                                {service.details.length}/120
+                                            </span>
                                         </div>
                                         <div className="col-xl-6">
                                             <p>Местная валюта</p>
