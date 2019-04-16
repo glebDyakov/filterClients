@@ -6,6 +6,7 @@ import {calendarActions, companyActions, menuActions, userActions} from "../_act
 import {access} from "../_helpers/access";
 import moment from "moment";
 import Link from "react-router-dom/es/Link";
+import classNames from "classnames";
 
 class SidebarMain extends Component {
     constructor(props) {
@@ -14,7 +15,9 @@ class SidebarMain extends Component {
             menu: props.menu,
             authentication: props.authentication,
             company: props.company,
-            calendar: props.calendar};
+            calendar: props.calendar,
+            collapse: localStorage.getItem('collapse') === 'true'
+        };
 
         this.handleClick=this.handleClick.bind(this)
         this.openAppointments=this.openAppointments.bind(this)
@@ -59,18 +62,24 @@ class SidebarMain extends Component {
         this.props.dispatch(menuActions.getMenu());
     }
 
+    toggleCollapse(value) {
+        const collapse = value === 'true';
+        localStorage.setItem('collapse', value);
+        this.setState({ collapse });
+    }
+
     render() {
-        const {location}=this.props;
-        const {authentication, count, menu, appointmentsCount, company}=this.state;
+        const { location }=this.props;
+        const { authentication, count, menu, appointmentsCount, company, collapse }=this.state;
         let path="/"+location.pathname.split('/')[1]
         console.log(this.state)
 
         return (
             <div>
-            <ul className={"sidebar "+(localStorage.getItem('collapse')=='true'&&' sidebar_collapse')}>
+            <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
 
                 <li className="mob-menu-personal">
-                    <a href={`${process.env.CONTEXT}calendar`} className="logo_mob"/>
+                    <div className="logo_mob"/>
                     <div className="mob-firm-name">
                         <div className="img-container">
                             <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/image.png`} alt=""/>
@@ -86,8 +95,8 @@ class SidebarMain extends Component {
                     </div>
                 </li>
 
-                <li className="arrow_collapse sidebar_list_collapse" onClick={()=>localStorage.setItem('collapse', 'true')} style={{'display':localStorage.getItem('collapse')=='true'?'none':'block'}}/>
-                <li className="arrow_collapse sidebar_list_collapse-out" onClick={()=>localStorage.setItem('collapse', 'false')} style={{'display':localStorage.getItem('collapse')!='true'?'none':'block'}}/>
+                <li className="arrow_collapse sidebar_list_collapse" onClick={() => this.toggleCollapse('true')} style={{'display':collapse?'none':'block'}}/>
+                <li className="arrow_collapse sidebar_list_collapse-out" onClick={() => this.toggleCollapse('false')} style={{'display':collapse?'block':'none'}}/>
                 {authentication && authentication.menu && authentication.user && authentication.user.menu &&
                 menu && menu.menuList && menu.menuList.map((item, keyStore)=>
                     authentication.user.menu.map(localItem=>
@@ -112,7 +121,7 @@ class SidebarMain extends Component {
                     </div>
                 </li>
 
-                {company.booking && <div className="id_company">Id компании: <a target="_blank"
+                {company.booking && <div className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && 'Id компании:'} <a target="_blank"
                                                             href={"https://online-zapis.com/online/" + company.booking.bookingPage}
                                                             className="">{company.booking.bookingPage}
                 </a>

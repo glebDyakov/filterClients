@@ -28,6 +28,7 @@ import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from "../_helpers/access";
 import * as ReactDOM from "react-dom";
+import {CalendarModals} from "../_components/modals/CalendarModals";
 
 
 function getWeekDays(weekStart) {
@@ -123,8 +124,6 @@ class CalendarPage extends Component {
             clickedTime: 0,
             minutes:[],
             minutesReservedtime:[],
-            editClient: false,
-            client_working: {},
             isLoading: true,
             opacity: false,
             closedDates: {},
@@ -134,7 +133,6 @@ class CalendarPage extends Component {
             type: dateToType,
             typeSelected: param1,
             selectedDays: dateTo,
-            appointmentEdited: null,
             reservedTimeEdited: null,
             selectedStaff: [],
             staffFromUrl: staffFromUrl,
@@ -154,7 +152,6 @@ class CalendarPage extends Component {
         this.getHours = this.getHours.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
-        this.handleEditClient = this.handleEditClient.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
         this.handleWeekClick = this.handleWeekClick.bind(this);
@@ -505,9 +502,9 @@ class CalendarPage extends Component {
 
     render() {
 
-        const {approvedId, staffAll, clients, calendar, workingStaff, appointmentEdited, reserved,
-            services, clickedTime, numbers, minutes, minutesReservedtime, staffClicked, editClient, client_working,
-            selectedDay, type, appointmentModal, selectedDays, newClientModal, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, pressedDragAndDrop, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
+        const {approvedId, staffAll, clients, calendar, workingStaff, reserved,
+            services, clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
+            selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
 
         console.log(selectedDays)
 
@@ -547,6 +544,15 @@ class CalendarPage extends Component {
                 getWeekRange
             };
         }
+        const calendarModalsProps = {
+            appointmentModal, clients, edit_appointment, staffAll, calendar, services, staffClicked,
+            clickedTime, selectedDayMoment, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
+            reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
+            newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
+            onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
+            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment
+        };
+
 
         return (
             <div className="calendar" ref={node => { this.node = node; }}>
@@ -875,90 +881,12 @@ class CalendarPage extends Component {
                                     </div>
                                 </div>
                             </div>
-                            {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
-                            <a className="add" href="#"/>}
-                            <div className="hide buttons-container">
-                                <div className="p-4">
-                                    <button type="button"
-                                            onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], numbers)}
-                                            className="button">Новая запись
-                                    </button>
-                                    <button type="button"
-                                            onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], null)}
-                                            className="button">Зарезервированное время
-                                    </button>
-                                </div>
-                                <div className="arrow"/>
-                            </div>
                         </div>
                     </div>
                 </div>
-                {appointmentModal &&
-                <AddAppointment
-                    clients={clients}
-                    staffs={staffAll}
-                    randNum={Math.random()}
-                    addAppointment={this.newAppointment}
-                    editAppointment={this.editAppointment}
-                    appointments={calendar && calendar}
-                    handleEditClient={this.handleEditClient}
-                    services={services}
-                    clickedTime={clickedTime}
-                    minutes={minutes}
-                    staffId={staffClicked}
-                    appointmentEdited={appointmentEdited}
-                    getHours={this.changeTime}
-                    edit_appointment={edit_appointment}
-                    onClose={this.onClose}
 
-                />
-                }
-                {reserved &&
-                    <ReservedTime
-                        staffs={staffAll}
-                        minutesReservedtime={minutesReservedtime}
-                        getHours={this.changeReservedTime}
-                        newReservedTime={this.newReservedTime}
-                        reservedTimeEdited={reservedTimeEdited}
-                        reservedTime={reservedTime}
-                        clickedTime={clickedTime}
-                        reservedStuffId={reservedStuffId}
-                        onClose={this.onClose}
-                    />
-                }
-                {newClientModal &&
-                    <NewClient
-                        client_working={client_working}
-                        edit={editClient}
-                        updateClient={this.updateClient}
-                        addClient={this.addClient}
-                        onClose={this.onCloseClient}
-                    />
-                }
+                <CalendarModals {...calendarModalsProps} />
 
-                {userSettings &&
-                    <UserSettings
-                        onClose={this.onClose}
-                    />
-                }
-                <ClientDetails
-                    client={infoClient}
-                    editClient={this.handleEditClient}
-                />
-                <UserPhoto/>
-                <ApproveAppointment
-                    id={approvedId}
-                    approve={this.approveAppointment}
-                />
-                <DeleteAppointment
-                    id={approvedId}
-                    cancel={this.deleteAppointment}
-                />
-                <DeleteReserve
-                    id={reserveId}
-                    staffId={reserveStId}
-                    cancel={this.deleteReserve}
-                />
             </div>
         );
     }
@@ -1063,7 +991,7 @@ class CalendarPage extends Component {
         const {selectedDays, type, selectedDayMoment} = this.state;
 
         if(newTime===null) {
-            this.setState({...this.state, clickedTime: minutesReservedtime, reserved: true});
+            this.setState({ clickedTime: minutesReservedtime, reserved: true });
 
         }
 
@@ -1284,21 +1212,6 @@ class CalendarPage extends Component {
 
 
             }
-        }
-
-
-
-    }
-
-    handleEditClient(id) {
-        const { clients } = this.state;
-
-        if(id!=null) {
-            const client_working = clients.client.find((item) => {return id === item.clientId});
-
-            this.setState({...this.state, editClient: true, client_working: client_working, newClientModal: true});
-        } else {
-            this.setState({...this.state, editClient: false, client_working: {}, newClientModal: true});
         }
     }
 

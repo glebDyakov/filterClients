@@ -2356,8 +2356,11 @@ select{
   position: absolute;
   left: 20px;
   font-size: 12px;
-    cursor: default;
+  cursor: default;
 
+  &_collapse {
+      bottom: 34px;
+  }
   a{
     font-size: 12px;
     &:hover {
@@ -2448,7 +2451,7 @@ select{
 .questions {
     position: absolute;
     bottom: 10px;
-    right: 21px;
+    right: 24px;
 
     img {
         width: auto;
