@@ -366,8 +366,8 @@ class AddAppointment extends React.Component {
                                                                 </li>
                                                         )}
                                                     </ul>
-                                                    <button className="button text-center button-absolute float-right" type="button"  onClick={(e)=>this.newClient(null, e)}>Создать
-                                                        клиента
+                                                    <button className="button text-center button-absolute float-right" type="button"  onClick={(e)=>this.newClient(null, e)}>
+                                                        Создать клиента
                                                     </button>
                                                 </div>
                                             }
