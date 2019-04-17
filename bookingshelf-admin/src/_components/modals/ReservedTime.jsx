@@ -247,7 +247,7 @@ class ReservedTime extends React.Component {
     addReservedTime (){
         const {reservedTime, staffCurrent }=this.state
         const {newReservedTime}=this.props
-
+        this.closeModal();
         return newReservedTime(staffCurrent.staffId, reservedTime)
     }
 

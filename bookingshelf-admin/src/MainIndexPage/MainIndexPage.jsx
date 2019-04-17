@@ -78,6 +78,9 @@ class MainIndexPage extends Component {
         const { name, value } = e.target;
         const { authentication, company } = this.state;
 
+        const phoneIndexes = [1, 2, 3];
+        phoneIndexes.forEach(index => company.settings[`companyPhone${index}`] = company.settings[`companyPhone${index}`].replace(/[() ]/g, ''));
+
         if(name==='countryCode'){
             this.setState({...this.state, company: {...company, settings: {...company.settings, [name]: value, timezoneId: '' }}});
         }else {
@@ -171,16 +174,14 @@ class MainIndexPage extends Component {
                                 onOpen={this.onOpen}
                             />
 
-                            <form className="content retreats" name="form">
+                            <form className="content retreats company_fields" name="form">
                                 <div className="row">
-                                    <div className="col-sm-4 company_fields">
+                                    <div className="col-sm-4">
                                         <p>Название компании</p>
                                         <div className="name_company_wrapper form-control">
-                                            <input type="text" className="name_company" placeholder="Например: Стоматология" name="companyName" maxLength="40"
+                                            <input type="text" className="company_input" placeholder="Например: Стоматология" name="companyName" maxLength="40"
                                                    value={company.settings.companyName} onChange={this.handleChange}/>
-                                            <span className="company_counter">
-                                                {company.settings.companyName.length}/40
-                                            </span>
+                                            <span className="company_counter">{company.settings.companyName.length}/40</span>
                                         </div>
 
                                         <p>Адрес компании</p>
@@ -189,7 +190,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress1" disabled={!company.settings.companyAddress1}  checked={company.settings.defaultAddress===1} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress1" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress1" className="company_input"
                                                    value={company.settings.companyAddress1} onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress1.length}/40</span>
                                         </div>
@@ -200,7 +201,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress2" disabled={!company.settings.companyAddress2} checked={company.settings.defaultAddress===2} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress2" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress2" className="company_input"
                                                    value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress2.length}/40</span>
                                         </div>
@@ -211,7 +212,7 @@ class MainIndexPage extends Component {
                                                 <input type="radio" aria-label="" name="defaultAddress3" disabled={!company.settings.companyAddress3} checked={company.settings.defaultAddress===3} onChange={this.handleChangeAddress}/>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress3" className="company_address"
+                                            <input type="text" placeholder="" name="companyAddress3" className="company_input"
                                                    value={company.settings.companyAddress3} onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress3.length}/40</span>
                                         </div>
@@ -310,66 +311,88 @@ class MainIndexPage extends Component {
                                     </div>
                                     <div className="col-sm-4">
                                         <p>Email</p>
-
-                                        <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail"
-                                               value={company.settings.companyEmail} onChange={this.handleChange}/>
+                                        <div className="name_company_wrapper form-control">
+                                            <div className="input-text2">
+                                                <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail" className="company_input"
+                                                       value={company.settings.companyEmail} onChange={this.handleChange} maxLength="60"/>
+                                            </div>
+                                            <span className="company_counter">{company.settings.companyEmail.length}/60</span>
+                                        </div>
                                         <p className="phone_hint_wrapper">
                                             <span>Номер телефона </span>
                                             <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
                                         </p>
-                                        <ReactPhoneInput
-                                            enableLongNumbers={true}
-                                            // disableCountryCode={true}
-                                            regions={['america', 'europe']}
-                                            placeholder=""
-                                            disableAreaCodes={true}
-                                            countryCodeEditable={false}
-                                            inputClass={(submitted && !company.settings.companyPhone1 || submitted && !isValidNumber(company.settings.companyPhone1) ? ' redBorder' : '')}
-                                            value={company.settings.companyPhone1} defaultCountry={'by'} onChange={companyPhone1 => {
-                                            this.setState({
-                                                company: {
-                                                    ...company,
-                                                    settings: {...company.settings, companyPhone1: companyPhone1.replace(/[() ]/g, '')}
-                                                }
-                                            });
-                                        }}/>
+                                        <div className="name_company_wrapper form-control">
+                                            <div className="input-text2">
+                                                <ReactPhoneInput
+                                                    enableLongNumbers={true}
+                                                    // disableCountryCode={true}
+                                                    regions={['america', 'europe']}
+                                                    placeholder=""
+                                                    disableAreaCodes={true}
+                                                    countryCodeEditable={true}
+                                                    inputClass={(submitted && !company.settings.companyPhone1 || submitted && !isValidNumber(company.settings.companyPhone1) ? 'company_input redBorder' : 'company_input')}
+                                                    value={company.settings.companyPhone1} defaultCountry={'by'} onChange={companyPhone1 => {
+                                                    this.setState({
+                                                        company: {
+                                                            ...company,
+                                                            settings: {...company.settings, companyPhone1 }
+                                                        }
+                                                    });
+                                                }}/>
+                                            </div>
+                                            <span className="company_counter">{company.settings.companyPhone1.length - 2}/20</span>
+                                        </div>
+
 
                                         <p className="mt-2">Номер телефона</p>
-                                        <ReactPhoneInput
-                                            enableLongNumbers={true}
-                                            // disableCountryCode={true}
-                                            regions={['america', 'europe']}
-                                            placeholder=""
-                                            disableAreaCodes={true}
-                                            countryCodeEditable={false}
-                                            inputClass={(submitted && !company.settings.companyPhone2 && company.settings.companyPhone2.length!==0 && !isValidNumber(company.settings.companyPhone2) ? ' redBorder' : '')}
+                                        <div className="name_company_wrapper form-control">
+                                            <div className="input-text2">
+                                                <ReactPhoneInput
+                                                    enableLongNumbers={true}
+                                                    // disableCountryCode={true}
+                                                    regions={['america', 'europe']}
+                                                    placeholder=""
+                                                    className="company_input"
+                                                    disableAreaCodes={true}
+                                                    countryCodeEditable={false}
+                                                    inputClass={(submitted && !company.settings.companyPhone2 && company.settings.companyPhone2.length!==0 && !isValidNumber(company.settings.companyPhone2) ? 'company_input redBorder' : 'company_input')}
 
-                                            value={company.settings.companyPhone2} defaultCountry={'by'} onChange={companyPhone2 => {
-                                            this.setState({
-                                                company: {
-                                                    ...company,
-                                                    settings: {...company.settings, companyPhone2: companyPhone2.replace(/[() ]/g, '')}
-                                                }
-                                            });
-                                        }}/>
+                                                    value={company.settings.companyPhone2} defaultCountry={'by'} onChange={companyPhone2 => {
+                                                    this.setState({
+                                                        company: {
+                                                            ...company,
+                                                            settings: {...company.settings, companyPhone2 }
+                                                        }
+                                                    });
+                                                }}/>
+                                            </div>
+                                            <span className="company_counter">{company.settings.companyPhone2.length - 2}/20</span>
+                                        </div>
                                         <p className="mt-2">Номер телефона</p>
-                                        <ReactPhoneInput
-                                            regions={['america', 'europe']}
-                                            disableAreaCodes={true}
-                                            placeholder=""
-                                            // disableCountryCode={true}
-                                            countryCodeEditable={false}
-                                            inputClass={(submitted && !company.settings.companyPhone3  && company.settings.companyPhone3.length!==0 && !isValidNumber(company.settings.companyPhone3) ? ' redBorder' : '')}
+                                        <div className="name_company_wrapper form-control">
+                                            <div className="input-text2">
+                                                <ReactPhoneInput
+                                                    enableLongNumbers={true}
+                                                    regions={['america', 'europe']}
+                                                    disableAreaCodes={true}
+                                                    placeholder=""
+                                                    className="company_input"
+                                                    // disableCountryCode={true}
+                                                    countryCodeEditable={false}
+                                                    inputClass={(submitted && !company.settings.companyPhone3  && company.settings.companyPhone3.length!==0 && !isValidNumber(company.settings.companyPhone3) ? 'company_input redBorder' : 'company_input')}
 
-                                            value={company.settings.companyPhone3} defaultCountry={'by'} onChange={companyPhone3 => {
-                                            this.setState({
-                                                company: {
-                                                    ...company,
-                                                    settings: {...company.settings, companyPhone3: companyPhone3.replace(/[() ]/g, '')}
-                                                }
-                                            });
-
-                                        }}/>
+                                                    value={company.settings.companyPhone3} defaultCountry={'by'} onChange={companyPhone3 => {
+                                                    this.setState({
+                                                        company: {
+                                                            ...company,
+                                                            settings: {...company.settings, companyPhone3 }
+                                                        }
+                                                    });
+                                                }}/>
+                                            </div>
+                                            <span className="company_counter">{company.settings.companyPhone3.length - 2}/20</span>
+                                        </div>
                                     </div>
                                     <div className="col-sm-4">
                                         <p>Фото компании</p>

@@ -76,7 +76,7 @@ class AddAppointment extends React.Component {
             })
         }
 
-       
+
                 
 
 
@@ -442,7 +442,7 @@ class AddAppointment extends React.Component {
 
     editClient(id){
         const {handleEditClient}=this.props;
-
+        this.closeModal();
         return handleEditClient(id)
     }
 
@@ -462,7 +462,7 @@ class AddAppointment extends React.Component {
             }, clientChecked: [] });
 
         let appointmentNew = {...appointment, approved: true}
-
+        this.closeModal();
         return addAppointment(appointmentNew, serviceCurrent.id, staffCurrent.staffId, clientChecked.clientId)
     }
 

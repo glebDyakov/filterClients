@@ -131,7 +131,7 @@ q:before, q:after { content:''; }
 }
 .modal_menu p{
     display: inline-flex;
-    width: 25%;
+    width: 32%;
     height: 62px;
     align-items: center;
     vertical-align: top;
@@ -882,7 +882,6 @@ q:before, q:after { content:''; }
     .firm_name {
         font-size: 18px;
         margin-right: 2%;
-        word-break: break-all;
         padding: 0 12px 6px;
     }
     .modal_menu .work_time {
