@@ -55,6 +55,9 @@ class HeaderMain extends React.Component {
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
                 </div>
+                <div className="header-notification">
+                    <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{company.count && company.count.count}</span>
+                </div>
                 <div className="col">
                     <p className="red-title-block mob-setting">
                         {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
