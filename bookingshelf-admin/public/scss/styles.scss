@@ -288,7 +288,7 @@ input{
         bottom: 6px;
         opacity: 0.7;
     }
-    .company_address, .name_company {
+    .company_input {
         border: none;
         height: 100%;
         padding-right: 40px;
@@ -798,37 +798,50 @@ input{
         }
 
     }
-    .menu-notification{
+}
+.menu-notification{
+    position: absolute;
+    height: 30px;
+    font-size: 12px;
+    padding: 0 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: -10px;
+    border-radius: 6px;
+    background: #FF0006;
+    line-height: 30px;
+    z-index: 2;
+    text-align: center;
+    box-shadow: 0 0 4px #666;
+
+    &::before{
         position: absolute;
-        height: 30px;
-        font-size: 12px;
-        padding: 0 10px;
+        background: #FF0006;
+        height: 8px;
+        width: 8px;
+        content: '';
         top: 0;
         bottom: 0;
+        left: -4px;
+        z-index: 50;
+        transform: rotate(45deg);
         margin: auto;
-        right: -10px;
-        border-radius: 6px;
-        background: #FF0006;
-        line-height: 30px;
-        z-index: 2;
-        text-align: center;
-        box-shadow: 0 0 4px #666;
+    }
+    @media screen and(max-width: $tablet-width){   /*--изменения--*/
+        right: 10px;
+    }
+}
 
-        &::before{
-            position: absolute;
-            background: #FF0006;
-            height: 8px;
-            width: 8px;
-            content: '';
-            top: 0;
-            bottom: 0;
-            left: -4px;
-            z-index: 50;
-            transform: rotate(45deg);
-            margin: auto;
-        }
-        @media screen and(max-width: $tablet-width){   /*--изменения--*/
-            right: 10px;
+.header-notification {
+    .menu-notification {
+        right: unset;
+        left: 54px;
+        height:25px;
+        line-height: 25px;
+        padding: 0 8px;
+        @media screen and(min-width: $tablet-width) { /*--изменения--*/
+            display: none;
         }
     }
 }
@@ -1131,7 +1144,7 @@ input{
         }
         div{
             width: 20px;
-            height: 23px;
+            height: 15px;
             cursor: pointer;
 
             img{
@@ -1147,7 +1160,7 @@ input{
             @media (max-width: $mob-width){
                 div{
                     width: 22px;
-                    height: 22px;
+                    height: 15px;
                 }
 
             }
