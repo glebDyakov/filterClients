@@ -1,6 +1,6 @@
 import {calendarConstants, clientConstants, userConstants} from '../_constants';
 import {calendarService, clientService} from '../_services';
-import {alertActions, staffActions} from './';
+import {alertActions, companyActions, staffActions} from './';
 import moment from "moment";
 
 export const calendarActions = {
@@ -174,7 +174,8 @@ function approveAppointment(id) {
             .then(
                 client => dispatch(success(id)),
                 error => dispatch(failure(id, error.toString()))
-            );
+            )
+            .then(dispatch(companyActions.getNewAppointments()));
     };
 
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
