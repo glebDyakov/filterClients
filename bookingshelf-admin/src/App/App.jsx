@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
-import {alertActions, staffActions} from '../_actions';
+import {alertActions, calendarActions, staffActions} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -88,7 +88,7 @@ class App extends React.Component {
 
     notifications(){
 
-        this.props.dispatch(companyActions.getNewAppointments());
+        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
 
 
         setTimeout(()=>this.notifications(), 20000)
