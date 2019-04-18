@@ -164,7 +164,6 @@ class CalendarPage extends Component {
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.approveAppointment = this.approveAppointment.bind(this);
         this.deleteAppointment = this.deleteAppointment.bind(this);
         this.deleteReserve = this.deleteReserve.bind(this);
         this.approveAppointmentSetter = this.approveAppointmentSetter.bind(this);
@@ -610,15 +609,6 @@ class CalendarPage extends Component {
                                                                                 {appointment[0][0].online &&
                                                                                 <span className="globus"
                                                                                       title="Онлайн-запись" />}
-                                                                                {appointment[0][0].approved &&
-                                                                                <span className="submitted"
-                                                                                      title="Встреча подтверждена"/>
-                                                                                }
-
-                                                                                {!appointment[0][0].approved && <span className="submit"
-                                                                                          data-toggle="modal"
-                                                                                          data-target=".save-notes-modal"
-                                                                                          title="Подтвердить встречу" onClick={()=>this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>}
                                                                                <span className="delete"
                                                                                       data-toggle="modal"
                                                                                       data-target=".delete-notes-modal"
@@ -654,8 +644,7 @@ class CalendarPage extends Component {
                                                                                                this.setState({...this.state, infoClient: client});
 
 
-                                                                                        }}>Просмотреть
-                                                                                            клиента</a>
+                                                                                        }}>Просмотреть клиента</a>
                                                                                     </div>
                                                                                 )}
                                                                             </div>
@@ -781,13 +770,6 @@ class CalendarPage extends Component {
         this.props.dispatch(companyActions.getNewAppointments());
 
         this.setState({...this.state, approvedId:id})
-    }
-
-    approveAppointment(id){
-        const {dispatch} = this.props;
-
-        dispatch(calendarActions.approveAppointment(id));
-        dispatch(companyActions.getNewAppointments());
     }
 
     deleteAppointment(id){

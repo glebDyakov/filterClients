@@ -42,10 +42,18 @@ class HeaderMain extends React.Component {
     }
 
     render() {
-        const {location}=this.props;
+        const {location, appointmentsCount: appointmentsCountFromProps }=this.props;
         const {authentication, company}=this.state;
 
         let path="/"+location.pathname.split('/')[1]
+
+        let appointmentsCount = appointmentsCountFromProps;
+        let notApprovedAppointments = [];
+
+        if(appointmentsCountFromProps) {
+            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
+            notApprovedAppointments = appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
+        }
 
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
@@ -55,9 +63,9 @@ class HeaderMain extends React.Component {
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
                 </div>
-                <div className="header-notification">
-                    <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{company.count && company.count.count}</span>
-                </div>
+                {notApprovedAppointments.length && <div className="header-notification">
+                    <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{notApprovedAppointments.length}</span>
+                </div>}
                 <div className="col">
                     <p className="red-title-block mob-setting">
                         {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
@@ -149,9 +157,9 @@ class HeaderMain extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company } = state;
+    const { alert, authentication, company, calendar: {appointmentsCount} } = state;
     return {
-        alert, authentication, company
+        alert, authentication, company, appointmentsCount
     };
 }
 
