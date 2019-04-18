@@ -63,7 +63,7 @@ class HeaderMain extends React.Component {
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
                 </div>
-                {notApprovedAppointments.length && <div className="header-notification">
+                {!!notApprovedAppointments.length && <div className="header-notification">
                     <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{notApprovedAppointments.length}</span>
                 </div>}
                 <div className="col">
