@@ -10,8 +10,9 @@ export function users(state = {}, action) {
       return {
         items: action.users
       };
+    case userConstants.CHECK_LOGIN_FAILURE:
     case userConstants.GETALL_FAILURE:
-      return { 
+      return {
         error: action.error
       };
     case userConstants.DELETE_REQUEST:

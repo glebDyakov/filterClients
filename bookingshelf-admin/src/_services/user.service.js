@@ -3,6 +3,7 @@ import { authHeader, handleResponse  } from '../_helpers';
 
 export const userService = {
     login,
+    checkLogin,
     logout,
     register,
     getAll,
@@ -32,6 +33,19 @@ function login(login, password) {
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         });
+}
+
+
+function checkLogin() {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/login/check`,  requestOptions)
+        .then(handleResponse)
 }
 
 function activate(activationCode) {

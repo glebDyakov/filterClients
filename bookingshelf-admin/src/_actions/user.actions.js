@@ -6,6 +6,7 @@ import moment from "moment";
 
 export const userActions = {
     login,
+    checkLogin,
     logout,
     register,
     getAll,
@@ -37,6 +38,26 @@ function login(login, password) {
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
     function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function checkLogin() {
+    return dispatch => {
+        userService.checkLogin()
+            .then(
+                () => {
+                    dispatch(success());
+                    history.push('/calendar');
+                },
+                error => {
+
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function success() { return { type: userConstants.CHECK_LOGIN_SUCCESS } }
+    function failure(error) { return { type: userConstants.CHECK_LOGIN_FAILURE, error } }
 }
 
 
