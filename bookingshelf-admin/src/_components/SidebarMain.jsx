@@ -15,7 +15,7 @@ class SidebarMain extends Component {
             menu: props.menu,
             authentication: props.authentication,
             company: props.company,
-            calendar: props.calendar,
+            appointmentsCount: props.appointmentsCount,
             collapse: localStorage.getItem('collapse') === 'true'
         };
 
@@ -45,13 +45,7 @@ class SidebarMain extends Component {
         }
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
             this.setState({ ...this.state,
-                company: newProps.company,
-                count: newProps.company.count && newProps.company.count.count
-            })
-        }
-        if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
-            this.setState({ ...this.state,
-                appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount
+                company: newProps.company
             })
         }
     }
@@ -69,10 +63,18 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location }=this.props;
-        const { authentication, count, menu, appointmentsCount, company, collapse }=this.state;
+        const { location, appointmentsCount: appointmentsCountFromProps }=this.props;
+        const { authentication, menu, company, collapse }=this.state;
         let path="/"+location.pathname.split('/')[1]
         console.log(this.state)
+
+        let appointmentsCount = appointmentsCountFromProps;
+        let notApprovedAppointments = [];
+
+        if(appointmentsCountFromProps) {
+            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
+            notApprovedAppointments = appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
+        }
 
         return (
             <div>
@@ -108,7 +110,9 @@ class SidebarMain extends Component {
                                 src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                 alt=""/>
                             <span>{item.name}</span>
-                            {keyStore===0 && count>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{count}</span>}
+                            {keyStore===0 && notApprovedAppointments.length>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">
+                                {notApprovedAppointments.length}
+                            </span>}
                         </a>
                     </li>
                     )
@@ -147,7 +151,7 @@ class SidebarMain extends Component {
                                     appointmentInfo.appointments.map((appointment)=>
                                         !appointment.approved &&
                                     <li>
-                                        <a className="service_item" onClick={()=>this.goToPageCalendar("/page/"+appointmentInfo.staff.staffId+"/"+moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                                        <a className="service_item" onClick={()=>this.goToPageCalendar(appointment.appointmentId, "/page/"+appointmentInfo.staff.staffId+"/"+moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
                                             <p>{appointment.serviceName}</p>
                                             <p><strong style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong></p>
                                         </a>
@@ -168,10 +172,19 @@ class SidebarMain extends Component {
             this.props.history.push(url)
     }
 
-    goToPageCalendar(url){
+    approveAppointment(id){
+        const {dispatch} = this.props;
+
+        dispatch(calendarActions.approveAppointment(id));
+    }
+
+    goToPageCalendar(id, url){
         $('.modal_counts').modal('hide')
 
-        this.props.history.push(url)
+        this.props.history.push(url);
+
+        this.approveAppointment(id)
+
     }
     openAppointments(event){
         event.stopPropagation()
@@ -180,9 +193,9 @@ class SidebarMain extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar } = state;
+    const { alert, menu, authentication, company, calendar: {appointmentsCount} } = state;
     return {
-        alert, menu, authentication, company, calendar
+        alert, menu, authentication, company, appointmentsCount
     };
 }
 
