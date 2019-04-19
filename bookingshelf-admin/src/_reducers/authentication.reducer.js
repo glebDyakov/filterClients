@@ -214,7 +214,9 @@ export function authentication(state = initialState, action) {
         case userConstants.CHECK_LOGIN_FAILURE:
             return {
                 ...state,
-                loginChecked: action.payload.loginChecked
+                loginChecked: action.payload.loginChecked,
+                loggedIn: false,
+                loggingIn: false
             };
         case userConstants.LOGIN_FAILURE:
             return {
