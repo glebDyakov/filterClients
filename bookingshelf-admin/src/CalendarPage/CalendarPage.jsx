@@ -29,6 +29,7 @@ import '../../public/css_admin/date.css'
 import {access} from "../_helpers/access";
 import * as ReactDOM from "react-dom";
 import {CalendarModals} from "../_components/modals/CalendarModals";
+import {userActions} from "../_actions/user.actions";
 
 
 function getWeekDays(weekStart) {
@@ -174,6 +175,7 @@ class CalendarPage extends Component {
     }
 
     componentDidMount() {
+        this.props.dispatch(userActions.checkLogin());
         if (this.props.match.params.selectedType && this.props.match.params.selectedType!=='workingstaff' && this.props.match.params.selectedType!=='staff' && this.props.match.params.selectedType!=='allstaff' && !this.props.match.params.dateFrom){
             this.props.history.push('/nopage');
             return false;
