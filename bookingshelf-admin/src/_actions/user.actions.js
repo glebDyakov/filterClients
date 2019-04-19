@@ -35,9 +35,9 @@ function login(login, password) {
             );
     };
 
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+    function request(user) { return { type: userConstants.LOGIN_REQUEST, payload: {user} } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, payload: {user} } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, payload: {error} } }
 }
 
 function checkLogin() {
@@ -56,8 +56,8 @@ function checkLogin() {
             );
     };
 
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, payload: {user, loginChecked: true} } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, payload: {error, loginChecked: true} } }
 }
 
 

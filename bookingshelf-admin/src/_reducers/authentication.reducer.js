@@ -163,11 +163,11 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGIN_SUCCESS:
 
 
-            if (!action.user.companyTimetables || action.user.companyTimetables <= 7) {
-                action.user.companyTimetables = times
+            if (!action.payload.user.companyTimetables || action.payload.user.companyTimetables <= 7) {
+                action.payload.user.companyTimetables = times
             }
 
-            let user4 = {...action.user,  password:'',
+            let user4 = {...action.payload.user,  password:'',
                 newPasswordRepeat: '',
                 newPassword: ''}
 
@@ -176,6 +176,7 @@ export function authentication(state = initialState, action) {
 
             return {
                 ...state,
+                loginChecked: action.payload.loginChecked,
                 loggedIn: true,
                 loggingIn: false,
                 user: user4,
@@ -212,7 +213,8 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGIN_FAILURE:
             return {
                 ...state,
-                error: JSON.parse(action.error),
+                loginChecked: action.payload.loginChecked,
+                error: JSON.parse(action.payload.error),
                 step: Math.random(),
                 loggedIn: false,
                 loggingIn: false
