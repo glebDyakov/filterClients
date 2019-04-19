@@ -44,8 +44,8 @@ function checkLogin() {
     return dispatch => {
         userService.checkLogin()
             .then(
-                () => {
-                    dispatch(success());
+                (user) => {
+                    dispatch(success(user));
                     history.push('/calendar');
                 },
                 error => {
@@ -56,8 +56,8 @@ function checkLogin() {
             );
     };
 
-    function success() { return { type: userConstants.CHECK_LOGIN_SUCCESS } }
-    function failure(error) { return { type: userConstants.CHECK_LOGIN_FAILURE, error } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
 

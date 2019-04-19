@@ -36,6 +36,7 @@ import {MainIndex} from "../MainIndex";
 import {CalendarPrePage} from "../CalendarPrePage";
 import {FaqPage} from "../FaqPage";
 import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
+import {userActions} from "../_actions/user.actions";
 
 class App extends React.Component {
     constructor(props) {
@@ -81,6 +82,8 @@ class App extends React.Component {
             this.notifications();
 
             this.props.dispatch(companyActions.get());
+        } else {
+            this.props.dispatch(userActions.checkLogin());
         }
 
 
