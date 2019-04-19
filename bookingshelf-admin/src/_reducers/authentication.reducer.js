@@ -105,7 +105,7 @@ export function authentication(state = initialState, action) {
             return {
                 ...state,
                 loggingIn: true,
-                user: action.user,
+                user: action.payload.user,
                 error: -1
             };
         case userConstants.UPDATE_COMPANY_SUCCESS:
@@ -160,6 +160,7 @@ export function authentication(state = initialState, action) {
                 status: 406,
                 adding: false
             };
+        case userConstants.CHECK_LOGIN_SUCCESS:
         case userConstants.LOGIN_SUCCESS:
 
 
@@ -210,10 +211,14 @@ export function authentication(state = initialState, action) {
                 step: Math.random(),
                 forgotPassLoading: false
             };
+        case userConstants.CHECK_LOGIN_FAILURE:
+            return {
+                ...state,
+                loginChecked: action.payload.loginChecked
+            };
         case userConstants.LOGIN_FAILURE:
             return {
                 ...state,
-                loginChecked: action.payload.loginChecked,
                 error: JSON.parse(action.payload.error),
                 step: Math.random(),
                 loggedIn: false,

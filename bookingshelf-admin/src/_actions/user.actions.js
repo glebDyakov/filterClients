@@ -56,8 +56,8 @@ function checkLogin() {
             );
     };
 
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, payload: {user, loginChecked: true} } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, payload: {error, loginChecked: true} } }
+    function success(user) { return { type: userConstants.CHECK_LOGIN_SUCCESS, payload: {user, loginChecked: true} } }
+    function failure(error) { return { type: userConstants.CHECK_LOGIN_FAILURE, payload: {error, loginChecked: true} } }
 }
 
 
