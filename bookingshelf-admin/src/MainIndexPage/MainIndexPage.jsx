@@ -78,9 +78,6 @@ class MainIndexPage extends Component {
         const { name, value } = e.target;
         const { authentication, company } = this.state;
 
-        const phoneIndexes = [1, 2, 3];
-        phoneIndexes.forEach(index => company.settings[`companyPhone${index}`] = company.settings[`companyPhone${index}`].replace(/[() ]/g, ''));
-
         if(name==='countryCode'){
             this.setState({...this.state, company: {...company, settings: {...company.settings, [name]: value, timezoneId: '' }}});
         }else {
@@ -130,6 +127,10 @@ class MainIndexPage extends Component {
         const { companyName, companyAddress, companyEmail, companyPhone, timezoneId } = this.state.company.settings;
         const { dispatch } = this.props;
         const {settings}=this.state.company
+
+
+        const phoneIndexes = [1, 2, 3];
+        phoneIndexes.forEach(index => settings[`companyPhone${index}`] = settings[`companyPhone${index}`].replace(/[() ]/g, ''));
 
         e.preventDefault();
 
