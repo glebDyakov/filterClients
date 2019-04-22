@@ -140,13 +140,12 @@ class IndexPage extends React.Component {
     }
 
     setScreen (num) {
-        let selectedDay=this.state.selectedDay;
+        let { selectedDay } = this.state;
         if (num===2){
-            selectedDay=undefined
+            selectedDay = null;
         }
 
         this.setState({
-            ...this.state,
             screen: num,
             selectedDay: selectedDay
         })
