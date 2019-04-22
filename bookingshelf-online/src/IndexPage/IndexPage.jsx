@@ -328,7 +328,6 @@ class IndexPage extends React.Component {
                     <div className="calendar_modal">
                         {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={this.showPrevWeek}/>}
                         <span className="arrow-right" onClick={this.showNextWeek}/>
-                        {disabledDays && disabledDays.length>0 &&
 
                         <DayPicker
                             selectedDays={selectedDay}
@@ -339,7 +338,6 @@ class IndexPage extends React.Component {
                             locale={'ru'}
 
                         />
-                        }
                         <p>
                             <span className="dark_blue_text"><span className="round"></span>Запись есть</span>
                             <span className="gray_text"><span className="round"></span>Записи нет</span>
