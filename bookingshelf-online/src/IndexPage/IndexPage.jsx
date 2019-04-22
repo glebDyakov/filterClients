@@ -129,26 +129,21 @@ class IndexPage extends React.Component {
         }
         const {company} = this.props.match.params
 
-        let daySelected = modifiers.selected ? undefined : moment(day);
+        console.log('day', day)
+        console.log('modifiers', modifiers)
+
+        let daySelected = !modifiers.selected && moment(day);
 
 
         this.setState({
-            ...this.state,
-            selectedDay: daySelected.toDate(),
+            selectedDay: daySelected ? daySelected.toDate() : this.state.selectedDay,
             screen: 4
         })
     }
 
     setScreen (num) {
-        let selectedDay=this.state.selectedDay;
-        if (num===2){
-            selectedDay=undefined
-        }
-
         this.setState({
-            ...this.state,
             screen: num,
-            selectedDay: selectedDay
         })
     }
 
