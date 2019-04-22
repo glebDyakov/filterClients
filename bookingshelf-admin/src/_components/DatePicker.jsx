@@ -40,8 +40,10 @@ class DatePicker extends Component {
         });
     }
 
-    handleOutsideClick() {
-        this.showCalendar(false);
+    handleOutsideClick(e) {
+        if (e.target.parentElement.className !== 'DayPicker-NavBar') {
+            this.showCalendar(false);
+        }
     }
 
     handleDayClick(date) {
