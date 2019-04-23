@@ -94,6 +94,19 @@ function logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('menu');
     localStorage.clear();
+    const requestOptions = {
+        method: 'PUT',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/logout`, requestOptions)
+        .then(handleResponse);
+
 }
 
 function getAll() {

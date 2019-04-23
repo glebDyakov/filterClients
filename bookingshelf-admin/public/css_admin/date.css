@@ -122,7 +122,7 @@
 
 .DayPicker-NavButton {
     position: absolute;
-    top: 1em;
+    top: 4px;
     right: 0;
     left: auto;
 
@@ -131,10 +131,13 @@
     width: 1.25em;
     height: 1.25em;
     background-position: center;
-    background-size: 50%;
+
     background-repeat: no-repeat;
     color: #8B9898;
     cursor: pointer;
+
+    padding: 20px;
+    background-size: 10px;
 }
 
 .date-num {
@@ -153,6 +156,12 @@
 
 .DayPicker-NavButton:hover {
     opacity: 0.8;
+
+}
+@media screen and (max-width: 480px) {
+    .DayPicker-NavButton:hover {
+        opacity: 1;
+    }
 }
 
 .DayPicker-NavButton--prev {

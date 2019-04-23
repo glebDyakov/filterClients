@@ -83,7 +83,6 @@
 }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
-    background-color: rgba(38, 78, 134, 0.09) !important;
     color: #3b4b5c;
 }
 .DayPicker-NavButton:hover {
