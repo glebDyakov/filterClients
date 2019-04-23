@@ -52,7 +52,7 @@ class HeaderMain extends React.Component {
 
         if(appointmentsCountFromProps) {
             appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
+            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
         }
 
         return (
@@ -63,7 +63,7 @@ class HeaderMain extends React.Component {
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
                 </div>
-                {!!notApprovedAppointments.length && <div className="header-notification">
+                {notApprovedAppointments && !!notApprovedAppointments.length && <div className="header-notification">
                     <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{notApprovedAppointments.length}</span>
                 </div>}
                 <div className="col">

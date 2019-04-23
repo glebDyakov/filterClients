@@ -255,6 +255,23 @@ q:before, q:after { content:''; }
 }
 .prev_block:hover, .next_block:hover{
     opacity: 0.7;
+
+}
+@media screen and (max-width: 480px) {
+    .prev_block:hover, .next_block:hover {
+        opacity: 1;
+    }
+    .prev_block, .next_block{
+        padding: 16px;
+        box-sizing: content-box;
+        margin: 0;
+    }
+    .prev_block{
+        padding-left: 30px;
+    }
+    .next_block{
+        padding-right: 30px;
+    }
 }
 .next_block{
     background: url(../img/icons/next.svg) no-repeat;
