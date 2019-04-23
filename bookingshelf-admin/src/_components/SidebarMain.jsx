@@ -73,7 +73,7 @@ class SidebarMain extends Component {
 
         if(appointmentsCountFromProps) {
             appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
+            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
         }
 
         return (
@@ -110,7 +110,7 @@ class SidebarMain extends Component {
                                 src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                 alt=""/>
                             <span>{item.name}</span>
-                            {keyStore===0 && notApprovedAppointments.length>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">
+                            {keyStore===0 && notApprovedAppointments && notApprovedAppointments.length>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">
                                 {notApprovedAppointments.length}
                             </span>}
                         </a>
