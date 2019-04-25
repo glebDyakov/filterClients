@@ -243,10 +243,9 @@ class StaffPage extends Component {
                                             <div className="select-inner">
                                                 <span className="arrow-left" onClick={this.showPrevWeek}/>
 
-                                                <div className="button-calendar" >
+                                                <div className="button-calendar" onClick={this.showCalendar}>{moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}
 
-                                                    <span
-                                                        className="dates-full-width text-capitalize date-num"  onClick={this.showCalendar}>{moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}</span>
+                                                    <span className="dates-full-width text-capitalize date-num" />
                                                     <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
                                                         <i className="datepicker--pointer"></i>
                                                         <DayPicker
