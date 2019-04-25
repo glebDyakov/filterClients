@@ -74,6 +74,7 @@
     /*    border-radius: 0 !important;*/
 }
 .select-date .select-inner .button-calendar {
+  cursor: pointer;
   border-bottom: solid 1px rgba(172, 172, 172, 0.5);
   border-top: solid 1px rgba(172, 172, 172, 0.5);
   height: 35px;
@@ -348,6 +349,7 @@
       display: none!important;
   }
   .select-date .select-inner .button-calendar {
+      cursor: pointer;
       border: solid 1px rgba(172, 172, 172, 0.5);
       border-radius: 6px;
       width: 94%;
