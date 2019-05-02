@@ -138,10 +138,8 @@ class AddAppointment extends React.Component {
             appointment.splice(index, 1);
             serviceCurrent.splice(index, 1);
         }
-        this.setState( { appointment, serviceCurrent })
-
-
-
+        const updatedAppointments = this.getAppointments(appointment);
+        this.setState({ serviceCurrent, appointment: updatedAppointments });
     }
 
     getTimeArrange(time, minutes){
@@ -252,7 +250,7 @@ class AddAppointment extends React.Component {
                                             return <div className="addApointmentEachBlock">
                                                 <p className="title mb-3 text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
                                                 <p className="title">Запись <span>{index+1}</span></p>
-                                                <button className="close"  onClick={()=>this.removeService(index)}>x</button>
+                                                {index !== 0 && <button className="close"  onClick={()=>this.removeService(index)}>x</button>}
                                                 <div className="row">
                                                     {minutes.length!==0&&<div className="col-md-4">
                                                         <p>Начало</p>
