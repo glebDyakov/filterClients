@@ -381,7 +381,7 @@ class CalendarPage extends Component {
         }
         const calendarModalsProps = {
             appointmentModal, clients, edit_appointment, staffAll, calendar, services, staffClicked,
-            clickedTime, selectedDayMoment, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
+            clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
