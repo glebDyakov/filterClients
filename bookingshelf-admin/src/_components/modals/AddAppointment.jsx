@@ -119,17 +119,19 @@ class AddAppointment extends React.Component {
             description: '',
             customId: '',
         };
+        let isAppointmentMessage = true;
         user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
             if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
                 newAppointment.appointmentTimeMillis = resultTime;
+                appointment.push(newAppointment);
+                serviceCurrent.push({
+                    id: -1,
+                    service: []
+                })
+                isAppointmentMessage = false;
             }
         }))
-        appointment.push(newAppointment);
-        serviceCurrent.push({
-            id: -1,
-            service: []
-        })
-        this.setState( { appointment, serviceCurrent })
+        this.setState( { appointment, serviceCurrent, isAppointmentMessage })
     }
 
     removeService(index){
@@ -139,7 +141,11 @@ class AddAppointment extends React.Component {
             serviceCurrent.splice(index, 1);
         }
         const updatedAppointments = this.getAppointments(appointment);
-        this.setState({ serviceCurrent, appointment: updatedAppointments });
+        this.setState({
+            serviceCurrent,
+            appointment: updatedAppointments.newAppointments,
+            isAppointmentMessage: updatedAppointments.isAppointmentMessage
+        });
     }
 
     getTimeArrange(time, minutes){
@@ -354,6 +360,7 @@ class AddAppointment extends React.Component {
                                                 }
                                             </div>
                                         })}
+                                        {this.state.isAppointmentMessage && <div>Невозможно добавить ещё одну услугу</div>}
                                          <div className="calendar_modal_buttons">
                                                 <button className="button text-center button-absolute addService"
                                                         onClick={() => this.addNewService()}>Добавить ещё одну услугу
@@ -565,7 +572,10 @@ class AddAppointment extends React.Component {
     }
     getAppointments(appointment) {
         const { staffs, staffId } = this.state;
-        return appointment.map((item, i) => {
+        const newAppointments = []
+        let isAppointmentMessage;
+        appointment.forEach((item, i) => {
+            let shouldAdd = false;
             if (i !== 0) {
                 const resultTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000;
                 const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
@@ -573,12 +583,18 @@ class AddAppointment extends React.Component {
                 user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
                     if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
                         item.appointmentTimeMillis = resultTime;
+                        shouldAdd = true;
                     }
                 }))
             }
-            return item;
-        });
+            if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
+                isAppointmentMessage = true;
+                return;
+            }
+            newAppointments.push(item);
 
+        });
+        return { newAppointments, isAppointmentMessage }
     }
 
     setService(serviceId, service, index) {
@@ -586,7 +602,11 @@ class AddAppointment extends React.Component {
         appointment[index].duration = service.duration;
         serviceCurrent[index] = { id: serviceId, service};
         const updatedAppointments = this.getAppointments(appointment);
-        this.setState({ serviceCurrent, appointment: updatedAppointments });
+        this.setState({
+            serviceCurrent,
+            appointment: updatedAppointments.newAppointments,
+            isAppointmentMessage: updatedAppointments.isAppointmentMessage
+        });
     }
 
     getHours (idStaff){
