@@ -13,15 +13,15 @@ export function calendar(state = {}, action) {
             let appointments = state.appointments;
             if (appointments) {
                 let boolAppointments = appointments.filter((app, key) =>
-                    app.staff.staffId === action.staffId && app['appointments'].push(action.appointment)
+                    action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
                 );
 
                 if (boolAppointments.length !== 0) {
                 } else {
-                    appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [action.appointment]})
+                    action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
                 }
             } else {
-                appointments = [{'staff': {'staffId': action.staffId}, 'appointments': [action.appointment]}];
+                appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
             }
             return {
                 ...state,

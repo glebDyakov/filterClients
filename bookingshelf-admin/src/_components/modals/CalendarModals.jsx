@@ -105,7 +105,7 @@ class CalendarModals extends Component {
 
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll,
-            services, calendar, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, workingStaff, numbers, type,
+            services, calendar, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type,
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps }
             = this.props;
 
@@ -150,6 +150,8 @@ class CalendarModals extends Component {
                         clickedTime={clickedTime}
                         minutes={minutes}
                         staffId={staffClicked}
+                        selectedDayMoment={selectedDayMoment}
+                        selectedDay={selectedDay}
                         appointmentEdited={appointmentEdited}
                         getHours={this.changeTime}
                         edit_appointment={edit_appointment}
