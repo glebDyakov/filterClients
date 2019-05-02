@@ -42,6 +42,7 @@ class AddAppointment extends React.Component {
         };
 
         this.addAppointment=this.addAppointment.bind(this);
+        this.getAppointments=this.getAppointments.bind(this);
         this.setStaff=this.setStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.setService = this.setService.bind(this);
@@ -564,12 +565,30 @@ class AddAppointment extends React.Component {
 
         this.setState({...this.state, staffCurrent: {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName }});
     }
+    getAppointments(appointment) {
+        const { staffs, staffId } = this.state;
+        return appointment.map((item, i) => {
+            if (i !== 0) {
+                const resultTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000;
+                const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
+
+                user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
+                    if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
+                        item.appointmentTimeMillis = resultTime;
+                    }
+                }))
+            }
+            return item;
+        });
+
+    }
 
     setService(serviceId, service, index) {
         const { serviceCurrent, appointment } = this.state;
         appointment[index].duration = service.duration;
         serviceCurrent[index] = { id: serviceId, service};
-        this.setState({ serviceCurrent, appointment });
+        const updatedAppointments = this.getAppointments(appointment);
+        this.setState({ serviceCurrent, appointment: updatedAppointments });
     }
 
     getHours (idStaff){

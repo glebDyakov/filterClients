@@ -595,6 +595,7 @@ class CalendarPage extends Component {
                                                         console.log(day);
                                                         console.log(moment(day).startOf('day').format("x"));
                                                         console.log(moment(day).endOf('day').format("x"));
+                                                        console.log('appointment', appointment && appointment[0] && appointment[0][0]);
 
                                                             return (appointment && appointment[0] && appointment[0].length > 0 ? <div
                                                                         className={currentTime<=moment().format("x")
