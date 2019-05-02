@@ -244,7 +244,7 @@ class AddAppointment extends React.Component {
                                 {edit_appointment?<h4 className="modal-title">Редактировать запись</h4>:<h4 className="modal-title">Новая запись</h4>}
                                 <button type="button" className="close" onClick={this.closeModal}>&times;</button>
                             </div>
-                            <div className="form-group p-4">
+                            <div className="form-group p-4 form-group-addService">
                                 <div className="row">
                                     <div className="calendar col-lg-6">
                                         {appointment.map((appointmentItem, index)=>{
