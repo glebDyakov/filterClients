@@ -361,10 +361,10 @@ class AddAppointment extends React.Component {
                                                 </button>
                                                 <button
 
-                                                    className={(appointments.status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent[0].service.length == 0) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                                    className={(appointments.status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                                     type="button"
                                                     onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                                    disabled={appointments.status === 208 || serviceCurrent[0].service.length == 0 || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
+                                                    disabled={appointments.status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
                                         {appointments.adding &&
