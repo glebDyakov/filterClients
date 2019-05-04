@@ -295,6 +295,7 @@
                     }
 
                     .button-calendar {
+                        cursor: pointer;
                         width: auto;
                         display: flex;
                         border-top: solid 1px rgba(172, 172, 172, 0.5);
@@ -1557,4 +1558,24 @@
         }
     }
 
+}
+.form-group-addService{
+    overflow-y: scroll;
+    max-height: 80%;
+    .calendar_modal_buttons{
+        display: flex;
+        justify-content: space-between;
+    }
+    .addService{
+        width: 140px;
+    }
+}
+.addApointmentEachBlock{
+    position: relative;
+    .close{
+        position: absolute;
+        top:30px;
+        right: 10px;
+        min-width: unset;
+    }
 }

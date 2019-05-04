@@ -67,7 +67,7 @@ class HeaderMain extends React.Component {
                     <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{notApprovedAppointments.length}</span>
                 </div>}
                 <div className="col">
-                    <p className="red-title-block mob-setting">
+                    <p className="red-title-block mob-setting ">
                         {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
                         </p>
                 </div>

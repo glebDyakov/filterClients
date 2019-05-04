@@ -295,14 +295,17 @@ class CalendarPage extends Component {
     componentWillReceiveProps(newProps) {
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
-                ...this.state,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
                 newClientModal: newProps.client.status && newProps.client.status===209 ? false : this.state.newClientModal,
-                appointmentModal: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.appointmentModal,
-                calendar: newProps.calendar,
                 clients: newProps.client,
                 services: newProps.services
+            });
+        }
+        if (JSON.stringify(this.props.calendar) !== JSON.stringify(newProps.calendar)) {
+            this.setState({
+                appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal,
+                calendar: newProps.calendar,
             });
         }
 
@@ -310,7 +313,6 @@ class CalendarPage extends Component {
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
                 this.setState({
-                    ...this.state,
                     staffAll: newProps.staff,
                     opacity: false,
                     typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
@@ -381,7 +383,7 @@ class CalendarPage extends Component {
         }
         const calendarModalsProps = {
             appointmentModal, clients, edit_appointment, staffAll, calendar, services, staffClicked,
-            clickedTime, selectedDayMoment, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
+            clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
@@ -593,6 +595,7 @@ class CalendarPage extends Component {
                                                         console.log(day);
                                                         console.log(moment(day).startOf('day').format("x"));
                                                         console.log(moment(day).endOf('day').format("x"));
+                                                        console.log('appointment', appointment && appointment[0] && appointment[0][0]);
 
                                                             return (appointment && appointment[0] && appointment[0].length > 0 ? <div
                                                                         className={currentTime<=moment().format("x")
