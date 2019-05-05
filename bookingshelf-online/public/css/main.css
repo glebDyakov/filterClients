@@ -348,7 +348,9 @@ q:before, q:after { content:''; }
     font-weight: bold;
     font-family: 'helvetica_medium';
 }
-
+.service_item{
+    padding: 10px;
+}
 .service_item p strong{
     font-size: 18px;
 }
@@ -358,6 +360,34 @@ q:before, q:after { content:''; }
     letter-spacing: 0;
     display: block;
     float: right;
+}
+
+.service_item label input {
+    display: none;/* <--скрываем дефолтный чекбокс */
+}
+.service_item label .checkHelper {/* <-- стилизируем новый */
+    height: 20px;
+    width: 20px;
+    border: 1px solid gray;
+    display: inline-block;
+    position: relative;
+    background-color:#FFF;
+    border-radius:2px;
+    padding:3px;
+    padding-left: 5px;
+    margin: 0 20px ;
+    vertical-align: bottom;
+
+}
+.service_item  [type=checkbox]:checked + span:before {/* <-- ставим иконку, когда чекбокс включен  */
+    content: '\2714';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    font-size:18px;
+    color: #3b4b5c;
+    line-height: 30px;
+    margin-left: 2px;
 }
 
 .service_item p:first-of-type{
@@ -1334,3 +1364,7 @@ q:before, q:after { content:''; }
     border: 1px solid red!important;
 }
 
+.specialist .supperVisDet{
+    display: flex;
+    justify-content: space-between;
+}
