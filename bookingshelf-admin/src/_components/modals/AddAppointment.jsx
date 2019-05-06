@@ -22,7 +22,7 @@ class AddAppointment extends React.Component {
             staffs: props.staffs,
             clients: props.clients && props.clients,
             allClients: props.clients,
-            services: props.services,
+            services: [props.services],
             clickedTime: props.clickedTime,
             minutes: props.minutes,
             hours: [],
@@ -87,7 +87,7 @@ class AddAppointment extends React.Component {
         ) {
             this.setState({
                 staffs:newProps.staffs,
-                services:newProps.services,
+                // services:newProps.services,
                 minutes:newProps.minutes,
                 staffId:newProps.staffId,
                 appointments: newProps.appointments,
@@ -111,7 +111,7 @@ class AddAppointment extends React.Component {
     }
 
     addNewService(){
-        const { appointment, serviceCurrent, staffs, staffId } = this.state;
+        const { appointment, serviceCurrent, staffs, staffId, services } = this.state;
         const resultTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
         const newAppointment = {
@@ -127,22 +127,28 @@ class AddAppointment extends React.Component {
                 serviceCurrent.push({
                     id: -1,
                     service: []
-                })
+                });
+                services.push({
+                    ...services[services.length -1],
+                    servicesList: services[services.length -1].servicesList.filter(service => availableTime.endTimeMillis >= (resultTime + service.duration * 1000))
+                });
                 isAppointmentMessage = false;
             }
         }))
-        this.setState( { appointment, serviceCurrent, isAppointmentMessage })
+        this.setState( { appointment, serviceCurrent, isAppointmentMessage, services })
     }
 
     removeService(index){
-        const { appointment, serviceCurrent } = this.state;
+        const { appointment, serviceCurrent, services } = this.state;
         if(appointment.length !== 1) {
             appointment.splice(index, 1);
             serviceCurrent.splice(index, 1);
+            services.splice(index, 1);
         }
         const updatedAppointments = this.getAppointments(appointment);
         this.setState({
             serviceCurrent,
+            services,
             appointment: updatedAppointments.newAppointments,
             isAppointmentMessage: updatedAppointments.isAppointmentMessage
         });
@@ -173,7 +179,7 @@ class AddAppointment extends React.Component {
     getInfo(appointment){
         const {serviceCurrent, clients, services}=this.state;
         let client=clients.client && clients.client.filter((client_user, i) => client_user.clientId===appointment.clientId)[0];
-        let service=services.servicesList && services.servicesList.filter((service, i) => service.serviceId===appointment.serviceId);
+        let service=services[0].servicesList && services[0].servicesList.filter((service, i) => service.serviceId===appointment.serviceId);
 
         this.setState({serviceCurrent: [{...serviceCurrent[0], id:appointment.serviceId, service:service[0] }], clientChecked:client})
     }
@@ -235,9 +241,9 @@ class AddAppointment extends React.Component {
     render() {
         const {appointment, staffCurrent, serviceCurrent, staffs, services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment, allClients, clickedTime, appointments}=this.state;
 
-        let servicesDisabling=services.servicesList && services.servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
+        let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
 
-        console.log(this.state)
+        console.log('servicesDisabling', servicesDisabling)
 
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
@@ -252,9 +258,10 @@ class AddAppointment extends React.Component {
                             <div className="form-group p-4 form-group-addService">
                                 <div className="row">
                                     <div className="calendar col-lg-6">
+                                        <p className="title mb-3 text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
                                         {appointment.map((appointmentItem, index)=>{
                                             return <div className="addApointmentEachBlock">
-                                                <p className="title mb-3 text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
+
                                                 <p className="title">Запись <span>{index+1}</span></p>
                                                 {index !== 0 && <button className="close"  onClick={()=>this.removeService(index)}>x</button>}
                                                 <div className="row">
@@ -296,7 +303,7 @@ class AddAppointment extends React.Component {
                                                             }
                                                             <ul className="dropdown-menu">
                                                                 {
-                                                                    services.servicesList && services.servicesList.map((service, key)=>
+                                                                    services[index].servicesList && services[index].servicesList.map((service, key)=>
                                                                         staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId) &&
                                                                         parseInt(service.duration)/60<=parseInt(timeArrange) &&
                                                                         <li className="dropdown-item"  key={key}><a  onClick={()=>this.setService(service.serviceId, service, index)}><span
@@ -363,11 +370,11 @@ class AddAppointment extends React.Component {
                                         {this.state.isAppointmentMessage && <div>Невозможно добавить ещё одну услугу</div>}
                                          <div className="calendar_modal_buttons">
                                                 <button className="button text-center button-absolute addService"
-                                                        onClick={() => this.addNewService()}>Добавить ещё одну услугу
+                                                        onClick={() => this.addNewService()}>Добавить услугу
                                                 </button>
                                                 <button
 
-                                                    className={(appointments.status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                                    className={(appointments.status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
                                                     onClick={edit_appointment ? this.editAppointment : this.addAppointment}
                                                     disabled={appointments.status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
@@ -379,14 +386,18 @@ class AddAppointment extends React.Component {
                                         }
                                     </div>
                                     <div className="block-style2 col-lg-6">
+
                                         <div className="calendar">
 
                                             {!clientChecked || clientChecked.length==0 &&
                                                 <div className="list-block-right mb-3">
 
                                                     <div className="row">
-                                                        <div className="col-sm-12"><p className="title mb-3">Добавить
-                                                            клиента</p></div>
+                                                        <div className="col-sm-12">
+                                                            <p className="title mb-3">Добавить клиента</p></div>
+                                                        <div className="client-title">
+                                                            <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
+                                                        </div>
                                                     </div>
                                                     {allClients.client && allClients.client.length > 0 &&
                                                     <div className="search dropdown row">
@@ -424,7 +435,9 @@ class AddAppointment extends React.Component {
                                             }
                                             { clientChecked && clientChecked.clientId && clients.client && clients.client.map((cl)=>cl.clientId===clientChecked.clientId &&
                                                 <div className="client-info content-pages-bg">
-
+                                                    <div className="client-title">
+                                                        <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
+                                                    </div>
                                                     <div className="clients-list pt-4 pl-4 pr-4">
                                                         <div className="client">
                                                             <span className="abbreviation">{cl.firstName.substr(0, 1)}</span>
@@ -472,13 +485,23 @@ class AddAppointment extends React.Component {
                                                     <span className="closer"></span>
                                                 </div>
                                             )}
-                                            <button className="button text-center button-absolute float-right" type="button"  onClick={(e)=>this.newClient(null, e)}>
+                                            <button className="button text-center button-absolute float-right create-client" type="button"  onClick={(e)=>this.newClient(null, e)}>
                                                 Создать клиента
                                             </button>
                                         </div>
                                     </div>
+                                    <div className="mobileButton">
+                                        <button
+
+                                            className={(appointments.status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                            type="button"
+                                            onClick={edit_appointment ? this.editAppointment : this.addAppointment}
+                                            disabled={appointments.status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Создать Запись
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

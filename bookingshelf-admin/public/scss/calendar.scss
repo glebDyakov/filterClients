@@ -1568,14 +1568,68 @@
     }
     .addService{
         width: 140px;
+        margin: 20px 0;
+        @media screen and(max-width: $tablet-width) {
+            width: 100%;
+        }
+    }
+    .button-save {
+        margin: 20px 0;
+    }
+    .saveservices{
+        @media screen and(max-width: $tablet-width) {
+            display: none;
+        }
+    }
+}
+.create-client{
+    @media screen and(max-width: $tablet-width) {
+        display: none;
     }
 }
 .addApointmentEachBlock{
     position: relative;
     .close{
         position: absolute;
-        top:30px;
+        top: -10px;
         right: 10px;
         min-width: unset;
     }
+}
+.mobileButton{
+    display: none;
+    width: 100%;
+    padding: 0 15px;
+    @media screen and(max-width: $tablet-width) {
+        display:  flex;
+    }
+    button{
+        width: 100%;
+    }
+}
+.client-title{
+    display: none;
+    width: 100%;
+    @media screen and(max-width: $tablet-width) {
+        display: flex;
+        line-height: 40px;
+        justify-content: space-between;
+        padding: 1.5rem 1.5rem 0;
+        p {
+            font-size: 16px;
+        }
+    }
+}
+.list-block-right .title{
+    @media screen and(max-width: $tablet-width) {
+        display: none;
+    }
+}
+.img-create-client{
+    background-image: url(../img/images/buton_new_client.svg);
+    //background-position: left center;
+    background-repeat: no-repeat;
+    width: 140px;
+    height: 40px;
+    cursor: pointer;
 }

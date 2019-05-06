@@ -120,11 +120,13 @@ class IndexPage extends React.Component {
 
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
-        selectedServices.forEach(selectedService => {
-            dispatch(staffActions.add(company, selectedStaff.staffId, selectedService.serviceId,
+        selectedServices.forEach((selectedService, i) => {
+            setTimeout(() =>{
+                dispatch(staffActions.add(company, selectedStaff.staffId, selectedService.serviceId,
                 JSON.stringify({...group, duration: selectedService.duration,
                     appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')})))
-            resultTime += selectedService.duration * 1000;
+            resultTime += selectedService.duration * 1000
+            }, 1000 * i);
         });
 
         this.setState({...this.state,
@@ -266,9 +268,10 @@ class IndexPage extends React.Component {
                             {/*</div>*/}
                             {/*</div>*/}
                         </div>
-                        <div className="supperVisDet" onClick={() => selectedServices.length && this.setScreen(3)}>
-                                <p>Выбрано услуг <br/><strong>{selectedServices.length}</strong></p>
-                                <p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>
+                        <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                     </div>}
                     <ul className="service_list">
@@ -300,6 +303,11 @@ class IndexPage extends React.Component {
                         }
 
                     </ul>
+
+                    {!!selectedServices.length &&
+                    <div className="button_block" onClick={() => selectedServices.length && this.setScreen(3)}>
+                        <button class="button">Продолжить</button>
+                    </div>}
                 </div>
                 }
                 {screen === 3 &&
@@ -332,9 +340,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="supperVisDet">
-                            <p>Выбрано услуг <br/><strong>{selectedServices.length}</strong></p>
-                            <p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
 
@@ -391,9 +400,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="supperVisDet">
-                            <p>Выбрано услуг <br/><strong>{selectedServices.length}</strong></p>
-                            <p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -443,9 +453,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="supperVisDet">
-                            <p>Выбрано услуг <br/><strong>{selectedServices.length}</strong></p>
-                            <p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -517,9 +528,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="supperVisDet">
-                            <p>Выбрано услуг <br/><strong>{selectedServices.length}</strong></p>
-                            <p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -559,7 +571,6 @@ class IndexPage extends React.Component {
                 <div className="footer_modal">
                     <p>Работает на <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
                 </div>
-
 
             </div>
 
