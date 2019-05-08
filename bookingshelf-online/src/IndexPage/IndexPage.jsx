@@ -306,7 +306,7 @@ class IndexPage extends React.Component {
 
                     {!!selectedServices.length &&
                     <div className="button_block" onClick={() => selectedServices.length && this.setScreen(3)}>
-                        <button class="button">Продолжить</button>
+                        <button class="button load">Продолжить</button>
                     </div>}
                 </div>
                 }
