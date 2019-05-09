@@ -27,6 +27,7 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
                     dispatch(success(appointment, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 500)
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    setTimeout(() => dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x'))), 1000);
                 },
                 error => {
                     dispatch(failure(error.toString()));

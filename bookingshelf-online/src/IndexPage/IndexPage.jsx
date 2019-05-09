@@ -24,7 +24,10 @@ class IndexPage extends React.Component {
             month: moment().utc().toDate(),
             selectedDay: undefined,
             newAppointment: false,
-            approveF: false
+            approveF: false,
+            selectedServices: [],
+            allPriceFrom: 0,
+            allPriceTo: 0
         };
 
 
@@ -109,14 +112,22 @@ class IndexPage extends React.Component {
 
     handleSave (e) {
         const { dispatch } = this.props;
-        const { selectedStaff,selectedService,group,selectedDay,selectedTime } = this.state;
+        const { selectedStaff,selectedServices,group,selectedDay,selectedTime } = this.state;
         const {company} = this.props.match.params
+        let resultTime = parseInt(selectedTime);
+        console.log('selectedTime', selectedTime);
+        console.log('selectedServices', selectedServices[0].duration);
 
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
-        dispatch(staffActions.add(company, selectedStaff.staffId, selectedService.serviceId,
-            JSON.stringify({...group, duration: selectedService.duration,
-                appointmentTimeMillis: moment(moment(selectedTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')})));
+        selectedServices.forEach((selectedService, i) => {
+            setTimeout(() =>{
+                dispatch(staffActions.add(company, selectedStaff.staffId, selectedService.serviceId,
+                JSON.stringify({...group, duration: selectedService.duration,
+                    appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')})))
+            resultTime += selectedService.duration * 1000
+            }, 1000 * i);
+        });
 
         this.setState({...this.state,
             screen: 6})
@@ -153,7 +164,7 @@ class IndexPage extends React.Component {
     }
 
     render() {
-        const {selectedStaff, selectedService, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+        const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -257,19 +268,32 @@ class IndexPage extends React.Component {
                             {/*</div>*/}
                             {/*</div>*/}
                         </div>
+                        <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                        </div>
                     </div>}
                     <ul className="service_list">
                         {services && services.map((service, serviceKey) =>
                             selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) &&
-                            <li onClick={() => this.selectService(service)}
+                            <li
                                 className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                             >
-                                <a className="service_item" href="#">
+                                <div className="service_item">
+                                    <label>
+
                                     <p>{service.name}</p>
-                                    <p><strong>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo} </strong> <span>{service.currency}</span></p>
+                                    <p><strong>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo} </strong> <span>{service.currency}</span>
+                                        <input onChange={(e)=> this.selectService(e, service)} type="checkbox"
+                                               checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)} />
+                                        <span className="checkHelper" />
+                                    </p>
                                     <span
                                         className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
-                                </a>
+
+                                    </label>
+                                </div>
                             </li>
                         )}
                         {
@@ -279,6 +303,11 @@ class IndexPage extends React.Component {
                         }
 
                     </ul>
+
+                    {!!selectedServices.length &&
+                    <div className="button_block" onClick={() => selectedServices.length && this.setScreen(3)}>
+                        <button class="button load">Продолжить</button>
+                    </div>}
                 </div>
                 }
                 {screen === 3 &&
@@ -311,11 +340,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="service_item">
-                            <p>{selectedService.name}</p>
-                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
-                            <span
-                                className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
 
@@ -372,11 +400,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="service_item">
-                            <p>{selectedService.name}</p>
-                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
-                            <span
-                                className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -426,10 +453,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="service_item">
-                            <p>{selectedService.name}</p>
-                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
-                            <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -501,10 +528,10 @@ class IndexPage extends React.Component {
                         </div>
                         }
                         {selectedService.serviceId &&
-                        <div className="service_item">
-                            <p>{selectedService.name}</p>
-                            <p className={selectedService.priceFrom!==selectedService.priceTo && 'sow'}><strong>{selectedService.priceFrom}{selectedService.priceFrom!==selectedService.priceTo && " - "+selectedService.priceTo} </strong> <span>{selectedService.currency}</span></p>
-                            <span className="runtime"><strong>{moment.duration(parseInt(selectedService.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                        <div className="supperVisDet" >
+                            <p>Выбрано услуг: <br/>
+                                <p><strong>{selectedServices.length}</strong></p></p>
+                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                         </div>
                         }
                         {selectedDay &&
@@ -545,7 +572,6 @@ class IndexPage extends React.Component {
                     <p>Работает на <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
                 </div>
 
-
             </div>
 
         );
@@ -560,26 +586,46 @@ class IndexPage extends React.Component {
         this.setScreen(7)
     }
 
-    selectService (service) {
+    selectService (e, service) {
         const {selectedStaff, staffs, selectedService}=this.state;
         const {company} = this.props.match.params
+        const {selectedServices} = this.state;
+        const { checked } = e.target;
+        if (checked) {
+            selectedServices.push(service);
+        } else {
+            const index = selectedServices.findIndex(selectedService => selectedService.serviceId === service.serviceId)
+            console.log('index', index);
+            selectedServices.splice(index, 1);
+        }
+        console.log('selectedServices', selectedServices);
+
+        let allPriceFrom = 0;
+        let allPriceTo = 0;
 
         let numbers = [];
-        let changedStaff = service.staffs && staffs ? staffs.filter((staff)=>service.staffs[0].staffId===staff.staffId)[0] : selectedStaff;
+        let changedStaff = selectedStaff;
 
-        for (let i = parseInt(moment().utc().startOf('day').format('H'))*60; i <= parseInt(moment().utc().endOf('day').format('H'))*60; i = i + parseInt(service.duration)) {
-            numbers.push(moment(moment().utc().startOf('day').utc().format('x'), "x").add(i, 'minutes').format('x'))
+        if (selectedServices && selectedServices.length) {
+            if (selectedServices && selectedServices[0] && selectedServices[0].staffs && staffs) {
+                changedStaff = staffs.filter((staff) => selectedServices[0].staffs[0].staffId === staff.staffId)[0]
+            }
+
+            let totalDuration = 0;
+            selectedServices.forEach(service => {
+                allPriceFrom += service.priceFrom
+                allPriceTo += service.priceTo
+                totalDuration += service.duration
+            })
+            for (let i = parseInt(moment().utc().startOf('day').format('H')) * 60; i <= parseInt(moment().utc().endOf('day').format('H')) * 60; i = i + parseInt(totalDuration)) {
+                numbers.push(moment(moment().utc().startOf('day').utc().format('x'), "x").add(i, 'minutes').format('x'))
+            }
+
+
+            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment.utc().startOf('month').format('x'), moment().endOf('month').format('x'), service.serviceId));
         }
-
-        this.setState({
-            ...this.state,
-
-        });
-
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment.utc().startOf('month').format('x'), moment().endOf('month').format('x'), service.serviceId));
-
-        this.setState({...this.state, selectedService:service, numbers: numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
-            screen: 3, month:moment.utc().startOf('month').toDate()})
+        this.setState({...this.state, selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
+            month:moment.utc().startOf('month').toDate()})
     }
 
     setTime (time){
@@ -589,24 +635,24 @@ class IndexPage extends React.Component {
     }
 
     showPrevWeek (){
-        const {selectedStaff, staffs, selectedService, month}=this.state;
+        const {selectedStaff, staffs, selectedServices, month}=this.state;
         const {company} = this.props.match.params;
 
-        let changedStaff = selectedService.staffs && staffs ? staffs.filter((staff)=>selectedService.staffs[0].staffId===staff.staffId)[0] : selectedStaff;
+        let changedStaff = selectedServices[0].staffs && staffs ? staffs.filter((staff)=>selectedServices[0].staffs[0].staffId===staff.staffId)[0] : selectedStaff;
 
 
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).utc().startOf('month').subtract(1, 'month').format('x'), moment(month).utc().endOf('month').subtract(1, 'month').format('x'), selectedService.serviceId));
+        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).utc().startOf('month').subtract(1, 'month').format('x'), moment(month).utc().endOf('month').subtract(1, 'month').format('x'), this.state.selectedServices[0].serviceId));
         this.setState({...this.state, month: moment(month).utc().subtract(1, 'month').toDate()})
     }
 
     showNextWeek (){
-        const {selectedStaff, staffs, selectedService, month}=this.state;
+        const {selectedStaff, staffs, selectedServices, month}=this.state;
         const {company} = this.props.match.params;
 
-        let changedStaff = selectedService.staffs && staffs ? staffs.filter((staff)=>selectedService.staffs[0].staffId===staff.staffId)[0] : selectedStaff;
+        let changedStaff = selectedServices[0].staffs && staffs ? staffs.filter((staff)=>selectedServices[0].staffs[0].staffId===staff.staffId)[0] : selectedStaff;
 
 
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).add(1, 'month').utc().startOf('month').format('x'), moment(month).add(1, 'month').utc().endOf('month').format('x'), selectedService.serviceId));
+        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).add(1, 'month').utc().startOf('month').format('x'), moment(month).add(1, 'month').utc().endOf('month').format('x'), this.state.selectedServices[0].serviceId));
         this.setState({...this.state, month: moment(month).utc().add(1, 'month').toDate()})
 
     }
