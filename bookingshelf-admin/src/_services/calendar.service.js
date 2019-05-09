@@ -146,3 +146,4 @@ function getReservedTime(dateFrom, dateTo) {
 
     return fetch(`${config.apiUrl}/reservedtimes/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
+
