@@ -23,7 +23,7 @@ class IndexPage extends React.Component {
             info: props.staff.info,
             month: moment().utc().toDate(),
             selectedDay: undefined,
-            newAppointment: false,
+            newAppointments: [],
             approveF: false,
             selectedServices: [],
             allPriceFrom: 0,
@@ -81,10 +81,12 @@ class IndexPage extends React.Component {
 
             newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays.length===0 && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
+            const { newAppointments } = this.state
+            newAppointments.push(newProps.staff.newAppointment)
 
-            this.setState({...this.state,
+            this.setState({
                 staffs: newProps.staff && newProps.staff.staff,
-                newAppointment: newProps.staff.newAppointment,
+                newAppointments,
                 services: newProps.staff && newProps.staff.services,
                 nearestTime:  newProps.staff && newProps.staff.nearestTime,
                 workingStaff: newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays,
@@ -160,11 +162,11 @@ class IndexPage extends React.Component {
 
     onCancelVisit() {
         this.setState({...this.state, approveF: true});
-        this.approvedButtons.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
     }
 
     render() {
-        const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+        const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -547,7 +549,11 @@ class IndexPage extends React.Component {
                     </div>
                     <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
                     {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
-                        <button className="approveFYes"  onClick={()=>newAppointment && newAppointment.customId && this._delete(newAppointment.customId)}>Да
+                        <button className="approveFYes"  onClick={()=>{
+                            if (newAppointments.length) {
+                                newAppointments.forEach((newAppointment, i) => setTimeout(() => newAppointment && newAppointment.customId && this._delete(newAppointment.customId), 1000 * i))
+                            }
+                        }}>Да
                         </button>
                         <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
                         </button>
@@ -629,8 +635,11 @@ class IndexPage extends React.Component {
     }
 
     setTime (time){
-        this.setState({...this.state, selectedTime:time,
-            screen: 5})
+        this.setState({
+            newAppointments: [],
+            selectedTime:time,
+            screen: 5
+        })
 
     }
 
