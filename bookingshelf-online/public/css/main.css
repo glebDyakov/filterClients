@@ -1016,6 +1016,7 @@ q:before, q:after { content:''; }
 @media screen and (max-width: 900px){
     .staff_popup {
         margin-bottom: 20px;
+        padding-bottom: 40px;
     }
 }
 @media screen and (max-width: 720px){
