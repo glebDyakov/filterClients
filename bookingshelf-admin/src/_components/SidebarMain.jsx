@@ -16,7 +16,11 @@ class SidebarMain extends Component {
             authentication: props.authentication,
             company: props.company,
             appointmentsCount: props.appointmentsCount,
-            collapse: localStorage.getItem('collapse') === 'true'
+            collapse: localStorage.getItem('collapse') === 'true',
+            calendar: props.calendar,
+            newOpened: true,
+            canceledOpened: false
+
         };
 
         this.handleClick=this.handleClick.bind(this)
@@ -45,14 +49,23 @@ class SidebarMain extends Component {
         }
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
             this.setState({ ...this.state,
-                company: newProps.company
+                company: newProps.company,
+                count: newProps.company.count && newProps.company.count
+            })
+        }
+        if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
+            this.setState({ ...this.state,
+                appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount,
+                appointmentsCanceled: newProps.calendar.appointmentsCanceled && newProps.calendar.appointmentsCanceled,
             })
         }
     }
 
     componentDidMount() {
         this.props.dispatch(companyActions.getBookingInfo());
+        this.props.dispatch(companyActions.getNewAppointments());
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(menuActions.getMenu());
     }
 
@@ -63,18 +76,14 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location, appointmentsCount: appointmentsCountFromProps }=this.props;
-        const { authentication, menu, company, collapse }=this.state;
+        const { location }=this.props;
+        const { authentication, menu, company, collapse, newOpened, canceledOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
         let path="/"+location.pathname.split('/')[1]
         console.log(this.state)
 
-        let appointmentsCount = appointmentsCountFromProps;
-        let notApprovedAppointments = [];
 
-        if(appointmentsCountFromProps) {
-            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
-        }
+        console.log(appointmentsCount);
+        console.log(appointmentsCanceled);
 
         return (
             <div>
@@ -110,9 +119,10 @@ class SidebarMain extends Component {
                                 src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                 alt=""/>
                             <span>{item.name}</span>
-                            {keyStore===0 && notApprovedAppointments && notApprovedAppointments.length>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">
-                                {notApprovedAppointments.length}
-                            </span>}
+                            {keyStore===0 &&
+                            ((count && count.appointments.count>0) ||
+                            (count && count.canceled.count>0))
+                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{count.appointments.count+count.canceled.count}</span>}
                         </a>
                     </li>
                     )
@@ -139,13 +149,15 @@ class SidebarMain extends Component {
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Новые записи</h4>
+                                <h4 className="modal-title">Уведомления</h4>
 
 
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+
+                            {newOpened &&
                             <div className="modal-inner pl-4 pr-4 count-modal">
                                 <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments.count}</span></button>
                                 {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
@@ -223,9 +235,9 @@ class SidebarMain extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar: {appointmentsCount} } = state;
+    const { alert, menu, authentication, company, calendar, appointmentsCount } = state;
     return {
-        alert, menu, authentication, company, appointmentsCount
+        alert, menu, authentication, company, calendar, appointmentsCount
     };
 }
 
