@@ -204,6 +204,41 @@ input{
 }
 
 .count-modal {
+    .opacity0 {
+        opacity: 0.5;
+        padding-top: 13px;
+        padding-bottom: 26px;
+    }
+
+    .deleted {
+        font-size: 10px;
+        color: red;
+    }
+
+    .counter {
+      color: white!important;
+      background-color: red;
+      padding: 4px 7px;
+      border-radius: 50%;
+      font-size: 10px;
+      position: absolute;
+      top: -8px;
+      right: -7px;
+    }
+
+    .disabled {
+        color: #264e86;
+        background-color: white;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    button {
+        margin-right: 10px;
+        margin-bottom: 10px;
+      position: relative;
+    }
+
     li {
         border: solid 1px rgba(172, 172, 172, 0);
         display: block;

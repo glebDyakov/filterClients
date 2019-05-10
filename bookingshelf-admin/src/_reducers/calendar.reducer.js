@@ -153,6 +153,12 @@ export function calendar(state = {}, action) {
                 ...state,
                 appointmentsCount: action.appointments
             };
+
+        case calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED:
+            return {
+                ...state,
+                appointmentsCanceled: action.appointments
+            };
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {
                 ...state,

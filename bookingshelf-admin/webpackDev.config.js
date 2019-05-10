@@ -62,37 +62,7 @@ module.exports = {
                 NODE_ENV: JSON.stringify('production'),
                 CONTEXT: JSON.stringify(process.env.CONTEXT)
             }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            mangle: true,
-            sourcemap: false,
-            debug: false,
-            minimize: true,
-            compress: {
-                warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true
-            }
-        }),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new CompressionPlugin({
-            filename: "[path].gz[query]",
-            algorithm: "gzip",
-            test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        }), new webpack.NoErrorsPlugin(),
-        new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
-        new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
-        new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/)
+        })
     ],
     devServer: {
         historyApiFallback: { index: process.env.CONTEXT },
