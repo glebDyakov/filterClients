@@ -95,7 +95,24 @@ class IndexPage extends React.Component {
     }
 
     selectStaff (staff){
-        this.setState({...this.state, selectedStaff:staff,
+        const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+        let staffId=staff;
+
+        console.log('staff', staffId);
+
+
+        if(staff.length===0){
+            staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
+                nearestTime && nearestTime.map((time, id)=>{
+                    if(time.staffId===staff.staffId && time.availableDays.length!==0){
+                        staffId=staff
+                    }
+                }))
+        }
+
+        console.log('staff', staffId);
+
+        this.setState({...this.state, selectedStaff:staffId,
             screen: 2})
     }
 
