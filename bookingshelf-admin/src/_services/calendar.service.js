@@ -5,6 +5,7 @@ export const calendarService = {
     addAppointment,
     editAppointment,
     getAppointments,
+    getAppointmentsCanceled,
     approveAppointment,
     deleteAppointment,
     deleteReservedTime,
@@ -131,6 +132,20 @@ function getAppointments(dateFrom, dateTo) {
     };
 
     return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+}
+
+function getAppointmentsCanceled(dateFrom, dateTo, id) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/staffs/${id}/appointments/canceled?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
 
 function getReservedTime(dateFrom, dateTo) {

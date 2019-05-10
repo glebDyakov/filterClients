@@ -7,6 +7,7 @@ export const calendarActions = {
     addAppointment,
     getAppointments,
     getAppointmentsCount,
+    getAppointmentsCanceled,
     editAppointment,
     editAppointmentTime,
     approveAppointment,
@@ -123,6 +124,19 @@ function getAppointmentsCount(dateFrom, dateTo) {
     };
 
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT, appointments } }
+}
+
+
+function getAppointmentsCanceled(dateFrom, dateTo) {
+
+    return dispatch => {
+        calendarService.getAppointmentsCanceled(dateFrom, dateTo, JSON.parse(localStorage.getItem('user')).profile.staffId)
+            .then(
+                appointments => dispatch(success(appointments)),
+            );
+    };
+
+    function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED, appointments } }
 }
 
 function getReservedTime(dateFrom, dateTo) {
