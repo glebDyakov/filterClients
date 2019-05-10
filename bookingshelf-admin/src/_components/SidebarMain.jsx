@@ -161,6 +161,7 @@ class SidebarMain extends Component {
                             <div className="modal-inner pl-4 pr-4 count-modal">
                                 <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments.count}</span></button>
                                 {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
+
                                 {appointmentsCount && appointmentsCount.map((appointmentInfo) =>
                                     appointmentInfo.appointments.map((appointment) =>
                                         !appointment.approved &&
@@ -180,24 +181,24 @@ class SidebarMain extends Component {
                             <div className="modal-inner pl-4 pr-4 count-modal">
                                 <button type="button" className="float-left button small-button disabled"
                                         onClick={() => this.setState({'newOpened': true})}>Новые
-                                    записи{count && count.appointments.count}</button>
+                                    записи<span className="counter">{count && count.appointments.count}</span></button>
                                 <button type="button" className="float-left button small-button">Удаленные визиты<span
                                     className="counter">{count && count.canceled.count}</span></button>
-                                {appointmentsCanceled &&
-                                appointmentsCanceled.map((appointment) =>
-                                    !appointment.approved &&
-                                    <li className="opacity0">
-                                        <a className="service_item">
-                                            <p>{appointment.serviceName}<br/>
-                                                <span
-                                                    className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
-                                            </p>
-                                            <p><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
-                                            </p>
-                                        </a>
-                                    </li>
-                                )}
+                                    {appointmentsCanceled &&
+                                    appointmentsCanceled.map((appointment) =>
+                                        !appointment.approved &&
+                                        <li className="opacity0">
+                                            <a className="service_item">
+                                                <p>{appointment.serviceName}<br/>
+                                                    <span
+                                                        className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                                </p>
+                                                <p><strong
+                                                    style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    )}
                             </div>
                             }
                         </div>

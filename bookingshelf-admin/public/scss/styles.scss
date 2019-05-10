@@ -215,6 +215,10 @@ input{
         color: red;
     }
 
+    .scroller {
+        overflow: auto;
+    }
+
     .counter {
       color: white!important;
       background-color: red;
@@ -224,6 +228,7 @@ input{
       position: absolute;
       top: -8px;
       right: -7px;
+
     }
 
     .disabled {
@@ -252,27 +257,32 @@ input{
             width: 100%;
             display: block;
             text-decoration: none;
-            height: 20px;
-
         }
 
         p:first-child {
-            max-width: 100%;
+            max-width: 75%;
             padding-right: 0;
             font-weight: normal;
             text-overflow: inherit;
             width: 70%;
-            overflow: hidden;
-            white-space: nowrap;
+            /* overflow: hidden; */
+            /* white-space: nowrap; */
             float: left;
             text-align: left;
             text-align-last: left;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+            @media screen and(max-width: 1050px){
+                max-width: 60%;
+            }
         }
 
         p {
             letter-spacing: 0;
             display: block;
             float: right;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
         }
 
         &:hover {
