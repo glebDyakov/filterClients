@@ -49,14 +49,6 @@ class HeaderMain extends React.Component {
 
         let path="/"+location.pathname.split('/')[1]
 
-        let appointmentsCount = appointmentsCountFromProps;
-        let notApprovedAppointments = [];
-
-        if(appointmentsCountFromProps) {
-            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
-        }
-
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
 

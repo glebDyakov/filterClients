@@ -181,9 +181,9 @@ class SidebarMain extends Component {
                             <div className="modal-inner pl-4 pr-4 count-modal">
                                 <button type="button" className="float-left button small-button disabled"
                                         onClick={() => this.setState({'newOpened': true})}>Новые
-                                    записи<span className="counter">{count && count.appointments.count}</span></button>
+                                    записи<span className="counter">{count && count.appointments && count.appointments.count}</span></button>
                                 <button type="button" className="float-left button small-button">Удаленные визиты<span
-                                    className="counter">{count && count.canceled.count}</span></button>
+                                    className="counter">{count && count.canceled && count.canceled.count}</span></button>
                                     {appointmentsCanceled &&
                                     appointmentsCanceled.map((appointment) =>
                                         !appointment.approved &&
