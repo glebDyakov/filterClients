@@ -222,12 +222,12 @@ class CalendarPage extends Component {
             this.scrollToMyRef()
         }
 
-        $('.tabs-scroll').scroll(function () {
-            $(".left-fixed-tab").scrollTop($(".tabs-scroll").scrollTop());
-            $(".tabs-scroll").scrollTop($(".tabs-scroll").scrollTop());
-            $(".fixed-tab").scrollLeft($(".tabs-scroll").scrollLeft());
-
-        });
+        // $('.tabs-scroll').scroll(function () {
+        //     $(".left-fixed-tab").scrollTop($(".tabs-scroll").scrollTop());
+        //     $(".tabs-scroll").scrollTop($(".tabs-scroll").scrollTop());
+        //     $(".fixed-tab").scrollLeft($(".tabs-scroll").scrollLeft());
+        //
+        // });
 
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'})
 
@@ -247,8 +247,8 @@ class CalendarPage extends Component {
     scrollToMyRef () {
         const listItemHeight =  parseInt($(".left-fixed-tab div:first-child").height())/92*(((parseInt(moment().format('H'))-2))*4);
 
-        $(".tabs-scroll").scrollTop(listItemHeight);
-        $(".left-fixed-tab").scrollTop(listItemHeight);
+        // $(".tabs-scroll").scrollTop(listItemHeight);
+        // $(".left-fixed-tab").scrollTop(listItemHeight);
 
 
         if(listItemHeight!==0) {
@@ -262,8 +262,8 @@ class CalendarPage extends Component {
     scrollTop () {
         const listItemHeight =  parseInt($(".left-fixed-tab div:first-child").height())/64*(((parseInt(moment().format('H')))-7)*4);
 
-        $(".tabs-scroll").scrollTop();
-        $(".left-fixed-tab").scrollTop();
+        // $(".tabs-scroll").scrollTop();
+        // $(".left-fixed-tab").scrollTop();
     }
 
     componentWillReceiveProps(newProps) {
@@ -521,20 +521,20 @@ class CalendarPage extends Component {
                                             </div>
                                         </div>
                                         {/*{workingStaff.availableTimetable &&*/}
-                                        {/*<div className="left-fixed-tab">*/}
-                                        {/*    <div>*/}
-                                        {/*        {numbers && numbers.map((time) =>*/}
-                                        {/*            <div className="tab-content-list ">*/}
-                                        {/*                {moment(time, "x").format('mm') === '00' ?*/}
-                                        {/*                    <div className={"hours" + " "}>*/}
-                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
-                                        {/*                    : <div className="hours minutes">*/}
-                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
-                                        {/*                }*/}
-                                        {/*            </div>*/}
-                                        {/*        )}*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
+                                        <div className="left-fixed-tab">
+                                            <div>
+                                                {numbers && numbers.map((time) =>
+                                                    <div className="tab-content-list ">
+                                                        {moment(time, "x").format('mm') === '00' ?
+                                                            <div className={"hours" + " "}>
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                            : <div className="hours minutes">
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                        }
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                         {/*}*/}
 
                                         <div className="tabs-scroll"
@@ -544,12 +544,7 @@ class CalendarPage extends Component {
                                                 <div className={(
                                                     (time>=moment().subtract(15, "minutes").format("x")
                                                     && time<=moment().format("x")) ? '':'')+"tab-content-list"} key={key}>
-                                                    {moment(time, "x").format('mm') === '00' ?
-                                                        <div className={"hours" + " "}>
-                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                        : <div className="hours minutes">
-                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                    }
+                                                    <div className="expired"><span/></div>
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                                                         let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
                                                         let appointment = calendar && calendar.appointments &&
