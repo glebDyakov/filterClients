@@ -644,8 +644,11 @@ class IndexPage extends React.Component {
                 numbers.push(moment(moment().utc().startOf('day').utc().format('x'), "x").add(i, 'minutes').format('x'))
             }
 
-
-            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment.utc().startOf('month').format('x'), moment().endOf('month').format('x'), service.serviceId));
+            let serviceIdList = '';
+            selectedServices.forEach((service, i) => {
+                serviceIdList = i === 0 ? `${service.serviceId}` : `${serviceIdList},${service.serviceId}`
+            });
+            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment.utc().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
         }
         this.setState({...this.state, selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
             month:moment.utc().startOf('month').toDate()})
