@@ -120,9 +120,9 @@ class SidebarMain extends Component {
                                 alt=""/>
                             <span>{item.name}</span>
                             {keyStore===0 &&
-                            ((count && count.appointments.count>0) ||
-                            (count && count.canceled.count>0))
-                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{count.appointments.count+count.canceled.count}</span>}
+                            ((count && count.appointments && count.appointments.count>0) ||
+                            (count && count.canceled && count.canceled.count>0))
+                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count.appointments.count)+parseInt(count.canceled.count)}</span>}
                         </a>
                     </li>
                     )
@@ -159,7 +159,7 @@ class SidebarMain extends Component {
 
                             {newOpened &&
                             <div className="modal-inner pl-4 pr-4 count-modal">
-                                <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments.count}</span></button>
+                                <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments && count.appointments.count}</span></button>
                                 {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
 
                                 {appointmentsCount && appointmentsCount.map((appointmentInfo) =>
