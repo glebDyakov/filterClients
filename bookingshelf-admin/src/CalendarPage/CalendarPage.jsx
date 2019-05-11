@@ -521,20 +521,20 @@ class CalendarPage extends Component {
                                             </div>
                                         </div>
                                         {/*{workingStaff.availableTimetable &&*/}
-                                        <div className="left-fixed-tab">
-                                            <div>
-                                                {numbers && numbers.map((time) =>
-                                                    <div className="tab-content-list ">
-                                                        {moment(time, "x").format('mm') === '00' ?
-                                                            <div className={"hours" + " "}>
-                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                            : <div className="hours minutes">
-                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                        }
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
+                                        {/*<div className="left-fixed-tab">*/}
+                                        {/*    <div>*/}
+                                        {/*        {numbers && numbers.map((time) =>*/}
+                                        {/*            <div className="tab-content-list ">*/}
+                                        {/*                {moment(time, "x").format('mm') === '00' ?*/}
+                                        {/*                    <div className={"hours" + " "}>*/}
+                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
+                                        {/*                    : <div className="hours minutes">*/}
+                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
+                                        {/*                }*/}
+                                        {/*            </div>*/}
+                                        {/*        )}*/}
+                                        {/*    </div>*/}
+                                        {/*</div>*/}
                                         {/*}*/}
 
                                         <div className="tabs-scroll"
@@ -544,7 +544,12 @@ class CalendarPage extends Component {
                                                 <div className={(
                                                     (time>=moment().subtract(15, "minutes").format("x")
                                                     && time<=moment().format("x")) ? '':'')+"tab-content-list"} key={key}>
-                                                    <div className="expired"><span/></div>
+                                                    {moment(time, "x").format('mm') === '00' ?
+                                                        <div className={"hours" + " "}>
+                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                        : <div className="hours minutes">
+                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                    }
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                                                         let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
                                                         let appointment = calendar && calendar.appointments &&

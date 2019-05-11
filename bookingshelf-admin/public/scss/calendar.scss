@@ -642,7 +642,7 @@
 
         .tabs-scroll {
             height: 76vh;
-            position: absolute;
+            position: sticky;
             top: 42px;
             min-width: 100%;
             z-index: 0;
