@@ -45,15 +45,9 @@ class HeaderMain extends React.Component {
         const {location, appointmentsCount: appointmentsCountFromProps }=this.props;
         const {authentication, company}=this.state;
 
+        const { count } = company;
+
         let path="/"+location.pathname.split('/')[1]
-
-        let appointmentsCount = appointmentsCountFromProps;
-        let notApprovedAppointments = [];
-
-        if(appointmentsCountFromProps) {
-            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
-        }
 
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
@@ -63,9 +57,11 @@ class HeaderMain extends React.Component {
                         <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
                     </div>
                 </div>
-                {notApprovedAppointments && !!notApprovedAppointments.length && <div className="header-notification">
-                    <span className="menu-notification" data-toggle="modal" data-target=".modal_counts">{notApprovedAppointments.length}</span>
-                </div>}
+
+                {((count && count.appointments && count.appointments.count>0) ||
+                (count && count.canceled && count.canceled.count>0))
+                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count.appointments.count)+parseInt(count.canceled.count)}</span></div>}
+
                 <div className="col">
                     <p className="red-title-block mob-setting ">
                         {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
