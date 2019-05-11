@@ -20,9 +20,6 @@ import {access} from "../_helpers/access";
 import {CalendarModals} from "../_components/modals/CalendarModals";
 import {userActions} from "../_actions/user.actions";
 
-// putting this var in this.state cases a lot of lags
-// TODO: include in react component
-var prevScrollTopValue = 0;
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -128,7 +125,6 @@ class CalendarPage extends Component {
             staffFromUrl: staffFromUrl,
             pressedDragAndDrop: true,
             scroll: true,
-            scrollLeft: 0,
             reservedTime: null,
             reservedStuffId: null,
             userSettings: false,
@@ -162,7 +158,6 @@ class CalendarPage extends Component {
         this.onClose = this.onClose.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
         this.onOpen = this.onOpen.bind(this);
-        this.handleScroll = this.handleScroll.bind(this);
     }
 
     componentDidMount() {
@@ -202,14 +197,6 @@ class CalendarPage extends Component {
         this.scrollToMyRef();
     }
 
-
-    handleScroll(e) {
-        const { scrollLeft, scrollTop } = e.target;
-        if (!scrollTop && !prevScrollTopValue) {
-            $('.fixed-hours').css('left', `${scrollLeft}px`);
-        }
-        prevScrollTopValue = scrollTop;
-    }
     updateCalendar(){
         const {dispatch}=this.props;
         const {selectedDayMoment, selectedDays, type}=this.state;
@@ -327,7 +314,7 @@ class CalendarPage extends Component {
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings, scrollLeft
+            reserveId, reserveStId, selectedDayMoment, userSettings
         } = this.state;
 
         let datePickerProps;
@@ -484,8 +471,7 @@ class CalendarPage extends Component {
                             </div>
                             <div className="days-container">
                                 <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                                    <div className="calendar-list"
-                                         onScroll={this.handleScroll}>
+                                    <div className="calendar-list">
                                         {selectedDays.length === 1 && (
                                             <div
                                                 className="fixed-tab"
@@ -535,20 +521,20 @@ class CalendarPage extends Component {
                                             </div>
                                         </div>
                                         {/*{workingStaff.availableTimetable &&*/}
-                                        {/*<div className="left-fixed-tab">*/}
-                                        {/*    <div>*/}
-                                        {/*        {numbers && numbers.map((time) =>*/}
-                                        {/*            <div className="tab-content-list ">*/}
-                                        {/*                {moment(time, "x").format('mm') === '00' ?*/}
-                                        {/*                    <div className={"hours" + " "}>*/}
-                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
-                                        {/*                    : <div className="hours minutes">*/}
-                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
-                                        {/*                }*/}
-                                        {/*            </div>*/}
-                                        {/*        )}*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
+                                        <div className="left-fixed-tab">
+                                            <div>
+                                                {numbers && numbers.map((time) =>
+                                                    <div className="tab-content-list ">
+                                                        {moment(time, "x").format('mm') === '00' ?
+                                                            <div className={"hours" + " "}>
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                            : <div className="hours minutes">
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                        }
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                         {/*}*/}
 
                                         <div className="tabs-scroll"
@@ -558,12 +544,7 @@ class CalendarPage extends Component {
                                                 <div className={(
                                                     (time>=moment().subtract(15, "minutes").format("x")
                                                     && time<=moment().format("x")) ? '':'')+"tab-content-list"} key={key}>
-                                                    {moment(time, "x").format('mm') === '00' ?
-                                                        <div className={"hours fixed-hours" + " "} style={{ left: scrollLeft }}>
-                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                        : <div className="hours fixed-hours minutes" style={{ left: scrollLeft }}>
-                                                            <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                    }
+                                                    <div className="expired"><span/></div>
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                                                         let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
                                                         let appointment = calendar && calendar.appointments &&

@@ -508,10 +508,6 @@
                     margin-right: 0;
                 }
 
-                &.fixed-hours {
-                    z-index: 100;
-                    background: white;
-                }
                 &.hours {
                     span {
                         font-size: 12px;
@@ -644,14 +640,12 @@
         }
 
         .tabs-scroll {
-            display: inline-block;
             height: 76vh;
-            position: sticky;
+            position: absolute;
             top: 42px;
             min-width: 100%;
             z-index: 0;
             overflow-y: scroll;
-            overflow-x: hidden;
 
             .tab-content-list {
                 div {
