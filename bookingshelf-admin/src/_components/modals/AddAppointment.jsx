@@ -119,23 +119,30 @@ class AddAppointment extends React.Component {
             description: '',
             customId: '',
         };
-        let isAppointmentMessage = true;
+        let appointmentMessage = 'Невозможно добавить ещё одну услугу';
+        if (serviceCurrent[appointment.length - 1].id === -1) {
+            appointmentMessage = `Добавьте услугу в запись ${appointment.length}`;
+            this.setState({ appointmentMessage });
+            return
+        }
         user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
             if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
                 newAppointment.appointmentTimeMillis = resultTime;
                 appointment.push(newAppointment);
-                serviceCurrent.push({
-                    id: -1,
-                    service: []
-                });
                 services.push({
                     ...services[services.length -1],
                     servicesList: services[services.length -1].servicesList.filter(service => availableTime.endTimeMillis >= (resultTime + service.duration * 1000))
                 });
-                isAppointmentMessage = false;
+                this.setService(
+                    services[services.length - 1].servicesList[0].serviceId,
+                    services[services.length - 1].servicesList[0],
+                    serviceCurrent.length,
+                    appointment
+                )
+                appointmentMessage = '';
             }
         }))
-        this.setState( { appointment, serviceCurrent, isAppointmentMessage, services })
+        this.setState( { appointment, appointmentMessage, services })
     }
 
     removeService(index){
@@ -150,7 +157,7 @@ class AddAppointment extends React.Component {
             serviceCurrent,
             services,
             appointment: updatedAppointments.newAppointments,
-            isAppointmentMessage: updatedAppointments.isAppointmentMessage
+            appointmentMessage: updatedAppointments.appointmentMessage
         });
     }
 
@@ -239,11 +246,12 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const {appointment, staffCurrent, serviceCurrent, staffs, services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment, allClients, clickedTime, appointments}=this.state;
+        const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
+            services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
+            allClients, appointments
+        } = this.state;
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
-
-        console.log('servicesDisabling', servicesDisabling)
 
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
@@ -367,7 +375,7 @@ class AddAppointment extends React.Component {
                                                 }
                                             </div>
                                         })}
-                                        {this.state.isAppointmentMessage && <div>Невозможно добавить ещё одну услугу</div>}
+                                        {appointmentMessage && <div>{appointmentMessage}</div>}
                                          <div className="calendar_modal_buttons">
                                                 <button className="button text-center button-absolute addService"
                                                         onClick={() => this.addNewService()}>Добавить услугу
@@ -596,7 +604,7 @@ class AddAppointment extends React.Component {
     getAppointments(appointment) {
         const { staffs, staffId } = this.state;
         const newAppointments = []
-        let isAppointmentMessage;
+        let appointmentMessage = '';
         appointment.forEach((item, i) => {
             let shouldAdd = false;
             if (i !== 0) {
@@ -611,24 +619,24 @@ class AddAppointment extends React.Component {
                 }))
             }
             if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
-                isAppointmentMessage = true;
+                appointmentMessage = 'Невозможно добавить ещё одну услугу';
                 return;
             }
             newAppointments.push(item);
 
         });
-        return { newAppointments, isAppointmentMessage }
+        return { newAppointments, appointmentMessage }
     }
 
-    setService(serviceId, service, index) {
-        const { serviceCurrent, appointment } = this.state;
+    setService(serviceId, service, index, appointment = this.state.appointment) {
+        const { serviceCurrent } = this.state;
         appointment[index].duration = service.duration;
         serviceCurrent[index] = { id: serviceId, service};
         const updatedAppointments = this.getAppointments(appointment);
         this.setState({
             serviceCurrent,
             appointment: updatedAppointments.newAppointments,
-            isAppointmentMessage: updatedAppointments.isAppointmentMessage
+            appointmentMessage: updatedAppointments.appointmentMessage
         });
     }
 
