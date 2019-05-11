@@ -381,7 +381,7 @@ class CalendarPage extends Component {
                                             aria-haspopup="true"
                                             aria-expanded="false"
                                         >
-                                            {typeSelected && selectedStaff.length!==0 && typeSelected===3 && (
+                                            {typeSelected && !!selectedStaff.length && typeSelected===3 && (
                                                 <span className="img-container">
                                                     <img
                                                         className="rounded-circle"
@@ -393,7 +393,7 @@ class CalendarPage extends Component {
                                                 </span>
                                             )}
                                             {typeSelected && typeSelected===1 && < p> Работающие сотрудники </p>}
-                                            {typeSelected && selectedStaff.length && typeSelected===3 && (
+                                            {typeSelected && !!selectedStaff.length && typeSelected===3 && (
                                                 <p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName}</p>)
                                             }
                                             {typeSelected && typeSelected===2 && < p> Все сотрудники </p>}
