@@ -2,10 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {calendarActions, staffActions, clientActions, servicesActions, companyActions} from '../_actions';
-import {SidebarMain} from "../_components/SidebarMain";
 import {HeaderMain} from "../_components/HeaderMain";
-import {AddAppointment} from "../_components/modals/AddAppointment";
-import {ReservedTime} from "../_components/modals/ReservedTime";
 
 import '../../public/scss/calendar.scss'
 import '../../public/scss/styles.scss'
@@ -14,20 +11,12 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment-duration-format';
 
-import {roundQuarterTime} from "../_helpers";
-import {NewClient, UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
-import {ClientDetails} from "../_components/modals/ClientDetails";
-import {ApproveAppointment} from "../_components/modals/ApproveAppointment";
-import {DeleteAppointment} from "../_components/modals/DeleteAppointment";
-import {DeleteReserve} from "../_components/modals/DeleteReserve";
 import {DatePicker} from "../_components/DatePicker";
 import Pace from "react-pace-progress";
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from "../_helpers/access";
-import * as ReactDOM from "react-dom";
 import {CalendarModals} from "../_components/modals/CalendarModals";
 import {userActions} from "../_actions/user.actions";
 
@@ -118,10 +107,7 @@ class CalendarPage extends Component {
             timetableFrom: 0,
             timetableTo: 0,
             staffAll: props.staff,
-            clients: props.client,
-            calendar: props.calendar,
             workingStaff: [],
-            services: props.services,
             clickedTime: 0,
             minutes:[],
             minutesReservedtime:[],
@@ -230,20 +216,11 @@ class CalendarPage extends Component {
     }
 
     componentDidUpdate(prevProps, newProps) {
-        const {dispatch}=this.props;
-        const {calendar, selectedDays, type, scroll, selectedDayMoment}=this.state;
-        const _state=this
-
-
-        let notes, start;
-        let note;
-        let pressed=false;
-        let app=calendar.appointments
+        const { scroll }=this.state;
 
         if(scroll){
             this.scrollToMyRef()
         }
-
 
         $('.tabs-scroll').scroll(function () {
             $(".left-fixed-tab").scrollTop($(".tabs-scroll").scrollTop());
@@ -265,9 +242,6 @@ class CalendarPage extends Component {
             e.stopPropagation();
             $('.buttons-container').fadeIn(400);
         });
-
-
-
     }
 
     scrollToMyRef () {
@@ -297,15 +271,12 @@ class CalendarPage extends Component {
             this.setState({
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
-                newClientModal: newProps.client.status && newProps.client.status===209 ? false : this.state.newClientModal,
-                clients: newProps.client,
-                services: newProps.services
+                newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal
             });
         }
-        if (JSON.stringify(this.props.calendar) !== JSON.stringify(newProps.calendar)) {
+        if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
             this.setState({
-                appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal,
-                calendar: newProps.calendar,
+                appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal
             });
         }
 
@@ -338,21 +309,23 @@ class CalendarPage extends Component {
 
 
     render() {
-
-        const {approvedId, staffAll, clients, calendar, workingStaff, reserved,
-            services, clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
-            selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient, typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId, reserveId, reserveStId, selectedDayMoment, userSettings} = this.state;
-
-        console.log(selectedDays)
+        const { calendar, services, clients } = this.props;
+        const { approvedId, staffAll, workingStaff, reserved,
+            clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
+            selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
+            typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
+            reserveId, reserveStId, selectedDayMoment, userSettings
+        } = this.state;
 
         let datePickerProps;
+        let selectedDaysText;
 
         if (type === 'day') {
             const clDates = staffAll.closedDates && staffAll.closedDates.some((st) =>
                 parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(selectedDays[0]).startOf('day').format("x")) &&
                 parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(selectedDays[0]).endOf('day').format("x")));
 
-            const selectedDaysText = (
+            selectedDaysText = (
                 <React.Fragment>
                     {moment(selectedDay).format('dd, DD MMMM ')}
                     {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
@@ -367,7 +340,7 @@ class CalendarPage extends Component {
                 selectedDays: selectedDay
             };
         } else {
-            const selectedDaysText = (
+            selectedDaysText = (
                 moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
             );
             datePickerProps = {
@@ -393,82 +366,105 @@ class CalendarPage extends Component {
 
         return (
             <div className="calendar" ref={node => { this.node = node; }}>
-                {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {this.state.isLoading && <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-
                     <div className={"content-wrapper  full-container "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-
+                            <HeaderMain onOpen={this.onOpen} />
                             <div className="row content calendar-container">
                                 <div className="staff_choise col-3">
-                                    {access(2) &&
-                                    <div className="bth dropdown-toggle dropdown rounded-button select-menu" role="menu"
-                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {typeSelected && selectedStaff.length!==0 && typeSelected===3 &&
-                                            <span className="img-container">
-                                            <img className="rounded-circle"
-                                                 src={JSON.parse(selectedStaff).imageBase64 ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                 alt=""/>
-                                        </span>}
-                                        {typeSelected && typeSelected===1 && < p> Работающие сотрудники </p>}
-                                        {typeSelected && selectedStaff.length!==0 && typeSelected===3 && < p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName} </p>}
+                                    {access(2) && (
+                                        <div
+                                            className="bth dropdown-toggle dropdown rounded-button select-menu" role="menu"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                        >
+                                            {typeSelected && selectedStaff.length!==0 && typeSelected===3 && (
+                                                <span className="img-container">
+                                                    <img
+                                                        className="rounded-circle"
+                                                        src={JSON.parse(selectedStaff).imageBase64
+                                                            ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64
+                                                            : `${process.env.CONTEXT}public/img/image.png`}
+                                                        alt=""
+                                                    />
+                                                </span>
+                                            )}
+                                            {typeSelected && typeSelected===1 && < p> Работающие сотрудники </p>}
+                                            {typeSelected && selectedStaff.length && typeSelected===3 && (
+                                                <p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName}</p>)
+                                            }
                                             {typeSelected && typeSelected===2 && < p> Все сотрудники </p>}
 
-                                    </div>
-                                    }
-                                    {!access(2) && selectedStaff && selectedStaff.length!=0 &&
-                                    <div className="bth rounded-button select-menu" >
+                                        </div>
+                                    )}
+                                    {!access(2) && selectedStaff && selectedStaff.length && (
+                                        <div className="bth rounded-button select-menu" >
                                             <span className="img-container">
-                                            <img className="rounded-circle"
-                                                 src={JSON.parse(selectedStaff).imageBase64 ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                 alt=""/>
+                                                <img
+                                                    className="rounded-circle"
+                                                    src={JSON.parse(selectedStaff).imageBase64
+                                                        ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64
+                                                        : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt=""
+                                                />
+                                            </span>
+                                            <p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName}</p>
+                                        </div>
+                                    )}
+                                    {access(2) && (
+                                        <ul className="dropdown-menu">
+                                            <li>
+                                                <a onClick={() => this.setWorkingStaff(staffAll.availableTimetable, 2)}>
+                                                    <p>Все сотрудники</p>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a onClick={() => this.setWorkingStaff(staffAll.availableTimetable, 1)}>
+                                                    <p>Работающие сотрудники</p>
+                                                </a>
+                                            </li>
 
-                                        </span>
-                                        <p> {JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName} </p>
-                                    </div>
-                                    }
-                                    {access(2) &&
-                                    <ul className="dropdown-menu">
-
-                                        <li>
-                                            <a onClick={() => this.setWorkingStaff(staffAll.availableTimetable, 2)}><p>Все сотрудники</p></a>
-                                        </li>
-
-                                        <li>
-                                            < a onClick={() => this.setWorkingStaff(staffAll.availableTimetable, 1)}>
-                                                <p>Работающие сотрудники</p></a>
-                                        </li>
-
-
-                                        {staffAll.availableTimetable && staffAll.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staffEl) =>
+                                            {staffAll.availableTimetable && staffAll.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl => (
                                                 <li>
                                                     <a onClick={() => this.setWorkingStaff([staffEl], 3)}>
-                                        <span className="img-container">
-                                            <img className="rounded-circle"
-                                                 src={staffEl.imageBase64 ? "data:image/png;base64," + staffEl.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                 alt=""/>
-                                        </span>
+                                                        <span className="img-container">
+                                                            <img className="rounded-circle"
+                                                                 src={staffEl.imageBase64
+                                                                     ? "data:image/png;base64," + staffEl.imageBase64
+                                                                     : `${process.env.CONTEXT}public/img/image.png`}
+                                                                 alt=""/>
+                                                        </span>
                                                         <p>{staffEl.firstName + " " + staffEl.lastName}</p>
                                                     </a>
                                                 </li>
-                                        )}
-                                    </ul>
-                                    }
+                                                )
+                                            )}
+                                        </ul>
+                                    )}
                                 </div>
-                                <div className="calendar col-6">
-                                    <DatePicker {...datePickerProps} />
-                                </div>
+
+                                <div className="calendar col-6"><DatePicker {...datePickerProps} /></div>
                                 <div className="tab-day-week tab-content col-3">
                                     <ul className="nav nav-tabs">
                                         <li className="nav-item no-bg">
-                                            <a className={type==='day'&&' active show '+"nav-link"} onClick={()=>this.selectType('day')} data-toggle="tab">День</a>
+                                            <a
+                                                className={type==='day'&&' active show '+"nav-link"}
+                                                onClick={()=>this.selectType('day')}
+                                                data-toggle="tab"
+                                            >
+                                                День
+                                            </a>
                                         </li>
                                         <li className="nav-item no-bg">
-                                            <a className={type==='week'&&' active show '+"nav-link"} onClick={()=>this.selectType('week')}>Неделя</a>
+                                            <a
+                                                className={type==='week'&&' active show '+"nav-link"}
+                                                onClick={()=>this.selectType('week')}
+                                            >
+                                                Неделя
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -476,16 +472,17 @@ class CalendarPage extends Component {
                             <div className="days-container">
                                 <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
                                     <div className="calendar-list">
-                                        {selectedDays.length === 1 && <div className="fixed-tab"  style={{'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'}}>
+                                        {selectedDays.length === 1 && (
+                                            <div
+                                                className="fixed-tab"
+                                                style={{
+                                                    'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'
+                                                }}
+                                            >
                                             <div className="tab-content-list">
                                                 <div className="hours"><span></span></div>
 
                                                 {workingStaff.availableTimetable && workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
-
-                                                        let clDate = staffAll.closedDates && staffAll.closedDates.some((st) =>
-                                                            parseInt(st.startDateMillis) <= parseInt(moment(selectedDays[0]).format("x")) &&
-                                                            parseInt(st.endDateMillis) >= parseInt(moment(selectedDays[0]).format("x")))
-
                                                         return <div>
 
                                                                      <span className="img-container">
@@ -501,7 +498,7 @@ class CalendarPage extends Component {
                                             </div>
                                         </div>
 
-                                        }
+                                        )}
                                         <div className="fixed-tab" style={{'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'}}>
                                             <div className="tab-content-list">
                                                 <div className="hours"><span></span></div>
@@ -549,16 +546,16 @@ class CalendarPage extends Component {
                                                     && time<=moment().format("x")) ? '':'')+"tab-content-list"} key={key}>
                                                     <div className="expired"><span/></div>
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
-                                                            let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
-                                                            let appointment = calendar && calendar.appointments &&
-                                                                calendar.appointments.map((appointmentStaff) =>
-                                                                    appointmentStaff.appointments &&
-                                                                    appointmentStaff.staff.staffId === workingStaffElement.staffId &&
-                                                                        appointmentStaff.appointments.filter((appointment)=>{
-                                                                            return currentTime <= parseInt(appointment.appointmentTimeMillis)
-                                                                                 && parseInt(moment(moment(day).format('DD/MM')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
-                                                                         })
-                                                                );
+                                                        let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
+                                                        let appointment = calendar && calendar.appointments &&
+                                                            calendar.appointments.map((appointmentStaff) =>
+                                                                appointmentStaff.appointments &&
+                                                                appointmentStaff.staff.staffId === workingStaffElement.staffId &&
+                                                                    appointmentStaff.appointments.filter((appointment)=>{
+                                                                        return currentTime <= parseInt(appointment.appointmentTimeMillis)
+                                                                             && parseInt(moment(moment(day).format('DD/MM')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
+                                                                     })
+                                                            );
 
                                                             let reservedTime = calendar && calendar.reservedTime &&
                                                             calendar.reservedTime.map((reserve) =>
@@ -589,118 +586,147 @@ class CalendarPage extends Component {
                                                                         currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))}
 
                                                                 ));
-
-                                                        console.log('clDate');
-                                                        console.log(staffAll.closedDates);
-                                                        console.log(day);
-                                                        console.log(moment(day).startOf('day').format("x"));
-                                                        console.log(moment(day).endOf('day').format("x"));
-                                                        console.log('appointment', appointment && appointment[0] && appointment[0][0]);
-
-                                                            return (appointment && appointment[0] && appointment[0].length > 0 ? <div
-                                                                        className={currentTime<=moment().format("x")
-                                                                        && currentTime>=moment().subtract(15, "minutes").format("x") ? 'present-time ':''}
+                                                        let resultMarkup;
+                                                        if(appointment && appointment[0] && appointment[0].length > 0) {
+                                                            let totalDuration = appointment[0][0].duration;
+                                                            let appointmentServices = [];
+                                                            appointmentServices.push(appointment[0][0].serviceName);
+                                                            if (appointment[0][0].hasCoAppointments) {
+                                                                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                                                                    if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
+                                                                        totalDuration += currentAppointment.duration;
+                                                                        appointmentServices.push(currentAppointment.serviceName)
+                                                                    }
+                                                                }))
+                                                            }
+                                                            resultMarkup = (
+                                                                <div
+                                                                    className={currentTime <= moment().format("x")
+                                                                    && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                                                >
+                                                                    <div
+                                                                        className={"notes " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
+                                                                        style={{display: appointment[0][0].coAppointmentId ? 'none' : 'block'}}
+                                                                        key={appointment[0][0].appointmentId + "_" + key}
+                                                                        id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                                                     >
-                                                                        <div className={"notes "+ appointment[0][0].color.toLowerCase()+"-color "+(parseInt(moment(currentTime).format("H"))>=20 && 'notes-bottom')}
-                                                                             key={appointment[0][0].appointmentId+"_"+key}
-                                                                             id={appointment[0][0].appointmentId+"_"+workingStaffElement.staffId+"_"+appointment[0][0].duration+"_"+appointment[0][0].appointmentTimeMillis+"_"+moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
-                                                                             >
-                                                                            <p className="notes-title">
-                                                                                {!appointment[0][0].online &&
-                                                                                <span className="pen"
-                                                                                      title="Запись через журнал" />}
-                                                                                {/*<span className="men"*/}
-                                                                                      {/*title="Постоянный клиент"/>*/}
-                                                                                {appointment[0][0].online &&
-                                                                                <span className="globus"
-                                                                                      title="Онлайн-запись" />}
-                                                                               <span className="delete"
-                                                                                      data-toggle="modal"
-                                                                                      data-target=".delete-notes-modal"
-                                                                                      title="Отменить встречу"  onClick={() => this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>
+                                                                        <p className="notes-title">
+                                                                            {!appointment[0][0].online &&
+                                                                            <span className="pen"
+                                                                                  title="Запись через журнал"/>}
+                                                                            {/*<span className="men"*/}
+                                                                            {/*title="Постоянный клиент"/>*/}
+                                                                            {appointment[0][0].online &&
+                                                                            <span className="globus"
+                                                                                  title="Онлайн-запись"/>}
 
+                                                                            <span className="delete"
+                                                                                  data-toggle="modal"
+                                                                                  data-target=".delete-notes-modal"
+                                                                                  title="Отменить встречу"
+                                                                                  onClick={() => this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>
+                                                                            {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                                                                            <span
+                                                                                className="service_time">{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                                                {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</span>
+                                                                        </p>
+                                                                        <p className="notes-container"
+                                                                           style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
+                                                                            <textarea>{appointment[0][0].serviceName}</textarea>
 
-                                                                                <span className="service_time">{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('HH:mm')}</span>
-                                                                            </p>
-                                                                            <p className="notes-container" style={{height: ((appointment[0][0].duration/60 / 15)-1) * 20 + "px"}}>
-                                                                                <textarea>{appointment[0][0].serviceName}</textarea>
-
-                                                                            </p>
-                                                                            <div className="msg-client-info">
-                                                                                {   clients && clients.client && clients.client.map((client)=>client.clientId===appointment[0][0].clientId &&
+                                                                        </p>
+                                                                        <div className="msg-client-info">
+                                                                            {clients && clients.client && clients.client.map((client) => (
+                                                                                 client.clientId === appointment[0][0].clientId &&
                                                                                     <div className="msg-inner">
                                                                                         <p className="new-text">Запись</p>
                                                                                         <p className="client-name-book">Клиент</p>
                                                                                         <p className="name">{client.firstName} {client.lastName}</p>
                                                                                         <p>{client.phone}</p>
 
-                                                                                        <p className="client-name-book">Услуга</p>
-                                                                                        <p>{appointment[0][0].serviceName}</p>
+                                                                                        <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
+                                                                                        {appointmentServices.map(service =>
+                                                                                            <p>{service}</p>)}
                                                                                         <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                                            {moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('HH:mm')}</p>
+                                                                                            {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                                                         <p>{workingStaffElement.firstName} {workingStaffElement.lastName}</p>
 
                                                                                         <a
-                                                                                           className="a-client-info"
-                                                                                           data-target=".client-detail"
-                                                                                           title="Просмотреть клиента" onClick={(e)=>{
-                                                                                               $('.client-detail').modal('show')
-                                                                                               this.setState({...this.state, infoClient: client});
+                                                                                            className="a-client-info"
+                                                                                            data-target=".client-detail"
+                                                                                            title="Просмотреть клиента"
+                                                                                            onClick={(e) => {
+                                                                                                $('.client-detail').modal('show')
+                                                                                                this.setState({
+                                                                                                    infoClient: client
+                                                                                                });
 
 
-                                                                                        }}>Просмотреть клиента</a>
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
+                                                                                            }}>Просмотреть клиента</a>
+                                                                                    </div>))
+                                                                            }
                                                                         </div>
                                                                     </div>
-                                                                    :
+                                                                </div>
+                                                            )
+                                                        } else if ( reservedTime && reservedTime[0] && reservedTime[0].length > 0 ) {
+                                                            resultMarkup = (
+                                                                <div className='reserve'>
+                                                                    <div className="notes color-grey"
+                                                                         style={{backgroundColor: "darkgrey"}}>
 
-                                                                    reservedTime && reservedTime[0] && reservedTime[0].length > 0 ?
-                                                                    <div className='reserve'>
-                                                                        <div className="notes color-grey"
-                                                                             style={{backgroundColor:"darkgrey"}}>
-
-                                                                            <p className="notes-title" style={{cursor: 'default'}}>
+                                                                        <p className="notes-title"
+                                                                           style={{cursor: 'default'}}>
                                                                                 <span className=""
-                                                                                      title="Онлайн-запись" />
-                                                                                <span
+                                                                                      title="Онлайн-запись"/>
+                                                                            <span
                                                                                 className="service_time"
-                                                                               >{moment(reservedTime[0][0].startTimeMillis, 'x').format('HH:mm')}
+                                                                            >{moment(reservedTime[0][0].startTimeMillis, 'x').format('HH:mm')}
                                                                                 -
                                                                                 {moment(reservedTime[0][0].endTimeMillis, 'x').format('HH:mm')}</span>
 
-                                                                            </p>
-                                                                            <p className="notes-container" style={{height: (parseInt(((moment.utc(reservedTime[0][0].endTimeMillis - reservedTime[0][0].startTimeMillis, 'x').format('x')/60000/15)-1)*20)) + "px"}}>
-                                                                                <textarea style={{color: '#5d5d5d'}}>{reservedTime[0][0].description}</textarea>
-                                                                                <span className="delete-notes"
-                                                                                      style={{right: '5px'}}
-                                                                                      data-toggle="modal"
-                                                                                      data-target=".delete-reserve-modal"
-                                                                                      title="Удалить"  onClick={() => this.setState({...this.state, reserveId: reservedTime[0][0].reservedTimeId, reserveStId: workingStaffElement.staffId})}
-                                                                                />
-                                                                            </p>
-                                                                        </div>
+                                                                        </p>
+                                                                        <p className="notes-container"
+                                                                           style={{height: (parseInt(((moment.utc(reservedTime[0][0].endTimeMillis - reservedTime[0][0].startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20)) + "px"}}>
+                                                                            <textarea
+                                                                                style={{color: '#5d5d5d'}}>{reservedTime[0][0].description}</textarea>
+                                                                            <span className="delete-notes"
+                                                                                  style={{right: '5px'}}
+                                                                                  data-toggle="modal"
+                                                                                  data-target=".delete-reserve-modal"
+                                                                                  title="Удалить"
+                                                                                  onClick={() => this.setState({
+                                                                                      ...this.state,
+                                                                                      reserveId: reservedTime[0][0].reservedTimeId,
+                                                                                      reserveStId: workingStaffElement.staffId
+                                                                                  })}
+                                                                            />
+                                                                        </p>
                                                                     </div>
-                                                                : <div
-                                                                        id={currentTime<=moment().format("x") && currentTime>=moment().subtract(15, "minutes").format("x") ? 'present-time ':''}
-                                                                        className={`col-tab ${currentTime<=moment().format("x")
-                                                                            && currentTime>=moment().subtract(15, "minutes").format("x") ? 'present-time ':''}
-                                                                            ${currentTime<parseInt(moment().format("x"))?'':""}
-                                                                            ${notExpired?'':"expired"}
-                                                                            ${clDate?'closedDateTick':""}`}
-                                                                        time={currentTime}
-                                                                        timeEnd={workingTimeEnd}
-                                                                        staff={workingStaffElement.staffId}
-                                                                        onClick={()=>notExpired && this.changeTime(currentTime, workingStaffElement, numbers, false, null)}
-                                                                    ><span className="fade-time">{moment(time, 'x').format("HH:mm")}</span></div>
+                                                                </div>
                                                             )
+                                                        } else {
+                                                            resultMarkup = (
+                                                                <div
+                                                                    id={currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                                                    className={`col-tab ${currentTime <= moment().format("x")
+                                                                    && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                                                            ${currentTime < parseInt(moment().format("x")) ? '' : ""}
+                                                                            ${notExpired ? '' : "expired"}
+                                                                            ${clDate ? 'closedDateTick' : ""}`}
+                                                                    time={currentTime}
+                                                                    timeEnd={workingTimeEnd}
+                                                                    staff={workingStaffElement.staffId}
+                                                                    onClick={() => notExpired && this.changeTime(currentTime, workingStaffElement, numbers, false, null)}
+                                                                ><span
+                                                                    className="fade-time">{moment(time, 'x').format("HH:mm")}</span>
+                                                                </div>
+                                                            )
+                                                        }
+                                                        return resultMarkup;
 
-
-                                                        })
-                                                    )
-                                                    }
+                                                    }))
+                                                }
 
                                                 </div>
                                             )}
@@ -774,18 +800,43 @@ class CalendarPage extends Component {
     approveAppointmentSetter(id){
         this.props.dispatch(companyActions.getNewAppointments());
 
-        this.setState({...this.state, approvedId:id})
+        this.setState({ approvedId:id })
     }
 
     deleteAppointment(id){
-        const {dispatch} = this.props;
+        const { dispatch, calendar } = this.props;
 
-        const {selectedDays, type, selectedDayMoment} = this.state;
+        const { selectedDays, type, selectedDayMoment } = this.state;
+        let activeAppointment = {};
+        let countTimeout = 0;
+        calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+            if (currentAppointment.appointmentId === id) {
+                activeAppointment = currentAppointment;
+            }
+        }));
 
         if(type==='day'){
             dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
+
+            if (activeAppointment.hasCoAppointments) {
+                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
+                        countTimeout += 1000;
+                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x'))), countTimeout)
+                    }
+                }))
+            }
+        } else {
             dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+
+            if (activeAppointment.hasCoAppointments) {
+                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
+                        countTimeout += 1000;
+                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.coAppointmentId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x'))), countTimeout)
+                    }
+                }))
+            }
         }
 
         dispatch(companyActions.getNewAppointments());
@@ -968,7 +1019,7 @@ class CalendarPage extends Component {
             this.props.dispatch(calendarActions.getAppointments(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
 
-            this.setState({...this.state, workingStaff: {...workingStaff, availableTimetable:[]}, type: 'day', typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
+            this.setState({ workingStaff: {...workingStaff, availableTimetable:[]}, type: 'day', typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
             typeSelected===1 ? history.pushState(null, '', '/calendar/workingstaff/0/'+moment().format('DD-MM-YYYY'))
             : history.pushState(null, '', '/calendar/allstaff/0/'+moment().format('DD-MM-YYYY'));
 
@@ -989,7 +1040,6 @@ class CalendarPage extends Component {
                     ));
 
                 this.setState({
-                    ...this.state,
                     staffAll: staffAll,
                     workingStaff: {
                         ...workingStaff,
@@ -1003,7 +1053,6 @@ class CalendarPage extends Component {
             } else if (typeSelected === 2) {
 
                 this.setState({
-                    ...this.state,
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
                     typeSelected: typeSelected,
                     type: 'day'
@@ -1018,7 +1067,6 @@ class CalendarPage extends Component {
 
 
                 this.setState({
-                    ...this.state,
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
                     selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
                     typeSelected: typeSelected,
@@ -1102,10 +1150,10 @@ class CalendarPage extends Component {
 }
 
 function mapStateToProps(store) {
-    const {staff, client, timetable, calendar, services, authentication} = store;
+    const {staff, client, calendar, services, authentication} = store;
 
     return {
-        staff, client, timetable, calendar, services, authentication
+        staff, clients: client, calendar, services, authentication
     };
 }
 
