@@ -31,6 +31,7 @@ class CalendarModals extends Component {
         }
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.changeTime = this.changeTime.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
         this.onCloseAppointment = this.onCloseAppointment.bind(this);
         this.onCloseReserved = this.onCloseReserved.bind(this);

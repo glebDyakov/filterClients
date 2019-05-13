@@ -42,7 +42,7 @@ class HeaderMain extends React.Component {
     }
 
     render() {
-        const {location, appointmentsCount: appointmentsCountFromProps }=this.props;
+        const {location }=this.props;
         const {authentication, company}=this.state;
 
         const { count } = company;

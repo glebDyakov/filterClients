@@ -1337,6 +1337,13 @@
         height: 94%;
         margin: 2.5% auto 0;
 
+        .addApointmentEachBlock {
+            .rc-time-picker-clear-icon {
+                display: none;
+                height: 0;
+                width: 0;
+            }
+        }
         .buttons{
             justify-content: space-around;
             position: absolute;
