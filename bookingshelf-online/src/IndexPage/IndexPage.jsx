@@ -81,12 +81,9 @@ class IndexPage extends React.Component {
 
             newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays.length===0 && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
-            const { newAppointments } = this.state
-            newAppointments.push(newProps.staff.newAppointment)
-
             this.setState({
                 staffs: newProps.staff && newProps.staff.staff,
-                newAppointments,
+                newAppointments: newProps.staff.newAppointment,
                 services: newProps.staff && newProps.staff.services,
                 nearestTime:  newProps.staff && newProps.staff.nearestTime,
                 workingStaff: newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays,

@@ -1186,6 +1186,10 @@
                             left: auto !important;
                             top: -289px!important;
                             bottom: auto!important;
+
+                            &.has-co-appointments-bottom {
+                                top: -300px !important;
+                            }
                             .msg-inner::before {
                                 left: 0 !important;
                                 margin: auto !important;
