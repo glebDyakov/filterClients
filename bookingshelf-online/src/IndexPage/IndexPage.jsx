@@ -695,7 +695,7 @@ class IndexPage extends React.Component {
             return date.add(1, 'hour').format('dddd, HH')+":00";
 
         }else {
-            return date.format('dddd, HH')+":"+moment(time, 'm').format('mm')
+            return date.format('MMMM DD, HH')+":"+moment(time, 'm').format('mm')
         }
     }
 
