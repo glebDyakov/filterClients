@@ -490,11 +490,13 @@ class CalendarPage extends Component {
                                                                               src={workingStaffElement.imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                               alt=""/>
                                                                      </span>
-                                                            <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName}</p>
+                                                            <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
                                                         </div>
                                                     }
                                                 )
+
                                                 }
+                                                {!workingStaff.availableTimetable && <div><p>Нет работающих сотрудников</p></div>}
                                             </div>
                                         </div>
 
@@ -765,8 +767,9 @@ class CalendarPage extends Component {
         const {selectedDays, type, selectedDayMoment} = this.state;
 
         if(type==='day'){
-            appointment.appointmentTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
-
+            appointment.forEach((currentAppointment,i) => {
+                appointment[i].appointmentTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
+            })
             dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
         }else {
             dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));

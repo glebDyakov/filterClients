@@ -76,7 +76,7 @@ function add(id, staff, service, params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/${id}/staffs/${staff}/services/${service}/appointments`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestOptions).then(handleResponse);
 }
 
 

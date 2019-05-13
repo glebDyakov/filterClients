@@ -77,9 +77,6 @@ class AddAppointment extends React.Component {
         }
 
 
-
-
-
         if ( (JSON.stringify(this.props) !==  JSON.stringify(newProps)
             && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)) ||
             newProps.randNum !== this.props.randNum
@@ -164,6 +161,7 @@ class AddAppointment extends React.Component {
     getTimeArrange(time, minutes){
         let timeArrange=[];
 
+
         if(time && minutes.length!=0){
 
             let minuteStart=time
@@ -180,7 +178,7 @@ class AddAppointment extends React.Component {
             }
         }
 
-        return moment.duration(timeArrange[1]-timeArrange[0], 'milliseconds').format("m")
+        return moment.duration(timeArrange[1]-parseInt(timeArrange[0]), 'milliseconds').format("m")
     }
 
     getInfo(appointment){
@@ -200,6 +198,7 @@ class AddAppointment extends React.Component {
             id:-1,
             service:[]
         }
+
         this.setState({
             appointment,
             timeArrange:timing,
@@ -252,7 +251,7 @@ class AddAppointment extends React.Component {
         } = this.state;
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
-
+debugger
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
 
@@ -277,7 +276,7 @@ class AddAppointment extends React.Component {
                                                         <p>Начало</p>
                                                         <TimePicker
                                                             value={appointmentItem.appointmentTimeMillis&&moment(appointmentItem.appointmentTimeMillis, 'x') }
-
+                                                            clearIcon={<div/>}
                                                             className={staffCurrent.id && staffCurrent.id===-1 ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
                                                             showSecond={false}
                                                             minuteStep={15}
@@ -333,7 +332,7 @@ class AddAppointment extends React.Component {
                                                     <div className="col-md-8">
                                                         <p>Сотрудник</p>
                                                         <div className="dropdown add-staff mb-3">
-                                                            <a className={edit_appointment || timeArrange!==0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange===0) && "dropdown"}
+                                                            <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
                                                                aria-haspopup="true" aria-expanded="false">
                                                                 {
                                                                     staffCurrent.staffId &&
@@ -344,22 +343,24 @@ class AddAppointment extends React.Component {
                                                                     </div>
                                                                 }
                                                             </a>
-                                                            {(!edit_appointment && timeArrange === 0) &&
+                                                            {(!edit_appointment && timeArrange !== 0) &&
                                                             <ul className="dropdown-menu" role="menu">
                                                                 {
-                                                                    staffs.availableTimetable && staffs.availableTimetable.map((staff, key) =>
-                                                                        <li onClick={() => this.setStaff(staff, staff.firstName, staff.lastName)}
-                                                                            key={key}>
-                                                                            <a>
-                                                                                <div className="img-container">
-                                                                                    <img className="rounded-circle"
-                                                                                         src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                                         alt=""/>
-                                                                                    <span>{staff.firstName + " " + staff.lastName}</span>
-                                                                                </div>
-                                                                            </a>
-                                                                        </li>
-                                                                    )
+                                                                        staffs.availableTimetable && staffs.availableTimetable
+                                                                            .filter(staff => staff.availableDays.some(day => day.availableTimes.length))
+                                                                            .map((staff, key) =>
+                                                                                <li onClick={() => this.setStaff(staff, staff.firstName, staff.lastName, index)}
+                                                                                    key={key}>
+                                                                                    <a>
+                                                                                        <div className="img-container">
+                                                                                            <img className="rounded-circle"
+                                                                                                 src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                                                 alt=""/>
+                                                                                            <span>{staff.firstName + " " + staff.lastName}</span>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </li>
+                                                                            )
                                                                 }
 
                                                             </ul>
@@ -596,10 +597,12 @@ class AddAppointment extends React.Component {
     }
 
     setStaff(staffId, firstName, lastName) {
-        const { staffCurrent } = this.state;
-        this.setState({...this.state, minutes: this.getHours(staffId)});
-
-        this.setState({...this.state, staffCurrent: {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName }});
+        const { staffCurrent, serviceCurrent } = this.state;
+        const newServiceCurrent = serviceCurrent.map(() => ({
+            id:-1,
+            service:[]
+        }))
+        this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName }});
     }
     getAppointments(appointment) {
         const { staffs, staffId } = this.state;

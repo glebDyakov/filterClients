@@ -139,14 +139,15 @@ class IndexPage extends React.Component {
 
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
-        selectedServices.forEach((selectedService, i) => {
-            setTimeout(() =>{
-                dispatch(staffActions.add(company, selectedStaff.staffId, selectedService.serviceId,
-                JSON.stringify({...group, duration: selectedService.duration,
-                    appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')})))
-            resultTime += selectedService.duration * 1000
-            }, 1000 * i);
+        const data = selectedServices.map((selectedService) => {
+           const item = {...group, duration: selectedService.duration, serviceId: selectedService.serviceId,
+                    appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')}
+            resultTime += selectedService.duration * 1000;
+            return item;
         });
+
+        dispatch(staffActions.add(company, selectedStaff.staffId, '',
+            JSON.stringify(data)))
 
         this.setState({...this.state,
             screen: 6})
