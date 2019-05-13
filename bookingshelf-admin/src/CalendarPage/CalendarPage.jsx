@@ -543,9 +543,7 @@ class CalendarPage extends Component {
                                              // style={{'minWidth': (120*parseInt(workingStaff.availableTimetable && workingStaff.availableTimetable.length))+'px'}}
                                         >
                                             {numbers && numbers.map((time, key) =>
-                                                <div className={(
-                                                    (time>=moment().subtract(15, "minutes").format("x")
-                                                    && time<=moment().format("x")) ? '':'')+"tab-content-list"} key={key}>
+                                                <div className="tab-content-list" key={key}>
                                                     <div className="expired"><span/></div>
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                                                         let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
@@ -559,18 +557,18 @@ class CalendarPage extends Component {
                                                                      })
                                                             );
 
-                                                            let reservedTime = calendar && calendar.reservedTime &&
-                                                            calendar.reservedTime.map((reserve) =>
-                                                                reserve.reservedTimes &&
-                                                                reserve.staff.staffId === workingStaffElement.staffId &&
-                                                                reserve.reservedTimes.filter((reservedTime)=>{
-                                                                    return currentTime <= parseInt(reservedTime.startTimeMillis)
-                                                                        && parseInt(moment(moment(day).format('DD/MM')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) > parseInt(reservedTime.startTimeMillis)
-                                                                })
-                                                            );
+                                                        let reservedTime = calendar && calendar.reservedTime &&
+                                                        calendar.reservedTime.map((reserve) =>
+                                                            reserve.reservedTimes &&
+                                                            reserve.staff.staffId === workingStaffElement.staffId &&
+                                                            reserve.reservedTimes.filter((reservedTime)=>{
+                                                                return currentTime <= parseInt(reservedTime.startTimeMillis)
+                                                                    && parseInt(moment(moment(day).format('DD/MM')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) > parseInt(reservedTime.startTimeMillis)
+                                                            })
+                                                        );
 
-                                                            appointment = appointment && appointment.filter(Boolean)
-                                                            reservedTime = reservedTime && reservedTime.filter(Boolean)
+                                                        appointment = appointment && appointment.filter(Boolean)
+                                                        reservedTime = reservedTime && reservedTime.filter(Boolean)
 
                                                         let clDate = staffAll.closedDates && staffAll.closedDates.some((st) =>
                                                             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
@@ -606,69 +604,75 @@ class CalendarPage extends Component {
                                                                     className={currentTime <= moment().format("x")
                                                                     && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                                                 >
-                                                                    <div
-                                                                        className={"notes " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
-                                                                        style={{display: appointment[0][0].coAppointmentId ? 'none' : 'block'}}
-                                                                        key={appointment[0][0].appointmentId + "_" + key}
-                                                                        id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
-                                                                    >
-                                                                        <p className="notes-title">
-                                                                            {!appointment[0][0].online &&
-                                                                            <span className="pen"
-                                                                                  title="Запись через журнал"/>}
-                                                                            {/*<span className="men"*/}
-                                                                            {/*title="Постоянный клиент"/>*/}
-                                                                            {appointment[0][0].online &&
-                                                                            <span className="globus"
-                                                                                  title="Онлайн-запись"/>}
+                                                                    {!appointment[0][0].coAppointmentId && (
+                                                                        <div
+                                                                            className={"notes " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
+                                                                            key={appointment[0][0].appointmentId + "_" + key}
+                                                                            id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
+                                                                        >
+                                                                            <p className="notes-title">
+                                                                                {!appointment[0][0].online &&
+                                                                                <span className="pen"
+                                                                                      title="Запись через журнал"/>}
+                                                                                {/*<span className="men"*/}
+                                                                                {/*title="Постоянный клиент"/>*/}
+                                                                                {appointment[0][0].online &&
+                                                                                <span className="globus"
+                                                                                      title="Онлайн-запись"/>}
 
-                                                                            <span className="delete"
-                                                                                  data-toggle="modal"
-                                                                                  data-target=".delete-notes-modal"
-                                                                                  title="Отменить встречу"
-                                                                                  onClick={() => this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>
-                                                                            {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
-                                                                            <span
-                                                                                className="service_time">{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                                {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</span>
-                                                                        </p>
-                                                                        <p className="notes-container"
-                                                                           style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
-                                                                            <textarea>{appointment[0][0].serviceName}</textarea>
+                                                                                <span className="delete"
+                                                                                      data-toggle="modal"
+                                                                                      data-target=".delete-notes-modal"
+                                                                                      title="Отменить встречу"
+                                                                                      onClick={() => this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>
+                                                                                {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                                                                                <span
+                                                                                    className="service_time">{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</span>
+                                                                            </p>
+                                                                            <p className="notes-container"
+                                                                               style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
+                                                                                <textarea>{appointment[0][0].serviceName}</textarea>
 
-                                                                        </p>
-                                                                        <div className="msg-client-info">
-                                                                            {clients && clients.client && clients.client.map((client) => (
-                                                                                 client.clientId === appointment[0][0].clientId &&
-                                                                                    <div className="msg-inner">
-                                                                                        <p className="new-text">Запись</p>
-                                                                                        <p className="client-name-book">Клиент</p>
-                                                                                        <p className="name">{client.firstName} {client.lastName}</p>
-                                                                                        <p>{client.phone}</p>
+                                                                            </p>
+                                                                            <div className="msg-client-info"
+                                                                                 ref={(node) => {
+                                                                                     if (node && appointment[0][0].hasCoAppointments && (parseInt(moment(currentTime).format("H")) >= 20)) {
+                                                                                         node.style.setProperty("top", '-325px', "important");
+                                                                                     }
+                                                                                 }}>
+                                                                                {clients && clients.client && clients.client.map((client) => (
+                                                                                     client.clientId === appointment[0][0].clientId &&
+                                                                                        <div className="msg-inner">
+                                                                                            <p className="new-text">Запись</p>
+                                                                                            <p className="client-name-book">Клиент</p>
+                                                                                            <p className="name">{client.firstName} {client.lastName}</p>
+                                                                                            <p>{client.phone}</p>
 
-                                                                                        <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
-                                                                                        {appointmentServices.map(service =>
-                                                                                            <p>{service}</p>)}
-                                                                                        <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                                            {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                                                        <p>{workingStaffElement.firstName} {workingStaffElement.lastName}</p>
+                                                                                            <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
+                                                                                            {appointmentServices.map(service =>
+                                                                                                <p>{service}</p>)}
+                                                                                            <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                                                                {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                                                                                            <p>{workingStaffElement.firstName} {workingStaffElement.lastName}</p>
 
-                                                                                        <a
-                                                                                            className="a-client-info"
-                                                                                            data-target=".client-detail"
-                                                                                            title="Просмотреть клиента"
-                                                                                            onClick={(e) => {
-                                                                                                $('.client-detail').modal('show')
-                                                                                                this.setState({
-                                                                                                    infoClient: client
-                                                                                                });
+                                                                                            <a
+                                                                                                className="a-client-info"
+                                                                                                data-target=".client-detail"
+                                                                                                title="Просмотреть клиента"
+                                                                                                onClick={(e) => {
+                                                                                                    $('.client-detail').modal('show')
+                                                                                                    this.setState({
+                                                                                                        infoClient: client
+                                                                                                    });
 
 
-                                                                                            }}>Просмотреть клиента</a>
-                                                                                    </div>))
-                                                                            }
+                                                                                                }}>Просмотреть клиента</a>
+                                                                                        </div>))
+                                                                                }
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    )}
                                                                 </div>
                                                             )
                                                         } else if ( reservedTime && reservedTime[0] && reservedTime[0].length > 0 ) {

@@ -251,7 +251,7 @@ class AddAppointment extends React.Component {
         } = this.state;
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
-debugger
+
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
 

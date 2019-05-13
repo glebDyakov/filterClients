@@ -1073,7 +1073,6 @@ q:before, q:after { content:''; }
         font-size: 18px;
         width: 35%;
         word-break: break-word;
-        overflow: hidden;
     }
 
     .title_block .prev_block, .title_block .next_block,
