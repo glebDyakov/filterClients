@@ -1,6 +1,10 @@
 import {staffConstants} from '../_constants';
 
-export function staff(state= {}, action) {
+const initialState = {
+    error: ''
+}
+
+export function staff(state= initialState, action) {
     switch (action.type) {
 
         case staffConstants.GET_SUCCESS:
@@ -28,10 +32,23 @@ export function staff(state= {}, action) {
                 ...state,
                 timetableAvailable: action.timetableAvailable
             };
+        case staffConstants.ADD_APPOINTMENT:
+            return {
+                ...state,
+                isLoading: true
+            }
         case staffConstants.ADD_APPOINTMENT_SUCCESS:
             return {
                 ...state,
-                newAppointment: action.appointment
+                newAppointment: action.appointment,
+                error: '',
+                isLoading: false
+            };
+        case staffConstants.ADD_APPOINTMENT_FAILURE:
+            return {
+                ...state,
+                error: 'Извините, это время недоступно для записи',
+                isLoading: false
             };
         case staffConstants.DELETE_APPOINTMENT_SUCCESS:
             return {

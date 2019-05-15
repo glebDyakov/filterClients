@@ -1396,3 +1396,19 @@ q:before, q:after { content:''; }
         margin: 40px auto;
     }
 }
+.loader{
+    width: 100%;
+    display: flex;
+    align-items:center;
+}
+.loader img{
+    width: 100px;
+    margin: 0 auto;
+}
+.service_name{
+    width: 60%;
+}
+.service_time{
+    width: 40%;
+}
+

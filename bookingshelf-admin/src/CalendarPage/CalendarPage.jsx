@@ -606,7 +606,7 @@ class CalendarPage extends Component {
                                                                 >
                                                                     {!appointment[0][0].coAppointmentId && (
                                                                         <div
-                                                                            className={"notes " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
+                                                                            className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
                                                                             key={appointment[0][0].appointmentId + "_" + key}
                                                                             id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                                                         >
