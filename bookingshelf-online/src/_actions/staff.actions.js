@@ -63,11 +63,21 @@ function add(id, staff, service, params) {
     return dispatch => {
         staffService.add(id, staff, service, params)
             .then(
-                appointment => dispatch(success(appointment)),
+                appointment => {
+                    if(appointment.length) {
+                        dispatch(success(appointment))
+                    } else {
+                        dispatch(failure());
+                    }
+                },
+                () => {
+                    dispatch(failure());
+                }
             );
     };
 
     function success(appointment) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, appointment } }
+    function failure() { return { type: staffConstants.ADD_APPOINTMENT_FAILURE } }
 }
 
 function _delete(id) {

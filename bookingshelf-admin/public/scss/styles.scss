@@ -2214,6 +2214,9 @@ select{
     p{
         padding-bottom: 8px;
     }
+    .button-field{
+        display: flex;
+    }
 }
 .modal-open{
     padding-right: 0 !important;

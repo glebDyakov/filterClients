@@ -159,17 +159,19 @@ class SidebarMain extends Component {
 
                             {newOpened &&
                             <div className="modal-inner pl-4 pr-4 count-modal">
-                                <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments && count.appointments.count}</span></button>
-                                {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
-
+                                <div className="button-field">
+                                    <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments && count.appointments.count}</span></button>
+                                    {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
+                                </div>
                                 {appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+
                                     appointmentInfo.appointments.map((appointment) =>
                                         !appointment.approved &&
                                         <li>
                                             <a className="service_item"
-                                               onClick={() => this.goToPageCalendar("/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                                <p>{appointment.serviceName}</p>
-                                                <p><strong
+                                               onClick={() => this.goToPageCalendar(appointment.appointmentId,"/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                                                <p className="service_name" style={{width:"70%"}}>{appointment.serviceName}</p>
+                                                <p className="service_time" style={{width:"30%", textAlign:"left"}}><strong
                                                     style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
                                                 </p>
                                             </a>
@@ -227,6 +229,9 @@ class SidebarMain extends Component {
         this.props.history.push(url);
 
         this.approveAppointment(id)
+        //  document.getElementsByClassName("id")[0].classList.add(" custom-blick-div ");
+
+        // setTimeout(()=> document.getElementsByClassName("id")[0].classList.remove(" custom-blick-div "), 5000);
 
     }
     openAppointments(event){
