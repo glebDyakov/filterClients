@@ -314,10 +314,9 @@ class MainIndexPage extends Component {
                                         <p>Email</p>
                                         <div className="name_company_wrapper form-control">
                                             <div className="input-text2">
-                                                <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail" className="company_input"
+                                                <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail" disabled className="company_input disabledField"
                                                        value={company.settings.companyEmail} onChange={this.handleChange} maxLength="60"/>
                                             </div>
-                                            <span className="company_counter">{company.settings.companyEmail.length}/60</span>
                                         </div>
                                         <p className="phone_hint_wrapper">
                                             <span>Номер телефона </span>

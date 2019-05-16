@@ -105,6 +105,27 @@ export function calendar(state = {}, action) {
                 status: 200,
                 appointments: appointmentsApproved
             };
+        case calendarConstants.APPROVE_APPOINTMENT_SUCCESS:
+
+            // let appointmentsApproved = state.appointments;
+            // appointmentsApproved.map((app, key1) =>
+            //     app['appointments'].map((appointments, key2) => {
+            //         if (appointments.appointmentId === action.id) {
+            //             appointmentsApproved[key1]['appointments'][key2].approved = true
+            //         }
+            //     })
+            // );
+            //
+            // return {
+            //     ...state,
+            //     status: 200,
+            //     appointments: appointmentsApproved
+            // };
+
+            return {
+                ...state
+            }
+
         case calendarConstants.SET_SCROLLABLE_APPOINTMENT:
             return {
                 ...state,

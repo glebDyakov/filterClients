@@ -161,7 +161,7 @@ class SidebarMain extends Component {
                             <div className="modal-inner pl-4 pr-4 count-modal">
                                 <div className="button-field">
                                     <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments && count.appointments.count}</span></button>
-                                    {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные визиты<span  className="counter">{count && count.canceled.count}</span></button>}
+                                    {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>}
                                 </div>
                                 {appointmentsCount && appointmentsCount.map((appointmentInfo) =>
 
@@ -177,30 +177,37 @@ class SidebarMain extends Component {
                                             </a>
                                         </li>
                                     ))}
+                                {/*{appointmentsCount && (*/}
+
+                                {/*    <div className="button-field">*/}
+                                {/*        <button className="button approveAll" onClick={()=>this.approveAllAppointment()}>Отметить всё как просмотрено</button>*/}
+                                {/*    </div>)}*/}
                             </div>
                             }
                             {!newOpened &&
                             <div className="modal-inner pl-4 pr-4 count-modal">
-                                <button type="button" className="float-left button small-button disabled"
-                                        onClick={() => this.setState({'newOpened': true})}>Новые
-                                    записи<span className="counter">{count && count.appointments && count.appointments.count}</span></button>
-                                <button type="button" className="float-left button small-button">Удаленные визиты<span
-                                    className="counter">{count && count.canceled && count.canceled.count}</span></button>
-                                    {appointmentsCanceled &&
-                                    appointmentsCanceled.map((appointment) =>
-                                        !appointment.approved &&
-                                        <li className="opacity0">
-                                            <a className="service_item">
-                                                <p>{appointment.serviceName}<br/>
-                                                    <span
-                                                        className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
-                                                </p>
-                                                <p><strong
-                                                    style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
-                                                </p>
-                                            </a>
-                                        </li>
-                                    )}
+                                <div className="button-field">
+                                    <button type="button" className="float-left button small-button disabled"
+                                            onClick={() => this.setState({'newOpened': true})}>Новые
+                                        записи<span className="counter">{count && count.appointments && count.appointments.count}</span></button>
+                                    <button type="button" className="float-left button small-button">Удаленные записи<span
+                                        className="counter">{count && count.canceled && count.canceled.count}</span></button>
+                                </div>
+                                {appointmentsCanceled &&
+                                appointmentsCanceled.map((appointment) =>
+                                    !appointment.approved &&
+                                    <li className="opacity0">
+                                        <a className="service_item">
+                                            <p>{appointment.serviceName}<br/>
+                                                <span
+                                                    className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                            </p>
+                                            <p><strong
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
+                                            </p>
+                                        </a>
+                                    </li>
+                                )}
                             </div>
                             }
                         </div>
@@ -221,6 +228,9 @@ class SidebarMain extends Component {
         const {dispatch} = this.props;
 
         dispatch(calendarActions.approveAppointment(id));
+    }
+    approveAllAppointment(){
+        dispatch(calendarActions.approveAllAppointment());
     }
 
     goToPageCalendar(id, url){

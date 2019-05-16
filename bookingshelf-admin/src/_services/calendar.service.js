@@ -7,6 +7,7 @@ export const calendarService = {
     getAppointments,
     getAppointmentsCanceled,
     approveAppointment,
+    approveAllAppointment,
     deleteAppointment,
     deleteReservedTime,
     getReservedTime,
@@ -90,6 +91,22 @@ function approveAppointment(appointmentId) {
         .then(appointment => {
             return appointment;
         });
+}
+function approveAllAppointment() {
+    const body = JSON.stringify({ approved: true });
+    const requestOptions = {
+        method: 'PATCH',
+        body,
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/appointments/`, requestOptions)
+        .then(handleResponse)
 }
 
 function deleteAppointment(appointmentId) {
