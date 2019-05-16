@@ -105,6 +105,11 @@ export function calendar(state = {}, action) {
                 status: 200,
                 appointments: appointmentsApproved
             };
+        case calendarConstants.SET_SCROLLABLE_APPOINTMENT:
+            return {
+                ...state,
+                scrollableAppointmentId: action.id
+            }
         case calendarConstants.DELETE_APPOINTMENT_SUCCESS:
             const appointmentsDeleted = state.appointments;
 

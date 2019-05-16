@@ -660,48 +660,21 @@
                         border-radius: 0px;
                         margin-right: 0px;
                     }
-                    &:last-of-type{/*изменения*/
-                        .notes{
-                            &:hover{
-                                .msg-client-info{
-                                    display: block;
-                                    position: absolute;
-                                    right: 100%;
-                                    left: auto;
-                                    top: -10px;
-                                    cursor: initial;
-                                    background: none;
-                                    width: auto;
-                                    max-width: none !important;
-                                    padding: 10px !important;
-                                    .msg-inner::before {
-                                        left: auto;
-                                        transform: rotate(225deg);
-                                        right: -7px;
-
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                    &:nth-child(2){ /*изменения*/
-                        .notes{
-                            &:hover{
-                                .msg-client-info{
-                                    right: auto;
-                                    left: auto;
-                                    bottom: auto;
-                                    top: auto;
-                                    .msg-inner::before {
-                                        left: 0;
-                                        margin: auto;
-                                        transform: rotate(135deg);
-                                        right: 0;
-                                        top: -7px;
-                                        z-index: 0;
-                                        background-color: #2a5184;
-                                    }
+                    .notes{
+                        &:hover{
+                            .msg-client-info{
+                                right: auto;
+                                left: auto;
+                                bottom: auto;
+                                top: auto;
+                                .msg-inner::before {
+                                    left: 0;
+                                    margin: auto;
+                                    transform: rotate(135deg);
+                                    right: 0;
+                                    top: -7px;
+                                    z-index: 0;
+                                    background-color: #2a5184;
                                 }
                             }
                         }
