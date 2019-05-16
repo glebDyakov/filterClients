@@ -198,12 +198,14 @@ class NewStaff extends React.Component {
 
                                                             />
                                                             <p>Email</p>
-                                                            <input type="email" placeholder="" name="email"
-                                                                   value={staff.email}  onChange={this.handleChange}
-                                                                   onKeyUp={() => this.setState({
-                                                                       emailIsValid: this.isValidEmailAddress(staff.email)
-                                                                   })}
-                                                                   className={'' + ((!this.isValidEmailAddress(staff.email) && staff.email!=='') || (!staff.email && (staff.phone || staff.firstName || staff.lastName)) ? ' redBorder' : '')}
+                                                            <input
+                                                                type="email"
+                                                                placeholder=""
+                                                                name="email"
+                                                                value={staff.email}
+                                                                onChange={this.handleChange}
+                                                                className="disabledField"
+                                                                disabled
                                                             />
                                                             <div className="check-box">
                                                                 <label>

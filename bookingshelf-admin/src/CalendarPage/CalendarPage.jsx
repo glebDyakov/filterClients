@@ -130,7 +130,10 @@ class CalendarPage extends Component {
             userSettings: false,
             reserved: false,
             appointmentModal: false,
-            newClientModal: false
+            newClientModal: false,
+            scrollableAppointmentAction: true,
+            appointmentMarkerAction: false,
+            appointmentMarkerActionCalled: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -158,6 +161,7 @@ class CalendarPage extends Component {
         this.onClose = this.onClose.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.animateActiveAppointment = this.animateActiveAppointment.bind(this);
     }
 
     componentDidMount() {
@@ -216,7 +220,8 @@ class CalendarPage extends Component {
     }
 
     componentDidUpdate(prevProps, newProps) {
-        const { scroll }=this.state;
+        const { calendar } = this.props;
+        const { scroll, appointmentMarkerAction, appointmentMarkerActionCalled }=this.state;
 
         if(scroll){
             this.scrollToMyRef()
@@ -242,16 +247,9 @@ class CalendarPage extends Component {
             e.stopPropagation();
             $('.buttons-container').fadeIn(400);
         });
-        if (this.props.calendar && this.props.calendar.scrollableAppointmentId) {
-            setTimeout(() => {
-                const classId = this.props.calendar.scrollableAppointmentId;
-                const className = `.${classId}`
-                $(className).addClass("custom-blick-div")
-                setTimeout(() => document.getElementsByClassName(classId)[0].scrollIntoView(), 300)
-                setTimeout(() => {
-                    $(className).removeClass('custom-blick-div')
-                }, 15000);
-            }, 100)
+
+        if (!appointmentMarkerActionCalled && appointmentMarkerAction && calendar && calendar.scrollableAppointmentId) {
+            this.animateActiveAppointment();
         }
     }
 
@@ -277,6 +275,29 @@ class CalendarPage extends Component {
         // $(".left-fixed-tab").scrollTop();
     }
 
+    animateActiveAppointment() {
+        setTimeout(() => {
+            const { calendar } = this.props;
+            const { scrollableAppointmentAction } = this.state;
+            const elemId = calendar.scrollableAppointmentId;
+            const activeElem = document.getElementsByClassName(elemId)[0];
+            if (activeElem) {
+                const updatedState = { appointmentMarkerAction: false, appointmentMarkerActionCalled: true };
+                const className = `.${elemId}`;
+
+                $(className).addClass("custom-blick-div")
+                if (scrollableAppointmentAction) {
+                    activeElem.scrollIntoView();
+                    updatedState.scrollableAppointmentAction = false
+                }
+                this.setState(updatedState)
+                setTimeout(() => { $(className).removeClass('custom-blick-div') }, 15000);
+            } else {
+                this.animateActiveAppointment(elemId);
+            }
+        }, 500);
+    }
+
     componentWillReceiveProps(newProps) {
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
@@ -290,6 +311,11 @@ class CalendarPage extends Component {
                 appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal
             });
         }
+
+        if (newProps.calendar.scrollableAppointmentId) {
+            this.setState({ appointmentMarkerAction: true });
+        }
+
 
 
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
@@ -376,7 +402,11 @@ class CalendarPage extends Component {
 
 
         return (
-            <div className="calendar" ref={node => { this.node = node; }}>
+            <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
+                if (this.state.scrollableAppointmentAction) {
+                    this.setState({scrollableAppointmentAction: false})
+                }
+            }}>
                 {this.state.isLoading && <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
@@ -561,7 +591,7 @@ class CalendarPage extends Component {
                                                         let appointment = calendar && calendar.appointments &&
                                                             calendar.appointments.map((appointmentStaff) =>
                                                                 appointmentStaff.appointments &&
-                                                                appointmentStaff.staff.staffId === workingStaffElement.staffId &&
+                                                                (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId) &&
                                                                     appointmentStaff.appointments.filter((appointment)=>{
                                                                         return currentTime <= parseInt(appointment.appointmentTimeMillis)
                                                                              && parseInt(moment(moment(day).format('DD/MM')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
@@ -601,19 +631,34 @@ class CalendarPage extends Component {
                                                         if(appointment && appointment[0] && appointment[0].length > 0) {
                                                             let totalDuration = appointment[0][0].duration;
                                                             let appointmentServices = [];
+                                                            let totalCount = 0;
                                                             appointmentServices.push(appointment[0][0].serviceName);
                                                             if (appointment[0][0].hasCoAppointments) {
                                                                 calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                                                                     if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                                                         totalDuration += currentAppointment.duration;
                                                                         appointmentServices.push(currentAppointment.serviceName)
+                                                                        totalCount++;
                                                                     }
                                                                 }))
                                                             }
-                                                            // let appointmentOptions = {}
-                                                            // if (parseInt(appointment[0][0].appointmentId) === parseInt(calendar.scrollableAppointmentId)) {
-                                                            //
-                                                            // }
+                                                            let extraServiceText;
+                                                            switch (totalCount) {
+                                                                case 0:
+                                                                    extraServiceText = '';
+                                                                    break;
+                                                                case 1:
+                                                                    extraServiceText = 'и ещё 1 услуга';
+                                                                    break;
+                                                                case 2:
+                                                                case 3:
+                                                                case 4:
+                                                                    extraServiceText = `и ещё ${totalCount} услуги`;
+                                                                    break;
+                                                                default:
+                                                                    extraServiceText = `и ещё 5+ услуг`;
+                                                            }
+                                                            const resultTextArea = `${appointment[0][0].serviceName} ${extraServiceText}`;
                                                             resultMarkup = (
                                                                 <div
                                                                     className={currentTime <= moment().format("x")
@@ -641,14 +686,14 @@ class CalendarPage extends Component {
                                                                                       title="Отменить встречу"
                                                                                       onClick={() => this.approveAppointmentSetter(appointment[0][0].appointmentId)}/>
                                                                                 {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
-                                                                                <span
-                                                                                    className="service_time">{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</span>
+                                                                                <span className="service_time">
+                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                                                                                </span>
                                                                             </p>
                                                                             <p className="notes-container"
                                                                                style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
-                                                                                <textarea>{appointment[0][0].serviceName}</textarea>
-
+                                                                                <textarea>{resultTextArea}</textarea>
                                                                             </p>
                                                                             <div className="msg-client-info"
                                                                                  ref={(node) => {

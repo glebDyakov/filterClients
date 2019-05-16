@@ -12,6 +12,7 @@ export const calendarActions = {
     editAppointment,
     editAppointmentTime,
     approveAppointment,
+    approveAllAppointment,
     deleteAppointment,
     getReservedTime,
     addReservedTime,
@@ -206,4 +207,17 @@ function approveAppointment(id) {
 
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
     function failure(error) { return { type: calendarConstants.APPROVE_APPOINTMENT_FAILURE, error } }
+}
+function approveAllAppointment() {
+    return dispatch => {
+        calendarService.approveAllAppointment()
+            .then(
+                client => dispatch(success()),
+                error => dispatch(failure(error.toString()))
+            )
+            // .then(dispatch(companyActions.getNewAppointments()));
+    };
+
+    function success(id) { return { type: calendarConstants.APPROVE_ALL_APPOINTMENT_SUCCESS, id } }
+    function failure(error) { return { type: calendarConstants.APPROVE_ALL_APPOINTMENT_FAILURE, error } }
 }
