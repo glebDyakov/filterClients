@@ -2221,8 +2221,19 @@ select{
     p{
         padding-bottom: 8px;
     }
+    div {
+        button {
+            min-width: 110px;
+        }
+        button:last-child {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+    }
     .button-field{
         display: flex;
+        justify-content: space-around;
+
         .approveAll{
             width: 100%;
             margin-right: 0;
