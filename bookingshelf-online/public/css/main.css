@@ -1400,6 +1400,7 @@ q:before, q:after { content:''; }
     width: 100%;
     display: flex;
     align-items:center;
+    height: 75%
 }
 .loader img{
     width: 100px;

@@ -6,6 +6,7 @@ import moment from "moment";
 export const calendarActions = {
     addAppointment,
     getAppointments,
+    setScrollableAppointment,
     getAppointmentsCount,
     getAppointmentsCanceled,
     editAppointment,
@@ -41,6 +42,15 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
     function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
+}
+
+
+function setScrollableAppointment(id) {
+    return dispatch => {
+        dispatch(success(id));
+    };
+
+    function success(id) { return { type: calendarConstants.SET_SCROLLABLE_APPOINTMENT, id } }
 }
 
 function addReservedTime(params, staffId) {

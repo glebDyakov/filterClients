@@ -242,6 +242,17 @@ class CalendarPage extends Component {
             e.stopPropagation();
             $('.buttons-container').fadeIn(400);
         });
+        if (this.props.calendar && this.props.calendar.scrollableAppointmentId) {
+            setTimeout(() => {
+                const classId = this.props.calendar.scrollableAppointmentId;
+                const className = `.${classId}`
+                $(className).addClass("custom-blick-div")
+                setTimeout(() => document.getElementsByClassName(classId)[0].scrollIntoView(), 300)
+                setTimeout(() => {
+                    $(className).removeClass('custom-blick-div')
+                }, 15000);
+            }, 100)
+        }
     }
 
     scrollToMyRef () {
@@ -599,6 +610,10 @@ class CalendarPage extends Component {
                                                                     }
                                                                 }))
                                                             }
+                                                            // let appointmentOptions = {}
+                                                            // if (parseInt(appointment[0][0].appointmentId) === parseInt(calendar.scrollableAppointmentId)) {
+                                                            //
+                                                            // }
                                                             resultMarkup = (
                                                                 <div
                                                                     className={currentTime <= moment().format("x")

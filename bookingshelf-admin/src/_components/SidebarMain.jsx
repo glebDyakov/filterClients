@@ -170,7 +170,7 @@ class SidebarMain extends Component {
                                         <li>
                                             <a className="service_item"
                                                onClick={() => this.goToPageCalendar(appointment.appointmentId,"/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                                <p className="service_name" style={{width:"70%"}}>{appointment.serviceName}</p>
+                                                <p className="service_name" style={{width:"65%", marginRight: "5%", wordWrap: "break-word"}}>{appointment.serviceName}</p>
                                                 <p className="service_time" style={{width:"30%", textAlign:"left"}}><strong
                                                     style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
                                                 </p>
@@ -229,9 +229,22 @@ class SidebarMain extends Component {
         this.props.history.push(url);
 
         this.approveAppointment(id)
-        //  document.getElementsByClassName("id")[0].classList.add(" custom-blick-div ");
-
-        // setTimeout(()=> document.getElementsByClassName("id")[0].classList.remove(" custom-blick-div "), 5000);
+        this.props.dispatch(calendarActions.setScrollableAppointment(id))
+        // const className = `.${id}`;
+        //  setTimeout(() => {
+        //
+        //      $(className).addClass("custom-blick-div")
+        //
+        //
+        //      setTimeout(() => {
+        //          // container.animate({scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop(), scrollLeft: 0},300);
+        //          const elmnt = document.getElementsByClassName(className)[0];
+        //          elmnt.scrollIntoView();
+        //          }, 500);
+        //
+        //  }, 1000)
+        //
+        // setTimeout(()=> $(className).removeClass("custom-blick-div"), 15000);
 
     }
     openAppointments(event){
