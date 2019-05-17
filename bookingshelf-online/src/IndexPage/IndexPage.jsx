@@ -447,7 +447,7 @@ class IndexPage extends React.Component {
                         {workingStaff && workingStaff.map((workingStaffElement, i) =>
                             parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                             workingStaffElement.availableTimes.map((workingTime) => {
-                                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15;
+                                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
                                     const arrayTimes = []
                                     for( let i = 0 ; i< countTimes; i++) {
                                         arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
