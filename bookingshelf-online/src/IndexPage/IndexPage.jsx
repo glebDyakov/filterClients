@@ -70,13 +70,31 @@ class IndexPage extends React.Component {
                 i<=parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').endOf('month').format('D'));i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
                     newProps.staff.timetableAvailable.availableDays.filter((time, key, elements) =>{
-                        return parseInt(moment(time.dayMillis, 'x').format('D'))===i && time.availableTimes.length!==0 &&
-                            time.availableTimes.some((timeOne)=>parseInt(moment(timeOne.startTimeMillis, 'x').format('x'))>=parseInt(moment().utc().format('x')))
+                        const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
+                        const checkingDayTimesArray = time.availableTimes;
+
+                        return checkingDay ===i && checkingDayTimesArray.length!==0 &&
+                            time.availableTimes.some((timeOne)=>{
+                                const countTimes = (timeOne.endTimeMillis - timeOne.startTimeMillis) / 1000 / 60 / 15;
+                                const arrayTimes = []
+                                for( let i = 0 ; i< countTimes; i++) {
+                                    arrayTimes.push(timeOne.startTimeMillis + (1000 * 60 * 15 * i))
+                                }
+
+                                return arrayTimes.some(intervalTime => {
+                                    const intervalTimeMillis =parseInt(moment(intervalTime, 'x').format('x'))
+                                    const currentUserTimeMillis = parseInt(moment().utc().format('x'))
+                                    return intervalTimeMillis >= currentUserTimeMillis;
+                                })
+                            })
                     })
 
-                if(avDay && avDay.length===0 || parseInt(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utcOffset('-4').format('x'))<
-                    parseInt(moment().utcOffset('-4').startOf('day').format('x'))){
-                    disabledDays.push(new Date(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utcOffset('-4').format('YYYY-MM-DD HH:mm').replace(/-/g, "/")))}
+                const checkingDate = parseInt(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utc().format('x'));
+                const currentDate = parseInt(moment().utcOffset('-4').startOf('day').format('x'));
+
+                if(avDay && avDay.length===0 || (checkingDate < currentDate)){
+                    const pushedDay = new Date(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utcOffset('-4').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
+                    disabledDays.push(pushedDay)}
 
             }
 
@@ -453,7 +471,7 @@ class IndexPage extends React.Component {
                                         arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
                                     }
 
-                                    return workingTime.startTimeMillis >= parseInt(moment().format("x")) && arrayTimes.map(arrayTime =>
+                                    return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
                                     <div key={i} onClick={() => this.setTime(arrayTime)}>
                                         <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
                                     </div>)
