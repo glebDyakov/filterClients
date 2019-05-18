@@ -166,12 +166,12 @@ class CalendarPage extends Component {
 
     componentDidMount() {
         this.props.dispatch(userActions.checkLogin());
-        if (this.props.match.params.selectedType && this.props.match.params.selectedType!=='workingstaff' && this.props.match.params.selectedType!=='staff' && this.props.match.params.selectedType!=='allstaff' && !this.props.match.params.dateFrom){
+        if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
             this.props.history.push('/nopage');
             return false;
         }
 
-        const {selectedDays, type, selectedDayMoment}=this.state;
+        const {selectedDays, type, selectedDayMoment} = this.state;
 
         document.title = "Журнал записи | Онлайн-запись";
 
@@ -181,11 +181,11 @@ class CalendarPage extends Component {
         this.props.dispatch(staffActions.getClosedDates());
 
 
-        if(type==='day'){
+        if (type === 'day') {
             this.props.dispatch(staffActions.getTimetableStaffs(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
             this.props.dispatch(calendarActions.getAppointments(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
+        } else {
             this.props.dispatch(staffActions.getTimetableStaffs(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
             this.props.dispatch(calendarActions.getAppointments(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
@@ -193,12 +193,22 @@ class CalendarPage extends Component {
 
         this.getHours24();
 
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
-        setTimeout(()=>this.updateCalendar(), 300000)
+        setTimeout(() => this.setState({isLoading: false}), 4500);
+        setTimeout(() => this.updateCalendar(), 300000)
 
         initializeJs();
 
         this.scrollToMyRef();
+
+        setTimeout(() => {
+            if (!this.props.calendar.scrollableAppointmentId) {
+                const activeElem = document.getElementsByClassName("present-time")[0];
+                if (activeElem) {
+                    activeElem.scrollIntoView();
+                }
+            }
+        }, 2000);
+
     }
 
     updateCalendar(){
@@ -249,7 +259,8 @@ class CalendarPage extends Component {
         });
 
         if (!appointmentMarkerActionCalled && appointmentMarkerAction && calendar && calendar.scrollableAppointmentId) {
-            this.animateActiveAppointment();
+            const className = calendar.scrollableAppointmentId;
+            this.animateActiveAppointment(className);
         }
     }
 
@@ -275,17 +286,15 @@ class CalendarPage extends Component {
         // $(".left-fixed-tab").scrollTop();
     }
 
-    animateActiveAppointment() {
+    animateActiveAppointment(className) {
         setTimeout(() => {
-            const { calendar } = this.props;
             const { scrollableAppointmentAction } = this.state;
-            const elemId = calendar.scrollableAppointmentId;
-            const activeElem = document.getElementsByClassName(elemId)[0];
+            const activeElem = document.getElementsByClassName(className)[0];
             if (activeElem) {
                 const updatedState = { appointmentMarkerAction: false, appointmentMarkerActionCalled: true };
-                const className = `.${elemId}`;
+                const formattedClassName = `.${className}`;
 
-                $(className).addClass("custom-blick-div")
+                $(formattedClassName).addClass("custom-blick-div")
                 if (scrollableAppointmentAction) {
                     activeElem.scrollIntoView();
                     updatedState.scrollableAppointmentAction = false
@@ -293,7 +302,7 @@ class CalendarPage extends Component {
                 this.setState(updatedState)
                 setTimeout(() => { $(className).removeClass('custom-blick-div') }, 15000);
             } else {
-                this.animateActiveAppointment(elemId);
+                this.animateActiveAppointment(className);
             }
         }, 500);
     }
@@ -821,8 +830,6 @@ class CalendarPage extends Component {
     }
 
     onOpen(){
-        console.log("onOpen")
-
         this.setState({...this.state, userSettings: true});
     }
 

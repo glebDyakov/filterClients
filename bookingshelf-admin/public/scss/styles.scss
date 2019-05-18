@@ -2210,8 +2210,6 @@ select{
 }
 .modal-inner{
 
-    max-height: 68vh;
-    overflow-y: auto;
     padding-top: 10px;
 
     input{
@@ -2230,14 +2228,34 @@ select{
             margin-left: 10px;
         }
     }
+
+}
+.modal-not-approved{
+    overflow: hidden;
+    padding-right: 0 !important;
     .button-field{
         display: flex;
         justify-content: space-around;
+        margin-right: 35px;
 
         .approveAll{
             width: 100%;
-            margin-right: 0;
+
+
         }
+    }
+    .not-approved-list{
+        overflow-y: auto;
+        height: 54%;
+        padding-right: 20px;
+        margin-bottom: 10px;
+
+    }
+}
+.modal-height{
+    height: 90vh;
+    .not-approved-list{
+        height: 85%;
     }
 }
 .modal-open{

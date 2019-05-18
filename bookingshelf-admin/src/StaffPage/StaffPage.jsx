@@ -756,7 +756,6 @@ class StaffPage extends Component {
 
     handleDayEnter (date) {
         const hoverRange = getWeekRange(date)
-        console.log('hoverRange', hoverRange);
         this.setState({
             hoverRange
         });

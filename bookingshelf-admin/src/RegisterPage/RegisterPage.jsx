@@ -96,8 +96,6 @@ class RegisterPage extends React.Component {
     render() {
         const { user, emailIsValid, agreed, authentication } = this.state;
 
-        console.log(authentication.error)
-
         return (
             <div>
                 <div className="container-bg slideLeft"></div>
