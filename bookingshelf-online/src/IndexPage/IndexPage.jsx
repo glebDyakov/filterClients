@@ -32,6 +32,7 @@ class IndexPage extends React.Component {
 
 
         this.selectStaff=this.selectStaff.bind(this);
+        this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
         this.handleDayClick=this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -116,8 +117,6 @@ class IndexPage extends React.Component {
         const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
         let staffId=staff;
 
-        console.log('staff', staffId);
-
 
         if(staff.length===0){
             staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
@@ -127,8 +126,6 @@ class IndexPage extends React.Component {
                     }
                 }))
         }
-
-        console.log('staff', staffId);
 
         this.setState({...this.state, selectedStaff:staffId,
             screen: 2})
@@ -150,8 +147,6 @@ class IndexPage extends React.Component {
         const { selectedStaff,selectedServices,group,selectedDay,selectedTime } = this.state;
         const {company} = this.props.match.params
         let resultTime = parseInt(selectedTime);
-        console.log('selectedTime', selectedTime);
-        console.log('selectedServices', selectedServices[0].duration);
 
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
@@ -174,10 +169,6 @@ class IndexPage extends React.Component {
         if (modifiers.disabled) {
             return;
         }
-        const {company} = this.props.match.params
-
-        console.log('day', day)
-        console.log('modifiers', modifiers)
 
         let daySelected = !modifiers.selected && moment(day);
 
@@ -186,6 +177,7 @@ class IndexPage extends React.Component {
             selectedDay: daySelected ? daySelected.toDate() : this.state.selectedDay,
             screen: 4
         })
+        this.refreshTimetable();
     }
 
     setScreen (num) {
@@ -202,12 +194,11 @@ class IndexPage extends React.Component {
     render() {
         const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error } = this.props.staff;
+        const { error, isLoading } = this.props.staff;
+
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
         });
-
-        console.log(servicesForStaff);
 
         return (
 
@@ -230,407 +221,424 @@ class IndexPage extends React.Component {
 
                 }
 
-
-                {screen === 1 && <div className="service_selection screen1">
-                    <div className="title_block n">
-                        <p className="modal_title">Выбор сотрудника</p>
-                        {selectedStaff.staffId &&
-                        <span className="next_block" onClick={() => this.setScreen(2)}>Вперед</span>}
-                    </div>
-                    <ul className="staff_popup">
-                        {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
-                            <li className={(selectedStaff.staffId && selectedStaff.staffId === staff.staffId && 'selected') + ' nb'}
-                                onClick={() => this.selectStaff(staff)}
-                                key={idStaff}
-                            >
-                                <a href="#">
-                                    <div className="img_container">
-                                        <img
-                                            src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                            alt=""/>
-                                        <span>{staff.firstName} <br/>{staff.lastName}</span>
-                                    </div>
-
-
-                                    {nearestTime && nearestTime.map((time, id)=>
-                                        time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                        <div className="mobile_block" key={'time'+id}>
-                                            <span>Ближайшая запись</span>
-                                            <div className="stars" style={{textTransform: 'capitalize'}}>{this.roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                <div className="service_selection_wrapper">
+                    {screen === 1 && <div className="service_selection screen1">
+                        <div className="title_block n">
+                            <p className="modal_title">Выбор сотрудника</p>
+                            {selectedStaff.staffId &&
+                            <span className="next_block" onClick={() => {
+                                this.setScreen(2);
+                                this.refreshTimetable();
+                            }}>Вперед</span>}
+                        </div>
+                        <ul className="staff_popup">
+                            {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
+                                <li className={(selectedStaff.staffId && selectedStaff.staffId === staff.staffId && 'selected') + ' nb'}
+                                    onClick={() => this.selectStaff(staff)}
+                                    key={idStaff}
+                                >
+                                    <a href="#">
+                                        <div className="img_container">
+                                            <img
+                                                src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                alt=""/>
+                                            <span>{staff.firstName} <br/>{staff.lastName}</span>
                                         </div>
 
-                                    )}
 
-                                    {nearestTime && !nearestTime.some((time, id)=>
-                                        time.staffId===staff.staffId && time.availableDays.length!==0
+                                        {nearestTime && nearestTime.map((time, id)=>
+                                            time.staffId===staff.staffId && time.availableDays.length!==0 &&
+                                            <div className="mobile_block" key={'time'+id}>
+                                                <span>Ближайшая запись</span>
+                                                <div className="stars" style={{textTransform: 'capitalize'}}>{this.roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                            </div>
 
-                                    ) && <div className="mobile_block">
-                                        <span style={{fontWeight: 'bold'}}>Нет записи</span>
-                                    </div>
+                                        )}
 
+                                        {nearestTime && !nearestTime.some((time, id)=>
+                                            time.staffId===staff.staffId && time.availableDays.length!==0
 
-                                    }
-
-
-
-                                </a>
-                            </li>
-                        )}
-                    </ul>
-                    <p className="skip_employee" onClick={() => this.selectStaff([])}>Пропустить выбор сотрудника</p>
-                </div>
-                }
-                {screen === 2 && <div className="service_selection screen1">
-                    <div className="title_block">
-                        <span className="prev_block" onClick={()=>this.setScreen(1)}>Назад</span>
-                        <p className="modal_title">Выбор услуги</p>
-                        {selectedService.serviceId && <span className="next_block" onClick={()=>this.setScreen(3)}>Вперед</span>}
-                    </div>
-                    {selectedStaff.staffId && <div className="specialist">
-                        <div>
-                            <p className="img_container">
-                                <img
-                                    src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                    alt=""/>
-                                <span>{selectedStaff.firstName} <br/>{selectedStaff.lastName}</span>
-                            </p>
-                            {/*<div className="mobile_block">*/}
-                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                            {/*<div className="stars">*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-                        </div>
-                        <div className="supperVisDet" >
-                                <p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>
-                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
-                        </div>
-                    </div>}
-                    <ul className="service_list">
-                        {services && services.map((service, serviceKey) =>
-                            selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) &&
-                            <li
-                                className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
-                            >
-                                <div className="service_item">
-                                    <label>
-
-                                    <p>{service.name}</p>
-                                    <p><strong>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo} </strong> <span>{service.currency}</span>
-                                        <input onChange={(e)=> this.selectService(e, service)} type="checkbox"
-                                               checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)} />
-                                        <span className="checkHelper" />
-                                    </p>
-                                    <span
-                                        className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
-
-                                    </label>
-                                </div>
-                            </li>
-                        )}
-                        {
-                            !servicesForStaff &&  <div className="final-book">
-                                <p>Нет доступных услуг</p>
-                            </div>
-                        }
-
-                    </ul>
-
-                    {!!selectedServices.length &&
-                    <div className="button_block" onClick={() => selectedServices.length && this.setScreen(3)}>
-                        <button class="button load">Продолжить</button>
-                    </div>}
-                </div>
-                }
-                {screen === 3 &&
-                <div className="service_selection screen1">
-                    <div className="title_block">
-                        <span className="prev_block" onClick={()=>{
-                            this.setScreen(2);
-                            const serviceIdList = this.getServiceIdList(selectedServices);
-                            const {company} = this.props.match.params;
-                            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
-                        }}>
-                            Назад</span>
-                        <p className="modal_title">Выбор даты</p>
-                        {selectedDay && <span className="next_block" onClick={()=>this.setScreen(4)}>Вперед</span>}
-                    </div>
-                    <div className="specialist">
-
-                        {selectedStaff.staffId &&
-                        <div>
-                            <p className="img_container">
-                                <img
-                                    src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                    alt=""/>
-                                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                            </p>
-                            {/*<div className="mobile_block">*/}
-                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                            {/*<div className="stars">*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-                        </div>
-                        }
-                        {selectedService.serviceId &&
-                        <div className="supperVisDet" >
-                            <p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>
-                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
-                        </div>
-                        }
-
-                    </div>
-                    <div className="calendar_modal">
-                        {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={this.showPrevWeek}/>}
-                        <span className="arrow-right" onClick={this.showNextWeek}/>
-
-                        <DayPicker
-                            selectedDays={selectedDay}
-                            disabledDays={disabledDays}
-                            month={month}
-                            onDayClick={this.handleDayClick}
-                            localeUtils={MomentLocaleUtils}
-                            locale={'ru'}
-
-                        />
-                        <p>
-                            <span className="dark_blue_text"><span className="round"></span>Запись есть</span>
-                            <span className="gray_text"><span className="round"></span>Записи нет</span>
-                        </p>
-                        <span className="clear"></span>
+                                        ) && <div className="mobile_block">
+                                            <span style={{fontWeight: 'bold'}}>Нет записи</span>
+                                        </div>
 
 
-                    </div>
-                </div>
-                }
-                {screen === 4 &&
-                <div className="service_selection screen1">
-                    <div className="title_block">
-                        <span className="prev_block" onClick={()=> {
-                            this.setScreen(3);
-                            const serviceIdList = this.getServiceIdList(selectedServices);
-                            const {company} = this.props.match.params;
-                            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
-                        }}>Назад</span>
-                        <p className="modal_title">Выбор времени</p>
-                        {selectedTime && <span className="next_block" onClick={()=>this.setScreen(5)}>Вперед</span>}
-                    </div>
-                    <div className="specialist">
-                        {selectedStaff.staffId &&
-                        <div>
-                            <p className="img_container">
-                                <img
-                                    src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                    alt=""/>
-                                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                            </p>
-                            {/*<div className="mobile_block">*/}
-                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                            {/*<div className="stars">*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-                        </div>
-                        }
-                        {selectedService.serviceId &&
-                        <div className="supperVisDet" >
-                            <p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>
-                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
-                        </div>
-                        }
-                        {selectedDay &&
-                        <div className="date_item_popup">
-                            <strong>{moment(selectedDay).utc().locale('ru').format('DD MMMM YYYY')}</strong>
-                        </div>
-                        }
-                    </div>
-                    <div className="choise_time">
+                                        }
 
-                        {workingStaff && workingStaff.map((workingStaffElement, i) =>
-                            parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
-                            workingStaffElement.availableTimes.map((workingTime) => {
-                                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
-                                    const arrayTimes = []
-                                    for( let i = 0 ; i< countTimes; i++) {
-                                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
-                                    }
 
-                                    return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
-                                    <div key={i} onClick={() => this.setTime(arrayTime)}>
-                                        <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
-                                    </div>)
-                                }
-                            )
 
-                        )
-                        }
-                    </div>
-                </div>
-                }
-                {screen === 5 &&
-                <div className="service_selection screen5">
-                    <div className="title_block">
-                        <span className="prev_block" onClick={()=>this.setScreen(4)}>Назад</span>
-                        <p className="modal_title">Запись</p>
-                    </div>
-                    <div className="specialist">
-                        {selectedStaff.staffId &&
-                        <div>
-                            <p className="img_container">
-                                <img src={selectedStaff.imageBase64?"data:image/png;base64,"+selectedStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
-                                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                            </p>
-                            {/*<div className="mobile_block">*/}
-                            {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
-                            {/*<div className="stars">*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*<span></span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
-                        </div>
-                        }
-                        {selectedService.serviceId &&
-                        <div className="supperVisDet" >
-                            <p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>
-                            {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
-                        </div>
-                        }
-                        {selectedDay &&
-                        <div className="date_item_popup">
-                            <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
-                        </div>
-                        }
-                        {selectedTime &&
-                        <div className="date_item_popup">
-                            <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
-                        </div>
-                        }
-                    </div>
-                    <p>Имя</p>
-                    <input type="text" placeholder="Введите имя" name="clientName" onChange={this.handleChange}
-                           value={group.clientName && group.clientName}
-                           className={((group.phone && !group.clientName) ? ' redBorder' : '')}
-                    />
-                    <p>Телефон</p>
-                    <div className="phones_country">
-                        <ReactPhoneInput
-                            regions={['america', 'europe']}
-                            disableAreaCodes={true}
-
-                            inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => this.setState({ group: {...group, phone: phone.replace(/[() ]/g, '')} })}
-                        />
-
-                    </div>
-                    <br/>
-                    <p>Email</p>
-                    <input type="text" placeholder="Введите email" name="email" onChange={this.handleChange}
-                           onKeyUp={() => this.setState({
-                               emailIsValid: this.isValidEmailAddress(group.email)
-                           })}
-                           value={group.email}
-                           className={'' + ((group.email && group.email!=='' && !this.isValidEmailAddress(group.email)) ? ' redBorder' : '')}
-                    />
-                    <p>Комментарии</p>
-                    <textarea placeholder="Комментарии к записи"  name="description" onChange={this.handleChange} value={group.description}/>
-                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
-                        пользовательского соглашения</a></p>
-                    <input className={((!selectedStaff.staffId || !selectedService.serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value="ЗАПИСАТЬСЯ" onClick={
-                        ()=>(selectedStaff.staffId && selectedService.serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && this.handleSave()}/>
-                </div>
-                }
-
-                {screen === 6 && newAppointments && !!newAppointments.length && !error && <div className="service_selection final-screen">
-                    <div className="final-book">
-                        <p>Запись успешно создана</p>
-                    </div>
-                    <div className="specialist">
-                        {selectedStaff.staffId &&
-                        <div>
-                            <p className="img_container">
-                                <img src={selectedStaff.imageBase64 ? "data:image/png;base64,"+selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt=""/>
-                                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                            </p>
-                        </div>
-                        }
-                        {selectedService.serviceId &&
-                        <div className="supperVisDet" >
-                            <p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>
-                        </div>
-                        }
-                        {selectedDay &&
-                        <div className="date_item_popup">
-                            <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
-                        </div>
-                        }
-                        {selectedTime &&
-                        <div className="date_item_popup">
-                            <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
-                        </div>
-                        }
-                    </div>
-                    <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
-                    {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
-                        <button className="approveFYes"  onClick={()=>{
-                            if (newAppointments.length) {
-                                newAppointments.forEach((newAppointment, i) => setTimeout(() => newAppointment && newAppointment.customId && this._delete(newAppointment.customId), 1000 * i))
-                            }
-                        }}>Да
-                        </button>
-                        <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
-                        </button>
+                                    </a>
+                                </li>
+                            )}
+                        </ul>
+                        <p className="skip_employee" onClick={() => this.selectStaff([])}>Пропустить выбор сотрудника</p>
                     </div>
                     }
-                    <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
-
-                </div>
-                }
-                {screen === 6 && (!error && !newAppointments.length) && (
-                    <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                )}
-                { screen === 6 && error && (
-                    <div className="service_selection final-screen">
-                            <div className="final-book">
-                                <p>{error}</p>
+                    {screen === 2 && <div className="service_selection screen1">
+                        <div className="title_block">
+                            <span className="prev_block" onClick={()=>{this.setScreen(1);this.refreshTimetable()} }>Назад</span>
+                            <p className="modal_title">Выбор услуги</p>
+                            {selectedService.serviceId && <span className="next_block" onClick={()=>{
+                                this.setScreen(3);
+                                this.refreshTimetable()
+                            }}>Вперед</span>}
+                        </div>
+                        {selectedStaff.staffId && <div className="specialist">
+                            <div>
+                                <p className="img_container">
+                                    <img
+                                        src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt=""/>
+                                    <span>{selectedStaff.firstName} <br/>{selectedStaff.lastName}</span>
+                                </p>
+                                {/*<div className="mobile_block">*/}
+                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                                {/*<div className="stars">*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*</div>*/}
+                                {/*</div>*/}
                             </div>
+                            <div className="supperVisDet" >
+                                    <p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                    {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                            </div>
+                        </div>}
+                        <ul className="service_list">
+                            {services && services.map((service, serviceKey) =>
+                                selectedStaff.staffId && service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId) &&
+                                <li
+                                    className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
+                                >
+                                    <div className="service_item">
+                                        <label>
+
+                                        <p>{service.name}</p>
+                                        <p><strong>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo} </strong> <span>{service.currency}</span>
+                                            <input onChange={(e)=> this.selectService(e, service)} type="checkbox"
+                                                   checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)} />
+                                            <span className="checkHelper" />
+                                        </p>
+                                        <span
+                                            className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+
+                                        </label>
+                                    </div>
+                                </li>
+                            )}
+                            {
+                                !servicesForStaff &&  <div className="final-book">
+                                    <p>Нет доступных услуг</p>
+                                </div>
+                            }
+
+                        </ul>
+
+                        {!!selectedServices.length &&
+                        <div className="button_block" onClick={() => {
+                            selectedServices.length && this.setScreen(3);
+                            this.refreshTimetable();
+                        }}>
+                            <button class="button load">Продолжить</button>
+                        </div>}
+                    </div>
+                    }
+                    {screen === 3 &&
+                    <div className="service_selection screen1">
+                        <div className="title_block">
+                            <span className="prev_block" onClick={()=>{
+                                this.setScreen(2);
+                                this.refreshTimetable()}}>
+                                Назад</span>
+                            <p className="modal_title">Выбор даты</p>
+                            {selectedDay && <span className="next_block" onClick={()=>{
+                                this.setScreen(4);
+                                this.refreshTimetable()
+                            }}>Вперед</span>}
+                        </div>
+                        <div className="specialist">
+
+                            {selectedStaff.staffId &&
+                            <div>
+                                <p className="img_container">
+                                    <img
+                                        src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt=""/>
+                                    <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                                </p>
+                                {/*<div className="mobile_block">*/}
+                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                                {/*<div className="stars">*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*</div>*/}
+                                {/*</div>*/}
+                            </div>
+                            }
+                            {selectedService.serviceId &&
+                            <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                            </div>
+                            }
+
+                        </div>
+                        <div className="calendar_modal">
+                            {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={this.showPrevWeek}/>}
+                            <span className="arrow-right" onClick={this.showNextWeek}/>
+
+                            <DayPicker
+                                selectedDays={selectedDay}
+                                disabledDays={disabledDays}
+                                month={month}
+                                onDayClick={this.handleDayClick}
+                                localeUtils={MomentLocaleUtils}
+                                locale={'ru'}
+
+                            />
+                            <p>
+                                <span className="dark_blue_text"><span className="round"></span>Запись есть</span>
+                                <span className="gray_text"><span className="round"></span>Записи нет</span>
+                            </p>
+                            <span className="clear"></span>
+
+
+                        </div>
+                    </div>
+                    }
+                    {screen === 4 &&
+                    <div className="service_selection screen1">
+                        <div className="title_block">
+                            <span className="prev_block" onClick={()=> {
+                                this.setScreen(3);
+                                this.refreshTimetable()
+                            }}>Назад</span>
+                            <p className="modal_title">Выбор времени</p>
+                            {selectedTime && <span className="next_block" onClick={()=>{
+                                this.setScreen(5);
+                                this.refreshTimetable();
+                            }}>Вперед</span>}
+                        </div>
+                        <div className="specialist">
+                            {selectedStaff.staffId &&
+                            <div>
+                                <p className="img_container">
+                                    <img
+                                        src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt=""/>
+                                    <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                                </p>
+                                {/*<div className="mobile_block">*/}
+                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                                {/*<div className="stars">*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*</div>*/}
+                                {/*</div>*/}
+                            </div>
+                            }
+                            {selectedService.serviceId &&
+                            <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                            </div>
+                            }
+                            {selectedDay &&
+                            <div className="date_item_popup">
+                                <strong>{moment(selectedDay).utc().locale('ru').format('DD MMMM YYYY')}</strong>
+                            </div>
+                            }
+                        </div>
+                        <div className="choise_time">
+
+                            {workingStaff && workingStaff.map((workingStaffElement, i) =>
+                                parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
+                                workingStaffElement.availableTimes.map((workingTime) => {
+                                        const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                                        const arrayTimes = []
+                                        for( let i = 0 ; i< countTimes; i++) {
+                                            arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                                        }
+
+                                        return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
+                                        <div key={i} onClick={() => this.setTime(arrayTime)}>
+                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                        </div>)
+                                    }
+                                )
+
+                            )
+                            }
+                        </div>
+                    </div>
+                    }
+                    {screen === 5 &&
+                    <div className="service_selection screen5">
+                        <div className="title_block">
+                            <span className="prev_block" onClick={()=>{
+                                this.setScreen(4);
+                                ;this.refreshTimetable()}}>
+                                Назад</span>
+                            <p className="modal_title">Запись</p>
+                        </div>
+                        <div className="specialist">
+                            {selectedStaff.staffId &&
+                            <div>
+                                <p className="img_container">
+                                    <img src={selectedStaff.imageBase64?"data:image/png;base64,"+selectedStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                                    <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                                </p>
+                                {/*<div className="mobile_block">*/}
+                                {/*<span><strong>5.0</strong> / <strong>13</strong> отзывов</span>*/}
+                                {/*<div className="stars">*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*<span></span>*/}
+                                {/*</div>*/}
+                                {/*</div>*/}
+                            </div>
+                            }
+                            {selectedService.serviceId &&
+                            <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                            </div>
+                            }
+                            {selectedDay &&
+                            <div className="date_item_popup">
+                                <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                            </div>
+                            }
+                            {selectedTime &&
+                            <div className="date_item_popup">
+                                <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
+                            </div>
+                            }
+                        </div>
+                        <p>Имя</p>
+                        <input type="text" placeholder="Введите имя" name="clientName" onChange={this.handleChange}
+                               value={group.clientName && group.clientName}
+                               className={((group.phone && !group.clientName) ? ' redBorder' : '')}
+                        />
+                        <p>Телефон</p>
+                        <div className="phones_country">
+                            <ReactPhoneInput
+                                regions={['america', 'europe']}
+                                disableAreaCodes={true}
+
+                                inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => this.setState({ group: {...group, phone: phone.replace(/[() ]/g, '')} })}
+                            />
+
+                        </div>
+                        <br/>
+                        <p>Email</p>
+                        <input type="text" placeholder="Введите email" name="email" onChange={this.handleChange}
+                               onKeyUp={() => this.setState({
+                                   emailIsValid: this.isValidEmailAddress(group.email)
+                               })}
+                               value={group.email}
+                               className={'' + ((group.email && group.email!=='' && !this.isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                        />
+                        <p>Комментарии</p>
+                        <textarea placeholder="Комментарии к записи"  name="description" onChange={this.handleChange} value={group.description}/>
+                        <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
+                            пользовательского соглашения</a></p>
+                        <input className={((!selectedStaff.staffId || !selectedService.serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value="ЗАПИСАТЬСЯ" onClick={
+                            ()=>(selectedStaff.staffId && selectedService.serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && this.handleSave()}/>
+                    </div>
+                    }
+
+                    {screen === 6 && newAppointments && !!newAppointments.length && !error && <div className="service_selection final-screen">
+                        <div className="final-book">
+                            <p>Запись успешно создана</p>
+                        </div>
+                        <div className="specialist">
+                            {selectedStaff.staffId &&
+                            <div>
+                                <p className="img_container">
+                                    <img src={selectedStaff.imageBase64 ? "data:image/png;base64,"+selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                                    <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                                </p>
+                            </div>
+                            }
+                            {selectedService.serviceId &&
+                            <div className="supperVisDet" >
+                                <p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>
+                            </div>
+                            }
+                            {selectedDay &&
+                            <div className="date_item_popup">
+                                <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                            </div>
+                            }
+                            {selectedTime &&
+                            <div className="date_item_popup">
+                                <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
+                            </div>
+                            }
+                        </div>
+                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                        {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
+                            <button className="approveFYes"  onClick={()=>{
+                                if (newAppointments.length) {
+                                    newAppointments.forEach((newAppointment, i) => setTimeout(() => newAppointment && newAppointment.customId && this._delete(newAppointment.customId), 1000 * i))
+                                }
+                            }}>Да
+                            </button>
+                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
+                            </button>
+                        </div>
+                        }
+                        <p className="skip_employee"  onClick={() => {
+                            this.setScreen(2);
+                            this.refreshTimetable()
+                        }}> Создать запись</p>
+
+                    </div>
+                    }
+                    {/*{screen === 6 && (!error && !newAppointments.length) && (*/}
+                    {/*    <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>*/}
+                    {/*)}*/}
+                    { screen === 6 && error && (
+                        <div className="service_selection final-screen">
+                                <div className="final-book">
+                                    <p>{error}</p>
+                                </div>
+                            <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
+                        </div>
+                    )}
+                    {screen === 7 &&
+                    <div className="service_selection final-screen">
+
+                        <div className="final-book">
+                            <p>Запись успешно отменена</p>
+                        </div>
+
                         <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
+
                     </div>
-                )}
-                {screen === 7 &&
-                <div className="service_selection final-screen">
-
-                    <div className="final-book">
-                        <p>Запись успешно отменена</p>
-                    </div>
-
-                    <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
-
+                    }
+                    {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
                 </div>
-                }
                 <div className="footer_modal">
                     <p>Работает на <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
                 </div>
-
             </div>
 
         );
@@ -654,10 +662,8 @@ class IndexPage extends React.Component {
             selectedServices.push(service);
         } else {
             const index = selectedServices.findIndex(selectedService => selectedService.serviceId === service.serviceId)
-            console.log('index', index);
             selectedServices.splice(index, 1);
         }
-        console.log('selectedServices', selectedServices);
 
         let allPriceFrom = 0;
         let allPriceTo = 0;
@@ -703,6 +709,13 @@ class IndexPage extends React.Component {
             screen: 5
         })
 
+    }
+
+    refreshTimetable() {
+        const { selectedServices, selectedStaff } = this.state;
+        const serviceIdList = this.getServiceIdList(selectedServices);
+        const {company} = this.props.match.params;
+        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
     }
 
     showPrevWeek (){

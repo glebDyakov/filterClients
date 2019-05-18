@@ -199,7 +199,12 @@ function approveAppointment(id) {
     return dispatch => {
         calendarService.approveAppointment(id)
             .then(
-                client => dispatch(success(id)),
+                client => {
+                    dispatch(success(id))
+
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
+                },
                 error => dispatch(failure(id, error.toString()))
             )
             .then(dispatch(companyActions.getNewAppointments()));

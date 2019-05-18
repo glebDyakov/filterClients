@@ -49,6 +49,7 @@ class HeaderMain extends React.Component {
 
         let path="/"+location.pathname.split('/')[1]
 
+
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
 
@@ -145,8 +146,6 @@ class HeaderMain extends React.Component {
 
     openModal() {
         const {onOpen} = this.props;
-
-        console.log('onOpen1')
 
         return onOpen();
     }

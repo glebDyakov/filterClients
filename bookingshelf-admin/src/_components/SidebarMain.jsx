@@ -77,13 +77,36 @@ class SidebarMain extends Component {
 
     render() {
         const { location }=this.props;
-        const { authentication, menu, company, collapse, newOpened, canceledOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
+        const { authentication, menu, company, collapse, newOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
         let path="/"+location.pathname.split('/')[1]
-        console.log(this.state)
 
+        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
 
-        console.log(appointmentsCount);
-        console.log(appointmentsCanceled);
+            appointmentInfo.appointments.map((appointment) => {
+                let resultMarkup = null;
+                if(!appointment.approved && !appointment.coAppointmentId) {
+
+                    resultMarkup = (
+                        <li>
+                            <a className="service_item"
+                               onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                                <p className="service_name" style={{
+                                    width: "65%",
+                                    marginRight: "5%",
+                                    wordWrap: "break-word"
+                                }}>{appointment.serviceName}</p>
+                                <p className="service_time"
+                                   style={{width: "30%", textAlign: "left"}}>
+                                    <strong
+                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                </p>
+                            </a>
+                        </li>
+                    )
+                }
+                return resultMarkup;
+            })
+        )
 
         return (
             <div>
@@ -147,7 +170,7 @@ class SidebarMain extends Component {
             </ul>
                 <div className="modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
-                        <div className="modal-content">
+                        <div className="modal-content modal-height">
                             <div className="modal-header">
                                 <h4 className="modal-title">Уведомления</h4>
 
@@ -158,41 +181,37 @@ class SidebarMain extends Component {
                             </div>
 
                             {newOpened &&
-                            <div className="modal-inner pl-4 pr-4 count-modal">
+                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
                                 <div className="button-field">
-                                    <button type="button" className="float-left button small-button">Новые записи <span className="counter">{count && count.appointments && count.appointments.count}</span></button>
+                                    <button type="button" className="float-left button small-button">Новые записи <span className="counter">
+                                        {count && count.appointments && count.appointments.count}
+                                    </span></button>
                                     {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>}
                                 </div>
-                                {appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+                                <div className="not-approved-list">
+                                    {appointmentCountMarkup}
 
-                                    appointmentInfo.appointments.map((appointment) =>
-                                        !appointment.approved &&
-                                        <li>
-                                            <a className="service_item"
-                                               onClick={() => this.goToPageCalendar(appointment.appointmentId,"/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                                <p className="service_name" style={{width:"65%", marginRight: "5%", wordWrap: "break-word"}}>{appointment.serviceName}</p>
-                                                <p className="service_time" style={{width:"30%", textAlign:"left"}}><strong
-                                                    style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
-                                                </p>
-                                            </a>
-                                        </li>
-                                    ))}
-                                {/*{appointmentsCount && (*/}
+                                </div>
+                                {/*/!*{appointmentsCount && (*!/*/}
 
-                                {/*    <div className="button-field">*/}
+                                {/*    <div className="button-field down-button">*/}
                                 {/*        <button className="button approveAll" onClick={()=>this.approveAllAppointment()}>Отметить всё как просмотрено</button>*/}
                                 {/*    </div>)}*/}
                             </div>
                             }
                             {!newOpened &&
-                            <div className="modal-inner pl-4 pr-4 count-modal">
+                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
+
                                 <div className="button-field">
                                     <button type="button" className="float-left button small-button disabled"
                                             onClick={() => this.setState({'newOpened': true})}>Новые
-                                        записи<span className="counter">{count && count.appointments && count.appointments.count}</span></button>
+                                        записи<span className="counter">
+                                            {count && count.appointments && count.appointments.count}
+                                            </span></button>
                                     <button type="button" className="float-left button small-button">Удаленные записи<span
                                         className="counter">{count && count.canceled && count.canceled.count}</span></button>
                                 </div>
+                                <div className="not-approved-list">
                                 {appointmentsCanceled &&
                                 appointmentsCanceled.map((appointment) =>
                                     !appointment.approved &&
@@ -203,11 +222,12 @@ class SidebarMain extends Component {
                                                     className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                             </p>
                                             <p><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong>
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
                                             </p>
                                         </a>
                                     </li>
                                 )}
+                            </div>
                             </div>
                             }
                         </div>

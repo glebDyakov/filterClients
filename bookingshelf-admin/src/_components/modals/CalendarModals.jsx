@@ -59,8 +59,6 @@ class CalendarModals extends Component {
     handleEditClient(id) {
         const { clients } = this.props;
 
-        console.log('id', id);
-        console.log('clients', clients);
         if(id!=null) {
             const client_working = clients.client.find((item) => {return id === item.clientId});
 

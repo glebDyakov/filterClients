@@ -120,7 +120,6 @@ class EmailPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            console.log(newProps.notification.notification)
             this.setState({...this.state, notifications: newProps.notification.notification===''?this.state.notifications:newProps.notification.notification,
                 services:newProps.services,
                 client:newProps.client,
@@ -186,8 +185,6 @@ class EmailPage extends Component {
             receivers_all=receivers+staff.staff.length;
 
         }
-
-        console.log(receivers)
 
         this.setState({...this.state, sms: {...sms, [type]: !sms[type]},
 
@@ -265,8 +262,6 @@ class EmailPage extends Component {
         }
 
         let count_sms=Math.ceil(value.length/letters);
-
-        console.log(count_sms);
 
         this.setState({...this.state, sms: {...sms, [name]: value},
             count_sms: count_sms,
