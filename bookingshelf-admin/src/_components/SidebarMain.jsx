@@ -77,17 +77,14 @@ class SidebarMain extends Component {
 
     render() {
         const { location }=this.props;
-        const { authentication, menu, company, collapse, newOpened, canceledOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
+        const { authentication, menu, company, collapse, newOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
         let path="/"+location.pathname.split('/')[1]
-        if (appointmentsCount) {
-            let appointmentCountInMarker = 0
 
-            const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
 
             appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
                 if(!appointment.approved && !appointment.coAppointmentId) {
-                    appointmentCountInMarker++
 
                     resultMarkup = (
                         <li>
@@ -188,7 +185,6 @@ class SidebarMain extends Component {
                                 <div className="button-field">
                                     <button type="button" className="float-left button small-button">Новые записи <span className="counter">
                                         {count && count.appointments && count.appointments.count}
-                                        {/*{appointmentCountInMarker}*/}
                                     </span></button>
                                     {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>}
                                 </div>
@@ -211,7 +207,6 @@ class SidebarMain extends Component {
                                             onClick={() => this.setState({'newOpened': true})}>Новые
                                         записи<span className="counter">
                                             {count && count.appointments && count.appointments.count}
-                                            {/*{appointmentCountInMarker}*/}
                                             </span></button>
                                     <button type="button" className="float-left button small-button">Удаленные записи<span
                                         className="counter">{count && count.canceled && count.canceled.count}</span></button>
