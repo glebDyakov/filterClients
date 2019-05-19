@@ -186,7 +186,7 @@ class SidebarMain extends Component {
                                     <button type="button" className="float-left button small-button">Новые записи <span className="counter">
                                         {count && count.appointments && count.appointments.count}
                                     </span></button>
-                                    {appointmentsCanceled && appointmentsCanceled.length>0 && <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>}
+                                    <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>
                                 </div>
                                 <div className="not-approved-list">
                                     {appointmentCountMarkup}
