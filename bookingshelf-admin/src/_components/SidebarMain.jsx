@@ -217,11 +217,16 @@ class SidebarMain extends Component {
                                     !appointment.approved &&
                                     <li className="opacity0">
                                         <a className="service_item">
-                                            <p>{appointment.serviceName}<br/>
+                                            <p className="service_name" style={{
+                                                width: "65%",
+                                                marginRight: "5%",
+                                                wordWrap: "break-word"
+                                            }}>{appointment.serviceName}<br/>
                                                 <span
                                                     className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                             </p>
-                                            <p><strong
+                                            <p className="service_time"
+                                               style={{width: "30%", textAlign: "left"}}><strong
                                                 style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
                                             </p>
                                         </a>
