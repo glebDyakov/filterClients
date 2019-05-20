@@ -1376,6 +1376,8 @@ q:before, q:after { content:''; }
     align-items: center;
 }
 .supperVisDet p {
+    text-align: left;
+    text-align-last: left;
     white-space: normal;
     word-break: break-word;
 }
