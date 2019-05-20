@@ -1,5 +1,6 @@
 import config from 'config';
 import { authHeader, handleResponse } from '../_helpers';
+import moment from 'moment';
 
 export const calendarService = {
     addAppointment,
@@ -92,20 +93,19 @@ function approveAppointment(appointmentId) {
             return appointment;
         });
 }
-function approveAllAppointment() {
-    const body = JSON.stringify({ approved: true });
+function approveAllAppointment(approved, canceled) {
     const requestOptions = {
         method: 'PATCH',
-        body,
         crossDomain: true,
         credentials: 'include',
         xhrFields: {
             withCredentials: true
         },
-        headers: {...authHeader(), 'Content-Type': 'application/json'}
+        headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/`, requestOptions)
+    const dateTo = moment().endOf('year').format('x')
+    return fetch(`${config.apiUrl}/appointments/approved?dateFrom=1&dateTo=${dateTo}&approved=${approved}&canceled=${canceled}`, requestOptions)
         .then(handleResponse)
 }
 

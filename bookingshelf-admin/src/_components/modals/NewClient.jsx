@@ -34,11 +34,13 @@ class NewClient extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        if (newProps.client.status === 200) {
+            setTimeout(() => this.props.onClose(), 1000)
+        }
         if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
             this.setState({alert:newProps.alert});
             setTimeout(() => {
                 this.setState({...this.state, alert: [] });
-                this.props.onClose()
             }, 3000)
         }
 
@@ -177,8 +179,11 @@ class NewClient extends React.Component {
     };
 
     addClient(){
-        const {addClient} = this.props;
+        const {addClient, isModalShouldPassClient} = this.props;
         const {client} = this.state;
+        if (isModalShouldPassClient) {
+            this.props.checkUser(client);
+        }
 
         return addClient(client);
     };
@@ -200,7 +205,9 @@ function mapStateToProps(state) {
 NewClient.propTypes ={
     client_working: PropTypes.object,
     edit: PropTypes.bool.isRequired,
+    isModalShouldPassClient: PropTypes.bool,
     updateClient: PropTypes.func,
+    checkUser: PropTypes.func,
     addClient: PropTypes.func,
     onClose: PropTypes.func
 };
