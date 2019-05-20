@@ -303,8 +303,9 @@ class IndexPage extends React.Component {
                                 {/*</div>*/}
                             </div>
                             <div className="supperVisDet" >
-                                    <p>Выбрано услуг: <br/>
-                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                                    (<p>Выбрано услуг: <br/>
+                                    <p><strong>{selectedServices.length}</strong></p></p>)}
                                     {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                             </div>
                         </div>}
@@ -384,8 +385,9 @@ class IndexPage extends React.Component {
                             }
                             {selectedService.serviceId &&
                             <div className="supperVisDet" >
-                                <p>Выбрано услуг: <br/>
-                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                                    (<p>Выбрано услуг: <br/>
+                                        <p><strong>{selectedServices.length}</strong></p></p>)}
                                 {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                             </div>
                             }
@@ -450,8 +452,9 @@ class IndexPage extends React.Component {
                             }
                             {selectedService.serviceId &&
                             <div className="supperVisDet" >
-                                <p>Выбрано услуг: <br/>
-                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                                    (<p>Выбрано услуг: <br/>
+                                        <p><strong>{selectedServices.length}</strong></p></p>)}
                                 {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                             </div>
                             }
@@ -514,8 +517,9 @@ class IndexPage extends React.Component {
                             }
                             {selectedService.serviceId &&
                             <div className="supperVisDet" >
-                                <p>Выбрано услуг: <br/>
-                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                                    (<p>Выбрано услуг: <br/>
+                                        <p><strong>{selectedServices.length}</strong></p></p>)}
                                 {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                             </div>
                             }
@@ -578,8 +582,10 @@ class IndexPage extends React.Component {
                             }
                             {selectedService.serviceId &&
                             <div className="supperVisDet" >
-                                <p>Выбрано услуг: <br/>
-                                    <p><strong>{selectedServices.length}</strong></p></p>
+                                {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                                    (<p>Выбрано услуг: <br/>
+                                        <p><strong>{selectedServices.length}</strong></p></p>)}
+                                {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
                             </div>
                             }
                             {selectedDay &&
@@ -654,10 +660,10 @@ class IndexPage extends React.Component {
     }
 
     selectService (e, service) {
-        const {selectedStaff, staffs, selectedService}=this.state;
-        const {company} = this.props.match.params
+        const {selectedStaff, staffs}=this.state;
         const {selectedServices} = this.state;
         const { checked } = e.target;
+
         if (checked) {
             selectedServices.push(service);
         } else {
@@ -686,10 +692,7 @@ class IndexPage extends React.Component {
                 numbers.push(moment(moment().utc().startOf('day').utc().format('x'), "x").add(i, 'minutes').format('x'))
             }
 
-            const serviceIdList = this.getServiceIdList(selectedServices);
-
-            this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
-        }
+}
         this.setState({...this.state, selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
             month:moment().startOf('month').toDate()})
     }
