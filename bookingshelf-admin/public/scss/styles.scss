@@ -2233,6 +2233,7 @@ select{
 .modal-not-approved{
     overflow: hidden;
     padding-right: 0 !important;
+    height: 100%;
     .button-field{
         display: flex;
         justify-content: space-around;
@@ -2255,7 +2256,8 @@ select{
 .modal-height{
     height: 90vh;
     .not-approved-list{
-        height: 85%;
+        height: calc(100% - 110px);;
+
     }
 }
 .modal-open{
@@ -2650,7 +2652,7 @@ textarea {
 
     .list-block-right{
         max-height: 65vh;
-        overflow: hidden;
+        overflow-x: hidden;
     }
 
     .list-style2{

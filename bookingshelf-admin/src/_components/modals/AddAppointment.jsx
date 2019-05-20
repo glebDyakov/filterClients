@@ -76,6 +76,15 @@ class AddAppointment extends React.Component {
             })
         }
 
+        if(this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
+            const user = newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
+            this.setState({ clientChecked: user, shouldUpdateCheckedUser: false})
+        }
+
+        if(JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
+            this.setState({ shouldUpdateCheckedUser: true })
+        }
+
 
         if ( (JSON.stringify(this.props) !==  JSON.stringify(newProps)
             && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)) ||
@@ -534,8 +543,7 @@ class AddAppointment extends React.Component {
 
     newClient(id){
         const {handleEditClient}=this.props;
-
-        return handleEditClient(id)
+        return handleEditClient(id, true);
     }
 
     addAppointment (){

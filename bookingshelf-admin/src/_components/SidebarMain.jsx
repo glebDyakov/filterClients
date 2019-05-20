@@ -24,6 +24,7 @@ class SidebarMain extends Component {
         };
 
         this.handleClick=this.handleClick.bind(this)
+        this.approveAllAppointment=this.approveAllAppointment.bind(this)
         this.openAppointments=this.openAppointments.bind(this)
         this.goToPageCalendar=this.goToPageCalendar.bind(this)
         this.logout=this.logout.bind(this)
@@ -192,11 +193,10 @@ class SidebarMain extends Component {
                                     {appointmentCountMarkup}
 
                                 </div>
-                                {/*/!*{appointmentsCount && (*!/*/}
-
-                                {/*    <div className="button-field down-button">*/}
-                                {/*        <button className="button approveAll" onClick={()=>this.approveAllAppointment()}>Отметить всё как просмотрено</button>*/}
-                                {/*    </div>)}*/}
+                                {appointmentsCount && (
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, false)}>Отметить всё как просмотрено</button>
+                                    </div>)}
                             </div>
                             }
                             {!newOpened &&
@@ -228,6 +228,10 @@ class SidebarMain extends Component {
                                     </li>
                                 )}
                             </div>
+                                {appointmentsCount && (
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, true)}>Отметить всё как просмотрено</button>
+                                    </div>)}
                             </div>
                             }
                         </div>
@@ -249,8 +253,8 @@ class SidebarMain extends Component {
 
         dispatch(calendarActions.approveAppointment(id));
     }
-    approveAllAppointment(){
-        dispatch(calendarActions.approveAllAppointment());
+    approveAllAppointment(approved, canceled){
+        this.props.dispatch(calendarActions.approveAllAppointment(approved, canceled));
     }
 
     goToPageCalendar(id, url){

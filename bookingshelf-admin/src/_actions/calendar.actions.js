@@ -213,16 +213,16 @@ function approveAppointment(id) {
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
     function failure(error) { return { type: calendarConstants.APPROVE_APPOINTMENT_FAILURE, error } }
 }
-function approveAllAppointment() {
+function approveAllAppointment(approved, canceled) {
     return dispatch => {
-        calendarService.approveAllAppointment()
+        calendarService.approveAllAppointment(approved, canceled)
             .then(
-                client => dispatch(success()),
-                error => dispatch(failure(error.toString()))
-            )
-            // .then(dispatch(companyActions.getNewAppointments()));
-    };
+                () => {
+                    dispatch(companyActions.getNewAppointments())
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
 
-    function success(id) { return { type: calendarConstants.APPROVE_ALL_APPOINTMENT_SUCCESS, id } }
-    function failure(error) { return { type: calendarConstants.APPROVE_ALL_APPOINTMENT_FAILURE, error } }
+                },
+            )
+    };
 }
