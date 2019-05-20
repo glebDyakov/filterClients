@@ -278,7 +278,7 @@ class IndexPage extends React.Component {
                         <div className="title_block">
                             <span className="prev_block" onClick={()=>{this.setScreen(1);this.refreshTimetable()} }>Назад</span>
                             <p className="modal_title">Выбор услуги</p>
-                            {selectedService.serviceId && <span className="next_block" onClick={()=>{
+                            {!!selectedServices.length && <span className="next_block" onClick={()=>{
                                 this.setScreen(3);
                                 this.refreshTimetable()
                             }}>Вперед</span>}

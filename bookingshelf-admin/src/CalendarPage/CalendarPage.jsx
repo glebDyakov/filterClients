@@ -300,7 +300,7 @@ class CalendarPage extends Component {
                     updatedState.scrollableAppointmentAction = false
                 }
                 this.setState(updatedState)
-                setTimeout(() => { $(className).removeClass('custom-blick-div') }, 15000);
+                setTimeout(() => { $(formattedClassName).removeClass('custom-blick-div') }, 10000);
             } else {
                 this.animateActiveAppointment(className);
             }
@@ -360,7 +360,7 @@ class CalendarPage extends Component {
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings
+            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage
         } = this.state;
 
         let datePickerProps;
@@ -546,7 +546,7 @@ class CalendarPage extends Component {
                                                 )
 
                                                 }
-                                                {!workingStaff.availableTimetable && <div><p>Нет работающих сотрудников</p></div>}
+                                                {availableTimetableMessage && <div><p>{availableTimetableMessage}</p></div>}
                                             </div>
                                         </div>
 
@@ -702,7 +702,7 @@ class CalendarPage extends Component {
                                                                             </p>
                                                                             <p className="notes-container"
                                                                                style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
-                                                                                <textarea>{resultTextArea}</textarea>
+                                                                                <textarea disabled>{resultTextArea}</textarea>
                                                                             </p>
                                                                             <div className="msg-client-info"
                                                                                  ref={(node) => {
@@ -1093,7 +1093,7 @@ class CalendarPage extends Component {
             this.props.dispatch(calendarActions.getAppointments(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
 
-            this.setState({ workingStaff: {...workingStaff, availableTimetable:[]}, type: 'day', typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
+            this.setState({ workingStaff: {...workingStaff, availableTimetable:[]}, availableTimetableMessage: 'qwe', type: 'day', typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
             typeSelected===1 ? history.pushState(null, '', '/calendar/workingstaff/0/'+moment().format('DD-MM-YYYY'))
             : history.pushState(null, '', '/calendar/allstaff/0/'+moment().format('DD-MM-YYYY'));
 
@@ -1119,6 +1119,7 @@ class CalendarPage extends Component {
                         ...workingStaff,
                         availableTimetable: staffWorking.length === 0 ? null : staffWorking
                     },
+                    availableTimetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
                 });
@@ -1128,6 +1129,7 @@ class CalendarPage extends Component {
 
                 this.setState({
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
+                    availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
                 });
@@ -1142,6 +1144,7 @@ class CalendarPage extends Component {
 
                 this.setState({
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
+                    availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
                     selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
                     typeSelected: typeSelected,
                     staffFromUrl: JSON.parse(staff).staffId
