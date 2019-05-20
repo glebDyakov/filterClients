@@ -1375,7 +1375,10 @@ q:before, q:after { content:''; }
     /*flex-direction: column;*/
     align-items: center;
 }
-
+.supperVisDet p {
+    white-space: normal;
+    word-break: break-word;
+}
 .container_popups .button_block{
     display: flex;
     justify-content: center;

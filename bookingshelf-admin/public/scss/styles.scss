@@ -2256,7 +2256,12 @@ select{
 .modal-height{
     height: 90vh;
     .not-approved-list{
-        height: calc(100% - 110px);;
+
+        height: calc(100% - 130px);
+        @media (max-width: $laptop-width){
+            height: calc(100% - 110px);
+        }
+
 
     }
 }
