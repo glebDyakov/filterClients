@@ -6,13 +6,10 @@ import moment from "moment";
 export const calendarActions = {
     addAppointment,
     getAppointments,
-    setScrollableAppointment,
     getAppointmentsCount,
-    getAppointmentsCanceled,
     editAppointment,
     editAppointmentTime,
     approveAppointment,
-    approveAllAppointment,
     deleteAppointment,
     getReservedTime,
     addReservedTime,
@@ -30,8 +27,6 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
                     dispatch(success(appointment, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 500)
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    setTimeout(() => dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x'))), 1000);
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -43,15 +38,6 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
     function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
-}
-
-
-function setScrollableAppointment(id) {
-    return dispatch => {
-        dispatch(success(id));
-    };
-
-    function success(id) { return { type: calendarConstants.SET_SCROLLABLE_APPOINTMENT, id } }
 }
 
 function addReservedTime(params, staffId) {
@@ -138,19 +124,6 @@ function getAppointmentsCount(dateFrom, dateTo) {
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT, appointments } }
 }
 
-
-function getAppointmentsCanceled(dateFrom, dateTo) {
-
-    return dispatch => {
-        calendarService.getAppointmentsCanceled(dateFrom, dateTo, JSON.parse(localStorage.getItem('user')).profile.staffId)
-            .then(
-                appointments => dispatch(success(appointments)),
-            );
-    };
-
-    function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED, appointments } }
-}
-
 function getReservedTime(dateFrom, dateTo) {
     return dispatch => {
         calendarService.getReservedTime(dateFrom, dateTo)
@@ -199,12 +172,7 @@ function approveAppointment(id) {
     return dispatch => {
         calendarService.approveAppointment(id)
             .then(
-                client => {
-                    dispatch(success(id))
-
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-
-                },
+                client => dispatch(success(id)),
                 error => dispatch(failure(id, error.toString()))
             )
             .then(dispatch(companyActions.getNewAppointments()));
@@ -212,17 +180,4 @@ function approveAppointment(id) {
 
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
     function failure(error) { return { type: calendarConstants.APPROVE_APPOINTMENT_FAILURE, error } }
-}
-function approveAllAppointment(approved, canceled) {
-    return dispatch => {
-        calendarService.approveAllAppointment(approved, canceled)
-            .then(
-                () => {
-                    dispatch(companyActions.getNewAppointments())
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-
-                },
-            )
-    };
 }

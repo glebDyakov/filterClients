@@ -214,6 +214,8 @@ class ClientsPage extends Component {
     }
 
     onOpen(){
+        console.log("onOpen")
+
         this.setState({...this.state, userSettings: true});
     }
 

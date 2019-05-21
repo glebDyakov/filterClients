@@ -78,8 +78,9 @@ class NewStaff extends React.Component {
     }
 
     render() {
-        const { staff, edit, emailIsValid, staffs }=this.state;
+        const {staff, edit, preview, emailIsValid, staffs, selectedItems}=this.state;
 
+        console.log(this.state)
 
         const options = [];
         let option = [];
@@ -95,6 +96,8 @@ class NewStaff extends React.Component {
                 st.staffId===staffr.staffId && option.push({value: staffr.staffId, label: staffr.firstName+" "+staffr.lastName})
             })
         )
+
+        console.log(option)
 
         return (
             <Modal size="lg" style={{maxWidth: '65%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -195,14 +198,12 @@ class NewStaff extends React.Component {
 
                                                             />
                                                             <p>Email</p>
-                                                            <input
-                                                                type="email"
-                                                                placeholder=""
-                                                                name="email"
-                                                                value={staff.email}
-                                                                onChange={this.handleChange}
-                                                                className="disabledField"
-                                                                disabled
+                                                            <input type="email" placeholder="" name="email"
+                                                                   value={staff.email}  onChange={this.handleChange}
+                                                                   onKeyUp={() => this.setState({
+                                                                       emailIsValid: this.isValidEmailAddress(staff.email)
+                                                                   })}
+                                                                   className={'' + ((!this.isValidEmailAddress(staff.email) && staff.email!=='') || (!staff.email && (staff.phone || staff.firstName || staff.lastName)) ? ' redBorder' : '')}
                                                             />
                                                             <div className="check-box">
                                                                 <label>
@@ -320,6 +321,7 @@ class NewStaff extends React.Component {
         const {updateStaff} = this.props;
         const {staff} = this.state;
 
+        console.log(staff)
         if(staff.costaffs && staff.costaffs.length===0) {
             delete staff.costaffs;
         }

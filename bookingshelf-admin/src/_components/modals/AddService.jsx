@@ -46,6 +46,8 @@ class AddService extends React.Component {
     render() {
         const {service, editServiceItem, colors, staffs, group, allStaffs, services}=this.state;
 
+        console.log(this.state)
+
         return (
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-service-modal">

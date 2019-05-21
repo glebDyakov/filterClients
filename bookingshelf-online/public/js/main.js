@@ -8,6 +8,7 @@ function initializeJs() {
             e.stopPropagation();
         });
         $(".nb").click(function () {
+            console.log($(".nb"))
             $('.service_selection').fadeOut(0);
             $(this).parent().parent('.service_selection').next('.service_selection').fadeIn(100);
         });

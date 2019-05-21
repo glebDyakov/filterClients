@@ -99,6 +99,9 @@ class UserSettings extends React.Component {
 
         const {authentication, submitted} = this.state;
 
+        console.log(authentication)
+
+
         return (
             <Modal size="sm"  style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
