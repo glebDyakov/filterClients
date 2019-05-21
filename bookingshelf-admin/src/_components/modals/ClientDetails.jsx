@@ -41,7 +41,7 @@ class ClientDetails extends React.Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <strong>{client.appointments.length}</strong>
+                                        <strong>{client.appointments.length} </strong>
                                         <span className="gray-text">Всего визитов</span>
                                     </div>
                                 </div>
@@ -68,13 +68,14 @@ class ClientDetails extends React.Component {
                                     </div>
                                 </div>
                             )}
-                            <hr/>
-                            <div className="buttons p-4">
-                                <button type="button" className="button" data-toggle="modal"
-                                        data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
-                                </button>
-                            </div>
+
                             <span className="closer"/>
+                        </div>
+                        <hr/>
+                        <div className="buttons p-4">
+                            <button type="button" className="button" data-toggle="modal"
+                                    data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
+                            </button>
                         </div>
                     </div>
                 </div>
