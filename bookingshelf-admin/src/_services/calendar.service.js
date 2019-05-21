@@ -1,11 +1,14 @@
 import config from 'config';
 import { authHeader, handleResponse } from '../_helpers';
+import moment from 'moment';
 
 export const calendarService = {
     addAppointment,
     editAppointment,
     getAppointments,
+    getAppointmentsCanceled,
     approveAppointment,
+    approveAllAppointment,
     deleteAppointment,
     deleteReservedTime,
     getReservedTime,
@@ -24,7 +27,7 @@ function addAppointment(params, serviceId, staffId, clientId) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/services/${serviceId}/staffs/${staffId}/clients/${clientId}/appointments`, requestOptions)
+    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments`, requestOptions)
         .then(handleResponse)
         .then(appointment => {
             return appointment;
@@ -90,6 +93,21 @@ function approveAppointment(appointmentId) {
             return appointment;
         });
 }
+function approveAllAppointment(approved, canceled) {
+    const requestOptions = {
+        method: 'PATCH',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    const dateTo = moment().endOf('year').format('x')
+    return fetch(`${config.apiUrl}/appointments/approved?dateFrom=1&dateTo=${dateTo}&approved=${approved}&canceled=${canceled}`, requestOptions)
+        .then(handleResponse)
+}
 
 function deleteAppointment(appointmentId) {
     const requestOptions = {
@@ -133,6 +151,20 @@ function getAppointments(dateFrom, dateTo) {
     return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
 
+function getAppointmentsCanceled(dateFrom, dateTo, id) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/staffs/${id}/appointments/canceled?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+}
+
 function getReservedTime(dateFrom, dateTo) {
     const requestOptions = {
         method: 'GET',
@@ -146,3 +178,4 @@ function getReservedTime(dateFrom, dateTo) {
 
     return fetch(`${config.apiUrl}/reservedtimes/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
+

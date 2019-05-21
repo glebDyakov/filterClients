@@ -16,10 +16,15 @@ class SidebarMain extends Component {
             authentication: props.authentication,
             company: props.company,
             appointmentsCount: props.appointmentsCount,
-            collapse: localStorage.getItem('collapse') === 'true'
+            collapse: localStorage.getItem('collapse') === 'true',
+            calendar: props.calendar,
+            newOpened: true,
+            canceledOpened: false
+
         };
 
         this.handleClick=this.handleClick.bind(this)
+        this.approveAllAppointment=this.approveAllAppointment.bind(this)
         this.openAppointments=this.openAppointments.bind(this)
         this.goToPageCalendar=this.goToPageCalendar.bind(this)
         this.logout=this.logout.bind(this)
@@ -45,14 +50,23 @@ class SidebarMain extends Component {
         }
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
             this.setState({ ...this.state,
-                company: newProps.company
+                company: newProps.company,
+                count: newProps.company.count && newProps.company.count
+            })
+        }
+        if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
+            this.setState({ ...this.state,
+                appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount,
+                appointmentsCanceled: newProps.calendar.appointmentsCanceled && newProps.calendar.appointmentsCanceled,
             })
         }
     }
 
     componentDidMount() {
         this.props.dispatch(companyActions.getBookingInfo());
+        this.props.dispatch(companyActions.getNewAppointments());
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(menuActions.getMenu());
     }
 
@@ -63,18 +77,37 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location, appointmentsCount: appointmentsCountFromProps }=this.props;
-        const { authentication, menu, company, collapse }=this.state;
+        const { location }=this.props;
+        const { authentication, menu, company, collapse, newOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
         let path="/"+location.pathname.split('/')[1]
-        console.log(this.state)
 
-        let appointmentsCount = appointmentsCountFromProps;
-        let notApprovedAppointments = [];
+        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
 
-        if(appointmentsCountFromProps) {
-            appointmentsCount = appointmentsCountFromProps.filter(appointment => appointment.staff.staffId === authentication.user.profile.staffId);
-            notApprovedAppointments = appointmentsCount && appointmentsCount[0] && appointmentsCount[0].appointments.filter(appointment => !appointment.approved)
-        }
+            appointmentInfo.appointments.map((appointment) => {
+                let resultMarkup = null;
+                if(!appointment.approved && !appointment.coAppointmentId) {
+
+                    resultMarkup = (
+                        <li>
+                            <a className="service_item"
+                               onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                                <p className="service_name" style={{
+                                    width: "65%",
+                                    marginRight: "5%",
+                                    wordWrap: "break-word"
+                                }}>{appointment.serviceName}</p>
+                                <p className="service_time"
+                                   style={{width: "30%", textAlign: "left"}}>
+                                    <strong
+                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                </p>
+                            </a>
+                        </li>
+                    )
+                }
+                return resultMarkup;
+            })
+        )
 
         return (
             <div>
@@ -110,9 +143,10 @@ class SidebarMain extends Component {
                                 src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                 alt=""/>
                             <span>{item.name}</span>
-                            {keyStore===0 && notApprovedAppointments && notApprovedAppointments.length>0 && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">
-                                {notApprovedAppointments.length}
-                            </span>}
+                            {keyStore===0 &&
+                            ((count && count.appointments && count.appointments.count>0) ||
+                            (count && count.canceled && count.canceled.count>0))
+                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count.appointments.count)+parseInt(count.canceled.count)}</span>}
                         </a>
                     </li>
                     )
@@ -137,27 +171,74 @@ class SidebarMain extends Component {
             </ul>
                 <div className="modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
-                        <div className="modal-content">
+                        <div className="modal-content modal-height">
                             <div className="modal-header">
-                                <h4 className="modal-title">Новые записи</h4>
+                                <h4 className="modal-title">Уведомления</h4>
 
 
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div className="modal-inner pl-4 pr-4 count-modal">
-                                {appointmentsCount && appointmentsCount.map((appointmentInfo)=>
-                                    appointmentInfo.appointments.map((appointment)=>
-                                        !appointment.approved &&
-                                    <li>
-                                        <a className="service_item" onClick={()=>this.goToPageCalendar(appointment.appointmentId, "/page/"+appointmentInfo.staff.staffId+"/"+moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                            <p>{appointment.serviceName}</p>
-                                            <p><strong style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, HH:mm')}</strong></p>
+
+                            {newOpened &&
+                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
+                                <div className="button-field">
+                                    <button type="button" className="float-left button small-button">Новые записи <span className="counter">
+                                        {count && count.appointments && count.appointments.count}
+                                    </span></button>
+                                    <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled.count}</span></button>
+                                </div>
+                                <div className="not-approved-list">
+                                    {appointmentCountMarkup}
+
+                                </div>
+                                {appointmentsCount && (
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, false)}>Отметить всё как просмотрено</button>
+                                    </div>)}
+                            </div>
+                            }
+                            {!newOpened &&
+                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
+
+                                <div className="button-field">
+                                    <button type="button" className="float-left button small-button disabled"
+                                            onClick={() => this.setState({'newOpened': true})}>Новые
+                                        записи<span className="counter">
+                                            {count && count.appointments && count.appointments.count}
+                                            </span></button>
+                                    <button type="button" className="float-left button small-button">Удаленные записи<span
+                                        className="counter">{count && count.canceled && count.canceled.count}</span></button>
+                                </div>
+                                <div className="not-approved-list">
+                                {appointmentsCanceled &&
+                                appointmentsCanceled.map((appointment) =>
+                                    !appointment.approved &&
+                                    <li className="opacity0">
+                                        <a className="service_item">
+                                            <p className="service_name" style={{
+                                                width: "65%",
+                                                marginRight: "5%",
+                                                wordWrap: "break-word"
+                                            }}>{appointment.serviceName}<br/>
+                                                <span
+                                                    className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                            </p>
+                                            <p className="service_time"
+                                               style={{width: "30%", textAlign: "left"}}><strong
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                            </p>
                                         </a>
                                     </li>
-                                ))}
+                                )}
                             </div>
+                                {appointmentsCount && (
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, true)}>Отметить всё как просмотрено</button>
+                                    </div>)}
+                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -177,6 +258,9 @@ class SidebarMain extends Component {
 
         dispatch(calendarActions.approveAppointment(id));
     }
+    approveAllAppointment(approved, canceled){
+        this.props.dispatch(calendarActions.approveAllAppointment(approved, canceled));
+    }
 
     goToPageCalendar(id, url){
         $('.modal_counts').modal('hide')
@@ -184,6 +268,22 @@ class SidebarMain extends Component {
         this.props.history.push(url);
 
         this.approveAppointment(id)
+        this.props.dispatch(calendarActions.setScrollableAppointment(id))
+        // const className = `.${id}`;
+        //  setTimeout(() => {
+        //
+        //      $(className).addClass("custom-blick-div")
+        //
+        //
+        //      setTimeout(() => {
+        //          // container.animate({scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop(), scrollLeft: 0},300);
+        //          const elmnt = document.getElementsByClassName(className)[0];
+        //          elmnt.scrollIntoView();
+        //          }, 500);
+        //
+        //  }, 1000)
+        //
+        // setTimeout(()=> $(className).removeClass("custom-blick-div"), 15000);
 
     }
     openAppointments(event){
@@ -193,9 +293,9 @@ class SidebarMain extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar: {appointmentsCount} } = state;
+    const { alert, menu, authentication, company, calendar, appointmentsCount } = state;
     return {
-        alert, menu, authentication, company, appointmentsCount
+        alert, menu, authentication, company, calendar, appointmentsCount
     };
 }
 

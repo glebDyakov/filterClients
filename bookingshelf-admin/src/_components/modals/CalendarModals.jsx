@@ -30,7 +30,9 @@ class CalendarModals extends Component {
 
         }
         this.updateClient = this.updateClient.bind(this);
+        this.checkUser = this.checkUser.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.changeTime = this.changeTime.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
         this.onCloseAppointment = this.onCloseAppointment.bind(this);
         this.onCloseReserved = this.onCloseReserved.bind(this);
@@ -55,17 +57,15 @@ class CalendarModals extends Component {
         this.props.deleteAppointment(id);
     }
 
-    handleEditClient(id) {
+    handleEditClient(id, isModalShouldPassClient) {
         const { clients } = this.props;
 
-        console.log('id', id);
-        console.log('clients', clients);
         if(id!=null) {
             const client_working = clients.client.find((item) => {return id === item.clientId});
 
-            this.setState({ editClient: true, client_working: client_working, newClientModal: true});
+            this.setState({ editClient: true, isModalShouldPassClient, client_working: client_working, newClientModal: true});
         } else {
-            this.setState({ editClient: false, client_working: {}, newClientModal: true});
+            this.setState({ editClient: false, isModalShouldPassClient, client_working: {}, newClientModal: true});
         }
     }
     newAppointment(appointment, serviceId, staffId, clientId) {
@@ -103,13 +103,17 @@ class CalendarModals extends Component {
         this.props.deleteReserve(stuffId, id);
     }
 
+    checkUser(checkedUser) {
+        this.setState({ checkedUser, appointmentModal: true })
+    }
+
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll,
-            services, calendar, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, workingStaff, numbers, type,
+            services, calendar, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type,
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps }
             = this.props;
 
-        const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient} = this.state;
+        const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;
 
 
         return(<React.Fragment>
@@ -132,7 +136,9 @@ class CalendarModals extends Component {
                     <NewClient
                         client_working={client_working}
                         edit={editClient}
+                        isModalShouldPassClient={isModalShouldPassClient}
                         updateClient={this.updateClient}
+                        checkUser={this.checkUser}
                         addClient={this.addClient}
                         onClose={this.onCloseClient}
                     />
@@ -140,6 +146,7 @@ class CalendarModals extends Component {
                     {(appointmentModal || appointmentModalFromProps) &&
                     <AddAppointment
                         clients={clients}
+                        checkedUser={checkedUser}
                         staffs={staffAll}
                         randNum={Math.random()}
                         addAppointment={this.newAppointment}
@@ -150,6 +157,8 @@ class CalendarModals extends Component {
                         clickedTime={clickedTime}
                         minutes={minutes}
                         staffId={staffClicked}
+                        selectedDayMoment={selectedDayMoment}
+                        selectedDay={selectedDay}
                         appointmentEdited={appointmentEdited}
                         getHours={this.changeTime}
                         edit_appointment={edit_appointment}

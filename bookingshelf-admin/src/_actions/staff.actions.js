@@ -146,8 +146,6 @@ function update(params) {
                         user.profile.lastName=staff.lastName
                         user.profile.phone=staff.phone
 
-                        console.log(user.profile)
-
                         dispatch(successUser(user.profile));
                     }
 
