@@ -76,7 +76,7 @@ function add(id, staff, service, params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/${id}/staffs/${staff}/services/${service}/appointments`, requestOptions).then(handleResponse);
 }
 
 
@@ -85,7 +85,7 @@ function _delete(id) {
         method: 'DELETE'
     };
 
-    return fetch(`https://${config.apiUrl.includes('staging') ? 'staging.' : ''}online-zapis.com/rest/visits/v1/${id}`, requestOptions).then(handleResponse);
+    return fetch(`https://online-zapis.com/rest/visits/v1/${id}`, requestOptions).then(handleResponse);
 }
 
 
@@ -95,7 +95,7 @@ function getByCustomId(id) {
         headers: {'Content-Type': 'application/json' }
     };
 
-    return fetch(`https://${config.apiUrl.includes('staging') ? 'staging.' : ''}online-zapis.com/rest/visits/v1/${id}`, requestOptions).then(handleResponse);
+    return fetch(`https://online-zapis.com/rest/visits/v1/${id}`, requestOptions).then(handleResponse);
 }
 
 

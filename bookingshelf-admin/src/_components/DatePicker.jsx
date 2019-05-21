@@ -105,8 +105,8 @@ class DatePicker extends Component {
             <div className="select-date">
                 <div className="select-inner">
                     <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
-                        <div className="button-calendar" onClick={()=>this.showCalendar(true)}>
-                            <span className="dates-full-width text-capitalize date-num" >
+                        <div className="button-calendar">
+                            <span className="dates-full-width text-capitalize date-num" onClick={()=>this.showCalendar(true)}>
                                 {selectedDaysText}
                             </span>
                             <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>

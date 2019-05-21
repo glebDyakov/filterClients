@@ -121,6 +121,9 @@ export function staff(state= {}, action) {
                 st2.push(st1)
             );
 
+            console.log('st')
+            console.log(st2)
+
             staffs.map(st=> {
                 let costaffOne=[st];
                 st.costaffs && st.costaffs.map(costaff=>
