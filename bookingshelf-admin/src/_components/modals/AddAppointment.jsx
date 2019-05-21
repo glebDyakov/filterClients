@@ -474,7 +474,7 @@ class AddAppointment extends React.Component {
                                                     {cl.appointments && cl.appointments.length!==0 ?
                                                         <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                                                     }
-                                                    <div style={{'maxHeight':'300px', 'overflow':'auto'}}>
+                                                    <div className='last-visit-list'>
                                                     {cl.appointments && cl.appointments.map((appointment)=>appointment.id===cl.id &&
                                                         <div className="visit-info row pl-4 pr-4 mb-2">
                                                             <div className="col-9">

@@ -1,6 +1,7 @@
 import config from 'config';
 import { authHeader, handleResponse } from '../_helpers';
 import FileSaver from 'file-saver';
+import moment from "moment";
 
 export const clientService = {
     addClient,
@@ -95,7 +96,7 @@ function getClientWithInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=1&dateTo=1550128218518`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=1&dateTo=${moment().endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {

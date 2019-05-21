@@ -36,6 +36,7 @@ class MainIndexPage extends Component {
             activeDay: 1,
             status: {},
             submitted: false,
+            isAvatarOpened: true,
             userSettings: false
         };
 
@@ -126,7 +127,9 @@ class MainIndexPage extends Component {
     handleSubmit(e) {
         const { companyName, companyAddress, companyEmail, companyPhone, timezoneId } = this.state.company.settings;
         const { dispatch } = this.props;
-        const {settings}=this.state.company
+        const {settings}=this.state.company;
+
+        this.onClose();
 
 
         const phoneIndexes = [1, 2, 3];
@@ -134,7 +137,8 @@ class MainIndexPage extends Component {
 
         e.preventDefault();
 
-        this.setState({...this.state, submitted: true });
+        this.setState({...this.state, submitted: true, isAvatarOpened: false });
+        setTimeout(() => this.setState({ isAvatarOpened: true }), 100);
 
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
             dispatch(companyActions.add(settings, JSON.parse(localStorage.getItem('user')).menu, JSON.parse(localStorage.getItem('user')).profile));
@@ -161,7 +165,7 @@ class MainIndexPage extends Component {
 
 
     render() {
-        const { authentication, submitted, isLoading, activeDay, status, company, userSettings } = this.state;
+        const { authentication, submitted, isLoading, activeDay, status, company, userSettings, isAvatarOpened } = this.state;
 
         return (
             <div>
@@ -407,14 +411,15 @@ class MainIndexPage extends Component {
                                                                 <img src={company.settings.imageBase64 && company.settings.imageBase64!==''?("data:image/png;base64,"+company.settings.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
                                                             </div>
-                                                            <Avatar
-                                                                height={180}
-                                                                cropRadius="100%"
-                                                                label=""
-                                                                onCrop={this.onCrop}
-                                                                onClose={this.onClose}
-
-                                                            />
+                                                            {isAvatarOpened &&
+                                                                <Avatar
+                                                                    height={180}
+                                                                    cropRadius="100%"
+                                                                    label=""
+                                                                    onCrop={this.onCrop}
+                                                                    onClose={this.onClose}
+                                                                />
+                                                            }
                                                         </div>
                                                     </label>
                                                 </div>

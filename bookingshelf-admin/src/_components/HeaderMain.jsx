@@ -61,7 +61,7 @@ class HeaderMain extends React.Component {
 
                 {((count && count.appointments && count.appointments.count>0) ||
                 (count && count.canceled && count.canceled.count>0))
-                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count.appointments.count)+parseInt(count.canceled.count)}</span></div>}
+                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span></div>}
 
                 <div className="col">
                     <p className="red-title-block mob-setting ">
