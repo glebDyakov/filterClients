@@ -1,52 +1,102 @@
 import {staffConstants} from '../_constants';
 
-export function staff(state= {}, action) {
+const initialState = {
+    error: '',
+    isLoading: false
+}
+
+export function staff(state= initialState, action) {
     switch (action.type) {
 
         case staffConstants.GET_SUCCESS:
             return {
                 ...state,
-                staff: action.staff
+                staff: action.staff,
+                isLoading: false
             };
         case staffConstants.GET_SERVICES_SUCCESS:
             return {
                 ...state,
-                services: action.services
+                services: action.services,
+                isLoading: false
             };
         case staffConstants.GET_INFO_SUCCESS:
             return {
                 ...state,
-                info: action.info
+                info: action.info,
+                isLoading: false
+            };
+        case staffConstants.GET:
+        case staffConstants.GET_INFO:
+        case staffConstants.GET_SERVICES:
+        case staffConstants.GET_NEAREST_TIME:
+        case staffConstants.GET_APPOINTMENT_CUSTOM:
+        case staffConstants.GET_TIMETABLE:
+        case staffConstants.GET_TIMETABLE_AVAILABLE:
+        case staffConstants.DELETE_APPOINTMENT:
+            return {
+                ...state,
+                isLoading: true
             };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
-                timetable: action.timetable
+                timetable: action.timetable,
+                isLoading: false
             };
         case staffConstants.GET_TIMETABLE_AVAILABLE_SUCCESS:
             return {
                 ...state,
-                timetableAvailable: action.timetableAvailable
+                timetableAvailable: action.timetableAvailable,
+                isLoading: false
             };
+        case staffConstants.GET_FAILURE:
+        case staffConstants.GET_INFO_FAILURE:
+        case staffConstants.GET_SERVICES_FAILURE:
+        case staffConstants.GET_NEAREST_TIME_FAILURE:
+        case staffConstants.GET_APPOINTMENT_CUSTOM_FAILURE:
+        case staffConstants.GET_TIMETABLE_FAILURE:
+        case staffConstants.GET_TIMETABLE_AVAILABLE_FAILURE:
+        case staffConstants.DELETE_APPOINTMENT_FAILURE:
+            return {
+                ...state,
+                isLoading: false
+            }
+        case staffConstants.ADD_APPOINTMENT:
+            return {
+                ...state,
+                isLoading: true
+            }
         case staffConstants.ADD_APPOINTMENT_SUCCESS:
             return {
                 ...state,
-                newAppointment: action.appointment
+                newAppointment: action.appointment,
+                error: '',
+                isLoading: false
+            };
+        case staffConstants.ADD_APPOINTMENT_FAILURE:
+            return {
+                ...state,
+                error: 'Извините, это время недоступно для записи',
+                isLoading: false
             };
         case staffConstants.DELETE_APPOINTMENT_SUCCESS:
             return {
                 ...state,
-                deleted: true
+                deleted: true,
+                isLoading: false
             };
         case staffConstants.GET_APPOINTMENT_CUSTOM_SUCCESS:
             return {
                 ...state,
-                appointment: action.appointment
+                appointment: action.appointment,
+                isLoading: false
             };
         case staffConstants.GET_NEAREST_TIME_SUCCESS:
             return {
                 ...state,
-                nearestTime: action.nearestTime
+                nearestTime: action.nearestTime,
+                isLoading: false
             };
         default:
             return state

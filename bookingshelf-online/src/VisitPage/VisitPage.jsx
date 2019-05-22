@@ -59,7 +59,7 @@ class VisitPage extends React.Component {
 
     onCancelVisit () {
         this.setState({...this.state, approveF: true});
-        this.approvedButtons.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
     }
 
     render() {

@@ -96,8 +96,6 @@ class RegisterPage extends React.Component {
     render() {
         const { user, emailIsValid, agreed, authentication } = this.state;
 
-        console.log(authentication.error)
-
         return (
             <div>
                 <div className="container-bg slideLeft"></div>
@@ -110,7 +108,7 @@ class RegisterPage extends React.Component {
                     <div className="sign_up">
                         <div>
                             <form name="form" onSubmit={this.handleSubmit}>
-                                <p>Зарегистрируйте и получите бесплатный пробный период 30 дней</p>
+                                <p>Зарегистрируйтесь и получите бесплатный пробный период 30 дней</p>
                                 <span>Название компании</span>
                                 <input type="text" className={'' + (user.countryCode && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
 

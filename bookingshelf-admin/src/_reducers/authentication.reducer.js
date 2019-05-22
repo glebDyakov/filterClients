@@ -132,8 +132,6 @@ export function authentication(state = initialState, action) {
                 adding: true
             };
         case userConstants.UPDATE_PROFILE_SUCCESS:
-
-            console.log(action.error)
             let profile = state.user
 
             let user = {...action.user,  password:'',
