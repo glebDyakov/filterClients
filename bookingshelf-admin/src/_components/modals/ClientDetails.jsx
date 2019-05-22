@@ -7,13 +7,19 @@ class ClientDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: props.client
+            client: props.client,
+            allPrice: 0
         };
     }
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, client:newProps.client});
+            if (newProps.client) {
+                let allPrice = 0;
+                newProps.client.appointments.forEach((appointment) => allPrice += appointment.priceFrom);
+                this.setState({ allPrice: allPrice });
+            }
         }
     }
 
@@ -40,9 +46,13 @@ class ClientDetails extends React.Component {
                                         className="email-user">{client.email}</span></span>
                                 </div>
                                 <div className="row">
-                                    <div className="col-12">
-                                        <strong>{client.appointments.length}</strong>
+                                    <div className="col-6" style={{textAlign:'center'}}>
+                                        <strong>{client.appointments.length} </strong><br/>
                                         <span className="gray-text">Всего визитов</span>
+                                    </div>
+                                    <div className="col-6"  style={{textAlign:'center'}}>
+                                        <strong>{this.state.allPrice} {client.appointments[0].currency}</strong><br/>
+                                        <span className="gray-text">Всего оплачено</span>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +61,9 @@ class ClientDetails extends React.Component {
                             {client && client.appointments && client.appointments.length!==0 ?
                                 <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
-                            {client && client.appointments && client.appointments.map((appointment)=>appointment.id===client.id &&
+                            {client && client.appointments && client.appointments.map((appointment)=>{
+
+                                return(appointment.id===client.id &&
                                 <div className="visit-info row pl-4 pr-4 mb-2">
                                     <div className="col-9">
                                         <p className="gray-bg">
@@ -67,14 +79,15 @@ class ClientDetails extends React.Component {
                                         <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
                                     </div>
                                 </div>
-                            )}
-                            <hr/>
-                            <div className="buttons p-4">
-                                <button type="button" className="button" data-toggle="modal"
-                                        data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
-                                </button>
-                            </div>
+                            )})}
+
                             <span className="closer"/>
+                        </div>
+                        <hr/>
+                        <div className="buttons p-4">
+                            <button type="button" className="button" data-toggle="modal"
+                                    data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
+                            </button>
                         </div>
                     </div>
                 </div>

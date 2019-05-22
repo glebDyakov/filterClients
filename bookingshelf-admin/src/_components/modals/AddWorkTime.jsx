@@ -34,11 +34,12 @@ class AddWorkTime extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
+
             this.setState({...this.state,
                 staff: newProps.currentStaff,
                 date: newProps.date,
                 staffs:newProps.staff,
-                repeat:newProps.editing_object?newProps.editing_object[0].repeat:'ONCE' })
+                repeat:newProps.editing_object?newProps.editing_object[0].repeat: this.state.repeat })
 
         }
     }
@@ -233,7 +234,7 @@ class AddWorkTime extends React.Component {
         const {times, repeat, staff} = this.state;
 
         let timing=[];
-        times&&times.map(time=>timing.push({...time, repeat:repeat}));
+        times && times.map(time=>timing.push({...time, repeat:repeat}));
 
         return addWorkingHours(timing, staff.staffId, );
     }

@@ -26,8 +26,6 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/visits/:company/:visit" component={VisitPage} />
                         <Route path="/:company" component={IndexPage} />
-
-
                     </Switch>
                 </div>
             </Router>
