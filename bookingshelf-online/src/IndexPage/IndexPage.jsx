@@ -749,10 +749,10 @@ class IndexPage extends React.Component {
         let time = Math.ceil((parseInt(moment(number, 'x').locale('ru').format('m')))/ 15) * 15
 
         if(time===60){
-            return date.add(1, 'hour').format('MMMM DD, HH')+":00";
+            return date.add(1, 'hour').format('MMMM DD, dd, HH')+":00";
 
         }else {
-            return date.format('MMMM DD, HH')+":"+moment(time, 'm').format('mm')
+            return date.format('MMMM DD, dd,  HH')+":"+moment(time, 'm').format('mm')
         }
     }
 
