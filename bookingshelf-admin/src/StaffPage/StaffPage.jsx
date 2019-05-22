@@ -35,10 +35,10 @@ function getWeekDays(weekStart) {
 
 function getWeekRange(date) {
     return {
-        from: moment(date).utc().locale('ru')
+        from: moment(date).locale('ru')
             .startOf('week')
             .toDate(),
-        to: moment(date).utc().locale('ru')
+        to: moment(date).locale('ru')
             .endOf('week')
             .toDate(),
     };
@@ -243,10 +243,10 @@ class StaffPage extends Component {
                                             <div className="select-inner">
                                                 <span className="arrow-left" onClick={this.showPrevWeek}/>
 
-                                                <div className="button-calendar" >
-
-                                                    <span
-                                                        className="dates-full-width text-capitalize date-num"  onClick={this.showCalendar}>{moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}</span>
+                                                <div className="button-calendar" onClick={this.showCalendar}>
+                                                    <span className="dates-full-width text-capitalize date-num">
+                                                        {moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}
+                                                    </span>
                                                     <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
                                                         <i className="datepicker--pointer"></i>
                                                         <DayPicker
@@ -755,8 +755,9 @@ class StaffPage extends Component {
     };
 
     handleDayEnter (date) {
+        const hoverRange = getWeekRange(date)
         this.setState({
-            hoverRange: getWeekRange(date),
+            hoverRange
         });
     };
 

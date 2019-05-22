@@ -13,15 +13,15 @@ export function calendar(state = {}, action) {
             let appointments = state.appointments;
             if (appointments) {
                 let boolAppointments = appointments.filter((app, key) =>
-                    app.staff.staffId === action.staffId && app['appointments'].push(action.appointment)
+                    action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
                 );
 
                 if (boolAppointments.length !== 0) {
                 } else {
-                    appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [action.appointment]})
+                    action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
                 }
             } else {
-                appointments = [{'staff': {'staffId': action.staffId}, 'appointments': [action.appointment]}];
+                appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
             }
             return {
                 ...state,
@@ -105,6 +105,32 @@ export function calendar(state = {}, action) {
                 status: 200,
                 appointments: appointmentsApproved
             };
+        case calendarConstants.APPROVE_APPOINTMENT_SUCCESS:
+
+            // let appointmentsApproved = state.appointments;
+            // appointmentsApproved.map((app, key1) =>
+            //     app['appointments'].map((appointments, key2) => {
+            //         if (appointments.appointmentId === action.id) {
+            //             appointmentsApproved[key1]['appointments'][key2].approved = true
+            //         }
+            //     })
+            // );
+            //
+            // return {
+            //     ...state,
+            //     status: 200,
+            //     appointments: appointmentsApproved
+            // };
+
+            return {
+                ...state
+            }
+
+        case calendarConstants.SET_SCROLLABLE_APPOINTMENT:
+            return {
+                ...state,
+                scrollableAppointmentId: action.id
+            }
         case calendarConstants.DELETE_APPOINTMENT_SUCCESS:
             const appointmentsDeleted = state.appointments;
 
@@ -152,6 +178,12 @@ export function calendar(state = {}, action) {
             return {
                 ...state,
                 appointmentsCount: action.appointments
+            };
+
+        case calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED:
+            return {
+                ...state,
+                appointmentsCanceled: action.appointments
             };
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {

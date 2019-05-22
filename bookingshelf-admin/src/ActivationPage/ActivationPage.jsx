@@ -10,8 +10,9 @@ class ActivationPage extends React.Component {
 
     componentDidMount() {
         const {company} = this.props.match.params;
-        this.props.dispatch(userActions.activate(company));
-
+        if (!this.props.loginChecked) {
+            this.props.dispatch(userActions.activate(company));
+        }
     }
 
     render() {
@@ -30,9 +31,9 @@ class ActivationPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.authentication;
+    const { registering, loginChecked } = state.authentication;
     return {
-        registering
+        registering, loginChecked
     };
 }
 
