@@ -63,6 +63,7 @@ class ClientDetails extends React.Component {
                             }
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
+                                    .filter(appointment => appointment.appointmentTimeMillis < moment().format('x'))
                                     .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
