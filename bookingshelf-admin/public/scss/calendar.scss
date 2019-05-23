@@ -1266,13 +1266,16 @@
             }
         }
     }
+    .visit-info-wrapper {
+        overflow-y: auto;
+        height: 100%;
+    }
     .client-info{
         display: block;
         position: relative;
         border: none;
         box-shadow: none;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden;
         height: 83%;
         padding: 105px 0 35px;
 
