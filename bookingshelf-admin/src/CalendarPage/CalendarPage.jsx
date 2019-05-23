@@ -213,7 +213,7 @@ class CalendarPage extends Component {
             } else {
                 this.navigateToRedLine()
             }
-        }, 1000);
+        }, 300);
     }
 
     refreshTable(startTime, endTime) {
@@ -279,7 +279,7 @@ class CalendarPage extends Component {
             if (!this.props.calendar.scrollableAppointmentId && scrollableRedLine && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
                 this.navigateToRedLine();
             }
-        }, 2000);
+        }, 300);
 
     }
 
