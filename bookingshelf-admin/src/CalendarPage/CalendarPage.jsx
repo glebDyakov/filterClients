@@ -132,6 +132,7 @@ class CalendarPage extends Component {
             appointmentModal: false,
             newClientModal: false,
             scrollableAppointmentAction: true,
+            scrollableRedLine: true,
             appointmentMarkerAction: false,
             appointmentMarkerActionCalled: false
         };
@@ -162,6 +163,7 @@ class CalendarPage extends Component {
         this.onCloseClient = this.onCloseClient.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.animateActiveAppointment = this.animateActiveAppointment.bind(this);
+        this.navigateToRedLine = this.navigateToRedLine.bind(this);
     }
 
     componentDidMount() {
@@ -199,15 +201,19 @@ class CalendarPage extends Component {
 
         this.scrollToMyRef();
 
-        setTimeout(() => {
-            if (!this.props.calendar.scrollableAppointmentId) {
-                const activeElem = document.getElementsByClassName("present-time")[0];
-                if (activeElem) {
-                    activeElem.scrollIntoView();
-                }
-            }
-        }, 2000);
 
+
+    }
+    navigateToRedLine() {
+        setTimeout(() => {
+            const activeElem = document.getElementsByClassName("present-time")[0];
+            if (activeElem) {
+                activeElem.scrollIntoView();
+                this.setState({ scrollableRedLine: false });
+            } else {
+                this.navigateToRedLine()
+            }
+        }, 1000);
     }
 
     refreshTable(startTime, endTime) {
@@ -232,7 +238,7 @@ class CalendarPage extends Component {
 
     }
 
-    componentDidUpdate(prevProps, newProps) {
+    componentDidUpdate(prevProps, prevState) {
         const { calendar } = this.props;
         const { scroll, appointmentMarkerAction, appointmentMarkerActionCalled }=this.state;
 
@@ -265,6 +271,16 @@ class CalendarPage extends Component {
             const className = calendar.scrollableAppointmentId;
             this.animateActiveAppointment(className);
         }
+        if (prevState.selectedDay !== this.state.selectedDay) {
+            this.setState({ scrollableRedLine: true })
+        }
+        setTimeout(() => {
+            const {selectedDay, scrollableRedLine} = this.state;
+            if (!this.props.calendar.scrollableAppointmentId && scrollableRedLine && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+                this.navigateToRedLine();
+            }
+        }, 2000);
+
     }
 
     scrollToMyRef () {
@@ -518,7 +534,7 @@ class CalendarPage extends Component {
                                                     'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'
                                                 }}
                                             >
-                                            <div className="tab-content-list">
+                                            <div className="tab-content-list tab-content-list-first">
                                                 <div className="hours"><span></span></div>
 
                                                 {workingStaff.availableTimetable && workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
@@ -562,20 +578,20 @@ class CalendarPage extends Component {
                                             </div>
                                         </div>
                                         {/*{workingStaff.availableTimetable &&*/}
-                                        <div className="left-fixed-tab">
-                                            <div>
-                                                {numbers && numbers.map((time) =>
-                                                    <div className="tab-content-list ">
-                                                        {moment(time, "x").format('mm') === '00' ?
-                                                            <div className={"hours" + " "}>
-                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                            : <div className="hours minutes">
-                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
-                                                        }
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
+                                        {/*<div className="left-fixed-tab">*/}
+                                        {/*    <div>*/}
+                                        {/*        {numbers && numbers.map((time) =>*/}
+                                        {/*            <div className="tab-content-list ">*/}
+                                        {/*                {moment(time, "x").format('mm') === '00' ?*/}
+                                        {/*                    <div className={"hours" + " "}>*/}
+                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
+                                        {/*                    : <div className="hours minutes">*/}
+                                        {/*                        <span>{moment(time, "x").format('HH:mm')}</span></div>*/}
+                                        {/*                }*/}
+                                        {/*            </div>*/}
+                                        {/*        )}*/}
+                                        {/*    </div>*/}
+                                        {/*</div>*/}
                                         {/*}*/}
 
                                         <div className="tabs-scroll"
@@ -583,7 +599,14 @@ class CalendarPage extends Component {
                                         >
                                             {numbers && numbers.map((time, key) =>
                                                 <div className="tab-content-list" key={key}>
-                                                    <div className="expired"><span/></div>
+                                                    <div className="expired ">
+                                                        {moment(time, "x").format('mm') === '00' ?
+                                                            <div className={"hours" + " "}>
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                            : <div className="hours minutes">
+                                                                <span>{moment(time, "x").format('HH:mm')}</span></div>
+                                                        }
+                                                    </div>
                                                     {workingStaff.availableTimetable && selectedDays.map((day) => workingStaff.availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                                                         let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
                                                         let appointment = calendar && calendar.appointments &&
@@ -783,7 +806,7 @@ class CalendarPage extends Component {
                                                                     staff={workingStaffElement.staffId}
                                                                     onClick={() => notExpired && this.changeTime(currentTime, workingStaffElement, numbers, false, null)}
                                                                 ><span
-                                                                    className="fade-time">{moment(time, 'x').format("HH:mm")}</span>
+                                                                    className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
                                                                 </div>
                                                             )
                                                         }
