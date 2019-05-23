@@ -68,7 +68,7 @@ class CalendarPage extends Component {
 
             dateFr = moment(getDayRange(moment()).from);
 
-            dateTo = [getDayRange(moment()).from]
+            dateTo = [getDayRange(moment()).from];
 
             dateToType = 'day'
 
@@ -137,6 +137,7 @@ class CalendarPage extends Component {
         };
 
         this.newAppointment = this.newAppointment.bind(this);
+        this.refreshTable = this.refreshTable.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.changeTime = this.changeTime.bind(this);
         this.getHours = this.getHours.bind(this);
@@ -149,7 +150,6 @@ class CalendarPage extends Component {
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this.scrollToMyRef = this.scrollToMyRef.bind(this);
-        this.scrollTop = this.scrollTop.bind(this);
         this.getHours24 = this.getHours24.bind(this);
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
@@ -180,16 +180,15 @@ class CalendarPage extends Component {
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
 
-
+        let startTime, endTime;
         if (type === 'day') {
-            this.props.dispatch(staffActions.getTimetableStaffs(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getAppointments(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getReservedTime(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x');
         } else {
-            this.props.dispatch(staffActions.getTimetableStaffs(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getAppointments(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getReservedTime(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
+        this.refreshTable(startTime, endTime);
 
         this.getHours24();
 
@@ -211,20 +210,24 @@ class CalendarPage extends Component {
 
     }
 
-    updateCalendar(){
-        const {dispatch}=this.props;
-        const {selectedDayMoment, selectedDays, type}=this.state;
+    refreshTable(startTime, endTime) {
+        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
+        this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
+        this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
+    }
 
+    updateCalendar(){
+        const {selectedDayMoment, selectedDays, type}=this.state;
+        let startTime, endTime;
 
         if(type==='day'){
-           dispatch(staffActions.getTimetableStaffs(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-           dispatch(calendarActions.getAppointments(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-           dispatch(calendarActions.getReservedTime(selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
-           dispatch(staffActions.getTimetableStaffs(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-           dispatch(calendarActions.getAppointments(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-           dispatch(calendarActions.getReservedTime(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
+        this.refreshTable(startTime, endTime);
         setTimeout(()=>this.updateCalendar(), 300000)
 
     }
@@ -265,25 +268,15 @@ class CalendarPage extends Component {
     }
 
     scrollToMyRef () {
-        const listItemHeight =  parseInt($(".left-fixed-tab div:first-child").height())/92*(((parseInt(moment().format('H'))-2))*4);
+        const listItemHeight = parseInt($(".left-fixed-tab div:first-child").height())/92*(((parseInt(moment().format('H'))-2))*4);
 
         // $(".tabs-scroll").scrollTop(listItemHeight);
         // $(".left-fixed-tab").scrollTop(listItemHeight);
 
 
-        if(listItemHeight!==0) {
-            this.setState({
-                ...this.state,
-                scroll: false
-            })
+        if (listItemHeight) {
+            this.setState({ scroll: false })
         }
-    }
-
-    scrollTop () {
-        const listItemHeight =  parseInt($(".left-fixed-tab div:first-child").height())/64*(((parseInt(moment().format('H')))-7)*4);
-
-        // $(".tabs-scroll").scrollTop();
-        // $(".left-fixed-tab").scrollTop();
     }
 
     animateActiveAppointment(className) {
@@ -316,16 +309,12 @@ class CalendarPage extends Component {
             });
         }
         if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
-            this.setState({
-                appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal
-            });
+            this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
         }
 
         if (newProps.calendar.scrollableAppointmentId) {
             this.setState({ appointmentMarkerAction: true });
         }
-
-
 
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
@@ -836,16 +825,20 @@ class CalendarPage extends Component {
     newAppointment(appointment, serviceId, staffId, clientId) {
         const {dispatch} = this.props;
         const {selectedDays, type, selectedDayMoment} = this.state;
+        let startTime, endTime;
 
         if(type==='day'){
             appointment.forEach((currentAppointment,i) => {
                 appointment[i].appointmentTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
-            })
-            dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
-            dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-        }
+            });
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
 
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+        dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, startTime, endTime));
     }
 
     newReservedTime(staffId, reservedTime) {
@@ -855,7 +848,6 @@ class CalendarPage extends Component {
         if(type==='day'){
             reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
             reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
-        }else {
         }
         dispatch(calendarActions.addReservedTime(JSON.stringify(reservedTime), staffId));
     }
@@ -863,18 +855,21 @@ class CalendarPage extends Component {
     editAppointment(appointment) {
         const {dispatch} = this.props;
         const {selectedDays, type, selectedDayMoment} = this.state;
+        let startTime, endTime;
 
-        if(type==='day'){
-            dispatch(calendarActions.editAppointmentTime(JSON.stringify(appointment), selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
-            dispatch(calendarActions.editAppointmentTime(JSON.stringify(appointment), moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+        if(type==='day') {
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
+        dispatch(calendarActions.editAppointmentTime(JSON.stringify(appointment), startTime, endTime));
     }
 
-    approveAppointmentSetter(id){
+    approveAppointmentSetter(approvedId){
         this.props.dispatch(companyActions.getNewAppointments());
-
-        this.setState({ approvedId:id })
+        this.setState({ approvedId })
     }
 
     deleteAppointment(id){
@@ -919,280 +914,270 @@ class CalendarPage extends Component {
 
     deleteReserve(stuffId, id){
         const {dispatch} = this.props;
-
         const {selectedDays, type, selectedDayMoment} = this.state;
+        let startTime, endTime;
 
-        if(type==='day'){
-            dispatch(calendarActions.deleteReservedTime(stuffId, id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-        }else {
-            dispatch(calendarActions.deleteReservedTime(stuffId, id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+        if(type==='day') {
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime =moment(selectedDays[0]).startOf('day').format('x')
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
+        dispatch(calendarActions.deleteReservedTime(stuffId, id, startTime, endTime));
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
-        this.setState({...this.state, appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment});
+        this.setState({ appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment });
     }
 
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
-        const {selectedDays, type, selectedDayMoment} = this.state;
+        const { selectedDayMoment } = this.state;
 
         if(newTime===null) {
             this.setState({ clickedTime: minutesReservedtime, reserved: true });
-
         }
 
         return this.getHours(staffId, selectedDayMoment.format('x'));
     }
 
     handleDayChange (date) {
-        const {selectedStaff} = this.state;
+        const { selectedStaff } = this.state;
+        const weeks = getWeekDays(getWeekRange(date).from);
+        const startTime = moment(weeks[0]).startOf('day').format('x');
+        const endTime = moment(weeks[6]).endOf('day').format('x');
 
-        let weeks = getWeekDays(getWeekRange(date).from);
         this.setState({
-            ...this.state,
             selectedDays: weeks,
-            timetableFrom: moment(weeks[0]).startOf('day').format('x'),
-            timetableTo:moment(weeks[6]).endOf('day').format('x')
+            timetableFrom: startTime,
+            timetableTo:endTime
         });
-        this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getAppointments(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+        this.refreshTable(startTime, endTime)
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
-
     };
 
     handleWeekClick (weekNumber, days, e) {
-        const {workingStaff, selectedStaff} = this.state;
+        const { selectedStaff } = this.state;
+        const startTime = moment(days[0]).startOf('day').format('x');
+        const endTime = moment(days[6]).endOf('day').format('x');
 
         this.setState({
-            ...this.state,
             selectedDays: days,
-            timetableFrom: moment(days[0]).startOf('day').format('x'),
-            timetableTo:moment(days[6]).endOf('day').format('x'), type: 'week',
+            timetableFrom: startTime,
+            timetableTo:endTime,
+            type: 'week',
             scroll: true, opacity: false
         });
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(days[0]).format('DD-MM-YYYY')+"/"+moment(days[6]).format('DD-MM-YYYY'))
 
-        this.props.dispatch(staffActions.getTimetableStaffs(moment(days[0]).startOf('day').format('x'), moment(days[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getAppointments(moment(days[0]).startOf('day').format('x'), moment(days[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getReservedTime(moment(days[0]).startOf('day').format('x'), moment(days[6]).endOf('day').format('x')));
-
+        this.refreshTable(startTime, endTime);
     };
 
     showPrevWeek (){
         const {selectedDays, workingStaff, selectedStaff} = this.state;
+        const weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).subtract(7, 'days')).from);
+        const statTime = moment(weeks[0]).startOf('day').format('x');
+        const endTime = moment(weeks[6]).endOf('day').format('x');
 
-        let weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).subtract(7, 'days')).from);
-
-        this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getAppointments(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+        this.refreshTable(statTime, endTime);
         this.setState({
             selectedDays: weeks,
-            timetableFrom: moment(weeks[0]).startOf('day').format('x'),
-            timetableTo:moment(weeks[6]).endOf('day').format('x'),
-            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]}, type: 'week',
+            timetableFrom: statTime,
+            timetableTo: endTime,
+            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]},
+            type: 'week',
             scroll: true
         });
 
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
-
     }
 
     showNextWeek (){
         const {selectedDays, workingStaff, selectedStaff} = this.state;
-
-        let weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).add(7, 'days')).from);
-
-        this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getAppointments(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+        const weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).add(7, 'days')).from);
+        const startTime = moment(weeks[0]).startOf('day').format('x');
+        const endTime = moment(weeks[6]).endOf('day').format('x')
+        this.refreshTable(startTime, endTime);
         this.setState({
             selectedDays: weeks,
-            timetableFrom: moment(weeks[0]).startOf('day').format('x'),
-            timetableTo:moment(weeks[6]).endOf('day').format('x'),
-            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]}, type: 'week',
+            timetableFrom: startTime,
+            timetableTo: endTime,
+            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]},
+            type: 'week',
             scroll: true
         });
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
-
     }
 
     handleDayClick(day) {
-        const {typeSelected, staffAll, workingStaff, selectedStaff} = this.state;
+        const {typeSelected, selectedStaff} = this.state;
         let daySelected = moment(day);
+        const startTime = daySelected.startOf('day').format('x');
+        const endTime = daySelected.endOf('day').format('x');
 
-        this.props.dispatch(staffActions.getTimetableStaffs(daySelected.startOf('day').format('x'), daySelected.endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getAppointments(daySelected.startOf('day').format('x'), daySelected.endOf('day').format('x')));
-        this.props.dispatch(calendarActions.getReservedTime(daySelected.startOf('day').format('x'), daySelected.endOf('day').format('x')));
-
+        this.refreshTable(startTime, endTime);
         this.getHours24();
 
         this.setState({
-            ...this.state,
             selectedDay: daySelected.utc().startOf('day').toDate(),
             selectedDayMoment: daySelected,
             selectedDays: [getDayRange(moment(daySelected).format()).from]
         });
 
-        typeSelected===1 && history.pushState(null, '', '/calendar/workingstaff/0/'+daySelected.startOf('day').format('DD-MM-YYYY'))
-        typeSelected===2 && history.pushState(null, '', '/calendar/allstaff/0/'+daySelected.startOf('day').format('DD-MM-YYYY'))
-        typeSelected===3 && history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+daySelected.startOf('day').format('DD-MM-YYYY'))
+        let url;
+        if (typeSelected===1) {
+            url = 'workingstaff/0/';
+        } else if (typeSelected===2) {
+            url = 'allstaff/0/'
+        } else if (typeSelected===3) {
+            url = `staff/${JSON.parse(selectedStaff).staffId}/`;
+        }
+        history.pushState(null, '', `/calendar/${url}${daySelected.startOf('day').format('DD-MM-YYYY')}`);
     }
 
     selectType (type){
         const {workingStaff, staffAll, typeSelected, selectedStaff} = this.state;
+        let url, startTime, endTime;
 
         let types=typeSelected
+        let newState = {
+            workingStaff: {...workingStaff, availableTimetable:[]},
+            scroll: true,
+        }
 
+        if (type==='day') {
+            newState = {
+                ...newState,
+                type: 'day',
+                staffFromUrl:JSON.parse(selectedStaff).staffId,
+                typeSelected: typeSelected,
+                selectedDay: moment().utc().startOf('day').toDate(),
+                selectedDays: [getDayRange(moment().format()).from]
+            };
 
-
-        if(type==='day') {
-
-
-            this.setState({...this.state, workingStaff: {...workingStaff, availableTimetable:[]}, type: 'day', staffFromUrl:JSON.parse(selectedStaff).staffId, scroll: true, typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
-
-            this.props.dispatch(staffActions.getTimetableStaffs(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getAppointments(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getReservedTime(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
+            startTime = moment().startOf('day').format('x');
+            endTime = moment().endOf('day').format('x');
 
             if(typeSelected===3){
-                history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY'));
+                url = `staff/${JSON.parse(selectedStaff).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}`;
             }else{
-                history.pushState(null, '', '/calendar/workingstaff/0/'+moment().format('DD-MM-YYYY'))
+                url = `workingstaff/0/${moment().format('DD-MM-YYYY')}`
             }
-        }else{
+        } else {
             if(typeSelected===1 || typeSelected===2){
                 types=3
             }
             let weeks = getWeekDays(getWeekRange(moment().format()).from);
-            this.setState({...this.state, workingStaff: {...workingStaff, availableTimetable:[]}, typeSelected: types, staffFromUrl:JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId, selectedStaff: selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]), type: 'week', scroll: true, selectedDays: weeks});
+            newState = {
+                ...newState,
+                typeSelected: types,
+                staffFromUrl: JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId,
+                selectedStaff: selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]),
+                type: 'week',
+                selectedDays: weeks
+            };
 
-            this.props.dispatch(staffActions.getTimetableStaffs(moment(weeks[0]).startOf('day').format('x'),
-                moment(weeks[6]).endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getAppointments(moment(weeks[0]).startOf('day').format('x'),
-                moment(weeks[6]).endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getReservedTime(moment(weeks[0]).startOf('day').format('x'),
-                moment(weeks[6]).endOf('day').format('x')));
+            startTime = moment(weeks[0]).startOf('day').format('x');
+            endTime = moment(weeks[6]).endOf('day').format('x');
 
-                history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'));
-
+            url = `staff/${JSON.parse(selectedStaff.length ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
         }
+        this.setState(newState);
+        this.refreshTable(startTime, endTime);
+        history.pushState(null, '', `/calendar/${url}`);
     }
 
     setWorkingStaff(staffEl = null, typeSelected = null, staffAll = null) {
         const {workingStaff, selectedDay, type, selectedStaff, selectedDays} = this.state;
-
+        let newState = {};
+        let url;
 
         if(staffAll===null){
             staffAll=this.state.staffAll
         }
 
         if(type==='week' && typeSelected !== 3){
-            this.props.dispatch(staffActions.getTimetableStaffs(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getAppointments(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
-            this.props.dispatch(calendarActions.getReservedTime(moment().startOf('day').format('x'), moment().endOf('day').format('x')));
+            const startOfDay = moment().startOf('day').format('x');
+            const endOfDay = moment().endOf('day').format('x');
+            this.refreshTable(startOfDay, endOfDay);
 
-            this.setState({ workingStaff: {...workingStaff, availableTimetable:[]}, availableTimetableMessage: 'qwe', type: 'day', typeSelected: typeSelected, selectedDay: moment().utc().startOf('day').toDate(), selectedDays: [getDayRange(moment().format()).from]});
-            typeSelected===1 ? history.pushState(null, '', '/calendar/workingstaff/0/'+moment().format('DD-MM-YYYY'))
-            : history.pushState(null, '', '/calendar/allstaff/0/'+moment().format('DD-MM-YYYY'));
+            newState = {
+                workingStaff: {...workingStaff, availableTimetable:[]},
+                availableTimetableMessage: 'qwe',
+                type: 'day',
+                typeSelected: typeSelected,
+                selectedDay: moment().utc().startOf('day').toDate(),
+                selectedDays: [getDayRange(moment().format()).from]
+            };
 
-        }else {
+            const staffUrl = typeSelected===1 ? 'workingstaff' : 'allstaff';
+            url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
+        } else {
             if (typeSelected === 1) {
+                let staffWorking = staffEl.filter((item) => item.availableDays.length && item.availableDays.some((time) =>
+                        parseInt(moment(time.dayMillis, 'x').format('DD')) === parseInt(moment(selectedDay).format('DD'))
+                    )
+                );
 
-
-
-                let staffWorking = staffEl.filter((item) => item.availableDays.length !== 0 &&
-                    item.availableDays.some((time) => {
-
-                            time.availableTimes.some((timing) => {
-
-                            })
-                            return parseInt(moment(time.dayMillis, 'x').format('DD')) === parseInt(moment(selectedDay).format('DD'))
-
-                        }
-                    ));
-
-                this.setState({
+                newState = {
                     staffAll: staffAll,
                     workingStaff: {
                         ...workingStaff,
-                        availableTimetable: staffWorking.length === 0 ? null : staffWorking
+                        availableTimetable: staffWorking.length ? staffWorking : null
                     },
                     availableTimetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
-                });
-                history.pushState(null, '', '/calendar/workingstaff/0/'+moment(selectedDay).format('DD-MM-YYYY'));
-
+                };
+                url = `/calendar/workingstaff/0/${moment(selectedDay).format('DD-MM-YYYY')}`;
             } else if (typeSelected === 2) {
-
-                this.setState({
+                newState = {
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
                     availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
-                });
-
-                history.pushState(null, '', '/calendar/allstaff/0/'+moment(selectedDay).format('DD-MM-YYYY'));
-
-
+                }
+                url = `/calendar/allstaff/0/${moment(selectedDay).format('DD-MM-YYYY')}`;
             } else {
                 let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
 
-
-
-                this.setState({
+                newState = {
                     workingStaff: {...workingStaff, availableTimetable: staffEl},
                     availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
                     selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
                     typeSelected: typeSelected,
                     staffFromUrl: JSON.parse(staff).staffId
-                });
-
-                if(selectedDays.length===1){
-                    history.pushState(null, '', '/calendar/staff/'+JSON.parse(staff).staffId+'/'+moment(selectedDay).format('DD-MM-YYYY'));
-                }else {
-                    history.pushState(null, '', '/calendar/staff/'+JSON.parse(staff).staffId+'/'+moment(selectedDays[0]).format('DD-MM-YYYY')+"/"+moment(selectedDays[6]).format('DD-MM-YYYY'));
                 }
-
-
+                const urlPath = selectedDays.length===1 ? moment(selectedDay).format('DD-MM-YYYY') : moment(selectedDays[0]).format('DD-MM-YYYY')+"/"+moment(selectedDays[6]).format('DD-MM-YYYY');
+                url = `/calendar/staff/${JSON.parse(staff).staffId}/${urlPath}`;
             }
         }
+
+        this.setState(newState);
+        history.pushState(null, '', url);
     }
 
     updateClient(client){
-        const { dispatch } = this.props;
-
-        dispatch(clientActions.updateClient(JSON.stringify(client)));
+        this.props.dispatch(clientActions.updateClient(JSON.stringify(client)));
     };
 
     addClient(client){
-        const { dispatch } = this.props;
-
-        dispatch(clientActions.addClient(JSON.stringify(client)));
+        this.props.dispatch(clientActions.addClient(JSON.stringify(client)));
     };
 
     getHours(idStaff, timeClicked){
         const {workingStaff}=this.state
-
-
-        let hoursArray=[];
         let day=timeClicked;
-
         let numbers =[]
 
         for (let i = 0; i < 24*60; i = i + 15) {
             numbers.push(moment().startOf('day').add(i, 'minutes').format('x'))
         }
 
-        numbers.map((time) =>
-            hoursArray.push(moment(time, 'x').format('H:mm'))
-        );
+        const hoursArray = numbers.map((time) => moment(time, 'x').format('H:mm'));
 
-
-        numbers.map((item)=>
-            workingStaff.availableTimetable.map((timing)=>
+        numbers.forEach((item)=>
+            workingStaff.availableTimetable.forEach((timing)=>
                 timing.staffId===idStaff.staffId && timing.availableDays.map((availableDay)=>
                     parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) &&
 
@@ -1211,19 +1196,14 @@ class CalendarPage extends Component {
     }
 
     getHours24 (){
-        let numbers =[]
+        let numbers =[];
 
         for (let i = 0; i < 24*60; i = i + 15) {
-            numbers.push(moment().startOf('day').add(i, 'minutes').format('x'))
+            numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
         }
 
-        this.setState({
-            ...this.state,
-            numbers: numbers
-        })
+        this.setState({ numbers });
     }
-
-
 }
 
 function mapStateToProps(store) {
@@ -1233,7 +1213,6 @@ function mapStateToProps(store) {
         staff, clients: client, calendar, services, authentication
     };
 }
-
 
 const connectedMainIndexPage = connect(mapStateToProps)(CalendarPage);
 export {connectedMainIndexPage as CalendarPage};
