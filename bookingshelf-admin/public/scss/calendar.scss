@@ -587,6 +587,11 @@
                     float:right;
                     font-size: 10px;
                     width: 100%;
+                    display:none;
+                    @media screen and(max-width: $tablet-width) {
+                        display: block;
+                    }
+
                 }
 
                 &.today-bd {

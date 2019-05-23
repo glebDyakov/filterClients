@@ -132,7 +132,6 @@ class CalendarPage extends Component {
             appointmentModal: false,
             newClientModal: false,
             scrollableAppointmentAction: true,
-            scrollableRedLine: true,
             appointmentMarkerAction: false,
             appointmentMarkerActionCalled: false
         };
@@ -201,7 +200,12 @@ class CalendarPage extends Component {
 
         this.scrollToMyRef();
 
-
+        setTimeout(() => {
+            const {selectedDay} = this.state;
+            if (!this.props.calendar.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+                this.navigateToRedLine();
+            }
+        }, 2500);
 
     }
     navigateToRedLine() {
@@ -209,7 +213,6 @@ class CalendarPage extends Component {
             const activeElem = document.getElementsByClassName("present-time")[0];
             if (activeElem) {
                 activeElem.scrollIntoView();
-                this.setState({ scrollableRedLine: false });
             } else {
                 this.navigateToRedLine()
             }
@@ -274,12 +277,6 @@ class CalendarPage extends Component {
         if (prevState.selectedDay !== this.state.selectedDay) {
             this.setState({ scrollableRedLine: true })
         }
-        setTimeout(() => {
-            const {selectedDay, scrollableRedLine} = this.state;
-            if (!this.props.calendar.scrollableAppointmentId && scrollableRedLine && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
-                this.navigateToRedLine();
-            }
-        }, 300);
 
     }
 
@@ -326,10 +323,6 @@ class CalendarPage extends Component {
         }
         if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
             this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
-        }
-
-        if (newProps.calendar.scrollableAppointmentId) {
-            this.setState({ appointmentMarkerAction: true });
         }
 
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
