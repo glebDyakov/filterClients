@@ -63,10 +63,11 @@ class ClientDetails extends React.Component {
                             }
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
+                                    .filter(appointment => appointment.id===client.id && appointment.appointmentTimeMillis < moment().format('x'))
                                     .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
-                                    return(appointment.id===client.id &&
+                                    return(
                                     <div className="visit-info row pl-4 pr-4 mb-2">
                                         <div className="col-9">
                                             <p className="gray-bg">

@@ -475,7 +475,10 @@ class AddAppointment extends React.Component {
                                                         <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                                                     }
                                                     <div className='last-visit-list'>
-                                                    {cl.appointments && cl.appointments.map((appointment)=>appointment.id===cl.id &&
+                                                    {cl.appointments && cl.appointments
+                                                        .filter(appointment => appointment.id===cl.id && appointment.appointmentTimeMillis < moment().format('x'))
+                                                        .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
+                                                        .map((appointment)=>
                                                         <div className="visit-info row pl-4 pr-4 mb-2">
                                                             <div className="col-9">
                                                                 <p className="gray-bg">
