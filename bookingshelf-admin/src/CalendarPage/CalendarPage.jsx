@@ -205,7 +205,7 @@ class CalendarPage extends Component {
             if (!this.props.calendar.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
                 this.navigateToRedLine();
             }
-        }, 2500);
+        }, 500);
 
     }
     navigateToRedLine() {
@@ -216,7 +216,7 @@ class CalendarPage extends Component {
             } else {
                 this.navigateToRedLine()
             }
-        }, 300);
+        }, 100);
     }
 
     refreshTable(startTime, endTime) {
