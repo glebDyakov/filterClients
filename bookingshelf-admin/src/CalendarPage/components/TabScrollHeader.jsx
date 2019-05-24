@@ -1,61 +1,68 @@
-import React from 'react';
-import pure from 'recompose/pure';
+import React, {PureComponent} from 'react';
 
 import moment from 'moment';
 
-const TabScrollHeader = ({selectedDays, availableTimetable,availableTimetableMessage, timetable, closedDates  } ) => (
-    <React.Fragment>
-        {selectedDays.length === 1 && (
-            <div
-                className="fixed-tab"
-                style={{
-                    'minWidth': (120*parseInt(timetable && timetable.length))+'px'
-                }}
-            >
-                <div className="tab-content-list tab-content-list-first">
-                    <div className="hours"><span></span></div>
+class TabScrollHeader extends PureComponent {
 
-                    {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
-                            return <div>
+    render() {
+        const {selectedDays, availableTimetable,availableTimetableMessage, timetable, closedDates  } =this.props;
 
-                                                             <span className="img-container">
-                                                                 <img className="rounded-circle"
-                                                                      src={workingStaffElement.imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                      alt=""/>
-                                                             </span>
-                                <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
-                            </div>
+        return(
+            <React.Fragment>
+                {selectedDays.length === 1 && (
+                    <div
+                        className="fixed-tab"
+                        style={{
+                            'minWidth': (120*parseInt(timetable && timetable.length))+'px'
+                        }}
+                    >
+                        <div className="tab-content-list tab-content-list-first">
+                            <div className="hours"><span></span></div>
+
+                            {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
+                                    return <div>
+
+                                                                     <span className="img-container">
+                                                                         <img className="rounded-circle"
+                                                                              src={workingStaffElement.imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                              alt=""/>
+                                                                     </span>
+                                        <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
+                                    </div>
+                                }
+                            )
+
+                            }
+                            {availableTimetableMessage && <div><p>{availableTimetableMessage}</p></div>}
+                        </div>
+                    </div>
+
+                )}
+                <div className="fixed-tab" style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}>
+                    <div className="tab-content-list">
+                        <div className="hours"><span></span></div>
+
+                        {
+                            selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
+
+                                    let clDate= closedDates && closedDates.some((st) =>
+                                        parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
+                                        parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")))
+
+                                    return <div key={weekKey}
+                                    >
+                                        <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD/MM")}</span>
+                                        </p>
+                                    </div>
+                                }
+                            )
                         }
-                    )
-
-                    }
-                    {availableTimetableMessage && <div><p>{availableTimetableMessage}</p></div>}
+                    </div>
                 </div>
-            </div>
 
-        )}
-        <div className="fixed-tab" style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}>
-            <div className="tab-content-list">
-                <div className="hours"><span></span></div>
+            </React.Fragment>
+        )
+    }
 
-                {
-                    selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
-
-                            let clDate= closedDates && closedDates.some((st) =>
-                                parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
-                                parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")))
-
-                            return <div key={weekKey}
-                            >
-                                <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD/MM")}</span>
-                                </p>
-                            </div>
-                        }
-                    )
-                }
-            </div>
-        </div>
-    </React.Fragment>
-);
-
-export default pure(TabScrollHeader);
+}
+export default TabScrollHeader;
