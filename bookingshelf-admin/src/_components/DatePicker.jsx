@@ -1,9 +1,8 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 
 import '../../public/scss/calendar.scss'
 import '../../public/scss/styles.scss'
 
-import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment-duration-format';
 
@@ -14,7 +13,7 @@ import '../../public/css_admin/date.css'
 import classNames from "classnames";
 
 
-class DatePicker extends PureComponent {
+class DatePicker extends Component {
     constructor(props) {
         super(props);
 
@@ -23,9 +22,6 @@ class DatePicker extends PureComponent {
             hoverRange: undefined,
         };
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
-        this.handleLocalDayClick = this.handleLocalDayClick.bind(this);
-        this.handleLeftArrowClick = this.handleLeftArrowClick.bind(this);
-        this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
         this.handleDayEnter = this.handleDayEnter.bind(this);
         this.handleDayLeave = this.handleDayLeave.bind(this);
     }
@@ -50,34 +46,19 @@ class DatePicker extends PureComponent {
         }
     }
 
-    handleLocalDayClick(date) {
-        const { type } = this.props;
+    handleDayClick(date) {
         this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(date);
-        } else {
-            this.props.handleDayChange(date);
-        }
+        this.props.onDayClick(date);
     }
 
     handleLeftArrowClick() {
-        const { type, selectedDay } = this.props;
         this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {})();
-        } else {
-            this.props.showPrevWeek();
-        }
+        this.props.onLeftArrowClick();
     }
 
     handleRightArrowClick() {
-        const { type, selectedDay } = this.props;
         this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
-        } else {
-            this.props.showNextWeek();
-        }
+        this.props.onRightArrowClick();
     }
 
     handleDayEnter (date) {
@@ -93,29 +74,9 @@ class DatePicker extends PureComponent {
     };
 
     render() {
-        const { type, selectedDay, selectedDays, closedDates } = this.props;
+        const { type, selectedDays, selectedDaysText } = this.props;
         const { opacity, hoverRange } = this.state;
         let weekProps = {};
-        let selectedDaysText;
-
-        if (type === 'day') {
-            const clDates = closedDates && closedDates.some((st) =>
-                parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(selectedDays[0]).startOf('day').format("x")) &&
-                parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(selectedDays[0]).endOf('day').format("x")));
-
-            selectedDaysText = (
-                <React.Fragment>
-                    {moment(selectedDay).format('dd, DD MMMM ')}
-                    {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
-                </React.Fragment>
-            );
-        } else {
-            selectedDaysText = (
-                moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
-            );
-        }
-
-
         if (type === 'week') {
             const daysAreSelected = selectedDays && selectedDays.length > 0;
 
@@ -135,7 +96,7 @@ class DatePicker extends PureComponent {
                 modifiers,
                 onDayMouseEnter: this.handleDayEnter,
                 onDayMouseLeave: this.handleDayLeave,
-                onWeekClick: this.props.handleWeekClick
+                onWeekClick: this.props.onWeekClick
             };
         }
 
@@ -152,7 +113,7 @@ class DatePicker extends PureComponent {
                                 <i className="datepicker--pointer"></i>
                                 <DayPicker
                                     selectedDays={selectedDays}
-                                    onDayClick={(date) => this.handleLocalDayClick(date)}
+                                    onDayClick={(date) => this.handleDayClick(date)}
                                     localeUtils={MomentLocaleUtils}
                                     showOutsideDays
                                     locale={'ru'}

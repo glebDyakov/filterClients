@@ -583,16 +583,6 @@
                     justify-content: right;
                     padding-right: 10px;
                 }
-                .visible-fade-time{
-                    float:right;
-                    font-size: 10px;
-                    width: 100%;
-                    display:none;
-                    @media screen and(max-width: $tablet-width) {
-                        display: block;
-                    }
-
-                }
 
                 &.today-bd {
                     background-color: rgba(118, 167, 236, 0.11);
@@ -628,10 +618,6 @@
                     z-index: 17 !important;
                 }
             }
-
-            .tab-content-list-first {
-                overflow-y: scroll;
-            }
             .tab-content-list{
 
                 div{
@@ -654,14 +640,13 @@
         }
 
         .tabs-scroll {
-            display: inline-block;
             height: 76vh;
-            position: sticky;
+            position: absolute;
             top: 42px;
             min-width: 100%;
             z-index: 0;
             overflow-y: scroll;
-            overflow-x: hidden;
+
             .tab-content-list {
                 div {
                     -moz-user-select: none;
@@ -1281,16 +1266,13 @@
             }
         }
     }
-    .visit-info-wrapper {
-        overflow-y: auto;
-        height: 100%;
-    }
     .client-info{
         display: block;
         position: relative;
         border: none;
         box-shadow: none;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         height: 83%;
         padding: 105px 0 35px;
 

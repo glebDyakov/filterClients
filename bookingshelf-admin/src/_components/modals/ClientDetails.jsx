@@ -61,30 +61,25 @@ class ClientDetails extends React.Component {
                             {client && client.appointments && client.appointments.length!==0 ?
                                 <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
-                            <div className="visit-info-wrapper">
-                                {client && client.appointments && client.appointments
-                                    .filter(appointment => appointment.id===client.id && appointment.appointmentTimeMillis < moment().format('x'))
-                                    .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
-                                    .map((appointment)=>{
+                            {client && client.appointments && client.appointments.map((appointment)=>{
 
-                                    return(
-                                    <div className="visit-info row pl-4 pr-4 mb-2">
-                                        <div className="col-9">
-                                            <p className="gray-bg">
-                                                <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
-                                                <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                            </p>
-                                            <p className="visit-detail">
-                                                <strong>{appointment.serviceName}</strong>
-                                                <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                            </p>
-                                        </div>
-                                        <div className="col-3">
-                                            <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
-                                        </div>
+                                return(appointment.id===client.id &&
+                                <div className="visit-info row pl-4 pr-4 mb-2">
+                                    <div className="col-9">
+                                        <p className="gray-bg">
+                                            <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
+                                            <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
+                                        </p>
+                                        <p className="visit-detail">
+                                            <strong>{appointment.serviceName}</strong>
+                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                        </p>
                                     </div>
-                                )})}
-                            </div>
+                                    <div className="col-3">
+                                        <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
+                                    </div>
+                                </div>
+                            )})}
 
                             <span className="closer"/>
                         </div>
