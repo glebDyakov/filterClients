@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {NewClient} from "./NewClient";
 import {ClientDetails} from "./ClientDetails";
@@ -11,7 +11,7 @@ import {DeleteAppointment} from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
 
 
-class CalendarModals extends PureComponent {
+class CalendarModals extends Component {
     constructor(props) {
         super(props);
 
@@ -108,14 +108,15 @@ class CalendarModals extends PureComponent {
     }
 
     render(){
-        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
-            services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type,
+        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll,
+            services, calendar, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type,
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps }
             = this.props;
 
-        const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;``
+        const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;
 
-        return(<React.Fragment>>
+
+        return(<React.Fragment>
                     {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
                     <a className="add" href="#"/>}
                     <div className="hide buttons-container">
@@ -150,8 +151,7 @@ class CalendarModals extends PureComponent {
                         randNum={Math.random()}
                         addAppointment={this.newAppointment}
                         editAppointment={this.editAppointment}
-                        adding={adding}
-                        status={status}
+                        appointments={calendar && calendar}
                         handleEditClient={this.handleEditClient}
                         services={services}
                         clickedTime={clickedTime}

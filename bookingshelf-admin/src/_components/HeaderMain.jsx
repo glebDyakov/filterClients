@@ -7,7 +7,7 @@ import moment from "moment";
 import {LogoutPage} from "../LogoutPage";
 import {userActions} from "../_actions";
 
-class HeaderMain extends React.PureComponent {
+class HeaderMain extends React.Component {
     constructor(props) {
         super(props);
         this.state={
