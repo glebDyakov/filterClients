@@ -1,7 +1,10 @@
-import React from 'react';
-import pure from 'recompose/pure';
+import React, {PureComponent} from 'react';
 
-const CalendarSwitch = ({type, selectType}) => (
+class CalendarSwitch extends PureComponent {
+    render() {
+        const {type, selectType} = this.props;
+
+        return (
             <div className="tab-day-week tab-content col-3">
                 <ul className="nav nav-tabs">
                     <li className="nav-item no-bg">
@@ -24,4 +27,6 @@ const CalendarSwitch = ({type, selectType}) => (
                 </ul>
             </div>
         );
-export default pure(CalendarSwitch);
+    }
+}
+export default CalendarSwitch;
