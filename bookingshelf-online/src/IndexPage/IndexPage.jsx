@@ -76,7 +76,7 @@ class IndexPage extends React.Component {
 
                         return checkingDay ===i && checkingDayTimesArray.length!==0 &&
                             time.availableTimes.some((timeOne)=>{
-                                const countTimes = (timeOne.endTimeMillis - timeOne.startTimeMillis) / 1000 / 60 / 15;
+                                const countTimes = (timeOne.endTimeMillis - timeOne.startTimeMillis) / 1000 / 60 / 15 + 1;
                                 const arrayTimes = []
                                 for( let i = 0 ; i< countTimes; i++) {
                                     arrayTimes.push(timeOne.startTimeMillis + (1000 * 60 * 15 * i))
