@@ -428,6 +428,7 @@
     }
 
     .days-container {
+        height: 76vh;
         overflow: auto;
         width: 100%;
         position: relative;
@@ -655,7 +656,7 @@
 
         .tabs-scroll {
             display: inline-block;
-            height: 76vh;
+            height: 100%;
             position: sticky;
             top: 42px;
             min-width: 100%;
