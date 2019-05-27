@@ -433,7 +433,7 @@ class CalendarPage extends PureComponent {
                                             availableTimetable={workingStaff.availableTimetable }
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
-                                            client={clients && clients.client}
+                                            clients={clients && clients.client}
                                             appointments={calendar && calendar.appointments}
                                             reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
