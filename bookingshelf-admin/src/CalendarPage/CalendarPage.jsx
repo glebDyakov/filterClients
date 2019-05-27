@@ -591,9 +591,10 @@ class CalendarPage extends PureComponent {
             infoClient: client
         })
     }
-    updateReservedId(){
+    updateReservedId(reserveId, reserveStId){
         this.setState({
-            infoClient: client
+            reserveId,
+            reserveStId
         })
     }
 
