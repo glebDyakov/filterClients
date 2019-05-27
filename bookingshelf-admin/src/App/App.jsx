@@ -76,10 +76,6 @@ class App extends React.Component {
     notifications(){
 
         this.props.dispatch(companyActions.getNewAppointments());
-        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-
-
         setTimeout(()=>this.notifications(), 20000)
     }
 

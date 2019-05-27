@@ -53,6 +53,9 @@ class SidebarMain extends Component {
                 company: newProps.company,
                 count: newProps.company.count && newProps.company.count
             })
+
+            this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+            this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         }
         if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
             this.setState({ ...this.state,
@@ -99,7 +102,7 @@ class SidebarMain extends Component {
                                 <p className="service_time"
                                    style={{width: "30%", textAlign: "left"}}>
                                     <strong
-                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
                                 </p>
                             </a>
                         </li>
@@ -227,7 +230,7 @@ class SidebarMain extends Component {
                                             </p>
                                             <p className="service_time"
                                                style={{width: "30%", textAlign: "left"}}><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
                                             </p>
                                         </a>
                                     </li>
