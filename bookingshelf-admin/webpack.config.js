@@ -81,7 +81,11 @@ module.exports = {
                 dead_code: true,
                 evaluate: true,
                 if_return: true,
-                join_vars: true
+                join_vars: true,
+                properties: true,
+                booleans: true,
+                drop_console: true,
+
             }
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -102,7 +106,7 @@ module.exports = {
     },
     externals: {
         config: JSON.stringify({
-            apiUrl: 'https://online-zapis.com/rest/v1'
+            apiUrl: 'https://staging.online-zapis.com/rest/v1'
         })
     }
 }
