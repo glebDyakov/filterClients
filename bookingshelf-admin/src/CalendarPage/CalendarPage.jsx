@@ -352,8 +352,8 @@ class CalendarPage extends PureComponent {
                 });
             }
 
-            if (this.state.typeSelected===1 && this.state.type!=='week'){
-                newProps.staff.availableTimetable && this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
+            if (this.state.typeSelected===1 && this.state.type!=='week' && newProps.staff.availableTimetable){
+                this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
             }
         }
 

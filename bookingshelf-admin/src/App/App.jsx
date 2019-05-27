@@ -76,7 +76,7 @@ class App extends React.Component {
     notifications(){
 
         this.props.dispatch(companyActions.getNewAppointments());
-        setTimeout(()=>this.notifications(), 20000)
+        setTimeout(()=>this.notifications(), 300000)
     }
 
 
