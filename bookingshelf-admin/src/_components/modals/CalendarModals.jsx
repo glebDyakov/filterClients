@@ -115,7 +115,7 @@ class CalendarModals extends PureComponent {
 
         const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;``
 
-        return(<React.Fragment>>
+        return(<React.Fragment>
                     {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
                     <a className="add" href="#"/>}
                     <div className="hide buttons-container">
