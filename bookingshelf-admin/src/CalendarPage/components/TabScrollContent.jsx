@@ -210,7 +210,7 @@ class TabScroll extends PureComponent{
                                         staff={workingStaffElement.staffId}
                                         onClick={() => notExpired && changeTime(currentTime, workingStaffElement, numbers, false, null)}
                                     ><span
-                                        className="fade-time">{moment(time, 'x').format("HH:mm")}</span>
+                                        className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
                                     </div>
                                 )
                             }

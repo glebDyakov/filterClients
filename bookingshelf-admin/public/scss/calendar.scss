@@ -1085,6 +1085,8 @@
                             min-height: 0px;
                             height: 90%;
                             font-size: 10px;
+                            line-height: 1.5;
+                            overflow-y: hidden;
                         }
 
                         .submit-notes {
@@ -1282,16 +1284,13 @@
             }
         }
     }
-    .visit-info-wrapper {
-        overflow-y: auto;
-        height: 100%;
-    }
     .client-info{
         display: block;
         position: relative;
         border: none;
         box-shadow: none;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         height: 83%;
         padding: 105px 0 35px;
 
