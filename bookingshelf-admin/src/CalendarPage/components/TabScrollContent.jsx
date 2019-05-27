@@ -3,9 +3,13 @@ import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
 class TabScroll extends PureComponent{
-
+    componentWillReceiveProps(newProps){
+        $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
+    }
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime } = this.props;
+
+
 
         return(
             <div className="tabs-scroll"
@@ -129,7 +133,7 @@ class TabScroll extends PureComponent{
                                                              node.style.setProperty("top", '-325px', "important");
                                                          }
                                                      }}>
-                                                    {clients && clients.client && clients.client.map((client) => (
+                                                    { clients && clients.map((client) => (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">
                                                             <p className="new-text">Запись</p>
