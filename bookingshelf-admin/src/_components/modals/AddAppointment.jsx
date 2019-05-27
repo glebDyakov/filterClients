@@ -115,7 +115,7 @@ class AddAppointment extends React.Component {
     }
 
     addNewService(){
-        const { appointment, serviceCurrent, staffs, staffId, services } = this.state;
+        const { appointment, serviceCurrent, staffs, staffId, services, staffCurrent } = this.state;
         const resultTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
         const newAppointment = {
@@ -135,7 +135,9 @@ class AddAppointment extends React.Component {
                 appointment.push(newAppointment);
                 services.push({
                     ...services[services.length -1],
-                    servicesList: services[services.length -1].servicesList.filter(service => availableTime.endTimeMillis >= (resultTime + service.duration * 1000))
+                    servicesList: services[services.length -1].servicesList.filter(service =>
+                        availableTime.endTimeMillis >= (resultTime + service.duration * 1000) && service.staffs && service.staffs.some(st => st.staffId===staffCurrent.staffId)
+                    )
                 });
                 this.setService(
                     services[services.length - 1].servicesList[0].serviceId,

@@ -106,7 +106,7 @@ module.exports = {
     },
     externals: {
         config: JSON.stringify({
-            apiUrl: 'https://staging.online-zapis.com/rest/v1'
+            apiUrl: 'https://online-zapis.com/rest/v1'
         })
     }
 }

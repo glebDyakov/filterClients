@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpackDev.config.js",
     "build": "cross-env CONTEXT=/ webpack --config webpack.config.js",
-    "dev": "cross-env CONTEXT=/ webpack --config webpack.config.js"
+    "dev": "cross-env CONTEXT=/ webpack --config webpackDev.config.js"
   },
   "dependencies": {
     "@kenshooui/react-multi-select": "^1.0.71",
