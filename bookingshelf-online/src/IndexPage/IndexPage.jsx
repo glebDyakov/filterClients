@@ -714,34 +714,28 @@ class IndexPage extends React.Component {
 
     }
 
-    refreshTimetable() {
+    refreshTimetable(newMonth = this.state.month) {
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment().startOf('month').format('x'), moment().endOf('month').format('x'), serviceIdList));
+        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment(newMonth).startOf('month').format('x'), moment(newMonth).endOf('month').format('x'), serviceIdList));
     }
 
     showPrevWeek (){
-        const {selectedStaff, staffs, selectedServices, month}=this.state;
-        const {company} = this.props.match.params;
-
-        let changedStaff = selectedServices[0].staffs && staffs ? staffs.filter((staff)=>selectedServices[0].staffs[0].staffId===staff.staffId)[0] : selectedStaff;
+        const {month}=this.state;
 
 
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).utc().startOf('month').subtract(1, 'month').format('x'), moment(month).utc().endOf('month').subtract(1, 'month').format('x'), this.state.selectedServices[0].serviceId));
-        this.setState({...this.state, month: moment(month).utc().subtract(1, 'month').toDate()})
+        const newMonth= moment(month).subtract(1, 'month').toDate()
+        this.setState({...this.state, month: newMonth})
+        this.refreshTimetable(newMonth)
     }
 
     showNextWeek (){
-        const {selectedStaff, staffs, selectedServices, month}=this.state;
-        const {company} = this.props.match.params;
+        const { month }=this.state;
 
-        let changedStaff = selectedServices[0].staffs && staffs ? staffs.filter((staff)=>selectedServices[0].staffs[0].staffId===staff.staffId)[0] : selectedStaff;
-
-
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId ? selectedStaff.staffId : changedStaff.staffId, moment(month).add(1, 'month').utc().startOf('month').format('x'), moment(month).add(1, 'month').utc().endOf('month').format('x'), this.state.selectedServices[0].serviceId));
-        this.setState({...this.state, month: moment(month).utc().add(1, 'month').toDate()})
-
+        const newMonth = moment(month).add(1, 'month').toDate()
+        this.setState({...this.state, month: newMonth})
+        this.refreshTimetable(newMonth)
     }
 
     roundDown(number, precision) {
