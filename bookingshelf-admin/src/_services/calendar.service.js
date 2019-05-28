@@ -96,16 +96,19 @@ function approveAppointment(appointmentId) {
 function approveAllAppointment(approved, canceled) {
     const requestOptions = {
         method: 'PATCH',
+        body: JSON.stringify({
+            approved: true
+        }),
         crossDomain: true,
         credentials: 'include',
         xhrFields: {
             withCredentials: true
         },
-        headers: authHeader()
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
     const dateTo = moment().endOf('year').format('x')
-    return fetch(`${config.apiUrl}/appointments/approved?dateFrom=1&dateTo=${dateTo}&approved=${approved}&canceled=${canceled}`, requestOptions)
+    return fetch(`${config.apiUrl}/appointments?dateFrom=1&dateTo=${dateTo}&canceled=${canceled}`, requestOptions)
         .then(handleResponse)
 }
 
