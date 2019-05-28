@@ -191,10 +191,10 @@ class TabScroll extends PureComponent{
                                                       data-toggle="modal"
                                                       data-target=".delete-reserve-modal"
                                                       title="Удалить"
-                                                      onClick={() => updateReservedId({
-                                                          reserveId: reservedTime[0][0].reservedTimeId,
-                                                          reserveStId: workingStaffElement.staffId
-                                                      })}
+                                                      onClick={() => updateReservedId(
+                                                          reservedTime[0][0].reservedTimeId,
+                                                          workingStaffElement.staffId
+                                                      )}
                                                 />
                                             </p>
                                         </div>
