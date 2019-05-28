@@ -361,7 +361,7 @@ class CalendarPage extends PureComponent {
 
 
     render() {
-        const { calendar, services, clients } = this.props;
+        const { calendar, services, clients, staff } = this.props;
         const { approvedId, staffAll, workingStaff, reserved,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
@@ -427,6 +427,7 @@ class CalendarPage extends PureComponent {
                                             availableTimetableMessage={availableTimetableMessage}
                                             timetable={workingStaff.timetable }
                                             closedDates={staffAll.closedDates}
+                                            staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
                                             numbers={numbers}
