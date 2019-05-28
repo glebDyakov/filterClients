@@ -115,7 +115,7 @@ class AddAppointment extends React.Component {
     }
 
     addNewService(){
-        const { appointment, serviceCurrent, staffs, staffId, services } = this.state;
+        const { appointment, serviceCurrent, staffs, staffId, services, staffCurrent } = this.state;
         const resultTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
         const newAppointment = {
@@ -135,7 +135,9 @@ class AddAppointment extends React.Component {
                 appointment.push(newAppointment);
                 services.push({
                     ...services[services.length -1],
-                    servicesList: services[services.length -1].servicesList.filter(service => availableTime.endTimeMillis >= (resultTime + service.duration * 1000))
+                    servicesList: services[services.length -1].servicesList.filter(service =>
+                        availableTime.endTimeMillis >= (resultTime + service.duration * 1000) && service.staffs && service.staffs.some(st => st.staffId===staffCurrent.staffId)
+                    )
                 });
                 this.setService(
                     services[services.length - 1].servicesList[0].serviceId,
@@ -251,6 +253,26 @@ class AddAppointment extends React.Component {
         return hoursArray;
     }
 
+    getServiceList(index) {
+        const { services, staffCurrent, timeArrange } = this.state
+
+        const filteredServiceList = services[index].servicesList && services[index].servicesList.filter((service, key)=>
+            staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId && parseInt(service.duration) / 60 <= parseInt(timeArrange)));
+        if (filteredServiceList.length) {
+            return filteredServiceList.map((service, key) =>
+
+                <li className="dropdown-item" key={key}><a
+                    onClick={() => this.setService(service.serviceId, service, index)}><span
+                    className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/><span
+                    className={service.color && service.color.toLowerCase()}><span
+                    className="items-color"><span>{service.name}</span>    <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
+                </li>
+            )
+        }
+
+        return <p className="staffAlert-noService">Нет доступных услуг. Выберите сотрудника в настройках услуг</p>
+    }
+
     render() {
         const { status, adding } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
@@ -317,16 +339,7 @@ class AddAppointment extends React.Component {
                                                                     </a>
                                                             }
                                                             <ul className="dropdown-menu">
-                                                                {
-                                                                    services[index].servicesList && services[index].servicesList.map((service, key)=>
-                                                                        staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId) &&
-                                                                        parseInt(service.duration)/60<=parseInt(timeArrange) &&
-                                                                        <li className="dropdown-item"  key={key}><a  onClick={()=>this.setService(service.serviceId, service, index)}><span
-                                                                            className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}><span
-                                                                            className="items-color"><span>{service.name}</span>    <span>{service.priceFrom}{service.priceFrom!==service.priceTo && " - "+service.priceTo}  {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
-                                                                        </li>
-                                                                    )
-                                                                }
+                                                                {this.getServiceList(index)}
                                                             </ul>
                                                             <div className="arrow-dropdown"><i></i></div>
                                                         </div>

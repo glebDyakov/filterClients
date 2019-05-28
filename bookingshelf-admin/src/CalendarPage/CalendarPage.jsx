@@ -136,7 +136,6 @@ class CalendarPage extends PureComponent {
             appointmentModal: false,
             newClientModal: false,
             scrollableAppointmentAction: true,
-            appointmentMarkerAction: false,
             appointmentMarkerActionCalled: false
         };
 
@@ -227,7 +226,7 @@ class CalendarPage extends PureComponent {
         }, 100);
     }
 
-    refreshTable(startTime, endTime) {
+    refreshTable(startTime, endTime, skipAppointment) {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
         this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
@@ -251,7 +250,7 @@ class CalendarPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         const { calendar } = this.props;
-        const { scroll, appointmentMarkerAction, appointmentMarkerActionCalled }=this.state;
+        const { scroll, appointmentMarkerActionCalled }=this.state;
 
         if(scroll){
             this.scrollToMyRef()
@@ -278,12 +277,14 @@ class CalendarPage extends PureComponent {
             $('.buttons-container').fadeIn(400);
         });
 
-        if (!appointmentMarkerActionCalled && appointmentMarkerAction && calendar && calendar.scrollableAppointmentId) {
-            const className = calendar.scrollableAppointmentId;
-            this.animateActiveAppointment(className);
-        }
+
         if (prevState.selectedDay !== this.state.selectedDay) {
             this.setState({ scrollableRedLine: true })
+        }
+
+        if (!appointmentMarkerActionCalled && calendar && calendar.scrollableAppointmentId) {
+            const className = calendar.scrollableAppointmentId;
+            this.animateActiveAppointment(className);
         }
 
     }
@@ -305,9 +306,8 @@ class CalendarPage extends PureComponent {
             const { scrollableAppointmentAction } = this.state;
             const activeElem = document.getElementsByClassName(className)[0];
             if (activeElem) {
-                const updatedState = { appointmentMarkerAction: false, appointmentMarkerActionCalled: true };
+                const updatedState = { appointmentMarkerActionCalled: true };
                 const formattedClassName = `.${className}`;
-
                 $(formattedClassName).addClass("custom-blick-div")
                 if (scrollableAppointmentAction) {
                     activeElem.scrollIntoView();
@@ -352,8 +352,8 @@ class CalendarPage extends PureComponent {
                 });
             }
 
-            if (this.state.typeSelected===1 && this.state.type!=='week'){
-                newProps.staff.availableTimetable && this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
+            if (this.state.typeSelected===1 && this.state.type!=='week' && newProps.staff.availableTimetable){
+                this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
             }
         }
 
@@ -433,7 +433,7 @@ class CalendarPage extends PureComponent {
                                             availableTimetable={workingStaff.availableTimetable }
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
-                                            client={clients && clients.client}
+                                            clients={clients && clients.client}
                                             appointments={calendar && calendar.appointments}
                                             reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
@@ -591,9 +591,10 @@ class CalendarPage extends PureComponent {
             infoClient: client
         })
     }
-    updateReservedId(){
+    updateReservedId(reserveId, reserveStId){
         this.setState({
-            infoClient: client
+            reserveId,
+            reserveStId
         })
     }
 

@@ -64,7 +64,7 @@ class DatePicker extends PureComponent {
         const { type, selectedDay } = this.props;
         this.showCalendar(false);
         if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {})();
+            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
         } else {
             this.props.showPrevWeek();
         }

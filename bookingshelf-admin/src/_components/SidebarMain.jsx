@@ -54,6 +54,11 @@ class SidebarMain extends Component {
                 count: newProps.company.count && newProps.company.count
             })
         }
+        if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
+            this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+            this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
+        }
         if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
             this.setState({ ...this.state,
                 appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount,
@@ -65,8 +70,6 @@ class SidebarMain extends Component {
     componentDidMount() {
         this.props.dispatch(companyActions.getBookingInfo());
         this.props.dispatch(companyActions.getNewAppointments());
-        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(menuActions.getMenu());
     }
 
@@ -99,7 +102,7 @@ class SidebarMain extends Component {
                                 <p className="service_time"
                                    style={{width: "30%", textAlign: "left"}}>
                                     <strong
-                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
                                 </p>
                             </a>
                         </li>
@@ -227,7 +230,7 @@ class SidebarMain extends Component {
                                             </p>
                                             <p className="service_time"
                                                style={{width: "30%", textAlign: "left"}}><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, d.MM, HH:mm')}</strong>
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
                                             </p>
                                         </a>
                                     </li>
