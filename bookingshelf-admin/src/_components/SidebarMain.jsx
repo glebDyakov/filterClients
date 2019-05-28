@@ -53,9 +53,11 @@ class SidebarMain extends Component {
                 company: newProps.company,
                 count: newProps.company.count && newProps.company.count
             })
-
+        }
+        if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
             this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
             this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
         }
         if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
             this.setState({ ...this.state,
@@ -68,8 +70,6 @@ class SidebarMain extends Component {
     componentDidMount() {
         this.props.dispatch(companyActions.getBookingInfo());
         this.props.dispatch(companyActions.getNewAppointments());
-        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(menuActions.getMenu());
     }
 
