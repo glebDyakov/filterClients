@@ -196,7 +196,7 @@ class CalendarPage extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime , true);
+        this.refreshTable(startTime, endTime);
 
         this.getHours24();
 
@@ -228,9 +228,7 @@ class CalendarPage extends PureComponent {
 
     refreshTable(startTime, endTime, skipAppointment) {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
-        if (!skipAppointment) {
-            this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
-        }
+        this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
         this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
     }
 
