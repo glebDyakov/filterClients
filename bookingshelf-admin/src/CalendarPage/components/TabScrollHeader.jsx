@@ -5,7 +5,7 @@ import moment from 'moment';
 class TabScrollHeader extends PureComponent {
 
     render() {
-        const {selectedDays, availableTimetable,availableTimetableMessage, timetable, closedDates  } =this.props;
+        const {selectedDays, availableTimetable,availableTimetableMessage, timetable, closedDates, staff  } =this.props;
 
         return(
             <React.Fragment>
@@ -20,15 +20,17 @@ class TabScrollHeader extends PureComponent {
                             <div className="hours"><span></span></div>
 
                             {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
-                                    return <div>
+                                const activeStaff = staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
-                                                                     <span className="img-container">
-                                                                         <img className="rounded-circle"
-                                                                              src={workingStaffElement.imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                              alt=""/>
-                                                                     </span>
-                                        <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
-                                    </div>
+                                return <div>
+
+                                                                 <span className="img-container">
+                                                                     <img className="rounded-circle"
+                                                                          src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                          alt=""/>
+                                                                 </span>
+                                    <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
+                                </div>
                                 }
                             )
 
