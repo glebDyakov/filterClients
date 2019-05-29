@@ -20,13 +20,13 @@ class TabScrollHeader extends PureComponent {
                             <div className="hours"><span></span></div>
 
                             {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
-                                const activeStaff = staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
+                                const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
                                 return <div>
 
                                                                  <span className="img-container">
                                                                      <img className="rounded-circle"
-                                                                          src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                          src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                           alt=""/>
                                                                  </span>
                                     <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
