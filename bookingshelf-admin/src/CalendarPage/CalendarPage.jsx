@@ -226,7 +226,7 @@ class CalendarPage extends PureComponent {
         }, 100);
     }
 
-    refreshTable(startTime, endTime, skipAppointment) {
+    refreshTable(startTime, endTime) {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
         this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
@@ -370,12 +370,13 @@ class CalendarPage extends PureComponent {
         } = this.state;
 
         const calendarModalsProps = {
-            appointmentModal, clients, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
+            appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
-            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable
+            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
+            refreshTable: this.refreshTable, selectedDays,
         };
 
 
@@ -396,6 +397,7 @@ class CalendarPage extends PureComponent {
                                     typeSelected={typeSelected}
                                     selectedStaff={selectedStaff}
                                     availableTimetable={staffAll.availableTimetable}
+                                    staff={staff && staff.staff}
                                     setWorkingStaff={this.setWorkingStaff}
                                 />
 
@@ -450,6 +452,7 @@ class CalendarPage extends PureComponent {
                 </div>
 
                 <CalendarModals {...calendarModalsProps} />
+                {0 && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
             </div>
         );

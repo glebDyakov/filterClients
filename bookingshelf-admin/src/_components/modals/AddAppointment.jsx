@@ -274,11 +274,13 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding } =this.props;
+        const { status, adding, staff: staffFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients
         } = this.state;
+
+        const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
 
@@ -356,11 +358,11 @@ class AddAppointment extends React.Component {
                                                             <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
                                                                aria-haspopup="true" aria-expanded="false">
                                                                 {
-                                                                    staffCurrent.staffId &&
+                                                                    activeStaffCurrent.staffId &&
                                                                     <div className="img-container">
                                                                         <img className="rounded-circle"
-                                                                             src={staffCurrent.imageBase64?"data:image/png;base64,"+staffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                        <span>{staffCurrent.firstName+" "+staffCurrent.lastName}</span>
+                                                                             src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                        <span>{activeStaffCurrent.firstName+" "+activeStaffCurrent.lastName}</span>
                                                                     </div>
                                                                 }
                                                             </a>
@@ -369,18 +371,20 @@ class AddAppointment extends React.Component {
                                                                 {
                                                                         staffs.availableTimetable && staffs.availableTimetable
                                                                             .filter(staff => staff.availableDays.some(day => day.availableTimes.length))
-                                                                            .map((staff, key) =>
-                                                                                <li onClick={() => this.setStaff(staff, staff.firstName, staff.lastName, index)}
+                                                                            .map((staff, key) => {
+                                                                                const activeStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staff.staffId);
+
+                                                                                return(<li onClick={() => this.setStaff(staff, staff.firstName, staff.lastName, activeStaff.imageBase64)}
                                                                                     key={key}>
                                                                                     <a>
                                                                                         <div className="img-container">
                                                                                             <img className="rounded-circle"
-                                                                                                 src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                                                 src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                                                  alt=""/>
                                                                                             <span>{staff.firstName + " " + staff.lastName}</span>
                                                                                         </div>
                                                                                     </a>
-                                                                                </li>
+                                                                                </li>);}
                                                                             )
                                                                 }
 
@@ -619,13 +623,16 @@ class AddAppointment extends React.Component {
         this.setState({ appointment });
     }
 
-    setStaff(staffId, firstName, lastName) {
+    setStaff(staffId, firstName, lastName, imageBase64) {
+
         const { staffCurrent, serviceCurrent } = this.state;
         const newServiceCurrent = serviceCurrent.map(() => ({
             id:-1,
             service:[]
         }))
-        this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName }});
+        const newStaffCurrent = {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName, imageBase64 }
+
+        this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: newStaffCurrent});
     }
     getAppointments(appointment) {
         const { staffs, staffId } = this.state;

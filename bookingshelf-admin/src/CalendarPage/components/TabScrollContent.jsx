@@ -166,6 +166,8 @@ class TabScroll extends PureComponent{
                                     </div>
                                 )
                             } else if ( reservedTime && reservedTime[0] && reservedTime[0].length > 0 ) {
+                                const textAreaHeight = (parseInt(((moment.utc(reservedTime[0][0].endTimeMillis - reservedTime[0][0].startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
+
                                 resultMarkup = (
                                     <div className='reserve'>
                                         <div className="notes color-grey"
@@ -173,20 +175,31 @@ class TabScroll extends PureComponent{
 
                                             <p className="notes-title"
                                                style={{cursor: 'default'}}>
-                                                                                <span className=""
-                                                                                      title="Онлайн-запись"/>
+                                                {textAreaHeight === 0 && <span className="delete"
+                                                                             style={{right: '5px'}}
+                                                                             data-toggle="modal"
+                                                                             data-target=".delete-reserve-modal"
+                                                                             title="Удалить"
+                                                                             onClick={() => updateReservedId(
+                                                                                 reservedTime[0][0].reservedTimeId,
+                                                                                 workingStaffElement.staffId
+                                                                             )}
+                                                />}
+                                                <span className="" title="Онлайн-запись"/>
                                                 <span
                                                     className="service_time"
-                                                >{moment(reservedTime[0][0].startTimeMillis, 'x').format('HH:mm')}
+                                                >
+                                                    {moment(reservedTime[0][0].startTimeMillis, 'x').format('HH:mm')}
                                                     -
-                                                    {moment(reservedTime[0][0].endTimeMillis, 'x').format('HH:mm')}</span>
+                                                    {moment(reservedTime[0][0].endTimeMillis, 'x').format('HH:mm')}
+                                                </span>
 
                                             </p>
                                             <p className="notes-container"
-                                               style={{height: (parseInt(((moment.utc(reservedTime[0][0].endTimeMillis - reservedTime[0][0].startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20)) + "px"}}>
+                                               style={{height: textAreaHeight+ "px"}}>
                                                                             <textarea
                                                                                 style={{color: '#5d5d5d'}}>{reservedTime[0][0].description}</textarea>
-                                                <span className="delete-notes"
+                                                {textAreaHeight > 0 && <span className="delete-notes"
                                                       style={{right: '5px'}}
                                                       data-toggle="modal"
                                                       data-target=".delete-reserve-modal"
@@ -195,7 +208,7 @@ class TabScroll extends PureComponent{
                                                           reservedTime[0][0].reservedTimeId,
                                                           workingStaffElement.staffId
                                                       )}
-                                                />
+                                                />}
                                             </p>
                                         </div>
                                     </div>
