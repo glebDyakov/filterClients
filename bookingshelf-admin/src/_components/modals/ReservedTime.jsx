@@ -69,15 +69,42 @@ class ReservedTime extends React.Component {
         }
     }
 
-    disabledMinutes(h) {
-        const {minutesReservedtime}=this.state
+    disabledMinutes(h, str) {
+        const {minutesReservedtime, reservedTime}=this.state
         let minutesArray=[];
 
-        minutesReservedtime && minutesReservedtime.map((minute)=>{
-            if (h == minute.split(':')[0]) {
-                minutesArray.push(parseInt(minute.split(':')[1]))
+        if(str==='start') {
+            minutesReservedtime && minutesReservedtime.map((minute)=>{
+                if (h == minute.split(':')[0]) {
+                        minutesArray.push(parseInt(minute.split(':')[1]))
+                    }
+            })
+        } else if (str==='end') {
+            const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+            const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            if (minHour === h) {
+                const localMinutesArray = ['00', '15', '30', '45'];
+                let findedMinute
+                localMinutesArray.forEach(minuteItem => {
+                    const currentTime = `${h < 10 ? '0' : ''}${h}:${minuteItem}`
+                    findedMinute = minutesReservedtime && minutesReservedtime.find(reservedTime => reservedTime === currentTime)
+
+                    if (findedMinute) {
+                        minutesArray.push(parseInt(minuteItem))
+                    } else if(parseInt(minuteItem) <= minMinute) {
+                        minutesArray.push(parseInt(minuteItem))
+                    }
+                })
+
+
+            } else {
+                minutesReservedtime && minutesReservedtime.map((minute)=>{
+                    if (h == minute.split(':')[0]) {
+                        minutesArray.push((minute.split(':')[1]))
+                    }
+                })
             }
-        })
+        }
 
         return minutesArray;
     }
@@ -96,6 +123,8 @@ class ReservedTime extends React.Component {
             }
             if(minute.split(':')[0]==firstElement){
                 countElements++
+            } else {
+                countElements=1
             }
             if(firstElement==null){
                 countElements++
@@ -109,16 +138,16 @@ class ReservedTime extends React.Component {
                 hoursArray.push(i);
             }
 
-            if(str==='start' && reservedTime.endTimeMillis && reservedTime.endTimeMillis!=='' && i<moment(reservedTime.endTimeMillis, 'x').format('H')){
+            if(str==='start' && reservedTime.endTimeMillis && reservedTime.endTimeMillis!=='' && i<=moment(reservedTime.endTimeMillis, 'x').format('H')){
                 hoursArray.push(i);
             }
         }
-
         return hoursArray;
     }
 
     render() {
-        const {staffs, edit_reservedTime, staffCurrent, reservedTime, reservedStuffId, timeNow, calendar}=this.state;
+        const { availableTimetable } = this.props;
+        const { edit_reservedTime, staffCurrent, reservedTime , timeNow, calendar}=this.state;
 
         return (
             <Modal size="md" style={{maxWidth: '30%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -151,7 +180,7 @@ class ReservedTime extends React.Component {
                                     </a>
                                     <ul className="dropdown-menu" role="menu">
                                         {
-                                            staffs.availableTimetable && staffs.availableTimetable.map((staff, key)=>
+                                            availableTimetable && availableTimetable.map((staff, key)=>
                                                 <li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={key}>
                                                     <a>
                                                         <div className="img-container">
@@ -175,7 +204,7 @@ class ReservedTime extends React.Component {
                                     value={reservedTime.startTimeMillis ? moment(parseInt(reservedTime.startTimeMillis), 'x') : '' }
                                     disabled={(staffCurrent.id && staffCurrent.id===-1)}
                                     disabledHours={()=>this.disabledHours('start')}
-                                    disabledMinutes={this.disabledMinutes}
+                                    disabledMinutes={(h) => this.disabledMinutes(h, 'start')}
                                     onChange={(startTimeMillis)=>this.setTime(startTimeMillis, 'startTimeMillis')}
                                 />
                                 <p>Конец</p>
@@ -187,7 +216,7 @@ class ReservedTime extends React.Component {
                                     value={reservedTime.endTimeMillis ? moment(parseInt(reservedTime.endTimeMillis), 'x') : '' }
                                     disabled={(staffCurrent.id && staffCurrent.id===-1)}
                                     disabledHours={()=>this.disabledHours('end')}
-                                    disabledMinutes={this.disabledMinutes}
+                                    disabledMinutes={(h) => this.disabledMinutes(h, 'end')}
                                     onChange={(endTimeMillis)=>this.setTime(endTimeMillis, 'endTimeMillis')}
                                 />
                                 <p>Описание</p>

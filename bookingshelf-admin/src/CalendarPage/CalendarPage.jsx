@@ -375,7 +375,7 @@ class CalendarPage extends PureComponent {
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
-            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment
+            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable
         };
 
 
@@ -825,27 +825,34 @@ class CalendarPage extends PureComponent {
 
     getHours(idStaff, timeClicked){
         const {workingStaff}=this.state
+
+
+        let hoursArray=[];
         let day=timeClicked;
+
         let numbers =[]
 
         for (let i = 0; i < 24*60; i = i + 15) {
             numbers.push(moment().startOf('day').add(i, 'minutes').format('x'))
         }
 
-        const hoursArray = numbers.map((time) => moment(time, 'x').format('H:mm'));
+        numbers.map((time) =>
+            hoursArray.push(moment(time, 'x').format('H:mm'))
+        );
 
-        numbers.forEach((item)=>
-            workingStaff.availableTimetable.forEach((timing)=>
+
+        numbers.map((item)=>
+            workingStaff.availableTimetable.map((timing)=>
                 timing.staffId===idStaff.staffId && timing.availableDays.map((availableDay)=>
-                    parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) &&
+                parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) &&
 
-                    availableDay.availableTimes && availableDay.availableTimes.map((time)=> {
+                availableDay.availableTimes && availableDay.availableTimes.map((time)=> {
 
-                        let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
+                    let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
 
-                        return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().format('x'))
+                    return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().format('x'))
                         && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
-                    })
+                })
                 )
             )
         );
