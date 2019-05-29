@@ -4,7 +4,7 @@ import {access} from "../../_helpers/access";
 class CalendarHeader extends PureComponent {
 
     render(){
-        const {typeSelected,selectedStaff, availableTimetable, setWorkingStaff}= this.props;
+        const {typeSelected,selectedStaff, availableTimetable, setWorkingStaff, staff}= this.props;
 
         return(
             <div className="staff_choise col-3">
@@ -61,20 +61,22 @@ class CalendarHeader extends PureComponent {
                             </a>
                         </li>
 
-                        {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl => (
+                        {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl =>{
+                            const activeStaff = staff && staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                            return(
                                 <li>
-                                    <a onClick={() => setWorkingStaff([staffEl], 3)}>
+                                    <a onClick={() => setWorkingStaff([activeStaff], 3)}>
                                                         <span className="img-container">
                                                             <img className="rounded-circle"
-                                                                 src={staffEl.imageBase64
-                                                                     ? "data:image/png;base64," + staffEl.imageBase64
+                                                                 src={activeStaff && activeStaff.imageBase64
+                                                                     ? "data:image/png;base64," + activeStaff.imageBase64
                                                                      : `${process.env.CONTEXT}public/img/image.png`}
                                                                  alt=""/>
                                                         </span>
                                         <p>{staffEl.firstName + " " + staffEl.lastName}</p>
                                     </a>
                                 </li>
-                            )
+                            )}
                         )}
                     </ul>
                 )}

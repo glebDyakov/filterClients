@@ -109,8 +109,9 @@ class CalendarModals extends PureComponent {
 
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
-            services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps }
+            services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps,
+             selectedDays,refreshTable}
             = this.props;
 
         const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;
@@ -146,6 +147,7 @@ class CalendarModals extends PureComponent {
                     <AddAppointment
                         clients={clients}
                         checkedUser={checkedUser}
+                        staff={staff && staff.staff}
                         staffs={staffAll}
                         randNum={Math.random()}
                         addAppointment={this.newAppointment}
@@ -176,12 +178,17 @@ class CalendarModals extends PureComponent {
                         staffs={staffAll}
                         minutesReservedtime={minutesReservedtime}
                         getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
+                        staff={staff && staff.staff}
                         newReservedTime={this.newReservedTime}
                         reservedTimeEdited={reservedTimeEdited}
                         reservedTime={reservedTime}
                         clickedTime={clickedTime}
                         reservedStuffId={reservedStuffId}
                         onClose={this.onCloseReserved}
+                        selectedDayMoment={selectedDayMoment}
+                        selectedDays={selectedDays}
+                        refreshTable={refreshTable}
+                        type={type}
                     />
                     }
                     {(userSettingsFromProps || userSettings) &&

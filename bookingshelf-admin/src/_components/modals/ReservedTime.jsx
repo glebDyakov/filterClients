@@ -80,30 +80,53 @@ class ReservedTime extends React.Component {
                     }
             })
         } else if (str==='end') {
-            const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
-            const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
-            if (minHour === h) {
-                const localMinutesArray = ['00', '15', '30', '45'];
-                let findedMinute
-                localMinutesArray.forEach(minuteItem => {
-                    const currentTime = `${h < 10 ? '0' : ''}${h}:${minuteItem}`
-                    findedMinute = minutesReservedtime && minutesReservedtime.find(reservedTime => reservedTime === currentTime)
+            // const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+            // const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            // if (minHour === h) {
+            //     const localMinutesArray = ['00', '15', '30', '45'];
+            //     let findedMinute
+            //     localMinutesArray.forEach(minuteItem => {
+            //         const currentTime = `${h < 10 ? '0' : ''}${h}:${minuteItem}`
+            //         findedMinute = minutesReservedtime && minutesReservedtime.find(reservedTime => reservedTime === currentTime)
+            //
+            //         if (findedMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         } else if(parseInt(minuteItem) <= minMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         }
+            //     })
+            //
+            //
+            // } else {
+            //     minutesReservedtime && minutesReservedtime.map((minute)=>{
+            //         if (h == minute.split(':')[0]) {
+            //             minutesArray.push((minute.split(':')[1]))
+            //         }
+            //     })
+            // }
 
-                    if (findedMinute) {
-                        minutesArray.push(parseInt(minuteItem))
-                    } else if(parseInt(minuteItem) <= minMinute) {
-                        minutesArray.push(parseInt(minuteItem))
-                    }
-                })
 
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
 
-            } else {
-                minutesReservedtime && minutesReservedtime.map((minute)=>{
-                    if (h == minute.split(':')[0]) {
-                        minutesArray.push((minute.split(':')[1]))
-                    }
-                })
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            for(let i=0; i <= 45; i+=15) {
+                if ((h !==selectedHour && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i)) {
+                    minutesArray.push(i);
+                }
             }
+
         }
 
         return minutesArray;
@@ -114,40 +137,80 @@ class ReservedTime extends React.Component {
         let hoursArray=[];
         let firstElement=null;
         let countElements=0;
-        minutesReservedtime && minutesReservedtime.map((minute)=>{
+        if (str === 'start') {
+            minutesReservedtime && minutesReservedtime.map((minute) => {
 
-            if (countElements==3 && minute.split(':')[0]==firstElement) {
-                hoursArray.push(parseInt(minute.split(':')[0]))
-                countElements=0
-                firstElement=null;
-            }
-            if(minute.split(':')[0]==firstElement){
-                countElements++
-            } else {
-                countElements=1
-            }
-            if(firstElement==null){
-                countElements++
-            }
-            firstElement=minute.split(':')[0];
-        })
-
+                if (countElements == 3 && minute.split(':')[0] == firstElement) {
+                    hoursArray.push(parseInt(minute.split(':')[0]))
+                    countElements = 0
+                    firstElement = null;
+                }
+                if (minute.split(':')[0] == firstElement) {
+                    countElements++
+                } else {
+                    countElements = 1
+                }
+                if (firstElement == null) {
+                    countElements++
+                }
+                firstElement = minute.split(':')[0];
+            })
+        }
 
         for(let i=0; i<=23; i++){
             if(str==='end' && reservedTime.startTimeMillis!=='' && i<moment(reservedTime.startTimeMillis, 'x').format('H')){
-                hoursArray.push(i);
-            }
-
-            if(str==='start' && reservedTime.endTimeMillis && reservedTime.endTimeMillis!=='' && i<=moment(reservedTime.endTimeMillis, 'x').format('H')){
-                hoursArray.push(i);
+                const isIncluded = hoursArray.find(hour => i === hour)
+                if (!isIncluded) {
+                    hoursArray.push(i);
+                }
             }
         }
+
+        if(str==='end') {
+
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            const minutesArray = []
+
+
+            for(let i=0; i<=23; i++) {
+                if (i > findTime.split(':')[0]) {
+                    hoursArray.push(i);
+
+                }
+                for(let j=0; j<= 45; j+=15) {
+                    if (i === selectedHour && selectedMinute >= j) {
+                        minutesArray.push(j);
+                    }
+                }
+            }
+
+            if (minutesArray.length === 4) {
+                hoursArray.push(selectedHour);
+            }
+        }
+
         return hoursArray;
     }
 
     render() {
-        const { availableTimetable } = this.props;
+        const { availableTimetable, staff: staffFromProps } = this.props;
         const { edit_reservedTime, staffCurrent, reservedTime , timeNow, calendar}=this.state;
+
+        const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId) || {};
 
         return (
             <Modal size="md" style={{maxWidth: '30%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -170,26 +233,27 @@ class ReservedTime extends React.Component {
                                     <a className={edit_reservedTime?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={!edit_reservedTime&&"dropdown"}
                                        aria-haspopup="true" aria-expanded="false">
                                         {
-                                            staffCurrent.staffId &&
+                                            activeStaffCurrent.staffId &&
                                             <div className="img-container">
                                                 <img className="rounded-circle"
-                                                     src={staffCurrent.imageBase64?"data:image/png;base64,"+staffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                <span>{staffCurrent.firstName+" "+staffCurrent.lastName}</span>
+                                                     src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                <span>{activeStaffCurrent.firstName+" "+activeStaffCurrent.lastName}</span>
                                             </div>
                                         }
                                     </a>
                                     <ul className="dropdown-menu" role="menu">
                                         {
-                                            availableTimetable && availableTimetable.map((staff, key)=>
-                                                <li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={key}>
+                                            availableTimetable && availableTimetable.map((staff, key)=>{
+                                                const activeStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staff.staffId);
+                                                return(<li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={key}>
                                                     <a>
                                                         <div className="img-container">
                                                             <img className="rounded-circle"
-                                                                 src={staff.imageBase64?"data:image/png;base64,"+staff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                 src={activeStaff && activeStaff.imageBase64?"data:image/png;base64,"+activeStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
                                                             <span>{staff.firstName+" "+staff.lastName}</span>
                                                         </div>
                                                     </a>
-                                                </li>
+                                                </li>);}
                                             )
                                         }
 
@@ -247,8 +311,12 @@ class ReservedTime extends React.Component {
 
     setTime(reservedTimeSelected, field){
         const {reservedTime}=this.state;
+        const reservedTimeProps = {}
+        if( field === 'startTimeMillis') {
+            reservedTimeProps.endTimeMillis = ''
+        }
 
-        this.setState({ ...this.state, reservedTime: {...reservedTime, [field]: moment(reservedTimeSelected).format('x')}});
+        this.setState({ reservedTime: {...reservedTime, ...reservedTimeProps, [field]: reservedTimeSelected ? moment(reservedTimeSelected).format('x') : ''}});
     }
 
     handleChange(e) {
@@ -275,8 +343,20 @@ class ReservedTime extends React.Component {
 
     addReservedTime (){
         const {reservedTime, staffCurrent }=this.state
-        const {newReservedTime}=this.props
+        const {newReservedTime, selectedDayMoment,selectedDays, refreshTable,type}=this.props
         this.closeModal();
+
+        let startTime, endTime;
+        if (type === 'day') {
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x');
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+
+        refreshTable(startTime, endTime);
+
         return newReservedTime(staffCurrent.staffId, reservedTime)
     }
 
