@@ -274,11 +274,11 @@ class ReservedTime extends React.Component {
                                 <p>Конец</p>
                                 <TimePicker
                                     key={"end"}
-                                    className={staffCurrent.id && staffCurrent.id===-1 ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
+                                    className={(staffCurrent.id && staffCurrent.id===-1) || !reservedTime.startTimeMillis ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
                                     showSecond={false}
                                     minuteStep={15}
                                     value={reservedTime.endTimeMillis ? moment(parseInt(reservedTime.endTimeMillis), 'x') : '' }
-                                    disabled={(staffCurrent.id && staffCurrent.id===-1)}
+                                    disabled={((staffCurrent.id && staffCurrent.id===-1) || !reservedTime.startTimeMillis)}
                                     disabledHours={()=>this.disabledHours('end')}
                                     disabledMinutes={(h) => this.disabledMinutes(h, 'end')}
                                     onChange={(endTimeMillis)=>this.setTime(endTimeMillis, 'endTimeMillis')}
