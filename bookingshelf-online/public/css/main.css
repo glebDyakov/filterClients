@@ -71,6 +71,9 @@ q:before, q:after { content:''; }
     margin: 21px 0;
     color: white;
 }
+.approveF button{
+    cursor: pointer;
+}
 
 .approveFYes {
     float: left;
