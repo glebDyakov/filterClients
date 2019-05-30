@@ -110,9 +110,8 @@ class CalendarModals extends PureComponent {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps,
-             selectedDays,refreshTable}
-            = this.props;
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps
+        } = this.props;
 
         const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;
 
@@ -185,10 +184,6 @@ class CalendarModals extends PureComponent {
                         clickedTime={clickedTime}
                         reservedStuffId={reservedStuffId}
                         onClose={this.onCloseReserved}
-                        selectedDayMoment={selectedDayMoment}
-                        selectedDays={selectedDays}
-                        refreshTable={refreshTable}
-                        type={type}
                     />
                     }
                     {(userSettingsFromProps || userSettings) &&

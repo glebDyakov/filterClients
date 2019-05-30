@@ -274,11 +274,11 @@ class ReservedTime extends React.Component {
                                 <p>Конец</p>
                                 <TimePicker
                                     key={"end"}
-                                    className={staffCurrent.id && staffCurrent.id===-1 ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
+                                    className={(staffCurrent.id && staffCurrent.id===-1) || !reservedTime.startTimeMillis ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
                                     showSecond={false}
                                     minuteStep={15}
                                     value={reservedTime.endTimeMillis ? moment(parseInt(reservedTime.endTimeMillis), 'x') : '' }
-                                    disabled={(staffCurrent.id && staffCurrent.id===-1)}
+                                    disabled={((staffCurrent.id && staffCurrent.id===-1) || !reservedTime.startTimeMillis)}
                                     disabledHours={()=>this.disabledHours('end')}
                                     disabledMinutes={(h) => this.disabledMinutes(h, 'end')}
                                     onChange={(endTimeMillis)=>this.setTime(endTimeMillis, 'endTimeMillis')}
@@ -343,19 +343,8 @@ class ReservedTime extends React.Component {
 
     addReservedTime (){
         const {reservedTime, staffCurrent }=this.state
-        const {newReservedTime, selectedDayMoment,selectedDays, refreshTable,type}=this.props
+        const {newReservedTime}=this.props
         this.closeModal();
-
-        let startTime, endTime;
-        if (type === 'day') {
-            startTime = selectedDayMoment.startOf('day').format('x');
-            endTime = selectedDayMoment.endOf('day').format('x');
-        } else {
-            startTime = moment(selectedDays[0]).startOf('day').format('x');
-            endTime = moment(selectedDays[6]).endOf('day').format('x');
-        }
-
-        refreshTable(startTime, endTime);
 
         return newReservedTime(staffCurrent.staffId, reservedTime)
     }
