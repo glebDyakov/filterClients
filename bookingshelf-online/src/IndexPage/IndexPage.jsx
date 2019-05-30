@@ -265,7 +265,8 @@ class IndexPage extends PureComponent {
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         handleDayClick={this.handleDayClick}
-
+                        showPrevWeek={this.showPrevWeek}
+                        showNextWeek={this.showNextWeek}
                     />}
                     {screen === 4 &&
                     <TabFour
