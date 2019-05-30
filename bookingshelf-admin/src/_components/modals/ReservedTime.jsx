@@ -343,19 +343,8 @@ class ReservedTime extends React.Component {
 
     addReservedTime (){
         const {reservedTime, staffCurrent }=this.state
-        const {newReservedTime, selectedDayMoment,selectedDays, refreshTable,type}=this.props
+        const {newReservedTime}=this.props
         this.closeModal();
-
-        let startTime, endTime;
-        if (type === 'day') {
-            startTime = selectedDayMoment.startOf('day').format('x');
-            endTime = selectedDayMoment.endOf('day').format('x');
-        } else {
-            startTime = moment(selectedDays[0]).startOf('day').format('x');
-            endTime = moment(selectedDays[6]).endOf('day').format('x');
-        }
-
-        refreshTable(startTime, endTime);
 
         return newReservedTime(staffCurrent.staffId, reservedTime)
     }

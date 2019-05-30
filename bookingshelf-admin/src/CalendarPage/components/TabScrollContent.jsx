@@ -1,15 +1,14 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
-class TabScroll extends PureComponent{
+class TabScroll extends Component{
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
     }
+
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime } = this.props;
-
-
 
         return(
             <div className="tabs-scroll"
