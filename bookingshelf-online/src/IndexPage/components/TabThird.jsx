@@ -6,7 +6,7 @@ class TabThird extends  PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable,selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, MomentLocaleUtils, handleDayClick } = this.props;
+        const {setScreen,refreshTimetable,selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, MomentLocaleUtils, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
         return (
@@ -45,8 +45,8 @@ class TabThird extends  PureComponent {
 
                 </div>
                 <div className="calendar_modal">
-                    {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={this.showPrevWeek}/>}
-                    <span className="arrow-right" onClick={this.showNextWeek}/>
+                    {parseInt(moment(month).utc().format('x'))>parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek}/>}
+                    <span className="arrow-right" onClick={showNextWeek}/>
 
                     <DayPicker
                         selectedDays={selectedDay}
