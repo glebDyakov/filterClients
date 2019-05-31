@@ -115,7 +115,6 @@ class CalendarPage extends PureComponent {
             clickedTime: 0,
             minutes:[],
             minutesReservedtime:[],
-            isLoading: true,
             opacity: false,
             closedDates: {},
 
@@ -200,7 +199,6 @@ class CalendarPage extends PureComponent {
 
         this.getHours24();
 
-        setTimeout(() => this.setState({isLoading: false}), 4500);
         setTimeout(() => this.updateCalendar(), 300000)
 
         initializeJs();
@@ -333,7 +331,7 @@ class CalendarPage extends PureComponent {
             this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
         }
 
-        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
+        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !newProps.staff.isLoading) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
                 this.setState({
                     staffAll: newProps.staff,
@@ -377,7 +375,7 @@ class CalendarPage extends PureComponent {
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
         };
-
+        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading;
 
         return (
             <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
@@ -385,8 +383,6 @@ class CalendarPage extends PureComponent {
                     this.setState({scrollableAppointmentAction: false})
                 }
             }}>
-                {this.state.isLoading && <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div>}
-
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper  full-container "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                         <div className="container-fluid">
@@ -421,7 +417,7 @@ class CalendarPage extends PureComponent {
                             </div>
                             <div className="days-container">
                                 <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                                    <div className="calendar-list">
+                                     <div className="calendar-list">
                                         <TabScrollHeader
                                             selectedDays={selectedDays}
                                             availableTimetable={workingStaff.availableTimetable }
@@ -442,6 +438,7 @@ class CalendarPage extends PureComponent {
                                             approveAppointmentSetter={this.approveAppointmentSetter}
                                             updateReservedId={this.updateReservedId}
                                             changeTime={this.changeTime}
+                                            isLoading={isLoading}
                                         />
                                     </div>
                                 </div>
@@ -451,7 +448,7 @@ class CalendarPage extends PureComponent {
                 </div>
 
                 <CalendarModals {...calendarModalsProps} />
-                {0 && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
             </div>
         );
