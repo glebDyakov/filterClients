@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
-class TabScroll extends Component{
+class TabScroll extends PureComponent{
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
     }
 
     render(){
-        const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime } = this.props;
+        const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading } = this.props;
 
         return(
             <div className="tabs-scroll"
                 // style={{'minWidth': (120*parseInt(workingStaff.availableTimetable && workingStaff.availableTimetable.length))+'px'}}
             >
                 {numbers && numbers.map((time, key) =>
-                    <div className="tab-content-list" key={key}>
+                    <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                         <TabScrollLeftMenu time={time}/>
-                        {availableTimetable && selectedDays.map((day) => availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
+                        {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                             let currentTime= parseInt(moment(moment(day).format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
                             let appointment = appointments &&
                                 appointments.map((appointmentStaff) =>
@@ -97,7 +97,7 @@ class TabScroll extends Component{
                                     >
                                         {!appointment[0][0].coAppointmentId && (
                                             <div
-                                                className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime).format("H")) >= 20 && 'notes-bottom')}
+                                                className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment[0][0].duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes'))}
                                                 key={appointment[0][0].appointmentId + "_" + key}
                                                 id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                             >
@@ -126,12 +126,7 @@ class TabScroll extends Component{
                                                    style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
                                                     <textarea disabled>{resultTextArea}</textarea>
                                                 </p>
-                                                <div className="msg-client-info"
-                                                     ref={(node) => {
-                                                         if (node && appointment[0][0].hasCoAppointments && (parseInt(moment(currentTime).format("H")) >= 20)) {
-                                                             node.style.setProperty("top", '-325px', "important");
-                                                         }
-                                                     }}>
+                                                <div className="msg-client-info">
                                                     { clients && clients.map((client) => (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">

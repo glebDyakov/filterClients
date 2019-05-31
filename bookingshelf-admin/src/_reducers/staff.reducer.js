@@ -1,7 +1,10 @@
-import {clientConstants, staffConstants, userConstants} from '../_constants';
-import {store} from '../_helpers/store';
+import { staffConstants } from '../_constants';
 
-export function staff(state= {}, action) {
+const initialState = {
+    isLoading: false
+}
+
+export function staff(state = initialState, action) {
     switch (action.type) {
         case staffConstants.STAFF_SUCCESS_TIME:
             return {
@@ -166,10 +169,22 @@ export function staff(state= {}, action) {
                 ...state,
                 timetable: action.timetable
             };
+        case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
+            return{
+                ...state,
+                isLoading: true
+
+            }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
             return {
                 ...state,
+                isLoading:false,
                 availableTimetable: action.availableTimetable
+            };
+            case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
+            return {
+                ...state,
+                isLoading:false,
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS:
             return {

@@ -131,21 +131,23 @@ class AddAppointment extends React.Component {
         }
         user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
             if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
-                newAppointment.appointmentTimeMillis = resultTime;
-                appointment.push(newAppointment);
-                services.push({
-                    ...services[services.length -1],
-                    servicesList: services[services.length -1].servicesList.filter(service =>
-                        availableTime.endTimeMillis >= (resultTime + service.duration * 1000) && service.staffs && service.staffs.some(st => st.staffId===staffCurrent.staffId)
+                const newServicesList = services[services.length -1].servicesList.filter(service =>
+                    availableTime.endTimeMillis >= (resultTime + service.duration * 1000) && service.staffs && service.staffs.some(st => st.staffId===staffCurrent.staffId))
+                if (newServicesList.length) {
+                    newAppointment.appointmentTimeMillis = resultTime;
+                    appointment.push(newAppointment);
+                    services.push({
+                        ...services[services.length -1],
+                        servicesList: newServicesList
+                    })
+                    this.setService(
+                        services[services.length - 1].servicesList[0].serviceId,
+                        services[services.length - 1].servicesList[0],
+                        serviceCurrent.length,
+                        appointment
                     )
-                });
-                this.setService(
-                    services[services.length - 1].servicesList[0].serviceId,
-                    services[services.length - 1].servicesList[0],
-                    serviceCurrent.length,
-                    appointment
-                )
-                appointmentMessage = '';
+                    appointmentMessage = '';
+                }
             }
         }))
         this.setState( { appointment, appointmentMessage, services })

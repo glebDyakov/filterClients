@@ -1,12 +1,17 @@
 import {calendarConstants} from '../_constants';
 
-export function calendar(state = {}, action) {
+const initialState = {
+    isLoading: false
+};
+
+export function calendar(state = initialState, action) {
     switch (action.type) {
         case calendarConstants.ADD_APPOINTMENT_REQUEST:
             return {
                 ...state,
                 status: 208,
-                adding: true
+                adding: true,
+                isLoading:true
             };
         case calendarConstants.ADD_APPOINTMENT_SUCCESS:
 
@@ -27,7 +32,8 @@ export function calendar(state = {}, action) {
                 ...state,
                 status: 200,
                 appointments: appointments,
-                adding: false
+                adding: false,
+                isLoading:false
             };
         case calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME:
             $('.new_appointment').modal('hide')
@@ -40,7 +46,8 @@ export function calendar(state = {}, action) {
             return {
                 ...state,
                 status: 208,
-                adding: true
+                adding: true,
+                isLoading: true
             };
         case calendarConstants.ADD_RESERVED_TIME_SUCCESS:
 
@@ -62,7 +69,8 @@ export function calendar(state = {}, action) {
                 ...state,
                 status: 200,
                 reservedTime: reservedTimes,
-                adding: false
+                adding: false,
+                isLoading: false
 
             };
         case calendarConstants.ADD_RESERVED_TIME_SUCCESS_TIME:
@@ -162,33 +170,56 @@ export function calendar(state = {}, action) {
                 reservedTime: reservedDeleted
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
-            return {...state};
+            return {...state, isLoading:false};
+        case calendarConstants.ADD_RESERVED_TIME_FAILURE:
+            return {...state, isLoading:false};
         case calendarConstants.EDIT_APPOINTMENT_FAILURE:
             return {...state};
         case calendarConstants.APPROVE_APPOINTMENT_FAILURE:
             return {...state};
         case calendarConstants.DELETE_APPOINTMENT_FAILURE:
             return {...state};
+        case calendarConstants.GET_APPOINTMENT_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            };
         case calendarConstants.GET_APPOINTMENT_SUCCESS:
             return {
                 ...state,
-                appointments: action.appointments
+                appointments: action.appointments,
+                isLoading: false
+            };
+        case calendarConstants.GET_APPOINTMENT_FAILURE:
+            return {
+                ...state,
+                isLoading: false
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
             return {
                 ...state,
                 appointmentsCount: action.appointments
             };
-
         case calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED:
             return {
                 ...state,
                 appointmentsCanceled: action.appointments
             };
+        case calendarConstants.GET_RESERVED_TIME_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {
                 ...state,
-                reservedTime: action.reservedTime
+                reservedTime: action.reservedTime,
+                isLoading: false
+            };
+        case calendarConstants.GET_RESERVED_TIME_FAILURE:
+            return {
+                ...state,
+                isLoading: false
             };
         default:
             return state

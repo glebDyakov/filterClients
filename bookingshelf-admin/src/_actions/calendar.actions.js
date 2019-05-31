@@ -117,13 +117,16 @@ function editAppointmentTime(params, time1, time2) {
 
 function getAppointments(dateFrom, dateTo) {
     return dispatch => {
+        dispatch(request());
         calendarService.getAppointments(dateFrom, dateTo)
             .then(
                 appointments => dispatch(success(appointments)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: calendarConstants.GET_APPOINTMENT_REQUEST} }
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS, appointments } }
+    function failure() { return { type: calendarConstants.GET_APPOINTMENT_FAILURE } }
 }
 
 
@@ -153,13 +156,16 @@ function getAppointmentsCanceled(dateFrom, dateTo) {
 
 function getReservedTime(dateFrom, dateTo) {
     return dispatch => {
+        dispatch(request());
         calendarService.getReservedTime(dateFrom, dateTo)
             .then(
                 reservedTime => dispatch(success(reservedTime)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: calendarConstants.GET_RESERVED_TIME_REQUEST } }
     function success(reservedTime) { return { type: calendarConstants.GET_RESERVED_TIME_SUCCESS, reservedTime } }
+    function failure() { return { type: calendarConstants.GET_RESERVED_TIME_FAILURE} }
 }
 
 function deleteAppointment(id, time1, time2) {

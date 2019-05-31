@@ -109,7 +109,6 @@ class ReservedTime extends React.Component {
             const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
 
             const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
-
             const findTime = minutesReservedtime && minutesReservedtime.find(time => {
                 const timeHour = parseInt(time.split(':')[0]);
                 const timeMinute = parseInt(time.split(':')[1]);
@@ -122,7 +121,7 @@ class ReservedTime extends React.Component {
             })
 
             for(let i=0; i <= 45; i+=15) {
-                if ((h !==selectedHour && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i)) {
+                if ((h !==selectedHour && h === parseInt(findTime.split(':')[0]) && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i) || (h === parseInt(findTime.split(':')[0]) && findTime.split(':')[1] < i)) {
                     minutesArray.push(i);
                 }
             }
