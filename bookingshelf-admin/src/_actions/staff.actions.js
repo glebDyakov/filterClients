@@ -1,5 +1,5 @@
-import {clientConstants, staffConstants, userConstants} from '../_constants';
-import {staffService, userService} from '../_services';
+import { staffConstants, userConstants } from '../_constants';
+import { staffService } from '../_services';
 import { alertActions } from './';
 import {store} from "../_helpers";
 
@@ -246,13 +246,16 @@ function getTimetableByStaff(id, from, to) {
 
 function getTimetableStaffs(from, to) {
     return dispatch => {
+        dispatch(request());
         staffService.getTimetableStaffs(from, to)
             .then(
                 availableTimetable => dispatch(success(availableTimetable)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST } }
     function success(availableTimetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, availableTimetable } }
+    function failure() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE } }
 }
 
 function addClosedDates(params) {

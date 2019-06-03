@@ -39,17 +39,17 @@ class SidebarMain extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
-            this.setState({ ...this.state,
+            this.setState({
                 authentication: newProps.authentication,
             })
         }
         if ( JSON.stringify(this.props.menu) !==  JSON.stringify(newProps.menu)) {
-            this.setState({ ...this.state,
+            this.setState({
                 menu: newProps.menu,
             })
         }
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
-            this.setState({ ...this.state,
+            this.setState({
                 company: newProps.company,
                 count: newProps.company.count && newProps.company.count
             })
@@ -60,7 +60,7 @@ class SidebarMain extends Component {
 
         }
         if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
-            this.setState({ ...this.state,
+            this.setState({
                 appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount,
                 appointmentsCanceled: newProps.calendar.appointmentsCanceled && newProps.calendar.appointmentsCanceled,
             })

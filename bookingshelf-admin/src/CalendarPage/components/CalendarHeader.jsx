@@ -5,6 +5,7 @@ class CalendarHeader extends PureComponent {
 
     render(){
         const {typeSelected,selectedStaff, availableTimetable, setWorkingStaff, staff}= this.props;
+        const currentSelectedStaff = selectedStaff.length && staff && staff.find(staffItem => staffItem.staffId === JSON.parse(selectedStaff).staffId);
 
         return(
             <div className="staff_choise col-3">
@@ -15,37 +16,37 @@ class CalendarHeader extends PureComponent {
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        {typeSelected && !!selectedStaff.length && typeSelected===3 && (
+                        {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
                             <span className="img-container">
                                                     <img
                                                         className="rounded-circle"
-                                                        src={JSON.parse(selectedStaff).imageBase64
-                                                            ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64
+                                                        src={currentSelectedStaff.imageBase64
+                                                            ? "data:image/png;base64," + currentSelectedStaff.imageBase64
                                                             : `${process.env.CONTEXT}public/img/image.png`}
                                                         alt=""
                                                     />
                                                 </span>
                         )}
                         {typeSelected && typeSelected===1 && < p> Работающие сотрудники </p>}
-                        {typeSelected && !!selectedStaff.length && typeSelected===3 && (
-                            <p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName}</p>)
+                        {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
+                            <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>)
                         }
                         {typeSelected && typeSelected===2 && < p> Все сотрудники </p>}
 
                     </div>
                 )}
-                {!access(2) && selectedStaff && selectedStaff.length && (
-                    <div className="bth rounded-button select-menu" >
-                                            <span className="img-container">
-                                                <img
-                                                    className="rounded-circle"
-                                                    src={JSON.parse(selectedStaff).imageBase64
-                                                        ? "data:image/png;base64," + JSON.parse(selectedStaff).imageBase64
-                                                        : `${process.env.CONTEXT}public/img/image.png`}
-                                                    alt=""
-                                                />
-                                            </span>
-                        <p>{JSON.parse(selectedStaff).firstName + " " + JSON.parse(selectedStaff).lastName}</p>
+                {!access(2) && currentSelectedStaff && (
+                    <div className="bth rounded-button select-menu">
+                        <span className="img-container">
+                            <img
+                                className="rounded-circle"
+                                src={currentSelectedStaff.imageBase64
+                                    ? "data:image/png;base64," + currentSelectedStaff.imageBase64
+                                    : `${process.env.CONTEXT}public/img/image.png`}
+                                alt=""
+                            />
+                        </span>
+                        <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
                     </div>
                 )}
                 {access(2) && (
