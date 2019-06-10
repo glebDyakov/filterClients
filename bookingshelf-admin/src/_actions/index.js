@@ -7,3 +7,4 @@ export * from './services.actions';
 export * from './menu.actions';
 export * from './calendar.actions';
 export * from './notification.actions';
+export * from './analitics.actions';
