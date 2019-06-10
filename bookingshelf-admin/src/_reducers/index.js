@@ -10,6 +10,8 @@ import { services } from './services.reducer';
 import { menu } from './menu.reducer';
 import { calendar } from './calendar.reducer';
 import { notification } from './notification.reducer';
+import { analitics } from '././analitics.reducer';
+
 
 const rootReducer = combineReducers({
   authentication,
@@ -21,7 +23,8 @@ const rootReducer = combineReducers({
   services,
   menu,
   calendar,
-  notification
+  notification,
+  analitics
 });
 
 export default rootReducer;

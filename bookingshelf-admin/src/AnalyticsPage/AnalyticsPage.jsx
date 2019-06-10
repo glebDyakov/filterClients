@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../../public/scss/analytics.scss'
 import '../../public/scss/styles.scss'
 import {DatePicker} from "../_components/DatePicker";
+import config from 'config';
 
 
 import 'react-day-picker/lib/style.css';
@@ -10,6 +11,10 @@ import {HeaderMain} from "../_components/HeaderMain";
 
 import {UserSettings} from "../_components/modals";
 import moment from 'moment';
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
+
+import { analiticsActions, staffActions } from "../_actions";
 
 
 function getDayRange(date) {
@@ -58,10 +63,13 @@ class AnalyticsPage extends Component{
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
 
+
         let dateFrom,dateTo,dateFr;
         dateFrom = moment().utc().toDate();
         dateTo = [getDayRange(moment()).from];
         dateFr = moment(getDayRange(moment()).from);
+        let dateNow = moment().toDate().valueOf();
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNow,0));
 
 
         this.state = {
@@ -72,6 +80,14 @@ class AnalyticsPage extends Component{
             selectedDayMoment: dateFr,
             saveStatistics: true,
             dropdownFirst: false,
+            staffs: props.staffs,
+            staffAll: props.staff,
+            analitics: props.analitics,
+            countRecAndCli: props.countRecAndCli,
+            currentSelectedStaff: {
+                firstName: 'Все',
+                lastName: 'Сотрудники'
+            },
             chosenPeriod: 1,
             timetableFrom: 0,
             timetableTo: 0,
@@ -102,23 +118,48 @@ class AnalyticsPage extends Component{
 
 
     }
+    componentDidMount() {
+
+        this.props.dispatch(analiticsActions.getStaff());
+        this.props.dispatch(staffActions.get());
+
+    }
 
     setToday(){
         let today;
         today = moment().utc().toDate();
         this.setState({...this.state, selectedDay: today, dropdownFirst:false, chosenPeriod:1, type: 'day',});
         console.log("period", this.state.dateFrom )
+        let todayMill = today.valueOf();
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, 0));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, todayMill, 0));
     }
     setYesterday(){
         let yesterday;
         yesterday = moment().subtract(1, 'days').utc().toDate();
         this.setState({...this.state, selectedDay: yesterday, dropdownFirst:false, chosenPeriod:2,type: 'day',});
         console.log("period", this.state.dateFrom)
+
+        let yesterdayMill = yesterday.valueOf();
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(yesterdayMill,0));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, 0));
     }
     setWeek(){
+
         let weeks = getWeekDays(getWeekRange(moment().format()).from);
         this.setState({...this.state, dropdownFirst:false, chosenPeriod:3, type: 'week',selectedDays: weeks});
+        console.log("boooom1");
+
+
+        let startDayOfWeek = moment(this.state.selectedDays[0]).format('x');
+        let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+        debugger
+
     }
+
 
 
     onOpen(){
@@ -136,6 +177,9 @@ class AnalyticsPage extends Component{
             selectedDayMoment: daySelected,
             selectedDays: [getDayRange(moment(daySelected).format()).from]
         });
+        let date = daySelected.valueOf();
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(date,0));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, date, 0));
     }
     handleWeekClick (weekNumber, days, e) {
 
@@ -162,7 +206,14 @@ class AnalyticsPage extends Component{
             selectedDays: weeks,
             timetableFrom: startTime,
             timetableTo:endTime
-        });};
+
+        });
+        let startDayOfWeek = moment(weeks[0]).format('x');
+        let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+    };
 
     showPrevWeek (){
         const {selectedDays} = this.state;
@@ -178,6 +229,12 @@ class AnalyticsPage extends Component{
             type: 'week',
         });
 
+        let startDayOfWeek = moment(weeks[0]).format('x');
+        let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+
     }
 
     showNextWeek (){
@@ -192,13 +249,40 @@ class AnalyticsPage extends Component{
             timetableTo: endTime,
             type: 'week',
         });
+        let startDayOfWeek = moment(weeks[0]).format('x');
+        let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+    }
+    setCurrentSelectedStaff(staff){
+
+        let resStaff = {}
+        if(staff === 1){
+            resStaff.firstName = "Все";
+            resStaff.lastName = "сотрудники"
+        }else if (staff===2){
+            resStaff.firstName = "Работающие";
+            resStaff.lastName = "сотрудники"
+        }else{
+            resStaff = staff;
+            let selectedDay = this.state.selectedDay.valueOf();
+            this.props.dispatch(analiticsActions.getStaffsAnalytic(staff.staffId, selectedDay, 0));
+
+        }
+
+
+        this.setState({currentSelectedStaff:resStaff })
     }
 
 
 
     render(){
 
-        const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst} = this.state;
+        const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff} = this.state;
+        const {analitics, staff} = this.props;
+       
+        debugger
+
 
         return(
             <div className="content-wrapper">
@@ -282,21 +366,19 @@ class AnalyticsPage extends Component{
                                 <div className="list-group-statistics">
                                     <strong>Всего <br/>Записей</strong>
                                     <span>
-                                        300
-                                        <span className="small">+3.6% со вчера</span>
+                                        {analitics.counter && analitics.counter.allRecordsToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.allRecordsPercent > 0?"+":"")
+                                            + analitics.counter.allRecordsPercent.toFixed(2))}% со вчера</span>
                                     </span>
                                 </div>
                                 <div className="visitor-statistics">
                                     <div>
-                                        <span className="number-statistics">250</span>
+                                        <span className="number-statistics">{analitics.counter && (analitics.counter.allRecordsToday - analitics.counter.allRecordsTodayCanceled)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
-                                        <span className="number-statistics">30</span>
-                                        <p>Клиент не пришел</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">20</span>
+                                        <span className="number-statistics">{analitics.counter &&
+                                        analitics.counter.allRecordsTodayCanceled}</span>
                                         <p>Отменено</p>
                                     </div>
                                 </div>
@@ -306,21 +388,19 @@ class AnalyticsPage extends Component{
                                 <div className="list-group-statistics">
                                     <strong>Онлайн <br/>Записей</strong>
                                     <span>
-                                        0
-                                        <span className="small">-2000% со вчера</span>
+                                        {analitics.counter && analitics.counter.recordsOnlineToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.recordsOnlinePercent > 0?"+":"")
+                                            + analitics.counter.recordsOnlinePercent.toFixed(2))}% со вчера</span>
                                     </span>
                                 </div>
                                 <div className="visitor-statistics">
                                     <div>
-                                        <span className="number-statistics">0</span>
+                                        <span className="number-statistics">{analitics.counter && (analitics.counter.recordsOnlineToday - analitics.counter.recordsOnlineTodayCanceled)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
-                                        <span className="number-statistics">0</span>
-                                        <p>Клиент не пришел</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">0</span>
+                                        <span className="number-statistics">{analitics.counter &&
+                                        analitics.counter.recordsOnlineTodayCanceled}</span>
                                         <p>Отменено</p>
                                     </div>
                                 </div>
@@ -330,21 +410,21 @@ class AnalyticsPage extends Component{
                                 <div className="list-group-statistics">
                                     <strong>Записей <br/>в журнал</strong>
                                     <span>
-                                        267
-                                        <span className="small">+300% со вчера</span>
+                                        {analitics.counter && analitics.counter.recordsToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.recordsPercent > 0?"+":"")
+                                            + analitics.counter.recordsPercent.toFixed(2))}% со вчера</span>
                                     </span>
                                 </div>
                                 <div className="visitor-statistics">
                                     <div>
-                                        <span className="number-statistics">200</span>
+                                        <span className="number-statistics">
+                                            {analitics.counter &&
+                                            (analitics.counter.recordsToday - analitics.counter.recordsTodayCanceled)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
-                                        <span className="number-statistics">60</span>
-                                        <p>Клиент не пришел</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">7</span>
+                                        <span className="number-statistics">{analitics.counter &&
+                                        analitics.counter.recordsTodayCanceled}</span>
                                         <p>Отменено</p>
                                     </div>
                                 </div>
@@ -357,8 +437,9 @@ class AnalyticsPage extends Component{
                                 <div className="list-group-statistics">
                                     <strong>Новые <br/>Клиенты</strong>
                                     <span>
-                                        20
-                                        <span className="small">+3.6% со вчера</span>
+                                        {analitics.counter && analitics.counter.newClientsToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.newClientsPercent > 0?"+":"")
+                                            + analitics.counter.newClientsPercent.toFixed(2))}% со вчера</span>
                                     </span>
                                 </div>
                             </div>
@@ -367,8 +448,9 @@ class AnalyticsPage extends Component{
                                 <div className="list-group-statistics">
                                     <strong>Постоянные <br/>Клиенты</strong>
                                     <span>
-                                        3000
-                                        <span className="small">+3.6% со вчера</span>
+                                        {analitics.counter && analitics.counter.permanentClientsToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.permanentClientsPercent > 0?"+":"")
+                                            + analitics.counter.permanentClientsPercent.toFixed(2))}% со вчера</span>
                                     </span>
                                 </div>
                             </div>
@@ -380,68 +462,46 @@ class AnalyticsPage extends Component{
                                         <div className="bth dropdown-toggle rounded-button select-menu"
                                              data-toggle="dropdown" role="menu" aria-haspopup="true"
                                              aria-expanded="false">
-                                            <p>Работающие сотрудники</p>
+                                            <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
                                         </div>
                                         <ul className="dropdown-menu">
-                                            <li>
-                                                <a href="#"><p>Все сотрудники</p></a>
+                                            <li onClick={()=>this.setCurrentSelectedStaff(1)}>
+                                                <a ><p>Все сотрудники</p></a>
                                             </li>
-                                            <li>
-                                                <a href="#"><p>Работающие сотрудники</p></a>
+                                            <li onClick={()=>this.setCurrentSelectedStaff(2)}>
+                                                <a ><p>Работающие сотрудники</p></a>
                                             </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/1.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Ольга Шубина</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/3.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Валерия Семенова</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/2.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Светлана Александрова</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/4.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Николай Петров</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/5.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Олег Смолов</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/3.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Валерия Семенова</p>
-                                                </a>
-                                            </li>
+                                            {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                                const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                                                return(
+                                                    <li onClick={()=>this.setCurrentSelectedStaff(staffEl)}>
+                                                        <a>
+                                                        <span className="img-container">
+                                                            <img className="rounded-circle"
+                                                                 src={activeStaff && activeStaff.imageBase64
+                                                                     ? "data:image/png;base64," +
+                                                                     activeStaff.imageBase64
+                                                                     // "1555020690000"
+                                                                     : `${process.env.CONTEXT}public/img/image.png`}
+                                                                 alt=""/>
+                                                        </span>
+                                                            <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                                        </a>
+                                                    </li>
+                                                )}
+                                            )}
                                         </ul>
                                     </div>
                                     <span>
-                                        20ч. (80%)
-                                        <span className="small">+3.6% со вчера</span>
+                                        {analitics.staffsAnalytic ?(((analitics.staffsAnalytic.appointmentTime)/3600000).toFixed(2)) + " ч.": "0 ч."}
+                                        ({analitics.staffsAnalytic?analitics.staffsAnalytic.percentWorkload.toFixed(2):"0"}%)
+                                        <span className="small">
+                                            {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")
+                                            + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% со вчера
+
+                                            {/*{analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")*/}
+                                            {/*    + analitics.staffsAnalytic.ratioToYesterday.toFixed(2))}*/}
+                                        </span>
                                     </span>
                                 </div>
                             </div>
@@ -484,7 +544,7 @@ class AnalyticsPage extends Component{
                                             <li>
                                                 <a href="#"><p>Работающие сотрудники</p></a>
                                             </li>
-                                            <li>
+                                            <li onClick={()=>setCurrentSelectedStaff()}>
                                                 <a href="#">
                                                     <span className="img-container">
                                                         <img className="rounded-circle" src="img/avatars/1.jpg" alt=""/>
@@ -592,4 +652,14 @@ class AnalyticsPage extends Component{
     }
 
 }
-export  { AnalyticsPage };
+
+function mapStateToProps(state) {
+    const { analitics, staff} = state;
+    debugger
+    return {
+        analitics, staff
+    };
+}
+
+const connectedApp = connect(mapStateToProps)(withRouter(AnalyticsPage));
+export { connectedApp as AnalyticsPage };
