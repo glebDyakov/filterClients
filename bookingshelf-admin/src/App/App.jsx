@@ -38,6 +38,7 @@ import {FaqPage} from "../FaqPage";
 import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
 import {userActions} from "../_actions/user.actions";
 import { AnalyticsPage } from "../AnalyticsPage";
+import {LicenseAgreement} from "../LicenseAgreement";
 
 class App extends React.Component {
     constructor(props) {
@@ -117,6 +118,7 @@ class App extends React.Component {
                             <PrivateRoute path="/denied" component={NoPageDenied} />
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
                             <PrivateRoute path="/analytics" component={AnalyticsPage} />
+                            <PublicRoute path="/licenseAgreement" component={LicenseAgreement} />
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />

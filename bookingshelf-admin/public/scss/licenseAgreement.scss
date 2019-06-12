@@ -1,0 +1,31 @@
+.licenseAgreement{
+  padding: 20px 10%;
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
+  p{
+    margin-bottom: 50px;
+    white-space: pre-line;
+    text-align: justify;
+  }
+  .title{
+    text-align: center;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  header{
+    display: flex;
+    justify-content: space-between;
+    p{
+      width: 30%;
+    }
+    .last{
+      margin-bottom: 0!important;
+    }
+  }
+
+}
