@@ -118,7 +118,7 @@ class App extends React.Component {
                             <PrivateRoute path="/denied" component={NoPageDenied} />
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
                             <PrivateRoute path="/analytics" component={AnalyticsPage} />
-                            <PublicRoute path="/licenseAgreement" component={LicenseAgreement} />
+                            <PublicRoute path="/license" component={LicenseAgreement} />
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />

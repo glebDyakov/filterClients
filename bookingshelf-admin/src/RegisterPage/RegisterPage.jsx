@@ -192,7 +192,7 @@ class RegisterPage extends React.Component {
                                 <label>
                                     <input type="checkbox" onChange={()=>this.setState({...this.state, agreed: !agreed})} checked={agreed}/>
                                     <span className={'' + ((user.countryCode || user.companyName) && !agreed ? ' redBorder' : '')}/>
-                                    Регистрируясь, вы принимаете условия <a href="/licenseAgreement" target="_blank">публичного
+                                    Регистрируясь, вы принимаете условия <a href="/license" target="_blank">публичного
                                     договора</a>
                                 </label>
 
