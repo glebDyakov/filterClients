@@ -3,7 +3,7 @@ import '../../public/scss/analytics.scss'
 import '../../public/scss/styles.scss'
 import {DatePicker} from "../_components/DatePicker";
 import config from 'config';
-
+import { Line } from 'react-chartjs-2';
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
@@ -62,14 +62,26 @@ class AnalyticsPage extends Component{
         this.handleDayChange = this.handleDayChange.bind(this);
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
+        this.statsForYear = this.statsForYear.bind(this);
 
 
-        let dateFrom,dateTo,dateFr;
+        let dateFrom,dateTo,dateFr, dateWeekBefore, dateNow;
+
         dateFrom = moment().utc().toDate();
         dateTo = [getDayRange(moment()).from];
         dateFr = moment(getDayRange(moment()).from);
-        let dateNow = moment().toDate().valueOf();
+        dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
+
+        dateNow = moment().toDate().valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNow,0));
+        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNow, 0));
+
+        let dataToChartStaff = moment().utc().format('x');
+        let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
+
+
+
+
 
 
         this.state = {
@@ -85,44 +97,33 @@ class AnalyticsPage extends Component{
             analitics: props.analitics,
             countRecAndCli: props.countRecAndCli,
             currentSelectedStaff: {
-                firstName: 'Все',
-                lastName: 'Сотрудники'
+                firstName: 'Работающие',
+                lastName: 'сотрудники'
             },
+            currentSelectedStaffChart: {
+                firstName: 'Работающие',
+                lastName: 'сотрудники'
+            },
+            initChartData: false,
             chosenPeriod: 1,
-            timetableFrom: 0,
-            timetableTo: 0,
-            allRecords:{
-                done: 0,
-                relative: 0,
-                notVisited: 0,
-                canceled: 0
-            },
-            onlineRecords:{
-                done: 0,
-                relative: 0,
-                notVisited: 0,
-                canceled: 0
-            },
-            calendarRecords:{
-                done: 0,
-                relative: 0,
-                notVisited: 0,
-                canceled: 0
-            },
-            recordsChar: {},
-            workloadChar:{},
-
-
-
+            dateArray: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            recordsArray: [],
+            charStatsFor: 'allRecordsToday',
+            dateArrayChart: [],
+            recordsArrayChart: [],
+            dataToChartStaff: dataToChartStaff,
+            dataFromChartStaff: dataFromChartStaff
         };
 
 
+
     }
+
     componentDidMount() {
-
-        this.props.dispatch(analiticsActions.getStaff());
-        this.props.dispatch(staffActions.get());
-
+        let dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
+        let dateNow = moment().toDate().valueOf();
+        this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dateWeekBefore,dateNow));
+        this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dateWeekBefore,dateNow));
     }
 
     setToday(){
@@ -133,7 +134,12 @@ class AnalyticsPage extends Component{
         let todayMill = today.valueOf();
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, 0));
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(todayMill, 0))
+        }else{
         this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, todayMill, 0));
+        }
     }
     setYesterday(){
         let yesterday;
@@ -143,7 +149,12 @@ class AnalyticsPage extends Component{
 
         let yesterdayMill = yesterday.valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(yesterdayMill,0));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, 0));
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(yesterdayMill, 0))
+        }else {
+            this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, 0));
+        }
     }
     setWeek(){
 
@@ -155,8 +166,12 @@ class AnalyticsPage extends Component{
         let startDayOfWeek = moment(this.state.selectedDays[0]).format('x');
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
-        debugger
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, 0))
+        }else {
+            this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+        }
 
     }
 
@@ -179,7 +194,11 @@ class AnalyticsPage extends Component{
         });
         let date = daySelected.valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(date,0));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, date, 0));
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(date, 0))
+        }else {
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, date, 0));}
     }
     handleWeekClick (weekNumber, days, e) {
 
@@ -212,7 +231,11 @@ class AnalyticsPage extends Component{
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
+        }else {
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));}
     };
 
     showPrevWeek (){
@@ -233,7 +256,10 @@ class AnalyticsPage extends Component{
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
+        }else {
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));}
 
     }
 
@@ -252,20 +278,23 @@ class AnalyticsPage extends Component{
         let startDayOfWeek = moment(weeks[0]).format('x');
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
+
+        if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
+        }else {
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));}
     }
     setCurrentSelectedStaff(staff){
 
+        let selectedDay = this.state.selectedDay.valueOf();
         let resStaff = {}
-        if(staff === 1){
-            resStaff.firstName = "Все";
+        if (staff===2){
+            resStaff.firstName = "Работающие ";
             resStaff.lastName = "сотрудники"
-        }else if (staff===2){
-            resStaff.firstName = "Работающие";
-            resStaff.lastName = "сотрудники"
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
         }else{
             resStaff = staff;
-            let selectedDay = this.state.selectedDay.valueOf();
+
             this.props.dispatch(analiticsActions.getStaffsAnalytic(staff.staffId, selectedDay, 0));
 
         }
@@ -274,15 +303,174 @@ class AnalyticsPage extends Component{
         this.setState({currentSelectedStaff:resStaff })
     }
 
+    setCurrentSelectedStaffChart(staff){
+        const {dataFromChartStaff, dataToChartStaff} = this.state;
+        let selectedDay = this.state.selectedDay.valueOf();
+        let resStaff = {}
+        if (staff===2){
+            resStaff.firstName = "Работающие ";
+            resStaff.lastName = "сотрудники"
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dataFromChartStaff, dataToChartStaff));
+        }else{
+            resStaff = staff;
+            this.props.dispatch(analiticsActions.getStaffsAnalyticChart(staff.staffId, dataFromChartStaff, dataToChartStaff));
+        }
+
+
+        this.setState({currentSelectedStaffChart:resStaff })
+    }
+
+    statsForYear(analitics){
+
+        const {charStatsFor} = this.state
+        let dateArray = [],
+            recordsArray = [],
+            lenght = Object.keys(analitics.countRecAndCliChart).length,
+            dateNormal = '';
+
+        switch (charStatsFor) {
+            case 'allRecordsToday':
+                for(let i = 0; i < lenght-1; i++){
+                    dateNormal = moment(Object.keys(analitics.countRecAndCliChart)[i]).format("D MMM YYYY")
+                    dateArray.push(dateNormal);
+                    recordsArray.push(analitics.countRecAndCliChart[Object.keys(analitics.countRecAndCliChart)[i]].allRecordsToday);
+
+                }
+                break;
+            case 'recordsToday':
+                for(let i = 0; i < lenght-1; i++){
+                    dateNormal = moment(Object.keys(analitics.countRecAndCliChart)[i]).format("D MMM YYYY")
+                    dateArray.push(dateNormal);
+                    recordsArray.push(analitics.countRecAndCliChart[Object.keys(analitics.countRecAndCliChart)[i]].recordsToday);
+
+                }
+                break;
+            case 'recordsOnlineToday':
+                for(let i = 0; i < lenght-1; i++){
+                    dateNormal = moment(Object.keys(analitics.countRecAndCliChart)[i]).format("D MMM YYYY")
+                    dateArray.push(dateNormal);
+                    recordsArray.push(analitics.countRecAndCliChart[Object.keys(analitics.countRecAndCliChart)[i]].recordsOnlineToday);
+
+                }
+                break;
+
+        }
+
+        this.setState({dateArray:dateArray, recordsArray:recordsArray});
+
+    }
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (JSON.stringify(this.props.analitics && this.props.analitics.countRecAndCliChart) !== JSON.stringify(nextProps.analitics.countRecAndCliChart)) {
+            this.statsForYear(nextProps.analitics)
+        }
+        if(this.state.initChartData && JSON.stringify(nextProps.analitics.countRecAndCliChart)) {
+
+            this.setState({ initChartData: true })
+        }
+
+        if ((JSON.stringify( this.props.analitics.staffsAnalyticChart) !== JSON.stringify(nextProps.analitics.staffsAnalyticChart))){
+
+            this.setState({ dateArrayChart: nextProps.analitics.staffsAnalyticChart.dateArrayChart, recordsArrayChart: nextProps.analitics.staffsAnalyticChart.recordsArrayChart})
+
+        }
+
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let dateNow = moment().toDate().valueOf();
+        let dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
+
+        if (this.props.analitics && this.props.analitics.countRecAndCliChart && (this.state.charStatsFor !== prevState.charStatsFor)) {
+            this.statsForYear(this.props.analitics);
+        }
+
+        if (this.state.initChartData) {
+            this.statsForYear(this.props.analitics);
+            this.setState({ initChartData: false})
+        }
+    }
 
 
     render(){
 
-        const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff} = this.state;
+        const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
         const {analitics, staff} = this.props;
-       
-        debugger
+       const data = {
+           labels: this.state.dateArray,
+           datasets: [
+               {
+                   fill: false,
+                   lineTension: 0,
+                   backgroundColor: 'rgba(75,192,192,0.4)',
+                   borderColor: 'rgba(75,192,192,1)',
+                   borderCapStyle: 'butt',
+                   borderDash: [],
+                   borderDashOffset: 0.0,
+                   borderJoinStyle: 'miter',
+                   pointBorderColor: 'rgba(75,192,192,1)',
+                   pointBackgroundColor: 'rgba(75,192,192,1)',
+                   pointBorderWidth: 1,
+                   pointHoverRadius: 5,
+                   pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                   pointHoverBorderColor: 'rgba(220,220,220,1)',
+                   pointHoverBorderWidth: 2,
+                   pointRadius: 3,
+                   pointHitRadius: 10,
+                   data: this.state.recordsArray
+               }
+           ]
+       };
+        const dataStaff = {
+            labels: this.state.dateArrayChart,
+            datasets: [
+                {
+                    fill: false,
+                    lineTension: 0,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBackgroundColor: 'rgba(75,192,192,1)',
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                    pointHoverBorderColor: 'rgba(220,220,220,1)',
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 3,
+                    pointHitRadius: 10,
+                    data: this.state.recordsArrayChart
+                }
+            ]
+        };
 
+       const options = {
+           legend: {
+               display: false,
+           },
+           scales: {
+               xAxes: [{
+                   // ticks: { display: false },
+                   gridLines: {
+                       display: false,
+                       drawBorder: false
+                   }
+               }],
+               yAxes: [{
+                   // ticks: { display: false },
+                   gridLines: {
+                       // display: false,
+                       drawBorder: false
+                   }
+               }]
+           }
+       };
+
+       if(analitics.countRecAndCli) {
+           console.log("Object.keys(analitics.countRecAndCli)[0]", Object.keys(analitics.countRecAndCli)[0]);
+           console.log("Object.keys(analitics.countRecAndCli)[0]", analitics.countRecAndCli[Object.keys(analitics.countRecAndCli)[0]]);
+       }
 
         return(
             <div className="content-wrapper">
@@ -465,9 +653,6 @@ class AnalyticsPage extends Component{
                                             <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
                                         </div>
                                         <ul className="dropdown-menu">
-                                            <li onClick={()=>this.setCurrentSelectedStaff(1)}>
-                                                <a ><p>Все сотрудники</p></a>
-                                            </li>
                                             <li onClick={()=>this.setCurrentSelectedStaff(2)}>
                                                 <a ><p>Работающие сотрудники</p></a>
                                             </li>
@@ -512,19 +697,24 @@ class AnalyticsPage extends Component{
                             <div className="analytics_list analytics_chart">
                                 <div>
                                     <span className="title-list">Записи</span>
-                                    <select className="custom-select">
+                                    <select className="custom-select" onChange={(e)=>this.setTypeDataOfChar(e)}>
                                         <option selected="">Всего записей в журнал</option>
                                         <option>Всего онлайн записей</option>
                                         <option>Всего записей</option>
                                     </select>
-                                    <select className="custom-select">
+                                    <select className="custom-select" onChange={(e)=>this.setCharData(e)}>
                                         <option selected="">Неделя</option>
                                         <option>Месяц</option>
                                         <option>Год</option>
                                     </select>
                                 </div>
                                 <div className="chart-inner">
-                                    <div id="container-chart" className="chart"></div>
+                                    <div id="container-chart" className="chart">
+                                        <Line
+                                            data={data}
+                                            options={options}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             {/*// <!--end analytics_chart-->*/}
@@ -535,73 +725,46 @@ class AnalyticsPage extends Component{
                                         <div className="bth dropdown-toggle rounded-button select-menu"
                                              data-toggle="dropdown" role="menu" aria-haspopup="true"
                                              aria-expanded="false">
-                                            <p>Все сотрудники</p>
+                                            <p>{currentSelectedStaffChart.firstName + " " + currentSelectedStaffChart.lastName}</p>
                                         </div>
                                         <ul className="dropdown-menu">
-                                            <li>
-                                                <a href="#"><p>Все сотрудники</p></a>
+                                            <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
+                                                <a ><p>Работающие сотрудники</p></a>
                                             </li>
-                                            <li>
-                                                <a href="#"><p>Работающие сотрудники</p></a>
-                                            </li>
-                                            <li onClick={()=>setCurrentSelectedStaff()}>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/1.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Ольга Шубина</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/3.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Валерия Семенова</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/2.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Светлана Александрова</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/4.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Николай Петров</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/5.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Олег Смолов</p>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src="img/avatars/3.jpg" alt=""/>
-                                                    </span>
-                                                    <p>Валерия Семенова</p>
-                                                </a>
-                                            </li>
+                                            {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                                const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                                                return(
+                                                    <li onClick={()=>this.setCurrentSelectedStaffChart(staffEl)}>
+                                                        <a>
+                                                        <span className="img-container">
+                                                            <img className="rounded-circle"
+                                                                 src={activeStaff && activeStaff.imageBase64
+                                                                     ? "data:image/png;base64," +
+                                                                     activeStaff.imageBase64
+                                                                     // "1555020690000"
+                                                                     : `${process.env.CONTEXT}public/img/image.png`}
+                                                                 alt=""/>
+                                                        </span>
+                                                            <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                                        </a>
+                                                    </li>
+                                                )}
+                                            )}
                                         </ul>
                                     </div>
                                     <select className="custom-select">
-                                        <option selected="">Неделя</option>
+                                        <option selected="" onClick={()=>setCharDataStaff()}>Неделя</option>
                                         <option>Месяц</option>
                                         <option>Год</option>
                                     </select>
                                 </div>
                                 <div className="chart-inner">
-                                    <div id="container-chart2" className="chart"></div>
+                                    <div id="container-chart2" className="chart">
+                                        <Line
+                                            data={dataStaff}
+                                            options={options}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             {/*// <!--end analytics_chart-->*/}
@@ -650,12 +813,71 @@ class AnalyticsPage extends Component{
 
         );
     }
+    setCharData(e){
+
+        let dataFrom, dataTo;
+            dataTo = moment().utc().format('x');
+            const {name, value} = e.target;
+
+            switch(value){
+                case 'Неделя':
+                dataFrom = moment().subtract(1, 'week').utc().format('x');
+                break;
+                case 'Месяц':
+                dataFrom = moment().subtract(1, 'month').utc().format('x');
+                break;
+                case 'Год':
+                dataFrom = moment().subtract(1, 'year').utc().format('x');
+                break;
+            }
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dataFrom,dataTo));
+
+
+    }
+    setTypeDataOfChar(e){
+        const {name, value} = e.target;
+        const {analitics} = this.props;
+        let type = '';
+        switch(value){
+            case 'Всего записей в журнал':
+                type = 'allRecordsToday';
+                break;
+            case 'Всего онлайн записей':
+                type = 'recordsOnlineToday';
+                break;
+            case 'Всего записей':
+                type = 'recordsToday';
+                break;
+        }
+        this.setState({charStatsFor: type})
+
+    }
+
+    setTypeDataOfCharStaff(e){
+        const {name, value} = e.target;
+        const {analitics} = this.props;
+        let type = '';
+        switch(value){
+            case 'Всего записей в журнал':
+                type = 'allRecordsToday';
+                break;
+            case 'Всего онлайн записей':
+                type = 'recordsOnlineToday';
+                break;
+            case 'Всего записей':
+                type = 'recordsToday';
+                break;
+        }
+        this.setState({charStatsFor: type})
+
+    }
 
 }
 
 function mapStateToProps(state) {
     const { analitics, staff} = state;
-    debugger
+
     return {
         analitics, staff
     };

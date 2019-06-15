@@ -144,6 +144,7 @@ function addService(params, idGroup) {
 }
 
 function updateService(params, idGroup) {
+
     const requestOptions = {
         method: 'PUT',
         crossDomain: true,

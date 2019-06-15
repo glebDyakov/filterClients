@@ -9,7 +9,6 @@ import '../../public/scss/styles.scss'
 class LicenseAgreement extends Component{
 
     render() {
-        debugger
         return(
             <div className="licenseAgreement">
                 <header>
