@@ -5,7 +5,11 @@ import {analiticsService} from '../_services';
 export const analiticsActions = {
     getStaff,
     getRecordsAndClientsCount,
-    getStaffsAnalytic
+    getRecordsAndClientsChartCount,
+    getStaffsAnalytic,
+    getStaffsAnalyticForAll,
+    getStaffsAnalyticChart,
+    getStaffsAnalyticForAllChart
 };
 
 function getStaff() {
@@ -29,6 +33,16 @@ function getRecordsAndClientsCount(daySelected,dayLast) {
 
     function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_SUCCESS, count } }
 }
+function getRecordsAndClientsChartCount(daySelected,dayLast) {
+    return dispatch => {
+        analiticsService.getRecordsAndClientsCount(daySelected,dayLast)
+            .then(
+                count => dispatch(success(count)),
+            );
+    };
+
+    function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_SUCCESS, count } }
+}
 function getStaffsAnalytic(staffId, daySelected, dayLast) {
     return dispatch => {
         analiticsService.getStaffsAnalytic(staffId, daySelected, dayLast)
@@ -39,3 +53,37 @@ function getStaffsAnalytic(staffId, daySelected, dayLast) {
 
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS, count } }
 }
+function getStaffsAnalyticForAll(daySelected, dayLast) {
+    return dispatch => {
+        analiticsService.getStaffsAnalyticForAll(daySelected, dayLast)
+            .then(
+                count => dispatch(success(count)),
+            );
+    };
+
+    function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_SUCCESS, count } }
+}
+
+function getStaffsAnalyticChart(staffId, daySelected, dayLast) {
+    return dispatch => {
+        analiticsService.getStaffsAnalytic(staffId, daySelected, dayLast)
+            .then(
+                count => dispatch(success(count)),
+            );
+    };
+
+
+    function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS, count } }
+}
+
+function getStaffsAnalyticForAllChart(daySelected, dayLast) {
+    return dispatch => {
+        analiticsService.getStaffsAnalyticForAll(daySelected, dayLast)
+            .then(
+                count => dispatch(success(count)),
+            );
+    };
+
+    function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_SUCCESS, count } }
+}
+

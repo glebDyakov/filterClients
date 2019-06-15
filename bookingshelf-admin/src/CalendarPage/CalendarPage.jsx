@@ -23,6 +23,10 @@ import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
+import { analiticsActions } from "../_actions";
+
+import {AlphaPicker, BlockPicker,ChromePicker, CirclePicker,CompactPicker, GithubPicker, HuePicker, MaterialPicker,PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker} from 'react-color';
+
 
 
 function getWeekDays(weekStart) {

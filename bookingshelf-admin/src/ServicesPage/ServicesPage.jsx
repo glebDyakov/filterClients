@@ -263,7 +263,6 @@ class ServicesPage extends Component {
 
     update(service){
         const { dispatch } = this.props;
-
         dispatch(servicesActions.update(service));
     };
 

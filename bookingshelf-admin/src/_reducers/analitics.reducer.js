@@ -1,4 +1,5 @@
 import {analiticsConstants} from '../_constants';
+import moment from 'moment';
 
 export function analitics(state = {}, action) {
 
@@ -29,7 +30,6 @@ export function analitics(state = {}, action) {
             const countLength = Object.keys(action.count).length;
 
             for(let i = 0; i< countLength; i++) {
-                debugger
                 allRecordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsPercent;
                 allRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday;
                 allRecordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
@@ -45,18 +45,10 @@ export function analitics(state = {}, action) {
                 recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
             }
             allRecordsPercent /=countLength;
-            // allRecordsToday /=countLength;
-            // allRecordsTodayCanceled/=countLength;
             newClientsPercent /=countLength;
-            // newClientsToday/=countLength;
             permanentClientsPercent/=countLength;
-            // permanentClientsToday/=countLength;
             recordsOnlinePercent/=countLength;
-            // recordsOnlineToday/=countLength;
-            // recordsOnlineTodayCanceled/=countLength;
             recordsPercent/=countLength;
-            // recordsToday/=countLength;
-            // recordsTodayCanceled/=countLength;
             return{
                 ...state,
                 countRecAndCli: action.count,
@@ -96,6 +88,73 @@ export function analitics(state = {}, action) {
                     percentWorkload,
                     ratioToYesterday
 
+                }
+            };
+
+
+        case analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_SUCCESS:
+            return{
+                ...state,
+                countRecAndCliChart: action.count,
+            };
+        case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_SUCCESS:
+                appointmentTime = 0;
+                percentWorkload = 0;
+                ratioToYesterday = 0;
+            for(let i = 0; i < Object.keys(action.count).length; i++) {
+                appointmentTime += action.count[Object.keys(action.count)[i]].appointmentTime;
+                percentWorkload += action.count[Object.keys(action.count)[i]].percentWorkload;
+                ratioToYesterday += action.count[Object.keys(action.count)[i]].ratioToYesterday;
+
+            }
+            percentWorkload /= Object.keys(action.count).length;
+
+            return{
+                ...state,
+                staffsAnalytic: {
+                    appointmentTime,
+                    percentWorkload,
+                    ratioToYesterday
+
+                }
+            };
+        case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
+            let dateArrayChart = [], recordsArrayChart = [], dateNormal = '';
+
+            let length = Object.keys(analitics.countRecAndCliChart).length;
+
+            for(i = 0; i < length; i++){
+                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM YYYY");
+                dateArrayChart.push(dateNormal);
+                recordsArrayChart.push(action.count[Object.keys(action.count)[i]].percentWorkload);
+            }
+
+
+            return{
+                ...state,
+                staffsAnalyticChart:{
+                    dateArrayChart,
+                    recordsArrayChart
+                }
+
+            };
+        case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_SUCCESS:
+            dateArrayChart= [];
+            recordsArrayChart = [];
+            dateNormal = '';
+            length = Object.keys(action.count).length;
+            let i=0;
+            for(i = 0; i < length; i++){
+                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM YYYY");
+                dateArrayChart.push(dateNormal);
+                recordsArrayChart.push(action.count[Object.keys(action.count)[i]].percentWorkload);
+            }
+            return{
+
+                ...state,
+                staffsAnalyticChart:{
+                    dateArrayChart,
+                    recordsArrayChart
                 }
             };
 
