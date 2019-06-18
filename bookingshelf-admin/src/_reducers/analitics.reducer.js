@@ -120,7 +120,7 @@ export function analitics(state = initialState, action) {
 
             switch (charStatsFor) {
                 case 'allRecordsToday':
-                    for(let i = 0; i < lengthChartFirst-1; i++){
+                    for(let i = 0; i < lengthChartFirst; i++){
                         dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].allRecordsToday);
@@ -128,7 +128,7 @@ export function analitics(state = initialState, action) {
                     }
                     break;
                 case 'recordsToday':
-                    for(let i = 0; i < lengthChartFirst-1; i++){
+                    for(let i = 0; i < lengthChartFirst; i++){
                         dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsToday);
@@ -136,7 +136,7 @@ export function analitics(state = initialState, action) {
                     }
                     break;
                 case 'recordsOnlineToday':
-                    for(let i = 0; i < lengthChartFirst-1; i++){
+                    for(let i = 0; i < lengthChartFirst; i++){
                         dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsOnlineToday);
