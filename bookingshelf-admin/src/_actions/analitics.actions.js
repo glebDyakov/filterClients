@@ -9,7 +9,8 @@ export const analiticsActions = {
     getStaffsAnalytic,
     getStaffsAnalyticForAll,
     getStaffsAnalyticChart,
-    getStaffsAnalyticForAllChart
+    getStaffsAnalyticForAllChart,
+    updateChartStatsFor
 };
 
 function getStaff() {
@@ -33,6 +34,10 @@ function getRecordsAndClientsCount(daySelected,dayLast) {
 
     function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_SUCCESS, count } }
 }
+function updateChartStatsFor(charStatsFor ) {
+    return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_UPDATE_CHART, charStatsFor }
+}
+
 function getRecordsAndClientsChartCount(daySelected,dayLast) {
     return dispatch => {
         analiticsService.getRecordsAndClientsCount(daySelected,dayLast)

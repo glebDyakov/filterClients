@@ -1,9 +1,28 @@
 import {analiticsConstants} from '../_constants';
 import moment from 'moment';
 
-export function analitics(state = {}, action) {
+const initialState = {
+    charStatsFor: 'allRecordsToday',
+    countRecAndCliChart: {
+        dateArrayChartFirst: [],
+        recordsArrayChartFirst: []
+    },
+    staffsAnalyticChart: {
+        dateArrayChart: [],
+        recordsArrayChart: []
+    }
+}
+
+export function analitics(state = initialState, action) {
 
     switch (action.type) {
+
+        case analiticsConstants.GET_RECORDS_AND_CLIENTS_UPDATE_CHART:
+            return {
+                ...state,
+                charStatsFor: action.charStatsFor
+            };
+
 
         case analiticsConstants.GET_STAFFS_SUCCESS:
 
@@ -93,9 +112,46 @@ export function analitics(state = {}, action) {
 
 
         case analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_SUCCESS:
+            const {charStatsFor} = state;
+            let dateArrayChartFirst = [],
+                recordsArrayChartFirst = [],
+                lengthChartFirst = Object.keys(action.count).length,
+                dateNormalChartFirst = '';
+
+            switch (charStatsFor) {
+                case 'allRecordsToday':
+                    for(let i = 0; i < lengthChartFirst-1; i++){
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateArrayChartFirst.push(dateNormalChartFirst);
+                        recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].allRecordsToday);
+
+                    }
+                    break;
+                case 'recordsToday':
+                    for(let i = 0; i < lengthChartFirst-1; i++){
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateArrayChartFirst.push(dateNormalChartFirst);
+                        recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsToday);
+
+                    }
+                    break;
+                case 'recordsOnlineToday':
+                    for(let i = 0; i < lengthChartFirst-1; i++){
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateArrayChartFirst.push(dateNormalChartFirst);
+                        recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsOnlineToday);
+
+                    }
+                    break;
+
+            }
+
             return{
                 ...state,
-                countRecAndCliChart: action.count,
+                countRecAndCliChart: {
+                    dateArrayChartFirst,
+                    recordsArrayChartFirst
+                }
             };
         case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_SUCCESS:
                 appointmentTime = 0;
@@ -121,14 +177,13 @@ export function analitics(state = {}, action) {
         case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
             let dateArrayChart = [], recordsArrayChart = [], dateNormal = '';
 
-            let length = Object.keys(analitics.countRecAndCliChart).length;
+            let length = Object.keys(action.count).length;
 
             for(i = 0; i < length; i++){
                 dateNormal = moment(Object.keys(action.count)[i]).format("D MMM YYYY");
                 dateArrayChart.push(dateNormal);
                 recordsArrayChart.push(action.count[Object.keys(action.count)[i]].percentWorkload);
             }
-
 
             return{
                 ...state,

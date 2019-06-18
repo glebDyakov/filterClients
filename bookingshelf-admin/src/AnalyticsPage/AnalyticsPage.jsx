@@ -63,14 +63,14 @@ class AnalyticsPage extends Component{
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this.statsForYear = this.statsForYear.bind(this);
+        this.getChartData = this.getChartData.bind(this);
 
 
-        let dateFrom,dateTo,dateFr, dateWeekBefore, dateNow;
+        let dateFrom,dateTo,dateFr, dateNow;
 
         dateFrom = moment().utc().toDate();
         dateTo = [getDayRange(moment()).from];
         dateFr = moment(getDayRange(moment()).from);
-        dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
 
         dateNow = moment().toDate().valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNow,0));
@@ -78,7 +78,6 @@ class AnalyticsPage extends Component{
 
         let dataToChartStaff = moment().utc().format('x');
         let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
-
 
 
 
@@ -112,7 +111,10 @@ class AnalyticsPage extends Component{
             dateArrayChart: [],
             recordsArrayChart: [],
             dataToChartStaff: dataToChartStaff,
-            dataFromChartStaff: dataFromChartStaff
+            dataFromChartStaff: dataFromChartStaff,
+            chartFirstDateTo: dataToChartStaff,
+            chartFirstDateFrom: dataFromChartStaff,
+
         };
 
 
@@ -120,6 +122,10 @@ class AnalyticsPage extends Component{
     }
 
     componentDidMount() {
+        this.getChartData()
+    }
+
+    getChartData() {
         let dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
         let dateNow = moment().toDate().valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dateWeekBefore,dateNow));
@@ -130,7 +136,6 @@ class AnalyticsPage extends Component{
         let today;
         today = moment().utc().toDate();
         this.setState({...this.state, selectedDay: today, dropdownFirst:false, chosenPeriod:1, type: 'day',});
-        console.log("period", this.state.dateFrom )
         let todayMill = today.valueOf();
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, 0));
@@ -145,7 +150,6 @@ class AnalyticsPage extends Component{
         let yesterday;
         yesterday = moment().subtract(1, 'days').utc().toDate();
         this.setState({...this.state, selectedDay: yesterday, dropdownFirst:false, chosenPeriod:2,type: 'day',});
-        console.log("period", this.state.dateFrom)
 
         let yesterdayMill = yesterday.valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(yesterdayMill,0));
@@ -160,8 +164,6 @@ class AnalyticsPage extends Component{
 
         let weeks = getWeekDays(getWeekRange(moment().format()).from);
         this.setState({...this.state, dropdownFirst:false, chosenPeriod:3, type: 'week',selectedDays: weeks});
-        console.log("boooom1");
-
 
         let startDayOfWeek = moment(this.state.selectedDays[0]).format('x');
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
@@ -290,7 +292,7 @@ class AnalyticsPage extends Component{
         let resStaff = {}
         if (staff===2){
             resStaff.firstName = "Работающие ";
-            resStaff.lastName = "сотрудники"
+            resStaff.lastName = "сотрудники";
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
         }else{
             resStaff = staff;
@@ -304,12 +306,12 @@ class AnalyticsPage extends Component{
     }
 
     setCurrentSelectedStaffChart(staff){
+
         const {dataFromChartStaff, dataToChartStaff} = this.state;
-        let selectedDay = this.state.selectedDay.valueOf();
         let resStaff = {}
         if (staff===2){
-            resStaff.firstName = "Работающие ";
-            resStaff.lastName = "сотрудники"
+            resStaff.firstName = "Работающие";
+            resStaff.lastName = "сотрудники";
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dataFromChartStaff, dataToChartStaff));
         }else{
             resStaff = staff;
@@ -317,12 +319,12 @@ class AnalyticsPage extends Component{
         }
 
 
-        this.setState({currentSelectedStaffChart:resStaff })
+        this.setState({currentSelectedStaffChart:resStaff });
     }
 
     statsForYear(analitics){
 
-        const {charStatsFor} = this.state
+        const {charStatsFor} = this.state;
         let dateArray = [],
             recordsArray = [],
             lenght = Object.keys(analitics.countRecAndCliChart).length,
@@ -367,17 +369,16 @@ class AnalyticsPage extends Component{
 
             this.setState({ initChartData: true })
         }
-
-        if ((JSON.stringify( this.props.analitics.staffsAnalyticChart) !== JSON.stringify(nextProps.analitics.staffsAnalyticChart))){
-
-            this.setState({ dateArrayChart: nextProps.analitics.staffsAnalyticChart.dateArrayChart, recordsArrayChart: nextProps.analitics.staffsAnalyticChart.recordsArrayChart})
-
+        if ((JSON.stringify( this.props.analitics.charStatsFor) !== JSON.stringify(nextProps.analitics.charStatsFor))){
+            const {chartFirstDateFrom, chartFirstDateTo} = this.state;
+            this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(chartFirstDateFrom,chartFirstDateTo));
         }
+
+
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let dateNow = moment().toDate().valueOf();
-        let dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
+
 
         if (this.props.analitics && this.props.analitics.countRecAndCliChart && (this.state.charStatsFor !== prevState.charStatsFor)) {
             this.statsForYear(this.props.analitics);
@@ -393,9 +394,14 @@ class AnalyticsPage extends Component{
     render(){
 
         const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
+        const dateArray = this.props.analitics.countRecAndCliChart.dateArrayChartFirst;
+        const recordsArray = this.props.analitics.countRecAndCliChart.recordsArrayChartFirst;
+
+        const dateArrayChart = this.props.analitics.staffsAnalyticChart.dateArrayChart;
+        const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart;
         const {analitics, staff} = this.props;
-       const data = {
-           labels: this.state.dateArray,
+        const data = {
+           labels: dateArray,
            datasets: [
                {
                    fill: false,
@@ -415,12 +421,12 @@ class AnalyticsPage extends Component{
                    pointHoverBorderWidth: 2,
                    pointRadius: 3,
                    pointHitRadius: 10,
-                   data: this.state.recordsArray
+                   data: recordsArray
                }
            ]
-       };
+        };
         const dataStaff = {
-            labels: this.state.dateArrayChart,
+            labels: dateArrayChart,
             datasets: [
                 {
                     fill: false,
@@ -440,7 +446,7 @@ class AnalyticsPage extends Component{
                     pointHoverBorderWidth: 2,
                     pointRadius: 3,
                     pointHitRadius: 10,
-                    data: this.state.recordsArrayChart
+                    data: recordsArrayChart
                 }
             ]
         };
@@ -451,26 +457,19 @@ class AnalyticsPage extends Component{
            },
            scales: {
                xAxes: [{
-                   // ticks: { display: false },
                    gridLines: {
                        display: false,
                        drawBorder: false
                    }
                }],
                yAxes: [{
-                   // ticks: { display: false },
                    gridLines: {
-                       // display: false,
                        drawBorder: false
                    }
                }]
            }
        };
 
-       if(analitics.countRecAndCli) {
-           console.log("Object.keys(analitics.countRecAndCli)[0]", Object.keys(analitics.countRecAndCli)[0]);
-           console.log("Object.keys(analitics.countRecAndCli)[0]", analitics.countRecAndCli[Object.keys(analitics.countRecAndCli)[0]]);
-       }
 
         return(
             <div className="content-wrapper">
@@ -752,8 +751,8 @@ class AnalyticsPage extends Component{
                                             )}
                                         </ul>
                                     </div>
-                                    <select className="custom-select">
-                                        <option selected="" onClick={()=>setCharDataStaff()}>Неделя</option>
+                                    <select className="custom-select" onChange={(e)=>this.setCharDataStaff(e)}>
+                                        <option selected="" >Неделя</option>
                                         <option>Месяц</option>
                                         <option>Год</option>
                                     </select>
@@ -831,13 +830,13 @@ class AnalyticsPage extends Component{
                 break;
             }
 
-        this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dataFrom,dataTo));
+            this.setState({chartFirstDateFrom: dataFrom, chartFirstDateTo: dataTo})
+            this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dataFrom,dataTo));
 
 
     }
     setTypeDataOfChar(e){
         const {name, value} = e.target;
-        const {analitics} = this.props;
         let type = '';
         switch(value){
             case 'Всего записей в журнал':
@@ -850,34 +849,40 @@ class AnalyticsPage extends Component{
                 type = 'recordsToday';
                 break;
         }
-        this.setState({charStatsFor: type})
+        this.props.dispatch(analiticsActions.updateChartStatsFor(type));
+
 
     }
 
-    setTypeDataOfCharStaff(e){
+    setCharDataStaff(e){
+        let dataFrom, dataTo;
+        dataTo = moment().utc().format('x');
         const {name, value} = e.target;
-        const {analitics} = this.props;
-        let type = '';
+        const {currentSelectedStaffChart} = this.state
+
         switch(value){
-            case 'Всего записей в журнал':
-                type = 'allRecordsToday';
+            case 'Неделя':
+                dataFrom = moment().subtract(1, 'week').utc().format('x');
                 break;
-            case 'Всего онлайн записей':
-                type = 'recordsOnlineToday';
+            case 'Месяц':
+                dataFrom = moment().subtract(1, 'month').utc().format('x');
                 break;
-            case 'Всего записей':
-                type = 'recordsToday';
+            case 'Год':
+                dataFrom = moment().subtract(1, 'year').utc().format('x');
                 break;
         }
-        this.setState({charStatsFor: type})
-
+        this.setState({dataFromChartStaff: dataFrom, dataToChartStaff: dataTo})
+        if (this.state.currentSelectedStaffChart.firstName === 'Работающие'){
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dataFrom, dataTo));
+        }else{
+            this.props.dispatch(analiticsActions.getStaffsAnalyticChart(currentSelectedStaffChart.staffId, dataFrom, dataTo));
+        }
     }
 
 }
 
 function mapStateToProps(state) {
     const { analitics, staff} = state;
-
     return {
         analitics, staff
     };
