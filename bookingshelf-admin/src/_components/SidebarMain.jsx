@@ -59,12 +59,6 @@ class SidebarMain extends Component {
             this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
 
         }
-        if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
-            this.setState({
-                appointmentsCount: newProps.calendar.appointmentsCount && newProps.calendar.appointmentsCount,
-                appointmentsCanceled: newProps.calendar.appointmentsCanceled && newProps.calendar.appointmentsCanceled,
-            })
-        }
     }
 
     componentDidMount() {
@@ -80,8 +74,8 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location }=this.props;
-        const { authentication, menu, company, collapse, newOpened, appointmentsCanceled, appointmentsCount, count }=this.state;
+        const { location, calendar: { appointmentsCanceled, appointmentsCount } }=this.props;
+        const { authentication, menu, company, collapse, newOpened,  count }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
@@ -292,6 +286,7 @@ class SidebarMain extends Component {
     openAppointments(event){
         event.stopPropagation()
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
     }
 }
 
