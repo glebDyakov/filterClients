@@ -47,7 +47,10 @@ export function analitics(state = initialState, action) {
                 recordsOnlineTodayCanceled = 0,
                 recordsPercent = 0,
                 recordsToday = 0,
-                recordsTodayCanceled = 0;
+                recordsTodayCanceled = 0,
+                approvedAllRecordsToday = 0,
+                approvedRecordsOnlineToday = 0,
+                approvedRecordsToday = 0;
             const countRecAndCli = action.count;
             const countLength = Object.keys(action.count).length;
 
@@ -65,6 +68,11 @@ export function analitics(state = initialState, action) {
                 recordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsPercent;
                 recordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
                 recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
+                if(moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')){
+                    approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday;
+                    approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday;
+                    approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
+                }
             }
             allRecordsPercent /=countLength;
             newClientsPercent /=countLength;
@@ -88,6 +96,9 @@ export function analitics(state = initialState, action) {
                     recordsPercent,
                     recordsToday,
                     recordsTodayCanceled,
+                    approvedAllRecordsToday,
+                    approvedRecordsOnlineToday,
+                    approvedRecordsToday
 
                 }
             };

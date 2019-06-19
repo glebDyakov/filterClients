@@ -565,7 +565,7 @@ class AnalyticsPage extends Component{
                                 </div>
                                 <div className="visitor-statistics">
                                     <div>
-                                        <span className="number-statistics">{analitics.counter && (analitics.counter.allRecordsToday - analitics.counter.allRecordsTodayCanceled)}</span>
+                                        <span className="number-statistics">{analitics.counter && (analitics.counter.approvedAllRecordsToday)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
@@ -587,7 +587,7 @@ class AnalyticsPage extends Component{
                                 </div>
                                 <div className="visitor-statistics">
                                     <div>
-                                        <span className="number-statistics">{analitics.counter && (analitics.counter.recordsOnlineToday - analitics.counter.recordsOnlineTodayCanceled)}</span>
+                                        <span className="number-statistics">{analitics.counter && (analitics.counter.approvedRecordsOnlineToday)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
@@ -611,7 +611,7 @@ class AnalyticsPage extends Component{
                                     <div>
                                         <span className="number-statistics">
                                             {analitics.counter &&
-                                            (analitics.counter.recordsToday - analitics.counter.recordsTodayCanceled)}</span>
+                                            (analitics.counter.approvedRecordsToday)}</span>
                                         <p>Выполнено</p>
                                     </div>
                                     <div>
