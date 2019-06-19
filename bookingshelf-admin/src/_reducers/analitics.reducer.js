@@ -69,9 +69,9 @@ export function analitics(state = initialState, action) {
                 recordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
                 recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
                 if(moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')){
-                    approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday;
-                    approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday;
-                    approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
+                    approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
+                    approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCanceled;
+                    approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
                 }
             }
             allRecordsPercent /=countLength;
