@@ -10,7 +10,10 @@ const initialState = {
     staffsAnalyticChart: {
         dateArrayChart: [],
         recordsArrayChart: []
-    }
+    },
+    isLoadingFirst: false,
+    isLoadingSecond: false,
+
 }
 
 export function analitics(state = initialState, action) {
@@ -121,7 +124,7 @@ export function analitics(state = initialState, action) {
             switch (charStatsFor) {
                 case 'allRecordsToday':
                     for(let i = 0; i < lengthChartFirst; i++){
-                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].allRecordsToday);
 
@@ -129,7 +132,7 @@ export function analitics(state = initialState, action) {
                     break;
                 case 'recordsToday':
                     for(let i = 0; i < lengthChartFirst; i++){
-                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsToday);
 
@@ -137,7 +140,7 @@ export function analitics(state = initialState, action) {
                     break;
                 case 'recordsOnlineToday':
                     for(let i = 0; i < lengthChartFirst; i++){
-                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM YYYY")
+                        dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM")
                         dateArrayChartFirst.push(dateNormalChartFirst);
                         recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsOnlineToday);
 
@@ -148,6 +151,7 @@ export function analitics(state = initialState, action) {
 
             return{
                 ...state,
+                isLoadingFirst: false,
                 countRecAndCliChart: {
                     dateArrayChartFirst,
                     recordsArrayChartFirst
@@ -170,9 +174,9 @@ export function analitics(state = initialState, action) {
                 staffsAnalytic: {
                     appointmentTime,
                     percentWorkload,
-                    ratioToYesterday
-
-                }
+                    ratioToYesterday,
+                },
+                isLoadingSecond: false
             };
         case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
             let dateArrayChart = [], recordsArrayChart = [], dateNormal = '';
@@ -180,13 +184,14 @@ export function analitics(state = initialState, action) {
             let length = Object.keys(action.count).length;
 
             for(i = 0; i < length; i++){
-                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM YYYY");
+                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM");
                 dateArrayChart.push(dateNormal);
                 recordsArrayChart.push(action.count[Object.keys(action.count)[i]].percentWorkload);
             }
 
             return{
                 ...state,
+                isLoadingSecond: false,
                 staffsAnalyticChart:{
                     dateArrayChart,
                     recordsArrayChart
@@ -200,17 +205,52 @@ export function analitics(state = initialState, action) {
             length = Object.keys(action.count).length;
             let i=0;
             for(i = 0; i < length; i++){
-                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM YYYY");
+                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM");
                 dateArrayChart.push(dateNormal);
                 recordsArrayChart.push(action.count[Object.keys(action.count)[i]].percentWorkload);
             }
             return{
 
                 ...state,
+                isLoadingSecond: false,
                 staffsAnalyticChart:{
                     dateArrayChart,
                     recordsArrayChart
                 }
+            };
+            case analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_REQUEST:
+            return{
+                ...state,
+                isLoadingFirst: true
+
+            };
+        case analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_FAILURE:
+            return{
+                ...state,
+                isLoadingFirst: false
+
+            };
+        case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_REQUEST:
+
+
+            return {
+                ...state,
+                isLoadingSecond: true
+            };
+            case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_FAILURE:
+            return {
+                ...state,
+                isLoadingSecond: false
+            };
+            case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_REQUEST:
+            return {
+                ...state,
+                isLoadingSecond: true
+            };
+            case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_FAILURE:
+            return {
+                ...state,
+                isLoadingSecond: false
             };
 
         default:

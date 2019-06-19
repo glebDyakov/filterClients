@@ -133,17 +133,19 @@ class AnalyticsPage extends Component{
     }
 
     setToday(){
-        let today;
-        today = moment().utc().toDate();
+        let today, todayEnd;
+        today = moment().utc().startOf('day');
+        todayEnd = moment().utc().endOf('day');
         this.setState({...this.state, selectedDay: today, dropdownFirst:false, chosenPeriod:1, type: 'day',});
         let todayMill = today.valueOf();
+        let todayEndMill = todayEnd.valueOf();
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, 0));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(todayMill, 0))
         }else{
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, todayMill, 0));
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, todayMill, todayEndMill));
         }
     }
     setYesterday(){
@@ -195,12 +197,14 @@ class AnalyticsPage extends Component{
             selectedDays: [getDayRange(moment(daySelected).format()).from]
         });
         let date = daySelected.valueOf();
+        let dateStart = daySelected.startOf('day').valueOf();
+        let dateEnd = daySelected.startOf('day').valueOf();
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(date,0));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(date, 0))
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateStart, dateEnd))
         }else {
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, date, 0));}
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, dateStart, dateEnd));}
     }
     handleWeekClick (weekNumber, days, e) {
 
@@ -393,6 +397,7 @@ class AnalyticsPage extends Component{
 
     render(){
 
+        const {isLoadingFirst, isLoadingSecond} = this.props.analitics;
         const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
         const dateArray = this.props.analitics.countRecAndCliChart.dateArrayChartFirst;
         const recordsArray = this.props.analitics.countRecAndCliChart.recordsArrayChartFirst;
@@ -704,15 +709,17 @@ class AnalyticsPage extends Component{
                                     <select className="custom-select" onChange={(e)=>this.setCharData(e)}>
                                         <option selected="">Неделя</option>
                                         <option>Месяц</option>
-                                        <option>Год</option>
+                                        {/*<option>Год</option>*/}
                                     </select>
                                 </div>
                                 <div className="chart-inner">
-                                    <div id="container-chart" className="chart">
+                                    <div id="container-chart" className="chart" style={{position:"relative"}}>
+                                        {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                        {!isLoadingFirst &&
                                         <Line
                                             data={data}
                                             options={options}
-                                        />
+                                        />}
                                     </div>
                                 </div>
                             </div>
@@ -754,21 +761,25 @@ class AnalyticsPage extends Component{
                                     <select className="custom-select" onChange={(e)=>this.setCharDataStaff(e)}>
                                         <option selected="" >Неделя</option>
                                         <option>Месяц</option>
-                                        <option>Год</option>
+                                        {/*<option>Год</option>*/}
                                     </select>
                                 </div>
                                 <div className="chart-inner">
-                                    <div id="container-chart2" className="chart">
-                                        <Line
+                                    <div id="container-chart2" className="chart" style={{position:"relative"}}>
+                                        {!!isLoadingSecond && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                        {!isLoadingSecond && <Line
                                             data={dataStaff}
                                             options={options}
-                                        />
+                                        />}
                                     </div>
                                 </div>
                             </div>
                             {/*// <!--end analytics_chart-->*/}
                         </div>
                         {/*// <!--end group-container-->*/}
+
+
+                        {!!0 &&
                         <div className="group-container">
                             <div className="analytics_list save-statistics">
                                 <div>
@@ -787,7 +798,8 @@ class AnalyticsPage extends Component{
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
+                        {!!0 &&
                         <div className="dropdown">
                             <a className="delete-icon menu-delete float-right" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
@@ -797,7 +809,9 @@ class AnalyticsPage extends Component{
                                 <button type="button" className="button">Да</button>
                                 <button type="button" className="gray-button">Нет</button>
                             </div>
-                        </div>
+                        </div>}
+
+
                     </div>
                     {/*// <!--end retreats-->*/}
                 </div>

@@ -1,4 +1,4 @@
-import {analiticsConstants} from '../_constants';
+import {analiticsConstants, calendarConstants} from '../_constants';
 import {analiticsService} from '../_services';
 
 
@@ -40,13 +40,17 @@ function updateChartStatsFor(charStatsFor ) {
 
 function getRecordsAndClientsChartCount(daySelected,dayLast) {
     return dispatch => {
+        dispatch(request());
         analiticsService.getRecordsAndClientsCount(daySelected,dayLast)
             .then(
                 count => dispatch(success(count)),
+                () => dispatch(failure())
             );
     };
 
     function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_SUCCESS, count } }
+    function request() { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_REQUEST} }
+    function failure() { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_CHART_FAILURE } }
 }
 function getStaffsAnalytic(staffId, daySelected, dayLast) {
     return dispatch => {
@@ -57,7 +61,9 @@ function getStaffsAnalytic(staffId, daySelected, dayLast) {
     };
 
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS, count } }
+
 }
+
 function getStaffsAnalyticForAll(daySelected, dayLast) {
     return dispatch => {
         analiticsService.getStaffsAnalyticForAll(daySelected, dayLast)
@@ -67,28 +73,37 @@ function getStaffsAnalyticForAll(daySelected, dayLast) {
     };
 
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_SUCCESS, count } }
+
 }
 
 function getStaffsAnalyticChart(staffId, daySelected, dayLast) {
     return dispatch => {
+        dispatch(request());
         analiticsService.getStaffsAnalytic(staffId, daySelected, dayLast)
             .then(
                 count => dispatch(success(count)),
+                () => dispatch(failure())
             );
     };
 
 
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS, count } }
+    function request() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_REQUEST} }
+    function failure() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_FAILURE } }
 }
 
 function getStaffsAnalyticForAllChart(daySelected, dayLast) {
     return dispatch => {
+        dispatch(request());
         analiticsService.getStaffsAnalyticForAll(daySelected, dayLast)
             .then(
                 count => dispatch(success(count)),
+                () => dispatch(failure())
             );
     };
 
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_SUCCESS, count } }
+    function request() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_REQUEST} }
+    function failure() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_FAILURE } }
 }
 
