@@ -321,3 +321,27 @@
 
     }
 }
+.tab-content-list{
+    .clientEye{
+        background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+        background-size: contain;
+        height: 26px;
+        width: 26px !important;
+        right: 5px;
+        cursor: pointer;
+        @media screen and(max-width: 720px) {
+            top: 14px;
+            transform: translateY(-50%);
+
+        }
+
+    }
+    @media screen and(max-width: 720px) {
+        .abbreviation{
+            margin: 0;
+        }
+        .delete{
+            height: 16px!important;
+        }
+    }
+}

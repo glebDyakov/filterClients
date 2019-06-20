@@ -7,7 +7,7 @@ import {HeaderMain} from "../_components/HeaderMain";
 import '../../public/scss/styles.scss'
 import '../../public/scss/clients.scss'
 
-import {NewClient, UserSettings} from "../_components/modals";
+import {ClientDetails, NewClient, UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
@@ -32,7 +32,8 @@ class ClientsPage extends Component {
             defaultClientsList:  props.client,
             isLoading: true,
             openedModal: false,
-            userSettings: false
+            userSettings: false,
+            infoClient: 0
 
         };
 
@@ -48,7 +49,8 @@ class ClientsPage extends Component {
 
     componentDidMount() {
 
-        this.props.dispatch(clientActions.getClient());
+        // this.props.dispatch(clientActions.getClient());
+        this.props.dispatch(clientActions.getClientWithInfo());
         setTimeout(() => this.setState({ isLoading: false }), 4500);
         initializeJs();
 
@@ -69,7 +71,7 @@ class ClientsPage extends Component {
 
 
     render() {
-        const { client, client_working, edit, defaultClientsList, isLoading, openedModal, userSettings } = this.state;
+        const { client, client_working, edit, defaultClientsList, isLoading, openedModal, userSettings, infoClient } = this.state;
 
         return (
             <div className="clients-page">
@@ -101,13 +103,15 @@ class ClientsPage extends Component {
                                     </div>
                                 </div>
                                 )}
-                            { client.client && client.client.map((client_user, i) =>
+                            { client.client && client.client.map((client_user, i) =>{
+                                return(
                                 <div className="tab-content-list mb-2" key={i}>
-                                    <div>
+                                    <div style={{position: "relative"}}>
                                         <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                             <p> {client_user.firstName} {client_user.lastName}</p>
                                         </a>
+                                        <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
                                     </div>
                                     <div>
                                         {client_user.email}
@@ -127,7 +131,7 @@ class ClientsPage extends Component {
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                                )})}
                             <div className="tab-content">
                             {
                                 (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
@@ -166,6 +170,11 @@ class ClientsPage extends Component {
                     onClose={this.onClose}
                 />
                 }
+                <ClientDetails
+                    client={infoClient}
+                    // editClient={this.handleEditClient}
+                    editClient={this.handleClick}
+                />
                 <UserPhoto/>
             </div>
         );
@@ -227,6 +236,12 @@ class ClientsPage extends Component {
         } else {
             this.setState({...this.state, openedModal: true, edit: false, client_working: {}});
         }
+    }
+    openClientStats(client){
+
+        this.setState({...this.state, infoClient: client});
+        $('.client-detail').modal('show')
+
     }
 
     updateClient(client){
