@@ -21,6 +21,8 @@ class ServicesPage extends Component {
 
         this.state = {
             services: props.services,
+            defaultServicesList: props.services,
+            search: false,
             staff: props.staff,
             edit: false,
             editServiceItem: false,
@@ -50,6 +52,7 @@ class ServicesPage extends Component {
         this.newService = this.newService.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -70,6 +73,9 @@ class ServicesPage extends Component {
                 createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
                 staff: newProps.staff })
         }
+        if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
+            this.setState({ ...this.state, services: newProps.services, defaultServicesList:  newProps.services })
+        }
     }
 
     onCollapse(key){
@@ -89,8 +95,8 @@ class ServicesPage extends Component {
     }
 
     render() {
-        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService  } = this.state;
-
+        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
+        debugger
         return (
             <div>
                 {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
@@ -106,6 +112,17 @@ class ServicesPage extends Component {
                             <div className="pages-content container-fluid">
 
                                 <div className="services_list" id="sortable_list">
+                                    {
+                                        (defaultServicesList.services && defaultServicesList!=="" &&
+                                        // (1 &&
+                                            <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                                <div className="search col-7">
+                                                    <input type="search" placeholder="Ввдите название услуги" style={{width: "175%"}}
+                                                           aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
+                                                    <button className="search-icon" type="submit"/>
+                                                </div>
+                                            </div>
+                                        )}
                                     {
                                         services.services && services.services.map((item, keyGroup)=>
                                             <div className={item.color.toLowerCase() + " "+'row mb-3 service_one collapsible'} key={keyGroup} >
@@ -184,12 +201,20 @@ class ServicesPage extends Component {
                             </div>
                             <div className="tab-content">
                                 {
-                                    (!isLoading && (!services.services || services.services.length===0)) &&
+                                    (!isLoading && (!services.services || services.services.length===0)) && !search &&
                                     <div className="no-holiday">
                                                 <span>
                                                     Услуги не добавлены
                                                     <button type="button"
                                                             className="button mt-3 p-3" onClick={(e)=>this.handleClick(null, false, e)}>Добавить услугу</button>
+                                                </span>
+                                    </div>
+                                }
+                                {
+                                    (!isLoading && (!services.services || services.services.length===0)) && search &&
+                                    <div className="no-holiday">
+                                                <span>
+                                                    Услуг не найдено
                                                 </span>
                                     </div>
                                 }
@@ -328,11 +353,34 @@ class ServicesPage extends Component {
 
         this.setState({...this.state, userSettings: true});
     }
+    handleSearch () {
+        const {defaultServicesList}= this.state;
+        debugger
+
+        const searchServicesList = defaultServicesList.services.filter((item)=>{
+            return item.name.toLowerCase().includes(this.search.value.toLowerCase()) ||
+                item.description.toLowerCase().includes(this.search.value.toLowerCase())
+        });
+
+        this.setState({
+            search: true,
+            services: {services: searchServicesList}
+        });
+
+        if(this.search.value===''){
+            this.setState({
+                search: true,
+                services: defaultServicesList
+            })
+        }
+
+
+    }
 }
 
 function mapStateToProps(store) {
     const {services, staff, authentication}=store;
-
+    debugger
     return {
         services,
         staff,
