@@ -1134,7 +1134,7 @@ q:before, q:after { content:''; }
     }
     .container_popups{
         top: 0;
-        padding-bottom: 10px;
+        padding-bottom: 40px;
     }
     .work_time > span, .work_time > span > span {
         font-size: 14px;
@@ -1403,7 +1403,9 @@ q:before, q:after { content:''; }
 }
 
 @media screen and (max-width: 520px){
-
+    .container_popups{
+        padding-bottom: 10px;
+    }
     .container_popups .book_button{
         margin: 40px auto;
     }
