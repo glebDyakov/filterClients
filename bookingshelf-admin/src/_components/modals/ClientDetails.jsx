@@ -86,7 +86,7 @@ class ClientDetails extends React.Component {
                                 <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
 
-                            {(defaultClientsList && defaultClientsList.appointments && defaultClientsList!=="" &&
+                            {(defaultClientsList && defaultClientsList.appointments && defaultClientsList.appointments.length!==0 && defaultClientsList!=="" &&
                                     <div className="row align-items-center content clients mb-2 search-block">
                                         <div className="search col-7">
                                             <input type="search" placeholder="Введите название услуги"
