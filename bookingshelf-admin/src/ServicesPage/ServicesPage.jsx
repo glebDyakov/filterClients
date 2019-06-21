@@ -96,7 +96,6 @@ class ServicesPage extends Component {
 
     render() {
         const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
-        debugger
         return (
             <div>
                 {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
@@ -117,7 +116,7 @@ class ServicesPage extends Component {
                                         // (1 &&
                                             <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
                                                 <div className="search col-7">
-                                                    <input type="search" placeholder="Ввдите название услуги" style={{width: "175%"}}
+                                                    <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
                                                            aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
                                                     <button className="search-icon" type="submit"/>
                                                 </div>
@@ -358,8 +357,11 @@ class ServicesPage extends Component {
         debugger
 
         const searchServicesList = defaultServicesList.services.filter((item)=>{
-            return item.name.toLowerCase().includes(this.search.value.toLowerCase()) ||
-                item.description.toLowerCase().includes(this.search.value.toLowerCase())
+            return item.services.some(item => item.name.toLowerCase().includes(this.search.value.toLowerCase()))
+                || item.services.some(item => item.details.toLowerCase().includes(this.search.value.toLowerCase()))
+                // || item.name.toLowerCase().includes(this.search.value.toLowerCase())
+                // || item.description.toLowerCase().includes(this.search.value.toLowerCase())
+
         });
 
         this.setState({
@@ -380,7 +382,6 @@ class ServicesPage extends Component {
 
 function mapStateToProps(store) {
     const {services, staff, authentication}=store;
-    debugger
     return {
         services,
         staff,
