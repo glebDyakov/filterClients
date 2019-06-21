@@ -200,8 +200,6 @@ class ClientsPage extends Component {
                 client: defaultClientsList
             })
         }
-
-
     }
 
     handleSubmit(e) {
