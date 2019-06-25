@@ -27,18 +27,29 @@ function getStaff() {
 }
 function getRecordsAndClientsCount(daySelected,dayLast) {
 
-    // let timeTakenStart = moment(dayLast).format('dd');
-    // let timeNowStart = moment().format('dd');
+    let timeTakenStart = moment(dayLast).format('dd');
+    let timeNowStart = moment().format('dd');
+    let momentMills = moment().format('x');
 
     return dispatch => {
-        // analiticsService.getRecordsAndClientsCount(daySelected, timeTakenStart===timeNowStart ? moment().format('x') : dayLast)
         analiticsService.getRecordsAndClientsCount(daySelected, dayLast)
             .then(
                 count => dispatch(success(count)),
-            );
+            ).then(() => {
+            if(timeTakenStart===timeNowStart) {
+                debugger
+                analiticsService.getRecordsAndClientsCount(daySelected, momentMills)
+                    .then(
+                        approvedCount => dispatch(successToday(approvedCount)),
+                    );
+            }
+        });
+
     };
 
-    function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_SUCCESS, count } }
+   function success(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_SUCCESS, count } }
+    function successToday(count) { return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS, approvedCount: count } }
+
 }
 function updateChartStatsFor(charStatsFor ) {
     return { type: analiticsConstants.GET_RECORDS_AND_CLIENTS_UPDATE_CHART, charStatsFor }
