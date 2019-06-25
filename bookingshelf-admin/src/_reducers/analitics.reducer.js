@@ -79,6 +79,8 @@ export function analitics(state = initialState, action) {
             permanentClientsPercent/=countLength;
             recordsOnlinePercent/=countLength;
             recordsPercent/=countLength;
+
+
             return{
                 ...state,
                 countRecAndCli: action.count,
@@ -102,6 +104,30 @@ export function analitics(state = initialState, action) {
 
                 }
             };
+        case analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS:
+
+
+            dateNormal = moment(Object.keys(action.approvedCount)[0]).format("D MMM");
+            let dateToday = moment().format("D MMM");
+            if(dateNormal === dateToday) {
+                approvedAllRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].allRecordsToday;
+                approvedRecordsOnlineToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
+                approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
+            }
+            debugger
+            return{
+                ...state,
+                counter: {
+                    ...state.counter,
+                    approvedAllRecordsToday,
+                    approvedRecordsOnlineToday,
+                    approvedRecordsToday
+                }
+
+
+        };
+
+
             case analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS:
                 let appointmentTime = 0,
                     percentWorkload = 0,
