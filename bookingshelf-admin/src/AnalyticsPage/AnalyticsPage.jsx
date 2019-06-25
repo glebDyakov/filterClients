@@ -66,15 +66,24 @@ class AnalyticsPage extends Component{
         this.getChartData = this.getChartData.bind(this);
 
 
-        let dateFrom,dateTo,dateFr, dateNow;
+        let dateFrom,dateTo,dateFr, dateNow, dateNowEnd;
 
         dateFrom = moment().utc().toDate();
         dateTo = [getDayRange(moment()).from];
         dateFr = moment(getDayRange(moment()).from);
 
-        dateNow = moment().toDate().valueOf();
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNow,0));
-        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNow, 0));
+
+        dateNow = moment().utc().startOf('day');
+        dateNowEnd = moment().utc().endOf('day');
+
+        let dateNowMill = dateNow.valueOf();
+        let dateNowEndMill = dateNowEnd.valueOf();
+
+        dateNowMill = parseInt(dateNowMill) - (3600 * 3 * 1000);
+        dateNowEndMill = parseInt(dateNowEndMill) - (3600 * 3 * 1000);
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNowMill,dateNowEndMill));
+        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNowMill, dateNowEndMill));
 
         let dataToChartStaff = moment().utc().format('x');
         let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
@@ -140,43 +149,55 @@ class AnalyticsPage extends Component{
         let todayMill = today.valueOf();
         let todayEndMill = todayEnd.valueOf();
 
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, 0));
+        todayMill = parseInt(todayMill) - (3600 * 3 * 1000);
+        todayEndMill = parseInt(todayEndMill) - (3600 * 3 * 1000);
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(todayMill, todayEndMill));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(todayMill, 0))
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(todayMill, todayEndMill))
         }else{
         this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, todayMill, todayEndMill));
         }
     }
     setYesterday(){
+
         let yesterday;
         yesterday = moment().subtract(1, 'days').utc().toDate();
         this.setState({...this.state, selectedDay: yesterday, dropdownFirst:false, chosenPeriod:2,type: 'day',});
 
-        let yesterdayMill = yesterday.valueOf();
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(yesterdayMill,0));
+        let yesterdayMill = moment().subtract(1, 'days').utc().startOf('day').format('x')
+        let yesterdayMillEnd = moment().subtract(1, 'days').utc().endOf('day').format('x')
+
+        yesterdayMill = parseInt(yesterdayMill) - (3600 * 3 * 1000);
+        yesterdayMillEnd = parseInt(yesterdayMillEnd) - (3600 * 3 * 1000);
+
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(yesterdayMill,yesterdayMillEnd));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(yesterdayMill, 0))
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(yesterdayMill, yesterdayMillEnd))
         }else {
-            this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, 0));
+            this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, yesterdayMillEnd));
         }
+        debugger
     }
     setWeek(){
 
         let weeks = getWeekDays(getWeekRange(moment().format()).from);
+        debugger
         this.setState({...this.state, dropdownFirst:false, chosenPeriod:3, type: 'week',selectedDays: weeks});
 
-        let startDayOfWeek = moment(this.state.selectedDays[0]).format('x');
+        // let startDayOfWeek = moment(this.state.selectedDays[0]).startOf('day').format('x');
+        let startDayOfWeek = moment(weeks[0]).startOf('day').format('x');
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
+
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, 0))
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
         }else {
             this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));
         }
-
     }
 
 
@@ -198,8 +219,10 @@ class AnalyticsPage extends Component{
         });
         let date = daySelected.valueOf();
         let dateStart = daySelected.startOf('day').valueOf();
-        let dateEnd = daySelected.startOf('day').valueOf();
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(date,0));
+        let dateEnd = daySelected.endOf('day').valueOf();
+        dateStart = parseInt(dateStart) - (3600 * 3 * 1000);
+        dateEnd = parseInt(dateEnd) - (3600 * 3 * 1000);
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateStart,dateEnd));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateStart, dateEnd))
@@ -261,11 +284,11 @@ class AnalyticsPage extends Component{
         let startDayOfWeek = moment(weeks[0]).format('x');
         let endDayOfWeek = parseInt(startDayOfWeek) + (1000 * 3600 * 24 * 6);
 
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(statTime,endTime));
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
         }else {
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));}
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, statTime, endTime));}
 
     }
 
@@ -286,25 +309,40 @@ class AnalyticsPage extends Component{
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(startDayOfWeek,endDayOfWeek));
 
         if (this.state.currentSelectedStaff.lastName === 'сотрудники'){
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startDayOfWeek, endDayOfWeek))
+            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(startTime, endTime))
         }else {
-        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startDayOfWeek, endDayOfWeek));}
+        this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, startTime, endTime));}
     }
-    setCurrentSelectedStaff(staff){
-
+    setCurrentSelectedStaff(staff) {
+        const {type} = this.state;
         let selectedDay = this.state.selectedDay.valueOf();
         let resStaff = {}
-        if (staff===2){
+
+        let selectedWeekStart = moment(this.state.selectedDay).startOf('week').format('x');
+        let selectedWeekEnd =  moment(this.state.selectedDay).endOf('week').format('x');
+
+        if (staff === 2) {
             resStaff.firstName = "Работающие ";
             resStaff.lastName = "сотрудники";
-            this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
-        }else{
+
+            if (type === 'week') {
+                this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedWeekStart, selectedWeekEnd))
+            } else {
+                this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
+            }
+
+        } else {
             resStaff = staff;
 
-            this.props.dispatch(analiticsActions.getStaffsAnalytic(staff.staffId, selectedDay, 0));
+
+            if (type === 'week') {
+                this.props.dispatch(analiticsActions.getStaffsAnalytic(staff.staffId, selectedWeekStart, selectedWeekEnd));
+            }
+            else{
+                    this.props.dispatch(analiticsActions.getStaffsAnalytic(staff.staffId, selectedDay, 0));
+                }
 
         }
-
 
         this.setState({currentSelectedStaff:resStaff })
     }
