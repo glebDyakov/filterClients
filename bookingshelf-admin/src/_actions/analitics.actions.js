@@ -27,11 +27,12 @@ function getStaff() {
 }
 function getRecordsAndClientsCount(daySelected,dayLast) {
 
-    let timeTakenStart = moment(dayLast).format('dd');
-    let timeNowStart = moment().format('dd');
+    // let timeTakenStart = moment(dayLast).format('dd');
+    // let timeNowStart = moment().format('dd');
 
     return dispatch => {
-        analiticsService.getRecordsAndClientsCount(daySelected, timeTakenStart===timeNowStart ? moment().format('x') : dayLast)
+        // analiticsService.getRecordsAndClientsCount(daySelected, timeTakenStart===timeNowStart ? moment().format('x') : dayLast)
+        analiticsService.getRecordsAndClientsCount(daySelected, dayLast)
             .then(
                 count => dispatch(success(count)),
             );
