@@ -1,5 +1,6 @@
 import {analiticsConstants, calendarConstants} from '../_constants';
 import {analiticsService} from '../_services';
+import moment from 'moment';
 
 
 export const analiticsActions = {
@@ -25,8 +26,12 @@ function getStaff() {
     function success(staffs) { return { type: analiticsConstants.GET_STAFFS_SUCCESS, staffs }}
 }
 function getRecordsAndClientsCount(daySelected,dayLast) {
+
+    let timeTakenStart = moment(dayLast).format('dd');
+    let timeNowStart = moment().format('dd');
+
     return dispatch => {
-        analiticsService.getRecordsAndClientsCount(daySelected,dayLast)
+        analiticsService.getRecordsAndClientsCount(daySelected, timeTakenStart===timeNowStart ? moment().format('x') : dayLast)
             .then(
                 count => dispatch(success(count)),
             );
