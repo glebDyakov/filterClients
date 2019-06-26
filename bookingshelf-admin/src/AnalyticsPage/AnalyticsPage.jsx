@@ -85,8 +85,11 @@ class AnalyticsPage extends Component{
         this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNowMill,dateNowEndMill));
         this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNowMill, dateNowEndMill));
 
-        let dataToChartStaff = moment().utc().format('x');
-        let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
+        // let dataToChartStaff = moment().utc().format('x');
+        // let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
+
+        let dataToChartStaff = moment().endOf('day').format('x');
+        let dataFromChartStaff = moment(dateNow - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
 
 
 
@@ -116,7 +119,7 @@ class AnalyticsPage extends Component{
             chosenPeriod: 1,
             dateArray: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             recordsArray: [],
-            charStatsFor: 'allRecordsToday',
+            charStatsFor: 'recordsToday',
             dateArrayChart: [],
             recordsArrayChart: [],
             dataToChartStaff: dataToChartStaff,
@@ -135,8 +138,9 @@ class AnalyticsPage extends Component{
     }
 
     getChartData() {
-        let dateWeekBefore = moment().subtract(1, 'week').utc().format('x');
-        let dateNow = moment().toDate().valueOf();
+        let dateNow = moment().endOf('day').format('x');
+        let dateWeekBefore = moment(dateNow - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
+
         this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dateWeekBefore,dateNow));
         this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dateWeekBefore,dateNow));
     }
@@ -740,9 +744,9 @@ class AnalyticsPage extends Component{
                                 <div>
                                     <span className="title-list">Записи</span>
                                     <select className="custom-select" onChange={(e)=>this.setTypeDataOfChar(e)}>
-                                        <option selected="">Всего записей в журнал</option>
+                                        <option>Всего записей в журнал</option>
                                         <option>Всего онлайн записей</option>
-                                        <option>Всего записей</option>
+                                        <option selected>Всего записей</option>
                                     </select>
                                     <select className="custom-select" onChange={(e)=>this.setCharData(e)}>
                                         <option selected="">Неделя</option>
@@ -867,20 +871,22 @@ class AnalyticsPage extends Component{
     setCharData(e){
 
         let dataFrom, dataTo;
-            dataTo = moment().utc().format('x');
-            const {name, value} = e.target;
 
-            switch(value){
-                case 'Неделя':
-                dataFrom = moment().subtract(1, 'week').utc().format('x');
+        const {name, value} = e.target;
+
+        dataTo = moment().endOf('day').format('x');
+
+        switch(value){
+            case 'Неделя':
+                dataFrom = moment(dataTo - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
                 break;
-                case 'Месяц':
-                dataFrom = moment().subtract(1, 'month').utc().format('x');
+            case 'Месяц':
+                dataFrom = moment(dataTo - (3600 * 1000 * 31 * 24)).startOf('day').format('x');
                 break;
-                case 'Год':
+            case 'Год':
                 dataFrom = moment().subtract(1, 'year').utc().format('x');
                 break;
-            }
+        }
 
             this.setState({chartFirstDateFrom: dataFrom, chartFirstDateTo: dataTo})
             this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dataFrom,dataTo));
@@ -892,13 +898,13 @@ class AnalyticsPage extends Component{
         let type = '';
         switch(value){
             case 'Всего записей в журнал':
-                type = 'allRecordsToday';
+                type = 'recordsToday';
                 break;
             case 'Всего онлайн записей':
                 type = 'recordsOnlineToday';
                 break;
             case 'Всего записей':
-                type = 'recordsToday';
+                type = 'allRecordsToday';
                 break;
         }
         this.props.dispatch(analiticsActions.updateChartStatsFor(type));
@@ -908,16 +914,18 @@ class AnalyticsPage extends Component{
 
     setCharDataStaff(e){
         let dataFrom, dataTo;
-        dataTo = moment().utc().format('x');
+
         const {name, value} = e.target;
         const {currentSelectedStaffChart} = this.state
 
+        dataTo = moment().endOf('day').format('x');
+
         switch(value){
             case 'Неделя':
-                dataFrom = moment().subtract(1, 'week').utc().format('x');
+                dataFrom = moment(dataTo - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
                 break;
             case 'Месяц':
-                dataFrom = moment().subtract(1, 'month').utc().format('x');
+                dataFrom = moment(dataTo - (3600 * 1000 * 31 * 24)).startOf('day').format('x');
                 break;
             case 'Год':
                 dataFrom = moment().subtract(1, 'year').utc().format('x');

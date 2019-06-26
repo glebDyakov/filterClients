@@ -54,6 +54,9 @@ export function analitics(state = initialState, action) {
             const countRecAndCli = action.count;
             const countLength = Object.keys(action.count).length;
 
+            let dateNormalCheck = moment(Object.keys(action.count)[0]).format("D MMM");
+            let dateTodayCheck = moment().format("D MMM");
+
             for(let i = 0; i< countLength; i++) {
                 allRecordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsPercent;
                 allRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday;
@@ -68,7 +71,7 @@ export function analitics(state = initialState, action) {
                 recordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsPercent;
                 recordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
                 recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
-                if(moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')){
+                if((moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')) && (dateNormalCheck !== dateTodayCheck)){
                     approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
                     approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCanceled;
                     approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
