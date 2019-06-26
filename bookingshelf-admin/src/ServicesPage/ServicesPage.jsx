@@ -354,7 +354,6 @@ class ServicesPage extends Component {
     }
     handleSearch () {
         const {defaultServicesList}= this.state;
-        debugger
 
         const searchServicesList = defaultServicesList.services.filter((item)=>{
             return item.services.some(item => item.name.toLowerCase().includes(this.search.value.toLowerCase()))

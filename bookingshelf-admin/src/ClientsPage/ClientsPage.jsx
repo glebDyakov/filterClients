@@ -105,7 +105,7 @@ class ClientsPage extends Component {
                                 )}
                             { client.client && client.client.map((client_user, i) =>{
                                 return(
-                                <div className="tab-content-list mb-2" key={i}>
+                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
                                     <div style={{position: "relative"}}>
                                         <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
@@ -123,6 +123,7 @@ class ClientsPage extends Component {
                                         {client_user.country&&(client_user.country)}{client_user.city&&(", "+client_user.city)}{client_user.province&&(", "+client_user.province)}
                                     </div>
                                     <div className="delete dropdown">
+                                        <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
                                         </a>
