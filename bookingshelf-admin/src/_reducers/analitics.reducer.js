@@ -117,7 +117,6 @@ export function analitics(state = initialState, action) {
                 approvedRecordsOnlineToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
                 approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
             }
-            debugger
             return{
                 ...state,
                 counter: {

@@ -330,11 +330,23 @@
         right: 5px;
         cursor: pointer;
         @media screen and(max-width: 720px) {
-            top: 14px;
-            transform: translateY(-50%);
+            display: none!important;
 
         }
 
+    }
+    .clientEyeDel{
+        display: none !important;
+        position: absolute;
+        background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+        background-size: contain;
+        height: 13px;
+        width: 13px !important;
+        right: 5px;
+        cursor: pointer;
+        padding: 0 !important;
+        right: 40px;
+        margin-top: 2px;
     }
     @media screen and(max-width: 720px) {
         .abbreviation{
@@ -342,6 +354,9 @@
         }
         .delete{
             height: 16px!important;
+        }
+        .clientEyeDel{
+            display: block !important;
         }
     }
 }

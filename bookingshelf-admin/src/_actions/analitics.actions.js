@@ -37,7 +37,6 @@ function getRecordsAndClientsCount(daySelected,dayLast) {
                 count => dispatch(success(count)),
             ).then(() => {
             if(timeTakenStart===timeNowStart) {
-                debugger
                 analiticsService.getRecordsAndClientsCount(daySelected, momentMills)
                     .then(
                         approvedCount => dispatch(successToday(approvedCount)),

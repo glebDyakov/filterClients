@@ -183,12 +183,10 @@ class AnalyticsPage extends Component{
         }else {
             this.props.dispatch(analiticsActions.getStaffsAnalytic(this.state.currentSelectedStaff.staffId, yesterdayMill, yesterdayMillEnd));
         }
-        debugger
     }
     setWeek(){
 
         let weeks = getWeekDays(getWeekRange(moment().format()).from);
-        debugger
         this.setState({...this.state, dropdownFirst:false, chosenPeriod:3, type: 'week',selectedDays: weeks});
 
         // let startDayOfWeek = moment(this.state.selectedDays[0]).startOf('day').format('x');
