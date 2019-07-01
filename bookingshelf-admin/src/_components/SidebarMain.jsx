@@ -82,7 +82,9 @@ class SidebarMain extends Component {
 
             appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
-                if(!appointment.approved && !appointment.coAppointmentId) {
+                if((!appointment.approved && !appointment.coAppointmentId)
+                    &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)
+                ) {
 
                     resultMarkup = (
                         <li>
@@ -92,7 +94,9 @@ class SidebarMain extends Component {
                                     width: "65%",
                                     marginRight: "5%",
                                     wordWrap: "break-word"
-                                }}>{appointment.serviceName}</p>
+                                }}>{appointment.serviceName}
+                                {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                </p>
                                 <p className="service_time"
                                    style={{width: "30%", textAlign: "left"}}>
                                     <strong
