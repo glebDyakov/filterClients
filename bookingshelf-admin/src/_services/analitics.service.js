@@ -32,7 +32,7 @@ function getRecordsAndClientsCount(daySelected,dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics/staff?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/analytics/staffs?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
 }
 
 function getStaffsAnalytic(staffId, daySelected, dayLast) {
@@ -45,7 +45,7 @@ function getStaffsAnalytic(staffId, daySelected, dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics/staff/${staffId}?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/analytics/time/staffs/${staffId}?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
 }
 function getStaffsAnalyticForAll(daySelected, dayLast) {
     const requestOptions = {
@@ -57,5 +57,5 @@ function getStaffsAnalyticForAll(daySelected, dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/analytics/time?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
 }

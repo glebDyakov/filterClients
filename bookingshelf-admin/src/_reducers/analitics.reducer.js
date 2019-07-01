@@ -54,8 +54,9 @@ export function analitics(state = initialState, action) {
             const countRecAndCli = action.count;
             const countLength = Object.keys(action.count).length;
 
-            let dateNormalCheck = moment(Object.keys(action.count)[0]).format("D MMM");
-            let dateTodayCheck = moment().format("D MMM");
+            // let dateNormalCheck = moment(Object.keys(action.count)[0]).format("D MMM");
+            // let dateTodayCheck = moment().format("D MMM");
+            debugger
 
             for(let i = 0; i< countLength; i++) {
                 allRecordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsPercent;
@@ -68,14 +69,24 @@ export function analitics(state = initialState, action) {
                 recordsOnlinePercent += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlinePercent;
                 recordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday;
                 recordsOnlineTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCanceled;
-                recordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsPercent;
-                recordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday;
-                recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
-                if((moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')) && (dateNormalCheck !== dateTodayCheck)){
-                    approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
-                    approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCanceled;
-                    approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
-                }
+                recordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsJournalPercent;
+                recordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsJournalToday;
+                recordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsJournalTodayCanceled;
+
+                approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCompleted;
+                approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCompleted;
+                approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsJournalTodayCompleted;
+
+
+
+
+
+
+                // if((moment(Object.keys(countRecAndCli)[i]).format('x') < moment().format('x')) && (dateNormalCheck !== dateTodayCheck)){
+                //     approvedAllRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
+                //     approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCanceled;
+                //     approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsToday - countRecAndCli[Object.keys(countRecAndCli)[i]].recordsTodayCanceled;
+                // }
             }
             allRecordsPercent /=countLength;
             newClientsPercent /=countLength;
@@ -107,27 +118,27 @@ export function analitics(state = initialState, action) {
 
                 }
             };
-        case analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS:
-
-
-            dateNormal = moment(Object.keys(action.approvedCount)[0]).format("D MMM");
-            let dateToday = moment().format("D MMM");
-            if(dateNormal === dateToday) {
-                approvedAllRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].allRecordsToday;
-                approvedRecordsOnlineToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
-                approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
-            }
-            return{
-                ...state,
-                counter: {
-                    ...state.counter,
-                    approvedAllRecordsToday,
-                    approvedRecordsOnlineToday,
-                    approvedRecordsToday
-                }
-
-
-        };
+        // case analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS:
+        //
+        //
+        //     dateNormal = moment(Object.keys(action.approvedCount)[0]).format("D MMM");
+        //     let dateToday = moment().format("D MMM");
+        //     if(dateNormal === dateToday) {
+        //         approvedAllRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].allRecordsToday;
+        //         approvedRecordsOnlineToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
+        //         approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
+        //     }
+        //     return{
+        //         ...state,
+        //         counter: {
+        //             ...state.counter,
+        //             approvedAllRecordsToday,
+        //             approvedRecordsOnlineToday,
+        //             approvedRecordsToday
+        //         }
+        //
+        //
+        // };
 
 
             case analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS:
@@ -173,7 +184,7 @@ export function analitics(state = initialState, action) {
                     for(let i = 0; i < lengthChartFirst; i++){
                         dateNormalChartFirst = moment(Object.keys(action.count)[i]).format("D MMM")
                         dateArrayChartFirst.push(dateNormalChartFirst);
-                        recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsToday);
+                        recordsArrayChartFirst.push(action.count[Object.keys(action.count)[i]].recordsJournalToday);
 
                     }
                     break;
