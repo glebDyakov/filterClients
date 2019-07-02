@@ -46,7 +46,7 @@ body{
 *{
     font-family: Helvetica;
     font-size: $font-body;
-    color: #0a1330;
+    color: #000;
     list-style: none;
 
     &:focus{
@@ -63,6 +63,13 @@ body{
             font-size: 13px;
         }
     }
+}
+.id_company, .quotient{
+        opacity: 0.5;
+        
+        &:hover{
+            opacity: 1;
+        }
 }
 p{
     margin-bottom: 0;
@@ -235,7 +242,7 @@ input{
     }
 
     .disabled {
-        color: #0a1330;
+        color: #000;
         background-color: white;
         margin-right: 10px;
         margin-bottom: 10px;
@@ -363,12 +370,12 @@ input{
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid #0a1330;
-        color: #0a1330;
+        border: 2px solid #000;
+        color: #000;
         cursor: pointer;
 
         &.active-day{
-            background-color: #0a1330;
+            background-color: #000;
             color: #fff;
 
         }
@@ -989,7 +996,7 @@ input{
 
                     }
                     &.active-firm{
-                        background-color: #0a1330;
+                        background-color: #000;
 
                         p{
                             color: #fff;
@@ -1549,7 +1556,7 @@ input{
 
             .button-cal{
                 background-color: #fff;
-                color: #0a1330;
+                color: #000;
                 text-align: center;
                 font-size: 18px;
                 border-radius: 0;
@@ -1617,7 +1624,7 @@ input{
         height: 35px;
 
         &:focus{
-            color: #0a1330;
+            color: #000;
         }
 
         @media screen and(max-width: $laptop-width){
@@ -1869,7 +1876,7 @@ input{
 
                     }
                     &.dropping{
-                        border-color: #0a1330;
+                        border-color: #000;
                     }
                 }
             }
@@ -1894,14 +1901,14 @@ input{
 .add-work-time{
     width: 100%;
     border-radius: 4px;
-    border: dashed 1px #0a1330;
+    border: dashed 1px #000;
     display: block;
     text-align: center;
     padding: 10px 0;
     margin-bottom: 10px;
     margin-top: 15px;
     cursor: pointer;
-    color: #0a1330;
+    color: #000;
     font-size: 18px;
 
     &:hover{
@@ -1940,7 +1947,7 @@ input{
 
     .info{
         font-size: 10px;
-        border: 1px solid #0a1330;
+        border: 1px solid #000;
         width: 15px;
         display: block;
         position: absolute;
@@ -2090,7 +2097,7 @@ select{
         border-radius: 4px;
         background-color: white;
         padding: 10px 12px 10px;
-        color: #0a1330;
+        color: #000;
         @media screen {
             @media (max-width: $laptop-width){
                 font-size: $font-reg;
@@ -2114,7 +2121,7 @@ select{
         }
 
         &:focus{
-            color: #0a1330;
+            color: #000;
         }
     }
 }
@@ -2552,7 +2559,7 @@ select{
     background-color: #8cbbff !important;
 }
 .line_connect {
-    border: 1px solid #0a1330;
+    border: 1px solid #000;
     height: 99px;
     position: absolute;
     z-index: 100;
@@ -2616,10 +2623,10 @@ textarea {
     padding: 11px 12px 10px;
     width: 100%;
     font-size: 16px;
-    color: #0a1330;
+    color: #000;
 
     &:focus{
-        color: #0a1330;
+        color: #000;
     }
     @media screen {
         @media (max-width: $laptop-width){
@@ -2661,7 +2668,7 @@ textarea {
 
         a{
             display: block;
-            color: #0a1330;
+            color: #000;
             padding: 10px 0 10px 5%;
 
             &:hover{
@@ -3035,17 +3042,17 @@ textarea {
         }
     }
     .dark-blue{
-        color: #0a1330;
+        color: #000;
 
         &.color-circle{
-            background-color: #0a1330;
+            background-color: #000;
         }
     }
     .dark_blue{
-        color: #0a1330;
+        color: #000;
 
         &.color-circle{
-            background-color: #0a1330;
+            background-color: #000;
         }
     }
 
@@ -3093,7 +3100,7 @@ textarea {
             &.select-button{
 
                 > span{
-                    color: #0a1330;
+                    color: #000;
                     font-size: 15px;
                     margin-left: 0;
                     @media screen {
@@ -3136,7 +3143,7 @@ textarea {
                     padding: 1rem 0;
 
                     span{
-                        color: #0a1330;
+                        color: #000;
                         font-size: 15px;
                         @media screen {
                             @media (max-width: $laptop-width){
@@ -3335,7 +3342,7 @@ textarea {
                         }
                         &.active{
                             background-color: #fff;
-                            color: #0a1330; 
+                            color: #000; 
                             position:relative;
 
                             &::after{
@@ -3645,7 +3652,7 @@ textarea {
         padding: 0;
         text-align: center;
         font-size: 13px;
-        color: #0a1330;
+        color: #000;
         min-width: 35px;
     }
 
