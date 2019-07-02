@@ -4,8 +4,6 @@
     width: 100%;
     display: block;
 
-
-
     .service_one{
         @include border-style();
         justify-content: space-between; 
@@ -16,9 +14,8 @@
 
         p{/*изменения*/
 
-
             @media screen and(max-width: 580px){/*изменения*/
-                height: auto;
+                height: 30px;
                 padding-bottom: 0;
                 overflow: hidden;
                 margin: 0 0 10px;
@@ -28,79 +25,10 @@
             border-left-color: #fbde14; 
         }
         &.green{
-            border-left-color: #8fbc94;
+            border-left-color: #3ebc07;
         }
-        &.turquoise{
-            border-left-color: #45bfb2;
-        }
-        &.purple{
-            border-left-color: #6a60a9;
-        }
-        &.blue{
-            border-left-color: #4ea1d3;
-        }
-        &.orange{
-            border-left-color: #f17f42;
-        }
-        &.red{
-            border-left-color: red;
-        }
-        &.grey{
-            border-left-color: #6d819c;
-        }
-        &.pink{
-            border-left-color: #ef5285;
-        }
-        &.dark_blue{
-            border-left-color: darkblue;
-        }
-
-        .buttonsCollapse{
-            .yellowButtonEdit{
-                border-color: #fbde14;
-                background-color: #fbde14;
-            }
-            .greenButtonEdit{
-                border-color: #8fbc94;
-                background-color: #8fbc94;
-            }
-            .turquoiseButtonEdit{
-                border-color: #45bfb2;
-                background-color: #45bfb2;
-            }
-            .purpleButtonEdit{
-                border-color: #6a60a9;
-                background-color: #6a60a9;
-            }
-            .blueButtonEdit{
-                border-color: #4ea1d3;
-                background-color: #4ea1d3;
-            }
-            .orangeButtonEdit{
-                border-color: #f17f42;
-                background-color: #f17f42;
-            }
-            .redButtonEdit{
-                border-color: red;
-                background-color: red;
-            }
-            .greyButtonEdit{
-                border-color: #6d819c;
-                background-color: #6d819c;
-            }
-            .pinkButtonEdit{
-                border-color: #ef5285;
-                background-color: #ef5285;
-            }
-            .dark_blueButtonEdit{
-                border-color: darkblue;
-                background-color: darkblue;
-            }
-        }
-
         .new-service{
             margin-left: 5%;
-            color: white;
 
             @media screen and(max-width: $mob-width){
                 margin-left: 0;
@@ -116,8 +44,13 @@
                 background-size: 16px;
                 min-width: 0;
             }
+        }
+        .delete{
+            margin-left: 6%;
+            cursor: pointer;
+
             &:hover{
-                color: #fff!important;
+                opacity: 0.7;
             }
         }
         .edit_service{
@@ -128,14 +61,6 @@
             padding: 0;
             background-position: center;
             background-size: 15px;
-
-            &:hover{
-                opacity: 0.7;
-            }
-        }
-        .delete{
-            margin-left: 6%;
-            cursor: pointer;
 
             &:hover{
                 opacity: 0.7;
@@ -180,7 +105,7 @@
             .gray-text{/*изменения*/
                 color: rgba(65, 76, 88, 0.47);
                 max-width: 60%;
-                height: auto;
+                height: auto; 
             }
             &.hide{
                 right: 1000px;
@@ -231,97 +156,55 @@
                 @media screen and(max-width: $tablet-width){
                     width: 60px;
                     justify-content: flex-end;
-                }
+                }   
             }
 
         }
     }
 
-}
-
-.color-radius .dropdown-menu {
-    width: calc(100% + 2px);
-    left: -1px !important;
-    max-height: 290px;
-    padding: 0;
-    right: 0;
-    transform: translate3d(0px, 40px, 0px) !important;
-    .dropdown-item {
-        margin: 0;
-    }
-}
-
-.services {
-    .no-holiday{
-        @include border-style();
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 82px;
-
-        span{
-            font-size: 20px;
-
-            .button{
-                display: block;
-                margin: auto;
-                font-size: 15px;
-                height: auto;
-                width: auto;
-            }
-
-        }
-
-    }
 }
 
 .new-service-modal,
 .edit-service-modal{
-    z-index: 1050;
-    overflow: hidden;
-    outline: 0;
-    overflow-y: auto;
-
-    .input_limited_wrapper_name{
-        position: relative;
-        input{
-            padding-right: 45px;
-        }
-    }
-    .input_limited_name{
-        position:absolute;
-        bottom: 16px;
-        right: 8px;
-        opacity: 0.7;
-    }
-    .input_limited_wrapper_description{
-        position:relative;
-       input{
-           padding-right:53px;
-       }
-    }
-    .input_limited_description{
-        position:absolute;
-        bottom: 16px;
-        right: 22px;
-        opacity: 0.7;
-    }
-
-
 
     .modal-dialog-lg{
-        max-width: 100%;
+        max-width: 80%;
         margin: auto;
         @media screen and(max-width: 991px){
             max-width: 90%;
         }
     }
+
+
+
+
+
+
     .block-style2 {
         width: 100%;
         float: none;
         border-left: 1px solid rgba(146, 146, 146, 0.3);
         height: auto;
         min-height: 0;
+        max-height: 100%;  
+        .clients-list-container {
+            height: 70vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         @media screen and(max-width: 991px){
             border-left: none;
@@ -332,12 +215,11 @@
         .clients-list-container{
             @media screen and(max-width: 991px){
                 max-height: 300px;
+                float: right;
+                max-width: 100%;
                 overflow-y: auto;
                 overflow-x: hidden;
             }
-            height: 60%;
-            overflow-y: auto;
-            overflow-x: hidden;
         }
         .img-container{
 
@@ -409,12 +291,4 @@
             width: 92%;
         }
     }
-}
-
-.visibleDropdown {
-    overflow: visible;
-
-        .dropdown-item {
-            border-radius: 0px!important;
-        }
 }
