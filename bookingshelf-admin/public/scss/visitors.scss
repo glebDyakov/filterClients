@@ -124,7 +124,6 @@
                 border-radius: 0;
                 font-size: 11px;
                 padding: 0;
-                height: 100%;
             }
             .img-container{
                 justify-content: flex-start;
@@ -195,7 +194,7 @@
                 width: 20%;
                 background: none;
                 border: none;
-                color: #264e86;
+                color: #000;
                 height: 100%;
                 padding: 0;
                 min-width: 0;
@@ -210,7 +209,7 @@
             cursor: pointer;
 
             &:hover{
-                color: #264e86;
+                color: #000;
             }
         }
         &.comments-visitor{
