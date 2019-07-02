@@ -46,4 +46,9 @@
     font-style: normal;
 
 }
-
+@font-face {
+    font-family: 'pfd_din_display_pro';
+    src: url('PFDinDisplayPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

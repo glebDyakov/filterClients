@@ -379,7 +379,7 @@ class IndexPage extends PureComponent {
             }
 
         }
-        this.setState({...this.state, selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
+        this.setState({selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
             month:moment().startOf('month').toDate()})
     }
 
