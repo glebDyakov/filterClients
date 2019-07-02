@@ -5,6 +5,8 @@ import moment from 'moment';
 import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
+import TabError from "../IndexPage/components/TabError";
+import TabCanceled from "../IndexPage/components/TabCanceled";
 
 class VisitPage extends React.Component {
     constructor(props) {
@@ -24,6 +26,7 @@ class VisitPage extends React.Component {
         const {company, visit} = this.props.match.params
 
 
+        this.props.dispatch(staffActions.get(company));
         this.props.dispatch(staffActions.getByCustomId(visit));
         this.props.dispatch(staffActions.getInfo(company));
 
@@ -36,7 +39,7 @@ class VisitPage extends React.Component {
             }
             newProps.staff.info && newProps.staff.info.timezoneId && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
-            this.setState({...this.state,
+            this.setState({
                 info: newProps.staff.info && newProps.staff.info,
                 appointment: newProps.staff && newProps.staff.appointment
 
@@ -51,8 +54,8 @@ class VisitPage extends React.Component {
 
 
     setScreen (num) {
+        debugger
         this.setState({
-            ...this.state,
             screen: num
         })
     }
@@ -63,11 +66,17 @@ class VisitPage extends React.Component {
     }
 
     render() {
+        const { staff : { staff } } = this.props;
         const {appointment, info, screen, approveF }=this.state;
+        const { isLoading, deleted, error } = this.props.staff;
+
+        const activeAppointment = appointment && staff && staff.find(item => item.staffId === appointment.staffId);
+
 
         return (
 
             <div className="container_popups">
+                {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
                 {info &&
                 <div className="modal_menu">
                     <p className="firm_name">{info && info.companyName}</p>
@@ -85,7 +94,7 @@ class VisitPage extends React.Component {
                 </div>
 
                 }
-                {appointment && screen===1 &&
+                {appointment && screen===1 && !isLoading &&
                     <div className="service_selection final-screen">
                         <div className="final-book">
                             <p>Ваша запись</p>
@@ -94,7 +103,7 @@ class VisitPage extends React.Component {
                             {appointment.staffId &&
                             <div>
                                 <p className="img_container">
-                                    <img src={appointment.imageBase64?"data:image/png;base64,"+appointment.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                                    <img src={activeAppointment && activeAppointment.imageBase64 ? "data:image/png;base64,"+activeAppointment.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt=""/>
                                     <span>{appointment.staffName}</span>
                                 </p>
                             </div>
@@ -119,26 +128,47 @@ class VisitPage extends React.Component {
                         </div>
                         <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
                         {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
-                            <button className="approveFYes" onClick={()=>appointment.customId && this._delete(appointment.customId)}>Да
+                            <button className="approveFYes" onClick={()=> {
+                                if (appointment.customId) {
+                                    this.setScreen(2)
+                                    this._delete(appointment.customId)
+                                }
+                            }}>Да
                             </button>
                             <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
                             </button>
                         </div>
                         }
-                        <p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>
+                        {/*<p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>*/}
+                        <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>Создать запись</a>
 
                     </div>
                 }
-                {appointment && screen === 2 &&
-                <div className="service_selection final-screen">
+                {/*{appointment && screen === 2 &&*/}
+                {/*<div className="service_selection final-screen">*/}
 
-                    <div className="final-book">
-                        <p>Запись успешно отменена</p>
-                    </div>
+                {/*    <div className="final-book">*/}
+                {/*        <p>Запись успешно отменена</p>*/}
+                {/*    </div>*/}
 
-                    <a className="skip_employee"  href={'/'+this.props.match.params.company}> Создать запись</a>
+                {/*    <a className="skip_employee"  href={'/'+this.props.match.params.company}> Создать запись</a>*/}
 
-                </div>
+                {/*</div>*/}
+                {/*}*/}
+
+                { screen === 2 && error &&
+                <TabError
+                    error={error}
+                    setScreen={this.setScreen}
+                    companyId={this.props.match.params.company}
+                    isVisitPage
+                />}
+                {screen === 2 && deleted &&
+                <TabCanceled
+                    setScreen={this.setScreen}
+                    companyId={this.props.match.params.company}
+                    isVisitPage
+                />
                 }
                 <div className="footer_modal">
                     <p>Работает на <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
@@ -157,7 +187,6 @@ class VisitPage extends React.Component {
 
 function mapStateToProps(store) {
     const {staff}=store;
-
     return {
         staff
     };

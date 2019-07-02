@@ -1,4 +1,5 @@
 @import "styles-group";
+@import "analytics";
 
 .sub-title{
     font-size: 18px;
@@ -2853,18 +2854,20 @@ textarea {
         }
     }
 }
+.color-circle{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    margin-left: 15px;
+}
+
 .select-color{
     position: relative;
 
-    .color-circle{
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        display: block;
-        float: left;
-        margin-right: 10px;
-        margin-left: 15px;
-    }
+
 
     a{
 
@@ -3650,6 +3653,14 @@ textarea {
         font-size: 13px;
         min-width: 35px;
         padding: 8px 0 8px;
+    }
+}
+.hue-picker{
+    width: 100%!important;
+    height: 26px!important;
+    .hue-horizontal div div{
+        height: 26px!important;
+        width: 26px!important;
     }
 }
 .mod {

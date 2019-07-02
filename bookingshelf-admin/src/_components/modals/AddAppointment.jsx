@@ -260,6 +260,8 @@ class AddAppointment extends React.Component {
 
         const filteredServiceList = services[index].servicesList && services[index].servicesList.filter((service, key)=>
             staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId && parseInt(service.duration) / 60 <= parseInt(timeArrange)));
+        const filteredServiceListWithoutTime = services[index].servicesList && services[index].servicesList.filter((service, key)=>
+            staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId));
         if (filteredServiceList.length) {
             return filteredServiceList.map((service, key) =>
 
@@ -270,6 +272,9 @@ class AddAppointment extends React.Component {
                     className="items-color"><span>{service.name}</span>    <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
                 </li>
             )
+        }
+        if(filteredServiceListWithoutTime.length){
+            return <p className="staffAlert-noService">Нет доступных услуг в выбранный диапазон времени</p>
         }
 
         return <p className="staffAlert-noService">Нет доступных услуг. Выберите сотрудника в настройках услуг</p>

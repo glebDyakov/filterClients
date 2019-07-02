@@ -37,6 +37,8 @@ import {CalendarPrePage} from "../CalendarPrePage";
 import {FaqPage} from "../FaqPage";
 import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
 import {userActions} from "../_actions/user.actions";
+import { AnalyticsPage } from "../AnalyticsPage";
+
 
 class App extends React.Component {
     constructor(props) {
@@ -115,6 +117,7 @@ class App extends React.Component {
                             <PrivateRoute path="/logout" component={LogoutPage} />
                             <PrivateRoute path="/denied" component={NoPageDenied} />
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
+                            <PrivateRoute path="/analytics" component={AnalyticsPage} />
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />

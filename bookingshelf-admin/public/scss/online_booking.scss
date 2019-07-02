@@ -195,6 +195,10 @@ textarea{
     }
 
 }
+.exemple-buton{
+    font-family: 'pfd_din_display_pro';
+    line-height: 16px;
+}
 .exemple-buton,
 .copy-code,
 .button-url{
@@ -558,3 +562,7 @@ strong{
         height: 200%;
         opacity: 0; } }
 
+.circle-picker {
+    width: inherit !important;
+    justify-content: center !important;
+}

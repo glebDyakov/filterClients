@@ -23,6 +23,10 @@ import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
+import { analiticsActions } from "../_actions";
+
+import {AlphaPicker, BlockPicker,ChromePicker, CirclePicker,CompactPicker, GithubPicker, HuePicker, MaterialPicker,PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker} from 'react-color';
+
 
 
 function getWeekDays(weekStart) {
@@ -488,13 +492,23 @@ class CalendarPage extends PureComponent {
 
     newReservedTime(staffId, reservedTime) {
         const {dispatch} = this.props;
-        const {selectedDayMoment, type} = this.state;
+        const {selectedDayMoment, type, selectedDays} = this.state;
 
         if(type==='day'){
             reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
             reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
         }
-        dispatch(calendarActions.addReservedTime(JSON.stringify(reservedTime), staffId));
+
+
+        let startTime, endTime;
+        if(type==='day') {
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime =moment(selectedDays[0]).startOf('day').format('x')
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+        dispatch(calendarActions.addReservedTime(JSON.stringify(reservedTime), staffId, startTime, endTime));
     }
 
     editAppointment(appointment) {

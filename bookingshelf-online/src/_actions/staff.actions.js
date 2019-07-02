@@ -104,7 +104,7 @@ function _delete(id) {
         staffService._delete(id)
             .then(
                 id => dispatch(success(id)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 

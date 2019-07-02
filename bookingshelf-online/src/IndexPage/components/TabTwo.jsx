@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import moment from 'moment'
 
-class TabTwo extends  PureComponent {
+class TabTwo extends Component {
 
     render() {
 

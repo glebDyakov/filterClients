@@ -1,7 +1,9 @@
 import {calendarConstants} from '../_constants';
 
 const initialState = {
-    isLoading: false
+    isLoading: false,
+    appointmentsCount: [],
+    appointmentsCanceled: []
 };
 
 export function calendar(state = initialState, action) {

@@ -54,7 +54,7 @@ function setScrollableAppointment(id) {
     function success(id) { return { type: calendarConstants.SET_SCROLLABLE_APPOINTMENT, id } }
 }
 
-function addReservedTime(params, staffId) {
+function addReservedTime(params, staffId, time1, time2) {
     return dispatch => {
         dispatch(request(true));
 
@@ -63,6 +63,7 @@ function addReservedTime(params, staffId) {
                 reservedTime => {
                     dispatch(success(reservedTime, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 100)
+                    dispatch(staffActions.getTimetableStaffs(time1, time2));
 
                 },
                 error => {
