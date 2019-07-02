@@ -6,6 +6,7 @@ import { alertActions } from '../_actions';
 
 import {IndexPage} from "../IndexPage";
 import {VisitPage} from "../VisitPage";
+import {NoPage}from "../NoPage";
 
 import {Router, Route, Switch} from "react-router-dom";
 
@@ -13,7 +14,8 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        const { dispatch } = this.props;
+        const { location, action } = this.props;
+        const dispatch = this.props
         history.listen((location, action) => {
             dispatch(alertActions.clear());
         });
@@ -26,8 +28,10 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/visits/:company/:visit" component={VisitPage} />
                         <Route path="/:company" component={IndexPage} />
+                        <Route component={NoPage} />
                     </Switch>
                 </div>
+
             </Router>
 
         );
