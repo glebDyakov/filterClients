@@ -2,127 +2,148 @@
 
 .analytics_container{
     .select-date{
-        min-width: 75%;
-        .select-inner {
-            .button-calendar{
-                min-width: 80%;
+        .select-inner{
+            label{
                 width: 100%;
-                background-color: white;
-                .SelectedWeekExample{
-                    width: 320px;
-                    margin: 0 auto;
+                background-color: #fff;
+            }
+            span,
+            .button-calendar,
+            .present-calendar-date{
+                background-size: 10px;
+                width: 7%;
+                display: block;
+                height: 70px;
+                float: left;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                background-color: #f5f5f6;
+
+                @media screen{
+                    @media(max-width: $laptop-width){
+                        height: 50px;
+                        width: 5%;
+                    }
+                    @media(max-width: $tablet-width){
+                        width: 12%;
+                    }
+                    @media(max-width: $mob-width){
+                        height: 35px;
+                        background-size: 8px;
+                    }
                 }
             }
-        }
-        //.select-inner{
-        //    label{
-        //        width: 100%;
-        //        background-color: #fff;
-        //    }
-        //    span,
-        //    .button-calendar,
-        //    .present-calendar-date{
-        //        background-size: 10px;
-        //        //width: 7%;
-        //        display: block;
-        //        height: 70px;
-        //        float: left;
-        //        border-top-right-radius: 10px;
-        //        border-bottom-right-radius: 10px;
-        //        background-color: #f5f5f6;
-        //
-        //        @media screen{
-        //            @media(max-width: $laptop-width){
-        //                height: 50px;
-        //                //width: 5%;
-        //            }
-        //            @media(max-width: $tablet-width){
-        //                //width: 12%;
-        //            }
-        //            @media(max-width: $mob-width){
-        //                height: 35px;
-        //                background-size: 8px;
-        //            }
-        //        }
-        //    }
-    //        .arrow-right{
-    //            float: right;
-    //        }
-    //        .button-calendar{
-    //            width: 86%;
-    //            margin: auto;
-    //            position: relative;
-    //            text-align: center;
-    //
-    //            @media screen{
-    //                @media(max-width: $laptop-width){
-    //                    width: 90%;
-    //                }
-    //                @media(max-width: $tablet-width){
-    //                    width: 76%;
-    //                }
-    //            }
-    //        }
-
-    //        .button-cal{
-    //            width: 80%;
-    //            height: 100%;
-    //            font-size: 15px;
-    //            font-weight: bold;
-    //            @media screen{
-    //                @media(max-width: $tablet-width){
-    //                    width: 74%;
-    //                }
-    //                @media(max-width: $mob-width){
-    //                    width: 63%;
-    //                }
-    //            }
-    //        }
-    //    }
-    }
-    .timeContainer{
-        display: flex;
-        background-color: white;
-        padding: 5px 10px;
-
-        box-shadow: 0 2px 5px 0 rgba(218, 218, 218, 0.71);
-        .calendar-switch{
-            width: 130px;
-            padding: 0 20px;
-
-            background: url(../img/arrow_down.png) no-repeat;
-            background-position: 90% 50%;
-            background-size: 13%;
-            height: 35px;
-            background-color: white;
-            margin-right: 10px;
-            @media screen and(max-width: $mob-width) {
-                display: none;
+            .arrow-right{
+                float: right;
             }
-            .choisen{
-                margin-top:6px;
+            .button-calendar{
+                width: 86%;
+                margin: auto;
+                position: relative;
+                text-align: center;
+
+                @media screen{
+                    @media(max-width: $laptop-width){
+                        width: 90%;
+                    }
+                    @media(max-width: $tablet-width){
+                        width: 76%;
+                    }
+                }
             }
-        }
-        .select-date{
-            width: 100%;
-        }
-        .choisen{
-            cursor: pointer;
-            width: 110px;
-        }
-        .dropdown{
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-top: none;
-            width: 150px;
-            top:13px;
-            left:-31px;
-            li{
-                padding: 10px 30px;
-                border-bottom: 1px solid rgba(172, 172, 172, 0.2);
+            .present-calendar-date{
+                border-bottom: solid 1px rgba(172,172,172,0.5);
+                border-top: solid 1px rgba(172,172,172,0.5);
+                border-right: solid 1px rgba(172,172,172,0.5);
+                background-color: #fff;
+                width: 20%;
+                display: flex;
+                border-radius: 0;
+                align-items: center;
                 cursor: pointer;
-                &:hover{
-                    background-color: rgba(191, 210, 237, 0.11)
+                background-image: url(../img/arrow_down.png);
+                background-repeat: no-repeat;
+                background-position: 90% center;
+                background-size: 16px 8px;
+                position: relative;
+
+                p{
+                    width: 100%;
+                    height: 100%;
+                    padding-left: 6%;
+                    text-align: left;
+                    line-height: 70px;
+
+                    @media screen{
+                        @media(max-width: $laptop-width){
+                            line-height: 48px;
+                        }  
+                        @media(max-width: $mob-width){
+                            line-height: 34px;
+                            padding-left: 2%;
+                        }  
+                    }
+                }
+
+                .present-dropdown{
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: -1px;
+                    width: 100%;
+                    border: solid 1px rgba(172,172,172,0.5);
+                    background: #fff;
+                    box-sizing: content-box;
+                    box-shadow: 0 2px 4px #ddd;
+                    border-radius: 0 0 10px 10px;
+
+                    li{
+                        padding: 3px 10px;
+                        text-align: left;
+
+                        &:first-of-type{
+                            padding-top: 8px;
+                        }
+
+                        &:last-of-type{
+                            padding-bottom: 12px;
+                        }
+
+                        &:hover{
+                            color: #adc6e9;
+                        }
+                    }
+                }
+
+                @media screen{
+                    @media(max-width: $tablet-width){
+                        width: 26%;
+                        padding-left: 2%;
+                    }
+                    @media(max-width: $mob-width){
+                        width: 37%;
+                        padding-left: 2%;
+                        background-size: 11px;
+                    }
+                }
+                p{
+                    &:hover{
+                        color: #adc6e9;
+                    }
+                }
+            }
+            .button-cal{
+                width: 80%;
+                height: 100%;
+                font-size: 15px;
+                font-weight: bold;
+                @media screen{
+                    @media(max-width: $tablet-width){
+                        width: 74%;
+                    }
+                    @media(max-width: $mob-width){
+                        width: 63%;
+                    }
                 }
             }
         }
@@ -195,7 +216,7 @@
             span{
                 font-size: 30px;
                 font-weight: bold;
-                color: #264e86;
+                color: #0a1330;
                 width: 43%;
                 display: block;
                 line-height: normal;
@@ -247,7 +268,7 @@
                     }
                 }
                 div{
-                    width: 50%;
+                    width: 33%;
                     display: inline-block;
                     text-align: center;
                     margin: 0;
@@ -349,7 +370,7 @@
                         border-bottom: none;
                         border-radius: 0;
                         font-size: 14px;
-                        color: #264e86;
+                        color: #0a1330;
                         border-left: solid 1px #eeeeee;
                         padding: 0 20px 0 5px;
                         @media screen{
@@ -387,7 +408,7 @@
             .title-list{
                 font-size: 24px;
                 font-weight: bold;
-                color: #264e86;
+                color: #0a1330;
                 width: 40%;
                 @media screen{
                     @media(max-width: $laptop-width){
@@ -465,7 +486,7 @@
 
                 }
                 &.gray-button{
-                    color: #264e86;
+                    color: #0a1330;
                     border-color: transparent;
                 }
             }
@@ -490,7 +511,7 @@
                 border-top: none;
                 height: 40px;
                 margin-bottom: 0;
-                color: #264e86;
+                color: #0a1330;
                 border-right: none;
                 margin-left: 10px;
                 @media screen{
@@ -599,7 +620,7 @@
 
             p{
                 font-size: 15px;
-                color: #264e86;
+                color: #0a1330;
                 font-weight: normal;
                 display: inline-block;
                 @media screen{
@@ -720,7 +741,7 @@
         display: flex;
         
         button{
-            width: 100%;
+            width: 44%;
             padding: 0;
             min-width: 0;
             
@@ -734,8 +755,4 @@
     @media screen and(max-width: $mob-width){
         max-width: 250px;
     }
-}
-.dropdown-toggle::after{
-    float: right;
-    margin-top: 3px;
 }

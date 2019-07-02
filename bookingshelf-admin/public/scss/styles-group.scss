@@ -6,7 +6,7 @@ $font-body: 16px;
 $font-tabs: 16px;
 $button-color: #fff;
 $button-color-gray: rgb(181, 185, 190);
-$content-color: rgb(38, 78, 134);
+$content-color: #0a1330;
 $bg_red: #ed1b24;
 $border: rgba(172, 172, 172, 0.5);
 $mob-width: 500px;
@@ -78,7 +78,7 @@ $large-width: 1820px;
     width: auto;
 }
 @mixin border-style(){
-    border-radius: 10px;
+        border-radius: 10px;
     box-shadow: 5px 6px 20px 0 rgba(188, 191, 205, 0.13);
     background-color: #ffffff;
     border: solid 1px rgba(172, 172, 172, 0.2);
