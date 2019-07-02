@@ -604,7 +604,7 @@
             }
 
             &:nth-child(4n) {
-                border-bottom: 1px solid #264e86;
+                border-bottom: 1px solid #0a1330;
                 &.loading {
                     border-bottom: 1px solid transparent;
                 }
@@ -699,7 +699,7 @@
                     }
                 }
 
-                .notes{ /*изменения*/
+                .notes{ 
                     width: 100%;
                     max-width: 100% !important;
                     min-width: 100% !important;
@@ -763,7 +763,7 @@
 
                                     &.new-text {
                                         border: none;
-                                        background: #264e86;
+                                        background: #0a1330;
                                         border-radius: 5px 5px 0 0;
                                         color: #fff;
                                         text-align: center;
@@ -785,7 +785,7 @@
 
                                     &.new-button {
                                         border: none;
-                                        background: #264e86;
+                                        background: #0a1330;
                                         border-radius: 50px;
                                         color: #fff;
                                         text-transform: uppercase;
