@@ -60,7 +60,8 @@ export function staff(state= initialState, action) {
         case staffConstants.DELETE_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                isLoading: false
+                isLoading: false,
+                deleted: false
             }
         case staffConstants.ADD_APPOINTMENT:
             return {
