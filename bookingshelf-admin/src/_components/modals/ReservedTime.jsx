@@ -216,13 +216,15 @@ class ReservedTime extends React.Component {
 
                 <div className="modal_calendar" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div>
-                        <div className="modal-content">
+                        <div className="modal-content reserved-time-modal">
                             <div className="modal-header p-1">
 
                                 <p>
                                     <span className="date_m">Зарезервированое время</span>
                                 </p>
-                                <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                                {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
+                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}/>
+
                             </div>
                             <div className="modal-inner pl-4 pr-4 pb-4">
                                 <p className="title mb-3 text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>

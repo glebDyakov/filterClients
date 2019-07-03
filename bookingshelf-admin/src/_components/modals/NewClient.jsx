@@ -62,7 +62,9 @@ class NewClient extends React.Component {
                             {!edit ? <h4 className="modal-title">Новый клиент</h4>
                                 : <h4 className="modal-title">Редактирование клиента</h4>
                             }
-                            <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                            {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
+                            <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
+                                 style={{margin:"13px 5px 0 0"}}/>
                         </div>
                         <div className="form-group mr-3 ml-3">
                             <p className="title mb-2">Общая информация</p>

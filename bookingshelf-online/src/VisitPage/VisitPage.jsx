@@ -54,7 +54,6 @@ class VisitPage extends React.Component {
 
 
     setScreen (num) {
-        debugger
         this.setState({
             screen: num
         })
