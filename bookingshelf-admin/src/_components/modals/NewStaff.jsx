@@ -97,7 +97,7 @@ class NewStaff extends React.Component {
         )
 
         return (
-            <Modal size="lg" style={{maxWidth: '65%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="lg" style={{maxWidth: '90%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="new-staff-modal" tabIndex="-1" role="dialog"
                      aria-hidden="true">
@@ -108,24 +108,28 @@ class NewStaff extends React.Component {
                                         {!edit ?
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Новый сотрудник</h5>
-                                                <button type="button" className="close" onClick={this.closeModal}>
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                                {/*<button type="button" className="close" onClick={this.closeModal}>*/}
+                                                {/*    <span aria-hidden="true">&times;</span>*/}
+                                                {/*</button>*/}
+                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" aria-hidden="true" onClick={this.closeModal}
+                                                     style={{margin:"13px 5px 0 0"}}/>
                                             </div>
                                             :
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Редактирование сотрудника</h5>
                                                 < span> {staff.firstName} {staff.lastName}</span>
-                                                <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                                {/*<button type="button" className="close" onClick={this.closeModal} aria-label="Close">*/}
+                                                {/*    <span aria-hidden="true">&times;</span>*/}
+                                                {/*</button>*/}
+                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
+                                                     style={{margin:"13px 5px 0 0"}}/>
                                             </div>
                                         }
                                         <div className="modal-body">
                                             <div className="container-fluid">
                                                 <div className="retreats">
                                                     <div className="row">
-                                                        <div className="col-md-4">
+                                                        <div className="col-md-6 col-xl-4">
                                                             <p>Имя</p>
                                                             <input type="text" placeholder="" value={staff.firstName} name="firstName"  onChange={this.handleChange}
                                                                    className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
@@ -187,7 +191,7 @@ class NewStaff extends React.Component {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-4">
+                                                        <div className="col-md-6 col-xl-4">
                                                             <p>Фамилия</p>
                                                             <input type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange}
 
@@ -218,7 +222,7 @@ class NewStaff extends React.Component {
                                                                        {/*className="datepicker-buttons-inline button-cal"/>*/}
                                                             {/*</div>*/}
                                                         </div>
-                                                        <div className="col-md-4">
+                                                        <div className="col-md-12 col-xl-4">
                                                             <div className="upload_container">
                                                                 <div className="setting image_picker">
                                                                     <div className="settings_wrap">

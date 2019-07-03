@@ -177,9 +177,11 @@ class SidebarMain extends Component {
                                 <h4 className="modal-title">Уведомления</h4>
 
 
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                {/*<button type="button" className="close" data-dismiss="modal" aria-label="Close">*/}
+                                {/*    <span aria-hidden="true">&times;</span>*/}
+                                {/*</button>*/}
+                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"
+                                     style={{margin:"13px 5px 0 0"}}/>
                             </div>
 
                             {newOpened &&
