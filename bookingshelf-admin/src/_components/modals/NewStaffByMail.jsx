@@ -29,14 +29,17 @@ class NewStaffByMail extends React.Component {
         const { emailNew, emailIsValid, staffs } = this.state;
 
         return (
-            <Modal size="md" style={{maxWidth: '20%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="md" style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-mail">
                     <div>
                         <div className="modal-content">
                             <div className="form-group">
                                 <div className="modal-header">
                                     <h4 className="modal-title">Пригласить сотрудника по Email</h4>
-                                    <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                                    {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
+                                    <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
+                                         style={{margin:"13px 5px 0 0"}}/>
+
                                 </div>
                                 <form className="pl-4 pr-4">
                                     <div className="form-group">
