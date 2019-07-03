@@ -56,7 +56,6 @@ export function analitics(state = initialState, action) {
 
             // let dateNormalCheck = moment(Object.keys(action.count)[0]).format("D MMM");
             // let dateTodayCheck = moment().format("D MMM");
-            debugger
 
             for(let i = 0; i< countLength; i++) {
                 allRecordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsPercent;

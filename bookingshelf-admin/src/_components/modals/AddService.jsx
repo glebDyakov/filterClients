@@ -58,7 +58,9 @@ class AddService extends React.Component {
                                     : <h4 className="modal-title">Новая услуга</h4>
 
                             }
-                            <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                            {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
+                            <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
+                                 style={{margin:"13px 5px 0 0"}}/>
                         </div>
                         <div className="form-group pl-4 pr-4">
                             <div className="row">

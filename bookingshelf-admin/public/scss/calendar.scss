@@ -1253,6 +1253,14 @@
 
             .modal-header {
                 padding: 5px 0;
+                height: 40px;
+                h4{
+                    line-height: 28px;
+                }
+                .close{
+                    height: 15px;
+                    margin: 10px 0 0 0;
+                }
 
                 .modal-title {
                     font-size: 14px;
@@ -1275,6 +1283,10 @@
     }
 }
 .client-detail{
+    .close{
+        margin: 13px 5px 0 0!important;
+        //height: 15px!important;
+    }
     .modal-dialog{
         margin-top: 0;
         margin-bottom: 0;
@@ -1381,7 +1393,7 @@
     }
     .modal-content{
         height: 94vh;
-        margin: 2.5% auto 0;
+        margin: 3% auto 0;
 
         .addApointmentEachBlock {
             .rc-time-picker-clear-icon {
@@ -1755,4 +1767,17 @@
 .loader img{
     width: 100px;
     margin: 0 auto;
+}
+
+.reserved-time-modal{
+    .modal-header {
+        p span{
+            font-size: 15px;
+            line-height: 36px;
+
+        }
+        .close{
+            margin: 13px 5px 0 0;
+        }
+    }
 }
