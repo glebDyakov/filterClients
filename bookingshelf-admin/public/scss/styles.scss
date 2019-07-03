@@ -3713,3 +3713,16 @@ textarea {
         box-shadow: unset!important;
     }
 }
+.modal---modal-overlay---3D5Nr{
+    z-index: 1!important;
+}
+.modal---modal-overlay---3D5Nr, .client-detail, .delete-notes-modal, .delete-reserve-modal{
+    //margin-right: -125px;
+    margin-left: 250px;
+    //z-index: 2!important;
+}
+@media screen and (max-width: 960px){
+    .modal---modal-overlay---3D5Nr, .client-detail, .delete-notes-modal, .delete-reserve-modal{
+        margin: 0;
+    }
+}
