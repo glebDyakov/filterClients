@@ -133,7 +133,9 @@ class AddWorkTime extends React.Component {
                                 <div className="modal-header">
                                     <p>{!editWorkingHours ? 'Добавить часы работы': 'Изменить рабочие часы'}</p>
                                     <span>{staff && staff.firstName} {staff && staff.lastName}</span>
-                                    <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                                    <button type="button" className="close" onClick={this.closeModal}></button>
+                                    {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
+                                    {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                                 </div>
                                 <div className="form-group mr-3 ml-3">
                                     <div className="check-box">

@@ -222,8 +222,8 @@ class ReservedTime extends React.Component {
                                 <p>
                                     <span className="date_m">Зарезервированое время</span>
                                 </p>
-                                {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
-                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}/>
+                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}/>*/}
 
                             </div>
                             <div className="modal-inner pl-4 pr-4 pb-4">

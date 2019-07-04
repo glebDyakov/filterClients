@@ -98,11 +98,13 @@ class ServicesPage extends Component {
         const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
         return (
             <div>
-                {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+                {this.state.isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper services "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     {/*<SidebarMain/>*/}
-                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
+                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}
+                         style={{overflowX: this.state.isLoading?"visible":"hidden"}}>
                         <div className="container-fluid">
                             <HeaderMain
                                 onOpen={this.onOpen}
