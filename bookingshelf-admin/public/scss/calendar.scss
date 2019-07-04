@@ -681,7 +681,7 @@
                     .notes{
                         &:hover{
                             .msg-client-info{
-                                right: auto;
+                                right: 0;
                                 left: auto;
                                 bottom: auto;
                                 top: auto;
@@ -811,6 +811,7 @@
                             }
 
                             &::before{
+                                display: none;
                                 width: 13px;
                                 height: 13px;
                                 content: '';
@@ -1005,6 +1006,11 @@
                             background: url(../img/icons/13.svg) no-repeat center;
                             background-size: 12px;
                             cursor: default;
+                            //@media screen and(max-width: 720px) {
+                            //    height: 16px;
+                            //    background-size: 16px;
+                            //    margin:0 0 0 5px;
+                            //}
 
 
 
@@ -1038,6 +1044,7 @@
 
                         .delete {
                             background: url(../img/icons/16.svg) no-repeat center;
+                            height: 12px!important;
                             &:hover {
                                 opacity: 0.6;
                                 cursor: pointer;
@@ -1780,4 +1787,12 @@
             margin: 13px 5px 0 0;
         }
     }
+}
+@media screen and(max-width: $tablet-width) {
+    .msg-client-info{
+        .msg-client{
+            width: 140px;
+        }
+    }
+
 }

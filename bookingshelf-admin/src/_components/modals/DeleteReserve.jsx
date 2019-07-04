@@ -30,8 +30,8 @@ class DeleteReserve extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Удалить</h4>
-                            {/*<button type="button" className="close" data-dismiss="modal">&times;</button>*/}
-                            <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>
+                            <button type="button" className="close" data-dismiss="modal"></button>
+                            {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
 
                         </div>
                         <div className="form-group mr-3 ml-3">

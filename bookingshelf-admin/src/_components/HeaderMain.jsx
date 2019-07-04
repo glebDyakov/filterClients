@@ -55,7 +55,7 @@ class HeaderMain extends React.PureComponent {
 
                 <div className="col-1 mob-menu b">
                     <div>
-                        <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
+                        <img src={`${process.env.CONTEXT}public/img/burger_mob.svg`} alt=""/>
                     </div>
                 </div>
 

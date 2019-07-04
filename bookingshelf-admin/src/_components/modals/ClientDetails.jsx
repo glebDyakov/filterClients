@@ -59,9 +59,9 @@ class ClientDetails extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Информация о клиенте</h4>
-                            {/*<button type="button" className="close" data-dismiss="modal">&times;</button>*/}
+                            <button type="button" className="close" data-dismiss="modal"></button>
                             {/*<div className="close"></div>*/}
-                            <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>
+                            {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
                         </div>
                         <div className="client-info content-pages-bg">
                             {client &&

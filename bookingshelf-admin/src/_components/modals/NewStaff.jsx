@@ -108,21 +108,21 @@ class NewStaff extends React.Component {
                                         {!edit ?
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Новый сотрудник</h5>
-                                                {/*<button type="button" className="close" onClick={this.closeModal}>*/}
-                                                {/*    <span aria-hidden="true">&times;</span>*/}
-                                                {/*</button>*/}
-                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" aria-hidden="true" onClick={this.closeModal}
-                                                     style={{margin:"13px 5px 0 0"}}/>
+                                                <button type="button" className="close" onClick={this.closeModal}>
+                                                    <span aria-hidden="true"></span>
+                                                </button>
+                                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" aria-hidden="true" onClick={this.closeModal}*/}
+                                                {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                                             </div>
                                             :
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Редактирование сотрудника</h5>
                                                 < span> {staff.firstName} {staff.lastName}</span>
-                                                {/*<button type="button" className="close" onClick={this.closeModal} aria-label="Close">*/}
-                                                {/*    <span aria-hidden="true">&times;</span>*/}
-                                                {/*</button>*/}
-                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
-                                                     style={{margin:"13px 5px 0 0"}}/>
+                                                <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
+                                                    <span aria-hidden="true"></span>
+                                                </button>
+                                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
+                                                {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                                             </div>
                                         }
                                         <div className="modal-body">

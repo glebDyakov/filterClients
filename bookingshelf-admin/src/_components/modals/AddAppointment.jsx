@@ -299,9 +299,9 @@ class AddAppointment extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 {edit_appointment?<h4 className="modal-title">Редактировать запись</h4>:<h4 className="modal-title">Новая запись</h4>}
-                                {/*<button type="button" className="close" onClick={this.closeModal}>&times;</button>*/}
-                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}
-                                     style={{margin:"13px 5px 0 0"}}/>
+                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
+                                {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
                             <div className="form-group p-4 form-group-addService">
                                 <div className="row">
