@@ -113,7 +113,7 @@ class EmailPage extends Component {
         this.props.dispatch(staffActions.get());
         this.props.dispatch(clientActions.getClient());
 
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }

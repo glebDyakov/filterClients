@@ -63,7 +63,7 @@ class OnlinePage extends Component {
         document.title = "Онлайн-запись | Онлайн-запись";
 
         this.props.dispatch(companyActions.getBookingInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
     }
 

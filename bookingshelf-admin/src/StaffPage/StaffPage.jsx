@@ -139,7 +139,7 @@ class StaffPage extends Component {
             timetableFrom: moment(selectedDays[0]).startOf('day').format('x'),
             timetableTo:moment(selectedDays[6]).endOf('day').format('x')
         })
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
