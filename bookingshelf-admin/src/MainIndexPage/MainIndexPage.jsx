@@ -159,7 +159,7 @@ class MainIndexPage extends Component {
         document.title = "Настройки компании | Онлайн-запись";
 
 
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
     }
 

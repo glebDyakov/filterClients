@@ -60,7 +60,7 @@ class ServicesPage extends Component {
         initializeJs();
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
 
     }
 

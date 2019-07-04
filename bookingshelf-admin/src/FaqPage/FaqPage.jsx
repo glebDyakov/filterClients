@@ -39,7 +39,7 @@ class FaqPage extends Component {
     componentDidMount() {
         document.title = "Вопросы и ответы | Онлайн-запись";
 
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }

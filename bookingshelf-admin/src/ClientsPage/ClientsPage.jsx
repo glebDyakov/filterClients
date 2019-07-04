@@ -51,7 +51,7 @@ class ClientsPage extends Component {
 
         // this.props.dispatch(clientActions.getClient());
         this.props.dispatch(clientActions.getClientWithInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
