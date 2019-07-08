@@ -7,7 +7,8 @@ export const companyActions = {
     get,
     getBookingInfo,
     getNewAppointments,
-    updateBookingInfo
+    updateBookingInfo,
+    getAppointmentsCountMarkerIncrement,
 };
 
 function add(companyInfo, menu, profile) {
@@ -60,6 +61,11 @@ function getNewAppointments() {
 
     function success(count) { return { type: companyConstants.GET_NEW_APPOINMENTS_SUCCESS, count } }
 }
+
+function getAppointmentsCountMarkerIncrement() {
+    return { type: companyConstants.GET_NEW_APPOINMENTS_MARKER_INCR  }
+}
+
 
 function updateBookingInfo(params) {
     return dispatch => {

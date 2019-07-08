@@ -7,6 +7,7 @@ import {access} from "../_helpers/access";
 import moment from "moment";
 import Link from "react-router-dom/es/Link";
 import classNames from "classnames";
+import {UserSettings} from "./modals/UserSettings";
 
 class SidebarMain extends Component {
     constructor(props) {
@@ -19,7 +20,8 @@ class SidebarMain extends Component {
             collapse: localStorage.getItem('collapse') === 'true',
             calendar: props.calendar,
             newOpened: true,
-            canceledOpened: false
+            canceledOpened: false,
+            userSettings: false
 
         };
 
@@ -28,6 +30,7 @@ class SidebarMain extends Component {
         this.openAppointments=this.openAppointments.bind(this)
         this.goToPageCalendar=this.goToPageCalendar.bind(this)
         this.logout=this.logout.bind(this)
+        this.onClose=this.onClose.bind(this)
 
     }
     logout(){
@@ -75,7 +78,7 @@ class SidebarMain extends Component {
 
     render() {
         const { location, calendar: { appointmentsCanceled, appointmentsCount } }=this.props;
-        const { authentication, menu, company, collapse, newOpened,  count }=this.state;
+        const { authentication, menu, company, collapse, newOpened,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
@@ -116,18 +119,18 @@ class SidebarMain extends Component {
 
                 <li className="mob-menu-personal">
                     <div className="logo_mob"/>
-                    <div className="mob-firm-name">
+                    <div className="mob-firm-name" onClick={()=>this.onOpen()} style={{height: "45px"}}>
                         <div className="img-container">
                             <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                         </div>
-                        <a className="firm-name" href="#">
+                        <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
                             {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
-                        </a>
+                        </p>
                         <span  onClick={()=>this.logout()} className="log_in"/>
-                        <div className="setting_mob">
-                            <a className="notification">Уведомления</a>
-                            <a className="setting" data-toggle="modal" data-target=".modal_user_setting">Настройки</a>
-                        </div>
+                        {/*<div className="setting_mob">*/}
+                        {/*    <a className="notification">Уведомления</a>*/}
+                        {/*    <a className="setting" data-toggle="modal" data-target=".modal_user_setting" onClick={()=>this.onOpen()}>Настройки</a>*/}
+                        {/*</div>*/}
                     </div>
                 </li>
 
@@ -245,12 +248,24 @@ class SidebarMain extends Component {
                         </div>
                     </div>
                 </div>
+                {userSettings &&
+                <UserSettings
+                onClose={this.onClose}/>
+                }
+
             </div>
 
 
 
         );
     }
+    onOpen(){
+        this.setState({userSettings: true})
+    }
+    onClose(){
+        this.setState({userSettings:false})
+    }
+
     handleClick(url){
 
             this.props.history.push(url)

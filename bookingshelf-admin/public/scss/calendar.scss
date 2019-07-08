@@ -450,6 +450,9 @@
             margin-bottom: 2px;
 
             .col-tab {
+                &:hover .visible-fade-time{
+                    display: block;
+                }
                 .col-note {
                     cursor: cell;
                     width: 100%;

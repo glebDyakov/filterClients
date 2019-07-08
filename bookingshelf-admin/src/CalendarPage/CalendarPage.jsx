@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import {calendarActions, staffActions, clientActions, servicesActions, companyActions} from '../_actions';
 import {HeaderMain} from "../_components/HeaderMain";
+import { createSocket } from '../_helpers/createSocket';
 
 import '../../public/scss/calendar.scss'
 import '../../public/scss/styles.scss'
@@ -12,7 +13,6 @@ import 'moment/locale/ru';
 import 'moment-duration-format';
 
 import {DatePicker} from "../_components/DatePicker";
-import Pace from "react-pace-progress";
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
@@ -23,10 +23,6 @@ import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
-import { analiticsActions } from "../_actions";
-
-import {AlphaPicker, BlockPicker,ChromePicker, CirclePicker,CompactPicker, GithubPicker, HuePicker, MaterialPicker,PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker} from 'react-color';
-
 
 
 function getWeekDays(weekStart) {
@@ -139,7 +135,8 @@ class CalendarPage extends PureComponent {
             appointmentModal: false,
             newClientModal: false,
             scrollableAppointmentAction: true,
-            appointmentMarkerActionCalled: false
+            appointmentMarkerActionCalled: false,
+            flagStaffId: true
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -171,7 +168,6 @@ class CalendarPage extends PureComponent {
         this.navigateToRedLine = this.navigateToRedLine.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.updateReservedId = this.updateReservedId.bind(this);
-
 
     }
 
@@ -217,6 +213,11 @@ class CalendarPage extends PureComponent {
         }, 500);
 
     }
+
+    handleSocketDispatch(){
+        this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+    }
+
     navigateToRedLine() {
         setTimeout(() => {
             const activeElem = document.getElementsByClassName("present-time")[0];
@@ -357,6 +358,45 @@ class CalendarPage extends PureComponent {
             if (this.state.typeSelected===1 && this.state.type!=='week' && newProps.staff.availableTimetable){
                 this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
             }
+        }
+
+        if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
+            this.setState({flagStaffId: false});
+            const socket = createSocket(this.props.authentication.user.profile.staffId );
+            socket.onopen = function() {
+                console.log("cоединение установлено");
+
+                socket.send('ping');
+
+            };
+
+
+            socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log('cоединение закрыто');
+                } else {
+                    console.log('соединения как-то закрыто');
+                }
+            };
+
+            socket.onmessage = function(event) {
+                debugger
+                if (event.data[0]==='{'){
+                    const finalData = JSON.parse(event.data);
+                    if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
+                        debugger
+                        // dispatch(companyActions.getNewAppointments());
+                        this.handleSocketDispatch();
+                    }
+                }
+                console.log(`пришли данные: ${event.data}`);
+
+            };
+            socket.onmessage = socket.onmessage.bind(this);
+
+            socket.onerror = function(event) {
+                console.error("ошибка", event);
+            };
         }
 
     }
