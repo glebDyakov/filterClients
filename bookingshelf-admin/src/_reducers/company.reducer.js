@@ -29,6 +29,17 @@ export function company(state = {}, action) {
                 random: Math.random(),
                 status: ''
             };
+        case companyConstants.GET_NEW_APPOINMENTS_MARKER_INCR:
+            let newCount = state.count.appointments.count + 1;
+            return {
+                ...state,
+                count: {
+                    ...state.count,
+                    appointments: {
+                        count: newCount
+                    }
+                },
+            };
         case userConstants.UPDATE_COMPANY_SUCCESS:
             const companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
 
