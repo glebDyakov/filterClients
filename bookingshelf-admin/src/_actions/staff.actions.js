@@ -2,6 +2,8 @@ import { staffConstants, userConstants } from '../_constants';
 import { staffService } from '../_services';
 import { alertActions } from './';
 import {store} from "../_helpers";
+import moment from 'moment';
+
 
 export const staffActions = {
     add,
@@ -245,6 +247,14 @@ function getTimetableByStaff(id, from, to) {
 }
 
 function getTimetableStaffs(from, to) {
+    // let a = moment(from).format('x');
+    // let b = moment(String(from)).format('x');
+    // let c = moment(parseInt(from)).format('dd MM hh:ss');
+    let normalViewTimeFrom = moment(parseInt(from)).format('hh:ss');
+    if(normalViewTimeFrom==='03:00'){
+        from = parseInt(from) - (3600 * 1000 * 3);
+        to = parseInt(to) - (3600 * 1000 * 3);
+    }
     return dispatch => {
         dispatch(request());
         staffService.getTimetableStaffs(from, to)

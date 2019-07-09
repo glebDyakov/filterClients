@@ -1,4 +1,4 @@
-import {calendarConstants, clientConstants, userConstants} from '../_constants';
+import {calendarConstants, clientConstants, companyConstants, userConstants} from '../_constants';
 import {calendarService, clientService} from '../_services';
 import {alertActions, companyActions, staffActions} from './';
 import moment from "moment";
@@ -16,7 +16,8 @@ export const calendarActions = {
     deleteAppointment,
     getReservedTime,
     addReservedTime,
-    deleteReservedTime
+    deleteReservedTime,
+    getAppointmentsNewSocket,
 };
 
 function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
@@ -117,6 +118,12 @@ function editAppointmentTime(params, time1, time2) {
 }
 
 function getAppointments(dateFrom, dateTo) {
+
+    let normalViewTime = moment(parseInt(dateFrom)).format('hh:ss');
+    if(normalViewTime==='03:00'){
+        dateFrom = parseInt(dateFrom) - (3600 * 1000 * 3);
+    }
+
     return dispatch => {
         dispatch(request());
         calendarService.getAppointments(dateFrom, dateTo)
@@ -128,6 +135,9 @@ function getAppointments(dateFrom, dateTo) {
     function request() { return { type: calendarConstants.GET_APPOINTMENT_REQUEST} }
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS, appointments } }
     function failure() { return { type: calendarConstants.GET_APPOINTMENT_FAILURE } }
+}
+function getAppointmentsNewSocket(payload) {
+    return { type: calendarConstants.GET_APPOINTMENT_NEW_SOCKET, payload }
 }
 
 
@@ -156,6 +166,12 @@ function getAppointmentsCanceled(dateFrom, dateTo) {
 }
 
 function getReservedTime(dateFrom, dateTo) {
+
+    let normalViewTime = moment(parseInt(dateFrom)).format('hh:ss');
+    if(normalViewTime==='03:00'){
+        dateFrom = parseInt(dateFrom) - (3600 * 1000 * 3);
+    }
+
     return dispatch => {
         dispatch(request());
         calendarService.getReservedTime(dateFrom, dateTo)

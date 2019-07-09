@@ -192,6 +192,15 @@ export function calendar(state = initialState, action) {
                 appointments: action.appointments,
                 isLoading: false
             };
+        // case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
+        //     let newAppointment = state.appointments;
+        //     let newItem = action.payload;
+        //     newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
+        //     debugger
+        //     return {
+        //         ...state,
+        //         appointments: newAppointment
+        //     };
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
                 ...state,
