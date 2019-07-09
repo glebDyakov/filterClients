@@ -2294,6 +2294,7 @@ select{
                 justify-content: space-between;
                 *{
                     color: white;
+                    font-size: 0.9em;
                 }
                 .img-container{
                     @media screen and(max-width: $mob-width){
