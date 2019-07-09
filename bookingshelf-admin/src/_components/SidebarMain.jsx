@@ -86,26 +86,35 @@ class SidebarMain extends Component {
             appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
                 if((!appointment.approved && !appointment.coAppointmentId)
-                    &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)
-                ) {
+                    &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
 
                     resultMarkup = (
                         <li>
-                            <a className="service_item"
+                            <div className="service_item"
                                onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                <p className="service_name" style={{
-                                    width: "65%",
-                                    marginRight: "5%",
-                                    wordWrap: "break-word"
-                                }}>{appointment.serviceName}
-                                {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
-                                </p>
-                                <p className="service_time"
-                                   style={{width: "30%", textAlign: "left"}}>
-                                    <strong
-                                        style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
-                                </p>
-                            </a>
+                                <div className="img-container" style={{width: "15%"}}><div className="img"></div></div>
+                                <div style={{width: "40%"}}>
+                                    <p className="service_name"
+                                       style={{
+                                        // width: "65%",
+                                        // marginRight: "5%",
+                                        // wordWrap: "break-word"
+                                        }}
+                                    ><strong>{appointment.serviceName}</strong>
+                                        {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                        </p><br/>
+                                    <p style={{float: "none"}} ><strong>Сотрудник: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                </div>
+                                <div style={{width: "40%"}}>
+                                    <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
+                                    <p className="service_time"
+                                       // style={{width: "30%", textAlign: "left"}}
+                                    >
+                                        <strong style={{textTransform: 'capitalize'}}>Время: </strong>
+                                        {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
+                                    </p>
+                                </div>
+                            </div>
                         </li>
                     )
                 }
@@ -121,7 +130,7 @@ class SidebarMain extends Component {
                     <div className="logo_mob"/>
                     <div className="mob-firm-name" onClick={()=>this.onOpen()} style={{height: "45px"}}>
                         <div className="img-container">
-                            <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                            <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                         </div>
                         <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
                             {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
@@ -220,9 +229,11 @@ class SidebarMain extends Component {
                                 <div className="not-approved-list">
                                 {appointmentsCanceled &&
                                 appointmentsCanceled.map((appointment) =>
+                                {
+                                    return(
                                     !appointment.approved &&
                                     <li className="opacity0">
-                                        <a className="service_item">
+                                        <div className="service_item">
                                             <p className="service_name" style={{
                                                 width: "65%",
                                                 marginRight: "5%",
@@ -235,9 +246,9 @@ class SidebarMain extends Component {
                                                style={{width: "30%", textAlign: "left"}}><strong
                                                 style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
                                             </p>
-                                        </a>
+                                        </div>
                                     </li>
-                                )}
+                                )})}
                             </div>
                                 {appointmentsCount && (
                                     <div className="button-field down-button">

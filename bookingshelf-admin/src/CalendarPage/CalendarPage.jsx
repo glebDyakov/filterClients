@@ -214,8 +214,11 @@ class CalendarPage extends PureComponent {
 
     }
 
-    handleSocketDispatch(){
+    handleSocketDispatch(payload){
+
         this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+        // this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+        this.updateCalendar();
     }
 
     navigateToRedLine() {
@@ -380,13 +383,11 @@ class CalendarPage extends PureComponent {
             };
 
             socket.onmessage = function(event) {
-                debugger
                 if (event.data[0]==='{'){
                     const finalData = JSON.parse(event.data);
                     if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
                         debugger
-                        // dispatch(companyActions.getNewAppointments());
-                        this.handleSocketDispatch();
+                        this.handleSocketDispatch(finalData.payload);
                     }
                 }
                 console.log(`пришли данные: ${event.data}`);
@@ -403,14 +404,13 @@ class CalendarPage extends PureComponent {
 
 
     render() {
-        const { calendar, services, clients, staff } = this.props;
+        const { calendar, services, clients, staff, appointments } = this.props;
         const { approvedId, staffAll, workingStaff, reserved,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
             reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage
         } = this.state;
-
         const calendarModalsProps = {
             appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
@@ -476,7 +476,7 @@ class CalendarPage extends PureComponent {
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
                                             clients={clients && clients.client}
-                                            appointments={calendar && calendar.appointments}
+                                            appointments={appointments}
                                             reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
                                             approveAppointmentSetter={this.approveAppointmentSetter}
@@ -572,12 +572,12 @@ class CalendarPage extends PureComponent {
     }
 
     deleteAppointment(id){
-        const { dispatch, calendar } = this.props;
+        const { dispatch, calendar, appointments } = this.props;
 
         const { selectedDays, type, selectedDayMoment } = this.state;
         let activeAppointment = {};
         let countTimeout = 0;
-        calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+        appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
             if (currentAppointment.appointmentId === id) {
                 activeAppointment = currentAppointment;
             }
@@ -587,7 +587,7 @@ class CalendarPage extends PureComponent {
             dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
 
             if (activeAppointment.hasCoAppointments) {
-                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                     if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
                         countTimeout += 1000;
                         setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x'))), countTimeout)
@@ -598,7 +598,7 @@ class CalendarPage extends PureComponent {
             dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
 
             if (activeAppointment.hasCoAppointments) {
-                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                     if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
                         countTimeout += 1000;
                         setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.coAppointmentId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x'))), countTimeout)
@@ -928,7 +928,7 @@ function mapStateToProps(store) {
     const {staff, client, calendar, services, authentication} = store;
 
     return {
-        staff, clients: client, calendar, services, authentication
+        staff, clients: client, calendar, services, authentication, appointments: calendar.appointments
     };
 }
 
