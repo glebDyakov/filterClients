@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
-import {calendarActions, companyActions, menuActions, userActions} from "../_actions";
+import {calendarActions, companyActions, menuActions, userActions, staffActions, clientActions} from "../_actions";
 import {access} from "../_helpers/access";
 import moment from "moment";
 import Link from "react-router-dom/es/Link";
@@ -60,7 +60,6 @@ class SidebarMain extends Component {
         if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
             this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
             this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-
         }
     }
 
@@ -68,6 +67,8 @@ class SidebarMain extends Component {
         this.props.dispatch(companyActions.getBookingInfo());
         this.props.dispatch(companyActions.getNewAppointments());
         this.props.dispatch(menuActions.getMenu());
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(clientActions.getClientWithInfo());
     }
 
     toggleCollapse(value) {
@@ -77,7 +78,7 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location, calendar: { appointmentsCanceled, appointmentsCount } }=this.props;
+        const { location, calendar: { appointmentsCanceled, appointmentsCount }, staff, client }=this.props;
         const { authentication, menu, company, collapse, newOpened,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
@@ -87,12 +88,18 @@ class SidebarMain extends Component {
                 let resultMarkup = null;
                 if((!appointment.approved && !appointment.coAppointmentId)
                     &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
+                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
+                        return((item.staffId) === (appointmentInfo.staff.staffId));});
+
+                    const activeClient = client && client.client && client.client.find(item => {
+                        return((item.clientId) === (appointment.clientId));});
 
                     resultMarkup = (
                         <li>
-                            <div className="service_item"
-                               onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
-                                <div className="img-container" style={{width: "15%"}}><div className="img"></div></div>
+                            <div className="service_item">
+                                <div className="img-container" style={{width: "15%"}}>
+                                    <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                         className="img"/></div>
                                 <div style={{width: "40%"}}>
                                     <p className="service_name"
                                        style={{
@@ -103,16 +110,19 @@ class SidebarMain extends Component {
                                     ><strong>{appointment.serviceName}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p><br/>
-                                    <p style={{float: "none"}} ><strong>Сотрудник: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
+                                    <p><strong>Телефон: </strong> {activeClient.phone}</p>
                                     <p className="service_time"
                                        // style={{width: "30%", textAlign: "left"}}
                                     >
                                         <strong style={{textTransform: 'capitalize'}}>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                                     </p>
+                                    <p style={{color: "#3E90FF"}} onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>Просмотреть запись</p>
+
                                 </div>
                             </div>
                         </li>
@@ -323,9 +333,9 @@ class SidebarMain extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar, appointmentsCount } = state;
+    const { alert, menu, authentication, company, calendar, appointmentsCount, staff, client} = state;
     return {
-        alert, menu, authentication, company, calendar, appointmentsCount
+        alert, menu, authentication, company, calendar, appointmentsCount, staff, client
     };
 }
 
