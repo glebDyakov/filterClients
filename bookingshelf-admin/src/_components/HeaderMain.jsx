@@ -5,7 +5,7 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import moment from "moment";
 import {LogoutPage} from "../LogoutPage";
-import { calendarActions } from "../_actions";
+import {calendarActions, companyActions} from "../_actions";
 
 class HeaderMain extends React.PureComponent {
     constructor(props) {
@@ -152,6 +152,7 @@ class HeaderMain extends React.PureComponent {
     openAppointments(){
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(companyActions.getNewAppointments());
     }
 }
 

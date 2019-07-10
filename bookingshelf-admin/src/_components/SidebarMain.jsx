@@ -250,7 +250,7 @@ class SidebarMain extends Component {
                                                 wordWrap: "break-word"
                                             }}>{appointment.serviceName}<br/>
                                                 <span
-                                                    className="deleted">{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                                    className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                             </p>
                                             <p className="service_time"
                                                style={{width: "30%", textAlign: "left"}}><strong

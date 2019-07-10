@@ -19,11 +19,13 @@ import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
 import {CalendarModals} from '../_components/modals/CalendarModals';
 import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
+
 import {userActions} from '../_actions/user.actions';
 import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
+// import AppointmentFromSocket from "./components/AppointmentFromSocket";
 
 
 function getWeekDays(weekStart) {
@@ -171,6 +173,7 @@ class CalendarPage extends PureComponent {
         this.navigateToRedLine = this.navigateToRedLine.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.updateReservedId = this.updateReservedId.bind(this);
+        this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
 
     }
 
@@ -541,11 +544,18 @@ class CalendarPage extends PureComponent {
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                {!!0 && <AppointmentFromSocket/>}
+                {appointmentSocketMessageFlag &&
+                <AppointmentFromSocket
+                    appointmentSocketMessageFlag={appointmentSocketMessageFlag}
+                    appointmentSocketMessage={appointmentSocketMessage}
+                    closeAppointmentFromSocket={this.closeAppointmentFromSocket}
+                />}
             </div>
         );
     }
-
+    closeAppointmentFromSocket(){
+        this.setState({appointmentSocketMessageFlag: false});
+    }
 
     onClose(){
         this.setState({...this.state, userSettings: false, reserved: false, appointmentModal:false});
