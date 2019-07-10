@@ -1801,11 +1801,62 @@
 }
 .appointment-socket-modal{
     position: fixed;
-    background-color: red;
-    bottom: 50px;
-    left: 300px;
+    bottom: 20px;
+    left: 260px;
     z-index: 9999;
-    width: 200px;
-    height: 50px;
+    width: 240px;
+    cursor: pointer;
+    @media screen and(max-width: 960px){
+        left: 10px;
+    }
+    .close {
+        margin: -10px 0px 0 0!important;
+        background: url(../img/icons/cancel.svg) no-repeat center;
+        background-size: contain;
+        padding: 0;
+        //margin: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-width: 0;
+        height: auto;
+        width: 10px!important;
 
+        span{
+            font-size: 2rem;
+        }
+    }
+    .appointment-socket-modal-title{
+        width: 100%;
+        p{
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border-bottom: 3px solid #F33;
+            width: fit-content;
+        }
+    }
+
+    background-color: #0a1330;
+    .service_item{
+        padding: 5px 5%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        *{
+            color: white;
+            font-size: 0.9em;
+        }
+        .img-container{
+            display: flex;
+        }
+        .img{
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: white;
+            margin: auto;
+        }
+
+    }
 }
