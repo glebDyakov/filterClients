@@ -8,3 +8,4 @@ export * from './AddService';
 export * from './CreatedService';
 export * from './ClientDetails';
 export * from './NewStaffByMail';
+export * from './AppointmentFromSocket';
