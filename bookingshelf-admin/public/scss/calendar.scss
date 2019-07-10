@@ -1799,3 +1799,13 @@
     }
 
 }
+.appointment-socket-modal{
+    position: fixed;
+    background-color: red;
+    bottom: 50px;
+    left: 300px;
+    z-index: 9999;
+    width: 200px;
+    height: 50px;
+
+}

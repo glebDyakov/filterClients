@@ -18,6 +18,7 @@ import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
 import {CalendarModals} from '../_components/modals/CalendarModals';
+import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
 import {userActions} from '../_actions/user.actions';
 import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
@@ -136,7 +137,9 @@ class CalendarPage extends PureComponent {
             newClientModal: false,
             scrollableAppointmentAction: true,
             appointmentMarkerActionCalled: false,
-            flagStaffId: true
+            flagStaffId: true,
+            appointmentSocketMessage: {},
+            appointmentSocketMessageFlag: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -215,10 +218,51 @@ class CalendarPage extends PureComponent {
     }
 
     handleSocketDispatch(payload){
+        this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
 
         this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
         // this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
         this.updateCalendar();
+        $('.appointment-socket-modal').modal('show')
+    }
+
+    openSocketAgain(id, socket){
+        socket = createSocket(id);
+        console.log("Сокет. Создан");
+        socket.onopen = function() {
+            console.log("Сокет. cоединение установлено");
+
+            socket.send('ping');
+
+        };
+
+
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                console.log('Сокет.cоединение закрыто');
+            } else {
+                console.log('Сокет.соединения как-то закрыто');
+            }
+            this.openSocketAgain(id);
+        };
+
+        socket.onmessage = function(event) {
+            if (event.data[0]==='{'){
+                const finalData = JSON.parse(event.data);
+                if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
+                    this.handleSocketDispatch(finalData.payload);
+                }
+            }
+            console.log(`Сокет.пришли данные: ${event.data}`);
+
+        };
+        socket.onmessage = socket.onmessage.bind(this);
+        socket.onclose = socket.onclose.bind(this);
+
+        socket.onerror = function(event) {
+            console.error("Сокет.ошибка", event);
+        };
+
     }
 
     navigateToRedLine() {
@@ -363,11 +407,13 @@ class CalendarPage extends PureComponent {
             }
         }
 
+
         if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
             this.setState({flagStaffId: false});
-            const socket = createSocket(this.props.authentication.user.profile.staffId );
+            var socket = createSocket(this.props.authentication.user.profile.staffId );
+            console.log("Сокет. Создан");
             socket.onopen = function() {
-                console.log("cоединение установлено");
+                console.log("Сокет. Соединение установлено");
 
                 socket.send('ping');
 
@@ -376,10 +422,11 @@ class CalendarPage extends PureComponent {
 
             socket.onclose = function(event) {
                 if (event.wasClean) {
-                    console.log('cоединение закрыто');
+                    console.log('Сокет. cоединение закрыто');
                 } else {
-                    console.log('соединения как-то закрыто');
+                    console.log('Сокет. соединения как-то закрыто');
                 }
+                this.openSocketAgain(this.props.authentication.user.profile.staffId, socket);
             };
 
             socket.onmessage = function(event) {
@@ -387,16 +434,17 @@ class CalendarPage extends PureComponent {
                     const finalData = JSON.parse(event.data);
                     if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
                         debugger
-                        this.handleSocketDispatch(finalData.payload);
+                        this.handleSocketDispatch(finalData);
                     }
                 }
-                console.log(`пришли данные: ${event.data}`);
+                console.log(`Сокет.пришли данные: ${event.data}`);
 
             };
             socket.onmessage = socket.onmessage.bind(this);
+            socket.onclose = socket.onclose.bind(this);
 
             socket.onerror = function(event) {
-                console.error("ошибка", event);
+                console.error("Сокет. ошибка", event);
             };
         }
 
@@ -409,7 +457,7 @@ class CalendarPage extends PureComponent {
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage
+            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
@@ -493,7 +541,7 @@ class CalendarPage extends PureComponent {
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-
+                {!!0 && <AppointmentFromSocket/>}
             </div>
         );
     }

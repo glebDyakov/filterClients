@@ -95,7 +95,7 @@ class SidebarMain extends Component {
                         return((item.clientId) === (appointment.clientId));});
 
                     resultMarkup = (
-                        <li>
+                        <li onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
                             <div className="service_item">
                                 <div className="img-container" style={{width: "15%"}}>
                                     <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -114,14 +114,14 @@ class SidebarMain extends Component {
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
-                                    <p><strong>Телефон: </strong> {activeClient.phone}</p>
+                                    {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time"
                                        // style={{width: "30%", textAlign: "left"}}
                                     >
                                         <strong style={{textTransform: 'capitalize'}}>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#3E90FF"}} onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>Просмотреть запись</p>
+                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
 
                                 </div>
                             </div>
