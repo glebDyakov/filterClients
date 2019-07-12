@@ -368,7 +368,7 @@ class StaffPage extends Component {
                                                                aria-expanded="false">
                                                                 {staff_user.roleId !== 4 &&
                                                                 <img
-                                                                    src={`${process.env.CONTEXT}public/img/delete.png`}
+                                                                    src={`${process.env.CONTEXT}public/img/delete_new.svg`}
                                                                     alt=""/>
                                                                 }
                                                             </a>
@@ -446,7 +446,7 @@ class StaffPage extends Component {
                                                         </div>
                                                         <div className="col-1 dropdown delete-tab-holiday">
                                                             <a className="delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                             </a>
                                                             <div className="dropdown-menu delete-menu p-3">
                                                                 <button type="button" className="button delete-tab" onClick={()=>this.deleteClosedDate(item.companyClosedDateId)}>Удалить</button>
