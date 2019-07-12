@@ -138,7 +138,7 @@ class ServicesPage extends Component {
                                                     <a className="edit_service"   onClick={(e)=>this.handleClick(item.serviceGroupId, false, e, this)}/>
                                                     <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
                                                        aria-haspopup="true" aria-expanded="false">
-                                                        <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                     </a>
                                                     <div className="dropdown-menu delete-menu p-3">
                                                         <button type="button" className="button delete-tab"  onClick={()=>this._delete(item.serviceGroupId)}>Удалить</button>
@@ -166,7 +166,7 @@ class ServicesPage extends Component {
                                                             <a className="delete-icon" id="menu-delete6633"
                                                                data-toggle="dropdown"
                                                                aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                             </a>
                                                             <div className="dropdown-menu delete-menu p-3">
                                                                 <button type="button"

@@ -127,7 +127,7 @@ class ClientsPage extends Component {
                                     <div className="delete dropdown">
                                         <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                         </a>
                                         <div className="dropdown-menu delete-menu p-3">
                                             <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>

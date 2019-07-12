@@ -115,11 +115,11 @@ class SidebarMain extends Component {
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
                                     {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
-                                    <p className="service_time"
+                                    <p className="service_time" style={{textTransform: 'capitalize'}}
                                        // style={{width: "30%", textAlign: "left"}}
                                     >
-                                        <strong style={{textTransform: 'capitalize'}}>Время: </strong>
-                                        {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
+                                        <strong>Время: </strong>
+                                        {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
                                     <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
 
@@ -254,7 +254,7 @@ class SidebarMain extends Component {
                                             </p>
                                             <p className="service_time"
                                                style={{width: "30%", textAlign: "left"}}><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dddd, D.MM, HH:mm')}</strong>
+                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</strong>
                                             </p>
                                         </div>
                                     </li>
