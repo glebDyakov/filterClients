@@ -740,3 +740,8 @@
     float: right;
     margin-top: 3px;
 }
+@media screen and(max-width: $mob-width){
+   .list-group-statistics strong{
+       text-align: left;
+   }
+}
