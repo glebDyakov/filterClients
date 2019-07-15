@@ -1,7 +1,8 @@
 import { staffConstants } from '../_constants';
 
 const initialState = {
-    isLoading: false
+    isLoading: false,
+    error: false
 }
 
 export function staff(state = initialState, action) {
@@ -86,11 +87,17 @@ export function staff(state = initialState, action) {
                 status: 200,
                 adding: false
             };
-        case staffConstants.UPDATE_ACCESS_SUCCESS:
+        case staffConstants.UPDATE_ACCESS_REQUEST:
+            return {
+                ...state,
+                isLoading: true,
+            };
+            case staffConstants.UPDATE_ACCESS_SUCCESS:
             return {
                 ...state,
                 status: 200,
-                access: action.access
+                access: action.access,
+                isLoading:false
             };
         case staffConstants.ADD_FAILURE:
             return {
@@ -111,7 +118,11 @@ export function staff(state = initialState, action) {
                 status: 209
             };
         case staffConstants.UPDATE_ACCESS_FAILURE:
-            return state;
+            return {
+                ...state,
+                isLoading: false,
+                error: true
+            };
         case staffConstants.GET_SUCCESS:
 
             let costaffs=[];
