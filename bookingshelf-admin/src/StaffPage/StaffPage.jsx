@@ -207,7 +207,7 @@ class StaffPage extends Component {
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
-                {this.state.isLoading && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {this.state.staff.isLoading && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
 
@@ -464,7 +464,7 @@ class StaffPage extends Component {
                                             <div className="arrow"></div>
                                         </div>
                                     </div>
-                                    {access(-1) &&
+                                    {access(-1) && !this.props.staff.error &&
                                     <div className={"tab-pane access-tab"+(activeTab==='permissions'?' active':'')} id="tab4">
                                         <div className="access">
                                             <div className="tab-content-list">
@@ -509,6 +509,8 @@ class StaffPage extends Component {
                                         </div>
                                     </div>
                                     }
+                                    {this.props.isLoading && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                    {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                                 </div>
                             </div>
                             {activeTab==='staff' &&

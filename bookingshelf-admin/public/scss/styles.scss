@@ -2183,7 +2183,8 @@ select{
             right: 5px;
             top: 0;
             min-width: 0;
-            height: auto;
+            height: 20px;
+            min-height: 35px;
             width: 20px!important;
 
             span{

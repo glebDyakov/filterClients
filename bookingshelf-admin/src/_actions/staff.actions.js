@@ -1,4 +1,4 @@
-import { staffConstants, userConstants } from '../_constants';
+import {analiticsConstants, staffConstants, userConstants} from '../_constants';
 import { staffService } from '../_services';
 import { alertActions } from './';
 import {store} from "../_helpers";
@@ -170,6 +170,7 @@ function update(params) {
 
 function updateAccess(params) {
     return dispatch => {
+        dispatch(request());
         staffService.updateAccess(params)
             .then(
                 access => {
@@ -181,7 +182,7 @@ function updateAccess(params) {
                 }
             );
     };
-
+    function request() { return { type: staffConstants.UPDATE_ACCESS_REQUEST} }
     function success(access) { return { type: staffConstants.UPDATE_ACCESS_SUCCESS, access } }
     function failure(error) { return { type: staffConstants.UPDATE_ACCESS_FAILURE, error } }
 }
