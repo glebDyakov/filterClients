@@ -16,7 +16,7 @@ class TabSix extends  PureComponent {
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
-            setScreen,refreshTimetable,_delete} = this.props;
+            setScreen,refreshTimetable,_delete, setDefaultFlag} = this.props;
         const {approveF} = this.state;
 
 
@@ -69,7 +69,8 @@ class TabSix extends  PureComponent {
                 }
                 <p className="skip_employee"  onClick={() => {
                     setScreen(2);
-                    refreshTimetable()
+                    refreshTimetable();
+                    setDefaultFlag();
                 }}> Создать запись</p>
             </div>
         );
