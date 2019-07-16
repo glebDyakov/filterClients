@@ -60,7 +60,7 @@ class AppointmentFromSocket extends React.Component {
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
                             {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                         </p>
-                        <p style={{color: "#3E90FF"}}>{payload && appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"Просмотреть запись":(payload.online ? 'Удален клиентом' : 'Удален сотрудником')}</p>
+                        <p style={{color: "#3E90FF"}}>{appointmentSocketMessage && appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"Просмотреть запись":(payload && payload.online ? 'Удален клиентом' : 'Удален сотрудником')}</p>
 
                     </div>
                 </div>
