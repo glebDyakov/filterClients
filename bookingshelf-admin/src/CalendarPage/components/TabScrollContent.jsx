@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
-class TabScroll extends PureComponent{
+class TabScroll extends Component{
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
     }

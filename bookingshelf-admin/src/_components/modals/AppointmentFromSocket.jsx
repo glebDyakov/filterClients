@@ -40,20 +40,27 @@ class AppointmentFromSocket extends React.Component {
                     <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                          className="img"/></div>
 
-                    <div style={{width: "65%"}} onClick={()=>closeAppointmentFromSocket()}>
-                        <div className="appointment-socket-modal-title" style={{position:"relative"}}><p>НОВАЯ ЗАПИСЬ </p>
+                    <div style={{width: "65%"}}>
+                        <div className="appointment-socket-modal-title" style={{position:"relative"}}>
+                            <p>{appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"НОВАЯ ЗАПИСЬ":"ОТМЕНЕНО КЛИЕНТОМ"}</p>
                             <button className="close" onClick={()=>closeAppointmentFromSocket()}></button>
                         </div>
-                        <p className="service_name"><strong>{payload.serviceName}</strong></p>
-                        <p style={{float: "none"}} ><strong>Мастер: </strong>{payload.staffName}</p>
+                        <p className="service_name"><strong>
+                            {payload && payload.serviceName}
+                        </strong></p>
+                        <p style={{float: "none"}} ><strong>Мастер: </strong>
+                            {payload && payload.staffName}
+                        </p>
 
-                        <p><strong>Клиент:</strong> {payload.clientName}</p>
+                        <p><strong>Клиент: </strong>
+                            {payload && payload.clientName}
+                        </p>
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
-                            {moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
+                            {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                         </p>
-                        <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+                        <p style={{color: "#3E90FF"}}>{payload && appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"Просмотреть запись":(payload.online ? 'Удален клиентом' : 'Удален сотрудником')}</p>
 
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment';
+import {withRouter} from "react-router-dom";
+
 
 
 
@@ -67,11 +69,12 @@ class TabSix extends  PureComponent {
                     </button>
                 </div>
                 }
-                <p className="skip_employee"  onClick={() => {
-                    setScreen(2);
-                    refreshTimetable();
-                    setDefaultFlag();
-                }}> Создать запись</p>
+                {/*<p className="skip_employee"  onClick={() => {*/}
+                {/*    setScreen(2);*/}
+                {/*    refreshTimetable();*/}
+                {/*    setDefaultFlag();*/}
+                {/*}}> Создать запись</p>*/}
+                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >Создать запись</a>
             </div>
         );
     }
@@ -83,4 +86,4 @@ class TabSix extends  PureComponent {
         this.setState({...this.state, approveF: false})
     }
 }
-export default TabSix;
+export default withRouter(TabSix);
