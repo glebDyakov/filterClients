@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import { withRouter } from 'react-router-dom';
 
 
 class TabCanceled extends  PureComponent {
@@ -14,10 +15,10 @@ class TabCanceled extends  PureComponent {
                     <p>Запись успешно отменена</p>
                 </div>
 
-                {isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}
-
+                {/*{isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}*/}
+                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >Создать запись</a>
             </div>
         );
     }
 }
-export default TabCanceled;
+export default withRouter(TabCanceled);

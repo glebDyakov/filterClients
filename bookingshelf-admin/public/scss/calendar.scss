@@ -1799,15 +1799,27 @@
     }
 
 }
+.appointment-socket-modal-go-away {
+    transform: translate(0, -2000px);
+}
 .appointment-socket-modal{
+    border-radius: 5px;
     position: fixed;
     bottom: 20px;
     left: 260px;
     z-index: 9999;
-    width: 240px;
+    width: 300px;
     cursor: pointer;
+    transition: all 2s ease-in-out;
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out;
+    -o-transition: all 2s ease-in-out;
     @media screen and(max-width: 960px){
         left: 10px;
+    }
+    @media screen and(max-width: 480px){
+        left: 10px;
+        width: 280px;
     }
     .close {
         margin: -10px 0px 0 0!important;
@@ -1819,7 +1831,8 @@
         right: 0;
         top: 0;
         min-width: 0;
-        height: auto;
+        height: 20px;
+        min-height: 35px;
         width: 10px!important;
 
         span{

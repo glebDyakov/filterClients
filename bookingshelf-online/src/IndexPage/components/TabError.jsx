@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {withRouter} from "react-router-dom";
 
 
 class TabError extends  PureComponent {
@@ -13,9 +14,10 @@ class TabError extends  PureComponent {
                 <div className="final-book">
                     <p>{error}</p>
                 </div>
-                {isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}
+                {/*{isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}*/}
+                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >Создать запись</a>
             </div>
         );
     }
 }
-export default TabError;
+export default withRouter(TabError);

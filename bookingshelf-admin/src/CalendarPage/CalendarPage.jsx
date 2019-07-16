@@ -252,7 +252,7 @@ class CalendarPage extends PureComponent {
         socket.onmessage = function(event) {
             if (event.data[0]==='{'){
                 const finalData = JSON.parse(event.data);
-                if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
+                if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
                     this.handleSocketDispatch(finalData.payload);
                 }
             }
@@ -435,7 +435,7 @@ class CalendarPage extends PureComponent {
             socket.onmessage = function(event) {
                 if (event.data[0]==='{'){
                     const finalData = JSON.parse(event.data);
-                    if(finalData.wsMessageType === "APPOINTMENT_CREATED"){
+                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
                         debugger
                         this.handleSocketDispatch(finalData);
                     }
@@ -554,7 +554,12 @@ class CalendarPage extends PureComponent {
         );
     }
     closeAppointmentFromSocket(){
-        this.setState({appointmentSocketMessageFlag: false});
+        $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
+        setTimeout(() => {
+            this.setState({ appointmentSocketMessageFlag: false });
+            $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
+            }, 2000);
+
     }
 
     onClose(){
