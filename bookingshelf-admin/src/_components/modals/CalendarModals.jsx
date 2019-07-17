@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {NewClient} from "./NewClient";
 import {ClientDetails} from "./ClientDetails";
@@ -9,9 +9,11 @@ import {UserPhoto} from "./UserPhoto";
 import {ApproveAppointment} from "./ApproveAppointment";
 import {DeleteAppointment} from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
+import moment from "./AddAppointment";
+import {staffActions} from "../../_actions";
 
 
-class CalendarModals extends PureComponent {
+class CalendarModals extends Component {
     constructor(props) {
         super(props);
 
@@ -142,7 +144,7 @@ class CalendarModals extends PureComponent {
                         onClose={this.onCloseClient}
                     />
                     }
-                    {(appointmentModal || appointmentModalFromProps) &&
+                    {(appointmentModal || appointmentModalFromProps) && staff.isAvailableTimesChecked &&
                     <AddAppointment
                         clients={clients}
                         checkedUser={checkedUser}
@@ -164,7 +166,7 @@ class CalendarModals extends PureComponent {
                         getHours={this.changeTime}
                         edit_appointment={edit_appointment}
                         onClose={this.onCloseAppointment}
-
+                        type={type}
                     />
                     }
                     <ClientDetails

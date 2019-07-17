@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { history } from '../_helpers';
-import {alertActions, calendarActions, staffActions} from '../_actions';
+import {alertActions, calendarActions, staffActions, menuActions} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -38,6 +38,11 @@ import {FaqPage} from "../FaqPage";
 import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
 import {userActions} from "../_actions/user.actions";
 import { AnalyticsPage } from "../AnalyticsPage";
+import {createSocket} from "../_helpers/createSocket";
+import {AppointmentFromSocket} from "../_components/modals";
+
+var socket;
+
 
 
 class App extends React.Component {
@@ -45,7 +50,10 @@ class App extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            authentication: props.authentication
+            authentication: props.authentication,
+            flagStaffId: true,
+            appointmentSocketMessage: {},
+            appointmentSocketMessageFlag: false
         }
 
 
@@ -55,6 +63,8 @@ class App extends React.Component {
         });
 
         this.notifications = this.notifications.bind(this);
+        this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
+        this.handleSocketDispatch = this.handleSocketDispatch.bind(this);
 
         this.props.dispatch(userActions.checkLogin());
 
@@ -73,6 +83,49 @@ class App extends React.Component {
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
             this.setState({...this.state, company: newProps.company })
         }
+
+        if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
+            // && this.props.menu.socketFlag){
+            && this.state.flagStaffId){
+            this.setState({flagStaffId: false});
+            // this.props.dispatch(menuActions.stopSocket());
+
+            socket = createSocket(this.props.authentication.user.profile.staffId );
+            console.log("Сокет. Создан");
+            socket.onopen = function() {
+                console.log("Сокет. Соединение установлено");
+                socket.send('ping');
+
+            };
+
+
+            socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log('Сокет. cоединение закрыто');
+                } else {
+                    console.log('Сокет. соединения как-то закрыто');
+                }
+                this.openSocketAgain(this.props.authentication.user.profile.staffId);
+            };
+
+            socket.onmessage = function(event) {
+                if (event.data[0]==='{'){
+                    const finalData = JSON.parse(event.data);
+                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+                        debugger
+                        this.handleSocketDispatch(finalData);
+                    }
+                }
+                console.log(`Сокет.пришли данные: ${event.data}`);
+
+            };
+           socket.onmessage = socket.onmessage.bind(this);
+           socket.onclose = socket.onclose.bind(this);
+
+           socket.onerror = function(event) {
+                console.error("Сокет. ошибка", event);
+            };
+        }
     }
 
     notifications(){
@@ -81,9 +134,73 @@ class App extends React.Component {
         setTimeout(()=>this.notifications(), 300000)
     }
 
+    closeAppointmentFromSocket(){
+        $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
+        setTimeout(() => {
+            this.setState({ appointmentSocketMessageFlag: false });
+            $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
+        }, 2000);
+
+    }
+    handleSocketDispatch(payload){
+
+
+        debugger
+        this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
+        if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
+
+            this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+            this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+        } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED') ){
+            this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+        }
+        // this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+        // this.updateCalendar();
+        // $('.appointment-socket-modal').modal('show')
+    }
+
+    openSocketAgain(id){
+        socket = createSocket(id);
+        console.log("Сокет. Создан");
+        socket.onopen = function() {
+            console.log("Сокет2. cоединение установлено");
+
+            socket.send('ping');
+
+        };
+
+
+        socket.onclose = function(event) {
+            if (event.wasClean) {
+                console.log('Сокет2.cоединение закрыто');
+            } else {
+                console.log('Сокет2.соединения как-то закрыто');
+            }
+            this.openSocketAgain(id);
+        };
+
+        socket.onmessage = function(event) {
+            if (event.data[0]==='{'){
+                const finalData = JSON.parse(event.data);
+                if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+                    this.handleSocketDispatch(finalData.payload);
+                }
+            }
+            console.log(`Сокет.пришли данные: ${event.data}`);
+
+        };
+        socket.onmessage = socket.onmessage.bind(this);
+        socket.onclose = socket.onclose.bind(this);
+
+        socket.onerror = function(event) {
+            console.error("Сокет2.ошибка", event);
+        };
+
+    }
+
 
     render() {
-        const { authentication, company } = this.state;
+        const { authentication, company, appointmentSocketMessageFlag, appointmentSocketMessage } = this.state;
         {
            company && company.settings && authentication.menu && authentication.loggedIn &&
             moment.tz.setDefault(company.settings.timezoneId)
@@ -95,6 +212,12 @@ class App extends React.Component {
                         {authentication && authentication.user && authentication.menu && authentication.loggedIn &&
                         <SidebarMain/>
                         }
+                        {appointmentSocketMessageFlag &&
+                        <AppointmentFromSocket
+                            appointmentSocketMessageFlag={appointmentSocketMessageFlag}
+                            appointmentSocketMessage={appointmentSocketMessage}
+                            closeAppointmentFromSocket={this.closeAppointmentFromSocket}
+                        />}
                         <Switch>
                             <PrivateRoute exact path="/" component={MainIndex} refresh={false} />
                             <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />
@@ -130,9 +253,9 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company } = state;
+    const { alert, authentication, company, menu } = state;
     return {
-        alert, authentication, company
+        alert, authentication, company, menu
     };
 }
 

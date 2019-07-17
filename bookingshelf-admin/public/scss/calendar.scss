@@ -1800,7 +1800,24 @@
 
 }
 .appointment-socket-modal-go-away {
-    transform: translate(0, -2000px);
+    transform: translate(-180px, -77vh) scale(0.2, 0.2);
+    animation-duration: 2.1s;
+    animation-name: moveMessage;
+    @media screen and(max-width: 960px){
+        transform: translate(-110px, -86vh) scale(0.2, 0.2);
+    }
+
+}
+@keyframes moveMessage {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 .appointment-socket-modal{
     border-radius: 5px;
