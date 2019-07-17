@@ -42,7 +42,6 @@ export function company(state = {}, action) {
             };
         case companyConstants.GET_NEW_APPOINMENTS_MARKER_INCR:
             newCount = state.count.canceled.count + 1;
-            debugger
             return {
                 ...state,
                 count: {
