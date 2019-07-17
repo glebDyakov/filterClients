@@ -2,7 +2,8 @@ import { staffConstants } from '../_constants';
 
 const initialState = {
     isLoading: false,
-    error: false
+    error: false,
+    isAvailableTimesChecked: false
 }
 
 export function staff(state = initialState, action) {
@@ -187,10 +188,12 @@ export function staff(state = initialState, action) {
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
+
             return {
                 ...state,
                 isLoading:false,
-                availableTimetable: action.availableTimetable
+                availableTimetable: action.payload.availableTimetable,
+                isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
             return {

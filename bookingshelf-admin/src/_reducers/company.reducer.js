@@ -40,6 +40,18 @@ export function company(state = {}, action) {
                     }
                 },
             };
+        case companyConstants.GET_NEW_APPOINMENTS_MARKER_INCR:
+            newCount = state.count.canceled.count + 1;
+            debugger
+            return {
+                ...state,
+                count: {
+                    ...state.count,
+                    canceled: {
+                        count: newCount
+                    }
+                },
+            };
         case userConstants.UPDATE_COMPANY_SUCCESS:
             const companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
 

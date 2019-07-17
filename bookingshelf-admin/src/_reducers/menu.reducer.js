@@ -1,6 +1,10 @@
 import { menuConstants } from '../_constants';
+const initialState = {
+    socketFlag: true
 
-export function menu(state = {}, action) {
+}
+
+export function menu(state = initialState, action) {
   switch (action.type) {
     case menuConstants.GET_MENU_SUCCESS:
       return {
@@ -60,6 +64,16 @@ export function menu(state = {}, action) {
                     "name":"Настройки компании",
                 }]
             };
+      case menuConstants.RUN_MENU_SOCKET:
+          return {
+              ...state,
+              socketFlag: true
+          };
+      case menuConstants.STOP_MENU_SOCKET:
+          return {
+              ...state,
+             socketFlag: false
+          };
       default:
           return state
   }

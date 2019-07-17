@@ -174,6 +174,7 @@ class CalendarPage extends PureComponent {
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.updateReservedId = this.updateReservedId.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
+        this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
 
     }
 
@@ -220,53 +221,70 @@ class CalendarPage extends PureComponent {
 
     }
 
-    handleSocketDispatch(payload){
-        this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
-
-        this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
-        // this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
-        this.updateCalendar();
-        $('.appointment-socket-modal').modal('show')
-    }
-
-    openSocketAgain(id, socket){
-        socket = createSocket(id);
-        console.log("Сокет. Создан");
-        socket.onopen = function() {
-            console.log("Сокет. cоединение установлено");
-
-            socket.send('ping');
-
-        };
-
-
-        socket.onclose = function(event) {
-            if (event.wasClean) {
-                console.log('Сокет.cоединение закрыто');
-            } else {
-                console.log('Сокет.соединения как-то закрыто');
-            }
-            this.openSocketAgain(id);
-        };
-
-        socket.onmessage = function(event) {
-            if (event.data[0]==='{'){
-                const finalData = JSON.parse(event.data);
-                if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-                    this.handleSocketDispatch(finalData.payload);
-                }
-            }
-            console.log(`Сокет.пришли данные: ${event.data}`);
-
-        };
-        socket.onmessage = socket.onmessage.bind(this);
-        socket.onclose = socket.onclose.bind(this);
-
-        socket.onerror = function(event) {
-            console.error("Сокет.ошибка", event);
-        };
-
-    }
+    // handleSocketDispatch(payload){
+    //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
+    //     debugger
+    //     // this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+    //     if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
+    //         this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+    //     }
+    //
+    //     // this.updateCalendar();
+    //     // $('.appointment-socket-modal').modal('show')
+    //
+    //     const {selectedDayMoment, selectedDays, type}=this.state;
+    //     let startTime, endTime;
+    //
+    //     if(type==='day'){
+    //         startTime = selectedDayMoment.startOf('day').format('x');
+    //         endTime = selectedDayMoment.endOf('day').format('x')
+    //     } else {
+    //         startTime = moment(selectedDays[0]).startOf('day').format('x');
+    //         endTime = moment(selectedDays[6]).endOf('day').format('x');
+    //     }
+    //     this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
+    //     // this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
+    //
+    // }
+    //
+    // openSocketAgain(id){
+    //     socket = createSocket(id);
+    //     console.log("Сокет. Создан");
+    //     socket.onopen = function() {
+    //         console.log("Сокет2. cоединение установлено");
+    //
+    //         socket.send('ping');
+    //
+    //     };
+    //
+    //
+    //     socket.onclose = function(event) {
+    //         if (event.wasClean) {
+    //             console.log('Сокет2.cоединение закрыто');
+    //         } else {
+    //             console.log('Сокет2.соединения как-то закрыто');
+    //         }
+    //         this.openSocketAgain(id);
+    //     };
+    //
+    //     socket.onmessage = function(event) {
+    //         if (event.data[0]==='{'){
+    //             const finalData = JSON.parse(event.data);
+    //             if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+    //                 this.handleSocketDispatch(finalData.payload);
+    //             }
+    //         }
+    //         console.log(`Сокет.пришли данные: ${event.data}`);
+    //
+    //     };
+    //     socket.onmessage = socket.onmessage.bind(this);
+    //     socket.onclose = socket.onclose.bind(this);
+    //
+    //     socket.onerror = function(event) {
+    //         console.error("Сокет2.ошибка", event);
+    //     };
+    //
+    // }
 
     navigateToRedLine() {
         setTimeout(() => {
@@ -411,45 +429,45 @@ class CalendarPage extends PureComponent {
         }
 
 
-        if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
-            this.setState({flagStaffId: false});
-            var socket = createSocket(this.props.authentication.user.profile.staffId );
-            console.log("Сокет. Создан");
-            socket.onopen = function() {
-                console.log("Сокет. Соединение установлено");
-
-                socket.send('ping');
-
-            };
-
-
-            socket.onclose = function(event) {
-                if (event.wasClean) {
-                    console.log('Сокет. cоединение закрыто');
-                } else {
-                    console.log('Сокет. соединения как-то закрыто');
-                }
-                this.openSocketAgain(this.props.authentication.user.profile.staffId, socket);
-            };
-
-            socket.onmessage = function(event) {
-                if (event.data[0]==='{'){
-                    const finalData = JSON.parse(event.data);
-                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-                        debugger
-                        this.handleSocketDispatch(finalData);
-                    }
-                }
-                console.log(`Сокет.пришли данные: ${event.data}`);
-
-            };
-            socket.onmessage = socket.onmessage.bind(this);
-            socket.onclose = socket.onclose.bind(this);
-
-            socket.onerror = function(event) {
-                console.error("Сокет. ошибка", event);
-            };
-        }
+        // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
+        //     this.setState({flagStaffId: false});
+        //     var socket = createSocket(this.props.authentication.user.profile.staffId );
+        //     console.log("Сокет. Создан");
+        //     socket.onopen = function() {
+        //         console.log("Сокет. Соединение установлено");
+        //
+        //         socket.send('ping');
+        //
+        //     };
+        //
+        //
+        //     socket.onclose = function(event) {
+        //         if (event.wasClean) {
+        //             console.log('Сокет. cоединение закрыто');
+        //         } else {
+        //             console.log('Сокет. соединения как-то закрыто');
+        //         }
+        //         this.openSocketAgain(this.props.authentication.user.profile.staffId);
+        //     };
+        //
+        //     socket.onmessage = function(event) {
+        //         if (event.data[0]==='{'){
+        //             const finalData = JSON.parse(event.data);
+        //             if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+        //                 debugger
+        //                 this.handleSocketDispatch(finalData);
+        //             }
+        //         }
+        //         console.log(`Сокет.пришли данные: ${event.data}`);
+        //
+        //     };
+        //     socket.onmessage = socket.onmessage.bind(this);
+        //     socket.onclose = socket.onclose.bind(this);
+        //
+        //     socket.onerror = function(event) {
+        //         console.error("Сокет. ошибка", event);
+        //     };
+        // }
 
     }
 
@@ -460,7 +478,7 @@ class CalendarPage extends PureComponent {
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag
+            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
@@ -690,7 +708,21 @@ class CalendarPage extends PureComponent {
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
+        this.checkAvaibleTime();
         this.setState({ appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment });
+    }
+    checkAvaibleTime(){
+        const {selectedDayMoment, selectedDays, type}=this.state;
+        let startTime, endTime;
+
+        if(type==='day'){
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, true));
     }
 
     changeReservedTime(minutesReservedtime, staffId, newTime=null){

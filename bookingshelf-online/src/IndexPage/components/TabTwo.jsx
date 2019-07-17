@@ -6,7 +6,6 @@ class TabTwo extends Component {
     render() {
 
         const {selectedServices, setScreen,refreshTimetable,selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
-        debugger
 
 
         return (

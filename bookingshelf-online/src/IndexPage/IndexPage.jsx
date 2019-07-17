@@ -140,7 +140,6 @@ class IndexPage extends PureComponent {
     selectStaff (staff){
         const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
         let staffId=staff;
-        debugger
         if(staff.length === 0){
             this.setState({flagAllStaffs: true});
         }

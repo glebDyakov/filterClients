@@ -19,7 +19,6 @@ class AddAppointment extends React.Component {
                 id: -1,
                 service: []
             }],
-            staffs: props.staffs,
             clients: props.clients && props.clients,
             allClients: props.clients,
             services: [props.services],
@@ -87,11 +86,10 @@ class AddAppointment extends React.Component {
 
         if ( (JSON.stringify(this.props) !==  JSON.stringify(newProps)
             && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)) ||
-            newProps.randNum !== this.props.randNum
+            newProps.randNum !== this.props.randNum || this.props.staffs.isAvailableTimesChecked !== newProps.staffs.isAvailableTimesChecked
 
         ) {
             this.setState({
-                staffs:newProps.staffs,
                 // services:newProps.services,
                 minutes:newProps.minutes,
                 staffId:newProps.staffId,
@@ -115,7 +113,8 @@ class AddAppointment extends React.Component {
     }
 
     addNewService(){
-        const { appointment, serviceCurrent, staffs, staffId, services, staffCurrent } = this.state;
+        const { appointment, serviceCurrent, staffId, services, staffCurrent } = this.state;
+        const { staffs } = this.props
         const resultTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
         const newAppointment = {
@@ -281,8 +280,8 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps } =this.props;
-        const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
+        const { status, adding, staff: staffFromProps, staffs } =this.props;
+        const { appointment, appointmentMessage, staffCurrent, serviceCurrent,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients
         } = this.state;

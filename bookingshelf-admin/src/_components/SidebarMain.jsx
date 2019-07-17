@@ -58,8 +58,9 @@ class SidebarMain extends Component {
             })
         }
         if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
-            this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-            this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+            debugger
+            // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+            // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         }
     }
 
@@ -288,7 +289,7 @@ class SidebarMain extends Component {
     }
 
     handleClick(url){
-
+            this.props.dispatch(menuActions.runSocket())
             this.props.history.push(url)
     }
 
