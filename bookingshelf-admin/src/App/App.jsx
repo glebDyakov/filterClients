@@ -40,9 +40,11 @@ import {userActions} from "../_actions/user.actions";
 import { AnalyticsPage } from "../AnalyticsPage";
 import {createSocket} from "../_helpers/createSocket";
 import {AppointmentFromSocket} from "../_components/modals";
-
 var socket;
 
+import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
+
+var sound = new Audio(`${process.env.CONTEXT}public/mp3/message_sound.mp3`);
 
 
 class App extends React.Component {
@@ -65,6 +67,7 @@ class App extends React.Component {
         this.notifications = this.notifications.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.handleSocketDispatch = this.handleSocketDispatch.bind(this);
+        this.playSound = this.playSound.bind(this);
 
         this.props.dispatch(userActions.checkLogin());
 
@@ -85,12 +88,20 @@ class App extends React.Component {
         }
 
         if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
-            // && this.props.menu.socketFlag){
             && this.state.flagStaffId){
             this.setState({flagStaffId: false});
-            // this.props.dispatch(menuActions.stopSocket());
 
-            socket = createSocket(this.props.authentication.user.profile.staffId );
+
+            const options = {
+                url: `wss://staging.online-zapis.com/websocket/${this.props.authentication.user.profile.staffId}/`,
+                pingTimeout: 30000,
+                pongTimeout: 10000,
+                reconnectTimeout: 2000,
+                pingMsg: "heartbeat"
+            }
+            let socket = new WebsocketHeartbeatJs(options);
+            // socket = createSocket(this.props.authentication.user.profile.staffId );
+
             console.log("Сокет. Создан");
             socket.onopen = function() {
                 console.log("Сокет. Соединение установлено");
@@ -105,7 +116,7 @@ class App extends React.Component {
                 } else {
                     console.log('Сокет. соединения как-то закрыто');
                 }
-                this.openSocketAgain(this.props.authentication.user.profile.staffId);
+                // this.openSocketAgain(this.props.authentication.user.profile.staffId);
             };
 
             socket.onmessage = function(event) {
@@ -113,9 +124,10 @@ class App extends React.Component {
                     const finalData = JSON.parse(event.data);
                     if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
                         this.handleSocketDispatch(finalData);
+                        console.log(`Сокет.пришли данные: ${event.data}`);
                     }
                 }
-                console.log(`Сокет.пришли данные: ${event.data}`);
+                // console.log(`Сокет.пришли данные: ${event.data}`);
 
             };
            socket.onmessage = socket.onmessage.bind(this);
@@ -142,6 +154,7 @@ class App extends React.Component {
 
     }
     handleSocketDispatch(payload){
+        this.playSound();
         this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
         if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
 
@@ -150,48 +163,54 @@ class App extends React.Component {
         } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED') ){
             this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
         }
-        // this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
-        // this.updateCalendar();
-        // $('.appointment-socket-modal').modal('show')
     }
 
-    openSocketAgain(id){
-        socket = createSocket(id);
-        console.log("Сокет. Создан");
-        socket.onopen = function() {
-            console.log("Сокет2. cоединение установлено");
-
-            socket.send('ping');
-
-        };
-
-
-        socket.onclose = function(event) {
-            if (event.wasClean) {
-                console.log('Сокет2.cоединение закрыто');
-            } else {
-                console.log('Сокет2.соединения как-то закрыто');
-            }
-            this.openSocketAgain(id);
-        };
-
-        socket.onmessage = function(event) {
-            if (event.data[0]==='{'){
-                const finalData = JSON.parse(event.data);
-                if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-                    this.handleSocketDispatch(finalData);
-                }
-            }
-            console.log(`Сокет.пришли данные: ${event.data}`);
-
-        };
-        socket.onmessage = socket.onmessage.bind(this);
-        socket.onclose = socket.onclose.bind(this);
-
-        socket.onerror = function(event) {
-            console.error("Сокет2.ошибка", event);
-        };
-
+    // openSocketAgain(id){
+    //     socket = createSocket(id);
+    //     console.log("Сокет. Создан");
+    //     socket.onopen = function() {
+    //         console.log("Сокет2. cоединение установлено");
+    //
+    //         socket.send('ping');
+    //
+    //     };
+    //
+    //
+    //     socket.onclose = function(event) {
+    //         if (event.wasClean) {
+    //             console.log('Сокет2.cоединение закрыто');
+    //         } else {
+    //             console.log('Сокет2.соединения как-то закрыто');
+    //         }
+    //         this.openSocketAgain(id);
+    //     };
+    //
+    //     socket.onmessage = function(event) {
+    //         if (event.data[0]==='{'){
+    //             const finalData = JSON.parse(event.data);
+    //             if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+    //                 this.handleSocketDispatch(finalData);
+    //             }
+    //         }
+    //         console.log(`Сокет.пришли данные: ${event.data}`);
+    //
+    //     };
+    //     socket.onmessage = socket.onmessage.bind(this);
+    //     socket.onclose = socket.onclose.bind(this);
+    //
+    //     socket.onerror = function(event) {
+    //         console.error("Сокет2.ошибка", event);
+    //     };
+    //
+    // }
+    playSound(){
+        let soundSettings = localStorage.getItem('sound');
+        if(soundSettings==="false") {
+            sound.volume = 0;
+        }else {
+            sound.volume = 1;
+        }
+        sound.play();
     }
 
 
@@ -214,6 +233,7 @@ class App extends React.Component {
                             appointmentSocketMessage={appointmentSocketMessage}
                             closeAppointmentFromSocket={this.closeAppointmentFromSocket}
                         />}
+                        {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
                         <Switch>
                             <PrivateRoute exact path="/" component={MainIndex} refresh={false} />
                             <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />

@@ -9,7 +9,7 @@ import {UserPhoto} from "./UserPhoto";
 import {ApproveAppointment} from "./ApproveAppointment";
 import {DeleteAppointment} from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
-import moment from "./AddAppointment";
+import moment from 'moment';
 import {staffActions} from "../../_actions";
 
 
