@@ -1,4 +1,4 @@
-import {analiticsConstants, staffConstants, userConstants} from '../_constants';
+import {analiticsConstants, menuConstants, staffConstants, userConstants} from '../_constants';
 import { staffService } from '../_services';
 import { alertActions } from './';
 import {store} from "../_helpers";
@@ -22,7 +22,8 @@ export const staffActions = {
     deleteStaff,
     addUSerByEmail,
     getTimetableByStaff,
-    getTimetableStaffs
+    getTimetableStaffs,
+    refreshCheckerAvailableTime
 };
 
 function add(params) {
@@ -267,6 +268,10 @@ function getTimetableStaffs(from, to, isAvailableTimesChecked) {
     function request() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST } }
     function success(availableTimetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, payload : {availableTimetable, isAvailableTimesChecked } } }
     function failure() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE } }
+}
+
+function refreshCheckerAvailableTime() {
+    return { type: staffConstants.REFRESH_CHECKER_AVAILABLE_TIME }
 }
 
 function addClosedDates(params) {
