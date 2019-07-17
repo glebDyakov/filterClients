@@ -44,6 +44,7 @@ class CalendarModals extends Component {
         this.deleteReserve = this.deleteReserve.bind(this);
         this.deleteAppointment = this.deleteAppointment.bind(this);
         this.onUserSettingsClose = this.onUserSettingsClose.bind(this);
+        this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
     }
     updateClient(client){
         this.props.updateClient(client);
@@ -82,11 +83,13 @@ class CalendarModals extends Component {
     onCloseAppointment(){
         this.setState({ appointmentModal:false });
         this.props.onClose();
+        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     onCloseReserved(){
         this.setState({ reserved :false });
         this.props.onClose();
+        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     onUserSettingsClose() {
@@ -98,6 +101,7 @@ class CalendarModals extends Component {
         this.props.newReservedTime(staffId, reservedTime);
     }
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
+        this.checkAvaibleTime();
         this.setState({ reserved: true })
         return this.props.changeReservedTime(minutesReservedtime, staffId, newTime);
     }
@@ -107,6 +111,19 @@ class CalendarModals extends Component {
 
     checkUser(checkedUser) {
         this.setState({ checkedUser, appointmentModal: true })
+    }
+    checkAvaibleTime(){
+        const {selectedDayMoment, selectedDays, type} = this.props;
+        let startTime, endTime;
+
+        if(type==='day'){
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, true));
     }
 
     render(){
