@@ -180,10 +180,11 @@ class App extends React.Component {
         };
 
         socket.onmessage = function(event) {
+            debugger
             if (event.data[0]==='{'){
                 const finalData = JSON.parse(event.data);
                 if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-                    this.handleSocketDispatch(finalData.payload);
+                    this.handleSocketDispatch(finalData);
                 }
             }
             console.log(`Сокет.пришли данные: ${event.data}`);
