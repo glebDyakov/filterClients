@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from "moment";
 import {access} from "../../_helpers/access";
+import {calendarActions} from "../../_actions";
 
 class ClientDetails extends React.Component {
     constructor(props) {
@@ -68,8 +69,11 @@ class ClientDetails extends React.Component {
                             <div className="clients-list pt-4 pl-4 pr-4">
                                 <div className="client">
                                     <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
-                                    <span className="name_container">{client.firstName} {client.lastName}<span
-                                        className="email-user">{client.email}</span></span>
+                                    <span className="name_container">{client.firstName} {client.lastName}
+                                        <span className="email-user">{client.email}</span>
+                                        <span>{client.phone}</span>
+                                    </span>
+
                                 </div>
                                 <div className="row">
                                     <div className="col-6" style={{textAlign:'center'}}>
@@ -85,7 +89,7 @@ class ClientDetails extends React.Component {
                             }
                             <hr className="gray"/>
                             {client && client.appointments && client.appointments.length!==0 ?
-                                <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
+                                <p className="pl-4 pr-4">Список визитов</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
 
                             {(defaultClientsList && defaultClientsList.appointments && defaultClientsList.appointments.length!==0 && defaultClientsList!=="" &&
@@ -100,14 +104,14 @@ class ClientDetails extends React.Component {
 
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
-                                    .filter(appointment => appointment.id===client.id && appointment.appointmentTimeMillis < moment().format('x'))
+                                    .filter(appointment => appointment.id===client.id)
                                     .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
                                     return(
                                     <div className="visit-info row pl-4 pr-4 mb-2">
                                         <div className="col-9">
-                                            <p className="gray-bg">
+                                            <p className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
                                                 <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
                                                 <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
                                             </p>
@@ -140,9 +144,9 @@ class ClientDetails extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert } = state;
+    const { alert,  calendar} = state;
     return {
-        alert
+        alert, calendar
     };
 }
 
