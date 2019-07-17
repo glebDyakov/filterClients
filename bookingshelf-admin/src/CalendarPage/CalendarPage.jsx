@@ -576,7 +576,7 @@ class CalendarPage extends PureComponent {
         setTimeout(() => {
             this.setState({ appointmentSocketMessageFlag: false });
             $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
-            }, 2000);
+            }, 1000);
 
     }
 

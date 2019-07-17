@@ -1801,8 +1801,9 @@
 }
 .appointment-socket-modal-go-away {
     transform: translate(-180px, -77vh) scale(0.2, 0.2);
-    animation-duration: 2.1s;
+    animation-duration: 1s;
     animation-name: moveMessage;
+    opacity: 0;
     @media screen and(max-width: 960px){
         transform: translate(-110px, -86vh) scale(0.2, 0.2);
     }
@@ -1827,10 +1828,10 @@
     z-index: 9999;
     width: 300px;
     cursor: pointer;
-    transition: all 2s ease-in-out;
-    -webkit-transition: all 2s ease-in-out;
-    -moz-transition: all 2s ease-in-out;
-    -o-transition: all 2s ease-in-out;
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
     @media screen and(max-width: 960px){
         left: 10px;
     }
