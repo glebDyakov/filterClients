@@ -58,7 +58,6 @@ class SidebarMain extends Component {
             })
         }
         if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
-            debugger
             // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
             // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         }
