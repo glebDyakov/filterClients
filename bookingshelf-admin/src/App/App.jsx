@@ -20,6 +20,7 @@ import {NoPage} from "../NoPage";
 import {LogoutPage} from "../LogoutPage";
 import {RegisterPage} from "../RegisterPage";
 import {LoginPage} from "../LoginPage";
+import {PaymentsPage} from "../PaymentsPage";
 
 
 import {Router, Route, Switch} from "react-router-dom";
@@ -94,7 +95,7 @@ class App extends React.Component {
 
             const options = {
                 url: `wss://staging.online-zapis.com/websocket/${this.props.authentication.user.profile.staffId}/`,
-                pingTimeout: 30000,
+                pingTimeout: 15000,
                 pongTimeout: 10000,
                 reconnectTimeout: 2000,
                 pingMsg: "heartbeat"
@@ -142,7 +143,7 @@ class App extends React.Component {
     notifications(){
 
         this.props.dispatch(companyActions.getNewAppointments());
-        setTimeout(()=>this.notifications(), 300000)
+        // setTimeout(()=>this.notifications(), 300000)
     }
 
     closeAppointmentFromSocket(){
@@ -257,6 +258,7 @@ class App extends React.Component {
                             <PrivateRoute path="/denied" component={NoPageDenied} />
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
                             <PrivateRoute path="/analytics" component={AnalyticsPage} />
+                            <PrivateRoute path="/payments" component={PaymentsPage} />
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />

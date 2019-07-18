@@ -206,7 +206,7 @@ class CalendarPage extends PureComponent {
 
         this.getHours24();
 
-        setTimeout(() => this.updateCalendar(), 300000)
+        // setTimeout(() => this.updateCalendar(), 300000)
 
         initializeJs();
 
@@ -315,7 +315,7 @@ class CalendarPage extends PureComponent {
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
         this.refreshTable(startTime, endTime);
-        setTimeout(()=>this.updateCalendar(), 300000)
+        // setTimeout(()=>this.updateCalendar(), 300000)
 
     }
 

@@ -28,7 +28,6 @@ class MainIndexPage extends Component {
         if(!access(-1)){
             props.history.push('/denied')
         }
-        let soundSettings = localStorage.getItem('sound');
 
         this.state = {
             authentication: props.authentication,
@@ -39,7 +38,6 @@ class MainIndexPage extends Component {
             submitted: false,
             isAvatarOpened: true,
             userSettings: false,
-            sound: soundSettings !=='false'
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -131,7 +129,7 @@ class MainIndexPage extends Component {
         const { companyName, companyAddress, companyEmail, companyPhone, timezoneId } = this.state.company.settings;
         const { dispatch } = this.props;
         const {settings}=this.state.company;
-        localStorage.setItem('sound', this.state.sound);
+
 
         this.onClose();
 
@@ -335,14 +333,14 @@ class MainIndexPage extends Component {
                                         {/*        /!*       value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>*!/*/}
                                         {/*    </div>*/}
                                         {/*</div>*/}
-                                        <div className="check-box">
-                                            <label>
-                                                <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}
-                                                       type="checkbox"/>
-                                                <span className="check"></span>
-                                                Звуковые уведомления для визитов
-                                            </label>
-                                        </div>
+                                        {/*<div className="check-box">*/}
+                                        {/*    <label>*/}
+                                        {/*        <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}*/}
+                                        {/*               type="checkbox"/>*/}
+                                        {/*        <span className="check"></span>*/}
+                                        {/*        Звуковые уведомления для визитов*/}
+                                        {/*    </label>*/}
+                                        {/*</div>*/}
                                     </div>
                                     <div className="col-sm-4">
                                         <p>Email</p>
