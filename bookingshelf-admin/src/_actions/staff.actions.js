@@ -227,13 +227,16 @@ function getClosedDates() {
 
 function getTimetable(from, to) {
     return dispatch => {
+        dispatch(request());
         staffService.getTimetable(from, to)
             .then(
                 timetable => dispatch(success(timetable)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: staffConstants.GET_TIMETABLE_REQUEST} }
     function success(timetable) { return { type: staffConstants.GET_TIMETABLE_SUCCESS, timetable } }
+    function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
 
 

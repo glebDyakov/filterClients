@@ -3,7 +3,8 @@ import { staffConstants } from '../_constants';
 const initialState = {
     isLoading: false,
     error: false,
-    isAvailableTimesChecked: false
+    isAvailableTimesChecked: false,
+    isLoadingStaffInit: false
 }
 
 export function staff(state = initialState, action) {
@@ -176,10 +177,23 @@ export function staff(state = initialState, action) {
                 ...state,
                 closedDates: action.closedDates
             };
+
+        case staffConstants.GET_TIMETABLE_REQUEST:
+            return {
+                ...state,
+                isLoadingStaffInit: true
+            };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
-                timetable: action.timetable
+                timetable: action.timetable,
+                isLoadingStaffInit: false
+            };
+        case staffConstants.GET_TIMETABLE_FAILURE:
+            return {
+                ...state,
+                isLoadingStaffInit: false,
+                error: true
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
