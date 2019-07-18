@@ -71,7 +71,7 @@ class CalendarPage extends PureComponent {
             staffFromUrl = 2;
             param1 = 3;
 
-            dateFrom = moment().utc().toDate();
+            dateFrom = moment().toDate();
 
             dateFr = moment(getDayRange(moment()).from);
 
@@ -89,7 +89,7 @@ class CalendarPage extends PureComponent {
 
             dateFrom=props.match.params.dateFrom ?
                 moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
-                moment().utc().startOf('day').toDate()
+                moment().startOf('day').toDate()
 
             dateFr=props.match.params.dateFrom ?
                 moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
