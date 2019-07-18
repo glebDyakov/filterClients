@@ -13,15 +13,21 @@ class UserSettings extends React.Component {
     constructor(props) {
         super(props);
 
+        let soundSettings = localStorage.getItem('sound');
+
         this.state = {
             authentication: props.authentication,
             key: props.key,
-            users: props.users
+            users: props.users,
+            sound: soundSettings !=='false'
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    changeSound(e){
+        this.setState({sound: e.target.checked});
     }
 
     componentWillReceiveProps(newProps) {
@@ -61,7 +67,7 @@ class UserSettings extends React.Component {
     handleSubmit(e) {
         const {alert}=this.props
         const { authentication } = this.state;
-
+        localStorage.setItem('sound', this.state.sound);
         const { dispatch } = this.props;
 
         e.preventDefault();
@@ -162,6 +168,14 @@ class UserSettings extends React.Component {
                                         <p>Повторить пароль</p>
                                         <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && authentication.user.profile.newPasswordRepeat && authentication.user.profile.newPasswordRepeat} onChange={this.handleChange} placeholder=""/>
                                     </div>
+                                </div>
+                                <div className="check-box">
+                                    <label>
+                                        <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}
+                                               type="checkbox"/>
+                                        <span className="check"></span>
+                                        Звуковые уведомления для визитов
+                                    </label>
                                 </div>
                                 {authentication && authentication.status === 200 &&
                                 <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>

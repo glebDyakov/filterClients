@@ -1,0 +1,6 @@
+export const paymentsConstants = {
+
+    GET_INVOICE_LIST_SUCCESS: 'GET_INVOICE_LIST_SUCCESS',
+    GET_PACKETS_SUCCESS: 'GET_PACKETS_SUCCESS',
+
+};

@@ -131,7 +131,6 @@ class SidebarMain extends Component {
                 return resultMarkup;
             })
         )
-
         return (
             <div>
             <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
@@ -156,8 +155,10 @@ class SidebarMain extends Component {
                 <li className="arrow_collapse sidebar_list_collapse" onClick={() => this.toggleCollapse('true')} style={{'display':collapse?'none':'block'}}/>
                 <li className="arrow_collapse sidebar_list_collapse-out" onClick={() => this.toggleCollapse('false')} style={{'display':collapse?'block':'none'}}/>
                 {authentication && authentication.menu && authentication.user && authentication.user.menu &&
-                menu && menu.menuList && menu.menuList.map((item, keyStore)=>
-                    authentication.user.menu.map(localItem=>
+                menu && menu.menuList && menu.menuList.map((item, keyStore)=>{
+                    return(
+                    authentication.user.menu.map(localItem=>{
+                        return(
                         localItem.id===item.id &&
                     <li className={path === item.url ? 'active' : ''}
                         key={keyStore}>
@@ -172,9 +173,9 @@ class SidebarMain extends Component {
                             && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span>}
                         </a>
                     </li>
-                    )
+                    );})
 
-                )}
+                );})}
 
                 <li className="mob-menu-closer">
                     <div>

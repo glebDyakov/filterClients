@@ -262,6 +262,10 @@ export function staff(state = initialState, action) {
                     {
                         "name": 'Онлайн запись',
                         "permissionCode": 9
+                    },
+                    {
+                        "name": 'Оплата',
+                        "permissionCode": 10
                     }
                 ]
             };
