@@ -18,6 +18,7 @@ export const calendarActions = {
     addReservedTime,
     deleteReservedTime,
     getAppointmentsNewSocket,
+    deleteAppointmentsNewSocket
 };
 
 function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
@@ -139,30 +140,39 @@ function getAppointments(dateFrom, dateTo) {
 function getAppointmentsNewSocket(payload) {
     return { type: calendarConstants.GET_APPOINTMENT_NEW_SOCKET, payload }
 }
-
+function deleteAppointmentsNewSocket(payload) {
+    return { type: calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET, payload }
+}
 
 function getAppointmentsCount(dateFrom, dateTo) {
     return dispatch => {
+        dispatch(request());
         calendarService.getAppointments(dateFrom, dateTo)
             .then(
                 appointments => dispatch(success(appointments)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: calendarConstants.GET_APPOINTMENT_REQUEST_COUNT} }
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT, appointments } }
+    function failure() { return { type: calendarConstants.GET_APPOINTMENT_FAILURE_COUNT } }
 }
 
 
 function getAppointmentsCanceled(dateFrom, dateTo) {
 
+
     return dispatch => {
+        dispatch(request());
         calendarService.getAppointmentsCanceled(dateFrom, dateTo, JSON.parse(localStorage.getItem('user')).profile.staffId)
             .then(
                 appointments => dispatch(success(appointments)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: calendarConstants.GET_APPOINTMENT_REQUEST__CANCELED} }
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED, appointments } }
+    function failure() { return { type: calendarConstants.GET_APPOINTMENT_FAILURE__CANCELED } }
 }
 
 function getReservedTime(dateFrom, dateTo) {

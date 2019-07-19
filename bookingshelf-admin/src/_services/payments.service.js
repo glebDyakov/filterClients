@@ -21,7 +21,7 @@ function getInvoiceList() {
     let dataFrom = moment().startOf('year').format('x');
     let dataTo = moment().endOf('year').format('x');
 
-    return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}&status=I`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then(handleResponse);
 }
 function getPackets() {
     const requestOptions = {
