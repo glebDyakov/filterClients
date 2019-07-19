@@ -157,11 +157,14 @@ class App extends React.Component {
     handleSocketDispatch(payload){
         this.playSound();
         this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
+        debugger
         if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
 
             this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
             this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
         } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED') ){
+            debugger
+            this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
             this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
         }
     }

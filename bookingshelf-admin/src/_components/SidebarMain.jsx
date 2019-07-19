@@ -79,6 +79,7 @@ class SidebarMain extends Component {
 
     render() {
         const { location, calendar: { appointmentsCanceled, appointmentsCount }, staff, client }=this.props;
+        const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
         const { authentication, menu, company, collapse, newOpened,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
@@ -216,7 +217,9 @@ class SidebarMain extends Component {
                                     <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
                                 </div>
                                 <div className="not-approved-list">
-                                    {appointmentCountMarkup}
+                                    {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentCountMarkup}
+                                    {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
+                                    && <div className="loader" style={{left: '0', width: '100%', height: '74%', top:'120px'}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                                 </div>
                                 {appointmentsCount && (
@@ -238,7 +241,7 @@ class SidebarMain extends Component {
                                         className="counter">{count && count.canceled && count.canceled.count}</span></button>
                                 </div>
                                 <div className="not-approved-list">
-                                {appointmentsCanceled &&
+                                {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
                                 appointmentsCanceled.map((appointment) =>
                                 {
                                     return(

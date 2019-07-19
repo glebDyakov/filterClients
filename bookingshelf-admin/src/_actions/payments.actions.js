@@ -34,6 +34,9 @@ function getPackets() {
 
 function addInvoice(invoice) {
     return dispatch => {
-        paymentsService.addInvoice(invoice);
+        paymentsService.addInvoice(invoice)
+            .then((data) => {
+                dispatch(getInvoiceList())
+            });
     }
 }
