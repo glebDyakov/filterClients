@@ -602,7 +602,7 @@ class PaymentsPage extends Component {
                                                     </div>
                                                     <div className="inv-date">
                                                         <p>{invoice.totalSum} {invoice.currency}</p></div>
-                                                    <div className="inv-date"><p>
+                                                    <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}><p style={{color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000' }}>
                                                         {invoice.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
                                                             (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                                                     </p></div>
@@ -630,7 +630,10 @@ class PaymentsPage extends Component {
                                                 <div className="acts-body">
 
                                                     <div className="row-status">
-                                                        <button>Оплачен</button>
+                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}>
+                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
+                                                                (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                                                        </button>
                                                     </div>
                                                     <div className="account-info col-12">
                                                         <h3>Счёт {chosenInvoice.invoiceId}</h3>
