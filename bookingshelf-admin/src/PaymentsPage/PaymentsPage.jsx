@@ -526,15 +526,16 @@ class PaymentsPage extends Component {
                                                     {/*            type="button"*/}
                                                     {/*            onClick={()=>this.setState({SMSCountChose: 3})}>Выбрать</button>*/}
                                                     {/*</div>*/}
-                                                    {packets && packets.filter(packet => packet.packetType === 'SMS_PACKET').map(packet => {
+                                                    {packets && packets.filter(packet => packet.packetType === 'SMS_PACKET')
+                                                        .sort((a, b) => a.smsAmount - b.smsAmount)
+                                                        .map(packet => {
                                                         return (
                                                             <div>
                                                                 <label>
                                                                     <input type="radio" name="sms-price-radio"/>
                                                                     <span
                                                                         className="sms-price">{packet.packetName}</span>
-                                                                    <span>{packet.smsAmount}
-                                                                        <span>SMS</span> {packet.price} {packet.currency}</span>
+                                                                    <span>{packet.smsAmount} <span>SMS</span> {packet.price} {packet.currency}</span>
                                                                 </label>
                                                                 <button
                                                                     className={(this.state.chosenAct.packetId === packet.packetId) ? "button button-selected" : "button"}
