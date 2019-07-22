@@ -69,6 +69,10 @@ class SidebarMain extends Component {
         this.props.dispatch(menuActions.getMenu());
         this.props.dispatch(staffActions.get());
         this.props.dispatch(clientActions.getClientWithInfo());
+
+        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
     }
 
     toggleCollapse(value) {
