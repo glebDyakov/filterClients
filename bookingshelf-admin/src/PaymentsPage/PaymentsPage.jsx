@@ -8,6 +8,7 @@ import '../../public/scss/styles.scss'
 import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";
 import {userActions, paymentsActions} from "../_actions";
+import {UserSettings} from "../_components/modals";
 
 
 class PaymentsPage extends Component {
@@ -267,7 +268,7 @@ class PaymentsPage extends Component {
     render() {
 
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
-        const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search} = this.state;
+        const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets} = this.props.payments;
@@ -551,20 +552,24 @@ class PaymentsPage extends Component {
 
                                             <div className="payments-list-block2">
                                                 <div className="payments-content">
-                                                    <p className="title-payments">К оплате</p>
+                                                    {chosenAct.packetName && <p className="title-payments">К оплате</p>}
                                                     <div>
                                                         {chosenAct.packetName ?
-                                                            <p>Пакет {chosenAct.packetName} {chosenAct.smsAmount} SMS</p> : "Выберите SMS пакет"}
+                                                            <p>Пакет {chosenAct.packetName} {chosenAct.smsAmount} SMS</p> : <p className="payment-choose-packet">Выберите SMS пакет</p>}
                                                     </div>
                                                     <hr/>
-                                                    <div>
-                                                        <p className="total-price">Итоговая
-                                                            стоимость <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
-                                                        </p>
-                                                    </div>
-                                                    <button className="button" type="button"
-                                                            onClick={() => this.AddingInvoice()}>Оплатить
-                                                    </button>
+                                                    {chosenAct.packetName &&
+                                                        <React.Fragment>
+                                                            <div>
+                                                                <p className="total-price">Итоговая
+                                                                    стоимость <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
+                                                                </p>
+                                                            </div>
+                                                            <button className="button" type="button"
+                                                                    onClick={() => this.AddingInvoice()}>Оплатить
+                                                            </button>
+                                                        </React.Fragment>
+                                                    }
                                                 </div>
 
                                             </div>
@@ -581,7 +586,7 @@ class PaymentsPage extends Component {
                                                 // (1 &&
                                                 <div className="row align-items-center content clients mb-2">
                                                     <div className="search col-7">
-                                                        <input type="search" placeholder="Введите название услуги"
+                                                        <input type="search" placeholder="Введите название счета"
                                                                style={{width: "175%"}}
                                                                aria-label="Search" ref={input => this.search = input}
                                                                onChange={this.handleSearch}/>
@@ -590,7 +595,7 @@ class PaymentsPage extends Component {
                                                 </div>
                                             )}
 
-                                        {list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
+                                        {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
                                             return (
                                                 <div className="invoice" onClick={() => this.setState({
                                                     chosenInvoice: invoice,
@@ -603,12 +608,14 @@ class PaymentsPage extends Component {
                                                     <div className="inv-date">
                                                         <p>{invoice.totalSum} {invoice.currency}</p></div>
                                                     <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}><p style={{color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000' }}>
-                                                        {invoice.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
+                                                        {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                             (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                                                     </p></div>
                                                 </div>
                                             );
-                                        })}
+                                        }) : (
+                                            <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
+                                        )}
 
                                         {/*--------------------*/}
 
@@ -631,7 +638,7 @@ class PaymentsPage extends Component {
 
                                                     <div className="row-status">
                                                         <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}>
-                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
+                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                                 (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                                                         </button>
                                                     </div>
@@ -656,7 +663,7 @@ class PaymentsPage extends Component {
                                                         <p><strong>Заплатить
                                                             до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
                                                         </p>
-                                                        <p>Статус: {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
+                                                        <p>Статус: {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                             (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}</p>
                                                     </div>
 
@@ -664,8 +671,8 @@ class PaymentsPage extends Component {
                                                         <div className="table-header">
                                                             <div className="table-description"><p>Описание</p></div>
                                                             <div className="table-count"><p
-                                                                className="default">Количество</p><p
-                                                                className="mob">Кол-во</p></div>
+                                                                className="default">Количество мес.</p><p
+                                                                className="mob">Кол-во мес.</p></div>
                                                             <div className="table-price"><p>Стоимость</p></div>
                                                         </div>
                                                         {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
@@ -900,6 +907,11 @@ class PaymentsPage extends Component {
                         </div>
                     </div>
                 </div>
+                {userSettings &&
+                <UserSettings
+                    onClose={this.onClose}
+                />
+                }
 
 
             </React.Fragment>
@@ -913,7 +925,7 @@ class PaymentsPage extends Component {
             return  String(item.invoiceId).toLowerCase().includes(String(this.search.value).toLowerCase())
                 || String(moment(item.createdDateMillis).format('DD.MM.YYYY')).toLowerCase().includes(String(this.search.value).toLowerCase())
             || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
-            || String(item.invoiceStatus === 'ISSUED' ? 'Не оплачено' :
+            || String(item.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                     (item.invoiceStatus === 'PAID' ? 'Оплачено' : (item.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))).toLowerCase().includes(String(this.search.value).toLowerCase())
 
 

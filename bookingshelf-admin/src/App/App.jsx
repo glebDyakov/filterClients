@@ -165,7 +165,9 @@ class App extends React.Component {
         } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED') ){
             debugger
             this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
-            this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+            // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+            // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+            this.props.dispatch(companyActions.getNewAppointments());
         }
     }
 

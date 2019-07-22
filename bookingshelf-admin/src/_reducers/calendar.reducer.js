@@ -199,22 +199,37 @@ export function calendar(state = initialState, action) {
             };
         case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
             let newAppointment = state.appointments;
+            let newAppointmentsCount = state.appointmentsCount
             let newItem = action.payload.payload;
+            debugger
             newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
+            newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
             return {
                 ...state,
-                appointments: newAppointment
+                appointments: newAppointment,
+                appointmentsCount: newAppointmentsCount
             };
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
+            newAppointmentsCount = state.appointmentsCount
+            let newAppointmentsCanceled = state.appointmentsCanceled
             newAppointment = state.appointments;
             newItem = action.payload.payload;
+
             let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+            let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
             if (indexElem) {
                 newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
             }
+            if (indexAppointmentsCount) {
+                newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+            }
+            debugger
+
+            newAppointmentsCanceled.push(newItem);
             return {
                 ...state,
-                appointments: newAppointment
+                appointments: newAppointment,
+                appointmentsCanceled: newAppointmentsCanceled
             };
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
@@ -229,6 +244,7 @@ export function calendar(state = initialState, action) {
                 isLoadingModalCount: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
+            debugger;
             return {
                 ...state,
                 appointmentsCount: action.appointments,

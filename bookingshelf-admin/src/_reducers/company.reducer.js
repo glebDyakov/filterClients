@@ -40,7 +40,7 @@ export function company(state = {}, action) {
                     }
                 },
             };
-        case companyConstants.GET_NEW_APPOINMENTS_MARKER_INCR:
+        case companyConstants.GET_NEW_APPOINMENTS_MARKER_DECR:
             newCount = state.count.canceled.count + 1;
             return {
                 ...state,

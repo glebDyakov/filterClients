@@ -22,6 +22,11 @@
     width: 40%;
   }
   .payments-content{
+    .payment-choose-packet {
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+    }
     hr{
       border-top: 3px solid #D4DDEC;
       display: block;

@@ -67,28 +67,36 @@ class UserSettings extends React.Component {
     handleSubmit(e) {
         const {alert}=this.props
         const { authentication } = this.state;
-        localStorage.setItem('sound', this.state.sound);
         const { dispatch } = this.props;
 
         e.preventDefault();
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && authentication.user.profile.lastName && isValidNumber(authentication.user.profile.phone) && authentication.user.profile.email && authentication.user.profile.password) {
-            const profile=authentication.user.profile;
+        if (authentication.user.profile.firstName && authentication.user.profile.lastName && isValidNumber(authentication.user.profile.phone) && authentication.user.profile.email) {
+            const profile= {}
+            Object.keys(authentication.user.profile).forEach(key => {
+                if (authentication.user.profile[key]) {
+                    profile[key] = authentication.user.profile[key]
+                }
+            });
 
-            if(authentication.user.profile.password){
-                if(authentication.user.profile.newPasswordRepeat || authentication.user.profile.newPassword) {
-                    if (authentication.user.profile.newPasswordRepeat !== authentication.user.profile.newPassword) {
-                        return false;
-                    } else {
+            if(profile.password && !profile.newPassword){
+                this.setState({ error: 'Поле "Новый пароль" не может быть пустым когда введён текущий пароль'})
+                return false;
+            }
+            if(profile.password || profile.newPasswordRepeat || profile.newPassword) {
+                if (!profile.newPasswordRepeat || !profile.newPassword || profile.newPasswordRepeat !== profile.newPassword) {
+                    this.setState({ error: "Повторите пароль верно"})
+                    return false;
+                } else {
 
-                    }
                 }
             }
 
 
 
+            localStorage.setItem('sound', this.state.sound);
 
             dispatch(
                 userActions.updateProfile(JSON.stringify(profile))
@@ -103,7 +111,7 @@ class UserSettings extends React.Component {
     render() {
         const { firstName, lastName, email, phone, newPassword, newPasswordRepeat, password, users } = this.state.authentication && this.state.authentication.user && this.state.authentication.user.profile;
 
-        const {authentication, submitted} = this.state;
+        const {authentication, submitted, error} = this.state;
 
         return (
             <Modal size="sm"  style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -182,6 +190,9 @@ class UserSettings extends React.Component {
                                 }
                                 {authentication && authentication.status=== 406 && authentication.errorPass  &&
                                 <p className="alert-danger p-1 rounded pl-3 mb-2">Старый пароль введен неверно</p>
+                                }
+                                {error  &&
+                                <p className="alert-danger p-1 rounded pl-3 mb-2">{error}</p>
                                 }
                                 {authentication && authentication.adding &&
                                 <img style={{width: "57px"}}
