@@ -205,8 +205,8 @@ class NewStaff extends React.Component {
                                                                 name="email"
                                                                 value={staff.email}
                                                                 onChange={this.handleChange}
-                                                                className="disabledField"
-                                                                disabled
+                                                                className={edit ? "disabledField" : ""}
+                                                                disabled={edit}
                                                             />
                                                             <div className="check-box">
                                                                 <label>
