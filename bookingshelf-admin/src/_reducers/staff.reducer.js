@@ -265,7 +265,7 @@ export function staff(state = initialState, action) {
                     },
                     {
                         "name": 'Оплата',
-                        "permissionCode": 10
+                        "permissionCode": 11
                     }
                 ]
             };
