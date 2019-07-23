@@ -266,6 +266,7 @@ class App extends React.Component {
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
                             <PrivateRoute path="/analytics" component={AnalyticsPage} />
                             <PrivateRoute path="/payments" component={PaymentsPage} />
+                            <PrivateRoute path="/invoices" component={PaymentsPage} />
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />

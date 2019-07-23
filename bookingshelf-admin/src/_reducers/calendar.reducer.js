@@ -223,7 +223,6 @@ export function calendar(state = initialState, action) {
             if (indexAppointmentsCount) {
                 newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
             }
-            debugger
 
             newAppointmentsCanceled.push(newItem);
             return {
