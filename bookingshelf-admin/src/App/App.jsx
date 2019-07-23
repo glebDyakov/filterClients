@@ -155,19 +155,21 @@ class App extends React.Component {
 
     }
     handleSocketDispatch(payload){
-        this.playSound();
-        this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
-        debugger
-        if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
-
-            this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
-            this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
-        } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED') ){
+        if (this.props.authentication.user.profile.staffId === payload.payload.staffId) {
+            this.playSound();
+            this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
             debugger
-            this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
-            // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
-            // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
-            this.props.dispatch(companyActions.getNewAppointments());
+            if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
+
+                this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+                this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+            } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED')) {
+                debugger
+                this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
+                // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+                // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+                this.props.dispatch(companyActions.getNewAppointments());
+            }
         }
     }
 
