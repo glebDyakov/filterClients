@@ -173,11 +173,6 @@ export function authentication(state = initialState, action) {
             }
 
             let newUserMenu = action.payload.user.menu;
-            let payloadObj = {
-                id: "payments_menu_id",
-                translationKey: "menuitem.payments"
-            };
-            newUserMenu.push(payloadObj);
 
             let user4 = {...action.payload.user,  password:'',
                 newPasswordRepeat: '',
