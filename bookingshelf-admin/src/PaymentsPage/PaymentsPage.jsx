@@ -24,6 +24,7 @@ class PaymentsPage extends Component {
         this.closeModalActs = this.closeModalActs.bind(this);
         this.AddingInvoiceStaff = this.AddingInvoiceStaff.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.redirect = this.redirect.bind(this);
 
         this.state = {
             list: this.props.payments.list,
@@ -69,9 +70,10 @@ class PaymentsPage extends Component {
         if (chosenAct && chosenAct.packetId) {
             this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                     {
-                        "packetId": chosenAct.packetId,
-                        "amount": chosenAct.smsAmount,
-                        "startDateMillis": moment().format('x')
+                        packetId: chosenAct.packetId,
+                        amount: chosenAct.smsAmount,
+                        discountAmount: 0,
+                        startDateMillis: moment().format('x')
                     },
                 ]
             )));
@@ -113,17 +115,32 @@ class PaymentsPage extends Component {
             }
         }
         packetId = packets.find(item => item.staffAmount === staffAmount).packetId;
-
+        let discountAmount
+        switch (amount) {
+            case 6:
+                discountAmount = 1;
+                break;
+            case 12:
+                discountAmount = 3;
+                break;
+            default:
+                discountAmount = 0;
+        }
 
         this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                 {
-                    "packetId": packetId,
-                    "amount": amount,
-                    "startDateMillis": moment().format('x')
-                },
+                    packetId: packetId,
+                    amount: amount,
+                    discountAmount,
+                    startDateMillis: moment().format('x')
+                }
             ]
         )));
 
+    }
+
+    redirect(url) {
+       this.props.history.push(url);
     }
 
     onOpen() {
@@ -287,12 +304,11 @@ class PaymentsPage extends Component {
 
                             <div className="retreats">
                                 <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <a className="nav-link active show" data-toggle="tab"
-                                           href="#payments">Оплата</a>
+                                    <li className="nav-item" >
+                                        <a className="nav-link active show" data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" data-toggle="tab" href="#acts">Счета</a>
+                                        <a className="nav-link" data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
                                 </ul>
                                 <div className="tab-content">

@@ -49,6 +49,13 @@ class HeaderMain extends React.PureComponent {
 
         let path="/"+location.pathname.split('/')[1]
 
+        let redTitle
+        if (path === '/invoices') {
+            redTitle = 'Счета'
+        } else {
+            redTitle = authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name
+        }
+
 
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
@@ -65,7 +72,7 @@ class HeaderMain extends React.PureComponent {
 
                 <div className="col">
                     <p className="red-title-block mob-setting ">
-                        {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
+                        {redTitle}
                         </p>
                 </div>
                 <div className="mob-info dropdown">
