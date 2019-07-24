@@ -56,7 +56,7 @@ class UserPhoto extends React.Component {
                         <div className="form-group">
                             <div className="modal-header">
                                 <h4 className="modal-title">Фото профиля</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close" data-dismiss="modal"></button>
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <div className="upload_container">

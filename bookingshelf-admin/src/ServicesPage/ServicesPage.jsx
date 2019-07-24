@@ -60,7 +60,7 @@ class ServicesPage extends Component {
         initializeJs();
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
 
     }
 
@@ -98,11 +98,13 @@ class ServicesPage extends Component {
         const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
         return (
             <div>
-                {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+                {this.state.isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper services "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     {/*<SidebarMain/>*/}
-                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
+                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}
+                         style={{overflowX: this.state.isLoading?"visible":"hidden"}}>
                         <div className="container-fluid">
                             <HeaderMain
                                 onOpen={this.onOpen}
@@ -136,7 +138,7 @@ class ServicesPage extends Component {
                                                     <a className="edit_service"   onClick={(e)=>this.handleClick(item.serviceGroupId, false, e, this)}/>
                                                     <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
                                                        aria-haspopup="true" aria-expanded="false">
-                                                        <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                     </a>
                                                     <div className="dropdown-menu delete-menu p-3">
                                                         <button type="button" className="button delete-tab"  onClick={()=>this._delete(item.serviceGroupId)}>Удалить</button>
@@ -164,7 +166,7 @@ class ServicesPage extends Component {
                                                             <a className="delete-icon" id="menu-delete6633"
                                                                data-toggle="dropdown"
                                                                aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                             </a>
                                                             <div className="dropdown-menu delete-menu p-3">
                                                                 <button type="button"

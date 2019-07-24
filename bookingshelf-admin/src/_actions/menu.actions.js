@@ -3,7 +3,9 @@ import {menuService} from '../_services';
 
 export const menuActions = {
     get,
-    getMenu
+    getMenu,
+    runSocket,
+    stopSocket
 };
 
 function get() {
@@ -19,4 +21,10 @@ function get() {
 
 function getMenu() {
         return { type: menuConstants.GET_MENU_LIST_SUCCESS }
+
+}function runSocket() {
+        return { type: menuConstants.RUN_MENU_SOCKET }
+}
+function stopSocket() {
+        return { type: menuConstants.STOP_MENU_SOCKET }
 }

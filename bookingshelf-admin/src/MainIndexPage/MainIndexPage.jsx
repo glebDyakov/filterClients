@@ -37,7 +37,7 @@ class MainIndexPage extends Component {
             status: {},
             submitted: false,
             isAvatarOpened: true,
-            userSettings: false
+            userSettings: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -49,6 +49,7 @@ class MainIndexPage extends Component {
         this.onClose = this.onClose.bind(this)
         this.onOpen = this.onOpen.bind(this);
         this.onClose2 = this.onClose2.bind(this);
+        this.changeSound = this.changeSound.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -129,6 +130,7 @@ class MainIndexPage extends Component {
         const { dispatch } = this.props;
         const {settings}=this.state.company;
 
+
         this.onClose();
 
 
@@ -159,8 +161,12 @@ class MainIndexPage extends Component {
         document.title = "Настройки компании | Онлайн-запись";
 
 
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
+    }
+
+    changeSound(e){
+        this.setState({sound: e.target.checked});
     }
 
 
@@ -169,7 +175,9 @@ class MainIndexPage extends Component {
 
         return (
             <div>
-                {isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {/*{isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+                {isLoading && <div className="loader loader-company"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
 
                     {company && company.settings &&
@@ -310,9 +318,29 @@ class MainIndexPage extends Component {
                                             {/*showSecond={false}*/}
                                             {/*onChange={(endTimeMillis) => this.onChangeTime('endTimeMillis', moment(endTimeMillis).format('x'), activeDay-1)}*/}
                                         {/*/>*/}
-                                        <div>
-
-                                        </div>
+                                        {/*<div>*/}
+                                        {/*    <p>Звуковые уведомления для визитов</p>*/}
+                                        {/*    <div className="check-box-group2 form-control" >*/}
+                                        {/*        <p style={{width: "calc(50% - 43px)", textAlign: "center", marginTop: "5px"}}>Вкл</p>*/}
+                                        {/*        <div className="input-text2">*/}
+                                        {/*            <input type="radio" aria-label="" name="sound1"  style={{cursor: "pointer"}} checked={this.state.sound} onChange={()=>this.changeSound(true)}/>*/}
+                                        {/*        </div>*/}
+                                        {/*        <div className="input-text2">*/}
+                                        {/*            <input type="radio" aria-label="" name="sound2"  style={{cursor: "pointer"}} checked={!this.state.sound} onChange={()=>this.changeSound(false)}/>*/}
+                                        {/*        </div>*/}
+                                        {/*        <p style={{width: "calc(50% - 43px)", textAlign: "center", marginTop: "5px"}}>Выкл</p>*/}
+                                        {/*        /!*<input type="text" placeholder="" name="companyAddress2" className="company_input"*!/*/}
+                                        {/*        /!*       value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>*!/*/}
+                                        {/*    </div>*/}
+                                        {/*</div>*/}
+                                        {/*<div className="check-box">*/}
+                                        {/*    <label>*/}
+                                        {/*        <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}*/}
+                                        {/*               type="checkbox"/>*/}
+                                        {/*        <span className="check"></span>*/}
+                                        {/*        Звуковые уведомления для визитов*/}
+                                        {/*    </label>*/}
+                                        {/*</div>*/}
                                     </div>
                                     <div className="col-sm-4">
                                         <p>Email</p>

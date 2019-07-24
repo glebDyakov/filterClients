@@ -59,6 +59,12 @@ let menuList = [{
         "icon": "9.svg",
         "name": "Онлайн-запись",
         "permission": 9
+    },
+    "payments_menu_id": {
+        "url": "/payments",
+        "icon": "payment.svg",
+        "name": "Оплата",
+        "permission": -1
     }}];
 
 let times = [
@@ -166,9 +172,13 @@ export function authentication(state = initialState, action) {
                 action.payload.user.companyTimetables = times
             }
 
+            let newUserMenu = action.payload.user.menu;
+
             let user4 = {...action.payload.user,  password:'',
                 newPasswordRepeat: '',
-                newPassword: ''}
+                newPassword: '',
+                menu: newUserMenu
+            };
 
             localStorage.setItem('menu', JSON.stringify(menuList));
             localStorage.setItem('user', JSON.stringify(user4));

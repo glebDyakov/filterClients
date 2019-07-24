@@ -95,8 +95,11 @@ class AddGroup extends React.Component {
                                 }
 
                                 <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true"></span>
                                 </button>
+
+                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal} aria-label="Close" aria-hidden="true"*/}
+                                {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
                             <div className="modal-inner pl-4 pr-4 pb-4">
                                 <p>Название группы</p>

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import {calendarActions, staffActions, clientActions, servicesActions, companyActions} from '../_actions';
 import {HeaderMain} from "../_components/HeaderMain";
+import { createSocket } from '../_helpers/createSocket';
 
 import '../../public/scss/calendar.scss'
 import '../../public/scss/styles.scss'
@@ -12,21 +13,19 @@ import 'moment/locale/ru';
 import 'moment-duration-format';
 
 import {DatePicker} from "../_components/DatePicker";
-import Pace from "react-pace-progress";
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
 import {CalendarModals} from '../_components/modals/CalendarModals';
+import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
+
 import {userActions} from '../_actions/user.actions';
 import TabScrollContent from './components/TabScrollContent';
 import CalendarHeader from './components/CalendarHeader';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
-import { analiticsActions } from "../_actions";
-
-import {AlphaPicker, BlockPicker,ChromePicker, CirclePicker,CompactPicker, GithubPicker, HuePicker, MaterialPicker,PhotoshopPicker, SketchPicker, SliderPicker, SwatchesPicker, TwitterPicker} from 'react-color';
-
+// import AppointmentFromSocket from "./components/AppointmentFromSocket";
 
 
 function getWeekDays(weekStart) {
@@ -72,7 +71,7 @@ class CalendarPage extends PureComponent {
             staffFromUrl = 2;
             param1 = 3;
 
-            dateFrom = moment().utc().toDate();
+            dateFrom = moment().toDate();
 
             dateFr = moment(getDayRange(moment()).from);
 
@@ -90,7 +89,7 @@ class CalendarPage extends PureComponent {
 
             dateFrom=props.match.params.dateFrom ?
                 moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
-                moment().utc().startOf('day').toDate()
+                moment().startOf('day').toDate()
 
             dateFr=props.match.params.dateFrom ?
                 moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
@@ -139,7 +138,10 @@ class CalendarPage extends PureComponent {
             appointmentModal: false,
             newClientModal: false,
             scrollableAppointmentAction: true,
-            appointmentMarkerActionCalled: false
+            appointmentMarkerActionCalled: false,
+            flagStaffId: true,
+            appointmentSocketMessage: {},
+            appointmentSocketMessageFlag: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -171,7 +173,8 @@ class CalendarPage extends PureComponent {
         this.navigateToRedLine = this.navigateToRedLine.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.updateReservedId = this.updateReservedId.bind(this);
-
+        this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
+        this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
 
     }
 
@@ -203,7 +206,7 @@ class CalendarPage extends PureComponent {
 
         this.getHours24();
 
-        setTimeout(() => this.updateCalendar(), 300000)
+        // setTimeout(() => this.updateCalendar(), 300000)
 
         initializeJs();
 
@@ -217,6 +220,72 @@ class CalendarPage extends PureComponent {
         }, 500);
 
     }
+
+    // handleSocketDispatch(payload){
+    //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
+    //     debugger
+    //     // this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
+    //     if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
+    //         this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+    //     }
+    //
+    //     // this.updateCalendar();
+    //     // $('.appointment-socket-modal').modal('show')
+    //
+    //     const {selectedDayMoment, selectedDays, type}=this.state;
+    //     let startTime, endTime;
+    //
+    //     if(type==='day'){
+    //         startTime = selectedDayMoment.startOf('day').format('x');
+    //         endTime = selectedDayMoment.endOf('day').format('x')
+    //     } else {
+    //         startTime = moment(selectedDays[0]).startOf('day').format('x');
+    //         endTime = moment(selectedDays[6]).endOf('day').format('x');
+    //     }
+    //     this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
+    //     // this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
+    //
+    // }
+    //
+    // openSocketAgain(id){
+    //     socket = createSocket(id);
+    //     console.log("Сокет. Создан");
+    //     socket.onopen = function() {
+    //         console.log("Сокет2. cоединение установлено");
+    //
+    //         socket.send('ping');
+    //
+    //     };
+    //
+    //
+    //     socket.onclose = function(event) {
+    //         if (event.wasClean) {
+    //             console.log('Сокет2.cоединение закрыто');
+    //         } else {
+    //             console.log('Сокет2.соединения как-то закрыто');
+    //         }
+    //         this.openSocketAgain(id);
+    //     };
+    //
+    //     socket.onmessage = function(event) {
+    //         if (event.data[0]==='{'){
+    //             const finalData = JSON.parse(event.data);
+    //             if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+    //                 this.handleSocketDispatch(finalData.payload);
+    //             }
+    //         }
+    //         console.log(`Сокет.пришли данные: ${event.data}`);
+    //
+    //     };
+    //     socket.onmessage = socket.onmessage.bind(this);
+    //     socket.onclose = socket.onclose.bind(this);
+    //
+    //     socket.onerror = function(event) {
+    //         console.error("Сокет2.ошибка", event);
+    //     };
+    //
+    // }
+
     navigateToRedLine() {
         setTimeout(() => {
             const activeElem = document.getElementsByClassName("present-time")[0];
@@ -246,7 +315,7 @@ class CalendarPage extends PureComponent {
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
         this.refreshTable(startTime, endTime);
-        setTimeout(()=>this.updateCalendar(), 300000)
+        // setTimeout(()=>this.updateCalendar(), 300000)
 
     }
 
@@ -359,18 +428,58 @@ class CalendarPage extends PureComponent {
             }
         }
 
+
+        // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
+        //     this.setState({flagStaffId: false});
+        //     var socket = createSocket(this.props.authentication.user.profile.staffId );
+        //     console.log("Сокет. Создан");
+        //     socket.onopen = function() {
+        //         console.log("Сокет. Соединение установлено");
+        //
+        //         socket.send('ping');
+        //
+        //     };
+        //
+        //
+        //     socket.onclose = function(event) {
+        //         if (event.wasClean) {
+        //             console.log('Сокет. cоединение закрыто');
+        //         } else {
+        //             console.log('Сокет. соединения как-то закрыто');
+        //         }
+        //         this.openSocketAgain(this.props.authentication.user.profile.staffId);
+        //     };
+        //
+        //     socket.onmessage = function(event) {
+        //         if (event.data[0]==='{'){
+        //             const finalData = JSON.parse(event.data);
+        //             if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+        //                 debugger
+        //                 this.handleSocketDispatch(finalData);
+        //             }
+        //         }
+        //         console.log(`Сокет.пришли данные: ${event.data}`);
+        //
+        //     };
+        //     socket.onmessage = socket.onmessage.bind(this);
+        //     socket.onclose = socket.onclose.bind(this);
+        //
+        //     socket.onerror = function(event) {
+        //         console.error("Сокет. ошибка", event);
+        //     };
+        // }
+
     }
 
 
     render() {
-        const { calendar, services, clients, staff } = this.props;
+        const { calendar, services, clients, staff, appointments } = this.props;
         const { approvedId, staffAll, workingStaff, reserved,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage
+            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
         } = this.state;
-
         const calendarModalsProps = {
             appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
@@ -436,7 +545,7 @@ class CalendarPage extends PureComponent {
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
                                             clients={clients && clients.client}
-                                            appointments={calendar && calendar.appointments}
+                                            appointments={appointments}
                                             reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
                                             approveAppointmentSetter={this.approveAppointmentSetter}
@@ -453,11 +562,23 @@ class CalendarPage extends PureComponent {
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-
+                {appointmentSocketMessageFlag &&
+                <AppointmentFromSocket
+                    appointmentSocketMessageFlag={appointmentSocketMessageFlag}
+                    appointmentSocketMessage={appointmentSocketMessage}
+                    closeAppointmentFromSocket={this.closeAppointmentFromSocket}
+                />}
             </div>
         );
     }
+    closeAppointmentFromSocket(){
+        $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
+        setTimeout(() => {
+            this.setState({ appointmentSocketMessageFlag: false });
+            $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
+            }, 1000);
 
+    }
 
     onClose(){
         this.setState({...this.state, userSettings: false, reserved: false, appointmentModal:false});
@@ -532,12 +653,12 @@ class CalendarPage extends PureComponent {
     }
 
     deleteAppointment(id){
-        const { dispatch, calendar } = this.props;
+        const { dispatch, calendar, appointments } = this.props;
 
         const { selectedDays, type, selectedDayMoment } = this.state;
         let activeAppointment = {};
         let countTimeout = 0;
-        calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+        appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
             if (currentAppointment.appointmentId === id) {
                 activeAppointment = currentAppointment;
             }
@@ -547,7 +668,7 @@ class CalendarPage extends PureComponent {
             dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
 
             if (activeAppointment.hasCoAppointments) {
-                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                     if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
                         countTimeout += 1000;
                         setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x'))), countTimeout)
@@ -558,7 +679,7 @@ class CalendarPage extends PureComponent {
             dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
 
             if (activeAppointment.hasCoAppointments) {
-                calendar.appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                     if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
                         countTimeout += 1000;
                         setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.coAppointmentId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x'))), countTimeout)
@@ -587,7 +708,21 @@ class CalendarPage extends PureComponent {
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
+        this.checkAvaibleTime();
         this.setState({ appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment });
+    }
+    checkAvaibleTime(){
+        const {selectedDayMoment, selectedDays, type}=this.state;
+        let startTime, endTime;
+
+        if(type==='day'){
+            startTime = selectedDayMoment.startOf('day').format('x');
+            endTime = selectedDayMoment.endOf('day').format('x')
+        } else {
+            startTime = moment(selectedDays[0]).startOf('day').format('x');
+            endTime = moment(selectedDays[6]).endOf('day').format('x');
+        }
+        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, true));
     }
 
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
@@ -888,7 +1023,7 @@ function mapStateToProps(store) {
     const {staff, client, calendar, services, authentication} = store;
 
     return {
-        staff, clients: client, calendar, services, authentication
+        staff, clients: client, calendar, services, authentication, appointments: calendar.appointments
     };
 }
 

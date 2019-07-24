@@ -51,7 +51,7 @@ class ClientsPage extends Component {
 
         // this.props.dispatch(clientActions.getClient());
         this.props.dispatch(clientActions.getClientWithInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
@@ -75,7 +75,9 @@ class ClientsPage extends Component {
 
         return (
             <div className="clients-page">
-                {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+                {isLoading && <div className="loader loader-client"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
@@ -125,7 +127,7 @@ class ClientsPage extends Component {
                                     <div className="delete dropdown">
                                         <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                         </a>
                                         <div className="dropdown-menu delete-menu p-3">
                                             <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>

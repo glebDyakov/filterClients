@@ -2,6 +2,9 @@ import {calendarConstants} from '../_constants';
 
 const initialState = {
     isLoading: false,
+    isLoadingModalAppointment: false,
+    isLoadingModalCount: false,
+    isLoadingModalCanceled: false,
     appointmentsCount: [],
     appointmentsCanceled: []
 };
@@ -184,28 +187,88 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                isLoadingModal: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS:
             return {
                 ...state,
                 appointments: action.appointments,
-                isLoading: false
+                isLoading: false,
+                isLoadingModal: false
+            };
+        case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
+            let newAppointment = state.appointments;
+            let newAppointmentsCount = state.appointmentsCount
+            let newItem = action.payload.payload;
+            debugger
+            newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
+            newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
+            return {
+                ...state,
+                appointments: newAppointment,
+                appointmentsCount: newAppointmentsCount
+            };
+        case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
+            newAppointmentsCount = state.appointmentsCount
+            let newAppointmentsCanceled = state.appointmentsCanceled
+            newAppointment = state.appointments;
+            newItem = action.payload.payload;
+
+            let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+            let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+            if (indexElem) {
+                newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+            }
+            if (indexAppointmentsCount) {
+                newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+            }
+
+            newAppointmentsCanceled.push(newItem);
+            return {
+                ...state,
+                appointments: newAppointment,
+                appointmentsCanceled: newAppointmentsCanceled
             };
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                isLoading: false
+                isLoading: false,
+                isLoadingModal: false
             };
-        case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
+
+        case calendarConstants.GET_APPOINTMENT_REQUEST_COUNT:
             return {
                 ...state,
-                appointmentsCount: action.appointments
+                isLoadingModalCount: true
+            };
+        case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
+            debugger;
+            return {
+                ...state,
+                appointmentsCount: action.appointments,
+                isLoadingModalCount: false
+            };
+            case calendarConstants.GET_APPOINTMENT_FAILURE_COUNT:
+            return {
+                ...state,
+                isLoadingModalCount: false
+            };
+        case calendarConstants.GET_APPOINTMENT_REQUEST__CANCELED:
+            return {
+                ...state,
+                isLoadingModalCanceled: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED:
             return {
                 ...state,
-                appointmentsCanceled: action.appointments
+                appointmentsCanceled: action.appointments,
+                isLoadingModalCanceled: false
+            };
+        case calendarConstants.GET_APPOINTMENT_FAILURE__CANCELED:
+            return {
+                ...state,
+                isLoadingModalCanceled: false
             };
         case calendarConstants.GET_RESERVED_TIME_REQUEST:
             return {

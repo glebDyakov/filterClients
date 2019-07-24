@@ -58,7 +58,9 @@ class AddService extends React.Component {
                                     : <h4 className="modal-title">Новая услуга</h4>
 
                             }
-                            <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                            <button type="button" className="close" onClick={this.closeModal}></button>
+                            {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
+                            {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                         </div>
                         <div className="form-group pl-4 pr-4">
                             <div className="row">
@@ -121,8 +123,8 @@ class AddService extends React.Component {
                                         <option value="9000">2 ч 30 мин</option>
                                         <option value="9900">2 ч 45 мин</option>
                                         <option value="10800">3 ч 00 мин</option>
-                                        <option value="12700">3 ч 30 мин</option>
-                                        <option value="13600">4 ч 00 мин</option>
+                                        <option value="12600">3 ч 30 мин</option>
+                                        <option value="14400">4 ч 00 мин</option>
                                     </select>
                                     <p>Цена от</p>
                                     <input type="number" placeholder="" name="priceFrom"

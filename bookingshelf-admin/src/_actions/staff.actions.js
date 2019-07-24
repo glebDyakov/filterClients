@@ -1,7 +1,9 @@
-import { staffConstants, userConstants } from '../_constants';
+import {analiticsConstants, menuConstants, staffConstants, userConstants} from '../_constants';
 import { staffService } from '../_services';
 import { alertActions } from './';
 import {store} from "../_helpers";
+import moment from 'moment';
+
 
 export const staffActions = {
     add,
@@ -20,7 +22,8 @@ export const staffActions = {
     deleteStaff,
     addUSerByEmail,
     getTimetableByStaff,
-    getTimetableStaffs
+    getTimetableStaffs,
+    refreshCheckerAvailableTime
 };
 
 function add(params) {
@@ -168,6 +171,7 @@ function update(params) {
 
 function updateAccess(params) {
     return dispatch => {
+        dispatch(request());
         staffService.updateAccess(params)
             .then(
                 access => {
@@ -179,7 +183,7 @@ function updateAccess(params) {
                 }
             );
     };
-
+    function request() { return { type: staffConstants.UPDATE_ACCESS_REQUEST} }
     function success(access) { return { type: staffConstants.UPDATE_ACCESS_SUCCESS, access } }
     function failure(error) { return { type: staffConstants.UPDATE_ACCESS_FAILURE, error } }
 }
@@ -223,13 +227,16 @@ function getClosedDates() {
 
 function getTimetable(from, to) {
     return dispatch => {
+        dispatch(request());
         staffService.getTimetable(from, to)
             .then(
                 timetable => dispatch(success(timetable)),
+                () => dispatch(failure())
             );
     };
-
+    function request() { return { type: staffConstants.GET_TIMETABLE_REQUEST} }
     function success(timetable) { return { type: staffConstants.GET_TIMETABLE_SUCCESS, timetable } }
+    function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
 
 
@@ -244,7 +251,15 @@ function getTimetableByStaff(id, from, to) {
     function success(timetableAvailableByStaff) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS, timetableAvailableByStaff } }
 }
 
-function getTimetableStaffs(from, to) {
+function getTimetableStaffs(from, to, isAvailableTimesChecked) {
+    // let a = moment(from).format('x');
+    // let b = moment(String(from)).format('x');
+    // let c = moment(parseInt(from)).format('dd MM hh:ss');
+    let normalViewTimeFrom = moment(parseInt(from)).format('hh:ss');
+    if(normalViewTimeFrom==='03:00'){
+        from = parseInt(from) - (3600 * 1000 * 3);
+        to = parseInt(to) - (3600 * 1000 * 3);
+    }
     return dispatch => {
         dispatch(request());
         staffService.getTimetableStaffs(from, to)
@@ -254,8 +269,12 @@ function getTimetableStaffs(from, to) {
             );
     };
     function request() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST } }
-    function success(availableTimetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, availableTimetable } }
+    function success(availableTimetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, payload : {availableTimetable, isAvailableTimesChecked } } }
     function failure() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE } }
+}
+
+function refreshCheckerAvailableTime() {
+    return { type: staffConstants.REFRESH_CHECKER_AVAILABLE_TIME }
 }
 
 function addClosedDates(params) {

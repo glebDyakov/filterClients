@@ -88,7 +88,7 @@
                             margin-bottom: 0;
                             padding-left: 0;
                             line-height: normal;
-                            color: #264e86;
+                            color: #000;
                             @media screen and(max-width: $tablet-width) {
                                 font-size: 11px;
                             }
@@ -140,7 +140,7 @@
                             margin-bottom: 0;
                             padding-left: 0;
                             line-height: normal;
-                            color: #264e86;
+                            color: #000;
                             @media screen and(max-width: $tablet-width) {
                                 font-size: 11px;
                             }
@@ -450,6 +450,9 @@
             margin-bottom: 2px;
 
             .col-tab {
+                &:hover .visible-fade-time{
+                    display: block;
+                }
                 .col-note {
                     cursor: cell;
                     width: 100%;
@@ -604,7 +607,7 @@
             }
 
             &:nth-child(4n) {
-                border-bottom: 1px solid #264e86;
+                border-bottom: 1px solid #0a1330;
                 &.loading {
                     border-bottom: 1px solid transparent;
                 }
@@ -679,9 +682,9 @@
                         margin-right: 0px;
                     }
                     .notes{
-                        &:hover{
+                        &.selected{
                             .msg-client-info{
-                                right: auto;
+                                right: 0;
                                 left: auto;
                                 bottom: auto;
                                 top: auto;
@@ -699,7 +702,7 @@
                     }
                 }
 
-                .notes{ /*изменения*/
+                .notes{ 
                     width: 100%;
                     max-width: 100% !important;
                     min-width: 100% !important;
@@ -714,7 +717,7 @@
                         display: none;
                     }
 
-                    &:hover{
+                    &.selected{
                         .msg-client-info{
                             display: block;
                             position: absolute;
@@ -738,12 +741,28 @@
                                 padding: 10px !important;
                                 max-width: none !important;
                                 width: 200px;
-                                border-radius: 5px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .close {
+                                    margin: 0 5px 0 0!important;
+                                    background: url(../img/icons/cancel.svg) no-repeat center;
+                                    background-size: contain;
+                                    padding: 0;
+                                    //margin: 0;
+                                    position: absolute;
+                                    right: 5px;
+                                    top: 0;
+                                    min-width: 0;
+                                    height: 15px;
+                                    width: 20px!important;
+
+                                    span{
+                                        font-size: 2rem;
+                                    }
+                                }
                                 a {
                                     text-decoration: underline;
-                                    color: #264e86;
+                                    color: #000;
                                     font-size: 14px;
 
                                     &:hover {
@@ -762,9 +781,10 @@
                                     border-bottom: 1px solid rgba(172, 172, 172, 0.5);
 
                                     &.new-text {
+                                        height: 35px;
+                                        line-height: 35px;
                                         border: none;
-                                        background: #264e86;
-                                        border-radius: 5px 5px 0 0;
+                                        background: #0a1330;
                                         color: #fff;
                                         text-align: center;
                                         font-weight: bold;
@@ -785,7 +805,7 @@
 
                                     &.new-button {
                                         border: none;
-                                        background: #264e86;
+                                        background: #0a1330;
                                         border-radius: 50px;
                                         color: #fff;
                                         text-transform: uppercase;
@@ -811,6 +831,7 @@
                             }
 
                             &::before{
+                                display: none;
                                 width: 13px;
                                 height: 13px;
                                 content: '';
@@ -831,7 +852,7 @@
                     }
 
                     .notes-bottom{
-                        &:hover{
+                        &.selected{
                             .msg-client-info{
                                 right: auto;
                                 left: auto;
@@ -945,7 +966,7 @@
 
                         .notes-container {
                             * {
-                                color: #264e86;
+                                color: #000;
                             }
                         }
                     }
@@ -982,7 +1003,7 @@
                             max-width: 80px;
                             padding: 0;
                             width: auto;
-                            float: right;
+                            //float: right;
                             margin-top: 1px;
                         }
 
@@ -1005,6 +1026,11 @@
                             background: url(../img/icons/13.svg) no-repeat center;
                             background-size: 12px;
                             cursor: default;
+                            //@media screen and(max-width: 720px) {
+                            //    height: 16px;
+                            //    background-size: 16px;
+                            //    margin:0 0 0 5px;
+                            //}
 
 
 
@@ -1038,6 +1064,7 @@
 
                         .delete {
                             background: url(../img/icons/16.svg) no-repeat center;
+                            height: 12px!important;
                             &:hover {
                                 opacity: 0.6;
                                 cursor: pointer;
@@ -1177,7 +1204,7 @@
                 }
 
                 .notes-bottom{
-                    &:hover{
+                    &.selected{
                         .msg-client-info{
                             right: auto !important;
                             left: auto !important;
@@ -1253,6 +1280,14 @@
 
             .modal-header {
                 padding: 5px 0;
+                height: 40px;
+                h4{
+                    line-height: 28px;
+                }
+                .close{
+                    height: 15px;
+                    margin: 10px 0 0 0;
+                }
 
                 .modal-title {
                     font-size: 14px;
@@ -1275,6 +1310,10 @@
     }
 }
 .client-detail{
+    .close{
+        margin: 13px 5px 0 0!important;
+        //height: 15px!important;
+    }
     .modal-dialog{
         margin-top: 0;
         margin-bottom: 0;
@@ -1367,6 +1406,31 @@
                 }
             }
 
+            .blue-bg {
+                background-color: #0a1232;
+                width: 80px;
+                border-radius: 6px;
+                margin-right: 15px;
+                float: left;
+
+                .visit-date {
+                    font-size: 15px;
+                    font-weight: bold;
+                    display: block;
+                    text-align: center;
+                    color: #fff;
+                    padding-top: 5px;
+                }
+
+                span {
+                    font-size: 12px;
+                    display: block;
+                    text-align: center;
+                    color: #fff;
+                    line-height: normal;
+                }
+            }
+
             .visit-detail {
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -1381,7 +1445,7 @@
     }
     .modal-content{
         height: 94vh;
-        margin: 2.5% auto 0;
+        margin: 3% auto 0;
 
         .addApointmentEachBlock {
             .rc-time-picker-clear-icon {
@@ -1431,7 +1495,7 @@
                             }
 
                             &:first-of-type {
-                                width: 50%;
+                                //width: 50%;
                                 overflow: hidden;
                             }
                         }
@@ -1755,4 +1819,117 @@
 .loader img{
     width: 100px;
     margin: 0 auto;
+}
+
+.reserved-time-modal{
+    .modal-header {
+        p span{
+            font-size: 15px;
+            line-height: 36px;
+
+        }
+        .close{
+            margin: 13px 5px 0 0;
+        }
+    }
+}
+@media screen and(max-width: $tablet-width) {
+    .msg-client-info{
+        .msg-client{
+            width: 140px;
+        }
+    }
+
+}
+.appointment-socket-modal-go-away {
+    transform: translate(-180px, -77vh) scale(0.2, 0.2);
+    animation-duration: 1s;
+    animation-name: moveMessage;
+    opacity: 0;
+    @media screen and(max-width: 960px){
+        transform: translate(-110px, -86vh) scale(0.2, 0.2);
+    }
+
+}
+@keyframes moveMessage {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.appointment-socket-modal{
+    border-radius: 5px;
+    position: fixed;
+    bottom: 20px;
+    left: 260px;
+    z-index: 9999;
+    width: 300px;
+    cursor: pointer;
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    @media screen and(max-width: 960px){
+        left: 10px;
+    }
+    @media screen and(max-width: 480px){
+        left: 10px;
+        width: 280px;
+    }
+    .close {
+        margin: -10px 0px 0 0!important;
+        background: url(../img/icons/cancel.svg) no-repeat center;
+        background-size: contain;
+        padding: 0;
+        //margin: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-width: 0;
+        height: 20px;
+        min-height: 35px;
+        width: 10px!important;
+
+        span{
+            font-size: 2rem;
+        }
+    }
+    .appointment-socket-modal-title{
+        width: 100%;
+        p{
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border-bottom: 3px solid #F33;
+            width: fit-content;
+        }
+    }
+
+    background-color: #0a1330;
+    .service_item{
+        padding: 5px 5%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        *{
+            color: white;
+            font-size: 0.9em;
+        }
+        .img-container{
+            display: flex;
+        }
+        .img{
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: white;
+            margin: auto;
+        }
+
+    }
 }

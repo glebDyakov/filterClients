@@ -402,7 +402,7 @@
                 }
 
                 .add-work-time-hover {
-                    background: #fff url(../img/add.png) no-repeat;
+                    background: #fff url(../img/add_new.svg) no-repeat;
                     background-size: 0;
                     height: 100%;
                     position: relative;
@@ -717,5 +717,11 @@
 
     .react-tel-input {
         margin-bottom: 10px;
+    }
+}
+.new-staff-modal{
+    .modal-header .modal-title{
+        font-size: 16px;
+        line-height: 14px;
     }
 }

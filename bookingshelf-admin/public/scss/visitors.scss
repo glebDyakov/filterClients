@@ -194,7 +194,7 @@
                 width: 20%;
                 background: none;
                 border: none;
-                color: #264e86;
+                color: #000;
                 height: 100%;
                 padding: 0;
                 min-width: 0;
@@ -209,7 +209,7 @@
             cursor: pointer;
 
             &:hover{
-                color: #264e86;
+                color: #000;
             }
         }
         &.comments-visitor{

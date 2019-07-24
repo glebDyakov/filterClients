@@ -5,7 +5,7 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import moment from "moment";
 import {LogoutPage} from "../LogoutPage";
-import { calendarActions } from "../_actions";
+import {calendarActions, companyActions} from "../_actions";
 
 class HeaderMain extends React.PureComponent {
     constructor(props) {
@@ -49,13 +49,20 @@ class HeaderMain extends React.PureComponent {
 
         let path="/"+location.pathname.split('/')[1]
 
+        let redTitle
+        if (path === '/invoices') {
+            redTitle = 'Счета'
+        } else {
+            redTitle = authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name
+        }
+
 
         return (
             <div className={"no-scroll row retreats "+(localStorage.getItem('collapse')==='true'&&' content-collapse')}>
 
                 <div className="col-1 mob-menu b">
                     <div>
-                        <img src={`${process.env.CONTEXT}public/img/burger_mob.png`} alt=""/>
+                        <img src={`${process.env.CONTEXT}public/img/burger_mob.svg`} alt=""/>
                     </div>
                 </div>
 
@@ -65,7 +72,7 @@ class HeaderMain extends React.PureComponent {
 
                 <div className="col">
                     <p className="red-title-block mob-setting ">
-                        {authentication.user && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name }
+                        {redTitle}
                         </p>
                 </div>
                 <div className="mob-info dropdown">
@@ -152,6 +159,7 @@ class HeaderMain extends React.PureComponent {
     openAppointments(){
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        this.props.dispatch(companyActions.getNewAppointments());
     }
 }
 

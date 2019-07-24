@@ -5,7 +5,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, setScreen,refreshTimetable,selectedStaff,services, selectedService,servicesForStaff, selectService} = this.props;
+        const {selectedServices, setScreen,refreshTimetable,selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
 
 
         return (
@@ -13,7 +13,8 @@ class TabTwo extends Component {
                 <div className="title_block">
                     <span className="prev_block" onClick={() => {
                         setScreen(1);
-                        refreshTimetable()
+                        refreshTimetable();
+                        setDefaultFlag();
                     }}>Назад</span>
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
@@ -63,10 +64,34 @@ class TabTwo extends Component {
                         </li>
                     )}
                     {
-                        !servicesForStaff && <div className="final-book">
+                        ((!servicesForStaff && selectedStaff.length!==0) || (services.length === 0)) && <div className="final-book">
                             <p>Нет доступных услуг</p>
                         </div>
                     }
+                    {!servicesForStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
+                        <li
+                            className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
+                        >
+                            <div className="service_item">
+                                <label>
+
+                                    <p>{service.name}</p>
+                                    <p>
+                                        <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                        <span>{service.currency}</span>
+                                        <input onChange={(e) => selectService(e, service)} type="checkbox"
+                                               checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
+                                        <span className="checkHelper"/>
+                                    </p>
+                                    <span
+                                        className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+
+                                </label>
+                            </div>
+                        </li>
+                    )}
+
+
 
                 </ul>
 

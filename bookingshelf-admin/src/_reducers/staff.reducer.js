@@ -1,7 +1,10 @@
 import { staffConstants } from '../_constants';
 
 const initialState = {
-    isLoading: false
+    isLoading: false,
+    error: false,
+    isAvailableTimesChecked: false,
+    isLoadingStaffInit: false
 }
 
 export function staff(state = initialState, action) {
@@ -86,11 +89,17 @@ export function staff(state = initialState, action) {
                 status: 200,
                 adding: false
             };
-        case staffConstants.UPDATE_ACCESS_SUCCESS:
+        case staffConstants.UPDATE_ACCESS_REQUEST:
+            return {
+                ...state,
+                isLoading: true,
+            };
+            case staffConstants.UPDATE_ACCESS_SUCCESS:
             return {
                 ...state,
                 status: 200,
-                access: action.access
+                access: action.access,
+                isLoading:false
             };
         case staffConstants.ADD_FAILURE:
             return {
@@ -111,7 +120,11 @@ export function staff(state = initialState, action) {
                 status: 209
             };
         case staffConstants.UPDATE_ACCESS_FAILURE:
-            return state;
+            return {
+                ...state,
+                isLoading: false,
+                error: true
+            };
         case staffConstants.GET_SUCCESS:
 
             let costaffs=[];
@@ -164,10 +177,23 @@ export function staff(state = initialState, action) {
                 ...state,
                 closedDates: action.closedDates
             };
+
+        case staffConstants.GET_TIMETABLE_REQUEST:
+            return {
+                ...state,
+                isLoadingStaffInit: true
+            };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
-                timetable: action.timetable
+                timetable: action.timetable,
+                isLoadingStaffInit: false
+            };
+        case staffConstants.GET_TIMETABLE_FAILURE:
+            return {
+                ...state,
+                isLoadingStaffInit: false,
+                error: true
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
@@ -176,10 +202,12 @@ export function staff(state = initialState, action) {
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
+
             return {
                 ...state,
                 isLoading:false,
-                availableTimetable: action.availableTimetable
+                availableTimetable: action.payload.availableTimetable,
+                isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
             return {
@@ -234,6 +262,10 @@ export function staff(state = initialState, action) {
                     {
                         "name": 'Онлайн запись',
                         "permissionCode": 9
+                    },
+                    {
+                        "name": 'Оплата',
+                        "permissionCode": 11
                     }
                 ]
             };
@@ -264,6 +296,11 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 staff: action.staff
+            };
+            case staffConstants.REFRESH_CHECKER_AVAILABLE_TIME:
+            return {
+                ...state,
+                isAvailableTimesChecked: false
             };
         default:
             return state

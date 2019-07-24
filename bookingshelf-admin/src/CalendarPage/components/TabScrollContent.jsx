@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
-class TabScroll extends PureComponent{
+class TabScroll extends Component{
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
     }
@@ -101,7 +101,7 @@ class TabScroll extends PureComponent{
                                                 key={appointment[0][0].appointmentId + "_" + key}
                                                 id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                             >
-                                                <p className="notes-title">
+                                                <p className="notes-title" onClick={()=> $(`.${appointment[0][0].appointmentId}`).toggleClass('selected')}>
                                                     {!appointment[0][0].online &&
                                                     <span className="pen"
                                                           title="Запись через журнал"/>}
@@ -130,7 +130,10 @@ class TabScroll extends PureComponent{
                                                     { clients && clients.map((client) => (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">
-                                                            <p className="new-text">Запись</p>
+                                                            <p>
+                                                                <p className="new-text">Запись</p>
+                                                                <button type="button" onClick={()=> $(`.${appointment[0][0].appointmentId}`).removeClass('selected')} className="close"></button>
+                                                            </p>
                                                             <p className="client-name-book">Клиент</p>
                                                             <p className="name">{client.firstName} {client.lastName}</p>
                                                             <p>{client.phone}</p>

@@ -139,7 +139,7 @@ class StaffPage extends Component {
             timetableFrom: moment(selectedDays[0]).startOf('day').format('x'),
             timetableTo:moment(selectedDays[6]).endOf('day').format('x')
         })
-        setTimeout(() => this.setState({ isLoading: false }), 4500);
+        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
@@ -206,7 +206,9 @@ class StaffPage extends Component {
 
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
-                {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}
+                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+                {this.props.staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
 
@@ -367,7 +369,7 @@ class StaffPage extends Component {
                                                                aria-expanded="false">
                                                                 {staff_user.roleId !== 4 &&
                                                                 <img
-                                                                    src={`${process.env.CONTEXT}public/img/delete.png`}
+                                                                    src={`${process.env.CONTEXT}public/img/delete_new.svg`}
                                                                     alt=""/>
                                                                 }
                                                             </a>
@@ -445,7 +447,7 @@ class StaffPage extends Component {
                                                         </div>
                                                         <div className="col-1 dropdown delete-tab-holiday">
                                                             <a className="delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete.png`} alt=""/>
+                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                             </a>
                                                             <div className="dropdown-menu delete-menu p-3">
                                                                 <button type="button" className="button delete-tab" onClick={()=>this.deleteClosedDate(item.companyClosedDateId)}>Удалить</button>
@@ -463,7 +465,7 @@ class StaffPage extends Component {
                                             <div className="arrow"></div>
                                         </div>
                                     </div>
-                                    {access(-1) &&
+                                    {access(-1) && !this.props.staff.error &&
                                     <div className={"tab-pane access-tab"+(activeTab==='permissions'?' active':'')} id="tab4">
                                         <div className="access">
                                             <div className="tab-content-list">
@@ -508,6 +510,8 @@ class StaffPage extends Component {
                                         </div>
                                     </div>
                                     }
+                                    {this.props.isLoading && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                    {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                                 </div>
                             </div>
                             {activeTab==='staff' &&
