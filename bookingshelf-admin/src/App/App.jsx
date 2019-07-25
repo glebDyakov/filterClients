@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import config from 'config';
 
 import { history } from '../_helpers';
 import {alertActions, calendarActions, staffActions, menuActions} from '../_actions';
@@ -94,7 +95,7 @@ class App extends React.Component {
 
 
             const options = {
-                url: `wss://staging.online-zapis.com/websocket/${this.props.authentication.user.profile.staffId}/`,
+                url: `${config.apiSocket}/${this.props.authentication.user.profile.staffId}/`,
                 pingTimeout: 15000,
                 pongTimeout: 10000,
                 reconnectTimeout: 2000,

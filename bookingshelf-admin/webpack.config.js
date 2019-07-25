@@ -107,6 +107,7 @@ module.exports = {
     externals: {
         config: JSON.stringify({
             apiUrl: 'https://online-zapis.com/rest/v1',
+            apiSocket: 'wss://online-zapis.com/websocket',
             apiUrlv2: 'https://staging.online-zapis.com/rest/v2',
             apiUrlimg: 'https://staging.online-zapis.com/',
         })
