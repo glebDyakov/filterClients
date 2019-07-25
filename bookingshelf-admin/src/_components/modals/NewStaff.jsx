@@ -286,6 +286,10 @@ class NewStaff extends React.Component {
         const { name, value } = e.target;
         const { staff } = this.state;
 
+        if (name === 'email') {
+            this.setState({ emailIsValid: this.isValidEmailAddress(value)})
+        }
+
         this.setState({ staff: {...staff, [name]: value }});
     }
 
