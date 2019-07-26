@@ -1,12 +1,14 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment'
 import DayPicker from "react-day-picker";
+import MomentLocaleUtils from 'react-day-picker/moment';
+
 
 class TabThird extends  PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable,selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, MomentLocaleUtils, handleDayClick, showPrevWeek, showNextWeek } = this.props;
+        const {setScreen,refreshTimetable,selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
         return (
@@ -51,7 +53,7 @@ class TabThird extends  PureComponent {
                     <DayPicker
                         selectedDays={selectedDay}
                         disabledDays={disabledDays}
-                        month={month}
+                        month={new Date(moment(month).format( 'YYYY-MM-DD HH:mm:ss' ))}
                         onDayClick={handleDayClick}
                         localeUtils={MomentLocaleUtils}
                         locale={'ru'}
