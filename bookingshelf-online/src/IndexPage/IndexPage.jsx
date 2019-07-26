@@ -6,6 +6,10 @@ import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
 
+import DayPicker from "react-day-picker";
+import MomentLocaleUtils from 'react-day-picker/moment';
+import ReactPhoneInput from "react-phone-input-2";
+import { isValidNumber } from 'libphonenumber-js'
 import TabOne from "./components/TabOne";
 import TabTwo from "./components/TabTwo";
 import TabThird from "./components/TabThird";
@@ -107,11 +111,10 @@ class IndexPage extends PureComponent {
                     })
 
                 const checkingDate = parseInt(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utc().format('x'));
-                const currentDate = parseInt(moment().startOf('day').format('x'));
-
+                const currentDate = parseInt(moment().utcOffset('-4').startOf('day').format('x'));
 
                 if(avDay && avDay.length===0 || (checkingDate < currentDate)){
-                    const pushedDay = new Date(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
+                    const pushedDay = new Date(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utcOffset('-4').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
                     disabledDays.push(pushedDay)}
 
             }
@@ -265,6 +268,7 @@ class IndexPage extends PureComponent {
                         selectedService={selectedService}
                         disabledDays={disabledDays}
                         month={month}
+                        MomentLocaleUtils={MomentLocaleUtils}
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         handleDayClick={this.handleDayClick}
@@ -341,7 +345,7 @@ class IndexPage extends PureComponent {
     }
 
     isValidEmailAddress(address) {
-        return !! (address && address.match(/.+@.+/));
+        return !! address.match(/.+@.+/);
     }
 
     _delete(id) {
@@ -403,7 +407,7 @@ class IndexPage extends PureComponent {
 
         }
         this.setState({selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
-            month:moment().utc().startOf('month').toDate()})
+            month:moment().startOf('month').toDate()})
 
         if(selectedServices.length === 0 && this.state.flagAllStaffs){
             this.setState({selectedStaff: []})
