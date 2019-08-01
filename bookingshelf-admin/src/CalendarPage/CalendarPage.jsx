@@ -726,13 +726,13 @@ class CalendarPage extends PureComponent {
     }
 
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
-        const { selectedDayMoment } = this.state;
+        const { selectedDay } = this.state;
 
         if(newTime===null) {
             this.setState({ clickedTime: minutesReservedtime, reserved: true });
         }
 
-        return this.getHours(staffId, selectedDayMoment.format('x'));
+        return this.getHours(staffId, moment(selectedDay).format('x'));
     }
 
     handleUpdateClient(client) {
