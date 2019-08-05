@@ -113,7 +113,7 @@
         border: none;
 
         &.gray-button{
-            color: #264e86;
+            color: #0a1330;
 
             @media screen and(max-width: 960px){
                 margin: 15px 0;
@@ -121,8 +121,7 @@
         }
     }
     .popup_forgot{
-        margin-left: 10px;
-        color: #264e86;
+        color: #0a1330;
         display: block;
         margin: auto;
         text-align: center;
@@ -134,7 +133,7 @@
         cursor: pointer;
         background: url(../img/logo_name.svg) no-repeat;
         padding-left: 0;
-        background-position: 60px center;
+        background-position: center center;
         position: relative;
         background-size: auto 40px;
         @media screen and(max-width: 960px){
