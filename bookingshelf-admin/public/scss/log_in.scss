@@ -113,7 +113,7 @@
         border: none;
 
         &.gray-button{
-            color: #264e86;
+            color: #0a1330;
 
             @media screen and(max-width: 960px){
                 margin: 15px 0;
@@ -121,8 +121,7 @@
         }
     }
     .popup_forgot{
-        margin-left: 10px;
-        color: #264e86;
+        color: #0a1330;
         display: block;
         margin: auto;
         text-align: center;
@@ -132,9 +131,9 @@
         margin: 15px auto;
         height: 60px;
         cursor: pointer;
-        background: url(../img/logo_name.png) no-repeat;
+        background: url(../img/logo_name.svg) no-repeat;
         padding-left: 0;
-        background-position: 60px center;
+        background-position: center center;
         position: relative;
         background-size: auto 40px;
         @media screen and(max-width: 960px){
@@ -142,29 +141,6 @@
             padding: 100px 0 0;
             background-position: 60px bottom;
             margin-bottom: 20px;
-        }
-
-        &::before{
-            content: '';
-            background: url(../img/logo_sign_in.png) no-repeat;
-            background-size: 45px;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            top: 0;
-            margin: auto;
-            display: block;
-            box-shadow: 5px 6px 20px 0 rgba(188, 191, 205, 0.31);
-            @media screen and(max-width: 960px){
-                background-position: top center;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: auto;
-            }
         }
     }
     .sign_in{
