@@ -590,6 +590,15 @@ q:before, q:after { content:''; }
     line-height: 22px;
 }
 
+.staff_popup_large .img_container img{
+    height: 75px !important;
+    width: 75px !important;
+}
+
+.staff_popup_large span{
+    font-size: 21px !important;
+}
+
 .skip_employee{
     font-size: 20px;
     color: #414c58;
