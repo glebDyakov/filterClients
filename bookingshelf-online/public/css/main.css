@@ -113,6 +113,10 @@ q:before, q:after { content:''; }
     font-weight: bold;
     letter-spacing: 0.5px;
 }
+.logo {
+    height: 60px;
+    width: 60px;
+}
 .modal_menu{
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -121,7 +125,6 @@ q:before, q:after { content:''; }
     padding: 15px 28px;
     z-index: 1;
     display: flex;
-    justify-content: space-between;
     padding: 10px 10px;
     position: fixed;
     width: 100%;
@@ -133,7 +136,7 @@ q:before, q:after { content:''; }
 }
 .modal_menu p{
     display: inline-flex;
-    width: 32%;
+    width: calc(32% - 30px);
     height: 62px;
     align-items: center;
     vertical-align: top;
@@ -145,9 +148,26 @@ q:before, q:after { content:''; }
 }
 .adress-phones{/*изменениия*/
     display: inline-block;
-    width: 48%;
+    word-break: break-word;
     margin-right: 10px;
     border-right: solid 1px #ffffff;
+    width: calc(50% - 30px);
+    padding-right: 0;
+}
+.adress-icon {
+    margin: 0 auto;
+    position: relative;
+    top: 11px;
+    right: 0;
+    display: none;
+    width: 37px;
+    height: 37px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: url(../img/icons/home.svg) no-repeat;
+    background-size: 50%;
+    background-position: center;
+    cursor: pointer;
 }
 .adress-phones p {
     white-space: nowrap;
@@ -157,7 +177,6 @@ q:before, q:after { content:''; }
     text-align: center;
     justify-content: center;
     min-height: 62px;
-    word-break: break-all;
     max-width: 95%;
 }
 .specialist .final-book{
@@ -879,6 +898,7 @@ q:before, q:after { content:''; }
     margin-top: 10px;
     font-family: 'helvetica_medium';
 }
+
 .select-location{
     position: relative;
     cursor: pointer;
@@ -915,8 +935,74 @@ q:before, q:after { content:''; }
     border: none;
     padding: 5px 5px;
 }
-
-
+.mobile {
+    margin: 0 auto;
+    display: block;
+    width: 37px;
+    height: 37px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: url(../img/icons/phone.svg) no-repeat;
+    background-size: 50%;
+    background-position: center;
+    cursor: pointer;
+    position: relative;
+    top: 11px;
+    right: 0;
+}
+.mobile:hover{
+    opacity: 0.7;
+}
+.modal_menu .phones_firm {
+    display: none;
+    position: absolute;
+    color: #3b4b5c;
+    width: 94%;
+    margin: auto;
+    max-width: 100%;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
+    border: solid 1px rgba(172, 172, 172, 0.2);
+    text-align: center;
+    padding: 20px 0 20px;
+    height: auto;
+    right: 0;
+    left: 0;
+}
+.phones_firm a{
+    color: #3b4b5c;
+    display: inline-block;
+    margin: 5px 4% 5px;
+}
+.closer{
+    background: url(../img/icons/close.svg) no-repeat;
+    width: 15px;
+    height: 15px;
+    display: block;
+    background-size: 100% auto;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+.closer:hover{
+    opacity: 0.7;
+}
+.adress-phones p{
+    white-space: normal;
+    line-height: 19px;
+    height: 62px;
+    overflow: hidden;
+}
+.modal_menu .firm_name {
+    word-break: break-word;
+    font-size: 18px;
+    width: calc(35% - 30px);
+}
+.mobile-icon-wrapper {
+    width: 70px;
+}
 
 /*--media--*/
 @media screen and (max-width: 1650px){
@@ -944,8 +1030,7 @@ q:before, q:after { content:''; }
     }
     .firm_name {
         font-size: 18px;
-        margin-right: 2%;
-        padding: 0 12px 6px;
+        padding: 0 4px 6px 24px;
     }
     .modal_menu .work_time {
         width: 34%;
@@ -1034,12 +1119,32 @@ q:before, q:after { content:''; }
         padding-bottom: 40px;
     }
 }
+@media screen and (min-width: 721px) {
+    .adress-text-wrapper {
+        display: block !important;
+    }
+}
 @media screen and (max-width: 720px){
-    .modal_menu .phones_firm {
+    .modal_menu .firm_name {
+        width: calc(65% - 30px);
+    }
+    .adress-icon {
+        display: block;
+    }
+    .adress-phones {
+        width: 100px;
+    }
+    .adress-text {
+        color: black;
+        min-height: 40px !important;
+        height: 100% !important;
+    }
+    .adress-text-wrapper {
         display: none;
         position: absolute;
         color: #3b4b5c;
         width: 94%;
+        top: 5px;
         margin: auto;
         max-width: 100%;
         background: #fff;
@@ -1048,48 +1153,13 @@ q:before, q:after { content:''; }
         border: solid 1px rgba(172, 172, 172, 0.2);
         text-align: center;
         padding: 20px 0 20px;
-        height: auto;
+        height: 70px;
         right: 0;
         left: 0;
     }
-    .phones_firm a{
-        color: #3b4b5c;
-        display: inline-block;
-        margin: 5px 4% 5px;
-    }
-    .closer{
-        background: url(../img/icons/close.svg) no-repeat;
-        width: 15px;
-        height: 15px;
-        display: block;
-        background-size: 100% auto;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        cursor: pointer;
-    }
-    .closer:hover{
-        opacity: 0.7;
-    }
-    .adress-phones{/*изменениия*/
-        width: 50%;
-        padding-right: 0;
-    }
-    .adress-phones p{
-        white-space: normal;
-        line-height: 19px;
-        height: 62px;
-        overflow: hidden;
-    }
     .modal_menu {
-        padding: 15px 20px;
+        padding: 10px 20px;
     }
-    .modal_menu .firm_name {
-        font-size: 18px;
-        width: 35%;
-        word-break: break-word;
-    }
-
     .title_block .prev_block, .title_block .next_block,
     .title_block2 .prev_block, .title_block2 .next_block{
         overflow: hidden;
@@ -1103,23 +1173,7 @@ q:before, q:after { content:''; }
         padding: 20px 0 20px;
         font-size: 20px;
     }
-    .mobile {
-        display: block;
-        width: 37px;
-        height: 37px;
-        position: absolute;
-        top: 29px;
-        border: 1px solid #fff;
-        border-radius: 50%;
-        right: 10px;
-        background: url(../img/icons/phone.svg) no-repeat;
-        background-size: 50%;
-        background-position: center;
-        cursor: pointer;
-    }
-    .mobile:hover{
-        opacity: 0.7;
-    }
+
     .img_container span, .service_item p,.service_item p{
         font-size: 18px;
     }
@@ -1216,6 +1270,10 @@ q:before, q:after { content:''; }
     }
     .service_selection {
         padding: 0 12px 0;
+    }
+    .firm_name {
+        font-size: 18px;
+        padding: 0 8px 6px;
     }
     .modal_menu {
         padding: 12px 12px;
@@ -1352,11 +1410,6 @@ q:before, q:after { content:''; }
     }
     .date_item_popup.mobile_block{
         display: inline-block;
-    }
-    .mobile{
-        position: relative;
-        top: 11px;
-        right: 0;
     }
 }
 
@@ -1501,6 +1554,12 @@ q:before, q:after { content:''; }
 @media screen and (max-width: 550px){
     .page404 .red_center_text{
         font-size: 8rem;
+    }
+
+}
+@media screen and (max-width: 375px){
+    .modal_menu .firm_name {
+        font-size: 12px;
     }
 
 }

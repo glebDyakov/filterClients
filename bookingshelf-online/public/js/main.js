@@ -1,5 +1,12 @@
 function initializeJs() {
     $(document).ready(function () {
+        $('.adress-icon').click(function () {
+            $('.adress-text-wrapper').fadeIn(300);
+        });
+        $('.adress-text-wrapper .closer').click(function (e) {
+            $('.adress-text-wrapper').fadeOut(300);
+            e.stopPropagation();
+        });
         $('.mobile').click(function () {
             $('.phones_firm').fadeIn(300);
         });

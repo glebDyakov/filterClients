@@ -18,7 +18,7 @@ class TabOne extends  PureComponent{
                         refreshTimetable();
                     }}>Вперед</span>}
                 </div>
-                <ul className={`staff_popup ${staffs && staffs.length < 3 ? "staff_popup_large" : ""}`}>
+                <ul className={`staff_popup ${staffs && staffs.length < 5 ? "staff_popup_large" : ""}`}>
                     {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
 
 
