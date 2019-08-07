@@ -615,7 +615,7 @@ q:before, q:after { content:''; }
 }
 
 .staff_popup_large span{
-    font-size: 21px !important;
+    font-size: 18px !important;
 }
 
 .skip_employee{
@@ -1267,6 +1267,13 @@ q:before, q:after { content:''; }
         height: 65px;
         margin-bottom: 8px;
         box-shadow: none;
+    }
+    .staff_popup_large .img_container img{
+        height: 50px !important;
+        width: 50px !important;
+    }
+    .staff_popup_large span{
+        font-size: 14px !important;
     }
     .service_selection {
         padding: 0 12px 0;
