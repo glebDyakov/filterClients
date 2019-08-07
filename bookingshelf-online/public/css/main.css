@@ -898,9 +898,7 @@ q:before, q:after { content:''; }
     margin-top: 10px;
     font-family: 'helvetica_medium';
 }
-.adress-text-wrapper {
-    display: block;
-}
+
 .select-location{
     position: relative;
     cursor: pointer;
@@ -1119,6 +1117,11 @@ q:before, q:after { content:''; }
     .staff_popup {
         margin-bottom: 20px;
         padding-bottom: 40px;
+    }
+}
+@media screen and (min-width: 721px) {
+    .adress-text-wrapper {
+        display: block !important;
     }
 }
 @media screen and (max-width: 720px){
