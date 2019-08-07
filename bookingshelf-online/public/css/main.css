@@ -1557,6 +1557,12 @@ q:before, q:after { content:''; }
     }
 
 }
+@media screen and (max-width: 375px){
+    .modal_menu .firm_name {
+        font-size: 12px;
+    }
+
+}
 @media screen and (max-width: 1650px) {
     .page404 .rate .title, .title {
         font-size: 32px;
