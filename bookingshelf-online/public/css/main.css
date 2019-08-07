@@ -614,10 +614,6 @@ q:before, q:after { content:''; }
     width: 60px !important;
 }
 
-.staff_popup_large span{
-    font-size: 18px !important;
-}
-
 .skip_employee{
     font-size: 20px;
     color: #414c58;
