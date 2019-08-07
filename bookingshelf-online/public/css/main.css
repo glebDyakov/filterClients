@@ -1139,6 +1139,7 @@ q:before, q:after { content:''; }
         display: none;
         position: absolute;
         color: #3b4b5c;
+        z-index: 1;
         width: 94%;
         top: 5px;
         margin: auto;
