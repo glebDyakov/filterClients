@@ -113,6 +113,10 @@ q:before, q:after { content:''; }
     font-weight: bold;
     letter-spacing: 0.5px;
 }
+.logo {
+    height: 60px;
+    width: 60px;
+}
 .modal_menu{
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -133,7 +137,7 @@ q:before, q:after { content:''; }
 }
 .modal_menu p{
     display: inline-flex;
-    width: 32%;
+    width: calc(32% - 30px);
     height: 62px;
     align-items: center;
     vertical-align: top;
@@ -145,7 +149,7 @@ q:before, q:after { content:''; }
 }
 .adress-phones{/*изменениия*/
     display: inline-block;
-    width: 48%;
+    width: calc(48% - 30px);
     margin-right: 10px;
     border-right: solid 1px #ffffff;
 }
@@ -157,7 +161,6 @@ q:before, q:after { content:''; }
     text-align: center;
     justify-content: center;
     min-height: 62px;
-    word-break: break-all;
     max-width: 95%;
 }
 .specialist .final-book{
@@ -1072,7 +1075,7 @@ q:before, q:after { content:''; }
         opacity: 0.7;
     }
     .adress-phones{/*изменениия*/
-        width: 50%;
+        width: calc(50% - 30px);
         padding-right: 0;
     }
     .adress-phones p{
@@ -1086,8 +1089,7 @@ q:before, q:after { content:''; }
     }
     .modal_menu .firm_name {
         font-size: 18px;
-        width: 35%;
-        word-break: break-word;
+        width: calc(35% - 30px);
     }
 
     .title_block .prev_block, .title_block .next_block,

@@ -10,6 +10,11 @@ class Header extends  PureComponent {
 
         return (
             <div className="modal_menu">
+
+                <img className="logo" src={info.imageBase64
+                    ? "data:image/png;base64," + info.imageBase64
+                    : `${process.env.CONTEXT}public/img/image.png`}
+                />
                 <p className="firm_name">{info && info.companyName}</p>
                 <div className="adress-phones">
                     <p>{info && info["companyAddress" + info.defaultAddress]}</p>
