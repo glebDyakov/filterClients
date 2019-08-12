@@ -170,7 +170,7 @@ class EmailPage extends Component {
                 data[key] = sms[key]
             }
         })
-        this.props.dispatch(notificationActions.setSMS(JSON.stringify(sms)));
+        this.props.dispatch(notificationActions.setSMS(JSON.stringify(data)));
 
     }
 
