@@ -164,7 +164,12 @@ class EmailPage extends Component {
     }
     setSMS () {
         const { sms } = this.state;
-
+        const data = {}
+        Object.keys(sms).map(key =>{
+            if(key === 'serviceId' && sms.serviceId !== 0) {
+                data[key] = sms[key]
+            }
+        })
         this.props.dispatch(notificationActions.setSMS(JSON.stringify(sms)));
 
     }
@@ -172,7 +177,13 @@ class EmailPage extends Component {
     setEmail () {
         const { email } = this.state;
 
-        this.props.dispatch(notificationActions.setSMS(JSON.stringify(email)));
+        const data = {}
+        Object.keys(email).map(key =>{
+            if(key === 'serviceId' && email.serviceId !== 0) {
+                data[key] = email[key]
+            }
+        })
+        this.props.dispatch(notificationActions.setSMS(JSON.stringify(data)));
 
     }
 
@@ -560,7 +571,7 @@ class EmailPage extends Component {
                                                     }
                                                     <button type="button"
                                                             className={"button float-right mob-hiden "
-                                                            +((email.title==='' || email.description==='' || (!email.toClients && !email.toStaffs) || email.serviceId===0) && ' disabledField')} data-toggle="modal" data-target={email.title!=='' && email.description!=='' && (email.toClients || email.toStaffs) && email.serviceId!==0 && '.start-modal'}>Сформировать рассылку
+                                                            +((email.title==='' || email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.title!=='' && email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
                                                     </button>
                                                 </div>
                                                 <div className="block-style2 container ">
@@ -599,7 +610,7 @@ class EmailPage extends Component {
                                                     }
                                                     <button type="submit"
                                                             className={"button float-right mob-fade "
-                                                            +((email.title==='' || email.description==='' || (!email.toClients && !email.toStaffs) || email.serviceId===0) && ' disabledField')} data-toggle="modal" data-target={email.title!=='' && email.description!=='' && (email.toClients || email.toStaffs) && email.serviceId!==0 && '.start-modal'}>Сформировать рассылку
+                                                            +((email.title==='' || email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.title!=='' && email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
                                                     </button>
                                                 </div>
                                                 <span className="clearfix"></span>
@@ -645,7 +656,7 @@ class EmailPage extends Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h4 className="modal-title">Начать рассылку</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close" data-dismiss="modal"></button>
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <div>
@@ -657,7 +668,7 @@ class EmailPage extends Component {
                                             Количество писем: {receivers_email}
                                         </li>
                                     </ul>
-                                    {notification.balance && receivers_email>notification.balance.emailAmount && <div style={{ fontSize: '11px',  color: 'red',     marginBottom: '17px'}}>Пополните ваш баланс, у вас нет достаточного количества, на вашем балансе {notification.balance && notification.balance.emailAmount} email. </div>}
+                                    {notification.balance && receivers_email>notification.balance.emailAmount && <div style={{ fontSize: '11px',  color: 'red',     marginBottom: '17px'}}>Недостаточное количество Email. Сзяжитесь со службой поддержки Online-zapis</div>}
                                 </div>
                                 <button type="button" className={"button"+(notification.balance && (receivers_email>notification.balance.emailAmount) && ' disabledField')} onClick={()=>receivers_email<=(notification.balance && notification.balance.emailAmount) && this.setEmail()} data-dismiss="modal">Начать</button>
                             </div>
@@ -670,7 +681,7 @@ class EmailPage extends Component {
                             <div className="modal-header">
                                 <h4 className="modal-title">Начать рассылку</h4>
 
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <button type="button" className="close" data-dismiss="modal"></button>
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <div>
@@ -685,7 +696,7 @@ class EmailPage extends Component {
                                             Количество смс: {count_sms_all}
                                         </li>
                                     </ul>
-                                    {notification.balance && count_sms_all>notification.balance.smsAmount && <div style={{ fontSize: '11px',  color: 'red',     marginBottom: '17px'}}>Пополните ваш баланс, у вас нет достаточного количества, на вашем балансе {notification.balance && notification.balance.smsAmount} sms. </div>}
+                                    {notification.balance && count_sms_all>notification.balance.smsAmount && <div style={{ fontSize: '11px',  color: 'red',     marginBottom: '17px'}}>Недостаточное количество sms. Сзяжитесь со службой поддержки Online-zapis </div>}
                                 </div>
                                 <button type="button" className={"button"+(notification.balance && (count_sms_all>notification.balance.smsAmount) && ' disabledField')} onClick={()=>count_sms_all<=(notification.balance && notification.balance.smsAmount) && this.setSMS()} data-dismiss="modal">Начать</button>
                             </div>
