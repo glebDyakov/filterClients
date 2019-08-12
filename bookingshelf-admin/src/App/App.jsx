@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import config from 'config';
 
 import { history } from '../_helpers';
-import {alertActions, calendarActions, staffActions, menuActions} from '../_actions';
+import {alertActions, calendarActions, staffActions, menuActions, notificationActions} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -92,6 +92,7 @@ class App extends React.Component {
         if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
             && this.state.flagStaffId){
             this.setState({flagStaffId: false});
+            this.props.dispatch(notificationActions.getBalance());
 
 
             const options = {

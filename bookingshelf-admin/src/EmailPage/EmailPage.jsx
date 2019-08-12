@@ -55,6 +55,8 @@ class EmailPage extends Component {
                 id: -1,
                 service: []
             },
+            smsNotifyCount: localStorage.getItem("smsNotifyCount") || 200,
+            emailNotifyCount: localStorage.getItem("emailNotifyCount") || 200,
             count_sms: 0,
             count_sms_all: 0,
             letters: 160,
@@ -86,6 +88,7 @@ class EmailPage extends Component {
         this.toggleChange = this.toggleChange.bind(this);
         this.setTab = this.setTab.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleNotifyChange = this.handleNotifyChange.bind(this);
         this.handleChangeEmailLetter = this.handleChangeEmailLetter.bind(this)
         this.handleChangeSMS = this.handleChangeSMS.bind(this)
         this.handleChangeEmail = this.handleChangeEmail.bind(this)
@@ -228,6 +231,12 @@ class EmailPage extends Component {
         this.setState({...this.state, notifications: notify});
 
         this.props.dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(notify)));
+    }
+
+    handleNotifyChange(e) {
+        const { name, value } = e.target;
+        localStorage.setItem(name, value);
+        this.setState({[name] : value})
     }
 
     handleChangeSMS(e) {
@@ -410,6 +419,29 @@ class EmailPage extends Component {
                                                                     }
                                                                 </div>
                                                             </div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+
+                                                            <p className="title_block mb-3">Уведомить при балансе SMS ниже:</p>
+
+                                                            <input type="number" name="smsNotifyCount" value={this.state.smsNotifyCount} onChange={this.handleNotifyChange}/>
+
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+
+                                                            <p className="title_block mb-3">Уведомить при балансе Email ниже:</p>
+
+                                                            <input type="number" name="emailNotifyCount" value={this.state.emailNotifyCount} onChange={this.handleNotifyChange}/>
 
 
                                                         </div>

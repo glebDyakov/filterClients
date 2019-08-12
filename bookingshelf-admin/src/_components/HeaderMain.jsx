@@ -12,9 +12,11 @@ class HeaderMain extends React.PureComponent {
         super(props);
         this.state={
             authentication: props.authentication,
-            company: props.company
+            company: props.company,
+            isNotificationDropdown: false
         }
         this.openModal = this.openModal.bind(this);
+        this.toggleNotificationDropdown = this.toggleNotificationDropdown.bind(this);
 
 
     }
@@ -42,7 +44,7 @@ class HeaderMain extends React.PureComponent {
     }
 
     render() {
-        const {location }=this.props;
+        const {location, notification }=this.props;
         const {authentication, company}=this.state;
 
         const { count } = company;
@@ -133,7 +135,23 @@ class HeaderMain extends React.PureComponent {
                 </div>
                 <div className="col right_elements">
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
-                    <span className="notification"/>
+                    <div style={{ position: "relative" }} onClick={this.toggleNotificationDropdown}>
+                        <span className="notification"/>
+                        { (notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount')
+                        || notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount'))
+                        && <React.Fragment>
+                            <span className="notification-signal" />
+                            {this.state.isNotificationDropdown && <ul className="notification-dropdown">
+                                {notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount') &&
+                                <li>Баланс SMS ниже {localStorage.getItem('smsNotifyCount')}</li>
+                                }
+                                {notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount') &&
+                                <li>Баланс Email ниже {localStorage.getItem('emailNotifyCount')}</li>
+                                }
+                            </ul>}
+                        </React.Fragment> }
+
+                    </div>
                     <a className="setting" onClick={this.openModal}/>
                     <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}</a>
                     <div className="img-container" data-toggle="modal" data-target=".modal_photo">
@@ -156,6 +174,9 @@ class HeaderMain extends React.PureComponent {
 
         return onOpen();
     }
+    toggleNotificationDropdown() {
+        this.setState({ isNotificationDropdown: !this.state.isNotificationDropdown})
+    }
     openAppointments(){
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
@@ -164,9 +185,9 @@ class HeaderMain extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company, calendar: {appointmentsCount} } = state;
+    const { alert, authentication, company, notification, calendar: {appointmentsCount} } = state;
     return {
-        alert, authentication, company, appointmentsCount
+        alert, authentication, company, notification, appointmentsCount
     };
 }
 
