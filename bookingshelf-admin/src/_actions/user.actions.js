@@ -46,7 +46,6 @@ function checkLogin() {
             .then(
                 (user) => {
                     dispatch(success(user));
-                    history.push('/calendar');
                 },
                 error => {
 
