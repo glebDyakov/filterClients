@@ -290,6 +290,13 @@ class PaymentsPage extends Component {
         const {countryCode} = this.state.country;
         const {packets} = this.props.payments;
 
+        const { pathname } = this.props.location;
+        if (pathname === '/payments') {
+            document.title = "Оплата | Онлайн-запись";
+        } else if (pathname === '/invoices' ) {
+            document.title = "Счета | Онлайн-запись";
+        }
+        debugger
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -305,14 +312,14 @@ class PaymentsPage extends Component {
                             <div className="retreats">
                                 <ul className="nav nav-tabs">
                                     <li className="nav-item" >
-                                        <a className="nav-link active show" data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
+                                        <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
+                                        <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
                                 </ul>
                                 <div className="tab-content">
-                                    <div className="tab-pane active " id="payments">
+                                    <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
                                         <div className="payments-inner">
                                             <div className="payments-list-block">
                                                 <p className="title-payments">Количество сотрудников</p>
@@ -595,7 +602,7 @@ class PaymentsPage extends Component {
 
                                     </div>
 
-                                    <div className="tab-pane" id="acts">
+                                    <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
 
                                         {/*--------------------*/}
                                         {
