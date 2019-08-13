@@ -45,13 +45,13 @@ class PaymentsPage extends Component {
                 period: '1',
             },
             finalPrice: this.props.company.settings ? ((this.props.company.settings.countryCode) ? ((this.props.company.settings.countryCode) === 'BLR' ?
-                '18' : ((this.props.company.settings.countryCode) === 'UKR' ?
-                    '225' : ((this.props.company.settings.countryCode) === 'RUS' ?
-                        '555' : '18'))) : '18') : '',
+                '15' : ((this.props.company.settings.countryCode) === 'UKR' ?
+                    '180' : ((this.props.company.settings.countryCode) === 'RUS' ?
+                        '480' : '15'))) : '15') : '',
             finalPriceMonth: this.props.company.settings ? ((this.props.company.settings.countryCode) ? ((this.props.company.settings.countryCode) === 'BLR' ?
-                '6' : ((this.props.company.settings.countryCode === 'UKR' ?
-                    '75' : (this.props.company.settings.countryCode) === 'RUS' ?
-                        '185' : '6'))) : '6') : ''
+                '5' : ((this.props.company.settings.countryCode === 'UKR' ?
+                    '60' : (this.props.company.settings.countryCode) === 'RUS' ?
+                        '160' : '5'))) : '5') : ''
         }
 
         this.props.dispatch(paymentsActions.getInvoiceList());
@@ -176,23 +176,23 @@ class PaymentsPage extends Component {
         const {countryCode} = this.state.country;
         let finalPrice = 0, finalPriceMonth = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
-        let priceForOneWorker = 6;
+        let priceForOneWorker = 5;
 
         if (countryCode && countryCode === 'BLR') {
             priceTo20 = 60;
             priceTo30 = 70;
             priceFrom30 = 80;
-            priceForOneWorker = 6;
+            priceForOneWorker = 5;
         } else if (countryCode && countryCode === 'UKR') {
             priceTo20 = 760;
             priceTo30 = 895;
             priceFrom30 = 1020;
-            priceForOneWorker = 75;
+            priceForOneWorker = 60;
         } else if (countryCode && countryCode === 'RUS') {
             priceTo20 = 1800;
             priceTo30 = 2100;
             priceFrom30 = 2400;
-            priceForOneWorker = 185;
+            priceForOneWorker = 160;
         }
 
         switch (period) {
