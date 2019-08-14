@@ -32,7 +32,7 @@ class TabOne extends  PureComponent{
                                         src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                         alt=""/>
                                     <span>{staff.firstName} <br/>{staff.lastName} <br/>
-                                        <span style={{ fontSize: "11px"}}>{staff.description}</span>
+                                        <span style={{ fontSize: "13px"}}>{staff.description}</span>
                                     </span>
                                 </div>
 
