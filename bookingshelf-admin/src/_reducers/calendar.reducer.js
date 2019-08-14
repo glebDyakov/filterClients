@@ -47,6 +47,24 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 209
             };
+        case calendarConstants.START_MOVING_VISIT_SUCCESS:
+
+            return {
+                ...state,
+                isStartMovingVisit: action.isStartMovingVisit
+            };
+        case calendarConstants.MOVE_VISIT_SUCCESS:
+
+            return {
+                ...state,
+                isMoveVisit: action.isMoveVisit
+            };
+        case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
+
+            return {
+                ...state,
+                isAppointmentUpdated: action.isAppointmentUpdated
+            };
         case calendarConstants.ADD_RESERVED_TIME_REQUEST:
             return {
                 ...state,
@@ -201,7 +219,6 @@ export function calendar(state = initialState, action) {
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
             let newItem = action.payload.payload;
-            debugger
             newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
             newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
             return {
@@ -243,7 +260,6 @@ export function calendar(state = initialState, action) {
                 isLoadingModalCount: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
-            debugger;
             return {
                 ...state,
                 appointmentsCount: action.appointments,

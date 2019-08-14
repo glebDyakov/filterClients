@@ -1,12 +1,71 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
+import {calendarActions} from "../../_actions/calendar.actions";
 
 class TabScroll extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            movingVisit: null,
+            movingVisitDuration: 0,
+            movingVisitMillis: 0,
+            movingVisitStaffId: null
+        }
+        this.startMovingVisit = this.startMovingVisit.bind(this);
+        this.moveVisit = this.moveVisit.bind(this);
+        this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
+    }
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
+        if (newProps.isStartMovingVisit && newProps.isMoveVisit) {
+            this.makeMovingVisitQuery()
+        }
     }
 
+    startMovingVisit(movingVisit, totalDuration) {
+        const activeItemWithStaffId = this.props.appointments.find(item =>
+            item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
+        );
+        const movingVisitStaffId = activeItemWithStaffId.staff.staffId
+        this.setState({ movingVisit, movingVisitDuration: totalDuration })
+    }
+
+    moveVisit(movingVisitStaffId, time) {
+        this.setState({ movingVisitMillis : time, movingVisitStaffId })
+    }
+
+    makeMovingVisitQuery() {
+        const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis } = this.state;
+
+        let shouldMove = false
+        const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
+
+        const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
+        availableTimetableItem.availableDays.forEach(item => {
+            item.availableTimes.forEach(time => {
+                if (time.startTimeMillis <= movingVisitTime && time.endTimeMillis >= movingVisitTime) {
+                    shouldMove = true
+                }
+            })
+        })
+
+        if (shouldMove) {
+            this.props.dispatch(calendarActions.updateAppointment(
+                movingVisit.appointmentId,
+                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId}))
+            );
+        }
+        this.props.dispatch(calendarActions.toggleMoveVisit(false))
+        this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+        this.setState({
+            movingVisit: null,
+            movingVisitDuration: 0,
+            movingVisitMillis: 0,
+            movingVisitStaffId: null
+        })
+    }
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading } = this.props;
 
@@ -154,7 +213,13 @@ class TabScroll extends Component{
                                                                     handleUpdateClient(client)
 
 
-                                                                }}>Просмотреть клиента</a>
+                                                                }}><p>Просмотреть клиента</p>
+                                                            </a>
+                                                            <button data-toggle="modal"
+                                                                    data-target=".start-moving-modal"
+                                                                    onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '0 auto', display: 'block'}}>
+                                                                Перенести визит
+                                                            </button>
                                                         </div>))
                                                     }
                                                 </div>
@@ -217,12 +282,15 @@ class TabScroll extends Component{
                                         className={`col-tab ${currentTime <= moment().format("x")
                                         && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                                                             ${currentTime < parseInt(moment().format("x")) ? '' : ""}
-                                                                            ${notExpired ? '' : "expired"}
+                                                                            ${notExpired ? '' : "expired "}
+                                                                            ${notExpired && this.props.isStartMovingVisit ? 'start-moving ' : ''}
                                                                             ${clDate ? 'closedDateTick' : ""}`}
                                         time={currentTime}
+                                        data-toggle={notExpired && this.props.isStartMovingVisit && "modal"}
+                                        data-target={notExpired && this.props.isStartMovingVisit && ".move-visit-modal"}
                                         timeEnd={workingTimeEnd}
                                         staff={workingStaffElement.staffId}
-                                        onClick={() => notExpired && changeTime(currentTime, workingStaffElement, numbers, false, null)}
+                                        onClick={() => notExpired && (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null))}
                                     ><span
                                         className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
                                     </div>
@@ -241,4 +309,14 @@ class TabScroll extends Component{
     }
 
 }
-export default TabScroll;
+
+function mapStateToProps(state) {
+    const { calendar: { isStartMovingVisit, isMoveVisit } } = state;
+
+    return {
+        isStartMovingVisit,
+        isMoveVisit
+    }
+}
+
+export default connect(mapStateToProps)(TabScroll);

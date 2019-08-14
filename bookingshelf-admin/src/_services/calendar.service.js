@@ -11,6 +11,7 @@ export const calendarService = {
     approveAllAppointment,
     deleteAppointment,
     deleteReservedTime,
+    updateAppointment,
     getReservedTime,
     addReservedTime
 };
@@ -76,6 +77,25 @@ function approveAppointment(appointmentId) {
     const params=JSON.stringify({
         "approved": true
     });
+    const requestOptions = {
+        method: 'PATCH',
+        body: params,
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/appointments/${appointmentId}`, requestOptions)
+        .then(handleResponse)
+        .then(appointment => {
+            return appointment;
+        });
+}
+
+function updateAppointment(appointmentId, params) {
     const requestOptions = {
         method: 'PATCH',
         body: params,

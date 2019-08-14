@@ -66,7 +66,6 @@ class PaymentsPage extends Component {
 
     AddingInvoice() {
         let {chosenAct} = this.state;
-        debugger
         if (chosenAct && chosenAct.packetId) {
             this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                     {
@@ -296,7 +295,6 @@ class PaymentsPage extends Component {
         } else if (pathname === '/invoices' ) {
             document.title = "Счета | Онлайн-запись";
         }
-        debugger
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -701,7 +699,6 @@ class PaymentsPage extends Component {
                                                         </div>
                                                         {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
                                                             let name = this.props.payments.packets.find(item => item.packetId === packet.packetId)
-                                                            debugger
                                                             return (
                                                                 <div className="table-row">
                                                                     <div className="table-description">
@@ -945,7 +942,6 @@ class PaymentsPage extends Component {
         const {defaultList}= this.state;
 
         const searchList = defaultList.filter((item)=>{
-            debugger
             return  String(item.invoiceId).toLowerCase().includes(String(this.search.value).toLowerCase())
                 || String(moment(item.createdDateMillis).format('DD.MM.YYYY')).toLowerCase().includes(String(this.search.value).toLowerCase())
             || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
@@ -979,7 +975,6 @@ class PaymentsPage extends Component {
 
 function mapStateToProps(state) {
     const { company, payments} = state;
-    debugger
     return {
         company, payments
     };
