@@ -35,12 +35,14 @@ class NewStaff extends React.Component {
             emailIsValid: props.edit && props.edit,
             edit: props.edit && props.edit,
             preview: null,
+            isQuestionsDropdown: false,
             selectedItems: [],
             staffs:props.staff && props.staff
 
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateStaff = this.updateStaff.bind(this);
         this.addStaff = this.addStaff.bind(this);
@@ -76,6 +78,10 @@ class NewStaff extends React.Component {
         value.map(m=>m.value && st.push({'staffId': m.value}));
 
         this.setState({ staff: {...staff, 'costaffs': st }});
+    }
+
+    toggleDropdown(dropdownKey) {
+        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
     }
 
     render() {
@@ -151,7 +157,13 @@ class NewStaff extends React.Component {
                                                                 <option value="2">Средний</option>
                                                                 <option value="3">Админ</option>
                                                             </select>
-                                                            <p>Напарник</p>
+                                                            <p>Напарник <div className="questions_black" onClick={() => this.toggleDropdown("isCoworkerDropdown")}>
+                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                    {this.state.isCoworkerDropdown && <span className="questions_dropdown">
+                                                                                Например: Если у вас 2 сотрудника на 1 кабинет
+                                                                            </span>}
+                                                                </div>
+                                                            </p>
                                                             {/*<select className="custom-select" value={staff.costaffs && staff.costaffs[0] && staff.costaffs[0].staffId} name="costaffs" onChange={this.handleChangeCoStaff}>*/}
                                                                 {/*<option value="">-</option>*/}
                                                                 {/*{ staffs && staffs.staff && staffs.staff.map((st)=>(!staff.staffId || (staff.staffId && staff.staffId !== st.staffId)) && <option value={st.staffId}>{st.lastName} {st.firstName}</option>)}*/}
@@ -210,10 +222,14 @@ class NewStaff extends React.Component {
                                                                 disabled={edit}
                                                             />
                                                             <div className="input_limited_wrapper_3_digital">
-                                                                <p>Описание (специализация)</p>
-                                                                <div className="questions_black" title="Например: Массажист высшей категории">
-                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                                                </div>
+                                                                <p>Описание (специализация) <div className="questions_black" onClick={() => this.toggleDropdown("isQuestionsDropdown")}>
+                                                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                        {this.state.isQuestionsDropdown && <span className="questions_dropdown">
+                                                                            Например: Массажист высшей категории
+                                                                        </span>}
+                                                                    </div>
+                                                                </p>
+
                                                                 <input
                                                                     type="text"
                                                                     placeholder=""
@@ -231,7 +247,13 @@ class NewStaff extends React.Component {
                                                                     <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={this.toggleChange}/>
                                                                     <span className="check"/>
                                                                     Включить онлайн запись
-                                                                </label>
+                                                                </label>&nbsp;
+                                                                <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisDropdown")}>
+                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                    {this.state.isOnlineZapisDropdown && <span className="questions_dropdown">
+                                                                                    Включает возможность записи к сотруднику через онлайн-запись
+                                                                                </span>}
+                                                                </div>
                                                             </div>
 
 
