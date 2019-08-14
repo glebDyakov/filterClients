@@ -215,6 +215,21 @@ class NewStaff extends React.Component {
                                                                     Включить онлайн запись
                                                                 </label>
                                                             </div>
+                                                            <div className="input_limited_wrapper_3_digital">
+                                                                <p>Описание (специализация)</p>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder=""
+                                                                    name="description"
+                                                                    value={staff.description}
+                                                                    onChange={this.handleChange}
+                                                                    maxLength="120"
+                                                                />
+                                                                <span className="input_limited_3_digital">
+                                                                    {staff.description ? staff.description.length : 0}/120
+                                                                </span>
+                                                            </div>
+
                                                             {/*<p>Конец работы</p>*/}
                                                             {/*<div className="button-calendar button-calendar-inline">*/}
                                                                 {/*<input type="button" data-range="false" value="___"*/}
