@@ -71,6 +71,13 @@ body{
             opacity: 1;
         }
 }
+.questions_black {
+    opacity: 0.7;
+
+    &:hover{
+        opacity: 1;
+    }
+}
 p{
     margin-bottom: 0;
 }
@@ -2682,6 +2689,16 @@ select{
     position: absolute;
     bottom: 10px;
     right: 24px;
+
+    img {
+        width: auto;
+        height: 20px;
+    }
+}
+.questions_black {
+    position: absolute;
+    top: 0;
+    left: 172px;
 
     img {
         width: auto;

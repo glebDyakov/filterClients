@@ -13,6 +13,7 @@ import moment from "moment";
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
+import Link from "react-router-dom/es/Link";
 
 class NewStaff extends React.Component {
     constructor(props) {
@@ -208,15 +209,11 @@ class NewStaff extends React.Component {
                                                                 className={edit ? "disabledField" : ""}
                                                                 disabled={edit}
                                                             />
-                                                            <div className="check-box">
-                                                                <label>
-                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={this.toggleChange}/>
-                                                                    <span className="check"/>
-                                                                    Включить онлайн запись
-                                                                </label>
-                                                            </div>
                                                             <div className="input_limited_wrapper_3_digital">
                                                                 <p>Описание (специализация)</p>
+                                                                <div className="questions_black" title="Например: Массажист высшей категории">
+                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                </div>
                                                                 <input
                                                                     type="text"
                                                                     placeholder=""
@@ -229,6 +226,14 @@ class NewStaff extends React.Component {
                                                                     {staff.description ? staff.description.length : 0}/120
                                                                 </span>
                                                             </div>
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={this.toggleChange}/>
+                                                                    <span className="check"/>
+                                                                    Включить онлайн запись
+                                                                </label>
+                                                            </div>
+
 
                                                             {/*<p>Конец работы</p>*/}
                                                             {/*<div className="button-calendar button-calendar-inline">*/}
