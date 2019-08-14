@@ -36,12 +36,15 @@ class NewStaff extends React.Component {
             edit: props.edit && props.edit,
             preview: null,
             isQuestionsDropdown: false,
+            isCoworkerDropdown: false,
+            isOnlineZapisDropdown: false,
             selectedItems: [],
             staffs:props.staff && props.staff
 
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateStaff = this.updateStaff.bind(this);
@@ -67,7 +70,20 @@ class NewStaff extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
+        if(this.state.isQuestionsDropdown || this.state.isCoworkerDropdown || this.state.isOnlineZapisDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    }
+
+    handleOutsideClick() {
+        this.setState({
+            isQuestionsDropdown: false,
+            isCoworkerDropdown: false,
+            isOnlineZapisDropdown: false,
+        })
     }
 
     handleChangeMultiple(value, { action, removedValue }) {
