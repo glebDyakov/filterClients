@@ -16,6 +16,7 @@ class HeaderMain extends React.PureComponent {
             isNotificationDropdown: false
         }
         this.openModal = this.openModal.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.toggleNotificationDropdown = this.toggleNotificationDropdown.bind(this);
 
 
@@ -41,6 +42,18 @@ class HeaderMain extends React.PureComponent {
             })
 
         }
+    }
+
+    componentDidUpdate() {
+        if(this.state.isNotificationDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    }
+
+    handleOutsideClick() {
+        this.setState({ isNotificationDropdown: false })
     }
 
     render() {
