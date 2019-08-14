@@ -9,6 +9,8 @@ import {UserPhoto} from "./UserPhoto";
 import {ApproveAppointment} from "./ApproveAppointment";
 import {DeleteAppointment} from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
+import {MoveVisit} from "./MoveVisit";
+import {StartMovingVisit} from "./StartMovingVisit";
 import moment from 'moment';
 import {staffActions} from "../../_actions";
 
@@ -211,6 +213,8 @@ class CalendarModals extends Component {
                     />
                     }
                     <UserPhoto/>
+                    <MoveVisit />
+                    <StartMovingVisit />
                     <ApproveAppointment
                         id={approvedId}
                         approve={this.approveAppointment}

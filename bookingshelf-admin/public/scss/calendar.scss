@@ -577,6 +577,12 @@
                     background: rgba(210, 210, 210, 0.2);
                     cursor: not-allowed;
                 }
+                &.start-moving {
+                    border: 1px solid black;
+                    &:hover {
+                        border-color: #ed1b24;
+                    }
+                }
 
                 .fade-time {
                     font-size: 10px;
@@ -1270,6 +1276,8 @@
 
     .save-notes-modal,
     .delete-notes-modal,
+    .start-moving-modal,
+    .move-visit-modal,
     .delete-reserve-modal,
     .start-modal{
 
@@ -1305,6 +1313,11 @@
                     float: right;
                 }
             }
+        }
+    }
+    .move-visit-modal {
+        .modal-content {
+            width: 275px !important;
         }
     }
 }

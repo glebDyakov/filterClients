@@ -223,7 +223,6 @@ class CalendarPage extends PureComponent {
 
     // handleSocketDispatch(payload){
     //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
-    //     debugger
     //     // this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
     //     if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
     //         this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
@@ -428,6 +427,19 @@ class CalendarPage extends PureComponent {
             }
         }
 
+        if (newProps.calendar.isAppointmentUpdated) {
+            let startTime, endTime;
+            if (this.state.type === 'day') {
+                startTime = this.state.selectedDayMoment.startOf('day').format('x');
+                endTime = this.state.selectedDayMoment.endOf('day').format('x');
+            } else {
+                startTime = moment(this.state.selectedDays[0]).startOf('day').format('x');
+                endTime = moment(this.state.selectedDays[6]).endOf('day').format('x');
+            }
+            this.props.dispatch(calendarActions.updateAppointmentFinish())
+            this.refreshTable(startTime, endTime);
+        }
+
 
         // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
         //     this.setState({flagStaffId: false});
@@ -454,7 +466,6 @@ class CalendarPage extends PureComponent {
         //         if (event.data[0]==='{'){
         //             const finalData = JSON.parse(event.data);
         //             if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-        //                 debugger
         //                 this.handleSocketDispatch(finalData);
         //             }
         //         }
