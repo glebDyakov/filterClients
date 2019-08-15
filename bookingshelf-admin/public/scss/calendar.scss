@@ -578,7 +578,7 @@
                     cursor: not-allowed;
                 }
                 &.start-moving {
-                    border: 1px solid black;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
                     &:hover {
                         border-color: #ed1b24;
                     }
@@ -694,6 +694,7 @@
                                 left: auto;
                                 bottom: auto;
                                 top: auto;
+                                z-index: 9999;
                                 &::before {
                                     left: 0;
                                     margin: auto;
@@ -715,7 +716,6 @@
                     position: absolute;
                     top: 0;
                     display: block;
-                    z-index: 1;
                     cursor: auto;
                     white-space: nowrap;
 

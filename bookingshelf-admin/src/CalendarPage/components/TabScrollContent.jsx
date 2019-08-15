@@ -11,7 +11,8 @@ class TabScroll extends Component{
             movingVisit: null,
             movingVisitDuration: 0,
             movingVisitMillis: 0,
-            movingVisitStaffId: null
+            movingVisitStaffId: null,
+            prevVisitStaffId: null
         }
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
@@ -28,8 +29,8 @@ class TabScroll extends Component{
         const activeItemWithStaffId = this.props.appointments.find(item =>
             item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
         );
-        const movingVisitStaffId = activeItemWithStaffId.staff.staffId
-        this.setState({ movingVisit, movingVisitDuration: totalDuration })
+        const prevVisitStaffId = activeItemWithStaffId.staff.staffId
+        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId })
     }
 
     moveVisit(movingVisitStaffId, time) {
@@ -37,7 +38,7 @@ class TabScroll extends Component{
     }
 
     makeMovingVisitQuery() {
-        const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis } = this.state;
+        const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
 
         let shouldMove = false
         const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
@@ -51,6 +52,11 @@ class TabScroll extends Component{
             })
         })
 
+        if (prevVisitStaffId === movingVisitStaffId && movingVisit.appointmentTimeMillis <= movingVisitTime
+            && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= movingVisitTime) {
+            shouldMove = true
+        }
+
         if (shouldMove) {
             this.props.dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
@@ -63,7 +69,8 @@ class TabScroll extends Component{
             movingVisit: null,
             movingVisitDuration: 0,
             movingVisitMillis: 0,
-            movingVisitStaffId: null
+            movingVisitStaffId: null,
+            prevVisitStaffId: null
         })
     }
     render(){
@@ -191,7 +198,10 @@ class TabScroll extends Component{
                                                         <div className="msg-inner">
                                                             <p>
                                                                 <p className="new-text">Запись</p>
-                                                                <button type="button" onClick={()=> $(`.${appointment[0][0].appointmentId}`).removeClass('selected')} className="close"></button>
+                                                                <button type="button" onClick={()=> {
+                                                                    $(`.${appointment[0][0].appointmentId}`).removeClass('selected')
+                                                                    this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                                                }} className="close" />
                                                             </p>
                                                             <p className="client-name-book">Клиент</p>
                                                             <p className="name">{client.firstName} {client.lastName}</p>
