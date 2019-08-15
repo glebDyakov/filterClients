@@ -24,14 +24,29 @@ class AppointmentFromSocket extends React.Component {
         const {appointmentSocketMessageFlag, appointmentSocketMessage, closeAppointmentFromSocket, staff, client} = this.props;
         const {payload} = this.props.appointmentSocketMessage;
 
-            const activeStaff = payload && payload.staffId &&  staff && staff.staff && staff.staff.find(item => {
-                return((item.staffId) === (payload.staffId));});
+        const activeStaff = payload && payload.staffId &&  staff && staff.staff && staff.staff.find(item => {
+            return((item.staffId) === (payload.staffId));});
 
-            const activeClient = payload && payload.clientId && client && client.client && client.client.find(item => {
-                return((item.clientId) === (payload.clientId));});
+        const activeClient = payload && payload.clientId && client && client.client && client.client.find(item => {
+            return((item.clientId) === (payload.clientId));});
 
+        let socketTitle, socketFooterText;
 
-
+        switch (appointmentSocketMessage && appointmentSocketMessage.wsMessageType) {
+            case "APPOINTMENT_CREATED":
+                socketTitle = "НОВАЯ ЗАПИСЬ";
+                socketFooterText = "Просмотреть запись"
+                break;
+            case "APPOINTMENT_DELETED":
+                socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
+                socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
+                break
+            case "APPOINTMENT_MOVED":
+                socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
+                socketFooterText = "Просмотреть запись"
+                break;
+            default:
+        }
 
         return (
             <div className="appointment-socket-modal">
@@ -42,7 +57,7 @@ class AppointmentFromSocket extends React.Component {
 
                     <div style={{width: "65%"}}>
                         <div className="appointment-socket-modal-title" style={{position:"relative"}}>
-                            <p>{appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"НОВАЯ ЗАПИСЬ":`ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`}</p>
+                            <p>{socketTitle}</p>
                             <button className="close" onClick={()=>closeAppointmentFromSocket()}></button>
                         </div>
                         <p className="service_name"><strong>
@@ -60,7 +75,7 @@ class AppointmentFromSocket extends React.Component {
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
                             {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                         </p>
-                        <p style={{color: "#3E90FF"}}>{appointmentSocketMessage && appointmentSocketMessage.wsMessageType==="APPOINTMENT_CREATED"?"Просмотреть запись":(payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')}</p>
+                        <p style={{color: "#3E90FF"}}>{socketFooterText}</p>
 
                     </div>
                 </div>

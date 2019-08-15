@@ -334,7 +334,7 @@ q:before, q:after { content:''; }
     vertical-align: top;
     margin-right: 1%;
     margin-bottom: 10px;
-    height: 70px;
+    height: 98px;
 }
 .specialist div:nth-child(2n+2){
     margin-right: 0;
