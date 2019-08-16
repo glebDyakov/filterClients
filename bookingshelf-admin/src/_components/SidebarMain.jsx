@@ -376,10 +376,15 @@ class SidebarMain extends Component {
 
     goToPageCalendar(id, url){
         $('.modal_counts').modal('hide')
+        const { openedTab } = this.state;
 
         this.props.history.push(url);
 
-        this.approveAppointment(id)
+        if (openedTab === 'new') {
+            this.approveAppointment(id)
+        } else if (openedTab === 'moved') {
+            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false })))
+        }
         this.props.dispatch(calendarActions.setScrollableAppointment(id))
         // const className = `.${id}`;
         //  setTimeout(() => {
