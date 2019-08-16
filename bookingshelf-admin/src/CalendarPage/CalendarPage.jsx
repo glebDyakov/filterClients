@@ -335,7 +335,6 @@ class CalendarPage extends PureComponent {
 
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'})
 
-        $('.calendar-list .tabs-scroll .tab-content-list div').css({'cursor': 'cell'});
         $('.notes').css({'cursor': 'default'});
         $('.notes-title').css({'cursor': 'grabbing'});
         $('.expired').css({'cursor': 'not-allowed'});

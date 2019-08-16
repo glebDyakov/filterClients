@@ -586,6 +586,7 @@ q:before, q:after { content:''; }
 .staff_popup .mobile_block {
     width: 28%;
     float: left;
+    text-align: right;
     min-width: 130px;
     flex-direction: column;
 }

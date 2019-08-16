@@ -105,20 +105,22 @@ function editAppointment(params) {
 
 function updateAppointment(id, params) {
     return dispatch => {
+        dispatch(request());
         calendarService.updateAppointment(id, params)
             .then(
                 appointment => {
                     dispatch(success());
                 },
                 error => {
-                    // dispatch(failure(error.toString()));
+                    dispatch(failure(error.toString()));
                     // dispatch(alertActions.error(error.toString()));
                 }
             );
     };
+    function request(reservedTime) { return { type: calendarConstants.UPDATE_APPOINTMENT, reservedTime } }
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated: true } }
-    // function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
+    function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
 }
 
 function updateAppointmentFinish(id, params) {

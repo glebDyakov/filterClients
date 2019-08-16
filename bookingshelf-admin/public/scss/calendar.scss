@@ -450,6 +450,7 @@
             margin-bottom: 2px;
 
             .col-tab {
+                cursor: cell;
                 &:hover .visible-fade-time{
                     display: block;
                 }
@@ -596,10 +597,6 @@
                     float:right;
                     font-size: 10px;
                     width: 100%;
-                    display:none;
-                    @media screen and(max-width: $tablet-width) {
-                        display: block;
-                    }
 
                 }
 
@@ -679,9 +676,6 @@
                     -moz-user-select: none;
                     -khtml-user-select: none;
                     user-select: none;
-                    &:nth-child(n+2) {
-                        cursor: cell;
-                    }
                     &.present-time {
                         border-bottom: 2px solid #ed1b24;
                         border-radius: 0px;
