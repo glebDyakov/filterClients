@@ -59,11 +59,19 @@ export function calendar(state = initialState, action) {
                 ...state,
                 isMoveVisit: action.isMoveVisit
             };
+        case calendarConstants.UPDATE_APPOINTMENT:
+
+            return {
+                ...state,
+                isAppointmentUpdated: action.isAppointmentUpdated,
+                isLoading: true
+            };
         case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
 
             return {
                 ...state,
-                isAppointmentUpdated: action.isAppointmentUpdated
+                isAppointmentUpdated: action.isAppointmentUpdated,
+                isLoading: false
             };
         case calendarConstants.ADD_RESERVED_TIME_REQUEST:
             return {
@@ -193,6 +201,7 @@ export function calendar(state = initialState, action) {
                 reservedTime: reservedDeleted
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
+        case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
             return {...state, isLoading:false};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:
             return {...state, isLoading:false};
