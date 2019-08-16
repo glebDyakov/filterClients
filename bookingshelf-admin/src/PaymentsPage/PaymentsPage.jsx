@@ -610,8 +610,9 @@ class PaymentsPage extends Component {
                                                     <div className="search col-7">
                                                         <input type="search" placeholder="Введите название счета"
                                                                style={{width: "175%"}}
-                                                               aria-label="Search" ref={input => this.search = input}
-                                                               onChange={this.handleSearch}/>
+                                                               ref={input => this.search = input}
+                                                               onChange={this.handleSearch}
+                                                        autoComplete="off"/>
                                                         <button className="search-icon" type="submit"/>
                                                     </div>
                                                 </div>
