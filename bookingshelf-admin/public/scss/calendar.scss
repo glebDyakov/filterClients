@@ -680,6 +680,8 @@
                         border-bottom: 2px solid #ed1b24;
                         border-radius: 0px;
                         margin-right: 0px;
+                        z-index: 9000;
+                        position: relative;
                     }
                     .notes{
                         &.selected{
@@ -708,6 +710,7 @@
                     max-width: 100% !important;
                     min-width: 100% !important;
                     position: absolute;
+                    z-index: 1;
                     top: 0;
                     display: block;
                     cursor: auto;
@@ -976,6 +979,7 @@
                         font-size: 11px;
                         padding: 3px 5px 4px 0;
                         color: #fff;
+                        cursor: pointer;
                         text-align: right;
                         position: relative;
                         display: block;

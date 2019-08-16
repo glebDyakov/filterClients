@@ -338,7 +338,6 @@ class SidebarMain extends Component {
                                 </React.Fragment>
                                 }
                             </div>
-                            }
                         </div>
                     </div>
                 </div>
