@@ -170,6 +170,8 @@ class App extends React.Component {
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
                 this.props.dispatch(companyActions.getNewAppointments());
+            } else if (payload.wsMessageType === 'APPOINTMENT_MOVED') {
+                this.props.dispatch(companyActions.getNewAppointments());
             }
         }
     }

@@ -82,8 +82,9 @@ class HeaderMain extends React.PureComponent {
                 </div>
 
                 {((count && count.appointments && count.appointments.count>0) ||
-                (count && count.canceled && count.canceled.count>0))
-                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span></div>}
+                (count && count.canceled && count.canceled.count>0) ||
+                (count && count.moved && count.moved.count>0))
+                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span></div>}
 
                 <div className="col">
                     <p className="red-title-block mob-setting ">

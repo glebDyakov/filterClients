@@ -129,7 +129,7 @@ class LoginPage extends React.Component {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h4 className="modal-title">Сброс пароля</h4>
-                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                    <button type="button" className="close" data-dismiss="modal" />
                                 </div>
                                 <div className="form-group mr-3 ml-3">
                                     <p>Электронный адрес</p>

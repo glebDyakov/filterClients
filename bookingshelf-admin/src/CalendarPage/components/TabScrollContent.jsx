@@ -225,11 +225,12 @@ class TabScroll extends Component{
 
                                                                 }}><p>Просмотреть клиента</p>
                                                             </a>
-                                                            <button data-toggle="modal"
+                                                            {currentTime >= parseInt(moment().format("x")) && <button data-toggle="modal"
                                                                     data-target=".start-moving-modal"
                                                                     onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '0 auto', display: 'block'}}>
                                                                 Перенести визит
                                                             </button>
+                                                            }
                                                         </div>))
                                                     }
                                                 </div>
