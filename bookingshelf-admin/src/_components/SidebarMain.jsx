@@ -224,8 +224,9 @@ class SidebarMain extends Component {
                             <span>{item.name}</span>
                             {keyStore===0 &&
                             ((count && count.appointments && count.appointments.count>0) ||
-                            (count && count.canceled && count.canceled.count>0))
-                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span>}
+                            (count && count.canceled && count.canceled.count>0) ||
+                            (count && count.moved && count.moved.count>0))
+                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
                         </a>
                     </li>
                     );})
@@ -270,7 +271,7 @@ class SidebarMain extends Component {
                                         {count && count.appointments && count.appointments.count}
                                     </span></button>
                                     <button type="button" className={"float-left button small-button " + (openedTab === 'deleted' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'deleted'})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
-                                    <button type="button" className={"float-left button small-button " + (openedTab === 'moved' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'moved'})}>Перемещенные записи<span  className="counter">{movedCount}</span></button>
+                                    <button type="button" className={"float-left button small-button " + (openedTab === 'moved' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'moved'})}>Перемещенные записи<span  className="counter">{count && count.moved && count.moved.count}</span></button>
                                 </div>
                                 {openedTab === 'new' && <React.Fragment>
                                     <div className="not-approved-list">
