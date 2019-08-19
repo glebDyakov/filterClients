@@ -19,7 +19,7 @@ class SidebarMain extends Component {
             appointmentsCount: props.appointmentsCount,
             collapse: localStorage.getItem('collapse') === 'true',
             calendar: props.calendar,
-            newOpened: true,
+            openedTab: 'new',
             canceledOpened: false,
             userSettings: false
 
@@ -84,7 +84,7 @@ class SidebarMain extends Component {
     render() {
         const { location, calendar: { appointmentsCanceled, appointmentsCount }, staff, client }=this.props;
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
-        const { authentication, menu, company, collapse, newOpened,  count, userSettings }=this.state;
+        const { authentication, menu, company, collapse, openedTab,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
@@ -122,6 +122,56 @@ class SidebarMain extends Component {
                                     {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                        // style={{width: "30%", textAlign: "left"}}
+                                    >
+                                        <strong>Время: </strong>
+                                        {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
+                                    </p>
+                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+
+                                </div>
+                            </div>
+                        </li>
+                    )
+                }
+                return resultMarkup;
+            })
+        )
+
+        let movedCount = 0;
+        const appointmentMovedMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+
+            appointmentInfo.appointments.map((appointment) => {
+                let resultMarkup = null;
+                if((appointment.moved) &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
+                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
+                        return((item.staffId) === (appointmentInfo.staff.staffId));});
+
+                    const activeClient = client && client.client && client.client.find(item => {
+                        return((item.clientId) === (appointment.clientId));});
+                    movedCount++;
+                    resultMarkup = (
+                        <li onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                            <div className="service_item">
+                                <div className="img-container" style={{width: "15%"}}>
+                                    <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                         className="img"/></div>
+                                <div style={{width: "40%"}}>
+                                    <p className="service_name"
+                                       style={{
+                                           // width: "65%",
+                                           // marginRight: "5%",
+                                           // wordWrap: "break-word"
+                                       }}
+                                    ><strong>{appointment.serviceName}</strong>
+                                        {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                    </p><br/>
+                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                </div>
+                                <div style={{width: "40%"}}>
+                                    <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
+                                    {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                    <p className="service_time" style={{textTransform: 'capitalize'}}
+                                        // style={{width: "30%", textAlign: "left"}}
                                     >
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
@@ -174,8 +224,9 @@ class SidebarMain extends Component {
                             <span>{item.name}</span>
                             {keyStore===0 &&
                             ((count && count.appointments && count.appointments.count>0) ||
-                            (count && count.canceled && count.canceled.count>0))
-                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span>}
+                            (count && count.canceled && count.canceled.count>0) ||
+                            (count && count.moved && count.moved.count>0))
+                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
                         </a>
                     </li>
                     );})
@@ -212,68 +263,80 @@ class SidebarMain extends Component {
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
 
-                            {newOpened &&
+
                             <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
                                 <div className="button-field">
-                                    <button type="button" className="float-left button small-button">Новые записи <span className="counter">
+                                    <button type="button" className={"float-left button small-button " + (openedTab === 'new' ? '' : 'disabled')}
+                                            onClick={() => this.setState({openedTab: 'new'})}>Новые записи <span className="counter">
                                         {count && count.appointments && count.appointments.count}
                                     </span></button>
-                                    <button type="button" className="float-left button small-button disabled" onClick={()=>this.setState({'newOpened':false})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
+                                    <button type="button" className={"float-left button small-button " + (openedTab === 'deleted' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'deleted'})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
+                                    <button type="button" className={"float-left button small-button " + (openedTab === 'moved' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'moved'})}>Перемещенные записи<span  className="counter">{count && count.moved && count.moved.count}</span></button>
                                 </div>
-                                <div className="not-approved-list">
-                                    {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentCountMarkup}
-                                    {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
-                                    && <div className="loader" style={{left: '0', width: '100%', height: '74%', top:'120px'}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                {openedTab === 'new' && <React.Fragment>
+                                    <div className="not-approved-list">
+                                        {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentCountMarkup}
+                                        {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
+                                        && <div className="loader"
+                                                style={{left: '0', width: '100%', height: '74%', top: '120px'}}><img
+                                            src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
-                                </div>
-                                {appointmentsCount && (
-                                    <div className="button-field down-button">
-                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, false)}>Отметить всё как просмотрено</button>
-                                    </div>)}
-                            </div>
-                            }
-                            {!newOpened &&
-                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
+                                    </div>
+                                    {appointmentsCount && (
+                                        <div className="button-field down-button">
+                                            <button className="button approveAll"
+                                                    onClick={() => this.approveAllAppointment(true, false)}>Отметить всё как просмотрено
+                                            </button>
+                                        </div>)}
+                                </React.Fragment>
+                                }
+                                {openedTab === 'deleted' && <React.Fragment>
+                                    <div className="not-approved-list">
+                                        {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
+                                        appointmentsCanceled.map((appointment) =>
+                                        {
+                                            return(
+                                                !appointment.approved &&
+                                                <li className="opacity0">
+                                                    <div className="service_item">
+                                                        <p className="service_name" style={{
+                                                            width: "65%",
+                                                            marginRight: "5%",
+                                                            wordWrap: "break-word"
+                                                        }}>{appointment.serviceName}<br/>
+                                                            <span
+                                                                className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                                        </p>
+                                                        <p className="service_time"
+                                                           style={{width: "30%", textAlign: "left"}}><strong
+                                                            style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</strong>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            )})}
+                                    </div>
+                                </React.Fragment>
+                                }
+                                {openedTab === 'moved' && <React.Fragment>
+                                    <div className="not-approved-list">
+                                        {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentMovedMarkup}
+                                        {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
+                                        && <div className="loader"
+                                                style={{left: '0', width: '100%', height: '74%', top: '120px'}}><img
+                                            src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
-                                <div className="button-field">
-                                    <button type="button" className="float-left button small-button disabled"
-                                            onClick={() => this.setState({'newOpened': true})}>Новые
-                                        записи<span className="counter">
-                                            {count && count.appointments && count.appointments.count}
-                                            </span></button>
-                                    <button type="button" className="float-left button small-button">Удаленные записи<span
-                                        className="counter">{count && count.canceled && count.canceled.count}</span></button>
-                                </div>
-                                <div className="not-approved-list">
-                                {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
-                                appointmentsCanceled.map((appointment) =>
-                                {
-                                    return(
-                                    !appointment.approved &&
-                                    <li className="opacity0">
-                                        <div className="service_item">
-                                            <p className="service_name" style={{
-                                                width: "65%",
-                                                marginRight: "5%",
-                                                wordWrap: "break-word"
-                                            }}>{appointment.serviceName}<br/>
-                                                <span
-                                                    className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
-                                            </p>
-                                            <p className="service_time"
-                                               style={{width: "30%", textAlign: "left"}}><strong
-                                                style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</strong>
-                                            </p>
-                                        </div>
-                                    </li>
-                                )})}
+                                    </div>
+                                    {appointmentsCount && (
+                                        <div className="button-field down-button">
+                                            <button className="button approveAll"
+                                                    onClick={() => {
+                                                        // this.props.dispatch(calendarActions.approveMovedAppointment());
+                                                    }}>Отметить всё как просмотрено
+                                            </button>
+                                        </div>)}
+                                </React.Fragment>
+                                }
                             </div>
-                                {appointmentsCount && (
-                                    <div className="button-field down-button">
-                                        <button className="button approveAll" onClick={()=>this.approveAllAppointment(true, true)}>Отметить всё как просмотрено</button>
-                                    </div>)}
-                            </div>
-                            }
                         </div>
                     </div>
                 </div>
@@ -311,10 +374,15 @@ class SidebarMain extends Component {
 
     goToPageCalendar(id, url){
         $('.modal_counts').modal('hide')
+        const { openedTab } = this.state;
 
         this.props.history.push(url);
 
-        this.approveAppointment(id)
+        if (openedTab === 'new') {
+            this.approveAppointment(id)
+        } else if (openedTab === 'moved') {
+            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false })))
+        }
         this.props.dispatch(calendarActions.setScrollableAppointment(id))
         // const className = `.${id}`;
         //  setTimeout(() => {

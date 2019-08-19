@@ -18,7 +18,7 @@ class TabOne extends  PureComponent{
                         refreshTimetable();
                     }}>Вперед</span>}
                 </div>
-                <ul className={`staff_popup ${staffs && staffs.length < 4 ? "staff_popup_large" : ""}`}>
+                <ul className="staff_popup">
                     {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
 
 
@@ -31,16 +31,24 @@ class TabOne extends  PureComponent{
                                     <img
                                         src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                         alt=""/>
-                                    <span>{staff.firstName} <br/>{staff.lastName}</span>
+                                    <span>{staff.firstName} <br/>{staff.lastName} <br/>
+                                        <span style={{ fontSize: "13px"}}>{staff.description}</span>
+                                    </span>
                                 </div>
 
 
                                 {nearestTime && nearestTime.map((time, id)=>
                                     time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                    <div className="mobile_block" key={'time'+id}>
-                                        <span>Ближайшая запись</span>
-                                        <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                    </div>
+                                    <React.Fragment>
+                                        <div className="mobile_block mobile-visible" key={'time'+id}>
+                                            <span>Ближ. запись</span>
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                        </div>
+                                        <div className="mobile_block desktop-visible" key={'time'+id}>
+                                            <span>Ближайшая запись</span>
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                        </div>
+                                    </React.Fragment>
 
                                 )}
 

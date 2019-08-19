@@ -450,6 +450,7 @@
             margin-bottom: 2px;
 
             .col-tab {
+                cursor: cell;
                 &:hover .visible-fade-time{
                     display: block;
                 }
@@ -577,6 +578,12 @@
                     background: rgba(210, 210, 210, 0.2);
                     cursor: not-allowed;
                 }
+                &.start-moving {
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    &:hover {
+                        border-color: #ed1b24;
+                    }
+                }
 
                 .fade-time {
                     font-size: 10px;
@@ -590,10 +597,6 @@
                     float:right;
                     font-size: 10px;
                     width: 100%;
-                    display:none;
-                    @media screen and(max-width: $tablet-width) {
-                        display: block;
-                    }
 
                 }
 
@@ -673,13 +676,12 @@
                     -moz-user-select: none;
                     -khtml-user-select: none;
                     user-select: none;
-                    &:nth-child(n+2) {
-                        cursor: cell;
-                    }
                     &.present-time {
                         border-bottom: 2px solid #ed1b24;
                         border-radius: 0px;
                         margin-right: 0px;
+                        z-index: 9000;
+                        position: relative;
                     }
                     .notes{
                         &.selected{
@@ -688,6 +690,7 @@
                                 left: auto;
                                 bottom: auto;
                                 top: auto;
+                                z-index: 9999;
                                 &::before {
                                     left: 0;
                                     margin: auto;
@@ -707,9 +710,9 @@
                     max-width: 100% !important;
                     min-width: 100% !important;
                     position: absolute;
+                    z-index: 1;
                     top: 0;
                     display: block;
-                    z-index: 1;
                     cursor: auto;
                     white-space: nowrap;
 
@@ -976,6 +979,7 @@
                         font-size: 11px;
                         padding: 3px 5px 4px 0;
                         color: #fff;
+                        cursor: pointer;
                         text-align: right;
                         position: relative;
                         display: block;
@@ -1270,6 +1274,8 @@
 
     .save-notes-modal,
     .delete-notes-modal,
+    .start-moving-modal,
+    .move-visit-modal,
     .delete-reserve-modal,
     .start-modal{
 
@@ -1305,6 +1311,11 @@
                     float: right;
                 }
             }
+        }
+    }
+    .move-visit-modal {
+        .modal-content {
+            width: 275px !important;
         }
     }
 }

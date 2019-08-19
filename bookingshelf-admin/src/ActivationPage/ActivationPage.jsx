@@ -10,9 +10,7 @@ class ActivationPage extends React.Component {
 
     componentDidMount() {
         const {company} = this.props.match.params;
-        if (!this.props.loginChecked) {
-            this.props.dispatch(userActions.activate(company));
-        }
+        this.props.dispatch(userActions.activate(company));
     }
 
     render() {

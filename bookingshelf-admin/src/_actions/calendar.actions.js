@@ -13,11 +13,16 @@ export const calendarActions = {
     editAppointmentTime,
     approveAppointment,
     approveAllAppointment,
+    approveMovedAppointment,
     deleteAppointment,
     getReservedTime,
     addReservedTime,
     deleteReservedTime,
     getAppointmentsNewSocket,
+    updateAppointment,
+    toggleMoveVisit,
+    toggleStartMovingVisit,
+    updateAppointmentFinish,
     deleteAppointmentsNewSocket
 };
 
@@ -97,6 +102,35 @@ function editAppointment(params) {
 
     function success(appointment) { return { type: calendarConstants.EDIT_APPOINTMENT_SUCCESS, appointment } }
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
+}
+
+function updateAppointment(id, params) {
+    return dispatch => {
+        dispatch(request());
+        calendarService.updateAppointment(id, params)
+            .then(
+                appointment => {
+                    dispatch(success());
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    // dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+    function request(reservedTime) { return { type: calendarConstants.UPDATE_APPOINTMENT, reservedTime } }
+
+    function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated: true } }
+    function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
+}
+
+function updateAppointmentFinish(id, params) {
+    return dispatch => {
+        dispatch(success());
+    };
+
+    function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated: false } }
+    // function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
 function editAppointmentTime(params, time1, time2) {
@@ -258,4 +292,32 @@ function approveAllAppointment(approved, canceled) {
                 },
             )
     };
+}
+
+function approveMovedAppointment() {
+    return dispatch => {
+        calendarService.approveMovedAppointment()
+            .then(
+                () => {
+                    dispatch(companyActions.getNewAppointments())
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
+                },
+            )
+    };
+}
+
+function toggleMoveVisit(isMoveVisit) {
+    return dispatch => {
+        dispatch(success(isMoveVisit))
+    }
+    function success(isMoveVisit) { return { type: calendarConstants.MOVE_VISIT_SUCCESS, isMoveVisit } }
+}
+
+function toggleStartMovingVisit(isStartMovingVisit) {
+    return dispatch => {
+        dispatch(success(isStartMovingVisit))
+    }
+    function success(isStartMovingVisit) { return { type: calendarConstants.START_MOVING_VISIT_SUCCESS, isStartMovingVisit } }
 }

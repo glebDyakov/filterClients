@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import config from 'config';
 
 import { history } from '../_helpers';
-import {alertActions, calendarActions, staffActions, menuActions} from '../_actions';
+import {alertActions, calendarActions, staffActions, menuActions, notificationActions} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -92,6 +92,7 @@ class App extends React.Component {
         if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
             && this.state.flagStaffId){
             this.setState({flagStaffId: false});
+            this.props.dispatch(notificationActions.getBalance());
 
 
             const options = {
@@ -124,7 +125,8 @@ class App extends React.Component {
             socket.onmessage = function(event) {
                 if (event.data[0]==='{'){
                     const finalData = JSON.parse(event.data);
-                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
+                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")
+                        || finalData.wsMessageType === "APPOINTMENT_MOVED"){
                         this.handleSocketDispatch(finalData);
                         console.log(`Сокет.пришли данные: ${event.data}`);
                     }
@@ -159,16 +161,16 @@ class App extends React.Component {
         if (this.props.authentication.user.profile.staffId === payload.payload.staffId) {
             this.playSound();
             this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
-            debugger
             if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
 
                 this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
                 this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
             } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED')) {
-                debugger
                 this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+                this.props.dispatch(companyActions.getNewAppointments());
+            } else if (payload.wsMessageType === 'APPOINTMENT_MOVED') {
                 this.props.dispatch(companyActions.getNewAppointments());
             }
         }

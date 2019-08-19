@@ -1,12 +1,78 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
+import {calendarActions} from "../../_actions/calendar.actions";
 
 class TabScroll extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            movingVisit: null,
+            movingVisitDuration: 0,
+            movingVisitMillis: 0,
+            movingVisitStaffId: null,
+            prevVisitStaffId: null
+        }
+        this.startMovingVisit = this.startMovingVisit.bind(this);
+        this.moveVisit = this.moveVisit.bind(this);
+        this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
+    }
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
+        if (newProps.isStartMovingVisit && newProps.isMoveVisit) {
+            this.makeMovingVisitQuery()
+        }
     }
 
+    startMovingVisit(movingVisit, totalDuration) {
+        const activeItemWithStaffId = this.props.appointments.find(item =>
+            item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
+        );
+        const prevVisitStaffId = activeItemWithStaffId.staff.staffId
+        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId })
+    }
+
+    moveVisit(movingVisitStaffId, time) {
+        this.setState({ movingVisitMillis : time, movingVisitStaffId })
+    }
+
+    makeMovingVisitQuery() {
+        const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
+
+        let shouldMove = false
+        const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
+
+        const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
+        availableTimetableItem.availableDays.forEach(item => {
+            item.availableTimes.forEach(time => {
+                if (time.startTimeMillis <= movingVisitTime && time.endTimeMillis >= movingVisitTime) {
+                    shouldMove = true
+                }
+            })
+        })
+
+        if (prevVisitStaffId === movingVisitStaffId && movingVisit.appointmentTimeMillis <= movingVisitTime
+            && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= movingVisitTime) {
+            shouldMove = true
+        }
+
+        if (shouldMove) {
+            this.props.dispatch(calendarActions.updateAppointment(
+                movingVisit.appointmentId,
+                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId}))
+            );
+        }
+        this.props.dispatch(calendarActions.toggleMoveVisit(false))
+        this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+        this.setState({
+            movingVisit: null,
+            movingVisitDuration: 0,
+            movingVisitMillis: 0,
+            movingVisitStaffId: null,
+            prevVisitStaffId: null
+        })
+    }
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading } = this.props;
 
@@ -126,13 +192,16 @@ class TabScroll extends Component{
                                                    style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
                                                     <textarea disabled>{resultTextArea}</textarea>
                                                 </p>
-                                                <div className="msg-client-info">
+                                                {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">
                                                             <p>
                                                                 <p className="new-text">Запись</p>
-                                                                <button type="button" onClick={()=> $(`.${appointment[0][0].appointmentId}`).removeClass('selected')} className="close"></button>
+                                                                <button type="button" onClick={()=> {
+                                                                    $(`.${appointment[0][0].appointmentId}`).removeClass('selected')
+                                                                    this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                                                }} className="close" />
                                                             </p>
                                                             <p className="client-name-book">Клиент</p>
                                                             <p className="name">{client.firstName} {client.lastName}</p>
@@ -154,10 +223,17 @@ class TabScroll extends Component{
                                                                     handleUpdateClient(client)
 
 
-                                                                }}>Просмотреть клиента</a>
+                                                                }}><p>Просмотреть клиента</p>
+                                                            </a>
+                                                            {currentTime >= parseInt(moment().format("x")) && <button data-toggle="modal"
+                                                                    data-target=".start-moving-modal"
+                                                                    onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '0 auto', display: 'block'}}>
+                                                                Перенести визит
+                                                            </button>
+                                                            }
                                                         </div>))
                                                     }
-                                                </div>
+                                                </div> }
                                             </div>
                                         )}
                                     </div>
@@ -217,12 +293,15 @@ class TabScroll extends Component{
                                         className={`col-tab ${currentTime <= moment().format("x")
                                         && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                                                             ${currentTime < parseInt(moment().format("x")) ? '' : ""}
-                                                                            ${notExpired ? '' : "expired"}
+                                                                            ${notExpired ? '' : "expired "}
+                                                                            ${notExpired && this.props.isStartMovingVisit ? 'start-moving ' : ''}
                                                                             ${clDate ? 'closedDateTick' : ""}`}
                                         time={currentTime}
+                                        data-toggle={notExpired && this.props.isStartMovingVisit && "modal"}
+                                        data-target={notExpired && this.props.isStartMovingVisit && ".move-visit-modal"}
                                         timeEnd={workingTimeEnd}
                                         staff={workingStaffElement.staffId}
-                                        onClick={() => notExpired && changeTime(currentTime, workingStaffElement, numbers, false, null)}
+                                        onClick={() => notExpired && (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null))}
                                     ><span
                                         className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
                                     </div>
@@ -241,4 +320,14 @@ class TabScroll extends Component{
     }
 
 }
-export default TabScroll;
+
+function mapStateToProps(state) {
+    const { calendar: { isStartMovingVisit, isMoveVisit } } = state;
+
+    return {
+        isStartMovingVisit,
+        isMoveVisit
+    }
+}
+
+export default connect(mapStateToProps)(TabScroll);

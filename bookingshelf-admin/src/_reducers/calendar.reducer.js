@@ -47,6 +47,32 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 209
             };
+        case calendarConstants.START_MOVING_VISIT_SUCCESS:
+
+            return {
+                ...state,
+                isStartMovingVisit: action.isStartMovingVisit
+            };
+        case calendarConstants.MOVE_VISIT_SUCCESS:
+
+            return {
+                ...state,
+                isMoveVisit: action.isMoveVisit
+            };
+        case calendarConstants.UPDATE_APPOINTMENT:
+
+            return {
+                ...state,
+                isAppointmentUpdated: action.isAppointmentUpdated,
+                isLoading: true
+            };
+        case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
+
+            return {
+                ...state,
+                isAppointmentUpdated: action.isAppointmentUpdated,
+                isLoading: false
+            };
         case calendarConstants.ADD_RESERVED_TIME_REQUEST:
             return {
                 ...state,
@@ -175,6 +201,7 @@ export function calendar(state = initialState, action) {
                 reservedTime: reservedDeleted
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
+        case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
             return {...state, isLoading:false};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:
             return {...state, isLoading:false};
@@ -201,7 +228,6 @@ export function calendar(state = initialState, action) {
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
             let newItem = action.payload.payload;
-            debugger
             newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
             newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
             return {
@@ -243,7 +269,6 @@ export function calendar(state = initialState, action) {
                 isLoadingModalCount: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
-            debugger;
             return {
                 ...state,
                 appointmentsCount: action.appointments,

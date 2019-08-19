@@ -45,13 +45,13 @@ class PaymentsPage extends Component {
                 period: '1',
             },
             finalPrice: this.props.company.settings ? ((this.props.company.settings.countryCode) ? ((this.props.company.settings.countryCode) === 'BLR' ?
-                '18' : ((this.props.company.settings.countryCode) === 'UKR' ?
-                    '225' : ((this.props.company.settings.countryCode) === 'RUS' ?
-                        '555' : '18'))) : '18') : '',
+                '15' : ((this.props.company.settings.countryCode) === 'UKR' ?
+                    '180' : ((this.props.company.settings.countryCode) === 'RUS' ?
+                        '480' : '15'))) : '15') : '',
             finalPriceMonth: this.props.company.settings ? ((this.props.company.settings.countryCode) ? ((this.props.company.settings.countryCode) === 'BLR' ?
-                '6' : ((this.props.company.settings.countryCode === 'UKR' ?
-                    '75' : (this.props.company.settings.countryCode) === 'RUS' ?
-                        '185' : '6'))) : '6') : ''
+                '5' : ((this.props.company.settings.countryCode === 'UKR' ?
+                    '60' : (this.props.company.settings.countryCode) === 'RUS' ?
+                        '160' : '5'))) : '5') : ''
         }
 
         this.props.dispatch(paymentsActions.getInvoiceList());
@@ -66,7 +66,6 @@ class PaymentsPage extends Component {
 
     AddingInvoice() {
         let {chosenAct} = this.state;
-        debugger
         if (chosenAct && chosenAct.packetId) {
             this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                     {
@@ -176,23 +175,23 @@ class PaymentsPage extends Component {
         const {countryCode} = this.state.country;
         let finalPrice = 0, finalPriceMonth = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
-        let priceForOneWorker = 6;
+        let priceForOneWorker = 5;
 
         if (countryCode && countryCode === 'BLR') {
             priceTo20 = 60;
             priceTo30 = 70;
             priceFrom30 = 80;
-            priceForOneWorker = 6;
+            priceForOneWorker = 5;
         } else if (countryCode && countryCode === 'UKR') {
             priceTo20 = 760;
             priceTo30 = 895;
             priceFrom30 = 1020;
-            priceForOneWorker = 75;
+            priceForOneWorker = 60;
         } else if (countryCode && countryCode === 'RUS') {
             priceTo20 = 1800;
             priceTo30 = 2100;
             priceFrom30 = 2400;
-            priceForOneWorker = 185;
+            priceForOneWorker = 160;
         }
 
         switch (period) {
@@ -290,6 +289,12 @@ class PaymentsPage extends Component {
         const {countryCode} = this.state.country;
         const {packets} = this.props.payments;
 
+        const { pathname } = this.props.location;
+        if (pathname === '/payments') {
+            document.title = "Оплата | Онлайн-запись";
+        } else if (pathname === '/invoices' ) {
+            document.title = "Счета | Онлайн-запись";
+        }
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -305,14 +310,14 @@ class PaymentsPage extends Component {
                             <div className="retreats">
                                 <ul className="nav nav-tabs">
                                     <li className="nav-item" >
-                                        <a className="nav-link active show" data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
+                                        <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
+                                        <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
                                 </ul>
                                 <div className="tab-content">
-                                    <div className="tab-pane active " id="payments">
+                                    <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
                                         <div className="payments-inner">
                                             <div className="payments-list-block">
                                                 <p className="title-payments">Количество сотрудников</p>
@@ -595,7 +600,7 @@ class PaymentsPage extends Component {
 
                                     </div>
 
-                                    <div className="tab-pane" id="acts">
+                                    <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
 
                                         {/*--------------------*/}
                                         {
@@ -605,8 +610,9 @@ class PaymentsPage extends Component {
                                                     <div className="search col-7">
                                                         <input type="search" placeholder="Введите название счета"
                                                                style={{width: "175%"}}
-                                                               aria-label="Search" ref={input => this.search = input}
-                                                               onChange={this.handleSearch}/>
+                                                               ref={input => this.search = input}
+                                                               onChange={this.handleSearch}
+                                                        autoComplete="off"/>
                                                         <button className="search-icon" type="submit"/>
                                                     </div>
                                                 </div>
@@ -694,7 +700,6 @@ class PaymentsPage extends Component {
                                                         </div>
                                                         {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
                                                             let name = this.props.payments.packets.find(item => item.packetId === packet.packetId)
-                                                            debugger
                                                             return (
                                                                 <div className="table-row">
                                                                     <div className="table-description">
@@ -938,7 +943,6 @@ class PaymentsPage extends Component {
         const {defaultList}= this.state;
 
         const searchList = defaultList.filter((item)=>{
-            debugger
             return  String(item.invoiceId).toLowerCase().includes(String(this.search.value).toLowerCase())
                 || String(moment(item.createdDateMillis).format('DD.MM.YYYY')).toLowerCase().includes(String(this.search.value).toLowerCase())
             || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
@@ -972,7 +976,6 @@ class PaymentsPage extends Component {
 
 function mapStateToProps(state) {
     const { company, payments} = state;
-    debugger
     return {
         company, payments
     };

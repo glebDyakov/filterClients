@@ -12,9 +12,12 @@ class HeaderMain extends React.PureComponent {
         super(props);
         this.state={
             authentication: props.authentication,
-            company: props.company
+            company: props.company,
+            isNotificationDropdown: false
         }
         this.openModal = this.openModal.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.toggleNotificationDropdown = this.toggleNotificationDropdown.bind(this);
 
 
     }
@@ -41,8 +44,20 @@ class HeaderMain extends React.PureComponent {
         }
     }
 
+    componentDidUpdate() {
+        if(this.state.isNotificationDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    }
+
+    handleOutsideClick() {
+        this.setState({ isNotificationDropdown: false })
+    }
+
     render() {
-        const {location }=this.props;
+        const {location, notification }=this.props;
         const {authentication, company}=this.state;
 
         const { count } = company;
@@ -67,8 +82,9 @@ class HeaderMain extends React.PureComponent {
                 </div>
 
                 {((count && count.appointments && count.appointments.count>0) ||
-                (count && count.canceled && count.canceled.count>0))
-                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)}</span></div>}
+                (count && count.canceled && count.canceled.count>0) ||
+                (count && count.moved && count.moved.count>0))
+                && <div className="header-notification"> <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span></div>}
 
                 <div className="col">
                     <p className="red-title-block mob-setting ">
@@ -133,7 +149,23 @@ class HeaderMain extends React.PureComponent {
                 </div>
                 <div className="col right_elements">
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
-                    <span className="notification"/>
+                    <div style={{ position: "relative" }} onClick={this.toggleNotificationDropdown}>
+                        <span className="notification"/>
+                        { (notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount')
+                        || notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount'))
+                        && <React.Fragment>
+                            <span className="notification-signal" />
+                            {this.state.isNotificationDropdown && <ul className="notification-dropdown">
+                                {notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount') &&
+                                <li>Баланс SMS ниже {localStorage.getItem('smsNotifyCount')}</li>
+                                }
+                                {notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount') &&
+                                <li>Баланс Email ниже {localStorage.getItem('emailNotifyCount')}</li>
+                                }
+                            </ul>}
+                        </React.Fragment> }
+
+                    </div>
                     <a className="setting" onClick={this.openModal}/>
                     <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}</a>
                     <div className="img-container" data-toggle="modal" data-target=".modal_photo">
@@ -156,6 +188,9 @@ class HeaderMain extends React.PureComponent {
 
         return onOpen();
     }
+    toggleNotificationDropdown() {
+        this.setState({ isNotificationDropdown: !this.state.isNotificationDropdown})
+    }
     openAppointments(){
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
@@ -164,9 +199,9 @@ class HeaderMain extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company, calendar: {appointmentsCount} } = state;
+    const { alert, authentication, company, notification, calendar: {appointmentsCount} } = state;
     return {
-        alert, authentication, company, appointmentsCount
+        alert, authentication, company, notification, appointmentsCount
     };
 }
 
