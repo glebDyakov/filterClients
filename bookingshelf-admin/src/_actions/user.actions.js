@@ -77,8 +77,8 @@ function activate(id) {
             );
     };
 
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, payload: {user} } }
+    function failure(error) { return { type: userConstants.LOGIN_FAILURE, payload: {error} } }
 }
 
 function activateStaff(id) {
