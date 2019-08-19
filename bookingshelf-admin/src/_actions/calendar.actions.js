@@ -13,6 +13,7 @@ export const calendarActions = {
     editAppointmentTime,
     approveAppointment,
     approveAllAppointment,
+    approveMovedAppointment,
     deleteAppointment,
     getReservedTime,
     addReservedTime,
@@ -282,6 +283,20 @@ function approveAppointment(id) {
 function approveAllAppointment(approved, canceled) {
     return dispatch => {
         calendarService.approveAllAppointment(approved, canceled)
+            .then(
+                () => {
+                    dispatch(companyActions.getNewAppointments())
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+
+                },
+            )
+    };
+}
+
+function approveMovedAppointment() {
+    return dispatch => {
+        calendarService.approveMovedAppointment()
             .then(
                 () => {
                     dispatch(companyActions.getNewAppointments())

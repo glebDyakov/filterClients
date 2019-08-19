@@ -192,7 +192,7 @@ class TabScroll extends Component{
                                                    style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
                                                     <textarea disabled>{resultTextArea}</textarea>
                                                 </p>
-                                                <div className="msg-client-info">
+                                                {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">
@@ -233,7 +233,7 @@ class TabScroll extends Component{
                                                             }
                                                         </div>))
                                                     }
-                                                </div>
+                                                </div> }
                                             </div>
                                         )}
                                     </div>

@@ -519,8 +519,11 @@ q:before, q:after { content:''; }
 .calendar_modal{
     margin-bottom: 50px;
 }
-.mobile, .work_time.mobile_block, .specialist div .mobile_block, .date_item_popup.mobile_block{
+.mobile-visible, .mobile, .work_time.mobile_block, .specialist div .mobile_block, .date_item_popup.mobile_block{
     display: none;
+}
+.desktop-visible {
+    display: block;
 }
 .stars span{
     background: url(../img/icons/star_full.svg) no-repeat;
@@ -1127,6 +1130,12 @@ q:before, q:after { content:''; }
 @media screen and (max-width: 720px){
     .modal_menu .firm_name {
         width: calc(65% - 30px);
+    }
+    .mobile-visible {
+        display: block;
+    }
+    .desktop-visible {
+        display: none;
     }
     .adress-icon {
         display: block;

@@ -9,6 +9,7 @@ export const calendarService = {
     getAppointmentsCanceled,
     approveAppointment,
     approveAllAppointment,
+    approveMovedAppointment,
     deleteAppointment,
     deleteReservedTime,
     updateAppointment,
@@ -129,6 +130,25 @@ function approveAllAppointment(approved, canceled) {
 
     const dateTo = moment().endOf('year').format('x')
     return fetch(`${config.apiUrl}/appointments?dateFrom=1&dateTo=${dateTo}&canceled=${canceled}`, requestOptions)
+        .then(handleResponse)
+}
+
+function approveMovedAppointment() {
+    const requestOptions = {
+        method: 'PATCH',
+        body: JSON.stringify({
+            moved: false
+        }),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    const dateTo = moment().endOf('year').format('x')
+    return fetch(`${config.apiUrl}/appointments/moved?moved=true&dateFrom=1&dateTo=${dateTo}`, requestOptions)
         .then(handleResponse)
 }
 
