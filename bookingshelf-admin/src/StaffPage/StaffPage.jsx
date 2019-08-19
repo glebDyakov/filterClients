@@ -208,7 +208,6 @@ class StaffPage extends Component {
             <div className="staff"  ref={node => { this.node = node; }}>
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
                 {this.props.staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
 

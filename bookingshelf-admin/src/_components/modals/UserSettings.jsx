@@ -73,7 +73,7 @@ class UserSettings extends React.Component {
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && authentication.user.profile.lastName && isValidNumber(authentication.user.profile.phone) && authentication.user.profile.email) {
+        if (authentication.user.profile.firstName && authentication.user.profile.lastName && ((authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
             const profile= {}
             Object.keys(authentication.user.profile).forEach(key => {
                 if (authentication.user.profile[key]) {
@@ -122,7 +122,7 @@ class UserSettings extends React.Component {
                         <div className="form-group">
                             <div className="modal-header">
                                 <h4 className="modal-title">Настройки профиля</h4>
-                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>

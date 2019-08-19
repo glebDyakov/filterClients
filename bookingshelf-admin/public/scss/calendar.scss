@@ -673,6 +673,9 @@
             overflow-x: hidden;
             .tab-content-list {
                 div {
+                    &.selectedNote {
+                        z-index: 9999;
+                    }
                     -moz-user-select: none;
                     -khtml-user-select: none;
                     user-select: none;
