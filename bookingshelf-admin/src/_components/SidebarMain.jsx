@@ -285,8 +285,7 @@ class SidebarMain extends Component {
                                     {appointmentsCount && (
                                         <div className="button-field down-button">
                                             <button className="button approveAll"
-                                                    onClick={() => this.approveAllAppointment(true, false)}>Отметить всё
-                                                как просмотрено
+                                                    onClick={() => this.approveAllAppointment(true, false)}>Отметить всё как просмотрено
                                             </button>
                                         </div>)}
                                 </React.Fragment>
@@ -331,9 +330,8 @@ class SidebarMain extends Component {
                                         <div className="button-field down-button">
                                             <button className="button approveAll"
                                                     onClick={() => {
-                                                        //this.approveAllAppointment(true, false)
-                                                    }}>Отметить всё
-                                                как просмотрено
+                                                        // this.props.dispatch(calendarActions.approveMovedAppointment());
+                                                    }}>Отметить всё как просмотрено
                                             </button>
                                         </div>)}
                                 </React.Fragment>

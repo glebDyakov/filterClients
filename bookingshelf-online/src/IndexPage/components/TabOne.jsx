@@ -39,10 +39,16 @@ class TabOne extends  PureComponent{
 
                                 {nearestTime && nearestTime.map((time, id)=>
                                     time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                    <div className="mobile_block" key={'time'+id}>
-                                        <span>Ближ. запись</span>
-                                        <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                    </div>
+                                    <React.Fragment>
+                                        <div className="mobile_block mobile-visible" key={'time'+id}>
+                                            <span>Ближ. запись</span>
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                        </div>
+                                        <div className="mobile_block desktop-visible" key={'time'+id}>
+                                            <span>Ближайшая запись</span>
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                        </div>
+                                    </React.Fragment>
 
                                 )}
 
