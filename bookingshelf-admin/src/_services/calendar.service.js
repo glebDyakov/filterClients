@@ -76,7 +76,8 @@ function editAppointment(params) {
 
 function approveAppointment(appointmentId) {
     const params=JSON.stringify({
-        "approved": true
+        approved: true,
+        moved: true
     });
     const requestOptions = {
         method: 'PATCH',
@@ -148,7 +149,7 @@ function approveMovedAppointment() {
     };
 
     const dateTo = moment().endOf('year').format('x')
-    return fetch(`${config.apiUrl}/appointments/moved?moved=true&dateFrom=1&dateTo=${dateTo}`, requestOptions)
+    return fetch(`${config.apiUrl}/appointments/moved?dateFrom=1&dateTo=${dateTo}`, requestOptions)
         .then(handleResponse)
 }
 

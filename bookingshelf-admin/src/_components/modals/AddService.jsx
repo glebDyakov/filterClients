@@ -18,7 +18,7 @@ class AddService extends React.Component {
                 "specialDescription":"",
                 "currency":"BYN",
                 "onlineBooking":true,
-                "staffs":[{}]
+                "staffs":[]
             },
             editServiceItem: props.editServiceItem,
             staffs: props.staffs && props.staffs,
@@ -186,7 +186,7 @@ class AddService extends React.Component {
                                             </form>
                                         </div>
                                         }
-                                        <ul className={((service.specialPrice || service.price) && service.staffs && service.staffs.length===0 ? 'redBorder clients-list-container' : 'clients-list-container')}>
+                                        <ul className={((service.specialPrice || service.priceFrom) && (service.staffs && service.staffs.length===0) ? 'redBorder clients-list-container' : 'clients-list-container')}>
                                             {staffs && staffs.map((item, keyStaffs) =>
                                                 <li className="row" key={keyStaffs}>
                                                     <div className="col-9">

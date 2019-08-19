@@ -315,6 +315,12 @@ class SidebarMain extends Component {
                                                 </li>
                                             )})}
                                     </div>
+                                    {appointmentsCount && (
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll"
+                                                onClick={() => this.approveAllAppointment(true, true)}>Отметить всё как просмотрено
+                                        </button>
+                                    </div>)}
                                 </React.Fragment>
                                 }
                                 {openedTab === 'moved' && <React.Fragment>
@@ -330,7 +336,7 @@ class SidebarMain extends Component {
                                         <div className="button-field down-button">
                                             <button className="button approveAll"
                                                     onClick={() => {
-                                                        // this.props.dispatch(calendarActions.approveMovedAppointment());
+                                                        this.props.dispatch(calendarActions.approveMovedAppointment());
                                                     }}>Отметить всё как просмотрено
                                             </button>
                                         </div>)}
@@ -381,7 +387,7 @@ class SidebarMain extends Component {
         if (openedTab === 'new') {
             this.approveAppointment(id)
         } else if (openedTab === 'moved') {
-            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false })))
+            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false, approved: true })))
         }
         this.props.dispatch(calendarActions.setScrollableAppointment(id))
         // const className = `.${id}`;
