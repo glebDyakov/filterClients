@@ -12,7 +12,8 @@ class TabScroll extends Component{
             movingVisitDuration: 0,
             movingVisitMillis: 0,
             movingVisitStaffId: null,
-            prevVisitStaffId: null
+            prevVisitStaffId: null,
+            selectedNote: null
         }
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
@@ -75,6 +76,7 @@ class TabScroll extends Component{
     }
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading } = this.props;
+        const { selectedNote } = this.state;
 
         return(
             <div className="tabs-scroll"
@@ -158,16 +160,16 @@ class TabScroll extends Component{
                                 const resultTextArea = `${appointment[0][0].serviceName} ${extraServiceText}`;
                                 resultMarkup = (
                                     <div
-                                        className={currentTime <= moment().format("x")
-                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                        className={(currentTime <= moment().format("x")
+                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment[0][0].appointmentId === selectedNote ? 'selectedNote' : '')}
                                     >
                                         {!appointment[0][0].coAppointmentId && (
                                             <div
-                                                className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment[0][0].duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes'))}
+                                                className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment[0][0].duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment[0][0].appointmentId === selectedNote ? ' selected' : '')}
                                                 key={appointment[0][0].appointmentId + "_" + key}
                                                 id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                             >
-                                                <p className="notes-title" onClick={()=> $(`.${appointment[0][0].appointmentId}`).toggleClass('selected')}>
+                                                <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment[0][0].appointmentId === selectedNote ? null : appointment[0][0].appointmentId})}>
                                                     {!appointment[0][0].online &&
                                                     <span className="pen"
                                                           title="Запись через журнал"/>}
@@ -199,7 +201,7 @@ class TabScroll extends Component{
                                                             <p>
                                                                 <p className="new-text">Запись</p>
                                                                 <button type="button" onClick={()=> {
-                                                                    $(`.${appointment[0][0].appointmentId}`).removeClass('selected')
+                                                                    this.setState({ selectedNote: null })
                                                                     this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
                                                                 }} className="close" />
                                                             </p>
