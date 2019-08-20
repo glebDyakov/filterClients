@@ -221,7 +221,9 @@ class App extends React.Component {
         }else {
             sound.volume = 1;
         }
-        sound.play();
+        sound.play().then((data) => {
+        }).catch((err) => {
+        });
     }
 
 
