@@ -1,12 +1,13 @@
 import {paymentsConstants} from '../_constants';
-import {calendarService, paymentsService} from '../_services';
-import moment from 'moment';
+import { paymentsService} from '../_services';
 
 
 
 export const paymentsActions = {
     getInvoiceList,
     getPackets,
+    makePayment,
+    cancelPayment,
     addInvoice
 }
 function getInvoiceList() {
@@ -20,6 +21,33 @@ function getInvoiceList() {
 
     function success(list) { return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, list }}
 }
+
+function makePayment(invoiceId) {
+    return dispatch => {
+
+        paymentsService.makePayment(invoiceId)
+            .then(
+                data => {
+                    dispatch(success(data))
+                },
+                error => {
+                    dispatch(failure("Нельзя оплатить. Попробуйте позже"))
+                }
+            );
+    };
+
+    function success(data) { return { type: paymentsConstants.MAKE_PAYMENT_SUCCESS, confirmationUrl: data.confirmationUrl }}
+    function failure(error) { return { type: paymentsConstants.MAKE_PAYMENT_FAILURE, exceptionMessage: error }}
+}
+
+function cancelPayment() {
+    return dispatch => {
+        dispatch(success())
+    };
+
+    function success() { return { type: paymentsConstants.CANCEL_PAYMENT, confirmationUrl: null }}
+}
+
 function getPackets() {
     return dispatch => {
 

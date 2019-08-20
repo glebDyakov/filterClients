@@ -1278,7 +1278,7 @@
     .save-notes-modal,
     .delete-notes-modal,
     .start-moving-modal,
-    .move-visit-modal,
+    .make-payment-modal,
     .delete-reserve-modal,
     .start-modal{
 
@@ -1316,12 +1316,13 @@
             }
         }
     }
-    .move-visit-modal {
+    .move-visit-modal{
         .modal-content {
             width: 275px !important;
         }
     }
 }
+
 .client-detail{
     .close{
         margin: 13px 5px 0 0!important;

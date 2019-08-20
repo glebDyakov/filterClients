@@ -1,5 +1,4 @@
 import { paymentsConstants } from '../_constants';
-import moment from 'moment';
 
 const initialState = {
     list: []
@@ -28,6 +27,18 @@ export function payments(state = initialState, action) {
             return {
                 ...state,
                 packets: action.packets
+            };
+        case paymentsConstants.MAKE_PAYMENT_FAILURE: {
+            return {
+                ...state,
+                exceptionMessage: action.exceptionMessage
+            }
+        }
+        case paymentsConstants.CANCEL_PAYMENT:
+        case paymentsConstants.MAKE_PAYMENT_SUCCESS:
+            return {
+                ...state,
+                confirmationUrl: action.confirmationUrl
             };
         default:
             return state
