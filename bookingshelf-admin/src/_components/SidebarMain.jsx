@@ -16,7 +16,6 @@ class SidebarMain extends Component {
             menu: props.menu,
             authentication: props.authentication,
             company: props.company,
-            appointmentsCount: props.appointmentsCount,
             collapse: localStorage.getItem('collapse') === 'true',
             calendar: props.calendar,
             openedTab: 'new',
@@ -44,6 +43,11 @@ class SidebarMain extends Component {
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
             this.setState({
                 authentication: newProps.authentication,
+            })
+        }
+        if ( JSON.stringify(this.props.calendar) !==  JSON.stringify(newProps.calendar)) {
+            this.setState({
+                calendar: newProps.calendar,
             })
         }
         if ( JSON.stringify(this.props.menu) !==  JSON.stringify(newProps.menu)) {
@@ -82,7 +86,7 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location, calendar: { appointmentsCanceled, appointmentsCount }, staff, client }=this.props;
+        const { location, calendar: { appointmentsCanceled }, staff, client, appointmentsCount }=this.props;
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
         const { authentication, menu, company, collapse, openedTab,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
@@ -390,34 +394,22 @@ class SidebarMain extends Component {
             this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false, approved: true })))
         }
         this.props.dispatch(calendarActions.setScrollableAppointment(id))
-        // const className = `.${id}`;
-        //  setTimeout(() => {
-        //
-        //      $(className).addClass("custom-blick-div")
-        //
-        //
-        //      setTimeout(() => {
-        //          // container.animate({scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop(), scrollLeft: 0},300);
-        //          const elmnt = document.getElementsByClassName(className)[0];
-        //          elmnt.scrollIntoView();
-        //          }, 500);
-        //
-        //  }, 1000)
-        //
-        // setTimeout(()=> $(className).removeClass("custom-blick-div"), 15000);
-
     }
     openAppointments(event){
         event.stopPropagation()
-        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        // setTimeout(() => {
+        //     this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        //     this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+        //
+        // }, 100)
     }
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar, appointmentsCount, staff, client} = state;
+    const { alert, menu, authentication, company, calendar, staff, client} = state;
+
     return {
-        alert, menu, authentication, company, calendar, appointmentsCount, staff, client
+        alert, menu, authentication, company, calendar, appointmentsCount: calendar.appointmentsCount, staff, client
     };
 }
 

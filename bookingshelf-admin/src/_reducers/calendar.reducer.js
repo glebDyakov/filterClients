@@ -228,12 +228,26 @@ export function calendar(state = initialState, action) {
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
             let newItem = action.payload.payload;
-            newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
-            newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.push(newItem);
+
+            const appointmentsToPush = []
+            const appointmentsCountToPush = []
+            newAppointment.forEach(item => {
+                if (item.staff.staffId === newItem.staffId) {
+                    item.appointments.push(newItem)
+                }
+                appointmentsToPush.push(item)
+            })
+            newAppointmentsCount.forEach(item => {
+                if (item.staff.staffId === newItem.staffId) {
+                    item.appointments.push(newItem)
+                }
+                appointmentsCountToPush.push(item)
+            })
             return {
                 ...state,
-                appointments: newAppointment,
-                appointmentsCount: newAppointmentsCount
+                appointments: appointmentsToPush,
+                appointmentsCount: appointmentsCountToPush,
+                appointmentShouldChange: !state.appointmentShouldChange
             };
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
             newAppointmentsCount = state.appointmentsCount

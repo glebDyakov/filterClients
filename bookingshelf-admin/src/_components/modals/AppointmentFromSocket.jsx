@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from "moment";
+import {calendarActions} from "../../_actions";
+import {withRouter} from "react-router";
 
 // import PropTypes from 'prop-types';
 
@@ -11,12 +13,24 @@ class AppointmentFromSocket extends React.Component {
         this.state = {
 
         };
+        this.goToPageCalendar = this.goToPageCalendar.bind(this)
 
     }
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.appointmentSocketMessageFlag) {
             $(".modal-backdrop ").css("display", "none")
         }
+    }
+
+    goToPageCalendar(id, url, wsMessageType){
+        this.props.history.push(url);
+
+        if (wsMessageType === 'APPOINTMENT_CREATED') {
+            this.props.dispatch(calendarActions.approveAppointment(id));
+        } else if (wsMessageType === 'APPOINTMENT_MOVED') {
+            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false, approved: true })))
+        }
+        this.props.dispatch(calendarActions.setScrollableAppointment(id))
     }
 
 
@@ -75,7 +89,11 @@ class AppointmentFromSocket extends React.Component {
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
                             {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                         </p>
-                        <p style={{color: "#3E90FF"}}>{socketFooterText}</p>
+                        <p onClick={() => {
+                            if (socketFooterText === 'Просмотреть запись') {
+                                this.goToPageCalendar(payload.appointmentId, "/page/" + payload.staffId + "/" + moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'), appointmentSocketMessage.wsMessageType)
+                            }
+                        }} style={{color: "#3E90FF", cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')}}>{socketFooterText}</p>
 
                     </div>
                 </div>
@@ -93,5 +111,5 @@ function mapStateToProps(state) {
 }
 
 
-const connectedApp = connect(mapStateToProps)(AppointmentFromSocket);
+const connectedApp = connect(mapStateToProps)(withRouter(AppointmentFromSocket));
 export { connectedApp as AppointmentFromSocket };
