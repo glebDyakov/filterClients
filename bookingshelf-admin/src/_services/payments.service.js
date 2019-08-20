@@ -6,6 +6,7 @@ import moment from 'moment';
 export const paymentsService = {
     getInvoiceList,
     addInvoice,
+    makePayment,
     getPackets
 };
 function getInvoiceList() {
@@ -35,6 +36,20 @@ function getPackets() {
     };
 
     return fetch(`${config.apiUrl}/packets`, requestOptions).then(handleResponse);
+}
+function makePayment(invoiceId) {
+    const requestOptions = {
+        method: 'POST',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/invoices/${invoiceId}/payments`, requestOptions)
+        .then(handleResponse);
 }
 function addInvoice(invoice) {
     const requestOptions = {
