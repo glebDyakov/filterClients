@@ -61,7 +61,7 @@ class TabScroll extends Component{
         if (shouldMove) {
             this.props.dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
-                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId}))
+                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId, approved: true, moved: true}))
             );
         }
         this.props.dispatch(calendarActions.toggleMoveVisit(false))

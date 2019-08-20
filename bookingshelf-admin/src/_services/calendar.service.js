@@ -76,8 +76,7 @@ function editAppointment(params) {
 
 function approveAppointment(appointmentId) {
     const params=JSON.stringify({
-        approved: true,
-        moved: true
+        approved: true
     });
     const requestOptions = {
         method: 'PATCH',

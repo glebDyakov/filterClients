@@ -63,6 +63,9 @@ class PaymentsPage extends Component {
         if (this.props.payments && this.props.payments.list && (JSON.stringify(this.props.payments.list) !== JSON.stringify(newProps.payments.list))) {
             this.setState({list: newProps.payments.list, defaultList: newProps.payments.list})
         }
+        if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
+            this.setState({ chosenInvoice: newProps.payments.activeInvoice, invoiceSelected: true})
+        }
     }
 
     AddingInvoice() {

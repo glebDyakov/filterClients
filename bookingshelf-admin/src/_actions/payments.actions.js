@@ -1,6 +1,6 @@
 import {paymentsConstants} from '../_constants';
 import { paymentsService} from '../_services';
-
+import { history } from '../_helpers';
 
 
 export const paymentsActions = {
@@ -10,16 +10,23 @@ export const paymentsActions = {
     cancelPayment,
     addInvoice
 }
-function getInvoiceList() {
+function getInvoiceList(activeInvoice) {
     return dispatch => {
 
         paymentsService.getInvoiceList()
             .then(
-                list => dispatch(success(list)),
+                list => {
+                    dispatch(success(list))
+                    if (activeInvoice) {
+                        history.push('/invoices')
+                        $('.make-payment-modal').modal('show')
+                        dispatch(paymentsActions.makePayment(activeInvoice.invoiceId))
+                    }
+                },
             );
     };
 
-    function success(list) { return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, list }}
+    function success(list) { return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, payload: {list, activeInvoice} }}
 }
 
 function makePayment(invoiceId) {
@@ -64,7 +71,7 @@ function addInvoice(invoice) {
     return dispatch => {
         paymentsService.addInvoice(invoice)
             .then((data) => {
-                dispatch(getInvoiceList())
+                dispatch(getInvoiceList(data))
             });
     }
 }
