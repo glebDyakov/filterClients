@@ -63,6 +63,9 @@ class PaymentsPage extends Component {
         if (this.props.payments && this.props.payments.list && (JSON.stringify(this.props.payments.list) !== JSON.stringify(newProps.payments.list))) {
             this.setState({list: newProps.payments.list, defaultList: newProps.payments.list})
         }
+        if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
+            this.setState({ chosenInvoice: newProps.payments.activeInvoice, invoiceSelected: true})
+        }
     }
 
     AddingInvoice() {
@@ -283,7 +286,8 @@ class PaymentsPage extends Component {
     }
 
     render() {
-
+        const {authentication} = this.props;
+        debugger
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
@@ -662,9 +666,9 @@ class PaymentsPage extends Component {
                                                     </div>
                                                     <div className="customer-seller">
                                                         <div className="col-md-6 col-12 customer">
-                                                            <p>Покупатель: <strong>Online-zapis</strong></p>
-                                                            <p>Представитель: Андрей</p>
-                                                            <p>Адрес: Minsk 220089, Minsk Belarus</p>
+                                                            <p>Покупатель: <strong>{authentication.user.companyName}</strong></p>
+                                                            <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
+                                                            <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
                                                         </div>
 
                                                         <div className="col-md-6 col-12 seller">
@@ -967,9 +971,9 @@ class PaymentsPage extends Component {
 
 
 function mapStateToProps(state) {
-    const { company, payments} = state;
+    const { company, payments, authentication} = state;
     return {
-        company, payments
+        company, payments, authentication
     };
 }
 
