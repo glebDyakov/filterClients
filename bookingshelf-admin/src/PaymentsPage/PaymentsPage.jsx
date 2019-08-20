@@ -71,7 +71,7 @@ class PaymentsPage extends Component {
             this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                     {
                         packetId: chosenAct.packetId,
-                        amount: chosenAct.smsAmount,
+                        amount: 1,
                         discountAmount: 0,
                         startDateMillis: moment().format('x')
                     },
