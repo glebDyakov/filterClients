@@ -190,13 +190,17 @@ function updateAccess(params) {
 
 function get() {
     return dispatch => {
+        dispatch(request())
         staffService.get()
             .then(
                 staff => dispatch(success(staff, staff)),
+                () => dispatch(failure())
             );
     };
 
+    function request(staff, st) { return { type: staffConstants.GET, staff, st } }
     function success(staff, st) { return { type: staffConstants.GET_SUCCESS, staff, st } }
+    function failure() { return { type: staffConstants.GET_FAILURE } }
 }
 
 function getAccessList() {

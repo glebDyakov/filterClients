@@ -9,6 +9,7 @@ import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";
 import {userActions, paymentsActions} from "../_actions";
 import {UserSettings} from "../_components/modals";
+import {MakePayment} from "../_components/modals/MakePayment";
 
 
 class PaymentsPage extends Component {
@@ -61,12 +62,6 @@ class PaymentsPage extends Component {
     componentWillReceiveProps(newProps) {
         if (this.props.payments && this.props.payments.list && (JSON.stringify(this.props.payments.list) !== JSON.stringify(newProps.payments.list))) {
             this.setState({list: newProps.payments.list, defaultList: newProps.payments.list})
-        }
-        if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
-            this.setState({ chosenInvoice: newProps.payments.activeInvoice, invoiceSelected: true})
-        }
-        if (newProps.payments.confirmationUrl && (this.props.payments.confirmationUrl !== newProps.payments.confirmationUrl)) {
-            window.open(newProps.payments.confirmationUrl)
         }
     }
 
@@ -289,7 +284,6 @@ class PaymentsPage extends Component {
 
     render() {
         const {authentication} = this.props;
-        debugger
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
@@ -653,6 +647,8 @@ class PaymentsPage extends Component {
 
                                                     <div className="row-status">
                                                         <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
+                                                                data-target=".make-payment-modal"
+                                                                data-toggle="modal"
                                                                 onClick={() => {
                                                                     this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
                                                                 }}>
@@ -929,6 +925,9 @@ class PaymentsPage extends Component {
                     onClose={this.onClose}
                 />
                 }
+                <MakePayment />
+
+
             </React.Fragment>
         );
     }
