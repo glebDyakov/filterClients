@@ -579,7 +579,7 @@ class AddAppointment extends React.Component {
         const { addAppointment }=this.props;
 
 
-        let appointmentNew = appointment.map((item, i) => { return {...item, serviceId: serviceCurrent[i].id, approved: true} });
+        let appointmentNew = appointment.map((item, i) => { return {...item, serviceId: serviceCurrent[i].id} });
 
         this.setState({
             serviceCurrent: [{

@@ -9,6 +9,7 @@ import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";
 import {userActions, paymentsActions} from "../_actions";
 import {UserSettings} from "../_components/modals";
+import {MakePayment} from "../_components/modals/MakePayment";
 
 
 class PaymentsPage extends Component {
@@ -70,7 +71,7 @@ class PaymentsPage extends Component {
             this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
                     {
                         packetId: chosenAct.packetId,
-                        amount: chosenAct.smsAmount,
+                        amount: 1,
                         discountAmount: 0,
                         startDateMillis: moment().format('x')
                     },
@@ -282,7 +283,7 @@ class PaymentsPage extends Component {
     }
 
     render() {
-
+        const {authentication} = this.props;
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
@@ -602,21 +603,6 @@ class PaymentsPage extends Component {
 
                                     <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
 
-                                        {/*--------------------*/}
-                                        {
-                                            (defaultList && defaultList !== "" &&
-                                                // (1 &&
-                                                <div className="row align-items-center content clients mb-2">
-                                                    <div className="search col-7">
-                                                        <input type="search" placeholder="Введите название счета"
-                                                               style={{width: "175%"}}
-                                                               ref={input => this.search = input}
-                                                               onChange={this.handleSearch}
-                                                        autoComplete="off"/>
-                                                        <button className="search-icon" type="submit"/>
-                                                    </div>
-                                                </div>
-                                            )}
 
                                         {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
                                             return (
@@ -660,7 +646,12 @@ class PaymentsPage extends Component {
                                                 <div className="acts-body">
 
                                                     <div className="row-status">
-                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}>
+                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
+                                                                data-target=".make-payment-modal"
+                                                                data-toggle="modal"
+                                                                onClick={() => {
+                                                                    this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
+                                                                }}>
                                                             {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                                 (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                                                         </button>
@@ -671,9 +662,9 @@ class PaymentsPage extends Component {
                                                     </div>
                                                     <div className="customer-seller">
                                                         <div className="col-md-6 col-12 customer">
-                                                            <p>Покупатель: <strong>Online-zapis</strong></p>
-                                                            <p>Представитель: Андрей</p>
-                                                            <p>Адрес: Minsk 220089, Minsk Belarus</p>
+                                                            <p>Покупатель: <strong>{authentication.user.companyName}</strong></p>
+                                                            <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
+                                                            <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
                                                         </div>
 
                                                         <div className="col-md-6 col-12 seller">
@@ -934,6 +925,7 @@ class PaymentsPage extends Component {
                     onClose={this.onClose}
                 />
                 }
+                <MakePayment />
 
 
             </React.Fragment>
@@ -975,9 +967,9 @@ class PaymentsPage extends Component {
 
 
 function mapStateToProps(state) {
-    const { company, payments} = state;
+    const { company, payments, authentication} = state;
     return {
-        company, payments
+        company, payments, authentication
     };
 }
 

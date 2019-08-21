@@ -18,11 +18,22 @@ export function services(state= {}, action) {
                 status: 208,
                 adding: true
             };
+        case servicesConstants.GET_GROUP:
+            return {
+                ...state,
+                isLoading: true
+            }
         case servicesConstants.GET_GROUP_SUCCESS:
             return {
                 ...state,
-                services: action.services
+                services: action.services,
+                isLoading: false
             };
+        case servicesConstants.GET_GROUP_FAILURE:
+            return {
+                ...state,
+                isLoading: false
+            }
         case servicesConstants.GET_SERVICES_SUCCESS:
             return {
                 ...state,

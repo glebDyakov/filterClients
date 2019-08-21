@@ -3,6 +3,48 @@
 .tab-content{
   overflow: visible;
 }
+.payment-loader {
+  display: block;
+  margin: 0 auto;
+  height: 100px;
+  width: 100px;
+}
+.make-payment-modal{
+
+  .modal-content {
+    width: 360px;
+    margin: auto;
+
+    .modal-header {
+      padding: 5px 0;
+      height: 40px;
+      h4{
+        line-height: 28px;
+      }
+      .close{
+        height: 15px;
+        margin: 2px 5px 0 0!important;
+      }
+
+      .modal-title {
+        font-size: 14px;
+      }
+    }
+
+    button {
+      min-width: 0;
+      width: 45%;
+      float: left;
+      height: auto;
+      padding: 0;
+      min-height: 25px;
+
+      &.gray-button {
+        float: right;
+      }
+    }
+  }
+}
 .payments-inner{
   display: flex;
   margin-bottom: 15px;
