@@ -19,7 +19,6 @@ function getInvoiceList(activeInvoice) {
                     dispatch(success(list))
                     if (activeInvoice) {
                         history.push('/invoices')
-                        $('.make-payment-modal').modal('show')
                         dispatch(paymentsActions.makePayment(activeInvoice.invoiceId))
                     }
                 },
