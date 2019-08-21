@@ -17,13 +17,17 @@ export const servicesActions = {
 
 function get() {
     return dispatch => {
+        dispatch(request());
         servicesService.get()
             .then(
                 services => dispatch(success(services)),
+                err => dispatch(failure(err))
             );
     };
 
+    function request() { return { type: servicesConstants.GET_GROUP } }
     function success(services) { return { type: servicesConstants.GET_GROUP_SUCCESS, services } }
+    function failure(err) { return { type: servicesConstants.GET_GROUP_FAILURE, err } }
 }
 
 function getServices() {

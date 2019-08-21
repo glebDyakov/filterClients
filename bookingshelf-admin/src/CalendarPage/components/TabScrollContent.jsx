@@ -47,8 +47,7 @@ class TabScroll extends Component{
         const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
         availableTimetableItem.availableDays.forEach(item => {
             item.availableTimes.forEach(time => {
-                if (time.startTimeMillis <= movingVisitTime && time.startTimeMillis <= movingVisitMillis
-                    && time.endTimeMillis >= movingVisitTime && time.endTimeMillis >= movingVisitMillis) {
+                if (time.startTimeMillis <= movingVisitTime && time.endTimeMillis >= movingVisitTime) {
                     shouldMove = true
                 }
             })

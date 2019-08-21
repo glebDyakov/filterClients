@@ -31,7 +31,6 @@ class ServicesPage extends Component {
             idGroupEditable: null,
             selectedProperties: [],
             editService: false,
-            isLoading: true,
             collapse: localStorage.getItem('services')?JSON.parse(localStorage.getItem('services')):[],
             newSet: false,
             newSetElement: null,
@@ -60,7 +59,6 @@ class ServicesPage extends Component {
         initializeJs();
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
-        setTimeout(() => this.setState({ isLoading: false }), 800);
 
     }
 
@@ -95,16 +93,17 @@ class ServicesPage extends Component {
     }
 
     render() {
-        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, isLoading, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
+        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
+        const isLoading = staff.isLoading || services.isLoading
         return (
             <div>
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
-                {this.state.isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper services "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     {/*<SidebarMain/>*/}
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}
-                         style={{overflowX: this.state.isLoading?"visible":"hidden"}}>
+                         style={{overflowX: isLoading?"visible":"hidden"}}>
                         <div className="container-fluid">
                             <HeaderMain
                                 onOpen={this.onOpen}

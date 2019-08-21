@@ -89,12 +89,13 @@ export function staff(state = initialState, action) {
                 status: 200,
                 adding: false
             };
+        case staffConstants.GET:
         case staffConstants.UPDATE_ACCESS_REQUEST:
             return {
                 ...state,
                 isLoading: true,
             };
-            case staffConstants.UPDATE_ACCESS_SUCCESS:
+        case staffConstants.UPDATE_ACCESS_SUCCESS:
             return {
                 ...state,
                 status: 200,
@@ -154,8 +155,14 @@ export function staff(state = initialState, action) {
                 ...state,
                 staff: st2,
                 costaff: costaffs,
-                code: Math.random()
+                code: Math.random(),
+                isLoading: false
             };
+        case staffConstants.GET_FAILURE:
+            return {
+                ...state,
+                isLoading: false
+            }
         case staffConstants.GET_ACCESS_SUCCESS:
             return {
                 ...state,
