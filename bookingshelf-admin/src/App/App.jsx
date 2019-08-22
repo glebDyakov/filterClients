@@ -70,8 +70,9 @@ class App extends React.Component {
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.handleSocketDispatch = this.handleSocketDispatch.bind(this);
         this.playSound = this.playSound.bind(this);
+        this.checkLogin = this.checkLogin.bind(this);
 
-        this.props.dispatch(userActions.checkLogin());
+        this.checkLogin();
 
     }
 
@@ -141,6 +142,11 @@ class App extends React.Component {
                 console.error("Сокет. ошибка", event);
             };
         }
+    }
+
+    checkLogin() {
+        this.props.dispatch(userActions.checkLogin());
+        setTimeout(()=>this.checkLogin(), 540000)
     }
 
     notifications(){
