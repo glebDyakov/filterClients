@@ -424,6 +424,10 @@ q:before, q:after { content:''; }
     text-align-last: left;
 }
 .runtime{
+    overflow: hidden;
+    white-space: nowrap;
+    width: 60%;
+    text-overflow: ellipsis;
     display: block;
     clear: both;
     padding-top: 5px;

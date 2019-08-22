@@ -152,11 +152,12 @@ class ServicesPage extends Component {
                                                 { collapse.indexOf(item.serviceGroupId)===-1 && item.services && item.services.length>0 && item.services.map((item2, keyService)=>
                                                     <div className="services_items" key={keyService}  id={"collapseService"+keyGroup}>
                                                         <p className="gray-text">
-                                                            {item2.name} {item2.details.length!==0 && "("+item2.details+")"}
+                                                            <span className="gray-text">{item2.name}</span>
+                                                            <span className="gray-text" style={{ fontSize: '11px', width: '100%', display: 'inline-block'}}>{item2.details.length!==0 && "("+item2.details+")"}</span>
                                                             <span className="hide-item">
-                                                        <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
-                                                        <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                    </span>
+                                                            <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
+                                                            <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                            </span>
                                                         </p>
                                                         <div className="list-inner">
                                                             <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>

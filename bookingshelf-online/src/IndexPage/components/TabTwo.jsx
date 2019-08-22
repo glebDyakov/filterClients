@@ -7,7 +7,6 @@ class TabTwo extends Component {
 
         const {selectedServices, setScreen,refreshTimetable,selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
 
-
         return (
             <div className="service_selection screen1">
                 <div className="title_block">
@@ -56,6 +55,8 @@ class TabTwo extends Component {
                                                checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
                                         <span className="checkHelper"/>
                                     </p>
+                                    <span className="runtime">{service.details}</span>
+
                                     <span
                                         className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
@@ -83,6 +84,8 @@ class TabTwo extends Component {
                                                checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
                                         <span className="checkHelper"/>
                                     </p>
+                                    <span className="runtime">{service.details}</span>
+
                                     <span
                                         className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
