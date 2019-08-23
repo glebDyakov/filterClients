@@ -885,8 +885,8 @@ class CalendarPage extends PureComponent {
             newState = {
                 ...newState,
                 typeSelected: types,
-                staffFromUrl: JSON.parse(selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId,
-                selectedStaff: selectedStaff.length!==0 ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]),
+                staffFromUrl: JSON.parse((selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId,
+                selectedStaff: (selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]),
                 type: 'week',
                 selectedDays: weeks
             };
@@ -894,7 +894,7 @@ class CalendarPage extends PureComponent {
             startTime = moment(weeks[0]).startOf('day').format('x');
             endTime = moment(weeks[6]).endOf('day').format('x');
 
-            url = `staff/${JSON.parse(selectedStaff.length ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
+            url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
         }
         this.setState(newState);
         this.refreshTable(startTime, endTime);
