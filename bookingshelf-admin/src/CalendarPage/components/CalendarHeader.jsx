@@ -5,7 +5,7 @@ class CalendarHeader extends PureComponent {
 
     render(){
         const {typeSelected,selectedStaff, availableTimetable, setWorkingStaff, staff}= this.props;
-        const currentSelectedStaff = !!selectedStaff.length && staff && staff.find(staffItem => staffItem.staffId === JSON.parse(selectedStaff).staffId);
+        const currentSelectedStaff = selectedStaff && !!selectedStaff.length && staff && staff.find(staffItem => staffItem.staffId === JSON.parse(selectedStaff).staffId);
 
         return(
             <div className="staff_choise col-3">

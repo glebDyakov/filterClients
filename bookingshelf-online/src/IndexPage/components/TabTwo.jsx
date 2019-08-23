@@ -65,11 +65,11 @@ class TabTwo extends Component {
                         </li>
                     )}
                     {
-                        ((!servicesForStaff && selectedStaff.length!==0) || (services.length === 0)) && <div className="final-book">
+                        ((!servicesForStaff && selectedStaff && selectedStaff.length!==0) || (services.length === 0)) && <div className="final-book">
                             <p>Нет доступных услуг</p>
                         </div>
                     }
-                    {!servicesForStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
+                    {!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
                         <li
                             className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                         >
