@@ -2380,6 +2380,13 @@ select{
         @media (max-width: $laptop-width){
             height: calc(100% - 110px);
         }
+        @media (max-width: $mob-width) {
+            img {
+                width: 40px !important;
+                height: 40px !important;
+                margin: 50% 0;
+            }
+        }
 
 
     }
