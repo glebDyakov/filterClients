@@ -617,13 +617,17 @@ q:before, q:after { content:''; }
     margin: 0 auto;
     display: block;
 }
+.staff_popup.staff_popup_one .img_container img{
+    height: 130px;
+    width: 130px;
+}
 .staff_popup.staff_popup_large .mobile_block {
     margin-top: 30px;
     width: 100%;
     float: none;
     text-align: center;
 }
-.staff_popup.staff_popup_large li {
+.staff_popup.staff_popup_one li {
     box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
     background-color: #ffffff;
     border: solid 1px rgba(172, 172, 172, 0.2);
