@@ -95,7 +95,7 @@ class AppointmentFromSocket extends React.Component {
                         </p>
                         <p onClick={() => {
                             if (socketFooterText === 'Просмотреть запись') {
-                                this.goToPageCalendar(payload.appointmentId, "/page/" + payload.staffId + "/" + moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'), appointmentSocketMessage.wsMessageType)
+                                this.goToPageCalendar(payload.appointmentId, "/page/" + payload.staffId + "/" + moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'), wsMessageType)
                             }
                         }} style={{color: "#3E90FF", cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')}}>{socketFooterText}</p>
 
