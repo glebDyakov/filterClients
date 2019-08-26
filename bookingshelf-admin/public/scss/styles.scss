@@ -2331,10 +2331,17 @@ select{
         justify-content: space-around;
         margin-right: 35px;
 
+        .approve-tab {
+            font-size: 10px;
+            &:first-child {
+                margin-left: 15px;
+            }
+            &:last-child {
+                margin-left: 0;
+            }
+        }
         .approveAll{
             width: 100%;
-
-
         }
     }
     .not-approved-list{
@@ -2352,11 +2359,6 @@ select{
                 *{
                     color: white;
                     font-size: 0.9em;
-                }
-                .img-container{
-                    @media screen and(max-width: $mob-width){
-                        display: none;
-                    }
                 }
                 .img{
                     width: 50px;
@@ -2377,6 +2379,13 @@ select{
         height: calc(100% - 130px);
         @media (max-width: $laptop-width){
             height: calc(100% - 110px);
+        }
+        @media (max-width: $mob-width) {
+            img {
+                width: 40px !important;
+                height: 40px !important;
+                margin: 50% 0;
+            }
         }
 
 
