@@ -570,12 +570,12 @@ class CalendarPage extends PureComponent {
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                {appointmentSocketMessageFlag &&
-                <AppointmentFromSocket
-                    appointmentSocketMessageFlag={appointmentSocketMessageFlag}
-                    appointmentSocketMessage={appointmentSocketMessage}
-                    closeAppointmentFromSocket={this.closeAppointmentFromSocket}
-                />}
+                {/*{appointmentSocketMessageFlag &&*/}
+                {/*<AppointmentFromSocket*/}
+                {/*    appointmentSocketMessageFlag={appointmentSocketMessageFlag}*/}
+                {/*    appointmentSocketMessage={appointmentSocketMessage}*/}
+                {/*    closeAppointmentFromSocket={this.closeAppointmentFromSocket}*/}
+                {/*/>}*/}
             </div>
         );
     }

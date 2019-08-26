@@ -1,6 +1,6 @@
 import {clientConstants, userConstants} from '../_constants';
 import {clientService, userService} from '../_services';
-import {alertActions, staffActions} from './';
+import {alertActions, socketActions, staffActions} from './';
 import { history } from '../_helpers';
 import moment from "moment";
 
@@ -152,8 +152,11 @@ function forgotPass(emailReset) {
 }
 
 function logout() {
-    userService.logout();
-    return { type: userConstants.LOGOUT };
+    return dispatch => {
+        dispatch(socketActions.alertSocketMessage(null))
+        userService.logout();
+        return { type: userConstants.LOGOUT };
+    }
 }
 
 function register(user) {
