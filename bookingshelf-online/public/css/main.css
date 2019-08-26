@@ -623,6 +623,11 @@ q:before, q:after { content:''; }
     float: none;
     text-align: center;
 }
+.staff_popup.staff_popup_large li {
+    box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
+    background-color: #ffffff;
+    border: solid 1px rgba(172, 172, 172, 0.2);
+}
 .staff_popup.staff_popup_large .mobile_block .nearest_appointment {
     font-size: 13px;
 }
