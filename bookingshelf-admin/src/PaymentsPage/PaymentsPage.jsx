@@ -508,7 +508,7 @@ class PaymentsPage extends Component {
                                                             onClick={() => this.AddingInvoiceStaff()}>Оплатить
                                                     </button>
                                                     {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                                Цены в нациолальной валюте указаны для ознакомления. Оплата производиться по курсу в рос. рублях
+                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
                                                         </div>
                                                     }
                                                 </div>
@@ -596,7 +596,7 @@ class PaymentsPage extends Component {
                                                                     onClick={() => this.AddingInvoice()}>Оплатить
                                                             </button>
                                                             {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                                Цены в нациолальной валюте указаны для ознакомления. Оплата производиться по курсу в рос. рублях
+                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
                                                             </div>
                                                             }
                                                         </React.Fragment>
