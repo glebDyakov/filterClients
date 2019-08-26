@@ -154,9 +154,13 @@ function forgotPass(emailReset) {
 function logout() {
     return dispatch => {
         dispatch(socketActions.alertSocketMessage(null))
-        userService.logout();
+        userService.logout()
+            .then(() => {
+                dispatch(success())
+            });
         return { type: userConstants.LOGOUT };
     }
+    function success() { return { type: userConstants.LOGOUT } }
 }
 
 function register(user) {

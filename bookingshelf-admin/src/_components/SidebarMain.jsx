@@ -270,12 +270,12 @@ class SidebarMain extends Component {
 
                             <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
                                 <div className="button-field">
-                                    <button type="button" className={"float-left button small-button " + (openedTab === 'new' ? '' : 'disabled')}
+                                    <button type="button" className={"float-left button small-button approve-tab " + (openedTab === 'new' ? '' : 'disabled')}
                                             onClick={() => this.setState({openedTab: 'new'})}>Новые записи <span className="counter">
                                         {count && count.appointments && count.appointments.count}
                                     </span></button>
-                                    <button type="button" className={"float-left button small-button " + (openedTab === 'deleted' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'deleted'})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
-                                    <button type="button" className={"float-left button small-button " + (openedTab === 'moved' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'moved'})}>Перемещенные записи<span  className="counter">{count && count.moved && count.moved.count}</span></button>
+                                    <button type="button" className={"float-left button small-button approve-tab " + (openedTab === 'deleted' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'deleted'})}>Удаленные записи<span  className="counter">{count && count.canceled && count.canceled.count}</span></button>
+                                    <button type="button" className={"float-left button small-button approve-tab " + (openedTab === 'moved' ? '' : 'disabled')} onClick={()=>this.setState({openedTab:'moved'})}>Перемещенные записи<span  className="counter">{count && count.moved && count.moved.count}</span></button>
                                 </div>
                                 {openedTab === 'new' && <React.Fragment>
                                     <div className="not-approved-list">
