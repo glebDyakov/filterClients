@@ -35,10 +35,14 @@ class AppointmentFromSocket extends React.Component {
 
 
     render() {
-        const {appointmentSocketMessageFlag, appointmentSocketMessage, closeAppointmentFromSocket, staff, client} = this.props;
-        const {payload} = this.props.appointmentSocketMessage;
+        const {socket, appointmentSocketMessage, closeAppointmentFromSocket, staff, client} = this.props;
+        if (!socket.appointmentSocketMessage) {
+            return null
+        }
 
-        const activeStaff = payload && payload.staffId &&  staff && staff.staff && staff.staff.find(item => {
+        const { payload, wsMessageType } = this.props.socket.appointmentSocketMessage;
+
+        const activeStaff = payload && payload.staffId && staff && staff.staff && staff.staff.find(item => {
             return((item.staffId) === (payload.staffId));});
 
         const activeClient = payload && payload.clientId && client && client.client && client.client.find(item => {
@@ -46,7 +50,7 @@ class AppointmentFromSocket extends React.Component {
 
         let socketTitle, socketFooterText;
 
-        switch (appointmentSocketMessage && appointmentSocketMessage.wsMessageType) {
+        switch (wsMessageType) {
             case "APPOINTMENT_CREATED":
                 socketTitle = "НОВАЯ ЗАПИСЬ";
                 socketFooterText = "Просмотреть запись"
@@ -54,7 +58,7 @@ class AppointmentFromSocket extends React.Component {
             case "APPOINTMENT_DELETED":
                 socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
-                break
+                break;
             case "APPOINTMENT_MOVED":
                 socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
                 socketFooterText = "Просмотреть запись"
@@ -72,7 +76,7 @@ class AppointmentFromSocket extends React.Component {
                     <div style={{width: "65%"}}>
                         <div className="appointment-socket-modal-title" style={{position:"relative"}}>
                             <p>{socketTitle}</p>
-                            <button className="close" onClick={()=>closeAppointmentFromSocket()}></button>
+                            <button className="close" onClick={()=>closeAppointmentFromSocket()} />
                         </div>
                         <p className="service_name"><strong>
                             {payload && payload.serviceName}
@@ -106,8 +110,8 @@ class AppointmentFromSocket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const {staff, client  } = state;
-    return {staff, client};
+    const { staff, client, socket } = state;
+    return { staff, client, socket };
 }
 
 

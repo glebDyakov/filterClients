@@ -114,7 +114,7 @@ class PaymentsPage extends Component {
                     break;
             }
         }
-        packetId = packets.find(item => item.staffAmount === staffAmount).packetId;
+        packetId = packets && packets.find(item => item.staffAmount === staffAmount).packetId;
         let discountAmount
         switch (amount) {
             case 6:
@@ -507,6 +507,10 @@ class PaymentsPage extends Component {
                                                     <button className="button" type="button"
                                                             onClick={() => this.AddingInvoiceStaff()}>Оплатить
                                                     </button>
+                                                    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
+                                                        </div>
+                                                    }
                                                 </div>
 
                                             </div>
@@ -591,6 +595,10 @@ class PaymentsPage extends Component {
                                                             <button className="button" type="button"
                                                                     onClick={() => this.AddingInvoice()}>Оплатить
                                                             </button>
+                                                            {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
+                                                            </div>
+                                                            }
                                                         </React.Fragment>
                                                     }
                                                 </div>
@@ -662,13 +670,15 @@ class PaymentsPage extends Component {
                                                     </div>
                                                     <div className="customer-seller">
                                                         <div className="col-md-6 col-12 customer">
-                                                            <p>Покупатель: <strong>{authentication.user.companyName}</strong></p>
+                                                            <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
                                                             <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
                                                             <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
                                                         </div>
 
                                                         <div className="col-md-6 col-12 seller">
-                                                            <p>Продавец: <strong>ЧУП "СОФТ-МЕЙК"</strong></p>
+                                                            <p>Лицензиар: <strong>СОФТ-МЕЙК. УНП 191644633</strong></p>
+                                                            <p>Адрес: 220034, Минск, Марьевская 7а-1-6</p>
+                                                            <p>Тел +375 44 5655557</p>
                                                         </div>
                                                     </div>
 
@@ -690,7 +700,7 @@ class PaymentsPage extends Component {
                                                             <div className="table-price"><p>Стоимость</p></div>
                                                         </div>
                                                         {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
-                                                            let name = this.props.payments.packets.find(item => item.packetId === packet.packetId)
+                                                            let name = packets && packets.find(item => item.packetId === packet.packetId)
                                                             return (
                                                                 <div className="table-row">
                                                                     <div className="table-description">
