@@ -8,4 +8,5 @@ export * from './menu.constants';
 export * from './calendar.constants';
 export * from './notification.constants';
 export * from './analitics.constants';
+export * from './socket.constants';
 export * from './payments.constants';

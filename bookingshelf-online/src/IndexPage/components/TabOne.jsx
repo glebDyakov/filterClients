@@ -18,7 +18,7 @@ class TabOne extends  PureComponent{
                         refreshTimetable();
                     }}>Вперед</span>}
                 </div>
-                <ul className="staff_popup">
+                <ul className={`staff_popup ${staffs && staffs.length < 2 ? "staff_popup_large" : ""}`}>
                     {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
 
 
@@ -26,12 +26,12 @@ class TabOne extends  PureComponent{
                             onClick={() => selectStaff(staff)}
                             key={idStaff}
                         >
-                            <a href="#">
+                            <span className="staff_popup_item">
                                 <div className="img_container">
                                     <img
                                         src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                         alt=""/>
-                                    <span>{staff.firstName} <br/>{staff.lastName} <br/>
+                                    <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length < 2 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
                                         <span style={{ fontSize: "13px"}}>{staff.description}</span>
                                     </span>
                                 </div>
@@ -64,7 +64,7 @@ class TabOne extends  PureComponent{
 
 
 
-                            </a>
+                            </span>
                         </li>
                     )}
                 </ul>

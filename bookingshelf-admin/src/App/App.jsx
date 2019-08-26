@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import config from 'config';
 
 import { history } from '../_helpers';
-import {alertActions, calendarActions, staffActions, menuActions, notificationActions} from '../_actions';
+import {
+    alertActions,
+    calendarActions,
+    staffActions,
+    menuActions,
+    notificationActions,
+    socketActions
+} from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
 import '../../public/css_admin/bootstrap.css'
@@ -56,8 +63,6 @@ class App extends React.Component {
             isLoading: true,
             authentication: props.authentication,
             flagStaffId: true,
-            appointmentSocketMessage: {},
-            appointmentSocketMessageFlag: false
         }
 
 
@@ -158,7 +163,7 @@ class App extends React.Component {
     closeAppointmentFromSocket(){
         $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
         setTimeout(() => {
-            this.setState({ appointmentSocketMessageFlag: false });
+            this.props.dispatch(socketActions.alertSocketMessage(null));
             $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
         }, 2000);
 
@@ -166,7 +171,7 @@ class App extends React.Component {
     handleSocketDispatch(payload){
         if (this.props.authentication.user.profile.staffId === payload.payload.staffId) {
             this.playSound();
-            this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
+            this.props.dispatch(socketActions.alertSocketMessage(payload));
             if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
 
                 this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
@@ -235,7 +240,7 @@ class App extends React.Component {
 
 
     render() {
-        const { authentication, company, appointmentSocketMessageFlag, appointmentSocketMessage } = this.state;
+        const { authentication, company } = this.state;
         {
            company && company.settings && authentication.menu && authentication.loggedIn &&
             moment.tz.setDefault(company.settings.timezoneId)
@@ -247,12 +252,9 @@ class App extends React.Component {
                         {authentication && authentication.user && authentication.menu && authentication.loggedIn &&
                         <SidebarMain/>
                         }
-                        {appointmentSocketMessageFlag &&
                         <AppointmentFromSocket
-                            appointmentSocketMessageFlag={appointmentSocketMessageFlag}
-                            appointmentSocketMessage={appointmentSocketMessage}
                             closeAppointmentFromSocket={this.closeAppointmentFromSocket}
-                        />}
+                        />
                         {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
                         <Switch>
                             <PrivateRoute exact path="/" component={MainIndex} refresh={false} />

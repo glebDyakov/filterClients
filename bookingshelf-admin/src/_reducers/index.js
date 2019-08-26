@@ -5,6 +5,7 @@ import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { company } from './company.reducer';
 import { staff } from './staff.reducer';
+import { socket } from './socket.reducer';
 import { client } from './client.reducer';
 import { services } from './services.reducer';
 import { menu } from './menu.reducer';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   users,
   company,
   staff,
+  socket,
   alert,
   client,
   services,

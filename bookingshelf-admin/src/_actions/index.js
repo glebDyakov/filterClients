@@ -8,4 +8,5 @@ export * from './menu.actions';
 export * from './calendar.actions';
 export * from './notification.actions';
 export * from './analitics.actions';
+export * from './socket.actions';
 export * from './payments.actions';

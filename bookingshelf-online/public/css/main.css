@@ -562,7 +562,7 @@ q:before, q:after { content:''; }
     word-break: break-word;
 }
 
-.staff_popup li a, .service_list li a{
+.staff_popup .staff_popup_item, .service_list li a{
     padding: 15px 16px;
     width: 100%;
     display: block;
@@ -597,12 +597,36 @@ q:before, q:after { content:''; }
     min-width: 130px;
     flex-direction: column;
 }
-.staff_popup li a{
+.staff_popup .staff_popup_item{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
 }
-
+.staff_popup.staff_popup_large .staff_popup_item{
+    display: block;
+}
+.staff_popup.staff_popup_large .img_container{
+    display: block;
+    float: none;
+    width: 100%;
+}
+.staff_popup.staff_popup_large .img_container img{
+    height: 75px;
+    width: 75px;
+    margin: 0 auto;
+    display: block;
+}
+.staff_popup.staff_popup_large .mobile_block {
+    margin-top: 8px;
+    width: 100%;
+    float: none;
+    text-align: center;
+}
+.staff_popup.staff_popup_large .img_container .staff_popup_name{
+    display: block;
+    text-align: center;
+}
 .staff_popup strong{
     font-size: 22px;
 }
@@ -615,11 +639,6 @@ q:before, q:after { content:''; }
     font-weight: normal;
     font-family: 'helvetica_roman';
     line-height: 22px;
-}
-
-.staff_popup_large .img_container img{
-    height: 60px !important;
-    width: 60px !important;
 }
 
 .skip_employee{
@@ -1027,7 +1046,7 @@ q:before, q:after { content:''; }
         line-height: 20px;
         font-size: 18px;
     }
-    .staff_popup li a, .service_list li a {
+    .staff_popup .staff_popup_item, .service_list li a {
         padding: 10px;
     }
     .container_popups {
@@ -1282,13 +1301,6 @@ q:before, q:after { content:''; }
         margin-bottom: 8px;
         box-shadow: none;
     }
-    .staff_popup_large .img_container img{
-        height: 50px !important;
-        width: 50px !important;
-    }
-    .staff_popup_large span{
-        font-size: 14px !important;
-    }
     .service_selection {
         padding: 0 12px 0;
     }
@@ -1356,7 +1368,6 @@ q:before, q:after { content:''; }
         font-size: 14px;
     }
     .img_container {
-        height: 39px;
         width: 50%;
         float: left;
     }
@@ -1394,7 +1405,7 @@ q:before, q:after { content:''; }
     .service_list .service_item p:first-of-type {
         width: 45%;
     }
-    .staff_popup li a {
+    .staff_popup .staff_popup_item {
         padding: 14px 12px;
     }
     .staff_popup .img_container span {
