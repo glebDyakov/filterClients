@@ -13,7 +13,9 @@ export const companyActions = {
     getAppointmentsCountMarkerDecrement,
 };
 
-function add(companyInfo, menu, profile) {
+function add(companyInfo) {
+    const menu = JSON.parse(localStorage.getItem('user')).menu
+    const profile = JSON.parse(localStorage.getItem('user')).profile
     return dispatch => {
         companyService.add(companyInfo)
             .then(
@@ -21,7 +23,7 @@ function add(companyInfo, menu, profile) {
                     dispatch(success(companyInfo, menu, profile));
                 },
                 error => {
-                    dispatch(failure(error.toString()));
+                    // dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
                 }
             )

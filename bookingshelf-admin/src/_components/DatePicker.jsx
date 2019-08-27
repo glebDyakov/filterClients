@@ -93,7 +93,7 @@ class DatePicker extends PureComponent {
     };
 
     render() {
-        const { type, selectedDay, selectedDays, closedDates } = this.props;
+        const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
         const { opacity, hoverRange } = this.state;
         let weekProps = {};
         let selectedDaysText;
@@ -157,6 +157,7 @@ class DatePicker extends PureComponent {
                                     showOutsideDays
                                     locale={'ru'}
                                     {...weekProps}
+                                    {...dayPickerProps}
                                 />
                             </div>
                         </div>

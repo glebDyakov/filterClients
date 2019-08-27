@@ -83,6 +83,9 @@ class IndexPage extends PureComponent {
             newProps.staff.info && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
             let disabledDays=[];
+            const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisOn && newProps.staff.info.onlineZapisEndTimeMillis)
+                ? newProps.staff.info.onlineZapisEndTimeMillis
+                : parseInt(moment().utc().add(3, 'month').format('x'))
             for(let i= parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').startOf('month').format('D'));
                 i<=parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').endOf('month').format('D'));i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
@@ -106,12 +109,11 @@ class IndexPage extends PureComponent {
                             })
                     })
 
-                const checkingDate = parseInt(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').utc().format('x'));
+                const checkingDate = parseInt(moment(moment(this.state.month).format('YYYY/MMMM')+"/"+i, 'YYYY/MMMM/D').utc().format('x'));
                 const currentDate = parseInt(moment().startOf('day').format('x'));
 
-
-                if(avDay && avDay.length===0 || (checkingDate < currentDate)){
-                    const pushedDay = new Date(moment(moment(this.state.month).format('MMMM')+"/"+i, 'MMMM/D').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
+                if(avDay && avDay.length===0 || (checkingDate < currentDate) || checkingDate > defaultBlockedTime){
+                    const pushedDay = new Date(moment(moment(this.state.month).format('YYYY/MMMM')+"/"+i, 'YYYY/MMMM/D').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
                     disabledDays.push(pushedDay)}
 
             }
@@ -224,17 +226,26 @@ class IndexPage extends PureComponent {
 
         const { error, isLoading } = this.props.staff;
 
+
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
         });
 
-        return (
+        let content;
 
-            <div className="container_popups">
-
-                {info && <Header info={info}/>}
-
-                <div className="service_selection_wrapper">
+        if (info && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
+            content = (
+                <div className="online-zapis-off">
+                    Онлайн-запись для этой компании отключена
+                </div>
+            )
+        } else if (!info) {
+            content = <div className="online-zapis-off">
+                Подождите...
+            </div>
+        } else {
+            content = (
+                <React.Fragment>
                     {screen === 1 &&
                     <TabOne
                         staffId={selectedStaff.staffId }
@@ -332,6 +343,18 @@ class IndexPage extends PureComponent {
                         setScreen={this.setScreen}
                     />
                     }
+                </React.Fragment>
+            )
+        }
+
+        return (
+
+            <div className="container_popups">
+
+                {info && <Header info={info}/>}
+
+                <div className="service_selection_wrapper">
+                    {content}
                     {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
                 </div>
                 <Footer/>

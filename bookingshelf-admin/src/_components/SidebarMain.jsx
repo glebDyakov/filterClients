@@ -91,41 +91,47 @@ class SidebarMain extends Component {
         const { authentication, menu, company, collapse, openedTab,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
-        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
+            const activeStaff = staff && staff.staff && staff.staff.find(item =>
+                ((item.staffId) === (appointmentInfo.staff.staffId)));
 
-            appointmentInfo.appointments.map((appointment) => {
+            return appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
-                if((!appointment.approved && !appointment.coAppointmentId)
-                    &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
-                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
-                        return((item.staffId) === (appointmentInfo.staff.staffId));});
+                if ((!appointment.approved && !appointment.coAppointmentId)
+                    && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || (activeStaff && activeStaff.adminOverviewMode))) {
+
 
                     const activeClient = client && client.client && client.client.find(item => {
-                        return((item.clientId) === (appointment.clientId));});
+                        return ((item.clientId) === (appointment.clientId));
+                    });
 
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
                             <div className="service_item">
                                 <div className="img-container" style={{width: "15%"}}>
-                                    <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                         className="img"/></div>
+                                    <img
+                                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        className="img"/></div>
                                 <div style={{width: "40%"}}>
                                     <p className="service_name"
                                        style={{
-                                        // width: "65%",
-                                        // marginRight: "5%",
-                                        // wordWrap: "break-word"
-                                        }}
+                                           // width: "65%",
+                                           // marginRight: "5%",
+                                           // wordWrap: "break-word"
+                                       }}
                                     ><strong>{appointment.serviceName}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
-                                        </p><br/>
-                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                    </p><br/>
+                                    <p style={{float: "none"}}>
+                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}
+                                    </p>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
-                                    {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                    {activeClient && activeClient.phone &&
+                                    <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
-                                       // style={{width: "30%", textAlign: "left"}}
+                                        // style={{width: "30%", textAlign: "left"}}
                                     >
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
@@ -139,16 +145,16 @@ class SidebarMain extends Component {
                 }
                 return resultMarkup;
             })
-        )
+        })
 
         let movedCount = 0;
-        const appointmentMovedMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
-
-            appointmentInfo.appointments.map((appointment) => {
+        const appointmentMovedMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
+            const activeStaff = staff && staff.staff && staff.staff.find(item =>
+                ((item.staffId) === (appointmentInfo.staff.staffId)));
+            return appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
-                if((appointment.moved) &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
-                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
-                        return((item.staffId) === (appointmentInfo.staff.staffId));});
+                if((appointment.moved) && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || (activeStaff && activeStaff.adminOverviewMode))) {
+
 
                     const activeClient = client && client.client && client.client.find(item => {
                         return((item.clientId) === (appointment.clientId));});
@@ -189,7 +195,8 @@ class SidebarMain extends Component {
                 }
                 return resultMarkup;
             })
-        )
+        })
+
         return (
             <div>
             <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
