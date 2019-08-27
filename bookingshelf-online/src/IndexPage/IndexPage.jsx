@@ -86,8 +86,17 @@ class IndexPage extends PureComponent {
             const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisOn && newProps.staff.info.onlineZapisEndTimeMillis)
                 ? newProps.staff.info.onlineZapisEndTimeMillis
                 : parseInt(moment().utc().add(3, 'month').format('x'))
-            for(let i= parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').startOf('month').format('D'));
-                i<=parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').endOf('month').format('D'));i++) {
+            const monthMoment = moment(moment(this.state.month).format('MMMM'), 'MMMM')
+            const year = parseInt(moment(this.state.month).format('YYYY'))
+            const month = parseInt(moment(this.state.month).format('MM'))
+
+            const firstDayOfMonth = parseInt(monthMoment.startOf('month').format('D'))
+            let lastDayOfMonth = parseInt(monthMoment.endOf('month').format('D'))
+
+            if ((year % 4 === 0) && month === 2) {
+                lastDayOfMonth++;
+            }
+            for(let i=firstDayOfMonth; i<=lastDayOfMonth;i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
                     newProps.staff.timetableAvailable.availableDays.filter((time, key, elements) =>{
                         const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
