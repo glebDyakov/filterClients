@@ -29,7 +29,6 @@ class OnlinePage extends Component {
             isOnlineZapisOnDropdown: false,
             userSettings: false
         };
-        debugger
 
         this.handleChange = this.handleChange.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
@@ -45,7 +44,6 @@ class OnlinePage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            debugger
             this.setState({
                 booking: newProps.company.booking,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
@@ -53,21 +51,20 @@ class OnlinePage extends Component {
         }
         if (newProps.company.settings) {
             this.setState({
-                selectedDay: newProps.company.settings.onlineZapisEndTimeMillis
-                    ? moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate()
-                    : this.state.selectedDay,
-                onlineZapisEndTimeMillis: parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
-                isOnlineZapisChecked: !!newProps.company.settings.onlineZapisEndTimeMillis,
+                selectedDay: newProps.company.settings.onlineZapisOn
+                    ? this.state.selectedDay
+                    : moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate(),
+                onlineZapisEndTimeMillis: newProps.company.settings.onlineZapisOn
+                    ? parseInt(moment(this.state.selectedDay).format('x'))
+                    : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
+                onlineZapisOn: newProps.company.settings.onlineZapisOn,
             })
         }
     }
 
     handleCheckboxChange() {
         const newState = {
-            isOnlineZapisChecked: !this.state.isOnlineZapisChecked
-        }
-        if (!newState.isOnlineZapisChecked) {
-            newState.onlineZapisEndTimeMillis = 0
+            onlineZapisOn: !this.state.onlineZapisOn
         }
         this.setState(newState)
     }
@@ -85,10 +82,11 @@ class OnlinePage extends Component {
     }
 
     handleSubmit() {
-        const { onlineZapisEndTimeMillis } = this.state;
+        const { onlineZapisEndTimeMillis, onlineZapisOn } = this.state;
         this.props.dispatch(companyActions.add({
             ...this.props.company.settings,
-            onlineZapisEndTimeMillis
+            onlineZapisEndTimeMillis,
+            onlineZapisOn
         }));
     }
 
@@ -149,7 +147,9 @@ class OnlinePage extends Component {
     }
 
     render() {
-        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, isOnlineZapisChecked } = this.state;
+        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn } = this.state;
+
+        const isOnlineZapisChecked = !onlineZapisOn
 
         const dayPickerProps = {
             month: new Date(),

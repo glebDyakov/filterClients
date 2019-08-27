@@ -98,7 +98,7 @@ class SidebarMain extends Component {
             return appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
                 if ((!appointment.approved && !appointment.coAppointmentId)
-                    && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || activeStaff.adminOverviewMode)) {
+                    && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || (activeStaff && activeStaff.adminOverviewMode))) {
 
 
                     const activeClient = client && client.client && client.client.find(item => {
@@ -153,7 +153,7 @@ class SidebarMain extends Component {
                 ((item.staffId) === (appointmentInfo.staff.staffId)));
             return appointmentInfo.appointments.map((appointment) => {
                 let resultMarkup = null;
-                if((appointment.moved) && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || activeStaff.adminOverviewMode)) {
+                if((appointment.moved) && ((appointmentInfo.staff.staffId === authentication.user.profile.staffId) || (activeStaff && activeStaff.adminOverviewMode))) {
 
 
                     const activeClient = client && client.client && client.client.find(item => {

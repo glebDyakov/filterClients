@@ -83,7 +83,7 @@ class IndexPage extends PureComponent {
             newProps.staff.info && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
             let disabledDays=[];
-            const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisEndTimeMillis)
+            const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisOn && newProps.staff.info.onlineZapisEndTimeMillis)
                 ? newProps.staff.info.onlineZapisEndTimeMillis
                 : parseInt(moment().utc().add(3, 'month').format('x'))
             for(let i= parseInt(moment(moment(this.state.month).format('MMMM'), 'MMMM').startOf('month').format('D'));
@@ -233,8 +233,17 @@ class IndexPage extends PureComponent {
 
         let content;
 
-        // info && info.isOnlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis)
-        if (true) {
+        if (info && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
+            content = (
+                <div className="online-zapis-off">
+                    Онлайн-запись для этой компании отключена
+                </div>
+            )
+        } else if (!info) {
+            content = <div className="online-zapis-off">
+                Подождите...
+            </div>
+        } else {
             content = (
                 <React.Fragment>
                     {screen === 1 &&
@@ -335,13 +344,6 @@ class IndexPage extends PureComponent {
                     />
                     }
                 </React.Fragment>
-            )
-
-        } else {
-            content = (
-                <div className="online-zapis-off">
-                    Онлайн-запись для этой компании отключена
-                </div>
             )
         }
 
