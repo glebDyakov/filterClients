@@ -27,7 +27,8 @@ class OnlinePage extends Component {
             isLoading: true,
             urlButton: false,
             isOnlineZapisOnDropdown: false,
-            userSettings: false
+            userSettings: false,
+            status: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -60,6 +61,12 @@ class OnlinePage extends Component {
                 onlineZapisOn: newProps.company.settings.onlineZapisOn,
             })
         }
+        if (newProps.company && newProps.company.status==='saved.settings') {
+            this.setState({status: newProps.company.status})
+            setTimeout(() => {
+                this.setState({status: '', submitted: false})
+            }, 3000)
+        }
     }
 
     handleCheckboxChange() {
@@ -88,6 +95,7 @@ class OnlinePage extends Component {
             onlineZapisEndTimeMillis,
             onlineZapisOn
         }));
+
     }
 
     componentDidMount(){
@@ -147,7 +155,7 @@ class OnlinePage extends Component {
     }
 
     render() {
-        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn } = this.state;
+        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
@@ -282,7 +290,7 @@ class OnlinePage extends Component {
                                         </div>
                                     </div>
                                     <div className="col-xl-4 mb-3 block-h">
-                                        <div className=" content-pages-bg p-4">
+                                        <div className=" content-pages-bg p-4 mb-3">
                                             <p className="title mb-3">Ваша страница</p>
                                             <p className="gray-text mb-3">Перейдите по ссылке для того что бы открыть
                                                 вашу персональную страницу онлайн записи. Вы увидете полную страницу
@@ -314,7 +322,7 @@ class OnlinePage extends Component {
                                                                                 </span>}
                                                 </div>
                                             </div>
-                                            {isOnlineZapisChecked && <div className="online-zapis-date-picker">
+                                            {isOnlineZapisChecked && <div className="online-zapis-date-picker mb-3">
                                                 <DatePicker
                                                     // closedDates={staffAll.closedDates}
                                                     type="day"
@@ -323,6 +331,9 @@ class OnlinePage extends Component {
                                                     dayPickerProps={dayPickerProps}
                                                 />
                                             </div>
+                                            }
+                                            {status === 'saved.settings' &&
+                                                <p className="alert-success p-1 rounded pl-3">Сохранено</p>
                                             }
                                             <button className="ahref button mt-3 mb-3" onClick={this.handleSubmit}>
                                                 Сохранить
