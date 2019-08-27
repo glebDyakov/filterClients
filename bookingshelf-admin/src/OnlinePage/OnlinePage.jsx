@@ -6,9 +6,10 @@ import {HeaderMain} from "../_components/HeaderMain";
 import '../../public/scss/online_booking.scss'
 import {UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from 'react-pace-progress'
 import {companyActions} from "../_actions";
 import {access} from "../_helpers/access";
+import {DatePicker} from "../_components/DatePicker";
+import moment from 'moment';
 
 class OnlinePage extends Component {
     constructor(props) {
@@ -22,13 +23,20 @@ class OnlinePage extends Component {
 
         this.state = {
             booking: props.company && props.company.booking,
+            selectedDay: moment().utc().toDate(),
             isLoading: true,
             urlButton: false,
+            isOnlineZapisOnDropdown: false,
             userSettings: false
         };
+        debugger
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.setType = this.setType.bind(this);
         this.copyToClipboard = this.copyToClipboard.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -37,10 +45,31 @@ class OnlinePage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({ booking: newProps.company.booking,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+            debugger
+            this.setState({
+                booking: newProps.company.booking,
+                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
             })
         }
+        if (newProps.company.settings) {
+            this.setState({
+                selectedDay: newProps.company.settings.onlineZapisEndTimeMillis
+                    ? moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate()
+                    : this.state.selectedDay,
+                onlineZapisEndTimeMillis: parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
+                isOnlineZapisChecked: !!newProps.company.settings.onlineZapisEndTimeMillis,
+            })
+        }
+    }
+
+    handleCheckboxChange() {
+        const newState = {
+            isOnlineZapisChecked: !this.state.isOnlineZapisChecked
+        }
+        if (!newState.isOnlineZapisChecked) {
+            newState.onlineZapisEndTimeMillis = 0
+        }
+        this.setState(newState)
     }
 
     handleChange(e) {
@@ -55,8 +84,12 @@ class OnlinePage extends Component {
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
     }
 
-    handleSubmit(e) {
-
+    handleSubmit() {
+        const { onlineZapisEndTimeMillis } = this.state;
+        this.props.dispatch(companyActions.add({
+            ...this.props.company.settings,
+            onlineZapisEndTimeMillis
+        }));
     }
 
     componentDidMount(){
@@ -65,6 +98,20 @@ class OnlinePage extends Component {
         this.props.dispatch(companyActions.getBookingInfo());
         setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
+    }
+
+    componentDidUpdate() {
+        if(this.state.isOnlineZapisOnDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    }
+
+    handleOutsideClick() {
+        this.setState({
+            isOnlineZapisOnDropdown: false,
+        })
     }
 
     setColor (color) {
@@ -97,8 +144,26 @@ class OnlinePage extends Component {
         this.setState({ copySuccess: 'Copied!' });
     };
 
+    toggleDropdown(key) {
+        this.setState({[key]: !this.state[key]})
+    }
+
     render() {
-        const { booking, submitted, isLoading, urlButton, userSettings } = this.state;
+        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, isOnlineZapisChecked } = this.state;
+
+        const dayPickerProps = {
+            month: new Date(),
+            fromMonth: new Date(),
+            toMonth: new Date(moment().utc().add(6, 'month').toDate()),
+            disabledDays:[
+                {
+                    before: new Date(),
+                },
+                {
+                    after: new Date(moment().utc().add(6, 'month').toDate()),
+                },
+            ]
+        }
 
         return (
             <div>
@@ -231,8 +296,39 @@ class OnlinePage extends Component {
                                                className="ahref button mt-3 mb-3 float-right button-url">Посмотреть
                                                 страницу в интернете
                                             </a>
-                                            <div className="clearfix"></div>
+                                            <div className="clearfix" />
+
                                         </div>
+                                        <div className=" content-pages-bg p-4">
+                                            <p className="title mb-3">Ограничить время онлайн-записи</p>
+                                            <div className="check-box">
+                                                <label>
+                                                    <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={this.handleCheckboxChange}/>
+                                                    <span className="check"/>
+                                                    Включить ограничение
+                                                </label>&nbsp;
+                                                <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisOnDropdown")}>
+                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                    {this.state.isOnlineZapisOnDropdown && <span className="questions_dropdown">
+                                                                                    По умолчанию открытое время онлайн-записи составляет 3 мес. При ограничении максимальное время составляет 6 мес.
+                                                                                </span>}
+                                                </div>
+                                            </div>
+                                            {isOnlineZapisChecked && <div className="online-zapis-date-picker">
+                                                <DatePicker
+                                                    // closedDates={staffAll.closedDates}
+                                                    type="day"
+                                                    selectedDay={selectedDay}
+                                                    handleDayClick={this.handleDayClick}
+                                                    dayPickerProps={dayPickerProps}
+                                                />
+                                            </div>
+                                            }
+                                            <button className="ahref button mt-3 mb-3" onClick={this.handleSubmit}>
+                                                Сохранить
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -259,6 +355,16 @@ class OnlinePage extends Component {
     onOpen(){
 
         this.setState({...this.state, userSettings: true});
+    }
+
+    handleDayClick(day){
+
+        let daySelected = moment(day);
+
+        this.setState({
+            selectedDay: daySelected.utc().startOf('day').toDate(),
+            onlineZapisEndTimeMillis: parseInt(moment(day).format('x'))
+        });
     }
 }
 

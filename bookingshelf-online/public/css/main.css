@@ -319,6 +319,11 @@ q:before, q:after { content:''; }
 .service_selection_wrapper {
     position: relative;
 }
+.online-zapis-off {
+    text-align: center;
+    font-size: 18px !important;
+    margin: 25vh 0;
+}
 .service_selection.screen0{
     display: block;
 }

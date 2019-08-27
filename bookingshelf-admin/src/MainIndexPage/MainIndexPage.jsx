@@ -143,7 +143,7 @@ class MainIndexPage extends Component {
         setTimeout(() => this.setState({ isAvatarOpened: true }), 100);
 
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
-            dispatch(companyActions.add(settings, JSON.parse(localStorage.getItem('user')).menu, JSON.parse(localStorage.getItem('user')).profile));
+            dispatch(companyActions.add(settings));
         }
     }
 
