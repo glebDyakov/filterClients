@@ -22,17 +22,32 @@ class AppointmentFromSocket extends React.Component {
         }
     }
 
-    goToPageCalendar(id, url, wsMessageType){
+    goToPageCalendar(appointment, appointmentStaffId, wsMessageType){
+        const { staffId, roleId } = this.props.authentication.user.profile
+        const { appointmentId, appointmentTimeMillis } = appointment
+
+        const url = "/page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY')
         this.props.history.push(url);
 
         if (wsMessageType === 'APPOINTMENT_CREATED') {
-            this.props.dispatch(calendarActions.approveAppointment(id));
-        } else if (wsMessageType === 'APPOINTMENT_MOVED') {
-            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false, approved: true })))
-        }
-        this.props.dispatch(calendarActions.setScrollableAppointment(id))
-    }
+            const params = {}
+            if (staffId !== appointmentStaffId) {
+                params.approved = false;
+                params.adminApproved = true;
+            } else if (roleId === 3 || roleId === 4) {
+                params.approved = true;
+                params.adminApproved = true;
+            } else {
+                params.approved = true;
 
+            }
+
+            this.props.dispatch(calendarActions.approveAppointment(appointmentId, params));
+        } else if (wsMessageType === 'APPOINTMENT_MOVED') {
+            this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify({ moved: false, approved: true })))
+        }
+        this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
+    }
 
     render() {
         const {socket, appointmentSocketMessage, closeAppointmentFromSocket, staff, client} = this.props;
@@ -95,7 +110,7 @@ class AppointmentFromSocket extends React.Component {
                         </p>
                         <p onClick={() => {
                             if (socketFooterText === 'Просмотреть запись') {
-                                this.goToPageCalendar(payload.appointmentId, "/page/" + payload.staffId + "/" + moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'), wsMessageType)
+                                this.goToPageCalendar(payload, payload.staffId, wsMessageType)
                             }
                         }} style={{color: "#3E90FF", cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')}}>{socketFooterText}</p>
 

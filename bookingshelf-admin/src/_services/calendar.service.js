@@ -74,13 +74,10 @@ function editAppointment(params) {
         });
 }
 
-function approveAppointment(appointmentId) {
-    const params=JSON.stringify({
-        approved: true
-    });
+function approveAppointment(appointmentId, params) {
     const requestOptions = {
         method: 'PATCH',
-        body: params,
+        body: JSON.stringify(params),
         crossDomain: true,
         credentials: 'include',
         xhrFields: {
@@ -114,12 +111,10 @@ function updateAppointment(appointmentId, params) {
             return appointment;
         });
 }
-function approveAllAppointment(approved, canceled) {
+function approveAllAppointment(approved, canceled, params) {
     const requestOptions = {
         method: 'PATCH',
-        body: JSON.stringify({
-            approved: true
-        }),
+        body: JSON.stringify(params),
         crossDomain: true,
         credentials: 'include',
         xhrFields: {
@@ -133,12 +128,10 @@ function approveAllAppointment(approved, canceled) {
         .then(handleResponse)
 }
 
-function approveMovedAppointment() {
+function approveMovedAppointment(params) {
     const requestOptions = {
         method: 'PATCH',
-        body: JSON.stringify({
-            moved: false
-        }),
+        body: JSON.stringify(params),
         crossDomain: true,
         credentials: 'include',
         xhrFields: {
