@@ -262,9 +262,9 @@ function deleteReservedTime(id, reservedTimeId, time1, time2) {
     function failure(error) { return { type: calendarConstants.DELETE_RESERVED_TIME_FAILURE, error } }
 }
 
-function approveAppointment(id) {
+function approveAppointment(id, params) {
     return dispatch => {
-        calendarService.approveAppointment(id)
+        calendarService.approveAppointment(id, params)
             .then(
                 client => {
                     dispatch(success(id))
@@ -280,9 +280,9 @@ function approveAppointment(id) {
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
     function failure(error) { return { type: calendarConstants.APPROVE_APPOINTMENT_FAILURE, error } }
 }
-function approveAllAppointment(approved, canceled) {
+function approveAllAppointment(approved, canceled, params) {
     return dispatch => {
-        calendarService.approveAllAppointment(approved, canceled)
+        calendarService.approveAllAppointment(approved, canceled, params)
             .then(
                 () => {
                     dispatch(companyActions.getNewAppointments())
@@ -294,9 +294,9 @@ function approveAllAppointment(approved, canceled) {
     };
 }
 
-function approveMovedAppointment() {
+function approveMovedAppointment(params) {
     return dispatch => {
-        calendarService.approveMovedAppointment()
+        calendarService.approveMovedAppointment(params)
             .then(
                 () => {
                     dispatch(companyActions.getNewAppointments())
