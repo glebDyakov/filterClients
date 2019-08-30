@@ -26,6 +26,7 @@ class SidebarMain extends Component {
 
         this.handleClick=this.handleClick.bind(this)
         this.approveAllAppointment=this.approveAllAppointment.bind(this)
+        this.approveMovedAppointment=this.approveMovedAppointment.bind(this)
         this.openAppointments=this.openAppointments.bind(this)
         this.goToPageCalendar=this.goToPageCalendar.bind(this)
         this.logout=this.logout.bind(this)
@@ -91,41 +92,49 @@ class SidebarMain extends Component {
         const { authentication, menu, company, collapse, openedTab,  count, userSettings }=this.state;
         let path="/"+location.pathname.split('/')[1]
 
-        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
+        const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
+            const activeStaff = staff && staff.staff && staff.staff.find(item =>
+                ((item.staffId) === (appointmentInfo.staff.staffId)));
 
-            appointmentInfo.appointments.map((appointment) => {
+            return appointmentInfo.appointments.map((appointment) => {
+                const { roleId } = authentication.user.profile
                 let resultMarkup = null;
-                if((!appointment.approved && !appointment.coAppointmentId)
-                    &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
-                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
-                        return((item.staffId) === (appointmentInfo.staff.staffId));});
-
-                    const activeClient = client && client.client && client.client.find(item => {
-                        return((item.clientId) === (appointment.clientId));});
+                let condition;
+                if (roleId === 3 || roleId === 4) {
+                    condition = !appointment.adminApproved
+                } else {
+                    condition = !appointment.approved && appointmentInfo.staff.staffId === authentication.user.profile.staffId
+                }
+                if (condition && !appointment.coAppointmentId) {
+                    const activeClient = client && client.client && client.client.find(item => ((item.clientId) === (appointment.clientId)));
 
                     resultMarkup = (
-                        <li onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                        <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
                                 <div className="img-container" style={{width: "15%"}}>
-                                    <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                         className="img"/></div>
+                                    <img
+                                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        className="img"/></div>
                                 <div style={{width: "40%"}}>
                                     <p className="service_name"
                                        style={{
-                                        // width: "65%",
-                                        // marginRight: "5%",
-                                        // wordWrap: "break-word"
-                                        }}
+                                           // width: "65%",
+                                           // marginRight: "5%",
+                                           // wordWrap: "break-word"
+                                       }}
                                     ><strong>{appointment.serviceName}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
-                                        </p><br/>
-                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                    </p><br/>
+                                    <p style={{float: "none"}}>
+                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}
+                                    </p>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
-                                    {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                    {activeClient && activeClient.phone &&
+                                    <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
-                                       // style={{width: "30%", textAlign: "left"}}
+                                        // style={{width: "30%", textAlign: "left"}}
                                     >
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
@@ -139,22 +148,27 @@ class SidebarMain extends Component {
                 }
                 return resultMarkup;
             })
-        )
+        })
 
         let movedCount = 0;
-        const appointmentMovedMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) =>
-
-            appointmentInfo.appointments.map((appointment) => {
+        const appointmentMovedMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
+            const activeStaff = staff && staff.staff && staff.staff.find(item =>
+                ((item.staffId) === (appointmentInfo.staff.staffId)));
+            return appointmentInfo.appointments.map((appointment) => {
+                const { roleId } = authentication.user.profile
                 let resultMarkup = null;
-                if((appointment.moved) &&(appointmentInfo.staff.staffId === authentication.user.profile.staffId)) {
-                    const activeStaff = staff && staff.staff && staff.staff.find(item => {
-                        return((item.staffId) === (appointmentInfo.staff.staffId));});
-
+                let condition;
+                if (roleId === 3 || roleId === 4) {
+                    condition = appointment.adminMoved
+                } else {
+                    condition = appointment.moved && appointmentInfo.staff.staffId === authentication.user.profile.staffId
+                }
+                if(condition) {
                     const activeClient = client && client.client && client.client.find(item => {
                         return((item.clientId) === (appointment.clientId));});
                     movedCount++;
                     resultMarkup = (
-                        <li onClick={() => this.goToPageCalendar(appointment.appointmentId, "/page/" + appointmentInfo.staff.staffId + "/" + moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY'))}>
+                        <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
                                 <div className="img-container" style={{width: "15%"}}>
                                     <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -189,7 +203,8 @@ class SidebarMain extends Component {
                 }
                 return resultMarkup;
             })
-        )
+        })
+
         return (
             <div>
             <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
@@ -297,10 +312,15 @@ class SidebarMain extends Component {
                                 {openedTab === 'deleted' && <React.Fragment>
                                     <div className="not-approved-list">
                                         {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
-                                        appointmentsCanceled.map((appointment) =>
-                                        {
-                                            return(
-                                                !appointment.approved &&
+                                        appointmentsCanceled.map((appointment) => {
+                                            const { roleId } = authentication.user.profile
+                                            let condition;
+                                            if (roleId === 3 || roleId === 4) {
+                                                condition = !appointment.adminApproved
+                                            } else {
+                                                condition = !appointment.approved
+                                            }
+                                            return (condition &&
                                                 <li className="opacity0">
                                                     <div className="service_item">
                                                         <p className="service_name" style={{
@@ -317,7 +337,8 @@ class SidebarMain extends Component {
                                                         </p>
                                                     </div>
                                                 </li>
-                                            )})}
+                                            )
+                                        })}
                                     </div>
                                     {appointmentsCount && (
                                     <div className="button-field down-button">
@@ -340,7 +361,8 @@ class SidebarMain extends Component {
                                         <div className="button-field down-button">
                                             <button className="button approveAll"
                                                     onClick={() => {
-                                                        this.props.dispatch(calendarActions.approveMovedAppointment());
+                                                        this.approveMovedAppointment()
+
                                                     }}>Отметить всё как просмотрено
                                             </button>
                                         </div>)}
@@ -373,27 +395,70 @@ class SidebarMain extends Component {
             this.props.history.push(url)
     }
 
-    approveAppointment(id){
-        const {dispatch} = this.props;
+    approveMovedAppointment() {
+        const { roleId } = this.props.authentication.user.profile
+        const params = {}
 
-        dispatch(calendarActions.approveAppointment(id));
+        if (roleId === 3 || roleId === 4) {
+            params.adminMoved = false
+        } else {
+            params.moved = false
+        }
+
+        this.props.dispatch(calendarActions.approveMovedAppointment(params));
     }
+
     approveAllAppointment(approved, canceled){
-        this.props.dispatch(calendarActions.approveAllAppointment(approved, canceled));
+        const { roleId } = this.props.authentication.user.profile
+        const params = {}
+
+        if (roleId === 3 || roleId === 4) {
+            params.adminApproved = true
+        } else {
+            params.approved = true
+        }
+
+        this.props.dispatch(calendarActions.approveAllAppointment(approved, canceled, params));
     }
 
-    goToPageCalendar(id, url){
+    goToPageCalendar(appointment, appointmentStaffId){
         $('.modal_counts').modal('hide')
+        const { staffId, roleId } = this.props.authentication.user.profile
         const { openedTab } = this.state;
+        const { appointmentId, appointmentTimeMillis } = appointment
 
+        const url = "/page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY')
         this.props.history.push(url);
 
         if (openedTab === 'new') {
-            this.approveAppointment(id)
+            const params = {}
+            if (staffId !== appointmentStaffId) {
+                params.approved = false;
+                params.adminApproved = true;
+            } else if (roleId === 3 || roleId === 4) {
+                params.approved = true;
+                params.adminApproved = true;
+            } else {
+                params.approved = true;
+
+            }
+
+            this.props.dispatch(calendarActions.approveAppointment(appointmentId, params));
         } else if (openedTab === 'moved') {
-            this.props.dispatch(calendarActions.updateAppointment(id, JSON.stringify({ moved: false, approved: true })))
+            const params = {}
+            if (staffId !== appointmentStaffId) {
+                params.moved = true;
+                params.adminMoved = false;
+            } else if (roleId === 3 || roleId === 4) {
+                params.moved = false;
+                params.adminMoved = false;
+            } else {
+                params.moved = false;
+
+            }
+            this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify(params)))
         }
-        this.props.dispatch(calendarActions.setScrollableAppointment(id))
+        this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
     }
     openAppointments(event){
         event.stopPropagation()

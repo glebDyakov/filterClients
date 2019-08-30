@@ -1,5 +1,21 @@
 @import "styles-group";
 
+
+.online-zapis-date-picker {
+    .arrow-left, .arrow-right {
+        display: none !important;
+    }
+    .button-calendar {
+        border: solid 1px rgba(172, 172, 172, 0.5);
+    }
+    //.button-calendar {
+    //    width: calc(100% - 70px);
+    //
+    //    @media screen and (max-width: 1200px) {
+    //        width: 100%;
+    //    }
+    //}
+}
 .chose_button{
     justify-content: space-between;
     flex-wrap: wrap;

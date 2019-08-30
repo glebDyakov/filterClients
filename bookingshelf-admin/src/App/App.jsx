@@ -169,7 +169,8 @@ class App extends React.Component {
 
     }
     handleSocketDispatch(payload){
-        if (this.props.authentication.user.profile.staffId === payload.payload.staffId) {
+        const { staffId, roleId } = this.props.authentication.user.profile
+        if (staffId === payload.payload.staffId || roleId === 3 || roleId === 4) {
             this.playSound();
             this.props.dispatch(socketActions.alertSocketMessage(payload));
             if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
