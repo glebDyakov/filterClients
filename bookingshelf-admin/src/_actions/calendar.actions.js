@@ -231,6 +231,7 @@ function getReservedTime(dateFrom, dateTo) {
 
 function deleteAppointment(id, time1, time2) {
     return dispatch => {
+        dispatch(request())
         calendarService.deleteAppointment(id)
             .then(
                 client => {
@@ -243,6 +244,7 @@ function deleteAppointment(id, time1, time2) {
             );
     };
 
+    function request() { return { type: calendarConstants.DELETE_APPOINTMENT } }
     function success(id) { return { type: calendarConstants.DELETE_APPOINTMENT_SUCCESS, id } }
     function failure(error) { return { type: calendarConstants.DELETE_APPOINTMENT_FAILURE, error } }
 }
