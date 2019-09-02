@@ -351,8 +351,6 @@ q:before, q:after { content:''; }
     height: auto;
     width: 100%;
     margin-bottom: 6px;
-    text-align: justify;
-    text-align-last: justify;
 }
 
 .img_container{
