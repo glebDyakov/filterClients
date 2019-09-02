@@ -125,6 +125,30 @@ class AddService extends React.Component {
                                         <option value="10800">3 ч 00 мин</option>
                                         <option value="12600">3 ч 30 мин</option>
                                         <option value="14400">4 ч 00 мин</option>
+                                        <option value="15300">4 ч 15 мин</option>
+                                        <option value="16200">4 ч 30 мин</option>
+                                        <option value="17100">4 ч 45 мин</option>
+                                        <option value="18000">5 ч 00 мин</option>
+                                        <option value="18900">5 ч 15 мин</option>
+                                        <option value="19800">5 ч 30 мин</option>
+                                        <option value="20700">5 ч 45 мин</option>
+                                        <option value="21600">6 ч 00 мин</option>
+                                        <option value="22500">6 ч 15 мин</option>
+                                        <option value="23400">6 ч 30 мин</option>
+                                        <option value="24300">6 ч 45 мин</option>
+                                        <option value="25200">7 ч 00 мин</option>
+                                        <option value="26100">7 ч 15 мин</option>
+                                        <option value="27000">7 ч 30 мин</option>
+                                        <option value="27900">7 ч 45 мин</option>
+                                        <option value="28800">8 ч 00 мин</option>
+                                        <option value="29700">8 ч 15 мин</option>
+                                        <option value="30600">8 ч 30 мин</option>
+                                        <option value="31500">8 ч 45 мин</option>
+                                        <option value="32400">9 ч 00 мин</option>
+                                        <option value="33300">9 ч 15 мин</option>
+                                        <option value="34200">9 ч 30 мин</option>
+                                        <option value="35100">9 ч 45 мин</option>
+                                        <option value="36000">10 ч 00 мин</option>
                                     </select>
                                     <p>Цена от</p>
                                     <input type="number" placeholder="" name="priceFrom"

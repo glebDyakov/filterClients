@@ -223,11 +223,7 @@ class NewStaff extends React.Component {
                                                         </div>
                                                         <div className="col-md-6 col-xl-4">
                                                             <p>Фамилия</p>
-                                                            <input type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange}
-
-                                                                   className={!staff.lastName && (staff.phone || staff.email || staff.firstName) ? ' redBorder' : ''}
-
-                                                            />
+                                                            <input type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} />
                                                             <p>Email</p>
                                                             <input
                                                                 type="email"
@@ -322,8 +318,8 @@ class NewStaff extends React.Component {
                                                                 <button className="small-button gray-button"
                                                                         type="button" data-dismiss="modal">Отменить
                                                                 </button>
-                                                                <button className={((!emailIsValid || !staff.firstName || !staff.lastName || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
-                                                                        onClick={emailIsValid && staff.firstName && staff.lastName && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
+                                                                <button className={((!emailIsValid || !staff.firstName || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
+                                                                        onClick={emailIsValid && staff.firstName && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
                                                                 >Сохранить
                                                                 </button>
                                                             </div>
