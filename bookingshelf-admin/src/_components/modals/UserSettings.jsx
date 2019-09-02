@@ -73,7 +73,7 @@ class UserSettings extends React.Component {
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && ((authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
+        if (authentication.user.profile.firstName && ((!authentication.user.profile.phone || authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
             const profile= {}
             Object.keys(authentication.user.profile).forEach(key => {
                 if (authentication.user.profile[key]) {
@@ -137,7 +137,7 @@ class UserSettings extends React.Component {
                                         <ReactPhoneInput
                                             regions={['america', 'europe']}
                                             disableAreaCodes={true}
-                                            inputClass={(submitted && !isValidNumber(phone) ? ' redBorder' : '')} value={ phone } defaultCountry={'by'} onChange={phone => {
+                                            value={ phone } defaultCountry={'by'} onChange={phone => {
                                             this.setState({authentication:{...authentication, user: {...authentication.user, profile: {...authentication.user.profile, phone: phone.replace(/[() ]/g, '')} }}});
                                         }}/>
                                     </div>
