@@ -346,7 +346,7 @@ class StaffPage extends Component {
                                                     <span className="img-container">
                                                         <img className="rounded-circle" src={staff_user.imageBase64?"data:image/png;base64,"+staff_user.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                                                     </span>
-                                                            <p>{`${staff_user.firstName} ${staff_user.lastName}`}</p>
+                                                            <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
                                                         </a>
                                                     </div>
                                                     <div>

@@ -73,7 +73,7 @@ class UserSettings extends React.Component {
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && authentication.user.profile.lastName && ((authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
+        if (authentication.user.profile.firstName && ((authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
             const profile= {}
             Object.keys(authentication.user.profile).forEach(key => {
                 if (authentication.user.profile[key]) {
