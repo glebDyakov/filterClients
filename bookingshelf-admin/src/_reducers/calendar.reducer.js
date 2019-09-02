@@ -170,6 +170,11 @@ export function calendar(state = initialState, action) {
                 ...state,
                 scrollableAppointmentId: action.id
             }
+        case calendarConstants.DELETE_APPOINTMENT:
+            return {
+                ...state,
+                isLoading: true
+            }
         case calendarConstants.DELETE_APPOINTMENT_SUCCESS:
             const appointmentsDeleted = state.appointments;
 
@@ -183,6 +188,7 @@ export function calendar(state = initialState, action) {
 
             return {
                 ...state,
+                isLoading: false,
                 appointments: appointmentsDeleted
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
@@ -210,7 +216,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.APPROVE_APPOINTMENT_FAILURE:
             return {...state};
         case calendarConstants.DELETE_APPOINTMENT_FAILURE:
-            return {...state};
+            return {...state, isLoading: false};
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,

@@ -1,4 +1,4 @@
-import {clientConstants, userConstants} from '../_constants';
+import {clientConstants, menuConstants, userConstants} from '../_constants';
 import {clientService, userService} from '../_services';
 import {alertActions, socketActions, staffActions} from './';
 import { history } from '../_helpers';
@@ -153,13 +153,14 @@ function forgotPass(emailReset) {
 
 function logout() {
     return dispatch => {
+        dispatch(hideMenu())
         dispatch(socketActions.alertSocketMessage(null))
         userService.logout()
             .then(() => {
                 dispatch(success())
             });
-        return { type: userConstants.LOGOUT };
     }
+    function hideMenu() { return { type: userConstants.HIDE_MENU } }
     function success() { return { type: userConstants.LOGOUT } }
 }
 

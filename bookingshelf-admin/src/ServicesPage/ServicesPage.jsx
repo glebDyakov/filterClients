@@ -149,32 +149,37 @@ class ServicesPage extends Component {
 
                                                 </div>
 
-                                                { collapse.indexOf(item.serviceGroupId)===-1 && item.services && item.services.length>0 && item.services.map((item2, keyService)=>
-                                                    <div className="services_items" key={keyService}  id={"collapseService"+keyGroup}>
-                                                        <p className="gray-text">
-                                                            <span className="gray-text">{item2.name}</span>
-                                                            <span className="gray-text" style={{ fontSize: '11px', width: '100%', display: 'inline-block'}}>{item2.details.length!==0 && "("+item2.details+")"}</span>
-                                                            <span className="hide-item">
-                                                            <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
-                                                            <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                            </span>
-                                                        </p>
-                                                        <div className="list-inner">
-                                                            <span>{item2.priceFrom} {item2.priceFrom!==item2.priceTo && " - "+item2.priceTo}  {item2.currency}</span>
-                                                            <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                            <a className="edit_service"  onClick={(e)=>this.newService(item2, item, e, this)}/>
-                                                            <a className="delete-icon" id="menu-delete6633"
-                                                               data-toggle="dropdown"
-                                                               aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                            </a>
-                                                            <div className="dropdown-menu delete-menu p-3">
-                                                                <button type="button"
-                                                                        className="button delete-tab" onClick={()=>this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
-                                                                </button>
-                                                            </div>
-                                                        </div>
+                                                { collapse.indexOf(item.serviceGroupId)===-1 && item.services && item.services.length>0 && item.services.map((item2, keyService)=> {
+                                                    return <div className="services_items" key={keyService}  id={"collapseService" + keyGroup}>
+                                                    <p className="gray-text">
+                                                    <span className="gray-text">{item2.name}</span>
+                                                    <span className="gray-text" style={{
+                                                    fontSize: '11px',
+                                                    width: '100%',
+                                                    display: 'inline-block'
+                                                }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
+                                                    <span className="hide-item">
+                                                    <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo}  {item2.currency}</span>
+                                                    <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                    </span>
+                                                    </p>
+                                                    <div className="list-inner">
+                                                    <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo}  {item2.currency}</span>
+                                                    <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                    <a className="edit_service"  onClick={(e) => this.newService(item2, item, e, this)}/>
+                                                    <a className="delete-icon" id="menu-delete6633"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                                    </a>
+                                                    <div className="dropdown-menu delete-menu p-3">
+                                                    <button type="button"
+                                                    className="button delete-tab" onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
+                                                    </button>
                                                     </div>
+                                                    </div>
+                                                    </div>
+                                                }
                                                 )}
                                                 { (collapse.indexOf(item.serviceGroupId)===-1 && (!item.services || item.services.length===0)) &&
                                                     <div className="services_items" >

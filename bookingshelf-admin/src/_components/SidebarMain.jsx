@@ -313,6 +313,10 @@ class SidebarMain extends Component {
                                     <div className="not-approved-list">
                                         {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
                                         appointmentsCanceled.map((appointment) => {
+                                            const activeStaff = staff && staff.staff && staff.staff.find(item =>
+                                                ((item.staffId) === (appointment.staffId)));
+                                            const activeClient = client && client.client && client.client.find(item => {
+                                                return((item.clientId) === (appointment.clientId));});
                                             const { roleId } = authentication.user.profile
                                             let condition;
                                             if (roleId === 3 || roleId === 4) {
@@ -323,14 +327,22 @@ class SidebarMain extends Component {
                                             return (condition &&
                                                 <li className="opacity0">
                                                     <div className="service_item">
-                                                        <p className="service_name" style={{
-                                                            width: "65%",
-                                                            marginRight: "5%",
-                                                            wordWrap: "break-word"
-                                                        }}>{appointment.serviceName}<br/>
-                                                            <span
-                                                                className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
-                                                        </p>
+                                                        <div className="img-container" style={{width: "15%"}}>
+                                                            <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                 className="img"/></div>
+                                                        <div style={{width: "50%"}}>
+                                                            <p className="service_name" style={{
+                                                                width: "65%",
+                                                                marginRight: "5%",
+                                                                wordWrap: "break-word"
+                                                            }}>{appointment.serviceName}<br/>
+                                                                <span
+                                                                    className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                                            </p>
+                                                        </div>
+                                                        {/*<p><strong>Клиент:</strong> {appointment.clientName}</p><br/>*/}
+                                                        {/*{activeClient && activeClient.phone &&*/}
+                                                        {/*<p><strong>Телефон: </strong> {activeClient.phone}</p>}*/}
                                                         <p className="service_time"
                                                            style={{width: "30%", textAlign: "left"}}><strong
                                                             style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</strong>
