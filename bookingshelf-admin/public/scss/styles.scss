@@ -2963,8 +2963,15 @@ textarea {
 .add-staff{
 
     .img-container{
+        width: 100%;
+        display: flex;
         padding: 0 1rem 0;
 
+        .staff-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         img{
             width: 30px;
             height: 30px;
