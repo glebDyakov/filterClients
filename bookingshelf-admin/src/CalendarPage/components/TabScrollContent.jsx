@@ -224,7 +224,7 @@ class TabScroll extends Component{
                                                                 <p>{service}</p>)}
                                                             <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
                                                                 {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                            <p>{workingStaffElement.firstName} {workingStaffElement.lastName}</p>
+                                                            <p>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
 
                                                             <a
                                                                 className="a-client-info"
