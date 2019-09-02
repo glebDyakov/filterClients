@@ -193,8 +193,8 @@ class NewStaff extends React.Component {
                                                                 placeholder=""
                                                                 options={options}
                                                             />
-                                                            <p>Начало работы</p>
-                                                            <div className="button-calendar button-calendar-inline">
+                                                            <p style={{ marginTop: '12px'}}>Начало работы: {edit && moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
+                                                            {!edit && <div className="button-calendar button-calendar-inline">
                                                                 <DayPicker
                                                                     id={staff.staffId}
                                                                     showOutsideDays
@@ -219,6 +219,7 @@ class NewStaff extends React.Component {
                                                                     }
                                                                 />
                                                             </div>
+                                                            }
                                                         </div>
                                                         <div className="col-md-6 col-xl-4">
                                                             <p>Фамилия</p>

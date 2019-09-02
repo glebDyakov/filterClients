@@ -234,13 +234,19 @@ export function authentication(state = initialState, action) {
                 loggedIn: false,
                 loggingIn: false
             };
+        case userConstants.HIDE_MENU: {
+            return {
+                ...state,
+                menu: null
+            }
+        }
         case userConstants.LOGOUT:
             localStorage.clear()
             return {
                 ...state,
                 loggedIn: false,
                 isLoading: false,
-                menu: {},
+                menu: null,
                 user: {}
             };
         case userConstants.REGISTER_REQUEST:
