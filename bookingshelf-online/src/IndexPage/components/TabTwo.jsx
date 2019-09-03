@@ -27,7 +27,7 @@ class TabTwo extends Component {
                             <img
                                 src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                 alt=""/>
-                            <span>{selectedStaff.firstName} <br/>{selectedStaff.lastName}</span>
+                            <span>{selectedStaff.firstName} <br/>{selectedStaff.lastName ? selectedStaff.lastName : ''}</span>
                         </p>
 
                     </div>

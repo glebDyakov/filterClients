@@ -218,7 +218,7 @@ class AddService extends React.Component {
                                                          <img className="rounded-circle"
                                                               src={item.imageBase64?"data:image/png;base64,"+item.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
                                                     </span>
-                                                        <p>{item.firstName} {item.lastName}</p>
+                                                        <p>{item.firstName} {item.lastName ? item.lastName : ''}</p>
                                                     </div>
                                                     <div className="col-3 justify-content-end check-box">
                                                         <label>
@@ -312,7 +312,7 @@ class AddService extends React.Component {
         const {allStaffs}= this.state;
 
         const allStaffsList=allStaffs.filter((item)=>{
-            return item.lastName.toLowerCase().includes(this.search.value.toLowerCase()) ||
+            return (item.lastName ? item.lastName : '').toLowerCase().includes(this.search.value.toLowerCase()) ||
                 item.firstName.toLowerCase().includes(this.search.value.toLowerCase())
         });
 

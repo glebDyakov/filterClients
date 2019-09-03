@@ -29,7 +29,7 @@ class TabScrollHeader extends PureComponent {
                                                                           src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                           alt=""/>
                                                                  </span>
-                                    <p>{workingStaffElement.firstName + " " + workingStaffElement.lastName }</p>
+                                    <p>{workingStaffElement.firstName + " " + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>
                                 </div>
                                 }
                             )

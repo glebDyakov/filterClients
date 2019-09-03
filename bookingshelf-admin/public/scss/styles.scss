@@ -1429,6 +1429,7 @@ input{
             max-height: 40px;
             overflow: hidden;
             min-width: 92px;
+            text-align: center;
 
             @media screen and(max-width: $mob-width){
                 display:none;
