@@ -167,7 +167,7 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const resultTextArea = `${appointment[0][0].serviceName} ${extraServiceText}`;
+                                const resultTextArea = `${appointment[0][0].serviceName} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 resultMarkup = (
                                     <div
                                         className={(currentTime <= moment().format("x")
@@ -202,7 +202,8 @@ class TabScroll extends Component{
                                                 </p>
                                                 <p className="notes-container"
                                                    style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
-                                                    <textarea disabled>{resultTextArea}</textarea>
+                                                    <textarea disabled>{resultTextArea}
+                                                    </textarea>
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => (
@@ -225,6 +226,7 @@ class TabScroll extends Component{
                                                             <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
                                                                 {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                             <p>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                                                            {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
                                                             <a
                                                                 className="a-client-info"

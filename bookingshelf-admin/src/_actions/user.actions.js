@@ -49,8 +49,8 @@ function checkLogin() {
                 },
                 error => {
 
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(failure(error || 'error'));
+                    dispatch(alertActions.error(error || 'error'));
                 }
             );
     };
