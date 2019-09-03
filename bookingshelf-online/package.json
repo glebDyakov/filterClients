@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpackDev.config.js",
-    "build": "cross-env CONTEXT=/online/ webpack --config webpack.config.js -p",
-    "dev": "cross-env CONTEXT=/online/ webpack --config webpackDev.config.js -p"
+    "build": "cross-env CONTEXT=/online/ webpack --config webpack.config.js",
+    "dev": "cross-env CONTEXT=/online/ webpack --config webpackDev.config.js"
   },
   "dependencies": {
     "compression-webpack-plugin": "^1.1.12",
