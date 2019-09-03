@@ -286,7 +286,7 @@ class StaffPage extends Component {
                                                             <div>
                                                                 <img className="rounded-circle"
                                                                      src={time.imageBase64?"data:image/png;base64,"+time.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                <p>{time.firstName} <br/>{time.lastName}</p>
+                                                                <p>{time.firstName} <br/>{time.lastName ? time.lastName : ''}</p>
                                                             </div>
                                                          {
                                                              time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey)=> {

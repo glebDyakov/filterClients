@@ -167,7 +167,7 @@ class HeaderMain extends React.PureComponent {
 
                     </div>
                     <a className="setting" onClick={this.openModal}/>
-                    <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}</a>
+                    <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}</a>
                     <div className="img-container" data-toggle="modal" data-target=".modal_photo">
                         <img src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 

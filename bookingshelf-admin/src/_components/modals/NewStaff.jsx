@@ -140,7 +140,7 @@ class NewStaff extends React.Component {
                                             :
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Редактирование сотрудника</h5>
-                                                < span> {staff.firstName} {staff.lastName}</span>
+                                                < span> {staff.firstName} {staff.lastName ? staff.lastName : ''}</span>
                                                 <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
                                                     <span aria-hidden="true"></span>
                                                 </button>
