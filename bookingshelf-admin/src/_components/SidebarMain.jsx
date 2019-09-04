@@ -340,13 +340,17 @@ class SidebarMain extends Component {
                                                                     className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                                             </p>
                                                         </div>
-                                                        {/*<p><strong>Клиент:</strong> {appointment.clientName}</p><br/>*/}
-                                                        {/*{activeClient && activeClient.phone &&*/}
-                                                        {/*<p><strong>Телефон: </strong> {activeClient.phone}</p>}*/}
-                                                        <p className="service_time"
-                                                           style={{width: "30%", textAlign: "left"}}><strong
-                                                            style={{textTransform: 'capitalize'}}>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</strong>
-                                                        </p>
+                                                        <div style={{width: "40%"}}>
+                                                            <p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/>
+                                                            {activeClient && activeClient.phone &&
+                                                            <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                                            <p className="service_time" style={{textTransform: 'capitalize'}}
+                                                                // style={{width: "30%", textAlign: "left"}}
+                                                            >
+                                                                <strong>Время: </strong>
+                                                                {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             )
