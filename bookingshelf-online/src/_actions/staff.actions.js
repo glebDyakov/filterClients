@@ -21,7 +21,7 @@ function get(id) {
         staffService.get(id)
             .then(
                 staff => dispatch(success(staff)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
