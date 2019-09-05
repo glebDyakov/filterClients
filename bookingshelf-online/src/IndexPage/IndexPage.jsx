@@ -250,7 +250,11 @@ class IndexPage extends PureComponent {
             )
         } else if (!info) {
             content = <div className="online-zapis-off">
-                Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                Подождите...
+            </div>
+        } else if (error) {
+            content =  <div className="online-zapis-off">
+                {error}
             </div>
         } else {
             content = (
