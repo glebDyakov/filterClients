@@ -41,30 +41,30 @@ class TabScroll extends Component{
     makeMovingVisitQuery() {
         const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
 
-        let shouldMove = false
-        const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
+        // let shouldMove = false
+        // const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
+        //
+        // const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
+        // availableTimetableItem.availableDays.forEach(item => {
+        //     item.availableTimes.forEach(time => {
+        //         if (time.startTimeMillis <= movingVisitTime && time.startTimeMillis <= movingVisitMillis
+        //             && time.endTimeMillis >= movingVisitTime && time.endTimeMillis >= movingVisitMillis) {
+        //             shouldMove = true
+        //         }
+        //     })
+        // })
+        //
+        // if (prevVisitStaffId === movingVisitStaffId && movingVisit.appointmentTimeMillis <= movingVisitTime
+        //     && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= movingVisitTime) {
+        //     shouldMove = true
+        // }
 
-        const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
-        availableTimetableItem.availableDays.forEach(item => {
-            item.availableTimes.forEach(time => {
-                if (time.startTimeMillis <= movingVisitTime && time.startTimeMillis <= movingVisitMillis
-                    && time.endTimeMillis >= movingVisitTime && time.endTimeMillis >= movingVisitMillis) {
-                    shouldMove = true
-                }
-            })
-        })
-
-        if (prevVisitStaffId === movingVisitStaffId && movingVisit.appointmentTimeMillis <= movingVisitTime
-            && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= movingVisitTime) {
-            shouldMove = true
-        }
-
-        if (shouldMove) {
+        //if (shouldMove) {
             this.props.dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
-                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId, adminApproved: true, approved: true, moved: true, adminMoved: true}))
+                JSON.stringify({appointmentTimeMillis: movingVisitMillis, duration: movingVisitDuration, staffId: movingVisitStaffId, adminApproved: true, approved: true, moved: true, adminMoved: true}))
             );
-        }
+        //}
         this.props.dispatch(calendarActions.toggleMoveVisit(false))
         this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
         this.setState({
