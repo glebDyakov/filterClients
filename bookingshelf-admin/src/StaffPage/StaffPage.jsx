@@ -146,7 +146,7 @@ class StaffPage extends Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, staff: newProps.staff,
+            this.setState({staff: newProps.staff,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
 
                 addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
@@ -155,9 +155,9 @@ class StaffPage extends Component {
             })
         }
         if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
-            this.setState({...this.state, alert: newProps.alert})
+            this.setState({alert: newProps.alert})
             setTimeout(() => {
-                this.setState({...this.state, alert: {}})
+                this.setState({alert: {}})
             }, 3000)
         }
     }
@@ -169,7 +169,6 @@ class StaffPage extends Component {
 
     setTab(tab){
         this.setState({
-            ...this.state,
             activeTab: tab
         })
 
