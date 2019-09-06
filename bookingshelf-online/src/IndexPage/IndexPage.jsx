@@ -252,6 +252,10 @@ class IndexPage extends PureComponent {
             content = <div className="online-zapis-off">
                 Подождите...
             </div>
+        } else if (error) {
+            content =  <div className="online-zapis-off">
+                {error}
+            </div>
         } else {
             content = (
                 <React.Fragment>
