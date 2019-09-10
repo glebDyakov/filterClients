@@ -53,7 +53,7 @@ class TabThird extends  PureComponent {
                     <DayPicker
                         selectedDays={selectedDay}
                         disabledDays={disabledDays}
-                        month={new Date(moment(month).format( 'YYYY-MM-DD HH:mm:ss' ))}
+                        month={new Date(moment(month).format( 'YYYY-MM' ))}
                         onDayClick={handleDayClick}
                         localeUtils={MomentLocaleUtils}
                         locale={'ru'}

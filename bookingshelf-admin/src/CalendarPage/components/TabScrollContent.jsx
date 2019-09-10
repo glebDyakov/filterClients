@@ -66,7 +66,6 @@ class TabScroll extends Component{
 
             const startDay = moment(movingVisitMillis, 'x').format('D')
             const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
-            debugger
             if (startDay !== endDay) {
                 shouldMove = false
             }

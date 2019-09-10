@@ -185,7 +185,7 @@ export function authentication(state = initialState, action) {
 
             return {
                 ...state,
-                loginChecked: action.payload.loginChecked,
+                loginChecked: true,
                 loggedIn: true,
                 loggingIn: false,
                 user: user4,
