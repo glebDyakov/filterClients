@@ -179,7 +179,7 @@ class CalendarPage extends PureComponent {
     }
 
     componentDidMount() {
-        this.props.dispatch(userActions.checkLogin());
+        // this.props.dispatch(userActions.checkLogin());
         if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
             this.props.history.push('/nopage');
             return false;
@@ -381,6 +381,7 @@ class CalendarPage extends PureComponent {
                     updatedState.scrollableAppointmentAction = false
                 }
                 this.setState(updatedState)
+                this.props.dispatch(calendarActions.setScrollableAppointment(null))
                 setTimeout(() => { $(formattedClassName).removeClass('custom-blick-div') }, 10000);
             } else {
                 this.animateActiveAppointment(className);

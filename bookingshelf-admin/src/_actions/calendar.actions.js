@@ -113,7 +113,7 @@ function updateAppointment(id, params) {
                     dispatch(success());
                 },
                 error => {
-                    dispatch(failure(error.toString()));
+                    dispatch(failure(error));
                     // dispatch(alertActions.error(error.toString()));
                 }
             );

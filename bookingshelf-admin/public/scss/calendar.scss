@@ -485,12 +485,12 @@
                 }
 
                 .img-container {
-                    height: 30px;
-                    width: 30px;
-                    margin: 0 2% 0 0%!important;
+                    height: 35px;
+                    width: 35px;
+                    margin: 0 2% 0 1%!important;
 
                     img {
-                        max-height: 30px;
+                        max-height: 35px;
                     }
                 }
 
@@ -640,6 +640,9 @@
 
             .tab-content-list-first {
                 overflow-y: scroll;
+                .tab-content-staff-item {
+                    justify-content: flex-start;
+                }
             }
             .tab-content-list{
 

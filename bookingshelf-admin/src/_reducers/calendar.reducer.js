@@ -234,15 +234,34 @@ export function calendar(state = initialState, action) {
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
             let newItem = action.payload.payload;
+            let isIncluded = false;
 
-            const appointmentsToPush = []
+            let appointmentsToPush = []
             const appointmentsCountToPush = []
-            newAppointment.forEach(item => {
-                if (item.staff.staffId === newItem.staffId) {
-                    item.appointments.push(newItem)
+            if (newAppointment && newAppointment.length) {
+                newAppointment.forEach(item => {
+                    if (item.staff.staffId === newItem.staffId) {
+                        item.appointments.push(newItem)
+                        isIncluded = true;
+                    }
+                    appointmentsToPush.push(item)
+                })
+                if (!isIncluded) {
+                    appointmentsToPush.push({
+                        staff: {
+                            staffId: newItem.staffId
+                        },
+                        appointments: [newItem]
+                    })
                 }
-                appointmentsToPush.push(item)
-            })
+            } else {
+                appointmentsToPush = [{
+                    staff: {
+                        staffId: newItem.staffId
+                    },
+                    appointments: [newItem]
+                }]
+            }
             newAppointmentsCount.forEach(item => {
                 if (item.staff.staffId === newItem.staffId) {
                     item.appointments.push(newItem)

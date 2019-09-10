@@ -54,15 +54,28 @@ class TabScroll extends Component{
             })
         })
 
-        if (prevVisitStaffId === movingVisitStaffId && movingVisit.appointmentTimeMillis <= movingVisitTime
-            && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= movingVisitTime) {
-            shouldMove = true
+        if (prevVisitStaffId === movingVisitStaffId) {
+            if (movingVisit.appointmentTimeMillis <= movingVisitTime
+                && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= movingVisitTime) {
+                shouldMove = true
+            }
+
+            if (movingVisit.appointmentTimeMillis <= movingVisitMillis && movingVisitMillis <= (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000))) {
+                shouldMove = true
+            }
+
+            const startDay = moment(movingVisitMillis, 'x').format('D')
+            const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
+            debugger
+            if (startDay !== endDay) {
+                shouldMove = false
+            }
         }
 
         if (shouldMove) {
             this.props.dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
-                JSON.stringify({appointmentTimeMillis: movingVisitMillis, staffId: movingVisitStaffId, adminApproved: true, approved: true, moved: true, adminMoved: true}))
+                JSON.stringify({appointmentTimeMillis: movingVisitMillis, duration: movingVisitDuration, staffId: movingVisitStaffId, adminApproved: true, approved: true, moved: true, adminMoved: true}))
             );
         }
         this.props.dispatch(calendarActions.toggleMoveVisit(false))
