@@ -448,39 +448,39 @@ class EmailPage extends Component {
 
                                                     </div>
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
+                                                    {/*<div className="row">*/}
+                                                    {/*    <div className="col-md-6">*/}
 
-                                                            <p className="title_block mb-3">Отправлять за день до:</p>
+                                                    {/*        <p className="title_block mb-3">Отправлять за день до:</p>*/}
 
-                                                            <div className="selects-block">
-                                                                <div className="add-block">
-                                                                    {settings && settings.hourDailyNotifications &&
-                                                                    <select className="custom-select mb-3"
-                                                                            value={settings.hourDailyNotifications} name="hourDailyNotifications"  onChange={this.handleSettingsChange}>
+                                                    {/*        <div className="selects-block">*/}
+                                                    {/*            <div className="add-block">*/}
+                                                    {/*                {settings && settings.hourDailyNotifications &&*/}
+                                                    {/*                <select className="custom-select mb-3"*/}
+                                                    {/*                        value={settings.hourDailyNotifications} name="hourDailyNotifications"  onChange={this.handleSettingsChange}>*/}
 
-                                                                        <option value={8}>в 8.00</option>
-                                                                        <option value={9}>в 9.00</option>
-                                                                        <option value={10}>в 10.00</option>
-                                                                        <option value={11}>в 11.00</option>
-                                                                        <option value={12}>в 12.00</option>
-                                                                        <option value={13}>в 13.00</option>
-                                                                        <option value={14}>в 14.00</option>
-                                                                        <option value={15}>в 15.00</option>
-                                                                        <option value={16}>в 16.00</option>
-                                                                        <option value={17}>в 17.00</option>
-                                                                        <option value={18}>в 18.00</option>
-                                                                        <option value={19}>в 19.00</option>
-                                                                        <option value={20}>в 20.00</option>
-                                                                    </select>
-                                                                    }
-                                                                </div>
-                                                            </div>
+                                                    {/*                    <option value={8}>в 8.00</option>*/}
+                                                    {/*                    <option value={9}>в 9.00</option>*/}
+                                                    {/*                    <option value={10}>в 10.00</option>*/}
+                                                    {/*                    <option value={11}>в 11.00</option>*/}
+                                                    {/*                    <option value={12}>в 12.00</option>*/}
+                                                    {/*                    <option value={13}>в 13.00</option>*/}
+                                                    {/*                    <option value={14}>в 14.00</option>*/}
+                                                    {/*                    <option value={15}>в 15.00</option>*/}
+                                                    {/*                    <option value={16}>в 16.00</option>*/}
+                                                    {/*                    <option value={17}>в 17.00</option>*/}
+                                                    {/*                    <option value={18}>в 18.00</option>*/}
+                                                    {/*                    <option value={19}>в 19.00</option>*/}
+                                                    {/*                    <option value={20}>в 20.00</option>*/}
+                                                    {/*                </select>*/}
+                                                    {/*                }*/}
+                                                    {/*            </div>*/}
+                                                    {/*        </div>*/}
 
 
-                                                        </div>
+                                                    {/*    </div>*/}
 
-                                                    </div>
+                                                    {/*</div>*/}
 
                                                     <div className="row">
                                                         <div className="col-md-6">
