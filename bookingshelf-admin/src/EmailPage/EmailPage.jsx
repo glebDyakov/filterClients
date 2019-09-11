@@ -86,7 +86,6 @@ class EmailPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setTag = this.setTag.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
-        this.handleSettingsChange = this.handleSettingsChange.bind(this);
         this.setTab = this.setTab.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleNotifyChange = this.handleNotifyChange.bind(this);
@@ -127,7 +126,6 @@ class EmailPage extends Component {
             this.setState({...this.state, notifications: newProps.notification.notification===''?this.state.notifications:newProps.notification.notification,
                 services:newProps.services,
                 client:newProps.client,
-                settings: newProps.company.settings,
                 staff:newProps.staff,
                 notification:newProps.notification,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
@@ -244,18 +242,6 @@ class EmailPage extends Component {
         this.props.dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(notify)));
     }
 
-    handleSettingsChange(e) {
-        const { name, value } = e.target;
-        const { settings } = this.state;
-
-        let newSettings={...settings, [name]: value}
-
-
-        this.setState({settings: newSettings});
-
-        this.props.dispatch(companyActions.add(newSettings));
-    }
-
     handleNotifyChange(e) {
         const { name, value } = e.target;
         localStorage.setItem(name, value);
@@ -337,7 +323,7 @@ class EmailPage extends Component {
 
 
     render() {
-        const {notification, userSettings, settings, activeTab, services, serviceCurrent, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
+        const {notification, userSettings, activeTab, services, serviceCurrent, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
 
         return (
             <div className="emailPage">
@@ -426,6 +412,7 @@ class EmailPage extends Component {
                                                                     <select className="custom-select mb-3"
                                                                             value={notifications.notifyBefore} name="notifyBefore"  onChange={this.handleChange}>
 
+                                                                        <option value={-1}>Выключено</option>
                                                                         <option value="43200">12 часов до</option>
                                                                         <option value="39600">11 часов до</option>
                                                                         <option value="36000">10 часов до</option>
@@ -448,39 +435,40 @@ class EmailPage extends Component {
 
                                                     </div>
 
-                                                    {/*<div className="row">*/}
-                                                    {/*    <div className="col-md-6">*/}
+                                                    <div className="row">
+                                                        <div className="col-md-6">
 
-                                                    {/*        <p className="title_block mb-3">Отправлять за день до:</p>*/}
+                                                            <p className="title_block mb-3">Отправлять за день до:</p>
 
-                                                    {/*        <div className="selects-block">*/}
-                                                    {/*            <div className="add-block">*/}
-                                                    {/*                {settings && settings.hourDailyNotifications &&*/}
-                                                    {/*                <select className="custom-select mb-3"*/}
-                                                    {/*                        value={settings.hourDailyNotifications} name="hourDailyNotifications"  onChange={this.handleSettingsChange}>*/}
+                                                            <div className="selects-block">
+                                                                <div className="add-block">
+                                                                    {notifications && notifications.dailyNotificationHour &&
+                                                                    <select className="custom-select mb-3"
+                                                                            value={notifications.dailyNotificationHour} name="dailyNotificationHour"  onChange={this.handleChange}>
 
-                                                    {/*                    <option value={8}>в 8.00</option>*/}
-                                                    {/*                    <option value={9}>в 9.00</option>*/}
-                                                    {/*                    <option value={10}>в 10.00</option>*/}
-                                                    {/*                    <option value={11}>в 11.00</option>*/}
-                                                    {/*                    <option value={12}>в 12.00</option>*/}
-                                                    {/*                    <option value={13}>в 13.00</option>*/}
-                                                    {/*                    <option value={14}>в 14.00</option>*/}
-                                                    {/*                    <option value={15}>в 15.00</option>*/}
-                                                    {/*                    <option value={16}>в 16.00</option>*/}
-                                                    {/*                    <option value={17}>в 17.00</option>*/}
-                                                    {/*                    <option value={18}>в 18.00</option>*/}
-                                                    {/*                    <option value={19}>в 19.00</option>*/}
-                                                    {/*                    <option value={20}>в 20.00</option>*/}
-                                                    {/*                </select>*/}
-                                                    {/*                }*/}
-                                                    {/*            </div>*/}
-                                                    {/*        </div>*/}
+                                                                        <option value={-1}>Выключено</option>
+                                                                        <option value={8}>в 8.00</option>
+                                                                        <option value={9}>в 9.00</option>
+                                                                        <option value={10}>в 10.00</option>
+                                                                        <option value={11}>в 11.00</option>
+                                                                        <option value={12}>в 12.00</option>
+                                                                        <option value={13}>в 13.00</option>
+                                                                        <option value={14}>в 14.00</option>
+                                                                        <option value={15}>в 15.00</option>
+                                                                        <option value={16}>в 16.00</option>
+                                                                        <option value={17}>в 17.00</option>
+                                                                        <option value={18}>в 18.00</option>
+                                                                        <option value={19}>в 19.00</option>
+                                                                        <option value={20}>в 20.00</option>
+                                                                    </select>
+                                                                    }
+                                                                </div>
+                                                            </div>
 
 
-                                                    {/*    </div>*/}
+                                                        </div>
 
-                                                    {/*</div>*/}
+                                                    </div>
 
                                                     <div className="row">
                                                         <div className="col-md-6">
@@ -812,10 +800,10 @@ class EmailPage extends Component {
 }
 
 function mapStateToProps(store) {
-    const {notification, services, company, staff, client, authentication}=store;
+    const {notification, services, staff, client, authentication}=store;
 
     return {
-        notification, services, company, staff, client, authentication
+        notification, services, staff, client, authentication
     };
 }
 
