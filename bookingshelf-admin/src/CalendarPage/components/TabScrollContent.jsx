@@ -89,7 +89,7 @@ class TabScroll extends Component{
     }
     render(){
         const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, movingVisitDuration } = this.state;
+        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId } = this.state;
 
         return(
             <div className="tabs-scroll"
@@ -134,7 +134,7 @@ class TabScroll extends Component{
                                     parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))===currentTime &&
                                     availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
                                         workingTimeEnd=workingTime.endTimeMillis;
-                                        if (isStartMovingVisit && movingVisit) {
+                                        if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId)) {
                                             const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))
                                             const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))
 
@@ -148,6 +148,7 @@ class TabScroll extends Component{
                                     }
 
                                     ));
+                            debugger
                             let resultMarkup;
                             if(appointment && appointment[0] && appointment[0].length > 0 && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment[0][0].appointmentId)) {
                                 let totalDuration = appointment[0][0].duration;
