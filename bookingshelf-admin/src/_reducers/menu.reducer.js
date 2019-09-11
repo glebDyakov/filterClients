@@ -6,13 +6,6 @@ const initialState = {
 
 export function menu(state = initialState, action) {
   switch (action.type) {
-    case menuConstants.HIDE_MENU:
-    {
-        return {
-            ...state,
-            menu: null
-        }
-    }
     case menuConstants.GET_MENU_SUCCESS:
       return {
           ...state,
