@@ -149,6 +149,26 @@ class AddService extends React.Component {
                                         <option value="34200">9 ч 30 мин</option>
                                         <option value="35100">9 ч 45 мин</option>
                                         <option value="36000">10 ч 00 мин</option>
+                                        <option value="36900">10 ч 15 мин</option>
+                                        <option value="37800">10 ч 30 мин</option>
+                                        <option value="38700">10 ч 45 мин</option>
+                                        <option value="39600">11 ч 00 мин</option>
+                                        <option value="40500">11 ч 15 мин</option>
+                                        <option value="41400">11 ч 30 мин</option>
+                                        <option value="42300">11 ч 45 мин</option>
+                                        <option value="43200">12 ч 00 мин</option>
+                                        <option value="44100">12 ч 15 мин</option>
+                                        <option value="45000">12 ч 30 мин</option>
+                                        <option value="45900">12 ч 45 мин</option>
+                                        <option value="46800">13 ч 00 мин</option>
+                                        <option value="47700">13 ч 15 мин</option>
+                                        <option value="48600">13 ч 30 мин</option>
+                                        <option value="49500">13 ч 45 мин</option>
+                                        <option value="50400">14 ч 00 мин</option>
+                                        <option value="51300">14 ч 15 мин</option>
+                                        <option value="52200">14 ч 30 мин</option>
+                                        <option value="53100">14 ч 45 мин</option>
+                                        <option value="54000">15 ч 00 мин</option>
                                     </select>
                                     <p>Цена от</p>
                                     <input type="number" placeholder="" name="priceFrom"
