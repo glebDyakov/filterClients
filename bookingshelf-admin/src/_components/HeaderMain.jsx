@@ -151,16 +151,16 @@ class HeaderMain extends React.PureComponent {
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
                     <div style={{ position: "relative" }} onClick={this.toggleNotificationDropdown}>
                         <span className="notification"/>
-                        { (notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount')
-                        || notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount'))
+                        { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200)
+                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount')) || 200)
                         && <React.Fragment>
                             <span className="notification-signal" />
                             {this.state.isNotificationDropdown && <ul className="notification-dropdown">
-                                {notification.balance && notification.balance.smsAmount < localStorage.getItem('smsNotifyCount') &&
-                                <li>Баланс SMS ниже {localStorage.getItem('smsNotifyCount')}</li>
+                                {notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200) &&
+                                <li>Баланс SMS ниже {(localStorage.getItem('smsNotifyCount') || 200)}</li>
                                 }
-                                {notification.balance && notification.balance.emailAmount < localStorage.getItem('emailNotifyCount') &&
-                                <li>Баланс Email ниже {localStorage.getItem('emailNotifyCount')}</li>
+                                {notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount') || 200) &&
+                                <li>Баланс Email ниже {(localStorage.getItem('emailNotifyCount') || 200)}</li>
                                 }
                             </ul>}
                         </React.Fragment> }

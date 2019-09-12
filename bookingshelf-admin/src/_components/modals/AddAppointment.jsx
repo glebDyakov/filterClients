@@ -189,7 +189,7 @@ class AddAppointment extends React.Component {
             }
         }
 
-        return moment.duration(timeArrange[1]-parseInt(timeArrange[0]), 'milliseconds').format("m")
+        return moment.duration(timeArrange[1]-parseInt(timeArrange[0]), 'milliseconds').format("m").replace(/\s/g, '')
     }
 
     getInfo(appointment){
@@ -212,7 +212,7 @@ class AddAppointment extends React.Component {
 
         this.setState({
             appointment,
-            timeArrange:timing,
+            timeArrange:timing.replace(/\s/, ''),
             serviceCurrent
         })
 
