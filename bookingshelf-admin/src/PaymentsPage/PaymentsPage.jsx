@@ -10,6 +10,8 @@ import {HeaderMain} from "../_components/HeaderMain";
 import {userActions, paymentsActions} from "../_actions";
 import {UserSettings} from "../_components/modals";
 import {MakePayment} from "../_components/modals/MakePayment";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 
 class PaymentsPage extends Component {
@@ -18,6 +20,7 @@ class PaymentsPage extends Component {
         super(props);
 
         this.changeSMSResult = this.changeSMSResult.bind(this);
+        this.downloadInPdf = this.downloadInPdf.bind(this);
         this.calculateRate = this.calculateRate.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -153,6 +156,15 @@ class PaymentsPage extends Component {
 
     closeModalActs() {
         this.setState({invoiceSelected: false});
+    }
+
+    downloadInPdf(pdfMarkup) {
+        html2canvas(document.getElementById('divIdToPrint')).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save("invoice.pdf");
+        })
     }
 
     rateChangeWorkersCount(e) {
@@ -296,6 +308,89 @@ class PaymentsPage extends Component {
         } else if (pathname === '/invoices' ) {
             document.title = "Счета | Онлайн-запись";
         }
+
+        const pdfMarkup = <React.Fragment>
+
+            <div className="row-status">
+                <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
+                        data-target=".make-payment-modal"
+                        data-toggle="modal"
+                        onClick={() => {
+                            this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
+                        }}>
+                    {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                        (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                </button>
+            </div>
+            <div id="divIdToPrint">
+            <div className="account-info col-12">
+                <h3>Счёт {chosenInvoice.invoiceId}</h3>
+                <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
+            </div>
+            <div className="customer-seller">
+                <div className="col-md-6 col-12 customer">
+                    <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
+                    <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
+                    <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
+                </div>
+
+                <div className="col-md-6 col-12 seller">
+                    <p>Лицензиар: <strong>СОФТ-МЕЙК. УНП 191644633</strong></p>
+                    <p>Адрес: 220034, Минск, Марьевская 7а-1-6</p>
+                    <p>Тел +375 44 5655557</p>
+                </div>
+            </div>
+
+            <div className="payments-type">
+                <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
+                <p><strong>Заплатить
+                    до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                </p>
+                <p>Статус: {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                    (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}</p>
+            </div>
+
+            <div className="table">
+                <div className="table-header">
+                    <div className="table-description"><p>Описание</p></div>
+                    <div className="table-count"><p
+                        className="default">Количество мес.</p><p
+                        className="mob">Кол-во мес.</p></div>
+                    <div className="table-price"><p>Стоимость</p></div>
+                </div>
+                {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
+                    let name = packets && packets.find(item => item.packetId === packet.packetId)
+                    return (
+                        <div className="table-row">
+                            <div className="table-description">
+                                <p>{name.packetName}</p></div>
+                            <div className="table-count"><p>{packet.amount}</p>
+                            </div>
+                            <div className="table-price">
+                                <p>{packet.sum} {packet.currency}</p></div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="result-price">
+                <div>
+                    <p>Общая сумма</p>
+                </div>
+                <div>
+                    <p>{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
+                </div>
+            </div>
+            <div className="result-price">
+                <div>
+                    <p>Без НДС</p>
+                </div>
+                <div>
+                    <p>0.00 EUR</p>
+                </div>
+            </div>
+            </div>
+        </React.Fragment>
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -653,85 +748,9 @@ class PaymentsPage extends Component {
                                             <div className="act-body-wrapper">
                                                 <div className="acts-body">
 
-                                                    <div className="row-status">
-                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
-                                                                data-target=".make-payment-modal"
-                                                                data-toggle="modal"
-                                                                onClick={() => {
-                                                                    this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
-                                                                }}>
-                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                                                                (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                                                        </button>
-                                                    </div>
-                                                    <div className="account-info col-12">
-                                                        <h3>Счёт {chosenInvoice.invoiceId}</h3>
-                                                        <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
-                                                    </div>
-                                                    <div className="customer-seller">
-                                                        <div className="col-md-6 col-12 customer">
-                                                            <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
-                                                            <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
-                                                            <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
-                                                        </div>
+                                                    {pdfMarkup}
 
-                                                        <div className="col-md-6 col-12 seller">
-                                                            <p>Лицензиар: <strong>СОФТ-МЕЙК. УНП 191644633</strong></p>
-                                                            <p>Адрес: 220034, Минск, Марьевская 7а-1-6</p>
-                                                            <p>Тел +375 44 5655557</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="payments-type">
-                                                        <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
-                                                        <p><strong>Заплатить
-                                                            до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
-                                                        </p>
-                                                        <p>Статус: {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                                                            (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}</p>
-                                                    </div>
-
-                                                    <div className="table">
-                                                        <div className="table-header">
-                                                            <div className="table-description"><p>Описание</p></div>
-                                                            <div className="table-count"><p
-                                                                className="default">Количество мес.</p><p
-                                                                className="mob">Кол-во мес.</p></div>
-                                                            <div className="table-price"><p>Стоимость</p></div>
-                                                        </div>
-                                                        {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
-                                                            let name = packets && packets.find(item => item.packetId === packet.packetId)
-                                                            return (
-                                                                <div className="table-row">
-                                                                    <div className="table-description">
-                                                                        <p>{name.packetName}</p></div>
-                                                                    <div className="table-count"><p>{packet.amount}</p>
-                                                                    </div>
-                                                                    <div className="table-price">
-                                                                        <p>{packet.sum} {packet.currency}</p></div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-
-                                                    <div className="result-price">
-                                                        <div>
-                                                            <p>Общая сумма</p>
-                                                        </div>
-                                                        <div>
-                                                            <p>{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="result-price">
-                                                        <div>
-                                                            <p>Без НДС</p>
-                                                        </div>
-                                                        <div>
-                                                            <p>0.00 EUR</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <p className="download">Скачать в PDF</p>
+                                                    <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
                                                 </div>
 
                                             </div>
