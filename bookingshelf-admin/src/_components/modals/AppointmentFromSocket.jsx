@@ -63,18 +63,24 @@ class AppointmentFromSocket extends React.Component {
         const activeClient = payload && payload.clientId && client && client.client && client.client.find(item => {
             return((item.clientId) === (payload.clientId));});
 
-        let socketTitle, socketFooterText;
+        let socketTitle, socketFooterText, clientName, staffName;
 
         switch (wsMessageType) {
             case "APPOINTMENT_CREATED":
+                staffName = payload && payload.staffName
+                clientName = payload && payload.clientName
                 socketTitle = "НОВАЯ ЗАПИСЬ";
                 socketFooterText = "Просмотреть запись"
                 break;
             case "APPOINTMENT_DELETED":
+                staffName = `${activeStaff.firstName} ${activeStaff.lastName}`
+                clientName = `${activeClient.firstName} ${activeClient.lastName}`
                 socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;
             case "APPOINTMENT_MOVED":
+                staffName = payload && payload.staffName
+                clientName = payload && payload.clientName
                 socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
                 socketFooterText = "Просмотреть запись"
                 break;
@@ -97,11 +103,11 @@ class AppointmentFromSocket extends React.Component {
                             {payload && payload.serviceName}
                         </strong></p>
                         <p style={{float: "none"}} ><strong>Мастер: </strong>
-                            {payload && payload.staffName}
+                            {staffName}
                         </p>
 
                         <p><strong>Клиент: </strong>
-                            {payload && payload.clientName}
+                            {clientName}
                         </p>
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">

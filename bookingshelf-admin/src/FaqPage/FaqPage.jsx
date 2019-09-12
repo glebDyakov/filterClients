@@ -95,7 +95,7 @@ class FaqPage extends Component {
                                 </div>
                                 <div className="flex-content col-md-5">
                                 </div>
-                                <div className="tab-content" style={{'height': '71vh'}}>
+                                <div className="tab-content">
                                     <div className={"tab-pane content-pages-bg"+(activeTab==='email_sms'?' active':'')}  id="email_sms">
                                         <div className="templates-group">
                                             <div className="templates-list row p-3">
