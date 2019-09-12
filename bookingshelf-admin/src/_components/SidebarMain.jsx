@@ -301,12 +301,11 @@ class SidebarMain extends Component {
                                             src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                                     </div>
-                                    {appointmentsCount && (
                                         <div className="button-field down-button">
                                             <button className="button approveAll"
                                                     onClick={() => this.approveAllAppointment(true, false)}>Отметить всё как просмотрено
                                             </button>
-                                        </div>)}
+                                        </div>
                                 </React.Fragment>
                                 }
                                 {openedTab === 'deleted' && <React.Fragment>
@@ -356,12 +355,11 @@ class SidebarMain extends Component {
                                             )
                                         })}
                                     </div>
-                                    {appointmentsCount && (
                                     <div className="button-field down-button">
                                         <button className="button approveAll"
                                                 onClick={() => this.approveAllAppointment(true, true)}>Отметить всё как просмотрено
                                         </button>
-                                    </div>)}
+                                    </div>
                                 </React.Fragment>
                                 }
                                 {openedTab === 'moved' && <React.Fragment>
@@ -373,15 +371,14 @@ class SidebarMain extends Component {
                                             src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                                     </div>
-                                    {appointmentsCount && (
-                                        <div className="button-field down-button">
-                                            <button className="button approveAll"
-                                                    onClick={() => {
-                                                        this.approveMovedAppointment()
+                                    <div className="button-field down-button">
+                                        <button className="button approveAll"
+                                                onClick={() => {
+                                                    this.approveMovedAppointment()
 
-                                                    }}>Отметить всё как просмотрено
-                                            </button>
-                                        </div>)}
+                                                }}>Отметить всё как просмотрено
+                                        </button>
+                                    </div>
                                 </React.Fragment>
                                 }
                             </div>
