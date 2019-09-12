@@ -30,7 +30,7 @@ function getInvoiceList(activeInvoice) {
 
 function makePayment(invoiceId) {
     return dispatch => {
-
+        dispatch(request())
         paymentsService.makePayment(invoiceId)
             .then(
                 data => {
@@ -42,6 +42,7 @@ function makePayment(invoiceId) {
             );
     };
 
+    function request() { return { type: paymentsConstants.MAKE_PAYMENT, confirmationUrl: null }}
     function success(data) { return { type: paymentsConstants.MAKE_PAYMENT_SUCCESS, confirmationUrl: data.confirmationUrl }}
     function failure(error) { return { type: paymentsConstants.MAKE_PAYMENT_FAILURE, exceptionMessage: error }}
 }

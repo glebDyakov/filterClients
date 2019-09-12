@@ -24,6 +24,7 @@ export function payments(state = initialState, action) {
             }
         }
         case paymentsConstants.CANCEL_PAYMENT:
+        case paymentsConstants.MAKE_PAYMENT:
         case paymentsConstants.MAKE_PAYMENT_SUCCESS:
             return {
                 ...state,
