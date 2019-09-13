@@ -20,6 +20,7 @@ class PaymentsPage extends Component {
         super(props);
 
         this.changeSMSResult = this.changeSMSResult.bind(this);
+        this.repeatPayment = this.repeatPayment.bind(this);
         this.downloadInPdf = this.downloadInPdf.bind(this);
         this.calculateRate = this.calculateRate.bind(this);
         this.onOpen = this.onOpen.bind(this);
@@ -65,6 +66,9 @@ class PaymentsPage extends Component {
     componentWillReceiveProps(newProps) {
         if (this.props.payments && this.props.payments.list && (JSON.stringify(this.props.payments.list) !== JSON.stringify(newProps.payments.list))) {
             this.setState({list: newProps.payments.list, defaultList: newProps.payments.list})
+        }
+        if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
+            this.repeatPayment(newProps.payments.activeInvoice.invoiceId)
         }
     }
 
@@ -294,6 +298,16 @@ class PaymentsPage extends Component {
 
     }
 
+    repeatPayment(invoiceId) {
+        const { pendingInvoice } = this.props.payments
+        if (!pendingInvoice || (pendingInvoice && pendingInvoice.invoiceStatus === 'ISSUED')) {
+            setTimeout(() => {
+                this.props.dispatch(paymentsActions.getInvoice(invoiceId))
+                this.repeatPayment(invoiceId)
+            }, 30000)
+        }
+    }
+
     render() {
         const {authentication} = this.props;
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
@@ -317,6 +331,7 @@ class PaymentsPage extends Component {
                         data-toggle="modal"
                         onClick={() => {
                             this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
+                            this.repeatPayment(chosenInvoice.invoiceId)
                         }}>
                     {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                         (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}

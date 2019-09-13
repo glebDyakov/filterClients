@@ -7,6 +7,7 @@ export const paymentsActions = {
     getInvoiceList,
     getPackets,
     makePayment,
+    getInvoice,
     cancelPayment,
     addInvoice
 }
@@ -26,6 +27,20 @@ function getInvoiceList(activeInvoice) {
     };
 
     function success(list) { return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, payload: {list, activeInvoice} }}
+}
+
+function getInvoice(invoiceId) {
+    return dispatch => {
+
+        paymentsService.getInvoice(invoiceId)
+            .then(
+                (invoice) => {
+                    dispatch(success(invoice))
+                },
+            );
+    };
+
+    function success(invoice) { return { type: paymentsConstants.GET_INVOICE_SUCCESS, pendingInvoice: invoice }}
 }
 
 function makePayment(invoiceId) {
