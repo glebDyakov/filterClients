@@ -152,7 +152,7 @@ class HeaderMain extends React.PureComponent {
                     <div style={{ position: "relative" }} onClick={this.toggleNotificationDropdown}>
                         <span className="notification"/>
                         { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200)
-                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount')) || 200)
+                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount') || 200))
                         && <React.Fragment>
                             <span className="notification-signal" />
                             {this.state.isNotificationDropdown && <ul className="notification-dropdown">
