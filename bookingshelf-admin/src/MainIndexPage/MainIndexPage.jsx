@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {companyActions, userActions} from '../_actions';
+import {companyActions, notificationActions, userActions} from '../_actions';
 import {SidebarMain} from "../_components/SidebarMain";
 import {HeaderMain} from "../_components/HeaderMain";
 import { parseNumber, formatNumber, isValidNumber } from 'libphonenumber-js'
@@ -18,6 +18,7 @@ import Avatar from "react-avatar-edit";
 import TimezonePicker from 'react-bootstrap-timezone-picker';
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import {access} from "../_helpers/access";
+import {notification} from "../_reducers/notification.reducer";
 
 
 
@@ -41,6 +42,7 @@ class MainIndexPage extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleNotificationChange = this.handleNotificationChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeTime = this.onChangeTime.bind(this);
         this.handleChangeAddress = this.handleChangeAddress.bind(this);
@@ -57,7 +59,7 @@ class MainIndexPage extends Component {
 
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
 
-            this.setState({...this.state, authentication: newProps.authentication,
+            this.setState({authentication: newProps.authentication,
 
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
 
@@ -66,13 +68,17 @@ class MainIndexPage extends Component {
 
         if ( JSON.stringify(this.props.company.settings) !==  JSON.stringify(newProps.company.settings)) {
 
-            this.setState({...this.state, company: newProps.company })
+            this.setState({ company: newProps.company })
         }
         if (newProps.company && newProps.company.status==='saved.settings') {
-            this.setState({...this.state, status: newProps.company.status})
+            this.setState({status: newProps.company.status})
             setTimeout(() => {
-                this.setState({...this.state, status: {}, submitted: false})
+                this.setState({status: {}, submitted: false})
             }, 3000)
+        }
+
+        if (JSON.stringify(this.props.notification) !== JSON.stringify(newProps.notification)) {
+            this.setState({ notification : newProps.notification.notification })
         }
     }
 
@@ -86,7 +92,15 @@ class MainIndexPage extends Component {
             this.setState({...this.state, company: {...company, settings: {...company.settings, [name]: value }}});
 
         }
+    }
 
+    handleNotificationChange({ target: { name, value }}) {
+        this.setState({
+            notification: {
+                ...this.state.notification,
+                [name]: value
+            }
+        })
     }
 
     handleChangeAddress(e) {
@@ -145,6 +159,7 @@ class MainIndexPage extends Component {
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
             dispatch(companyActions.add(settings));
         }
+        dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(this.state.notification)))
     }
 
     onClose() {
@@ -161,6 +176,7 @@ class MainIndexPage extends Component {
         document.title = "Настройки компании | Онлайн-запись";
 
 
+        this.props.dispatch(notificationActions.getSMS_EMAIL())
         setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
     }
@@ -171,7 +187,7 @@ class MainIndexPage extends Component {
 
 
     render() {
-        const { authentication, submitted, isLoading, activeDay, status, company, userSettings, isAvatarOpened } = this.state;
+        const { authentication, submitted, isLoading, activeDay, notification, status, company, userSettings, isAvatarOpened } = this.state;
 
         return (
             <div>
@@ -229,6 +245,13 @@ class MainIndexPage extends Component {
                                                    value={company.settings.companyAddress3} onChange={this.handleChange} maxLength="40"/>
                                             <span className="company_counter">{company.settings.companyAddress3.length}/40</span>
                                         </div>
+
+                                        <p>Вид деятельности</p>
+                                        <select className="custom-select" onChange={this.handleNotificationChange} name="template"
+                                                value={notification && notification.template}>
+                                            <option value={1}>Сфера услуг</option>
+                                            <option value={2}>Коворкинг</option>
+                                        </select>
                                         {/*<p>Cтрана</p>*/}
                                         {/*<div className="">*/}
                                             {/*<select className="custom-select" value ={company.settings.countryCode}  name="countryCode"  onChange={this.handleChange}>*/}
@@ -494,9 +517,9 @@ class MainIndexPage extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company } = state;
+    const { alert, authentication, notification, company } = state;
     return {
-        alert, authentication, company
+        alert, authentication, notification, company
     };
 }
 
