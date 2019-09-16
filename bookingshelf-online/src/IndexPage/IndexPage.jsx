@@ -235,7 +235,6 @@ class IndexPage extends PureComponent {
 
         const { error, isLoading } = this.props.staff;
 
-
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
         });
@@ -261,6 +260,7 @@ class IndexPage extends PureComponent {
                 <React.Fragment>
                     {screen === 1 &&
                     <TabOne
+                        info={info}
                         staffId={selectedStaff.staffId }
                         staffs={staffs}
                         nearestTime={nearestTime}
