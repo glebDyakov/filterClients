@@ -131,8 +131,8 @@ class AppointmentFromSocket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { staff, client, socket } = state;
-    return { staff, client, socket };
+    const { staff, client, socket, authentication } = state;
+    return { staff, client, socket, authentication };
 }
 
 
