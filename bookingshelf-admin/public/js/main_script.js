@@ -67,9 +67,11 @@ function initializeJs() {
         }, 200);
     });
 
-    $('body').click(function () {
+    $('body').click(function (e) {
         if ($(window).width() < 961) {
-            $('.sidebar').slideUp(200);
+            if (e.target.className !=='email-sms-notification') {
+                $('.sidebar').slideUp(200);
+            }
         }
     });
     $('.sidebar .mob-menu-closer').click(function (e) {
