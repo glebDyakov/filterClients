@@ -882,6 +882,48 @@ input{
 
     }
 }
+
+.email-sms-notification{
+    height: 30px;
+    width: 30px;
+    background-image: url(../img/attention.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    border-radius: 25px;
+    background-color: white;
+    opacity: 1 !important;
+
+    &-wrapper {
+        position: absolute;
+        right: -11px;
+        @media screen and(max-width: 960px){
+            right: 11px;
+        }
+    }
+    &-dropdown {
+        position: absolute;
+        width: 160px;
+        top: 100%;
+        text-align: center;
+        left: 0;
+        z-index: 1000;
+        padding: 6px;
+        margin: 0.125rem 0 0;
+        font-size: 1rem;
+        list-style: none;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.25rem;
+        li {
+            color: #212529;
+            height: auto;
+            min-height: auto;
+            display: block;
+        }
+    }
+}
 .menu-notification{
     cursor: pointer;
     opacity: 1!important;
@@ -1375,23 +1417,7 @@ input{
             //    animation: 2s cubic-bezier(0.37, 0, 0.8, 0.77) infinite wave-stroke;
             //}
         }
-        .notification-dropdown {
-            position: absolute;
-            width: 160px;
-            top: 100%;
-            text-align: center;
-            left: 0;
-            z-index: 1000;
-            padding: 6px;
-            margin: 0.125rem 0 0;
-            font-size: 1rem;
-            color: #212529;
-            list-style: none;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            border-radius: 0.25rem;
-        }
+
         .setting{
             background-image: url(../img/icons/settings.svg);
             background-position: center center;
