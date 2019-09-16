@@ -906,7 +906,8 @@ input{
         width: 160px;
         top: 100%;
         text-align: center;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 1000;
         padding: 6px;
         margin: 0.125rem 0 0;
