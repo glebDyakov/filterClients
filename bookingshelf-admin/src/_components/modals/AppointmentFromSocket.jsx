@@ -47,6 +47,7 @@ class AppointmentFromSocket extends React.Component {
             this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify({ moved: false, approved: true })))
         }
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
+        this.props.closeAppointmentFromSocket()
     }
 
     render() {
