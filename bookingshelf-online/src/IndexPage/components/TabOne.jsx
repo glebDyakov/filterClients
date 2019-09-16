@@ -5,13 +5,13 @@ class TabOne extends  PureComponent{
 
     render() {
 
-        const {staffId,staffs, nearestTime, selectStaff, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
-                    <p className="modal_title">Выбор сотрудника</p>
+                    <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(2);
@@ -68,7 +68,7 @@ class TabOne extends  PureComponent{
                         </li>
                     )}
                 </ul>
-                <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>
+                {info.template === 1 && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
             </div>
         );
     }
