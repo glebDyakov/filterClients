@@ -247,7 +247,7 @@ class IndexPage extends PureComponent {
                     Онлайн-запись для этой компании отключена
                 </div>
             )
-        } else if (!info) {
+        } else if (!info && !error) {
             content = <div className="online-zapis-off">
                 Подождите...
             </div>
