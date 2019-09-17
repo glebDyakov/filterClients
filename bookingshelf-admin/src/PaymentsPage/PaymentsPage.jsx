@@ -325,7 +325,7 @@ class PaymentsPage extends Component {
 
         const pdfMarkup = <React.Fragment>
 
-            <div className="row-status">
+            { chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
                 <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
                         data-target=".make-payment-modal"
                         data-toggle="modal"
@@ -336,7 +336,7 @@ class PaymentsPage extends Component {
                     {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                         (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                 </button>
-            </div>
+            </div>}
             <div id="divIdToPrint">
             <div className="account-info col-12">
                 <h3>Счёт {chosenInvoice.invoiceId}</h3>
@@ -350,19 +350,22 @@ class PaymentsPage extends Component {
                 </div>
 
                 <div className="col-md-6 col-12 seller">
-                    <p>Лицензиар: <strong>СОФТ-МЕЙК. УНП 191644633</strong></p>
-                    <p>Адрес: 220034, Минск, Марьевская 7а-1-6</p>
+                    <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>
+                    <p>Адрес: 220034, Беларусь, Минск, Марьевская 7а-1-6</p>
                     <p>Тел +375 44 5655557</p>
                 </div>
             </div>
 
             <div className="payments-type">
                 <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
-                <p><strong>Заплатить
-                    до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                { chosenInvoice.invoiceStatus !== 'PAID' && <p>
+                    <strong>Заплатить до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                </p>}
+                <p>
+                    Статус: <span style={{ fontWeight: chosenInvoice.invoiceStatus === 'PAID' ? 'bold' : 'normal' }}>{chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                  (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                    </span>
                 </p>
-                <p>Статус: {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                    (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}</p>
             </div>
 
             <div className="table">
@@ -401,7 +404,7 @@ class PaymentsPage extends Component {
                     <p>Без НДС</p>
                 </div>
                 <div>
-                    <p>0.00 EUR</p>
+                    <p>0.00 {chosenInvoice.currency}</p>
                 </div>
             </div>
             </div>
@@ -419,6 +422,7 @@ class PaymentsPage extends Component {
                             />
 
                             <div className="retreats">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                 <ul className="nav nav-tabs">
                                     <li className="nav-item" >
                                         <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
@@ -426,7 +430,11 @@ class PaymentsPage extends Component {
                                     <li className="nav-item">
                                         <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
+
                                 </ul>
+                                <span style={{ marginBottom: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Пакет: {authentication.user.invoicePacket && authentication.user.invoicePacket.packetId ? 'Стандарт' :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') <= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</span>
+                                </div>
+
                                 <div className="tab-content">
                                     <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
                                         <div className="payments-inner">
@@ -734,10 +742,14 @@ class PaymentsPage extends Component {
                                                     </div>
                                                     <div className="inv-date">
                                                         <p>{invoice.totalSum} {invoice.currency}</p></div>
-                                                    <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}><p style={{color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000' }}>
+                                                    <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}>
+                                                        <p style={{
+                                                            color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000',
+                                                        }}>
                                                         {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                             (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                                                    </p></div>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             );
                                         }) : (
