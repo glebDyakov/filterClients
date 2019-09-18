@@ -315,6 +315,10 @@ class PaymentsPage extends Component {
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets} = this.props.payments;
+        let activePacket
+        if (packets && authentication.user.invoicePacket) {
+          activePacket =  packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
+        }
 
         const { pathname } = this.props.location;
         if (pathname === '/payments') {
@@ -432,7 +436,7 @@ class PaymentsPage extends Component {
                                     </li>
 
                                 </ul>
-                                <span style={{ marginBottom: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Пакет: {authentication.user.invoicePacket && authentication.user.invoicePacket.packetId ? 'Стандарт' :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') <= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</span>
+                                <span style={{ marginBottom: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') <= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</span>
                                 </div>
 
                                 <div className="tab-content">
