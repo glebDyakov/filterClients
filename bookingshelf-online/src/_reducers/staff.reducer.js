@@ -53,6 +53,7 @@ export function staff(state= initialState, action) {
         case staffConstants.GET_FAILURE:
             return {
                 ...state,
+                isLoading: false,
                 error: 'Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.'
             }
         case staffConstants.GET_INFO_FAILURE:

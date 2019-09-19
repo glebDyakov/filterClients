@@ -148,7 +148,7 @@ class TabScroll extends Component{
                                     }
 
                                     ));
-                            debugger
+
                             let resultMarkup;
                             if(appointment && appointment[0] && appointment[0].length > 0 && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment[0][0].appointmentId)) {
                                 let totalDuration = appointment[0][0].duration;

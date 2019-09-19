@@ -17,7 +17,6 @@ class HeaderMain extends React.PureComponent {
         }
         this.openModal = this.openModal.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
-        this.toggleNotificationDropdown = this.toggleNotificationDropdown.bind(this);
 
 
     }
@@ -149,22 +148,8 @@ class HeaderMain extends React.PureComponent {
                 </div>
                 <div className="col right_elements">
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
-                    <div style={{ position: "relative" }} onClick={this.toggleNotificationDropdown}>
+                    <div style={{ position: "relative" }}>
                         <span className="notification"/>
-                        { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200)
-                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount')) || 200)
-                        && <React.Fragment>
-                            <span className="notification-signal" />
-                            {this.state.isNotificationDropdown && <ul className="notification-dropdown">
-                                {notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200) &&
-                                <li>Баланс SMS ниже {(localStorage.getItem('smsNotifyCount') || 200)}</li>
-                                }
-                                {notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount') || 200) &&
-                                <li>Баланс Email ниже {(localStorage.getItem('emailNotifyCount') || 200)}</li>
-                                }
-                            </ul>}
-                        </React.Fragment> }
-
                     </div>
                     <a className="setting" onClick={this.openModal}/>
                     <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}</a>
@@ -187,9 +172,6 @@ class HeaderMain extends React.PureComponent {
         const {onOpen} = this.props;
 
         return onOpen();
-    }
-    toggleNotificationDropdown() {
-        this.setState({ isNotificationDropdown: !this.state.isNotificationDropdown})
     }
     openAppointments(){
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));

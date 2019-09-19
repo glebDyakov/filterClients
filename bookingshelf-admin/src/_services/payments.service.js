@@ -6,6 +6,7 @@ import moment from 'moment';
 export const paymentsService = {
     getInvoiceList,
     addInvoice,
+    getInvoice,
     makePayment,
     getPackets
 };
@@ -24,6 +25,21 @@ function getInvoiceList() {
 
     return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then(handleResponse);
 }
+
+function getInvoice(invoiceId) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/invoices/${invoiceId}`, requestOptions).then(handleResponse);
+}
+
 function getPackets() {
     const requestOptions = {
         method: 'GET',
