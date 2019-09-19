@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react';
 import {access} from "../../_helpers/access";
 
-class CalendarHeader extends PureComponent {
+class StaffChoice extends PureComponent {
 
     render(){
-        const {typeSelected,selectedStaff, availableTimetable, setWorkingStaff, staff}= this.props;
+        const {typeSelected,selectedStaff,hideWorkingStaff, availableTimetable, setWorkingStaff, staff}= this.props;
         const currentSelectedStaff = selectedStaff && !!selectedStaff.length && staff && staff.find(staffItem => staffItem.staffId === JSON.parse(selectedStaff).staffId);
 
         return(
@@ -56,11 +56,11 @@ class CalendarHeader extends PureComponent {
                                 <p>Все сотрудники</p>
                             </a>
                         </li>
-                        <li>
+                        {!hideWorkingStaff && <li>
                             <a onClick={() => setWorkingStaff(availableTimetable, 1)}>
                                 <p>Работающие сотрудники</p>
                             </a>
-                        </li>
+                        </li>}
 
                         {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl =>{
                             const activeStaff = staff && staff.find(staffItem => staffItem.staffId === staffEl.staffId);
@@ -87,4 +87,4 @@ class CalendarHeader extends PureComponent {
         );
     }
 }
-export default CalendarHeader;
+export default StaffChoice;

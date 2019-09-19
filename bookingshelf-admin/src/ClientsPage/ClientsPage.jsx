@@ -11,8 +11,7 @@ import {ClientDetails, NewClient, UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
-
-
+import StaffChoice from '../CalendarPage/components/StaffChoice'
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -28,6 +27,8 @@ class ClientsPage extends Component {
             client: props.client,
             edit: false,
             client_working: {},
+            selectedStaffList: [],
+            typeSelected: 1,
             search: false,
             defaultClientsList:  props.client,
             isLoading: true,
@@ -38,6 +39,7 @@ class ClientsPage extends Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
@@ -68,11 +70,13 @@ class ClientsPage extends Component {
         }
     }
 
-
+    setWorkingStaff(selectedStaffList, typeSelected) {
+        this.setState({ selectedStaffList, typeSelected });
+    }
 
     render() {
-        const { client, client_working, edit, defaultClientsList, isLoading, openedModal, userSettings, infoClient } = this.state;
-
+        const { staff } = this.props;
+        const { client, client_working, edit, defaultClientsList, selectedStaffList, typeSelected, isLoading, openedModal, userSettings, infoClient } = this.state;
         return (
             <div className="clients-page">
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
@@ -85,17 +89,28 @@ class ClientsPage extends Component {
                             <HeaderMain
                                 onOpen={this.onOpen}
                             />
+                            <div>
+
+                            </div>
                             {
                                 (defaultClientsList.client && defaultClientsList!=="" &&
                                 <div className="row align-items-center content clients mb-2">
+                                    <StaffChoice
+                                      selectedStaff={JSON.stringify(selectedStaffList[0])}
+                                      typeSelected={typeSelected}
+                                      staff={staff.staff}
+                                      availableTimetable={staff.staff}
+                                      setWorkingStaff={this.setWorkingStaff}
+                                      hideWorkingStaff={true}
+                                    />
                                     <div className="search col-7">
                                         <input type="search" placeholder="Искать по имени, email, номеру телефона"
                                                aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
                                         <button className="search-icon" type="submit"/>
                                     </div>
-                                    <div className="col-5 d-flex justify-content-end">
+                                    <div className="col-2 d-flex justify-content-end">
                                         {access(5) &&
-                                        <div className="dropdown">
+                                        <div className="export">
 
                                             <button   onClick={this.downloadFile} type="button" className="button client-download"
                                                >Экспорт в CSV
@@ -106,7 +121,11 @@ class ClientsPage extends Component {
                                 </div>
                                 )}
                             { client.client && client.client.map((client_user, i) =>{
-                                return(
+                                let condition = true;
+                                if (selectedStaffList && selectedStaffList.length) {
+                                    condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+                                }
+                                return condition && (
                                 <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
                                     <div style={{position: "relative"}}>
                                         <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
@@ -271,10 +290,10 @@ class ClientsPage extends Component {
 }
 
 function mapStateToProps(store) {
-    const {client, authentication}=store;
+    const {client, authentication, staff}=store;
 
     return {
-        client, authentication
+        client, authentication, staff
     };
 }
 
