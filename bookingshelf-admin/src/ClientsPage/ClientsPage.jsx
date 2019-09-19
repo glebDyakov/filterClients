@@ -28,7 +28,7 @@ class ClientsPage extends Component {
             edit: false,
             client_working: {},
             selectedStaffList: [],
-            typeSelected: 1,
+            typeSelected: 2,
             search: false,
             defaultClientsList:  props.client,
             isLoading: true,
