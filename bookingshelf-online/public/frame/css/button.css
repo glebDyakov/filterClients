@@ -45,7 +45,7 @@
     border: 0px;
     width: 0%;
     position: fixed;
-    right: 0;
+    right: -45px;
     z-index: 1001;
     height: 100%;
 }
@@ -77,10 +77,13 @@
 }
 @media screen and (max-width: 1650px){
   .closer-modal{
-    right: 730px;
+    right: 634px;
   }
 }
 @media screen and (max-width: 720px){
+  #online-booking {
+    right: 0;
+  }
   .closer-modal {
     right: 2px;
     top: 2px;
