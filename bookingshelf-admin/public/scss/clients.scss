@@ -11,14 +11,17 @@
         .search {
             height: 35px;
             @media screen and(max-width: $tablet-width) {
-                width: 100%;
-                min-width: 100%;
+                width: calc(50%);
+                flex: unset;
             }
 
             input {
                 border-bottom: none;
                 margin: 0;
                 padding: 4px 0 0 40px;
+                @media screen and(max-width: $tablet-width) {
+                    padding-left: 24px;
+                }
             }
         }
 
@@ -34,7 +37,7 @@
             padding-right: 25px;
         }
 
-        .dropdown {
+        .export {
             @media screen and(max-width: $tablet-width) {
                 display: none;
             }

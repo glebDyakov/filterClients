@@ -22,7 +22,7 @@ import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket
 
 import {userActions} from '../_actions/user.actions';
 import TabScrollContent from './components/TabScrollContent';
-import CalendarHeader from './components/CalendarHeader';
+import StaffChoice from './components/StaffChoice';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
 // import AppointmentFromSocket from "./components/AppointmentFromSocket";
@@ -510,7 +510,7 @@ class CalendarPage extends PureComponent {
                         <div className="container-fluid">
                             <HeaderMain onOpen={this.onOpen} />
                             <div className="row content calendar-container">
-                                <CalendarHeader
+                                <StaffChoice
                                     typeSelected={typeSelected}
                                     selectedStaff={selectedStaff}
                                     availableTimetable={staffAll.availableTimetable}
