@@ -1069,7 +1069,7 @@ q:before, q:after { content:''; }
         padding: 10px;
     }
     .container_popups {
-        max-width: 630px;
+        max-width: 721px;
         padding-bottom: 60px;
 
     }
@@ -1140,7 +1140,7 @@ q:before, q:after { content:''; }
     .footer_modal,
     .skip_employee,
     .title_block{
-        max-width: 628px;
+        max-width: 721px;
     }
     .title_block .next_block{
         right: 10px;
