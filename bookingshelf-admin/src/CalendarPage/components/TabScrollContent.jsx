@@ -42,27 +42,45 @@ class TabScroll extends Component{
         const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
 
         let shouldMove = false
-        const movingVisitTime = movingVisitMillis + (movingVisitDuration * 1000);
+        const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
         const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
         availableTimetableItem.availableDays.forEach(item => {
             item.availableTimes.forEach(time => {
-                if (time.startTimeMillis <= movingVisitTime && time.startTimeMillis <= movingVisitMillis
-                    && time.endTimeMillis >= movingVisitTime && time.endTimeMillis >= movingVisitMillis) {
+                if (time.startTimeMillis <= movingVisitEndTime && time.startTimeMillis <= movingVisitMillis
+                    && time.endTimeMillis >= movingVisitEndTime && time.endTimeMillis >= movingVisitMillis) {
                     shouldMove = true
                 }
             })
         })
 
-        if (prevVisitStaffId === movingVisitStaffId) {
-            if (movingVisit.appointmentTimeMillis <= movingVisitTime
-                && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= movingVisitTime) {
-                shouldMove = true
-            }
+        if (!shouldMove && prevVisitStaffId === movingVisitStaffId) {
+            // if (movingVisit.appointmentTimeMillis <= movingVisitEndTime
+            //     && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= movingVisitEndTime) {
+            //     shouldMove = true
+            // }
+            //
+            // if (movingVisit.appointmentTimeMillis <= movingVisitMillis && movingVisitMillis <= (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000))) {
+            //     shouldMove = true
+            // }
+            const intervals = []
 
-            if (movingVisit.appointmentTimeMillis <= movingVisitMillis && movingVisitMillis <= (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000))) {
-                shouldMove = true
+            for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
+                console.log(i)
+                intervals.push(i)
             }
+            availableTimetableItem.availableDays.forEach(item => {
+                item.availableTimes.forEach(time => {
+                    const isFreeInterval = intervals.every(i => {
+                        return ((time.startTimeMillis <= i && time.endTimeMillis > i)
+                          || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= i))
+                    });
+                    if (isFreeInterval) {
+                        shouldMove = true
+                    }
+
+                })
+            });
 
             const startDay = moment(movingVisitMillis, 'x').format('D')
             const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')

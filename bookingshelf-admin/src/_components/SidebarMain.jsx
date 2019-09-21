@@ -244,7 +244,11 @@ class SidebarMain extends Component {
 
                         <span  onClick={()=>this.logout()} className="log_in"/>
                         <span className="notification-mob" onClick={() => {
+                            $('#__replain_widget').addClass('__replain_widget_show')
                             $('#__replain_widget_iframe').contents().find(".btn-img").click()
+                            $("#__replain_widget_iframe").contents().find(".hide-chat").bind("click", function() {
+                                $('#__replain_widget').removeClass('__replain_widget_show')
+                            });
                         }}/>
                         {/*<div className="setting_mob">*/}
                         {/*    <a className="notification">Уведомления</a>*/}
