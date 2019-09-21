@@ -230,14 +230,22 @@ class SidebarMain extends Component {
 
                 <li className="mob-menu-personal">
                     <div className="logo_mob"/>
-                    <div className="mob-firm-name" onClick={()=>this.onOpen()} style={{height: "45px"}}>
+                    <div className="mob-firm-name" onClick={(e)=> {
+                        if (e.target.className !== 'notification-mob') {
+                            this.onOpen()
+                        }
+                    }} style={{height: "45px"}}>
                         <div className="img-container">
                             <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                         </div>
                         <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
                             {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
                         </p>
+
                         <span  onClick={()=>this.logout()} className="log_in"/>
+                        <span className="notification-mob" onClick={() => {
+                            $('#__replain_widget_iframe').contents().find(".btn-img").click()
+                        }}/>
                         {/*<div className="setting_mob">*/}
                         {/*    <a className="notification">Уведомления</a>*/}
                         {/*    <a className="setting" data-toggle="modal" data-target=".modal_user_setting" onClick={()=>this.onOpen()}>Настройки</a>*/}

@@ -817,13 +817,7 @@ input{
                             cursor: pointer;
                         }
                     }
-                    .notification{
-                        background-image: url(../img/icons/ring_mob.svg);
-                        background-position: left center;
-                        background-repeat: no-repeat;
-                        background-size: 16px;
 
-                    }
                     .setting{
                         background-image: url(../img/icons/settings_mob.svg);
                         background-position: left center;
@@ -1489,7 +1483,7 @@ input{
         }
 
         .notification{
-            background-image: url(../img/icons/ring.svg);
+            background-image: url(../img/icons/support.svg);
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100% auto;
@@ -2547,6 +2541,22 @@ select{
 
 
     }
+}
+.notification-mob{
+    background-image: url(../img/icons/support_mob.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    float: right;
+
+    &:hover {
+        opacity: 0.7;
+        cursor: pointer;
+    }
+
 }
 .modal-open{
     padding-right: 0 !important;
