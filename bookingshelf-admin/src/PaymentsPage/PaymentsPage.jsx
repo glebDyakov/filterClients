@@ -781,28 +781,10 @@ class PaymentsPage extends Component {
                                             </div>
                                             <div className="act-body-wrapper">
                                                 <div className="acts-body">
-                                                    { chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
-                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
-                                                                data-target=".make-payment-modal"
-                                                                data-toggle="modal"
-                                                                onClick={() => {
-                                                                    this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
-                                                                    this.repeatPayment(chosenInvoice.invoiceId)
-                                                                }}>
-                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                                                              (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                                                        </button>
-                                                    </div>}
 
                                                     {pdfMarkup}
 
-                                                    <ReactToPdf targetRef={ref} filename="payment.pdf">
-                                                        {({toPdf}) => (
-                                                          <p className="download" onClick={toPdf}>Скачать в PDF</p>
-                                                        )}
-                                                    </ReactToPdf>
-                                                    <button onClick={this.downloadInPdf}>Download</button>
-
+                                                    <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
                                                 </div>
 
                                             </div>
