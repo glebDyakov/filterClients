@@ -435,8 +435,11 @@ class PaymentsPage extends Component {
                                         <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
 
-                                </ul>
-                                <span style={{ marginBottom: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') <= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</span>
+                                    </ul>
+                                    <div>
+                                        <div style={{ textAlign: 'right', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</div>
+                                        <div style={{ textAlign: 'right', fontWeight: 'bold', whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : 'Пробный период продлён')}</div>
+                                    </div>
                                 </div>
 
                                 <div className="tab-content">
