@@ -435,8 +435,11 @@ class PaymentsPage extends Component {
                                         <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
                                     </li>
 
-                                </ul>
-                                <span style={{ marginBottom: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') <= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</span>
+                                    </ul>
+                                    <div>
+                                        <div style={{ textAlign: 'right', fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</div>
+                                        <div style={{ textAlign: 'right', fontWeight: 'bold', whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : 'Пробный период продлён')}</div>
+                                    </div>
                                 </div>
 
                                 <div className="tab-content">
@@ -778,10 +781,28 @@ class PaymentsPage extends Component {
                                             </div>
                                             <div className="act-body-wrapper">
                                                 <div className="acts-body">
+                                                    { chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
+                                                        <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
+                                                                data-target=".make-payment-modal"
+                                                                data-toggle="modal"
+                                                                onClick={() => {
+                                                                    this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
+                                                                    this.repeatPayment(chosenInvoice.invoiceId)
+                                                                }}>
+                                                            {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                                                              (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                                                        </button>
+                                                    </div>}
 
                                                     {pdfMarkup}
 
-                                                    <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                                                    <ReactToPdf targetRef={ref} filename="payment.pdf">
+                                                        {({toPdf}) => (
+                                                          <p className="download" onClick={toPdf}>Скачать в PDF</p>
+                                                        )}
+                                                    </ReactToPdf>
+                                                    <button onClick={this.downloadInPdf}>Download</button>
+
                                                 </div>
 
                                             </div>
