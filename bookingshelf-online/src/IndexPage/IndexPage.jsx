@@ -129,6 +129,10 @@ class IndexPage extends PureComponent {
 
             newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays.length===0 && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
+            if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.newAppointment)) {
+                this.setState({ screen: 6})
+            }
+
             this.setState({
                 staffs: newProps.staff && newProps.staff.staff,
                 newAppointments: newProps.staff.newAppointment,

@@ -24,6 +24,10 @@ class TabFive extends PureComponent {
             group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, clientVerificationCode} = this.props;
         const { enteredCode, enteredCodeError } = this.state;
 
+        if (!clientActivationId) {
+          $('.phones_country').css({ display: 'flex' })
+        }
+
         return (
             <div className="service_selection screen5">
                 <div className="title_block">
@@ -61,7 +65,7 @@ class TabFive extends PureComponent {
                     </div>
                     }
                 </div>
-                {clientActivationId && (
+                {clientActivationId ? (
                   <React.Fragment>
                     <p style={{ marginBottom: '0' }} className="modal_title">Подтверждение нового клиента</p>
                     <p>Код подтверждения был отправлен на номер {group.phone}. Введите код ниже:</p>
@@ -70,36 +74,35 @@ class TabFive extends PureComponent {
                            className={(enteredCodeError ? ' redBorder' : '')}
                     />
                   </React.Fragment>
-                )}
-               {!clientActivationId && (
-                 <React.Fragment>
-                 <p>Имя</p>
-                <input type="text" placeholder="Введите имя" name="clientName" onChange={handleChange}
-                       value={group.clientName && group.clientName}
-                       className={((group.phone && !group.clientName) ? ' redBorder' : '')}
-                />
-                <p>Телефон</p>
-                <div className="phones_country">
-                    <ReactPhoneInput
+                ) : (
+                  <React.Fragment>
+                    <p>Имя</p>
+                    <input type="text" placeholder="Введите имя" name="clientName" onChange={handleChange}
+                           value={group.clientName && group.clientName}
+                           className={((group.phone && !group.clientName) ? ' redBorder' : '')}
+                    />
+                    <p>Телефон</p>
+                    <div className="phones_country">
+                      <ReactPhoneInput
                         regions={['america', 'europe']}
                         disableAreaCodes={true}
 
                         inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => setterPhone(phone)}
-                    />
+                      />
 
-                </div>
-                <br/>
-                <p>Email</p>
-                <input type="text" placeholder="Введите email" name="email" onChange={handleChange}
-                       onKeyUp={() => setterEmail()}
-                       value={group.email}
-                       className={'' + ((group.email && group.email!=='' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
-                />
-                <p>Комментарии</p>
-                <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
-                <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
-                    пользовательского соглашения</a></p>
-                </React.Fragment>
+                    </div>
+                    <br/>
+                    <p>Email</p>
+                    <input type="text" placeholder="Введите email" name="email" onChange={handleChange}
+                           onKeyUp={() => setterEmail()}
+                           value={group.email}
+                           className={'' + ((group.email && group.email!=='' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                    />
+                    <p>Комментарии</p>
+                    <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
+                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
+                      пользовательского соглашения</a></p>
+                  </React.Fragment>
                 )}
                 <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
                     ()=> {
@@ -116,7 +119,10 @@ class TabFive extends PureComponent {
                         }
 
                       } else {
-                        (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && handleSave()
+                        $('.phones_country').css({ display: 'none' })
+                        if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
+                          handleSave()
+                        }
                       }
                     }}/>
             </div>
