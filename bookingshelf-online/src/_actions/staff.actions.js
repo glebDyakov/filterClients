@@ -80,9 +80,16 @@ function add(id, staff, service, params) {
         dispatch(request());
         staffService.add(id, staff, service, params)
             .then(
-                appointment => {
-                    if(appointment.length) {
-                        dispatch(success(appointment))
+                result => {
+                    if(result.length) {
+                        dispatch(success({
+                            newAppointment: result,
+                            clientActivationId: null,
+                            clientVerificationCode: null,
+
+                        }))
+                    } else if (result.clientVerificationCode) {
+                        dispatch(success(result))
                     } else {
                         dispatch(failure());
                     }
@@ -94,7 +101,7 @@ function add(id, staff, service, params) {
     };
 
     function request() { return { type: staffConstants.ADD_APPOINTMENT } }
-    function success(appointment) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, appointment } }
+    function success(payload) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, payload } }
     function failure() { return { type: staffConstants.ADD_APPOINTMENT_FAILURE } }
 }
 

@@ -76,7 +76,7 @@ export function staff(state= initialState, action) {
         case staffConstants.ADD_APPOINTMENT_SUCCESS:
             return {
                 ...state,
-                newAppointment: action.appointment,
+                ...action.payload,
                 error: '',
                 isLoading: false
             };
