@@ -280,16 +280,16 @@ class SidebarMain extends Component {
                             {item.id === 'email_menu_id' && (
                               <div className="email-sms-notification-wrapper" onClick={this.toggleNotificationDropdown}>
 
-                                  { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200)
-                                    || notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount') || 200))
+                                  { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
+                                    || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
                                   && <React.Fragment>
                                       <span className="email-sms-notification"/>
                                       {isNotificationDropdown && <ul className="email-sms-notification-dropdown">
-                                          {notification.balance && notification.balance.smsAmount < (localStorage.getItem('smsNotifyCount') || 200) &&
-                                          <li>Баланс SMS ниже {(localStorage.getItem('smsNotifyCount') || 200)}</li>
+                                          {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
+                                          <li>Баланс SMS ниже {(localStorage.getItem('notifyCount') || 200)}</li>
                                           }
-                                          {notification.balance && notification.balance.emailAmount < (localStorage.getItem('emailNotifyCount') || 200) &&
-                                          <li>Баланс Email ниже {(localStorage.getItem('emailNotifyCount') || 200)}</li>
+                                          {notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200) &&
+                                          <li>Баланс Email ниже {(localStorage.getItem('notifyCount') || 200)}</li>
                                           }
                                       </ul>}
                                   </React.Fragment> }

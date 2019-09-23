@@ -8,21 +8,22 @@ if (document.getElementById('bb'))
     var iframe  = document.createElement('iframe');
     var span = document.createElement('span');
     var closer = document.createElement('span');
+    var hostUrl = location.host.includes('staging') ? 'https://staging.online-zapis.com' : 'https://online-zapis.com';
 
     link.rel  = 'stylesheet';
     link.type = 'text/css';
-    link.href = 'https://online-zapis.com/bb/'+buttonName+'.css';
+    link.href = hostUrl+'/bb/'+buttonName+'.css';
     link.media = 'all';
 
     link2.rel  = 'stylesheet';
     link2.type = 'text/css';
-    link2.href = 'https://online-zapis.com/bb/button.css';
+    link2.href = hostUrl+'/bb/button.css';
     link2.media = 'all';
 
     head.appendChild(link2);
     head.appendChild(link);
 
-    iframe.src = "https://online-zapis.com/online/"+document.getElementById('bb').getAttribute('code');
+    iframe.src = hostUrl+"/online/"+document.getElementById('bb').getAttribute('code');
     iframe.id = 'online-booking';
     iframe.style.visibility = 'hidden';
 
