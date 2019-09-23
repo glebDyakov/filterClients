@@ -683,7 +683,7 @@ q:before, q:after { content:''; }
     display: flex;
     font-size: 20px;
     width: 100%;
-    align-items: center;
+    align-items: flex-end;
     height: 40px;
 }
 .choise_time span {

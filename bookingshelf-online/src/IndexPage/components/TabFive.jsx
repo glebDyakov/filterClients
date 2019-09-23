@@ -4,13 +4,25 @@ import ReactPhoneInput from "react-phone-input-2";
 import {isValidNumber} from "libphonenumber-js";
 
 
-class TabFive extends  PureComponent {
+class TabFive extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+          enteredCode: '',
+          enteredCodeError: false
+        };
+        this.handleActivationChange = this.handleActivationChange.bind(this);
+    }
+
+    handleActivationChange({ target: { name, value } }) {
+      this.setState({ [name]: value })
+    }
 
     render() {
 
         const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime,
-            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave} = this.props;
-
+            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, clientVerificationCode} = this.props;
+        const { enteredCode, enteredCodeError } = this.state;
 
         return (
             <div className="service_selection screen5">
@@ -49,7 +61,19 @@ class TabFive extends  PureComponent {
                     </div>
                     }
                 </div>
-                <p>Имя</p>
+                {clientActivationId && (
+                  <React.Fragment>
+                    <p style={{ marginBottom: '0' }} className="modal_title">Подтверждение нового клиента</p>
+                    <p>Код подтверждения был отправлен на номер {group.phone}. Введите код ниже:</p>
+                    <input type="text" placeholder="Код" name="enteredCode" onChange={this.handleActivationChange}
+                           value={enteredCode}
+                           className={(enteredCodeError ? ' redBorder' : '')}
+                    />
+                  </React.Fragment>
+                )}
+               {!clientActivationId && (
+                 <React.Fragment>
+                 <p>Имя</p>
                 <input type="text" placeholder="Введите имя" name="clientName" onChange={handleChange}
                        value={group.clientName && group.clientName}
                        className={((group.phone && !group.clientName) ? ' redBorder' : '')}
@@ -75,8 +99,26 @@ class TabFive extends  PureComponent {
                 <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
                 <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
                     пользовательского соглашения</a></p>
-                <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value="ЗАПИСАТЬСЯ" onClick={
-                    ()=>(selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && handleSave()}/>
+                </React.Fragment>
+                )}
+                <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
+                    ()=> {
+                      if (clientActivationId) {
+
+                        if (enteredCode === clientVerificationCode) {
+                          this.setState({ enteredCodeError: false });
+                          handleSave({
+                            clientActivationId,
+                            clientVerificationCode: enteredCode
+                          })
+                        } else {
+                          this.setState({ enteredCodeError: true })
+                        }
+
+                      } else {
+                        (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) && handleSave()
+                      }
+                    }}/>
             </div>
         );
     }
