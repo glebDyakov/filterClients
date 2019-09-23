@@ -2561,15 +2561,6 @@ select{
 .modal-open{
     padding-right: 0 !important;
 }
-.__replain_widget_show {
-    display: block!important;
-}
-#__replain_widget {
-    display: none!important;
-    &.__replain_widget_show {
-        display: block!important;
-    }
-}
 .hide{
     display: none;
 }

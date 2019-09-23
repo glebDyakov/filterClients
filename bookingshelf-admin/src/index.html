@@ -7,12 +7,17 @@
     <link href="<%= htmlWebpackPlugin.options.vendorsFilename %>public/css_admin/fonts/fonts.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet"/>
     <link rel="icon" href="<%= htmlWebpackPlugin.options.vendorsFilename %>public/img/favicon.png" type="image/x-icon">
-    <script>
-      window.replainSettings = { id: 'c0da6fe6-32bb-4aa2-8b89-cd183a2f7c3d' };
-      (function(u){var s=document.createElement('script');s.type='text/javascript';s.async=true;s.src=u;
-        var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);
-      })('https://widget.replain.cc/dist/client.js');
-    </script>
+    <style>
+        .__replain_widget_show {
+            display: block!important;
+        }
+        #__replain_widget {
+            display: none!important;
+        }
+        #__replain_widget.__replain_widget_show {
+            display: block!important;
+        }
+    </style>
 </head>
 <body>
     <div id="app"></div>
@@ -23,6 +28,11 @@
     <script src="<%= htmlWebpackPlugin.options.vendorsFilename %>public/js/bootstrap-show-password.js"></script>
     <script src="<%= htmlWebpackPlugin.options.vendorsFilename %>public/js/main_script.js"></script>
     <script src="<%= htmlWebpackPlugin.options.vendorsFilename %>public/js/datepicker.js"></script>
-
+    <script>
+      window.replainSettings = { id: 'c0da6fe6-32bb-4aa2-8b89-cd183a2f7c3d' };
+      (function(u){var s=document.createElement('script');s.type='text/javascript';s.async=true;s.src=u;
+        var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);
+      })('https://widget.replain.cc/dist/client.js');
+    </script>
 </body>
 </html>
