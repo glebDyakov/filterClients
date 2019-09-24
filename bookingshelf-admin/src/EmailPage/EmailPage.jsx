@@ -159,6 +159,13 @@ class EmailPage extends Component {
 
         let notify={...notifications, [type]: !notifications[type]}
 
+        if (type === 'clientVerification' && notify.clientVerification) {
+            notify.smsOn = true;
+        }
+        if (type === 'smsOn' && !notify.smsOn) {
+            notify.clientVerification = false;
+        }
+
 
         this.setState({...this.state, notifications: notify});
 
