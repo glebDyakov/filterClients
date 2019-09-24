@@ -177,11 +177,11 @@ class AddService extends React.Component {
                                     <input type="number" placeholder="" name="priceTo"
                                            value={service.priceTo} onChange={this.handleChange} className={(service.priceFrom && service.priceFrom!==0 && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)? ' redBorder' : '')}/>
 
-                                    <p>Специальная цена</p>
-                                    <input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"
-                                           value={service.specialPrice===0?'':service.specialPrice}
+                                    {/*<p>Специальная цена</p>*/}
+                                    {/*<input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"*/}
+                                    {/*       value={service.specialPrice===0?'':service.specialPrice}*/}
 
-                                    />
+                                    {/*/>*/}
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <div className="check-box">

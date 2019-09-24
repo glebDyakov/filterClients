@@ -102,9 +102,11 @@ class EmailPage extends Component {
         this.setServiceEmail = this.setServiceEmail.bind(this)
         this.isKr = this.isKr.bind(this)
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
+        this.toggleDropdown = this.toggleDropdown.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
         this.onOpen = this.onOpen.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
 
     }
@@ -130,6 +132,14 @@ class EmailPage extends Component {
                 notification:newProps.notification,
                 userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
             })
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.state.isVerificationDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
         }
     }
 
@@ -315,6 +325,14 @@ class EmailPage extends Component {
     handleChangeEmailLetter(value) {
         this.setState({ description: value })
     }
+    toggleDropdown(dropdownKey) {
+        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
+    }
+    handleOutsideClick() {
+        this.setState({
+            isVerificationDropdown: false
+        })
+    }
 
     setServiceSMS(serviceId, service) {
         const { serviceCurrent, sms } = this.state;
@@ -480,7 +498,7 @@ class EmailPage extends Component {
                                                     <div className="row">
                                                         <div className="col-md-6">
 
-                                                            <p className="title_block mb-3">Уведомить при балансе SMS и email ниже:</p>
+                                                            <p className="title_block mb-3">Уведомить при балансе SMS и Email ниже:</p>
 
                                                             <input type="number" name="notifyCount" value={this.state.notifyCount} onChange={this.handleNotifyChange}/>
 
@@ -491,7 +509,13 @@ class EmailPage extends Component {
 
                                                     <div className="row">
                                                         <div className="col-md-6">
-                                                            <p className="title_block mb-3">Опция подтверждения новых клиентов</p>
+                                                            <span style={{ marginRight: '6px' }} className="title_block mb-3">Опция подтверждения новых клиентов</span>
+                                                            <div className="questions_black" onClick={() => this.toggleDropdown("isVerificationDropdown")}>
+                                                                <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                {this.state.isVerificationDropdown && <span className="questions_dropdown">
+                                                                                Прежде чем запись будет создана, клиенту на телефон придет SMS подтверждение.
+                                                                            </span>}
+                                                            </div>
                                                             <div className="check-box">
                                                                 <label>
                                                                     <input className="form-check-input" checked={notifications && notifications.clientVerification}  onChange={()=>this.toggleChange('clientVerification')}
