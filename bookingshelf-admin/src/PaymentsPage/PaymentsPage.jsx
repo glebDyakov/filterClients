@@ -45,7 +45,7 @@ class PaymentsPage extends Component {
             country: this.props.company.settings || {},
             // country: '',
             rate: {
-                workersCount: '1',
+                workersCount: -1,
                 specialWorkersCount: '',
                 period: '1',
             },
@@ -309,7 +309,7 @@ class PaymentsPage extends Component {
     }
 
     render() {
-        const {authentication} = this.props;
+        const {authentication, staff} = this.props;
         const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
@@ -319,6 +319,7 @@ class PaymentsPage extends Component {
         if (packets && authentication.user.invoicePacket) {
           activePacket =  packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
         }
+        debugger
 
         const { pathname } = this.props.location;
         if (pathname === '/payments') {
@@ -413,6 +414,8 @@ class PaymentsPage extends Component {
             </div>
             </div>
         </React.Fragment>
+
+        const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -449,103 +452,32 @@ class PaymentsPage extends Component {
                                                 <p className="title-payments">Количество сотрудников</p>
                                                 <div id="range-staff">
                                                     <ul className="range-labels">
-                                                        <li className={workersCount === '1' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "1",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>1
-                                                        </li>
-                                                        <li className={workersCount === '2' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "2",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>2
-                                                        </li>
-                                                        <li className={workersCount === '3' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "3",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>3
-                                                        </li>
-                                                        <li className={workersCount === '4' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "4",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>4
-                                                        </li>
-                                                        <li className={workersCount === '5' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "5",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>5
-                                                        </li>
-                                                        <li className={workersCount === '6' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "6",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>6
-                                                        </li>
-                                                        <li className={workersCount === '7' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "7",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>7
-                                                        </li>
-                                                        <li className={workersCount === '8' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "8",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>8
-                                                        </li>
-                                                        <li className={workersCount === '9' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "9",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>9
-                                                        </li>
-                                                        <li className={workersCount === '10' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    workersCount: "10",
-                                                                    specialWorkersCount: ''
-                                                                }
-                                                            })}>10
-                                                        </li>
+                                                        {options.map(option => (
+                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staff.costaff && staff.costaff.length) < option ? '' : 'disabledField')}
+                                                              onClick={() => {
+                                                                  if ((staff.costaff && staff.costaff.length) < option) {
+                                                                      this.setState({
+                                                                          rate: {
+                                                                              ...this.state.rate,
+                                                                              workersCount: option,
+                                                                              specialWorkersCount: ''
+                                                                          }
+                                                                      })
+                                                                  }
+                                                              }}>{option}
+                                                          </li>
+                                                        ))}
                                                     </ul>
 
                                                     <div
                                                         className={(specialWorkersCount !== '') ? "range range-hidden" : "range"}
                                                         style={{position: "relative"}}>
                                                         <input type="range" min="1" max="10" value={workersCount}
-                                                               onChange={(e) => this.rateChangeWorkersCount(e)}/>
+                                                               onChange={(e) => {
+                                                                   if ((staff.costaff && staff.costaff.length) < e.target.value) {
+                                                                       this.rateChangeWorkersCount(e)
+                                                                   }
+                                                               }}/>
                                                         <div
                                                             className={(specialWorkersCount !== '') ? "rateLine rateLineHidden" : "rateLine"}
                                                             style={{width: ((workersCount - 1) * 11) + "%"}}></div>
@@ -554,17 +486,17 @@ class PaymentsPage extends Component {
 
                                                 </div>
                                                 <div className="radio-buttons">
-                                                    <div onClick={() => this.rateChangeSpecialWorkersCount('to 20')}>
+                                                    <div onClick={() => ((staff.costaff && staff.costaff.length) < 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                                                         <input type="radio" className="radio" id="radio"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 20'}/>
-                                                        <label htmlFor="radio">До 20</label>
+                                                        <label className={(staff.costaff && staff.costaff.length) < 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
                                                     </div>
-                                                    <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
+                                                    <div onClick={() => ((staff.costaff && staff.costaff.length) < 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                                                         <input type="radio" className="radio" id="radio2"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 30'}/>
-                                                        <label htmlFor="radio2">До 30</label>
+                                                        <label className={(staff.costaff && staff.costaff.length) < 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
                                                     </div>
                                                     <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                                                         <input type="radio" className="radio" id="radio3"
@@ -629,7 +561,8 @@ class PaymentsPage extends Component {
                                                         </p>
 
                                                     </div>
-                                                    <button className="button" type="button"
+                                                    <button className={"button " + (workersCount === -1 ? 'disabledField' : '')} type="button"
+                                                            disabled={workersCount === -1}
                                                             onClick={() => this.AddingInvoiceStaff()}>Оплатить
                                                     </button>
                                                     {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
@@ -998,7 +931,7 @@ class PaymentsPage extends Component {
         const {defaultList}= this.state;
 
         const searchList = defaultList.filter((item)=>{
-            return  String(item.invoiceId).toLowerCase().includes(String(this.search.value).toLowerCase())
+            return  String(item.customId).toLowerCase().includes(String(this.search.value).toLowerCase())
                 || String(moment(item.createdDateMillis).format('DD.MM.YYYY')).toLowerCase().includes(String(this.search.value).toLowerCase())
             || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
             || String(item.invoiceStatus === 'ISSUED' ? 'Оплатить' :
@@ -1030,9 +963,9 @@ class PaymentsPage extends Component {
 
 
 function mapStateToProps(state) {
-    const { company, payments, authentication} = state;
+    const { company, payments, authentication, staff} = state;
     return {
-        company, payments, authentication
+        company, payments, authentication, staff
     };
 }
 
