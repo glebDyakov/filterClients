@@ -530,7 +530,7 @@ class EmailPage extends Component {
                                                     </div>
                                                     <div className="row">
                                                         <div className="offset-md-2 col-md-8 mt-1">
-                                                            <span style={{ fontSize: '11px'}} >
+                                                            <span style={{ fontSize: '11px', textDecoration: 'underline'}} >
                                                                 Постарайтесь избегать записи клиентов в журнал в позднее время, т.к. клиенты получают моментальные sms о записи.
                                                             </span>
 
