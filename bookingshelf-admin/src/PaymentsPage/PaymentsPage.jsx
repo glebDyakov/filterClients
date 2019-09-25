@@ -343,7 +343,7 @@ class PaymentsPage extends Component {
             </div>}
             <div id="divIdToPrint">
             <div className="account-info col-12">
-                <h3>Счёт {chosenInvoice.invoiceId}</h3>
+                <h3>Счёт {chosenInvoice.customId}</h3>
                 <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
             </div>
             <div className="customer-seller">
@@ -743,7 +743,7 @@ class PaymentsPage extends Component {
                                                     chosenInvoice: invoice,
                                                     invoiceSelected: true
                                                 })}>
-                                                    <div className="inv-number"><p>Счёт {invoice.invoiceId}</p></div>
+                                                    <div className="inv-number"><p>Счёт {invoice.customId}</p></div>
                                                     <div className="inv-date">
                                                         <p>{moment(invoice.createdDateMillis).format('DD.MM.YYYY')}</p>
                                                     </div>
