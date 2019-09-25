@@ -1,5 +1,9 @@
 @import "styles-group";
 .emailPage {
+    .tab-content .tab-content {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
     .start-modal{
 
         .modal-content {
@@ -56,9 +60,9 @@
             }
         }
     }
-    .tab-pane {
-        overflow: hidden;
-    }
+    //.tab-pane {
+    //    overflow: hidden;
+    //}
     .auto_notification_page {
         justify-content: space-between;
         @include border-style;

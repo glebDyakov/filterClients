@@ -44,7 +44,8 @@ class EmailPage extends Component {
             notifications: {
                 "smsOn":false,
                 "emailOn":false,
-                "notifyBefore": 3600
+                "notifyBefore": 3600,
+                clientVerification: false
             },
             services: props.services,
             notification: props.notification,
@@ -55,8 +56,7 @@ class EmailPage extends Component {
                 id: -1,
                 service: []
             },
-            smsNotifyCount: localStorage.getItem("smsNotifyCount") || 200,
-            emailNotifyCount: localStorage.getItem("emailNotifyCount") || 200,
+            notifyCount: localStorage.getItem("notifyCount") || 200,
             count_sms: 0,
             count_sms_all: 0,
             letters: 160,
@@ -102,9 +102,11 @@ class EmailPage extends Component {
         this.setServiceEmail = this.setServiceEmail.bind(this)
         this.isKr = this.isKr.bind(this)
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
+        this.toggleDropdown = this.toggleDropdown.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
         this.onOpen = this.onOpen.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
 
     }
@@ -133,6 +135,14 @@ class EmailPage extends Component {
         }
     }
 
+    componentDidUpdate() {
+        if(this.state.isVerificationDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+    }
+
     setTag(tag, block){
         const {html}=this.state;
 
@@ -158,6 +168,13 @@ class EmailPage extends Component {
         const { notifications } = this.state;
 
         let notify={...notifications, [type]: !notifications[type]}
+
+        if (type === 'clientVerification' && notify.clientVerification) {
+            notify.smsOn = true;
+        }
+        if (type === 'smsOn' && !notify.smsOn) {
+            notify.clientVerification = false;
+        }
 
 
         this.setState({...this.state, notifications: notify});
@@ -307,6 +324,14 @@ class EmailPage extends Component {
     }
     handleChangeEmailLetter(value) {
         this.setState({ description: value })
+    }
+    toggleDropdown(dropdownKey) {
+        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
+    }
+    handleOutsideClick() {
+        this.setState({
+            isVerificationDropdown: false
+        })
     }
 
     setServiceSMS(serviceId, service) {
@@ -473,9 +498,9 @@ class EmailPage extends Component {
                                                     <div className="row">
                                                         <div className="col-md-6">
 
-                                                            <p className="title_block mb-3">Уведомить при балансе SMS ниже:</p>
+                                                            <p className="title_block mb-3">Уведомить при балансе SMS и Email ниже:</p>
 
-                                                            <input type="number" name="smsNotifyCount" value={this.state.smsNotifyCount} onChange={this.handleNotifyChange}/>
+                                                            <input type="number" name="notifyCount" value={this.state.notifyCount} onChange={this.handleNotifyChange}/>
 
 
                                                         </div>
@@ -484,11 +509,30 @@ class EmailPage extends Component {
 
                                                     <div className="row">
                                                         <div className="col-md-6">
+                                                            <span style={{ marginRight: '6px' }} className="title_block mb-3">Опция подтверждения новых клиентов</span>
+                                                            <div className="questions_black" onClick={() => this.toggleDropdown("isVerificationDropdown")}>
+                                                                <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                                                {this.state.isVerificationDropdown && <span className="questions_dropdown">
+                                                                                Прежде чем запись будет создана, клиенту на телефон придет SMS подтверждение.
+                                                                            </span>}
+                                                            </div>
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" checked={notifications && notifications.clientVerification}  onChange={()=>this.toggleChange('clientVerification')}
+                                                                           type="checkbox"/>
+                                                                    <span className="check" />
+                                                                    Активировать опцию sms подтверждения новых клиентов
+                                                                </label>
+                                                            </div>
 
-                                                            <p className="title_block mb-3">Уведомить при балансе Email ниже:</p>
+                                                        </div>
 
-                                                            <input type="number" name="emailNotifyCount" value={this.state.emailNotifyCount} onChange={this.handleNotifyChange}/>
-
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="offset-md-2 col-md-8 mt-1">
+                                                            <span style={{ fontSize: '11px', textDecoration: 'underline'}} >
+                                                                Постарайтесь избегать записи клиентов в журнал в позднее время, т.к. клиенты получают моментальные sms о записи.
+                                                            </span>
 
                                                         </div>
 

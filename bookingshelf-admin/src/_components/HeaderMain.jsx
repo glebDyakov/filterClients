@@ -149,7 +149,13 @@ class HeaderMain extends React.PureComponent {
                 <div className="col right_elements">
                     <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
                     <div style={{ position: "relative" }}>
-                        <span className="notification"/>
+                        <span className="notification" onClick={() => {
+                            $('#__replain_widget').addClass('__replain_widget_show')
+                            $('#__replain_widget_iframe').contents().find(".btn-img").click()
+                            $("#__replain_widget_iframe").contents().find(".hide-chat").bind("click", function() {
+                                $('#__replain_widget').removeClass('__replain_widget_show')
+                            });
+                        }}/>
                     </div>
                     <a className="setting" onClick={this.openModal}/>
                     <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}</a>

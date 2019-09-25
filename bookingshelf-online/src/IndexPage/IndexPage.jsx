@@ -129,6 +129,10 @@ class IndexPage extends PureComponent {
 
             newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays.length===0 && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
+            if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.newAppointment)) {
+                this.setState({ screen: 6})
+            }
+
             this.setState({
                 staffs: newProps.staff && newProps.staff.staff,
                 newAppointments: newProps.staff.newAppointment,
@@ -174,8 +178,10 @@ class IndexPage extends PureComponent {
         this.setState({ group: {...group, [name]: value }});
     }
 
-    handleSave (e) {
+    handleSave (codeInfo) {
         const { dispatch } = this.props;
+        const { clientActivationId, clientVerificationCode } = this.props.staff;
+
         const { selectedStaff,selectedServices,group,selectedDay,selectedTime } = this.state;
         const {company} = this.props.match.params
         let resultTime = parseInt(selectedTime);
@@ -189,11 +195,14 @@ class IndexPage extends PureComponent {
             return item;
         });
 
-        dispatch(staffActions.add(company, selectedStaff.staffId, '',
-            JSON.stringify(data)))
-
-        this.setState({...this.state,
-            screen: 6})
+        if (codeInfo) {
+            data[0].clientActivationId = clientActivationId
+            data[0].clientVerificationCode = clientVerificationCode
+            dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
+            this.setState({ ...this.state, screen: 6 })
+        } else {
+            dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
+        }
     }
 
 
@@ -233,7 +242,7 @@ class IndexPage extends PureComponent {
     render() {
         const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -311,6 +320,8 @@ class IndexPage extends PureComponent {
                     {screen === 5 &&
                     <TabFive
                         serviceId={selectedService.serviceId}
+                        clientActivationId={clientActivationId}
+                        clientVerificationCode={clientVerificationCode}
                         selectedStaff={selectedStaff}
                         selectedDay={selectedDay}
                         selectedServices={selectedServices}
@@ -323,7 +334,6 @@ class IndexPage extends PureComponent {
                         setterPhone={this.setterPhone}
                         setterEmail={this.setterEmail}
                         handleSave={this.handleSave}
-
                     />
 
                     }

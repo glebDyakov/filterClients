@@ -817,13 +817,7 @@ input{
                             cursor: pointer;
                         }
                     }
-                    .notification{
-                        background-image: url(../img/icons/ring_mob.svg);
-                        background-position: left center;
-                        background-repeat: no-repeat;
-                        background-size: 16px;
 
-                    }
                     .setting{
                         background-image: url(../img/icons/settings_mob.svg);
                         background-position: left center;
@@ -1006,21 +1000,21 @@ input{
 }
 
 .email-sms-notification{
-    height: 30px;
-    width: 30px;
+    height: 24px;
+    width: 24px;
     background-image: url(../img/attention.svg);
     background-position: left center;
     background-repeat: no-repeat;
-    background-size: 30px;
+    background-size: 24px;
     border-radius: 25px;
     background-color: white;
     opacity: 1 !important;
 
     &-wrapper {
         position: absolute;
-        right: -11px;
+        right: -6px;
         @media screen and(max-width: 960px){
-            right: 11px;
+            right: 13px;
         }
     }
     &-dropdown {
@@ -1045,6 +1039,25 @@ input{
             min-height: auto;
             display: block;
         }
+    }
+}
+.desktop-visible {
+    display: block;
+
+    @media (max-width: 767px) {
+        display: none;
+    }
+}
+.new-staff-buttons {
+    @media (max-width: 767px) {
+       justify-content: center !important;
+    }
+}
+.mobile-visible {
+    display: none;
+
+    @media (max-width: 767px) {
+        display: block;
     }
 }
 .menu-notification{
@@ -1489,7 +1502,7 @@ input{
         }
 
         .notification{
-            background-image: url(../img/icons/ring.svg);
+            background-image: url(../img/icons/support.svg);
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100% auto;
@@ -2548,6 +2561,22 @@ select{
 
     }
 }
+.notification-mob{
+    background-image: url(../img/icons/support_mob.svg);
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    float: right;
+
+    &:hover {
+        opacity: 0.7;
+        cursor: pointer;
+    }
+
+}
 .modal-open{
     padding-right: 0 !important;
 }
@@ -2866,7 +2895,7 @@ select{
 }
 .questions_dropdown {
     position: absolute;
-    width: 160px;
+    width: 200px;
     top: 21px;
     text-align: center;
     left: 50%;
