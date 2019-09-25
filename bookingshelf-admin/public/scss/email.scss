@@ -1,5 +1,9 @@
 @import "styles-group";
 .emailPage {
+    .tab-content .tab-content {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
     .start-modal{
 
         .modal-content {

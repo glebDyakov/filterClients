@@ -653,7 +653,11 @@
   width: 795px;
   padding: 0 20px;
 }
-
+.current-packet {
+  @media screen and (min-width: 576px) {
+    text-align: right;
+  }
+}
 #acts{
   .row-status{
     width: 755px;
