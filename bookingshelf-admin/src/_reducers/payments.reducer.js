@@ -26,15 +26,26 @@ export function payments(state = initialState, action) {
             case paymentsConstants.MAKE_PAYMENT_FAILURE: {
                 return {
                     ...state,
-                    exceptionMessage: action.exceptionMessage
+                    exceptionMessage: action.exceptionMessage,
+                    isLoading: false
                 }
             }
-            case paymentsConstants.CANCEL_PAYMENT:
             case paymentsConstants.MAKE_PAYMENT:
-            case paymentsConstants.MAKE_PAYMENT_SUCCESS:
+                return {
+                    ...state,
+                    isLoading: true,
+                    confirmationUrl: action.confirmationUrl
+                }
+            case paymentsConstants.CANCEL_PAYMENT:
                 return {
                     ...state,
                     confirmationUrl: action.confirmationUrl
+                };
+            case paymentsConstants.MAKE_PAYMENT_SUCCESS:
+                return {
+                    ...state,
+                    confirmationUrl: action.confirmationUrl,
+                    isLoading: false
                 };
             default:
                 return state
