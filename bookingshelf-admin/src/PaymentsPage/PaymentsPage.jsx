@@ -336,7 +336,7 @@ class PaymentsPage extends Component {
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
-        const {packets} = this.props.payments;
+        const {packets, isLoading} = this.props.payments;
         let activePacket
         if (packets && authentication.user.invoicePacket) {
           activePacket =  packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
@@ -449,7 +449,8 @@ class PaymentsPage extends Component {
                                 onOpen={this.onOpen}
                             />
 
-                            <div className="retreats">
+                            {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                            {!isLoading && <div className="retreats">
                                 <div className="row">
                                     <div className="col-sm-6">
                                     <ul className="nav nav-tabs">
@@ -753,7 +754,7 @@ class PaymentsPage extends Component {
 
                                 </div>
 
-                            </div>
+                            </div>}
 
                         </div>
 
