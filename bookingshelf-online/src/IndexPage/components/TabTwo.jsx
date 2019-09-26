@@ -39,7 +39,7 @@ class TabTwo extends Component {
                     </div>
                 </div>}
                 <ul className="service_list">
-                    {services && services.map((service, serviceKey) =>
+                    {services && services.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
                         selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId) &&
                         <li
                             className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
