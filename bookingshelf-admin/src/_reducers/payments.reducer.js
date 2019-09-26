@@ -13,10 +13,14 @@ export function payments(state = initialState, action) {
                     pendingInvoice: action.pendingInvoice
                 }
             case paymentsConstants.GET_INVOICE_LIST_SUCCESS:
+                const newState = {}
+                if (action.payload.activeInvoice) {
+                    newState.activeInvoice = action.payload.activeInvoice
+                }
                 return {
                     ...state,
                     list: action.payload.list,
-                    activeInvoice: action.payload.activeInvoice
+                    ...newState
                 };
             case paymentsConstants.GET_PACKETS_SUCCESS:
                 return {
@@ -34,7 +38,8 @@ export function payments(state = initialState, action) {
                 return {
                     ...state,
                     isLoading: true,
-                    confirmationUrl: action.confirmationUrl
+                    confirmationUrl: action.confirmationUrl,
+                    exceptionMessage: null
                 }
             case paymentsConstants.CANCEL_PAYMENT:
                 return {

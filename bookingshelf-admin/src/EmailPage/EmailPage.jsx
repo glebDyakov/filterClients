@@ -513,7 +513,7 @@ class EmailPage extends Component {
                                                             <div className="questions_black" onClick={() => this.toggleDropdown("isVerificationDropdown")}>
                                                                 <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
                                                                 {this.state.isVerificationDropdown && <span className="questions_dropdown">
-                                                                                Прежде чем запись будет создана, клиенту на телефон придет SMS подтверждение.
+                                                                                Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение.
                                                                             </span>}
                                                             </div>
                                                             <div className="check-box">
