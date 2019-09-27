@@ -349,8 +349,6 @@ class PaymentsPage extends Component {
             document.title = "Счета | Онлайн-запись";
         }
 
-        debugger
-
         const chosenPacket = packets && packets.find(packet => packet.packetId === (chosenInvoice.invoicePackets && chosenInvoice.invoicePackets[0].packetId)) || {};
 
         const pdfMarkup = <React.Fragment>
