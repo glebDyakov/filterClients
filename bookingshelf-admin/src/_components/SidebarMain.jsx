@@ -26,7 +26,7 @@ class SidebarMain extends Component {
 
         this.handleClick=this.handleClick.bind(this)
         this.handleOutsideClick=this.handleOutsideClick.bind(this)
-        this.toggleNotificationDropdown=this.toggleNotificationDropdown.bind(this)
+        this.toggleDropdown=this.toggleDropdown.bind(this)
         this.approveAllAppointment=this.approveAllAppointment.bind(this)
         this.approveMovedAppointment=this.approveMovedAppointment.bind(this)
         this.openAppointments=this.openAppointments.bind(this)
@@ -83,7 +83,7 @@ class SidebarMain extends Component {
     }
 
     componentDidUpdate() {
-        if(this.state.isNotificationDropdown) {
+        if(this.state.isNotificationDropdown || this.state.isPaymentDropdown) {
             document.addEventListener('click', this.handleOutsideClick, false);
         } else {
             document.removeEventListener('click', this.handleOutsideClick, false);
@@ -92,7 +92,7 @@ class SidebarMain extends Component {
 
 
     handleOutsideClick() {
-        this.setState({ isNotificationDropdown: false })
+        this.setState({ isNotificationDropdown: false, isPaymentDropdown: false })
     }
 
     toggleCollapse(value) {
@@ -101,15 +101,27 @@ class SidebarMain extends Component {
         this.setState({ collapse });
     }
 
-    toggleNotificationDropdown() {
-        this.setState({ isNotificationDropdown: !this.state.isNotificationDropdown})
+    toggleDropdown(key) {
+        this.setState({ [key]: !this.state[key]})
     }
 
     render() {
         const { location, notification, calendar: { appointmentsCanceled }, staff, client, appointmentsCount }=this.props;
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
-        const { authentication, menu, company, collapse, openedTab,  count, userSettings, isNotificationDropdown }=this.state;
+        const { authentication, menu, company, collapse, openedTab,  count, userSettings, isNotificationDropdown, isPaymentDropdown }=this.state;
         let path="/"+location.pathname.split('/')[1]
+
+        const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
+        let packetEnd, packetEndText;
+        if (invoicePacket) {
+            packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000)
+            packetEndText = `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+        } else if (!forceActive) {
+            packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000)
+            packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+        }
+
+        const packetShowCondition = packetEnd ? packetEnd <= 3 : false;
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
             const activeStaff = staff && staff.staff && staff.staff.find(item =>
@@ -277,14 +289,15 @@ class SidebarMain extends Component {
                             (count && count.canceled && count.canceled.count>0) ||
                             (count && count.moved && count.moved.count>0))
                             && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
+
                             {item.id === 'email_menu_id' && (
-                              <div className="email-sms-notification-wrapper" onClick={this.toggleNotificationDropdown}>
+                              <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isNotificationDropdown')}>
 
                                   { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
                                     || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
                                   && <React.Fragment>
-                                      <span className="email-sms-notification"/>
-                                      {isNotificationDropdown && <ul className="email-sms-notification-dropdown">
+                                      <span className="sidebar-notification"/>
+                                      {isNotificationDropdown && <ul className="sidebar-notification-dropdown">
                                           {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
                                           <li>Баланс SMS ниже {(localStorage.getItem('notifyCount') || 200)}</li>
                                           }
@@ -293,6 +306,22 @@ class SidebarMain extends Component {
                                           }
                                       </ul>}
                                   </React.Fragment> }
+
+                              </div>
+                            )}
+
+                            {item.id === 'payments_menu_id' && (
+                              <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isPaymentDropdown')}>
+
+                                  {packetShowCondition && <React.Fragment>
+                                      <span className="sidebar-notification"/>
+                                      {isPaymentDropdown && (
+                                        <ul className="sidebar-notification-dropdown">
+                                          <li>{packetEndText}</li>
+                                        </ul>
+                                      )}
+                                  </React.Fragment>
+                                  }
 
                               </div>
                             )}
@@ -454,7 +483,7 @@ class SidebarMain extends Component {
     }
 
     handleClick(url, e){
-        if (e.target.className !== 'email-sms-notification') {
+        if (e.target.className !== 'sidebar-notification') {
             this.props.dispatch(menuActions.runSocket())
             this.props.history.push(url)
         }
