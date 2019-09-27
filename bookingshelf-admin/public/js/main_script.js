@@ -69,7 +69,7 @@ function initializeJs() {
 
     $('body').click(function (e) {
         if ($(window).width() < 961) {
-            if (e.target.className !=='email-sms-notification') {
+            if (e.target.className !=='sidebar-notification') {
                 $('.sidebar').slideUp(200);
             }
         }

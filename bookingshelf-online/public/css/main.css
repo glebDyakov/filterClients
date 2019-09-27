@@ -1313,10 +1313,14 @@ q:before, q:after { content:''; }
 
 
 @media screen and (max-width: 520px){
+    .date_item_popup strong {
+        align-items: center;
+    }
     .specialist div {
         width: 100%;
         padding: 12px 12px;
-        height: 65px;
+        min-height: 65px;
+        height: auto;
         margin-bottom: 8px;
         box-shadow: none;
     }
