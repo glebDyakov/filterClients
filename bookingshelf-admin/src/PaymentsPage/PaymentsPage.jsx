@@ -65,8 +65,8 @@ class PaymentsPage extends Component {
     }
 
     componentDidMount() {
-        if (this.props.staff.costaff && this.props.staff.costaff.length) {
-            this.setDefaultWorkersCount(this.props.staff.costaff)
+        if (this.props.staff.staff && this.props.staff.staff.length) {
+            this.setDefaultWorkersCount(this.props.staff.staff)
         }
     }
 
@@ -77,17 +77,17 @@ class PaymentsPage extends Component {
         if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
             this.repeatPayment(newProps.payments.activeInvoice.invoiceId)
         }
-        if (JSON.stringify(this.props.staff.costaff) !== JSON.stringify(newProps.staff.costaff)) {
-            this.setDefaultWorkersCount(newProps.staff.costaff)
+        if (JSON.stringify(this.props.staff.staff) !== JSON.stringify(newProps.staff.staff)) {
+            this.setDefaultWorkersCount(newProps.staff.staff)
         }
     }
 
-    setDefaultWorkersCount(costaff) {
-        if (costaff.length <= 10) {
-            this.setState({ rate: { ...this.state.rate, workersCount: costaff.length }})
-        } else if (costaff.length > 10 && costaff.length <= 20) {
+    setDefaultWorkersCount(staff) {
+        if (staff.length <= 10) {
+            this.setState({ rate: { ...this.state.rate, workersCount: staff.length }})
+        } else if (staff.length > 10 && staff.length <= 20) {
             this.rateChangeSpecialWorkersCount('to 20')
-        } else if (costaff.length > 20 && costaff.length <= 30) {
+        } else if (staff.length > 20 && staff.length <= 30) {
             this.rateChangeSpecialWorkersCount('to 30')
         } else {
             this.rateChangeSpecialWorkersCount('from 30')
@@ -479,9 +479,9 @@ class PaymentsPage extends Component {
                                                 <div id="range-staff">
                                                     <ul className="range-labels">
                                                         {options.map(option => (
-                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staff.costaff && staff.costaff.length) <= option ? '' : 'disabledField')}
+                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staff.staff && staff.staff.length) <= option ? '' : 'disabledField')}
                                                               onClick={() => {
-                                                                  if ((staff.costaff && staff.costaff.length) <= option) {
+                                                                  if ((staff.staff && staff.staff.length) <= option) {
                                                                       this.setState({
                                                                           rate: {
                                                                               ...this.state.rate,
@@ -500,7 +500,7 @@ class PaymentsPage extends Component {
                                                         style={{position: "relative"}}>
                                                         <input type="range" min="1" max="10" value={workersCount}
                                                                onChange={(e) => {
-                                                                   if ((staff.costaff && staff.costaff.length) <= e.target.value) {
+                                                                   if ((staff.staff && staff.staff.length) <= e.target.value) {
                                                                        this.rateChangeWorkersCount(e)
                                                                    }
                                                                }}/>
@@ -512,17 +512,17 @@ class PaymentsPage extends Component {
 
                                                 </div>
                                                 <div className="radio-buttons">
-                                                    <div onClick={() => ((staff.costaff && staff.costaff.length) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
+                                                    <div onClick={() => ((staff.staff && staff.staff.length) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                                                         <input type="radio" className="radio" id="radio"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 20'}/>
-                                                        <label className={(staff.costaff && staff.costaff.length) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
+                                                        <label className={(staff.staff && staff.staff.length) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
                                                     </div>
-                                                    <div onClick={() => ((staff.costaff && staff.costaff.length) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
+                                                    <div onClick={() => ((staff.staff && staff.staff.length) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                                                         <input type="radio" className="radio" id="radio2"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 30'}/>
-                                                        <label className={(staff.costaff && staff.costaff.length) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
+                                                        <label className={(staff.staff && staff.staff.length) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
                                                     </div>
                                                     <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                                                         <input type="radio" className="radio" id="radio3"
