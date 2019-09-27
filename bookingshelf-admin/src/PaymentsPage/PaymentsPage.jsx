@@ -349,6 +349,8 @@ class PaymentsPage extends Component {
             document.title = "Счета | Онлайн-запись";
         }
 
+        const chosenPacket = packets && packets.find(packet => packet.packetId === (chosenInvoice.invoicePackets && chosenInvoice.invoicePackets[0].packetId)) || {};
+
         const pdfMarkup = <React.Fragment>
 
             { chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
@@ -398,8 +400,8 @@ class PaymentsPage extends Component {
                 <div className="table-header">
                     <div className="table-description"><p>Описание</p></div>
                     <div className="table-count"><p
-                        className="default">Количество мес.</p><p
-                        className="mob">Кол-во мес.</p></div>
+                        className="default">Количество {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p><p
+                        className="mob">Кол-во {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p></div>
                     <div className="table-price"><p>Стоимость</p></div>
                 </div>
                 {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
@@ -407,7 +409,7 @@ class PaymentsPage extends Component {
                     return (
                         <div className="table-row">
                             <div className="table-description">
-                                <p>{name.packetName}</p></div>
+                                <p>{name.packetName} {chosenPacket.packetType !== 'SMS_PACKET' ? '' : `, ${chosenPacket.smsAmount} sms`}</p></div>
                             <div className="table-count"><p>{packet.amount}</p>
                             </div>
                             <div className="table-price">
