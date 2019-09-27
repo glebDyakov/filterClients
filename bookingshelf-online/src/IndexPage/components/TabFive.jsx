@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment'
+import config from 'config'
 import ReactPhoneInput from "react-phone-input-2";
 import {isValidNumber} from "libphonenumber-js";
 
@@ -100,8 +101,7 @@ class TabFive extends PureComponent {
                     />
                     <p>Комментарии</p>
                     <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
-                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href="#">условиями
-                      пользовательского соглашения</a></p>
+                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${config.baseUrl}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
                   </React.Fragment>
                 )}
                 <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
