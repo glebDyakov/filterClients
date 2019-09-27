@@ -20,7 +20,7 @@ function getStaff() {
             headers: authHeader()
         };
 
-        return fetch(`${config.apiUrlimg}/staffs/115/image?v=15555020690000`, requestOptions).then(handleResponse);
+        return fetch(`${config.baseUrl}/staffs/115/image?v=15555020690000`, requestOptions).then(handleResponse);
 }
 function getRecordsAndClientsCount(daySelected,dayLast) {
     const requestOptions = {
