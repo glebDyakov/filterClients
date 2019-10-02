@@ -24,7 +24,7 @@ class FaqPage extends Component {
         }
 
         if(props.match.params.activeTab==='email_sms') {document.title = "Вопросы по Email и SMS | Онлайн-запись";}
-        if(props.match.params.activeTab==='system'){document.title = "Вопросы по системе | Онлайн-запись"}
+        if(props.match.params.activeTab==='system'){document.title = "Журнал записи | Онлайн-запись"}
 
         this.state = {
             isLoading: true,
@@ -61,7 +61,7 @@ class FaqPage extends Component {
         })
 
         if(tab==='email_sms') {document.title = "Вопросы по Email и SMS | Онлайн-запись";}
-        if(tab==='system'){document.title = "Вопросы по системе | Онлайн-запись"}
+        if(tab==='system'){document.title = "Журнал записи | Онлайн-запись"}
 
         history.pushState(null, '', '/faq/'+tab);
 
@@ -89,7 +89,7 @@ class FaqPage extends Component {
                                         </li>
                                         <li className="nav-item">
                                             <a className={"nav-link"+(activeTab==='system'?' active show':'')} data-toggle="tab"
-                                               href="#system" onClick={()=>{this.setTab('system')}}>Вопросы по системе</a>
+                                               href="#system" onClick={()=>{this.setTab('system')}}>Журнал записи</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -222,18 +222,60 @@ class FaqPage extends Component {
                                         <div className="templates-group">
                                             <div className="templates-list row p-3">
                                                 <div className="col-4">
-                                            <span>
-                                                <strong>Вопрос</strong>
-                                                Что такое виджет «Онлайн запись»?
-                                            </span>
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Как создать визит?
+                                                  </span>
                                                 </div>
                                                 <div className="col-8">
-                                            <span>
-                                                <strong className="sub-title">Ответ</strong>
-                                                <span className="massege-templates">Виджет – это вспомогательное приложение, выполняющее определенную функцию. В этом случае, функцию записи онлайн. Он интегрируется на сайт и поддерживается на любом устройстве – на телефоне, планшете, компьютере и ноутбуке.</span>
-                                            </span>
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Создать визит можно либо через кнопку “плюс” в нижней части экрана, либо нажатием на ячейку в журнале.</span>
+                                                    </span>
                                                 </div>
                                             </div>
+                                          <div className="templates-list row p-3">
+                                            <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Как перенести визит?
+                                                  </span>
+                                            </div>
+                                            <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Чтобы перенести визит нажмите на шапку визита. В появившейся информации о визите, есть опция “перенести визит”.</span>
+                                                    </span>
+                                            </div>
+                                          </div>
+                                          <div className="templates-list row p-3">
+                                            <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                     Как отменить визит?
+                                                  </span>
+                                            </div>
+                                            <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">В шапке визита нажмите на значек удаления.</span>
+                                                    </span>
+                                            </div>
+                                          </div>
+                                          <div className="templates-list row p-3">
+                                            <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Что такое зарезервированное время?
+                                                  </span>
+                                            </div>
+                                            <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Опция необходима если сотруднику надо отлучиться или просто вычеркнуть время из доступного для записи.</span>
+                                                    </span>
+                                            </div>
+                                          </div>
 
                                         </div>
                                     </div>
