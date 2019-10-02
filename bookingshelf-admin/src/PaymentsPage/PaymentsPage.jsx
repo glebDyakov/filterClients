@@ -7,7 +7,7 @@ import '../../public/scss/styles.scss'
 
 import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";
-import {userActions, paymentsActions} from "../_actions";
+import {userActions, paymentsActions, staffActions} from "../_actions";
 import {UserSettings} from "../_components/modals";
 import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
@@ -60,13 +60,16 @@ class PaymentsPage extends Component {
                         '160' : '5'))) : '5') : ''
         }
 
-        this.props.dispatch(paymentsActions.getInvoiceList());
-        this.props.dispatch(paymentsActions.getPackets());
+
     }
 
     componentDidMount() {
+        this.props.dispatch(paymentsActions.getInvoiceList());
+        this.props.dispatch(paymentsActions.getPackets());
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
+        } else {
+            this.props.dispatch(staffActions.get());
         }
     }
 
