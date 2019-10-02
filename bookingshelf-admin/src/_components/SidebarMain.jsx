@@ -126,13 +126,13 @@ class SidebarMain extends Component {
         let packetEnd, packetEndText;
         if (invoicePacket) {
             packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000)
-            packetEndText = `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+            packetEndText = `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
         } else if (!forceActive) {
             packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000)
             if (packetEnd < 0) {
               packetEndText = 'Компания не активна. Чтобы активировать, выберите и оплатите пакет'
             } else {
-              packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+              packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
             }
         }
 
