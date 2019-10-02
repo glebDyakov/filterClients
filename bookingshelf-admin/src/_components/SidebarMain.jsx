@@ -71,6 +71,17 @@ class SidebarMain extends Component {
     }
 
     componentDidMount() {
+        const { user } = this.props.authentication
+
+        if (user.forceActive
+          || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+          || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+        ) {
+        } else {
+          this.props.dispatch(menuActions.getMenu());
+          return;
+        }
+
         this.props.dispatch(companyActions.getBookingInfo());
         this.props.dispatch(companyActions.getNewAppointments());
         this.props.dispatch(menuActions.getMenu());
@@ -118,7 +129,11 @@ class SidebarMain extends Component {
             packetEndText = `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
         } else if (!forceActive) {
             packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000)
-            packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+            if (packetEnd < 0) {
+              packetEndText = 'Компания не активна. Чтобы активировать, выберите и оплатите пакет'
+            } else {
+              packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дней`}`;
+            }
         }
 
         const packetShowCondition = packetEnd ? packetEnd <= 3 : false;
