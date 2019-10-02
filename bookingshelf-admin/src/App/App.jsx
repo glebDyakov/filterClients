@@ -88,7 +88,7 @@ class App extends React.Component {
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
         ) {
         } else {
-            this.setState({...this.state, paymentsOnly: true, authentication: newProps.authentication})
+            this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
         if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked) {
@@ -278,7 +278,7 @@ class App extends React.Component {
                             {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
                             {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
                             {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
-                            {!paymentsOnly && <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />}
+                            <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
 
                             <PublicRoute path="/register" component={RegisterPage} />
                             <PublicRoute path="/activation/company/:company" component={ActivationPage} />
