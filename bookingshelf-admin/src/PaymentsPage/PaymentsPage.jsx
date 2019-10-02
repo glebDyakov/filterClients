@@ -41,6 +41,7 @@ class PaymentsPage extends Component {
             SMSCount: 5000,
             SMSPrice: 75,
             chosenAct: {},
+            staffCount: 0,
             chosenInvoice: {},
             invoiceSelected: false,
             country: this.props.company.settings || {},
@@ -68,6 +69,13 @@ class PaymentsPage extends Component {
         this.props.dispatch(paymentsActions.getPackets());
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
+        }
+
+        const { user } = this.props.authentication
+        if (user.forceActive
+          || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+          || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+        ) {
         } else {
             this.setDefaultWorkersCount()
             this.props.dispatch(companyActions.get());
@@ -98,6 +106,7 @@ class PaymentsPage extends Component {
         } else {
             this.rateChangeSpecialWorkersCount('from 30')
         }
+        this.setState({ staffCount: count })
     }
 
     AddingInvoice() {
@@ -338,7 +347,7 @@ class PaymentsPage extends Component {
 
     render() {
         const {authentication, staff} = this.props;
-        const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
+        const {SMSCountChose, SMSCount, SMSPrice, chosenAct, staffCount} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
@@ -445,7 +454,6 @@ class PaymentsPage extends Component {
         </React.Fragment>
 
         const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const staffCount = staff.staff ? staff.staff.length : 0;
         return (
             <React.Fragment>
                 <div className="container_wrapper">
