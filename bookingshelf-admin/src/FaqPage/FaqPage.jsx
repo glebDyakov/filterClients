@@ -76,7 +76,7 @@ class FaqPage extends Component {
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                        <div className="container-fluid">
+                        <div className="container-fluid" style={{ position: 'relative', minHeight: '100%', paddingBottom: '40px'}}>
                             <HeaderMain
                                 onOpen={this.onOpen}
                             />
@@ -281,7 +281,15 @@ class FaqPage extends Component {
                                     </div>
                                 </div>
                                 <hr/>
-                                <div className="delimiter p-3"><span></span><p className="col-12">Не нашли ответ на вопрос? Используйте форму обратной связи на сайте: <a href="http://online-zapis.com" target="_blank"><b>Online-zapis.com</b></a></p></div>
+                              <div style={{ position: 'absolute', bottom: '0' }} className="delimiter p-3"><span></span><p className="col-12">
+                                Не нашли ответ на вопрос? Используйте <span style={{ textDecoration: 'underline', cursor: 'pointer'}} onClick={() => {
+                                    $('#__replain_widget').addClass('__replain_widget_show')
+                                    $('#__replain_widget_iframe').contents().find(".btn-img").click()
+                                    $("#__replain_widget_iframe").contents().find(".hide-chat").bind("click", function() {
+                                      $('#__replain_widget').removeClass('__replain_widget_show')
+                                    });
+                                  }}>форму обратной связи
+                                </span></p></div>
 
                             </div>
 

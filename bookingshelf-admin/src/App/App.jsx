@@ -91,6 +91,9 @@ class App extends React.Component {
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
+        if (this.state.paymentsOnly) {
+            this.setState({paymentsOnly: false})
+        }
         if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked) {
             if (newProps.authentication.loggedIn) {
                 this.notifications();
