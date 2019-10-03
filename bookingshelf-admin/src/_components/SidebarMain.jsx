@@ -73,10 +73,10 @@ class SidebarMain extends Component {
     componentDidMount() {
         const { user } = this.props.authentication
 
-        if (user.forceActive
+        if (user && (user.forceActive
           || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
-        ) {
+        )) {
         } else {
           this.props.dispatch(menuActions.getMenu());
           return;
