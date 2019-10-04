@@ -83,10 +83,10 @@ class App extends React.Component {
 
     componentWillReceiveProps(newProps) {
         const { user } = newProps.authentication
-        if (user.forceActive
+        if (user && (user.forceActive
           || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
-        ) {
+        )) {
         } else {
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
