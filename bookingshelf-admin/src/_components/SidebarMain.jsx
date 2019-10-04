@@ -125,14 +125,18 @@ class SidebarMain extends Component {
         const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
         let packetEnd, packetEndText;
         if (invoicePacket) {
-            packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000)
-            packetEndText = `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
+            packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1
+            packetEndText = packetEnd === 0
+              ? `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`
+              : 'Сегодня система будет отключена';
         } else if (!forceActive) {
-            packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000)
+            packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1
             if (packetEnd < 0) {
               packetEndText = 'Компания не активна. Чтобы активировать, выберите и оплатите пакет'
             } else {
-              packetEndText = `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
+              packetEndText = packetEnd === 0
+                ? `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`
+                : 'Сегодня система будет отключена';
             }
         }
 
