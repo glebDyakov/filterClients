@@ -290,7 +290,7 @@ class OnlinePage extends Component {
                                         </div>
                                     </div>
                                     <div className="col-xl-4 mb-3 block-h">
-                                        <div className=" content-pages-bg p-4 mb-3">
+                                        <div className=" content-pages-bg p-4 mb-3 h-auto">
                                             <p className="title mb-3">Ваша страница</p>
                                             <p className="gray-text mb-3">Перейдите по ссылке для того что бы открыть
                                                 вашу персональную страницу онлайн записи. Вы увидете полную страницу
@@ -307,7 +307,7 @@ class OnlinePage extends Component {
                                             <div className="clearfix" />
 
                                         </div>
-                                        <div className=" content-pages-bg p-4">
+                                        <div className=" content-pages-bg p-4 h-auto">
                                             <p className="title mb-3">Ограничить время онлайн-записи</p>
                                             <div className="check-box">
                                                 <label>
@@ -318,7 +318,7 @@ class OnlinePage extends Component {
                                                 <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisOnDropdown")}>
                                                     <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
                                                     {this.state.isOnlineZapisOnDropdown && <span className="questions_dropdown">
-                                                                                    По умолчанию открытое время онлайн-записи составляет 3 мес. При ограничении максимальное время составляет 6 мес.
+                                                                                    По умолчанию (если выключено), открытый период онлайн-записи составляет 3 мес.
                                                                                 </span>}
                                                 </div>
                                             </div>

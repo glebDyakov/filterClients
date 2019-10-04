@@ -7,7 +7,7 @@ import '../../public/scss/styles.scss'
 
 import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";
-import {userActions, paymentsActions} from "../_actions";
+import {userActions, paymentsActions, staffActions, companyActions} from "../_actions";
 import {UserSettings} from "../_components/modals";
 import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
@@ -41,6 +41,7 @@ class PaymentsPage extends Component {
             SMSCount: 5000,
             SMSPrice: 75,
             chosenAct: {},
+            staffCount: 0,
             chosenInvoice: {},
             invoiceSelected: false,
             country: this.props.company.settings || {},
@@ -60,13 +61,25 @@ class PaymentsPage extends Component {
                         '160' : '5'))) : '5') : ''
         }
 
-        this.props.dispatch(paymentsActions.getInvoiceList());
-        this.props.dispatch(paymentsActions.getPackets());
+
     }
 
     componentDidMount() {
+        this.props.dispatch(paymentsActions.getInvoiceList());
+        this.props.dispatch(paymentsActions.getPackets());
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
+        }
+
+        const { user } = this.props.authentication
+        if (user && (user.forceActive
+          || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+          || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+        )) {
+        } else {
+            this.setDefaultWorkersCount()
+            this.props.dispatch(companyActions.get());
+            this.props.dispatch(companyActions.getBookingInfo());
         }
     }
 
@@ -83,15 +96,17 @@ class PaymentsPage extends Component {
     }
 
     setDefaultWorkersCount(staff) {
-        if (staff.length <= 10) {
-            this.setState({ rate: { ...this.state.rate, workersCount: staff.length }})
-        } else if (staff.length > 10 && staff.length <= 20) {
+        const count = staff ? staff.length : 0;
+        if (count <= 10) {
+            this.setState({ rate: { ...this.state.rate, workersCount: count }})
+        } else if (count > 10 && count <= 20) {
             this.rateChangeSpecialWorkersCount('to 20')
-        } else if (staff.length > 20 && staff.length <= 30) {
+        } else if (count > 20 && count <= 30) {
             this.rateChangeSpecialWorkersCount('to 30')
         } else {
             this.rateChangeSpecialWorkersCount('from 30')
         }
+        this.setState({ staffCount: count })
     }
 
     AddingInvoice() {
@@ -332,7 +347,7 @@ class PaymentsPage extends Component {
 
     render() {
         const {authentication, staff} = this.props;
-        const {SMSCountChose, SMSCount, SMSPrice, chosenAct} = this.state;
+        const {SMSCountChose, SMSCount, SMSPrice, chosenAct, staffCount} = this.state;
         const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
@@ -438,7 +453,7 @@ class PaymentsPage extends Component {
             </div>
         </React.Fragment>
 
-        const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         return (
             <React.Fragment>
                 <div className="container_wrapper">
@@ -467,7 +482,7 @@ class PaymentsPage extends Component {
                                     </div>
                                     <div className="col-sm-6 mb-2">
                                         <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</div>
-                                        <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : 'Пробный период продлён')}</div>
+                                        <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
                                     </div>
                                 </div>
 
@@ -479,9 +494,9 @@ class PaymentsPage extends Component {
                                                 <div id="range-staff">
                                                     <ul className="range-labels">
                                                         {options.map(option => (
-                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staff.staff && staff.staff.length) <= option ? '' : 'disabledField')}
+                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
                                                               onClick={() => {
-                                                                  if ((staff.staff && staff.staff.length) <= option) {
+                                                                  if ((staffCount) <= option) {
                                                                       this.setState({
                                                                           rate: {
                                                                               ...this.state.rate,
@@ -500,7 +515,7 @@ class PaymentsPage extends Component {
                                                         style={{position: "relative"}}>
                                                         <input type="range" min="1" max="10" value={workersCount}
                                                                onChange={(e) => {
-                                                                   if ((staff.staff && staff.staff.length) <= e.target.value) {
+                                                                   if ((staffCount) <= e.target.value) {
                                                                        this.rateChangeWorkersCount(e)
                                                                    }
                                                                }}/>
@@ -512,17 +527,17 @@ class PaymentsPage extends Component {
 
                                                 </div>
                                                 <div className="radio-buttons">
-                                                    <div onClick={() => ((staff.staff && staff.staff.length) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
+                                                    <div onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                                                         <input type="radio" className="radio" id="radio"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 20'}/>
-                                                        <label className={(staff.staff && staff.staff.length) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
+                                                        <label className={(staffCount) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
                                                     </div>
-                                                    <div onClick={() => ((staff.staff && staff.staff.length) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
+                                                    <div onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                                                         <input type="radio" className="radio" id="radio2"
                                                                name="staff-radio"
                                                                checked={specialWorkersCount === 'to 30'}/>
-                                                        <label className={(staff.staff && staff.staff.length) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
+                                                        <label className={(staffCount) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
                                                     </div>
                                                     <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                                                         <input type="radio" className="radio" id="radio3"

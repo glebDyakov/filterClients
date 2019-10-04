@@ -31,7 +31,7 @@ import {LoginPage} from "../LoginPage";
 import {PaymentsPage} from "../PaymentsPage";
 
 
-import {Router, Route, Switch} from "react-router-dom";
+import {Router, Route, Switch, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {SidebarMain} from "../_components/SidebarMain";
 import {access} from "../_helpers/access";
@@ -82,21 +82,33 @@ class App extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked) {
+        const { user } = newProps.authentication
+        if (user && (user.forceActive
+          || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+          || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+        )) {
+        } else {
+            this.setState({ paymentsOnly: true, authentication: newProps.authentication })
+            return;
+        }
+        if (this.state.paymentsOnly) {
+            this.setState({paymentsOnly: false})
+        }
+        if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked) {
             if (newProps.authentication.loggedIn) {
                 this.notifications();
 
                 this.props.dispatch(companyActions.get());
             }
-            this.setState({...this.state, authentication: newProps.authentication })
+            this.setState({...this.state, authentication: newProps.authentication})
         }
 
-        if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
-            this.setState({...this.state, company: newProps.company })
+        if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
+            this.setState({...this.state, company: newProps.company})
         }
 
         if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
-            && this.state.flagStaffId){
+          && this.state.flagStaffId) {
             this.setState({flagStaffId: false});
             this.props.dispatch(notificationActions.getBalance());
 
@@ -112,14 +124,14 @@ class App extends React.Component {
             // socket = createSocket(this.props.authentication.user.profile.staffId );
 
             console.log("Сокет. Создан");
-            socket.onopen = function() {
+            socket.onopen = function () {
                 console.log("Сокет. Соединение установлено");
                 socket.send('ping');
 
             };
 
 
-            socket.onclose = function(event) {
+            socket.onclose = function (event) {
                 if (event.wasClean) {
                     console.log('Сокет. cоединение закрыто');
                 } else {
@@ -128,11 +140,11 @@ class App extends React.Component {
                 // this.openSocketAgain(this.props.authentication.user.profile.staffId);
             };
 
-            socket.onmessage = function(event) {
-                if (event.data[0]==='{'){
+            socket.onmessage = function (event) {
+                if (event.data[0] === '{') {
                     const finalData = JSON.parse(event.data);
-                    if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")
-                        || finalData.wsMessageType === "APPOINTMENT_MOVED"){
+                    if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")
+                      || finalData.wsMessageType === "APPOINTMENT_MOVED") {
                         this.handleSocketDispatch(finalData);
                         console.log(`Сокет.пришли данные: ${event.data}`);
                     }
@@ -140,10 +152,10 @@ class App extends React.Component {
                 // console.log(`Сокет.пришли данные: ${event.data}`);
 
             };
-           socket.onmessage = socket.onmessage.bind(this);
-           socket.onclose = socket.onclose.bind(this);
+            socket.onmessage = socket.onmessage.bind(this);
+            socket.onclose = socket.onclose.bind(this);
 
-           socket.onerror = function(event) {
+            socket.onerror = function (event) {
                 console.error("Сокет. ошибка", event);
             };
         }
@@ -241,7 +253,7 @@ class App extends React.Component {
 
 
     render() {
-        const { authentication, company } = this.state;
+        const { authentication, company, paymentsOnly } = this.state;
         {
            company && company.settings && authentication.menu && authentication.loggedIn &&
             moment.tz.setDefault(company.settings.timezoneId)
@@ -258,30 +270,31 @@ class App extends React.Component {
                         />
                         {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
                         <Switch>
-                            <PrivateRoute exact path="/" component={MainIndex} refresh={false} />
-                            <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />
-                            <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage}  refresh={false}  />
-                            <PrivateRoute exact path="/clients" component={ClientsPage}  refresh={false}  />
-                            {access(0) &&
+                            {!paymentsOnly && <PrivateRoute exact path="/" component={MainIndex} refresh={false} />}
+                            {!paymentsOnly && <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />}
+                            {!paymentsOnly && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage}  refresh={false}  />}
+                            {!paymentsOnly && <PrivateRoute exact path="/clients" component={ClientsPage}  refresh={false}  />}
+                            {!paymentsOnly && access(0) &&
                             <PrivateRoute exact path="/services" component={ServicesPage}/>
                             }
-                            <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />
-                            <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />
-                            <PrivateRoute exact path="/online_booking" component={OnlinePage}  />
-                            <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />
+                            {!paymentsOnly && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />}
+                            {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
+                            {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
+                            {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
                             <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
 
                             <PublicRoute path="/register" component={RegisterPage} />
                             <PublicRoute path="/activation/company/:company" component={ActivationPage} />
-                            <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
+                            {!paymentsOnly && <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />}
                             <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
                             <PublicRoute path="/login" component={LoginPage} />
-                            <PrivateRoute path="/logout" component={LogoutPage} />
+                            {!paymentsOnly && <PrivateRoute path="/logout" component={LogoutPage} />}
                             <PrivateRoute path="/denied" component={NoPageDenied} />
                             <PrivateRoute path="/nopage" component={NoPagePrivate} />
-                            <PrivateRoute path="/analytics" component={AnalyticsPage} />
+                            {!paymentsOnly && <PrivateRoute path="/analytics" component={AnalyticsPage} />}
                             <PrivateRoute path="/payments" component={PaymentsPage} />
                             <PrivateRoute path="/invoices" component={PaymentsPage} />
+                            {paymentsOnly && <Redirect to="/payments" />}
                             <PrivateRoute component={NoPagePrivate} />
 
                             <Route component={NoPage} />
