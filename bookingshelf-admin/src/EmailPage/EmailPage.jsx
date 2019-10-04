@@ -387,7 +387,11 @@ class EmailPage extends Component {
                                                     <div className="row">
                                                         <div className="col-md-6">
 
-                                                            <p className="title_block mb-3">SMS уведомления</p>
+                                                            <p className="title_block mb-3">
+                                                                SMS уведомления {notification.balance && notification.balance.smsAmount === 0 && (
+                                                                  <span style={{ fontSize: '12px'}}>(уведомления отключены. Недостаточный баланс)</span>
+                                                            )}
+                                                            </p>
                                                             <div className="check-box">
                                                                 <label>
                                                                     <input className="form-check-input" checked={notifications && notifications.smsOn} onChange={()=>this.toggleChange('smsOn')}

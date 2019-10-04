@@ -109,20 +109,6 @@ class FaqPage extends Component {
                                                 <div className="col-4">
                                             <span>
                                                 <strong>Вопрос</strong>
-Отличаются ли цены на E-mail рассылки и сообщения в разные страны?
-                                            </span>
-                                                </div>
-                                                <div className="col-8">
-                                            <span>
-                                                <strong className="sub-title">Ответ</strong>
-                                                <span className="massege-templates">Нет, цены одинаковы по всему миру.</span>
-                                            </span>
-                                                </div>
-                                            </div>
-                                            <div className="templates-list row p-3">
-                                                <div className="col-4">
-                                            <span>
-                                                <strong>Вопрос</strong>
 Любая рассылка — то спам. Вы нарушаете закон?
                                             </span>
                                                 </div>
@@ -187,21 +173,6 @@ class FaqPage extends Component {
                                                 <strong className="sub-title">Ответ</strong>
                                                 <span className="massege-templates">
 Нет, мы используем сторонние сервисы и несем финансовые обязательства. При этом, мы предлагаем более выгодные цены на SMS рассылки для наших клиентов.
-</span>
-                                            </span>
-                                                </div>
-                                            </div>
-                                            <div className="templates-list row p-3">
-                                                <div className="col-4">
-                                            <span>
-                                                <strong>Вопрос</strong>
-Включены ли E-mail сообщения в стоимость обслуживания?
-                                            </span>
-                                                </div>
-                                                <div className="col-8">
-                                            <span>
-                                                <strong className="sub-title">Ответ</strong>
-                                                <span className="massege-templates">Да, некоторое количество E-mail сообщений включено в каждый из пакетов. При превышении, вы получаете лучшую на рынке цену по E-mail рассылкам. Важно понимать, что мы используем только Авторизованные системы, что позволяет исключить попадание писем в спам.
 </span>
                                             </span>
                                                 </div>
