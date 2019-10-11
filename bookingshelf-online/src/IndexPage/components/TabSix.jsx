@@ -21,6 +21,27 @@ class TabSix extends  PureComponent {
             setScreen,refreshTimetable,_delete, setDefaultFlag} = this.props;
         const {approveF} = this.state;
 
+        let serviceInfo = null
+        if (selectedService.serviceId) {
+            let priceFrom = 0;
+            let priceTo= 0;
+            let duration = 0;
+            selectedServices.forEach((service) => {
+                priceFrom += parseInt(service.priceFrom)
+                priceTo += parseInt(service.priceTo)
+                duration += parseInt(service.duration)
+            })
+
+            serviceInfo = (
+                <div className="service_item">
+                    {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                        (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
+                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{selectedServices[0].currency}</span></p>
+                    <span className="runtime"><strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                </div>
+            )
+        }
+
 
         return (
             <div className="service_selection final-screen">
@@ -38,14 +59,13 @@ class TabSix extends  PureComponent {
                     </div>
                     }
 
-                    {selectedService.serviceId &&
-                    <div className="supperVisDet" >
-                        {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                            (<p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>)}
+                    {/*{selectedService.serviceId &&*/}
+                    {/*<div className="supperVisDet" >*/}
+                    {/*    */}
 
-                    </div>
-                    }
+                    {/*</div>*/}
+                    {/*}*/}
+                    {serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
                         <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>

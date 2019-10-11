@@ -128,9 +128,10 @@ class UserSettings extends React.Component {
                             </div>
                             <form className="form-group mr-3 ml-3"  name="form">
                                 <div className="row">
-                                    <div className="calendar col-xl-6">
+                                    <div style={{ position: 'relative' }} className="calendar col-xl-6">
                                         <p>Имя</p>
-                                        <input type="text" name="firstName" value={firstName}  onChange={this.handleChange} placeholder="Например: Иван"/>
+                                        <input style={{paddingRight: '56px'}} type="text" name="firstName" value={firstName}  onChange={this.handleChange} maxLength="100" placeholder="Например: Иван"/>
+                                        <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7}}>{firstName.length}/100</span>
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Номер телефона</p>
@@ -143,9 +144,10 @@ class UserSettings extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="calendar col-xl-6">
+                                    <div  style={{ position: 'relative' }}  className="calendar col-xl-6">
                                         <p>Фамилия</p>
-                                        <input type="text" name="lastName" value={lastName} onChange={this.handleChange} placeholder="Например: Иванов"/>
+                                        <input style={{paddingRight: '56px'}} type="text" name="lastName" value={lastName} onChange={this.handleChange} maxLength="100" placeholder="Например: Иванов"/>
+                                        <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7}}>{lastName.length}/100</span>
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Электронный адрес</p>
