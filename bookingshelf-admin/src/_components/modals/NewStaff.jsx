@@ -153,13 +153,18 @@ class NewStaff extends React.Component {
                                                 <div className="retreats">
                                                     <div className="row">
                                                         <div className="col-md-6 col-xl-4">
-                                                            <p>Имя</p>
-                                                            <input type="text" placeholder="" value={staff.firstName} name="firstName"  onChange={this.handleChange}
-                                                                   className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
-                                                            />
-                                                            <div className="mobile-visible">
+                                                            <div style={{position: 'relative'}}>
+                                                                <p>Имя</p>
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.firstName} name="firstName"  onChange={this.handleChange}
+                                                                       className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
+                                                                       maxLength="100"
+                                                                />
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.firstName.length}/100</span>
+                                                            </div>
+                                                            <div style={{position: 'relative'}} className="mobile-visible">
                                                                 <p>Фамилия</p>
-                                                                <input type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} />
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.lastName} name="lastName" onChange={this.handleChange} maxLength="100" />
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName.length}/100</span>
                                                             </div>
 
                                                             <p>Номер телефона</p>
@@ -238,9 +243,10 @@ class NewStaff extends React.Component {
                                                             {/*}*/}
                                                         </div>
                                                         <div className="col-md-6 col-xl-4">
-                                                            <div className="desktop-visible">
+                                                            <div style={{ position: 'relative' }} className="desktop-visible">
                                                                 <p>Фамилия</p>
-                                                                <input type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} />
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} maxLength="100" />
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName.length}/100</span>
                                                             </div>
                                                             <div className="desktop-visible">
                                                                 <p>Email</p>
