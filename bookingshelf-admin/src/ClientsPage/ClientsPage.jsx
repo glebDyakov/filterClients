@@ -7,7 +7,7 @@ import {HeaderMain} from "../_components/HeaderMain";
 import '../../public/scss/styles.scss'
 import '../../public/scss/clients.scss'
 
-import {ClientDetails, NewClient, UserSettings} from "../_components/modals";
+import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
@@ -31,8 +31,10 @@ class ClientsPage extends Component {
             typeSelected: 2,
             search: false,
             defaultClientsList:  props.client,
+            activeTab: 'clients',
             isLoading: true,
             openedModal: false,
+            blackListModal: false,
             userSettings: false,
             infoClient: 0
 
@@ -47,6 +49,8 @@ class ClientsPage extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.closeBlackListModal = this.closeBlackListModal.bind(this);
+        this.openBlackListModal = this.openBlackListModal.bind(this);
     }
 
     componentDidMount() {
@@ -74,9 +78,23 @@ class ClientsPage extends Component {
         this.setState({ selectedStaffList, typeSelected });
     }
 
+    setTab(tab){
+        this.setState({
+            activeTab: tab
+        })
+
+        // if(tab==='clients') {document.title = "Доступы | Онлайн-запись";}
+        // if(tab==='blacklist'){document.title = "Выходные дни | Онлайн-запись"}
+        // if(tab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
+        // if(tab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
+
+        //history.pushState(null, '', '/staff/'+tab);
+
+    }
+
     render() {
         const { staff } = this.props;
-        const { client, client_working, edit, defaultClientsList, selectedStaffList, typeSelected, isLoading, openedModal, userSettings, infoClient } = this.state;
+        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, isLoading, openedModal, userSettings, infoClient } = this.state;
         return (
             <div className="clients-page">
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
@@ -89,8 +107,15 @@ class ClientsPage extends Component {
                             <HeaderMain
                                 onOpen={this.onOpen}
                             />
-                            <div>
-
+                            <div className="flex-content col-xl-12">
+                                <ul className="nav nav-tabs">
+                                    <li className="nav-item">
+                                        <a className={"nav-link"+(activeTab==='clients'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.setTab('clients')}}>Клиенты</a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className={"nav-link"+(activeTab==='blacklist'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('blacklist')}>Blacklist</a>
+                                    </li>
+                                </ul>
                             </div>
                             {
                                 (defaultClientsList.client && defaultClientsList!=="" &&
@@ -122,10 +147,12 @@ class ClientsPage extends Component {
                                 )}
                             { client.client && client.client.map((client_user, i) =>{
                                 let condition = true;
-                                if (selectedStaffList && selectedStaffList.length) {
+                                if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
+
                                     condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+
                                 }
-                                return condition && (
+                                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
                                 <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
                                     <div style={{position: "relative"}}>
                                         <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
@@ -149,7 +176,11 @@ class ClientsPage extends Component {
                                             <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                         </a>
                                         <div className="dropdown-menu delete-menu p-3">
-                                            <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>
+                                            {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
+                                            {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
+                                                delete client_user.appointments;
+                                                this.updateClient({...client_user, blacklisted: false})
+                                            }}>Удалить</button>}
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +201,11 @@ class ClientsPage extends Component {
                             <a className="add"/>
                             <div className="hide buttons-container">
                                 <div className="p-4">
-                                    <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>
+                                    {activeTab==='clients' && <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>}
+                                    {activeTab==='blacklist' && <button type="button" className="button"
+                                                                        data-target=".add-black-list-modal"
+                                                                        data-toggle="modal"
+                                                                        onClick={()=>this.openBlackListModal()}>Добавить в blacklist</button>}
                                 </div>
                                 <div className="arrow"/>
                             </div>
@@ -185,6 +220,14 @@ class ClientsPage extends Component {
                         updateClient={this.updateClient}
                         addClient={this.addClient}
                         onClose={this.onClose}
+                    />
+                }
+                {blackListModal &&
+                    <AddBlackList
+                        clients={client.client}
+                        updateClient={this.updateClient}
+                        addClient={this.addClient}
+                        onClose={this.closeBlackListModal}
                     />
                 }
                 {userSettings &&
@@ -240,6 +283,14 @@ class ClientsPage extends Component {
 
     onClose(){
         this.setState({...this.state, openedModal: false, userSettings: false});
+    }
+
+    openBlackListModal() {
+        this.setState({ blackListModal: true });
+    }
+
+    closeBlackListModal() {
+        this.setState({ blackListModal: false })
     }
 
     onOpen(){

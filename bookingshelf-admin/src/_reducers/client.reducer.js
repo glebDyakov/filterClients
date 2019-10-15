@@ -42,7 +42,7 @@ export function client(state= {}, action) {
 
           clients.find((item, key)=>{
               if(item.clientId===action.client.clientId){
-                  clients[key]={...clients[key], firstName: action.client.firstName, lastName: action.client.lastName, phone: action.client.phone, email: action.client.email, acceptNewsletter: action.client.acceptNewsletter, city: action.client.city, country: action.client.country, province: action.client.province};
+                  clients[key]={...clients[key], firstName: action.client.firstName, lastName: action.client.lastName, phone: action.client.phone, email: action.client.email, acceptNewsletter: action.client.acceptNewsletter, city: action.client.city, country: action.client.country, province: action.client.province, blacklisted: action.client.blacklisted};
               }
           });
 
