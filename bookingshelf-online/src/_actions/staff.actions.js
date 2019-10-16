@@ -91,18 +91,22 @@ function add(id, staff, service, params) {
                     } else if (result.clientVerificationCode) {
                         dispatch(success(result))
                     } else {
-                        dispatch(failure());
+                        dispatch(failure('Извините, это время недоступно для записи'));
                     }
                 },
-                () => {
-                    dispatch(failure());
+                (err) => {
+                    if (err === 'client in blacklist') {
+                        dispatch(failure('Извините, ваша запись не может быть создана. Пожалуйста, свяжитесь с администратором заведения.'));
+                    } else {
+                        dispatch(failure('Извините, это время недоступно для записи'));
+                    }
                 }
             );
     };
 
     function request() { return { type: staffConstants.ADD_APPOINTMENT } }
     function success(payload) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, payload } }
-    function failure() { return { type: staffConstants.ADD_APPOINTMENT_FAILURE } }
+    function failure(error) { return { type: staffConstants.ADD_APPOINTMENT_FAILURE, error } }
 }
 
 function _delete(id) {

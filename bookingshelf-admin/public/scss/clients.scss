@@ -261,6 +261,7 @@
 
                 .delete-icon {
                     display: flex;
+                    margin-top: 1px;
                 }
             }
             @media screen and(max-width: 720px) {
@@ -353,12 +354,13 @@
     }
     @media screen and(max-width: 720px) {
         .abbreviation{
-            margin: 0;
+            margin: 8px 0;
         }
         .delete{
             height: 16px!important;
         }
         .clientEyeDel{
+            margin-top: 0;
             display: block !important;
         }
     }
