@@ -344,8 +344,8 @@ class NewStaff extends React.Component {
                                                                 <button className="small-button gray-button"
                                                                         type="button" data-dismiss="modal">Отменить
                                                                 </button>
-                                                                <button className={((!emailIsValid || !staff.firstName || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
-                                                                        onClick={emailIsValid && staff.firstName && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
+                                                                <button className={((!staff.firstName || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
+                                                                        onClick={staff.firstName && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
                                                                 >Сохранить
                                                                 </button>
                                                             </div>

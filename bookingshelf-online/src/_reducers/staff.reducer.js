@@ -83,7 +83,7 @@ export function staff(state= initialState, action) {
         case staffConstants.ADD_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                error: 'Извините, это время недоступно для записи',
+                error: action.error,
                 isLoading: false
             };
         case staffConstants.DELETE_APPOINTMENT_SUCCESS:
