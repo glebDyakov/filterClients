@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import moment from "moment";
+import config from 'config'
 import {staffActions} from "../../_actions";
 import './ClientDetails.scss'
 import '../../../public/css/bootstrap.css'
