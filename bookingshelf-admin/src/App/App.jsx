@@ -43,7 +43,6 @@ import {NoPageDenied} from "../NoPageDenied";
 import {NoPagePrivate} from "../NoPagePrivate";
 import {MainIndex} from "../MainIndex";
 import {CalendarPrePage} from "../CalendarPrePage";
-import {CalendarOnlinePrePage} from "../CalendarPrePage";
 import {FaqPage} from "../FaqPage";
 import {ActivationPageStaff} from "../ActivationPageStaff/ActivationPageStaff";
 import {userActions} from "../_actions/user.actions";
@@ -280,7 +279,6 @@ class App extends React.Component {
                             }
                             {!paymentsOnly && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />}
                             {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
-                            {!paymentsOnly && <PrivateRoute exact path="/online-page/:staffId?/:date?/:appointmentId?" component={CalendarOnlinePrePage}  />}
                             {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
                             {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
                             <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
