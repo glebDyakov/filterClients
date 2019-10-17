@@ -8,6 +8,7 @@ export const staffService = {
     getServices,
     getInfo,
     getTimetable,
+    getClientAppointments,
     _delete,
     getByCustomId,
     getTimetableAvailable,
@@ -50,7 +51,6 @@ function getNearestTime(id) {
     return fetch(`${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(3,'month').utc().format('x')}`, requestOptions).then(handleResponse);
 }
 
-
 function getTimetable(id, date1, date2) {
     const requestOptions = {
         method: 'GET',
@@ -59,6 +59,16 @@ function getTimetable(id, date1, date2) {
 
     return fetch(`${config.apiUrl}/${id}/timetables?dateFrom=${date1}&dateTo=${date2}`, requestOptions).then(handleResponse);
 }
+
+function getClientAppointments(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${id}/appointments/clients?dateFrom=1&dateTo=${moment().endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
 
 function getTimetableAvailable(id, staffId, date1, date2, service) {
     const requestOptions = {

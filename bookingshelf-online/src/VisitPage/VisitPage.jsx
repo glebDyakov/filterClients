@@ -8,6 +8,7 @@ import 'moment-timezone';
 import TabError from "../IndexPage/components/TabError";
 import TabCanceled from "../IndexPage/components/TabCanceled";
 import Header from "../IndexPage/components/Header";
+import { ClientDetails }from '../IndexPage/components/ClientDetails';
 
 class VisitPage extends React.Component {
     constructor(props) {
@@ -15,12 +16,14 @@ class VisitPage extends React.Component {
         this.state = {
             info: props.staff.info,
             screen: 1,
-            approveF: false
+            approveF: false,
+            allVisits: false
 
         };
 
         this._delete = this._delete.bind(this);
         this.setScreen = this.setScreen.bind(this);
+        this.toggleAllVisits = this.toggleAllVisits.bind(this);
     }
 
     componentDidMount () {
@@ -53,7 +56,9 @@ class VisitPage extends React.Component {
         initializeJs()
     }
 
-
+    toggleAllVisits() {
+        this.setState({ allVisits: !this.state.allVisits });
+    }
     setScreen (num) {
         this.setState({
             screen: num
@@ -67,7 +72,7 @@ class VisitPage extends React.Component {
 
     render() {
         const { staff : { staff } } = this.props;
-        const {appointment, info, screen, approveF }=this.state;
+        const {appointment, info, screen, approveF, allVisits }=this.state;
         const { isLoading, deleted, error } = this.props.staff;
 
         const activeAppointment = appointment && staff && staff.find(item => item.staffId === appointment.staffId);
@@ -123,6 +128,9 @@ class VisitPage extends React.Component {
                             </button>
                         </div>
                         }
+
+                        <input style={{margin: '8px auto'}} type="submit" className="cansel-visit" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
+                        {allVisits && <ClientDetails />}
                         {/*<p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>*/}
                         <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>Создать запись</a>
 

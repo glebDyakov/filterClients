@@ -38,6 +38,11 @@ export function staff(state= initialState, action) {
                 ...state,
                 isLoading: true
             };
+        case staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS:
+            return {
+                ...state,
+                clients: action.clients
+            }
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,

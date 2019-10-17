@@ -1,9 +1,12 @@
 
-html, body, h1, h2, h3, h4, h5, h6, p, ol, ul, li, pre, code, address, variable, form, fieldset, blockquote {
+html, body, h1, html h2, h3, h4, h5, h6, html p, ol, ul, li, pre, code, address, variable, form, fieldset, blockquote {
     padding: 0;
     margin: 0;
     font-size: 100%;
     font-weight: normal;
+}
+html label {
+    display: inline;
 }
 a{
     text-decoration: none;
@@ -203,6 +206,7 @@ q:before, q:after { content:''; }
     background-color: #39434f;
     border: none;
     margin: auto;
+    width: 185px;
     display: block;
     color: #fff;
     font-size: 20px;
@@ -742,7 +746,7 @@ q:before, q:after { content:''; }
 .screen5 > p{
     margin-bottom: 10px;
 }
-.screen5 input[type="text"],
+.screen5 input[type="text"], input[type="search"] ,
 .screen5 textarea{
     border-radius: 6px;
     box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
@@ -1130,7 +1134,7 @@ q:before, q:after { content:''; }
     .screen5 .term{
         margin: 15px auto 15px;
     }
-    .screen5 input[type="text"], .screen5 textarea {
+    .screen5 input[type="text"], input[type="search"] , .screen5 textarea {
         height: 40px;
     }
     .screen5 textarea {

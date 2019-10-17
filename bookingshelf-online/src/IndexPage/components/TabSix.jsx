@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
+import {ClientDetails} from "./ClientDetails";
 
 
 
@@ -14,12 +15,16 @@ class TabSix extends  PureComponent {
         };
         this.onCancelVisit = this.onCancelVisit.bind(this);
         this.setterApproveF = this.setterApproveF.bind(this);
+        this.toggleAllVisits = this.toggleAllVisits.bind(this);
+    }
+    toggleAllVisits() {
+        this.setState({ allVisits: !this.state.allVisits });
     }
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
             setScreen,refreshTimetable,_delete, setDefaultFlag} = this.props;
-        const {approveF} = this.state;
+        const {approveF, allVisits} = this.state;
 
         let serviceInfo = null
         if (selectedService.serviceId) {
@@ -89,6 +94,8 @@ class TabSix extends  PureComponent {
                     </button>
                 </div>
                 }
+                <input style={{margin: '8px auto'}} type="submit" className="cansel-visit" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
+                {allVisits && <ClientDetails />}
                 {/*<p className="skip_employee"  onClick={() => {*/}
                 {/*    setScreen(2);*/}
                 {/*    refreshTimetable();*/}

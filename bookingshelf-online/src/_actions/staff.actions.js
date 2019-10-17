@@ -9,6 +9,7 @@ export const staffActions = {
     getInfo,
     getServices,
     getTimetable,
+    getClientAppointments,
     getByCustomId,
     getNearestTime,
     getTimetableAvailable
@@ -153,6 +154,22 @@ function getTimetable(company, date1, date2) {
     function success(timetable) { return { type: staffConstants.GET_TIMETABLE_SUCCESS, timetable } }
     function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
+
+function getClientAppointments(company) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getClientAppointments(company)
+            .then(
+                clients => dispatch(success(clients)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS } }
+    function success(clients) { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS, clients } }
+    function failure() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_FAILURE } }
+}
+
 
 function getTimetableAvailable(company, staffId, date1, date2, service) {
     return dispatch => {
