@@ -63,7 +63,7 @@ class ClientDetails extends React.Component {
     goToPageCalendar(appointment, appointmentStaffId) {
         const {appointmentId, appointmentTimeMillis} = appointment
 
-        const url = `https://${config.apiUrl.includes('staging') ? 'staging.' : ''}admin.online-zapis.com` + "/online-page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY') + '/' + appointmentId
+        const url = `https://${config.apiUrl.includes('staging') ? 'staging.' : ''}admin.online-zapis.com` + '/calendar/staff/' + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY') + '?appointmentId=' + appointmentId
         location.href = url
         //this.props.history.push(url);
     }
