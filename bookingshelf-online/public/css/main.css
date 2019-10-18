@@ -75,6 +75,7 @@ q:before, q:after { content:''; }
     color: white;
 }
 .all-visits{
+    cursor: pointer;
     text-align: center;
     margin: 14px auto;
     display: block;
