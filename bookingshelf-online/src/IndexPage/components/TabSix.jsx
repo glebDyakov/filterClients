@@ -94,7 +94,7 @@ class TabSix extends  PureComponent {
                     </button>
                 </div>
                 }
-                <input style={{margin: '8px auto'}} type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
+                <input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
                 {allVisits && <ClientDetails />}
                 {/*<p className="skip_employee"  onClick={() => {*/}
                 {/*    setScreen(2);*/}
