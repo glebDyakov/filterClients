@@ -74,6 +74,13 @@ q:before, q:after { content:''; }
     margin: 21px 0;
     color: white;
 }
+.all-visits{
+    text-align: center;
+    margin: 14px auto;
+    display: block;
+    border: none;
+    text-decoration: underline;
+}
 .approveF button{
     cursor: pointer;
 }

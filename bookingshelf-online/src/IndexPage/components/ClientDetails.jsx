@@ -88,14 +88,14 @@ class ClientDetails extends React.Component {
                             <div className="client-info content-pages-bg">
                                 {client &&
                                 <div className="clients-list pt-4 pl-4 pr-4">
-                                    <div className="client">
-                                        <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
-                                        <span className="name_container">{client.firstName} {client.lastName}
-                                            <span className="email-user">{client.email}</span>
-                                            <span>{client.phone}</span>
-                                        </span>
+                                    {/*<div className="client">*/}
+                                    {/*    <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>*/}
+                                    {/*    <span className="name_container">{client.firstName} {client.lastName}*/}
+                                    {/*        <span className="email-user">{client.email}</span>*/}
+                                    {/*        <span>{client.phone}</span>*/}
+                                    {/*    </span>*/}
 
-                                    </div>
+                                    {/*</div>*/}
                                     <div className="row">
                                         <div className="col-6" style={{textAlign:'center'}}>
                                             <strong>{defaultClientsList.appointments.length} </strong><br/>
