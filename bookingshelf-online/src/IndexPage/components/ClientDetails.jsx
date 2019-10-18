@@ -20,7 +20,7 @@ class ClientDetails extends React.Component {
         };
 
         this.handleSearch = this.handleSearch.bind(this);
-        this.goToPageCalendar = this.goToPageCalendar.bind(this);
+        this.goToVisit = this.goToVisit.bind(this);
     }
 
     componentDidMount() {
@@ -60,12 +60,11 @@ class ClientDetails extends React.Component {
         }
     }
 
-    goToPageCalendar(appointment, appointmentStaffId) {
-        const {appointmentId, appointmentTimeMillis} = appointment
+    goToVisit(appointment) {
+        const {customId} = appointment
 
-        const url = `https://${config.apiUrl.includes('staging') ? 'staging.' : ''}admin.online-zapis.com` + '/calendar/staff/' + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY') + '?appointmentId=' + appointmentId
+        const url = `https://${config.apiUrl.includes('staging') ? 'staging.' : ''}online-zapis.com` + `/online/visits/${this.props.match.params.company}/${customId}`
         location.href = url
-        //this.props.history.push(url);
     }
 
 
@@ -131,7 +130,8 @@ class ClientDetails extends React.Component {
                                         .map((appointment)=>{
 
                                         return(
-                                        <div onClick={() => this.goToPageCalendar(appointment, appointment.staffId)} className="visit-info row mx-2 mb-2">
+                                        <div onClick={() => appointment.appointmentTimeMillis > moment().format('x') && this.goToVisit(appointment)}
+                                             className={"visit-info row mx-2 mb-2 " + (appointment.appointmentTimeMillis > moment().format('x') ? 'clickable' : '')}>
                                             <div className="col-9">
                                                 <p className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
                                                     <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
