@@ -99,6 +99,7 @@ class App extends React.Component {
                 this.notifications();
 
                 this.props.dispatch(companyActions.get());
+                this.props.dispatch(companyActions.getSubcompanies());
             }
             this.setState({...this.state, authentication: newProps.authentication})
         }

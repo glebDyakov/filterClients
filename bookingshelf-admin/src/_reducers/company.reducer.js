@@ -1,6 +1,9 @@
 import {companyConstants, userConstants} from '../_constants';
+const initialState = {
+    subcompanies: []
+}
 
-export function company(state = {}, action) {
+export function company(state = initialState, action) {
     switch (action.type) {
         case companyConstants.ADD_COMPANY_SUCCESS:
             localStorage.setItem('user', action.company);
@@ -11,7 +14,12 @@ export function company(state = {}, action) {
                 settings: action.company
             };
         case companyConstants.ADD_COMPANY_FAILURE:
-            return {};
+            return {...state};
+        case companyConstants.GET_SUBCOMPANIES_SUCCESS:
+            return {
+                ...state,
+                subcompanies: action.subcompanies.sort((a, b) => a.companyId - b.companyId)
+            }
         case companyConstants.GET_COMPANY_SUCCESS:
             return {
                 ...state,
@@ -62,6 +70,11 @@ export function company(state = {}, action) {
                     }
                 },
             };
+        case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
+            return {
+                ...state,
+                status: 'saved.settings'
+            }
         case userConstants.UPDATE_COMPANY_SUCCESS:
             const companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
 
