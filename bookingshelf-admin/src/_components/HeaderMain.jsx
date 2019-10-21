@@ -125,7 +125,7 @@ class HeaderMain extends React.PureComponent {
 
                         <ul className="dropdown-menu">
                             {company.subcompanies.map((subcompany, i) => {
-                                return (
+                                return (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? (
                                    <div onClick={() => {
                                            this.props.dispatch(companyActions.switchSubcompany(subcompany))
                                    }}>
@@ -148,6 +148,27 @@ class HeaderMain extends React.PureComponent {
                                        </li>
                                        }
                                    </div>
+                                ) : (
+                                    <React.Fragment>
+                                        {company && company.settings && company.settings.defaultAddress === 1 && company.settings.companyAddress1.length > 0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                        {company && company.settings && company.settings.defaultAddress === 2 && company.settings.companyAddress2.length > 0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                        {company && company.settings && company.settings.defaultAddress === 3 && company.settings.companyAddress3.length>0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                    </React.Fragment>
                                 )
                             })
 
