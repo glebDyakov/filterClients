@@ -70,13 +70,20 @@ export function company(state = initialState, action) {
                     }
                 },
             };
+        case companyConstants.SWITCH_SUBCOMPANY_SUCCESS:
+            let companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
+            return {
+                ...state,
+                settings: companyAllInfo
+
+            }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
             return {
                 ...state,
                 status: 'saved.settings'
             }
         case userConstants.UPDATE_COMPANY_SUCCESS:
-            const companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
+            companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
 
             // localStorage.setItem('user', JSON.stringify(companyAllInfo))
 

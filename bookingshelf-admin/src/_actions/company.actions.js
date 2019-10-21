@@ -73,11 +73,14 @@ function updateSubcompany(companyInfo) {
     function success(company) { return { type: companyConstants.UPDATE_SUBCOMPANY_SUCCESS, company } }
 }
 function switchSubcompany(companyInfo) {
+    const menu = JSON.parse(localStorage.getItem('user')).menu
+    const profile = JSON.parse(localStorage.getItem('user')).profile
     return dispatch => {
         companyService.switchSubcompany(companyInfo)
             .then(
-                company => {
-                    dispatch(success(company));
+                () => {
+                    dispatch(success());
+                    location.reload()
                 },
                 error => {
                     // dispatch(failure(error.toString()));
@@ -87,7 +90,7 @@ function switchSubcompany(companyInfo) {
 
     };
 
-    function success(company) { return { type: companyConstants.SWITCH_SUBCOMPANY_SUCCESS, company } }
+    function success() { return { type: companyConstants.SWITCH_SUBCOMPANY_SUCCESS, company: companyInfo, menu, profile } }
 }
 
 function get() {
