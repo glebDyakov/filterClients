@@ -33,7 +33,9 @@ class MainIndexPage extends Component {
         this.state = {
             authentication: props.authentication,
             company: props.company,
+            subcompanies: props.company.subcompanies,
             isLoading: true,
+            adding: false,
             activeDay: 1,
             status: {},
             submitted: false,
@@ -70,10 +72,14 @@ class MainIndexPage extends Component {
 
             this.setState({ company: newProps.company })
         }
+        if ( JSON.stringify(this.props.company.subcompanies) !==  JSON.stringify(newProps.company.subcompanies)) {
+
+            this.setState({ subcompanies: newProps.company.subcompanies })
+        }
         if (newProps.company && newProps.company.status==='saved.settings') {
             this.setState({status: newProps.company.status})
             setTimeout(() => {
-                this.setState({status: {}, submitted: false})
+                this.setState({status: {}, submitted: false, saved: null})
             }, 3000)
         }
 
@@ -82,30 +88,27 @@ class MainIndexPage extends Component {
         }
     }
 
-    handleChange(e) {
+    handleChange(e, i) {
         const { name, value } = e.target;
-        const { authentication, company } = this.state;
+        const { subcompanies } = this.state;
+        const newSubcompanies = subcompanies;
+        newSubcompanies[i][name] = value
 
-        if(name==='countryCode'){
-            this.setState({...this.state, company: {...company, settings: {...company.settings, [name]: value, timezoneId: '' }}});
-        }else {
-            this.setState({...this.state, company: {...company, settings: {...company.settings, [name]: value }}});
-
-        }
+        this.setState({...this.state, subcompanies: newSubcompanies });
     }
 
-    handleNotificationChange({ target: { name, value }}) {
+    handleNotificationChange({ target: { name, value }}, i) {
+        const { subcompanies } = this.state
+        const newSubcompanies = subcompanies
+        newSubcompanies[i][name] = value
         this.setState({
-            notification: {
-                ...this.state.notification,
-                [name]: value
-            }
+            subcompanies: newSubcompanies
         })
     }
 
-    handleChangeAddress(e) {
+    handleChangeAddress(e, i) {
         const { name, value } = e.target;
-        const { authentication, company } = this.state;
+        const { subcompanies } = this.state;
 
         let address;
 
@@ -120,8 +123,10 @@ class MainIndexPage extends Component {
         if(name==='defaultAddress3' && value){
             address=3
         }
+        const newSubcompanies = subcompanies
+        newSubcompanies[i].defaultAddress = address
 
-        this.setState({...this.state,  company: {...company, settings: {...company.settings, defaultAddress: address }}});
+        this.setState({...this.state, subcompanies: newSubcompanies});
     }
 
     handleWeekPicker(num){
@@ -139,37 +144,37 @@ class MainIndexPage extends Component {
         this.setState({...this.state, company: {...company, settings: {...company.settings, companyTimetables:times}}});
     }
 
-    handleSubmit(e) {
-        const { companyName, companyAddress, companyEmail, companyPhone, timezoneId } = this.state.company.settings;
+    handleSubmit(e, subcompany, i) {
+        const { companyName, companyAddress, companyEmail, companyPhone, timezoneId } = subcompany;
         const { dispatch } = this.props;
-        const {settings}=this.state.company;
 
 
         this.onClose();
 
 
         const phoneIndexes = [1, 2, 3];
-        phoneIndexes.forEach(index => settings[`companyPhone${index}`] = settings[`companyPhone${index}`].replace(/[() ]/g, ''));
+        phoneIndexes.forEach(index => subcompany[`companyPhone${index}`] = subcompany[`companyPhone${index}`].replace(/[() ]/g, ''));
 
         e.preventDefault();
 
-        this.setState({...this.state, submitted: true, isAvatarOpened: false });
+        this.setState({...this.state, submitted: true, isAvatarOpened: false, saved: i });
         setTimeout(() => this.setState({ isAvatarOpened: true }), 100);
 
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
-            dispatch(companyActions.add(settings));
+            dispatch(companyActions.updateSubcompany(subcompany));
         }
-        dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(this.state.notification)))
+        //dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(this.state.notification)))
     }
 
     onClose() {
         this.setState({...this.state, preview: null})
     }
 
-    onCrop(preview) {
-        const {company}=this.state;
-
-        this.setState({...this.state, company: {...company, settings: {...company.settings, imageBase64: preview.split(',')[1]}}});
+    onCrop(preview, i) {
+        const {subcompanies}=this.state;
+        const newSubcompanies = subcompanies
+        newSubcompanies[i].imageBase64 = preview.split(',')[1]
+        this.setState({...this.state, subcompanies: newSubcompanies});
     }
 
     componentDidMount(){
@@ -187,11 +192,10 @@ class MainIndexPage extends Component {
 
 
     render() {
-        const { authentication, submitted, isLoading, activeDay, notification, status, company, userSettings, isAvatarOpened } = this.state;
+        const { adding, authentication, submitted, isLoading, activeDay, saved, notification, status, company, userSettings, isAvatarOpened, subcompanies } = this.state;
 
         return (
             <div>
-                {/*{isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
                 {isLoading && <div className="loader loader-company"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
@@ -203,292 +207,211 @@ class MainIndexPage extends Component {
                                 onOpen={this.onOpen}
                             />
 
-                            <form className="content retreats company_fields" name="form">
-                                <div className="row">
-                                    <div className="col-sm-4">
-                                        <p>Название компании</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <input type="text" className="company_input" placeholder="Например: Стоматология" name="companyName" maxLength="40"
-                                                   value={company.settings.companyName} onChange={this.handleChange}/>
-                                            <span className="company_counter">{company.settings.companyName.length}/40</span>
-                                        </div>
-
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress1" disabled={!company.settings.companyAddress1}  checked={company.settings.defaultAddress===1} onChange={this.handleChangeAddress}/>
+                            {subcompanies.map((subcompany, i) => (
+                                <form className="content retreats company_fields" name="form">
+                                    <h3 style={{ textAlign: 'center' }}>Филиал {i + 1}</h3>
+                                    <div className="row">
+                                        <div className="col-sm-4">
+                                            <p>Название компании</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <input type="text" className="company_input" placeholder="Например: Стоматология" name="companyName" maxLength="40"
+                                                       value={subcompany.companyName} onChange={(e) => this.handleChange(e, i)}/>
+                                                <span className="company_counter">{subcompany.companyName.length}/40</span>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress1" className="company_input"
-                                                   value={company.settings.companyAddress1} onChange={this.handleChange} maxLength="40"/>
-                                            <span className="company_counter">{company.settings.companyAddress1.length}/40</span>
-                                        </div>
+                                            <p>Адрес компании</p>
+                                            <div className="check-box-group2 form-control">
+                                                <div className="input-text2">
+                                                    <input type="radio" aria-label="" name="defaultAddress1" disabled={!subcompany.companyAddress1}  checked={subcompany.defaultAddress===1} onChange={(e) => this.handleChangeAddress(e, i)}/>
+                                                </div>
 
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress2" disabled={!company.settings.companyAddress2} checked={company.settings.defaultAddress===2} onChange={this.handleChangeAddress}/>
+                                                <input type="text" placeholder="" name="companyAddress1" className="company_input"
+                                                       value={subcompany.companyAddress1} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
+                                                <span className="company_counter">{subcompany.companyAddress1.length}/40</span>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress2" className="company_input"
-                                                   value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>
-                                            <span className="company_counter">{company.settings.companyAddress2.length}/40</span>
-                                        </div>
+                                            <p>Адрес компании</p>
+                                            <div className="check-box-group2 form-control">
+                                                <div className="input-text2">
+                                                    <input type="radio" aria-label="" name="defaultAddress2" disabled={!subcompany.companyAddress2} checked={subcompany.defaultAddress===2} onChange={(e) => this.handleChangeAddress(e, i)}/>
+                                                </div>
 
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress3" disabled={!company.settings.companyAddress3} checked={company.settings.defaultAddress===3} onChange={this.handleChangeAddress}/>
+                                                <input type="text" placeholder="" name="companyAddress2" className="company_input"
+                                                       value={subcompany.companyAddress2}  onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
+                                                <span className="company_counter">{subcompany.companyAddress2.length}/40</span>
                                             </div>
 
-                                            <input type="text" placeholder="" name="companyAddress3" className="company_input"
-                                                   value={company.settings.companyAddress3} onChange={this.handleChange} maxLength="40"/>
-                                            <span className="company_counter">{company.settings.companyAddress3.length}/40</span>
-                                        </div>
+                                            <p>Адрес компании</p>
+                                            <div className="check-box-group2 form-control">
+                                                <div className="input-text2">
+                                                    <input type="radio" aria-label="" name="defaultAddress3" disabled={!subcompany.companyAddress3} checked={subcompany.defaultAddress===3} onChange={(e) => this.handleChangeAddress(e, i)}/>
+                                                </div>
 
-                                        <p>Вид деятельности</p>
-                                        <select className="custom-select" onChange={this.handleNotificationChange} name="template"
-                                                value={notification && notification.template}>
-                                            <option value={1}>Сфера услуг</option>
-                                            <option value={2}>Коворкинг</option>
-                                        </select>
-                                        {/*<p>Cтрана</p>*/}
-                                        {/*<div className="">*/}
-                                            {/*<select className="custom-select" value ={company.settings.countryCode}  name="countryCode"  onChange={this.handleChange}>*/}
-                                                {/*<option value='BLR'>Беларусь</option>*/}
-                                                {/*<option value='UKR'>Украина</option>*/}
-                                                {/*<option value='RUS'>Россия</option>*/}
-                                            {/*</select>*/}
-                                        {/*</div>*/}
-                                        {/*<p>Таймзона</p>*/}
-                                        {/*<div className="">*/}
-                                            {/*{company.settings.countryCode === 'BLR' &&*/}
-                                            {/*<select className="custom-select" value={company.settings.timezoneId}*/}
-                                                    {/*name="timezoneId" onChange={this.handleChange}>*/}
-                                                {/*<option value=''>-</option>*/}
-                                                {/*<option value='Europe/Minsk'>Europe/Minsk</option>*/}
-                                            {/*</select>*/}
-                                            {/*}*/}
-                                            {/*{company.settings.countryCode === 'UKR' &&*/}
-                                            {/*<select className="custom-select" value={company.settings.timezoneId}*/}
-                                                    {/*name="timezoneId" onChange={this.handleChange}>*/}
-                                                {/*<option value=''>-</option>*/}
-                                                {/*<option value='Europe/Kiev'>Europe/Kiev</option>*/}
-                                            {/*</select>*/}
-                                            {/*}*/}
-                                            {/*{company.settings.countryCode === 'RUS' &&*/}
-                                            {/*<select className="custom-select" value={company.settings.timezoneId}*/}
-                                                    {/*name="timezoneId" onChange={this.handleChange}>*/}
-                                                {/*<option value=''>-</option>*/}
-                                                {/*<option value='Europe/Moscow'>Europe/Moscow</option>*/}
-                                                {/*<option value='Europe/Astrakhan'>Europe/Astrakhan</option>*/}
-                                                {/*<option value='Europe/Kaliningrad'>Europe/Kaliningrad'</option>*/}
-                                                {/*<option value='Europe/Kirov'>Europe/Kirov</option>*/}
-                                                {/*<option value='Europe/Samara'>Europe/Samara</option>*/}
-                                                {/*<option value='Europe/Saratov'>Europe/Saratov</option>*/}
-                                                {/*<option value='Europe/Simferopol'>Europe/Simferopol</option>*/}
-                                                {/*<option value='Europe/Ulyanovsk'>Europe/Ulyanovsk</option>*/}
-                                                {/*<option value='Europe/Volgograd'>Europe/Volgograd</option>*/}
-                                                {/*<option value='Asia/Anadyr'>Asia/Anadyr</option>*/}
-                                                {/*<option value='Asia/Barnaul'>Asia/Barnaul</option>*/}
-                                                {/*<option value='Asia/Chita'>Asia/Chita</option>*/}
-                                                {/*<option value='Asia/Irkutsk'>Asia/Irkutsk</option>*/}
-                                                {/*<option value='Asia/Kamchatka'>Asia/Kamchatka</option>*/}
-                                                {/*<option value='Asia/Khandyga'>Asia/Khandyga</option>*/}
-                                                {/*<option value='Asia/Krasnoyarsk'>Asia/Krasnoyarsk</option>*/}
-                                                {/*<option value='Asia/Magadan'>Asia/Magadan</option>*/}
-                                                {/*<option value='Asia/Novokuznetsk'>Asia/Novokuznetsk</option>*/}
-                                                {/*<option value='Asia/Novosibirsk'>Asia/Novosibirsk</option>*/}
-                                                {/*<option value='Asia/Omsk'>Asia/Omsk</option>*/}
-                                                {/*<option value='Asia/Sakhalin'>Asia/Sakhalin</option>*/}
-                                                {/*<option value='Asia/Srednekolymsk'>Asia/Srednekolymsk'</option>*/}
-                                                {/*<option value='Asia/Tomsk'>Asia/Tomsk</option>*/}
-                                                {/*<option value='Asia/Ust-Nera'>Asia/Ust-Nera</option>*/}
-                                                {/*<option value='Asia/Vladivostok'>Asia/Vladivostok</option>*/}
-                                                {/*<option value='Asia/Yakutsk'>Asia/Yakutsk</option>*/}
-                                                {/*<option value='Asia/Yekaterinburg'>Asia/Yekaterinburg</option>*/}
-                                            {/*</select>*/}
-                                            {/*}*/}
-                                        {/*</div>*/}
-
-
-                                        {/*<p>Время работы</p>*/}
-                                        {/*<div className="day-picker">*/}
-                                            {/*<span className={activeDay===1 && "active-day"} onClick={()=>this.handleWeekPicker(1)}>Пн</span>*/}
-                                            {/*<span  className={activeDay===2 && "active-day"} onClick={()=>this.handleWeekPicker(2)}>Вт</span>*/}
-                                            {/*<span  className={activeDay===3 && "active-day"} onClick={()=>this.handleWeekPicker(3)}>Ср</span>*/}
-                                            {/*<span  className={activeDay===4 && "active-day"} onClick={()=>this.handleWeekPicker(4)}>Чт</span>*/}
-                                            {/*<span  className={activeDay===5 && "active-day"} onClick={()=>this.handleWeekPicker(5)}>Пт</span>*/}
-                                            {/*<span  className={activeDay===6 && "active-day"} onClick={()=>this.handleWeekPicker(6)}>Сб</span>*/}
-                                            {/*<span  className={activeDay===7 && "active-day"} onClick={()=>this.handleWeekPicker(7)}>Вс</span>*/}
-                                        {/*</div>*/}
-
-                                        {/*<TimePicker*/}
-                                            {/*id="workStartMilis"*/}
-                                            {/*value={company.settings.companyTimetables ? moment(parseInt(company.settings.companyTimetables[activeDay-1].startTimeMillis), 'x') : moment().startOf('day').add('7 hours').format('x')}*/}
-                                            {/*className="col-md-4 p-0 pull-left pr-3"*/}
-                                            {/*key={activeDay+"start"}*/}
-                                            {/*minuteStep={15}*/}
-                                            {/*showSecond={false}*/}
-                                            {/*onChange={(startTimeMillis) => this.onChangeTime('startTimeMillis', moment(startTimeMillis).format('x'), activeDay-1)}*/}
-                                        {/*/>*/}
-                                        {/*<TimePicker*/}
-                                            {/*id="workEndMilis"*/}
-                                            {/*value={company.settings.companyTimetables ? moment(parseInt(company.settings.companyTimetables[activeDay-1].endTimeMillis), 'x') : moment().startOf('day').add('22 hours').format('x')}*/}
-                                            {/*className="col-md-4 p-0 pull-left"*/}
-                                            {/*minuteStep={15}*/}
-                                            {/*key={activeDay+"end"}*/}
-                                            {/*showSecond={false}*/}
-                                            {/*onChange={(endTimeMillis) => this.onChangeTime('endTimeMillis', moment(endTimeMillis).format('x'), activeDay-1)}*/}
-                                        {/*/>*/}
-                                        {/*<div>*/}
-                                        {/*    <p>Звуковые уведомления для визитов</p>*/}
-                                        {/*    <div className="check-box-group2 form-control" >*/}
-                                        {/*        <p style={{width: "calc(50% - 43px)", textAlign: "center", marginTop: "5px"}}>Вкл</p>*/}
-                                        {/*        <div className="input-text2">*/}
-                                        {/*            <input type="radio" aria-label="" name="sound1"  style={{cursor: "pointer"}} checked={this.state.sound} onChange={()=>this.changeSound(true)}/>*/}
-                                        {/*        </div>*/}
-                                        {/*        <div className="input-text2">*/}
-                                        {/*            <input type="radio" aria-label="" name="sound2"  style={{cursor: "pointer"}} checked={!this.state.sound} onChange={()=>this.changeSound(false)}/>*/}
-                                        {/*        </div>*/}
-                                        {/*        <p style={{width: "calc(50% - 43px)", textAlign: "center", marginTop: "5px"}}>Выкл</p>*/}
-                                        {/*        /!*<input type="text" placeholder="" name="companyAddress2" className="company_input"*!/*/}
-                                        {/*        /!*       value={company.settings.companyAddress2}  onChange={this.handleChange} maxLength="40"/>*!/*/}
-                                        {/*    </div>*/}
-                                        {/*</div>*/}
-                                        {/*<div className="check-box">*/}
-                                        {/*    <label>*/}
-                                        {/*        <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}*/}
-                                        {/*               type="checkbox"/>*/}
-                                        {/*        <span className="check"></span>*/}
-                                        {/*        Звуковые уведомления для визитов*/}
-                                        {/*    </label>*/}
-                                        {/*</div>*/}
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <p>Email</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="input-text2">
-                                                <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail" disabled className="company_input disabledField"
-                                                       value={company.settings.companyEmail} onChange={this.handleChange} maxLength="60"/>
+                                                <input type="text" placeholder="" name="companyAddress3" className="company_input"
+                                                       value={subcompany.companyAddress3} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
+                                                <span className="company_counter">{subcompany.companyAddress3.length}/40</span>
                                             </div>
+
+                                            <p>Вид деятельности</p>
+                                            <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="template"
+                                                    value={subcompany && subcompany.template}>
+                                                <option value={1}>Сфера услуг</option>
+                                                <option value={2}>Коворкинг</option>
+                                            </select>
                                         </div>
-                                        <p className="phone_hint_wrapper">
-                                            <span>Номер телефона </span>
-                                            <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
-                                        </p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="input-text2">
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    // disableCountryCode={true}
-                                                    regions={['america', 'europe']}
-                                                    placeholder=""
-                                                    disableAreaCodes={true}
-                                                    countryCodeEditable={true}
-                                                    inputClass={(submitted && !company.settings.companyPhone1 || submitted && !isValidNumber(company.settings.companyPhone1) ? 'company_input redBorder' : 'company_input')}
-                                                    value={company.settings.companyPhone1} defaultCountry={'by'} onChange={companyPhone1 => {
-                                                    this.setState({
-                                                        company: {
-                                                            ...company,
-                                                            settings: {...company.settings, companyPhone1 }
-                                                        }
-                                                    });
-                                                }}/>
-                                            </div>
-                                            <span className="company_counter">{company.settings.companyPhone1.length - 2}/20</span>
-                                        </div>
-
-
-                                        <p className="mt-2">Номер телефона</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="input-text2">
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    // disableCountryCode={true}
-                                                    regions={['america', 'europe']}
-                                                    placeholder=""
-                                                    className="company_input"
-                                                    disableAreaCodes={true}
-                                                    countryCodeEditable={false}
-                                                    inputClass={(submitted && !company.settings.companyPhone2 && company.settings.companyPhone2.length!==0 && !isValidNumber(company.settings.companyPhone2) ? 'company_input redBorder' : 'company_input')}
-
-                                                    value={company.settings.companyPhone2} defaultCountry={'by'} onChange={companyPhone2 => {
-                                                    this.setState({
-                                                        company: {
-                                                            ...company,
-                                                            settings: {...company.settings, companyPhone2 }
-                                                        }
-                                                    });
-                                                }}/>
-                                            </div>
-                                            <span className="company_counter">{company.settings.companyPhone2.length - 2}/20</span>
-                                        </div>
-                                        <p className="mt-2">Номер телефона</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="input-text2">
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    regions={['america', 'europe']}
-                                                    disableAreaCodes={true}
-                                                    placeholder=""
-                                                    className="company_input"
-                                                    // disableCountryCode={true}
-                                                    countryCodeEditable={false}
-                                                    inputClass={(submitted && !company.settings.companyPhone3  && company.settings.companyPhone3.length!==0 && !isValidNumber(company.settings.companyPhone3) ? 'company_input redBorder' : 'company_input')}
-
-                                                    value={company.settings.companyPhone3} defaultCountry={'by'} onChange={companyPhone3 => {
-                                                    this.setState({
-                                                        company: {
-                                                            ...company,
-                                                            settings: {...company.settings, companyPhone3 }
-                                                        }
-                                                    });
-                                                }}/>
-                                            </div>
-                                            <span className="company_counter">{company.settings.companyPhone3.length - 2}/20</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <p>Фото компании</p>
-                                        <div className="upload_container">
-                                            <div className="setting image_picker">
-                                                <div className="settings_wrap">
-                                                    <label className="drop_target">
-                                                        {/*<span/>*/}
-
-                                                        <div className="image_preview">
-                                                            <div className="existed-image">
-                                                                <img src={company.settings.imageBase64 && company.settings.imageBase64!==''?("data:image/png;base64,"+company.settings.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
-
-                                                            </div>
-                                                            {isAvatarOpened &&
-                                                                <Avatar
-                                                                    height={180}
-                                                                    cropRadius="100%"
-                                                                    label=""
-                                                                    onCrop={this.onCrop}
-                                                                    onClose={this.onClose}
-                                                                />
-                                                            }
-                                                        </div>
-                                                    </label>
+                                        <div className="col-sm-4">
+                                            <p>Email</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <div className="input-text2">
+                                                    <input type="email" placeholder="Например: walkerfrank@gmail.com" name="companyEmail" disabled className="company_input disabledField"
+                                                           value={subcompany.companyEmail} onChange={(e) => this.handleChange(e, i)} maxLength="60"/>
                                                 </div>
                                             </div>
+                                            <p className="phone_hint_wrapper">
+                                                <span>Номер телефона </span>
+                                                <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
+                                            </p>
+                                            <div className="name_company_wrapper form-control">
+                                                <div className="input-text2">
+                                                    <ReactPhoneInput
+                                                        enableLongNumbers={true}
+                                                        // disableCountryCode={true}
+                                                        regions={['america', 'europe']}
+                                                        placeholder=""
+                                                        disableAreaCodes={true}
+                                                        countryCodeEditable={true}
+                                                        inputClass={(submitted && !subcompany.companyPhone1 || submitted && !isValidNumber(subcompany.companyPhone1) ? 'company_input redBorder' : 'company_input')}
+                                                        value={subcompany.companyPhone1} defaultCountry={'by'} onChange={companyPhone1 => {
+                                                            const newSubcompanies = subcompanies;
+                                                            newSubcompanies[i].companyPhone1 = companyPhone1
+                                                            this.setState({
+                                                                subcompanies: newSubcompanies
+                                                            });
+                                                    }}/>
+                                                </div>
+                                                <span className="company_counter">{subcompany.companyPhone1.length - 2}/20</span>
+                                            </div>
+
+
+                                            <p className="mt-2">Номер телефона</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <div className="input-text2">
+                                                    <ReactPhoneInput
+                                                        enableLongNumbers={true}
+                                                        // disableCountryCode={true}
+                                                        regions={['america', 'europe']}
+                                                        placeholder=""
+                                                        className="company_input"
+                                                        disableAreaCodes={true}
+                                                        countryCodeEditable={false}
+                                                        inputClass={(submitted && !subcompany.companyPhone2 && subcompany.companyPhone2.length!==0 && !isValidNumber(subcompany.companyPhone2) ? 'company_input redBorder' : 'company_input')}
+
+                                                        value={subcompany.companyPhone2} defaultCountry={'by'} onChange={companyPhone2 => {
+                                                        const newSubcompanies = subcompanies;
+                                                        newSubcompanies[i].companyPhone2 = companyPhone2
+                                                        this.setState({
+                                                            subcompanies: newSubcompanies
+                                                        });
+                                                    }}/>
+                                                </div>
+                                                <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
+                                            </div>
+                                            <p className="mt-2">Номер телефона</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <div className="input-text2">
+                                                    <ReactPhoneInput
+                                                        enableLongNumbers={true}
+                                                        regions={['america', 'europe']}
+                                                        disableAreaCodes={true}
+                                                        placeholder=""
+                                                        className="company_input"
+                                                        // disableCountryCode={true}
+                                                        countryCodeEditable={false}
+                                                        inputClass={(submitted && !subcompany.companyPhone3  && subcompany.companyPhone3.length!==0 && !isValidNumber(subcompany.companyPhone3) ? 'company_input redBorder' : 'company_input')}
+
+                                                        value={subcompany.companyPhone3} defaultCountry={'by'} onChange={companyPhone3 => {
+                                                        const newSubcompanies = subcompanies;
+                                                        newSubcompanies[i].companyPhone3 = companyPhone3
+                                                        this.setState({
+                                                            subcompanies: newSubcompanies
+                                                        });
+                                                    }}/>
+                                                </div>
+                                                <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
+                                            </div>
                                         </div>
-                                        {status === 'saved.settings' &&
-                                            <p className="alert-success p-1 rounded pl-3 mb-2">Настройки сохранены</p>
-                                        }
+                                        <div className="col-sm-4">
+                                            <p>Фото компании</p>
+                                            <div className="upload_container">
+                                                <div className="setting image_picker">
+                                                    <div className="settings_wrap">
+                                                        <label className="drop_target">
+                                                            {/*<span/>*/}
 
-                                        <div className="buttons-container-setting">
+                                                            <div className="image_preview">
+                                                                <div className="existed-image">
+                                                                    <img src={subcompany.imageBase64 && subcompany.imageBase64!==''?("data:image/png;base64,"+subcompany.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
-                                            <button type="button"  className={((status === 'saved.settings' || submitted) && 'disabledField')+' small-button'} onClick={(status !== 'saved.settings' || !submitted) && this.handleSubmit}>Сохранить</button>
+                                                                </div>
+                                                                {isAvatarOpened &&
+                                                                    <Avatar
+                                                                        height={180}
+                                                                        cropRadius="100%"
+                                                                        label=""
+                                                                        onCrop={(e) => this.onCrop(e, i)}
+                                                                        onClose={this.onClose}
+                                                                    />
+                                                                }
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {saved === i && status === 'saved.settings' &&
+                                                <p className="alert-success p-1 rounded pl-3 mb-2">Настройки сохранены</p>
+                                            }
 
+                                            <div className="buttons-container-setting">
+
+                                                {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' small-button'} onClick={(e) => {
+                                                    if (saved !== i && (status !== 'saved.settings' || !submitted)) {
+                                                        this.handleSubmit(e, subcompany, i)
+                                                    }
+                                                }
+                                                }>Сохранить</button>}
+
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                {/*<input type="submit" className='small-button mobileButton' value="Сохранить"/>*/}
-                            </form>
+                                </form>
+                                )
+                            )}
+
+                            <button style={{ display: 'block', margin: '0.5rem auto' }} type="button"  className={' small-button'} onClick={() => {
+                                if (!adding) {
+                                    const newSubcompanies = subcompanies
+                                    newSubcompanies.push({
+                                        companyName: '',
+                                        companyAddress1: '',
+                                        companyAddress2: '',
+                                        companyAddress3: '',
+                                        companyPhone1: company.settings.companyPhone1.slice(0, 4),
+                                        companyPhone2: company.settings.companyPhone2.slice(0, 4),
+                                        companyPhone3: company.settings.companyPhone3.slice(0, 4),
+                                    })
+                                    this.setState({ adding: true, subcompanies: newSubcompanies  })
+                                } else {
+                                    this.props.dispatch(companyActions.addSubcompany({
+                                        countryCode: company.settings.countryCode,
+                                        timezoneId: company.settings.timezoneId,
+                                        ...subcompanies[subcompanies.length - 1]
+                                    }))
+                                    this.setState({ adding: false })
+                                }
+                            }}>
+                                {adding ? 'Сохранить новый филиал' : 'Добавить филиал'}
+                            </button>
+
                         </div>
                     </div>
                     }

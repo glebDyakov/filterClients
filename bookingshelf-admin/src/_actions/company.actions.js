@@ -4,7 +4,11 @@ import { alertActions } from './';
 
 export const companyActions = {
     add,
+    addSubcompany,
+    updateSubcompany,
+    switchSubcompany,
     get,
+    getSubcompanies,
     getBookingInfo,
     getNewAppointments,
     updateBookingInfo,
@@ -33,6 +37,59 @@ function add(companyInfo) {
     function success(company, menu, profile) { return { type: userConstants.UPDATE_COMPANY_SUCCESS, company, menu, profile } }
 }
 
+function addSubcompany(companyInfo) {
+    return dispatch => {
+        companyService.addSubcompany(companyInfo)
+            .then(
+                company => {
+                    dispatch(success(company));
+                },
+                error => {
+                    // dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            )
+
+    };
+
+    function success(company, menu, profile) { return { type: companyConstants.ADD_SUBCOMPANY_SUCCESS, company } }
+}
+
+function updateSubcompany(companyInfo) {
+    return dispatch => {
+        companyService.updateSubcompany(companyInfo)
+            .then(
+                company => {
+                    dispatch(success(company));
+                },
+                error => {
+                    // dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            )
+
+    };
+
+    function success(company) { return { type: companyConstants.UPDATE_SUBCOMPANY_SUCCESS, company } }
+}
+function switchSubcompany(companyInfo) {
+    return dispatch => {
+        companyService.switchSubcompany(companyInfo)
+            .then(
+                company => {
+                    dispatch(success(company));
+                },
+                error => {
+                    // dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            )
+
+    };
+
+    function success(company) { return { type: companyConstants.SWITCH_SUBCOMPANY_SUCCESS, company } }
+}
+
 function get() {
     return dispatch => {
         companyService.get()
@@ -42,6 +99,17 @@ function get() {
     };
 
     function success(settings) { return { type: companyConstants.GET_COMPANY_SUCCESS, settings } }
+}
+
+function getSubcompanies() {
+    return dispatch => {
+        companyService.getSubcompanies()
+            .then(
+                subcompanies => dispatch(success(subcompanies)),
+            );
+    };
+
+    function success(subcompanies) { return { type: companyConstants.GET_SUBCOMPANIES_SUCCESS, subcompanies } }
 }
 
 function getBookingInfo() {
