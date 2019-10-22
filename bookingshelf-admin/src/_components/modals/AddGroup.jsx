@@ -50,7 +50,7 @@ class AddGroup extends React.Component {
                     },
                     "PINK": {
                         "key": "pink",
-                        "name": "Желтый"
+                        "name": "Розовый"
                     },
                     "GREY": {
                         "key": "grey",

@@ -19,7 +19,7 @@ class Header extends  PureComponent {
                 <div className="adress-phones">
                     <span className="adress-icon" />
                     <div className="adress-text-wrapper">
-                        <p className="adress-text">{info && info["companyAddress" + info.defaultAddress]}</p>
+                        <p className="adress-text">{info && `${info.city ? (info.city + ', ') : ''}${info["companyAddress" + info.defaultAddress]}`}</p>
                         <span className="closer" />
                     </div>
                 </div>

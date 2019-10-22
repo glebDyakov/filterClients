@@ -6,6 +6,7 @@ import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
 
+import TabCompanySelection from "./components/TabCompanySelection";
 import TabOne from "./components/TabOne";
 import TabTwo from "./components/TabTwo";
 import TabThird from "./components/TabThird";
@@ -22,10 +23,11 @@ class IndexPage extends PureComponent {
         super(props);
         this.state = {
             selectedStaff: [],
+            selectedSubcompany: {},
             selectedService: [],
             interval: 15,
             group:localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''},
-            screen: 1,
+            screen: 0,
             info: props.staff.info,
             month: moment().utc().toDate(),
             selectedDay: undefined,
@@ -39,8 +41,10 @@ class IndexPage extends PureComponent {
 
 
         this.selectStaff=this.selectStaff.bind(this);
+        this.clearStaff=this.clearStaff.bind(this);
         this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
+        this.selectSubcompany=this.selectSubcompany.bind(this);
         this.handleDayClick=this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -65,14 +69,12 @@ class IndexPage extends PureComponent {
 
 
     componentDidMount () {
-        const {company} = this.props.match.params
+        let {company} = this.props.match.params
+        company = company.includes('_') ? company.split('_')[0] : company
 
 
-        this.props.dispatch(staffActions.get(company));
+        this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
-        this.props.dispatch(staffActions.getNearestTime(company));
-        this.props.dispatch(staffActions.getServices(company));
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -143,6 +145,26 @@ class IndexPage extends PureComponent {
 
             })
         }
+        if (!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany)) {
+            this.setScreen(1)
+        }
+    }
+
+
+    componentDidUpdate(prevProps, prevState) {
+        initializeJs()
+        if (prevState.screen === 0 && this.state.screen === 1) {
+            let {company} = this.props.match.params
+
+            this.props.dispatch(staffActions.getInfo(company));
+            this.props.dispatch(staffActions.get(company));
+            this.props.dispatch(staffActions.getNearestTime(company));
+            this.props.dispatch(staffActions.getServices(company));
+        }
+    }
+
+    clearStaff() {
+        this.props.dispatch(staffActions.clearStaff());
     }
 
     setDefaultFlag(){
@@ -167,9 +189,10 @@ class IndexPage extends PureComponent {
         this.setState({selectedStaff:staffId, screen: 2})
     }
 
-    componentDidUpdate() {
-        initializeJs()
+    selectSubcompany(subcompany) {
+        this.setState({ selectedSubcompany: subcompany, screen: 1 })
     }
+
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -240,9 +263,9 @@ class IndexPage extends PureComponent {
     }
 
     render() {
-        const {selectedStaff, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
+        const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -267,8 +290,25 @@ class IndexPage extends PureComponent {
         } else {
             content = (
                 <React.Fragment>
+                    {screen === 0 &&
+                    <TabCompanySelection
+                        history={this.props.history}
+                        selectSubcompany={this.selectSubcompany}
+                        selectedSubcompany={selectedSubcompany}
+                        subcompanies={subcompanies}
+                        info={info}
+                        staffId={selectedStaff.staffId }
+                        staffs={staffs}
+                        nearestTime={nearestTime}
+                        selectStaff={this.selectStaff}
+                        setScreen={this.setScreen}
+                        refreshTimetable={this.refreshTimetable}
+                        roundDown={this.roundDown}
+                    />}
                     {screen === 1 &&
                     <TabOne
+                        clearStaff={this.clearStaff}
+                        subcompanies={subcompanies}
                         info={info}
                         staffId={selectedStaff.staffId }
                         staffs={staffs}

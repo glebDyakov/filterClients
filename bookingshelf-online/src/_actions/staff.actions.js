@@ -7,6 +7,8 @@ export const staffActions = {
     add,
     _delete,
     getInfo,
+    getSubcompanies,
+    clearStaff,
     getServices,
     getTimetable,
     getClientAppointments,
@@ -30,6 +32,14 @@ function get(id) {
     function success(staff) { return { type: staffConstants.GET_SUCCESS, staff, } }
     function failure() { return { type: staffConstants.GET_FAILURE } }
 }
+function clearStaff() {
+    return dispatch => {
+        dispatch(success());
+
+    };
+
+    function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
+}
 
 function getInfo(id) {
     return dispatch => {
@@ -44,6 +54,21 @@ function getInfo(id) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+
+function getSubcompanies(id) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getSubcompanies(id)
+            .then(
+                subcompanies => dispatch(success(subcompanies)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_SUBCOMPANIES } }
+    function success(subcompanies) { return { type: staffConstants.GET_SUBCOMPANIES_SUCCESS, subcompanies } }
+    function failure() { return { type: staffConstants.GET_SUBCOMPANIES_FAILURE } }
 }
 
 function getServices(id) {

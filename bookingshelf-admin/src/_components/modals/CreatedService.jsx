@@ -38,7 +38,7 @@ class CreatedService extends React.Component {
                         <div className="modal-content visibleDropdown">
                             <div className="modal-header">
                                 <h4 className="modal-title">Выберите группу услуг</h4>
-                                <button type="button" className="close" onClick={this.closeModal}>&times;</button>
+                                <button type="button" className="close" onClick={this.closeModal} />
                             </div>
                             <div className="modal-inner pl-4 pr-4 pb-4">
                                 <div className="select-color dropdown mb-3 border-color">
