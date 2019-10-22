@@ -2,12 +2,31 @@ import {staffConstants} from '../_constants';
 
 const initialState = {
     error: '',
-    isLoading: false
+    isLoading: false,
+    subcompanies: [],
+    superCompany: true
 }
 
-export function staff(state= initialState, action) {
+export function staff(state = initialState, action) {
     switch (action.type) {
+        case staffConstants.CLEAR_STAFF_SUCCESS:
+            return {
+                ...state,
+                staff: []
+            }
+        case staffConstants.GET_SUBCOMPANIES_SUCCESS:
 
+            let newState = {}
+            if (action.subcompanies) {
+                newState.subcompanies = state.subcompanies.concat(action.subcompanies);
+            } else {
+                newState.superCompany = false
+            }
+
+            return {
+                ...state,
+                ...newState
+            }
         case staffConstants.GET_SUCCESS:
             return {
                 ...state,
@@ -21,10 +40,20 @@ export function staff(state= initialState, action) {
                 isLoading: false
             };
         case staffConstants.GET_INFO_SUCCESS:
+            let ownerCompany = {
+                ...action.info,
+                bookingPage: '000' + action.info.companyId,
+                companyName: action.info.companyName
+            }
+
+            let isOwnerCompanyAdded = state.subcompanies.find(item => item.companyId === action.info.companyId)
+            if (!isOwnerCompanyAdded) {
+                state.subcompanies.unshift(ownerCompany)
+            }
             return {
                 ...state,
                 info: action.info,
-                isLoading: false
+                isLoading: false,
             };
         case staffConstants.GET:
         case staffConstants.GET_INFO:

@@ -339,6 +339,12 @@ class MainIndexPage extends Component {
                                                 </div>
                                                 <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                                             </div>
+                                            <p className="mt-2">Город</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <input type="text" className="company_input" placeholder="" name="city" maxLength="40"
+                                                       value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
+                                                <span className="company_counter">{subcompany.city.length}/40</span>
+                                            </div>
                                         </div>
                                         <div className="col-sm-4">
                                             <p>Фото компании</p>

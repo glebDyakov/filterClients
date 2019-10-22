@@ -6,6 +6,7 @@ export const staffService = {
     get,
     add,
     getServices,
+    getSubcompanies,
     getInfo,
     getTimetable,
     getClientAppointments,
@@ -40,6 +41,15 @@ function getInfo(id) {
     };
 
     return fetch(`${config.apiUrl}/${id}`, requestOptions).then(handleResponse);
+}
+
+function getSubcompanies(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${id}/subcompanies`, requestOptions).then(handleResponse);
 }
 
 function getNearestTime(id) {

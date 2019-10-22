@@ -15,7 +15,7 @@ class App extends React.Component {
         super(props);
 
         const { location, action } = this.props;
-        const dispatch = this.props
+        const { dispatch } = this.props
         history.listen((location, action) => {
             dispatch(alertActions.clear());
         });

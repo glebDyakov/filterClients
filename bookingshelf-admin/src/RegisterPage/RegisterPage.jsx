@@ -5,6 +5,8 @@ import config from 'config';
 
 
 import { userActions } from '../_actions';
+import {isValidNumber} from "libphonenumber-js";
+import ReactPhoneInput from "react-phone-input-2";
 
 class RegisterPage extends React.Component {
     constructor(props) {
@@ -117,6 +119,24 @@ class RegisterPage extends React.Component {
                                            emailIsValid: this.isValidEmailAddress(user.email)
                                        })}
                                 />
+                                <span>Телефон</span>
+                                <ReactPhoneInput
+                                    enableLongNumbers={true}
+                                    // disableCountryCode={true}
+                                    regions={['america', 'europe']}
+                                    placeholder=""
+                                    disableAreaCodes={true}
+                                    countryCodeEditable={true}
+                                    inputClass={((!user.phone || isValidNumber(user.phone)) ? 'company_input ' : 'company_input redBorder')}
+                                    value={user.phone} defaultCountry={'by'} onChange={phone => {
+                                    this.setState({
+                                        user: {
+                                            ...user,
+                                            phone: phone.replace(/[() ]/g, '')
+                                        }
+                                    });
+                                }}/>
+
 
                                 <span>Cтрана</span>
                                 <div className="">
@@ -209,8 +229,8 @@ class RegisterPage extends React.Component {
                                     authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)  &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
                                 }
-                                <button className={((!emailIsValid || !user.companyName || user.countryCode==='' || user.timezoneId==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
-                                        type={emailIsValid && user.companyName && user.countryCode!=='' && user.timezoneId!=='' && agreed && 'submit'}
+                                <button className={((!isValidNumber(user.phone) || !emailIsValid || !user.companyName || user.countryCode==='' || user.timezoneId==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
+                                        type={isValidNumber(user.phone) && emailIsValid && user.companyName && user.countryCode!=='' && user.timezoneId!=='' && agreed && 'submit'}
                                 >Регистрация
                                 </button>
 
