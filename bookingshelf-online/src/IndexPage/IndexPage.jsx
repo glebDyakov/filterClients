@@ -263,6 +263,7 @@ class IndexPage extends PureComponent {
     }
 
     render() {
+        const { history } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies } = this.props.staff;
@@ -292,7 +293,7 @@ class IndexPage extends PureComponent {
                 <React.Fragment>
                     {screen === 0 &&
                     <TabCompanySelection
-                        history={this.props.history}
+                        history={history}
                         selectSubcompany={this.selectSubcompany}
                         selectedSubcompany={selectedSubcompany}
                         subcompanies={subcompanies}
@@ -307,6 +308,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        history={history}
+                        selectedSubcompany={selectedSubcompany}
                         clearStaff={this.clearStaff}
                         subcompanies={subcompanies}
                         info={info}
@@ -414,7 +417,7 @@ class IndexPage extends PureComponent {
 
             <div className="container_popups">
 
-                {info && <Header info={info}/>}
+                {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}
 
                 <div className="service_selection_wrapper">
                     {content}

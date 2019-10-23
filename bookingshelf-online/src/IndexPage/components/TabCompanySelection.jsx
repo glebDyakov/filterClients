@@ -35,6 +35,7 @@ class TabCompanySelection extends  PureComponent{
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(1);
+                        this.props.history.push(`/${selectedSubcompany.bookingPage}`)
                         //refreshTimetable();
                     }}>Вперед</span>}
                 </div>
@@ -48,29 +49,35 @@ class TabCompanySelection extends  PureComponent{
                             key={i}
                         >
                             <span className="staff_popup_item">
-                                <div className="img_container">
-                                    {subcompany.city ? (
-                                        <iframe
-                                            width="100%"
-                                            height="300"
-                                            frameBorder="0"
-                                            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyAqRjBmS8aGyPsZqxDpZg9KsG9xiqgi95o
-                                                &q=${this.getPlace(subcompany)}`}
-                                            allowFullScreen>
-                                        </iframe>
-                                    ) : (<img
-                                            src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                            alt=""/>
-                                    )
-                                    }
-                                    <span className="staff_popup_name">{subcompany.companyName}</span>
-                                </div>
+                                    <div className="img_container">
+                                        {subcompany.city ? (
+                                            <iframe
+                                                width="100%"
+                                                height="300"
+                                                frameBorder="0"
+                                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyAqRjBmS8aGyPsZqxDpZg9KsG9xiqgi95o
+                                                    &q=${this.getPlace(subcompany)}`}
+                                                allowFullScreen>
+                                            </iframe>
+                                        ) : (<img
+                                                src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                alt=""/>
+                                        )
+                                        }
+                                        <div style={{ position: 'relative'}}>
+
+                                        <span className="staff_popup_name">{subcompany.companyName}</span>
+
+                                            <span className="next_block"></span>
+                                        </div>
+                                    </div>
 
 
 
-                                <div className="mobile_block">
-                                    <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                </div>
+                                    <div className="mobile_block">
+                                        <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                    </div>
+
                             </span>
                         </li>
                     )}
