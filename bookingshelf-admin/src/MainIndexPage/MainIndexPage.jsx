@@ -163,7 +163,11 @@ class MainIndexPage extends Component {
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
             dispatch(companyActions.updateSubcompany(subcompany));
         }
-        //dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify(this.state.notification)))
+        if (i === 0) {
+            dispatch(notificationActions.updateSMS_EMAIL(JSON.stringify({...this.state.notification, template: subcompany.template})))
+        } else {
+            dispatch(notificationActions.updateSubcompanySMS_EMAIL(JSON.stringify({...this.state.notification, template: subcompany.template}), subcompany.companyId))
+        }
     }
 
     onClose() {

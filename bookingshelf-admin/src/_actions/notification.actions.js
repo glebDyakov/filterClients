@@ -4,6 +4,7 @@ import {notificationService} from '../_services';
 export const notificationActions = {
     getSMS_EMAIL,
     updateSMS_EMAIL,
+    updateSubcompanySMS_EMAIL,
     setSMS,
     getBalance
 };
@@ -43,6 +44,18 @@ function updateSMS_EMAIL(params) {
 
     function success(notification) { return notification }
 }
+
+function updateSubcompanySMS_EMAIL(params, id) {
+    return dispatch => {
+        notificationService.updateSubcompanySMS_EMAIL(params, id)
+            .then(
+                notification => dispatch(success(notification)),
+            );
+    };
+
+    function success(notification) { return notification }
+}
+
 
 function setSMS(params) {
 

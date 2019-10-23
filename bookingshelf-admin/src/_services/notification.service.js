@@ -4,6 +4,7 @@ import { authHeader, handleResponse } from '../_helpers';
 export const notificationService = {
     getSMS_EMAIL,
     updateSMS_EMAIL,
+    updateSubcompanySMS_EMAIL,
     setSMS,
     getBalance
 };
@@ -25,6 +26,22 @@ function updateSMS_EMAIL(params) {
         .then(notification => {
             return notification;
         });
+}
+
+function updateSubcompanySMS_EMAIL(params, id) {
+    const requestOptions = {
+        method: 'PUT',
+        body: params,
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/subcompanies/${id}/notifications`, requestOptions)
+        .then(handleResponse);
 }
 
 function setSMS(params) {
