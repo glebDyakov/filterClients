@@ -79,12 +79,7 @@ class ClientDetails extends React.Component {
 
                     <div>
                         <div className="">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Информация о клиенте</h4>
-                                <button type="button" className="close" data-dismiss="modal"></button>
-                                {/*<div className="close"></div>*/}
-                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
-                            </div>
+                            <div className="modal-header"></div>
                             <div className="client-info content-pages-bg">
                                 {client &&
                                 <div className="clients-list pt-4 pl-4 pr-4">
