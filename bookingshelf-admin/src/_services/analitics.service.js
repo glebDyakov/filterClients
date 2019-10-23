@@ -5,6 +5,7 @@ import moment from 'moment';
 export const analiticsService = {
     getStaff,
     getRecordsAndClientsCount,
+    getFinancialAnalyticChart,
     getStaffsAnalytic,
     getStaffsAnalyticForAll
 };
@@ -58,4 +59,17 @@ function getStaffsAnalyticForAll(daySelected, dayLast) {
         headers: authHeader()
     };
     return fetch(`${config.apiUrl}/analytics/time?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
+}
+
+function getFinancialAnalyticChart(daySelected, dayLast) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+    return fetch(`${config.apiUrl}/financial/analytics?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then(handleResponse);
 }

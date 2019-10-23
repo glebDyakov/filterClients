@@ -64,6 +64,8 @@ class AnalyticsPage extends Component{
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this.statsForYear = this.statsForYear.bind(this);
         this.getChartData = this.getChartData.bind(this);
+        this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
 
         let dateFrom,dateTo,dateFr, dateNow, dateNowEnd;
@@ -140,9 +142,21 @@ class AnalyticsPage extends Component{
     getChartData() {
         let dateNow = moment().endOf('day').format('x');
         let dateWeekBefore = moment(dateNow - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
+        let dateMonthBefore = moment(dateNow - (3600 * 1000 * 31 * 24)).startOf('day').format('x');
 
         this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dateWeekBefore,dateNow));
         this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dateWeekBefore,dateNow));
+        this.props.dispatch(analiticsActions.getFinancialAnalyticChart(dateMonthBefore, dateNow));
+    }
+
+
+    toggleDropdown(dropdownKey) {
+        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
+    }
+    handleOutsideClick() {
+        this.setState({
+            isFinancialDropdown: false
+        })
     }
 
     setToday(){
@@ -432,6 +446,11 @@ class AnalyticsPage extends Component{
             this.statsForYear(this.props.analitics);
             this.setState({ initChartData: false})
         }
+        if(this.state.isFinancialDropdown) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
     }
 
 
@@ -444,28 +463,36 @@ class AnalyticsPage extends Component{
 
         const dateArrayChart = this.props.analitics.staffsAnalyticChart.dateArrayChart;
         const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart;
+
+        const dateFinancialChart = this.props.analitics.financialAnalyticChart.dateArrayChart;
+        const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
+
         const {analitics, staff} = this.props;
+        const chartOptions = {
+            fill: false,
+            lineTension: 0,
+            backgroundColor: 'rgba(75,192,192,0.4)',
+            borderColor: 'rgba(75,192,192,1)',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: 'rgba(75,192,192,1)',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 3,
+            pointHitRadius: 10,
+        }
+
         const data = {
            labels: dateArray,
            datasets: [
                {
-                   fill: false,
-                   lineTension: 0,
-                   backgroundColor: 'rgba(75,192,192,0.4)',
-                   borderColor: 'rgba(75,192,192,1)',
-                   borderCapStyle: 'butt',
-                   borderDash: [],
-                   borderDashOffset: 0.0,
-                   borderJoinStyle: 'miter',
-                   pointBorderColor: 'rgba(75,192,192,1)',
-                   pointBackgroundColor: 'rgba(75,192,192,1)',
-                   pointBorderWidth: 1,
-                   pointHoverRadius: 5,
-                   pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                   pointHoverBorderColor: 'rgba(220,220,220,1)',
-                   pointHoverBorderWidth: 2,
-                   pointRadius: 3,
-                   pointHitRadius: 10,
+                   ...chartOptions,
                    data: recordsArray
                }
            ]
@@ -474,24 +501,18 @@ class AnalyticsPage extends Component{
             labels: dateArrayChart,
             datasets: [
                 {
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: 'rgba(75,192,192,1)',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 3,
-                    pointHitRadius: 10,
+                    ...chartOptions,
                     data: recordsArrayChart
+                }
+            ]
+        };
+
+        const dataFinancial = {
+            labels: dateFinancialChart,
+            datasets: [
+                {
+                    ...chartOptions,
+                    data: recordsFinancialChart
                 }
             ]
         };
@@ -818,6 +839,27 @@ class AnalyticsPage extends Component{
                         </div>
                         {/*// <!--end group-container-->*/}
 
+                        <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
+                            <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+                                <span style={{ width: 'auto'}} className="title-list">Финансовая аналитика</span>
+                                <div style={{paddingLeft: '6px'}} className="questions_black" onClick={() => this.toggleDropdown("isFinancialDropdown")}>
+                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                    {this.state.isFinancialDropdown && <span className="questions_dropdown">
+                                                                                Сумма стоимости визитов в журнале записи
+                                                                            </span>}
+                                </div>
+                            </div>
+                            <div className="chart-inner">
+                                <div id="container-chart" className="chart" style={{position:"relative"}}>
+                                    {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                    {!isLoadingFirst &&
+                                    <Line
+                                        data={dataFinancial}
+                                        options={options}
+                                    />}
+                                </div>
+                            </div>
+                        </div>
 
                         {!!0 &&
                         <div className="group-container">

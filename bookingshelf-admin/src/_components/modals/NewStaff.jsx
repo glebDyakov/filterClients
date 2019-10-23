@@ -119,6 +119,15 @@ class NewStaff extends React.Component {
             })
         )
 
+        const colourStyles = {
+            menu: (base) => {
+                return {
+                    ...base,
+                    zIndex: 99999999999
+                }
+            }
+        }
+
         return (
             <Modal size="lg" style={{maxWidth: '90%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
@@ -152,7 +161,7 @@ class NewStaff extends React.Component {
                                             <div className="container-fluid">
                                                 <div className="retreats">
                                                     <div className="row">
-                                                        <div className="col-md-6 col-xl-4">
+                                                        <div className="col-md-6">
                                                             <div style={{position: 'relative'}}>
                                                                 <p>Имя</p>
                                                                 <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.firstName} name="firstName"  onChange={this.handleChange}
@@ -213,6 +222,7 @@ class NewStaff extends React.Component {
                                                                 onChange={this.handleChangeMultiple}
                                                                 placeholder=""
                                                                 options={options}
+                                                                styles={colourStyles}
                                                             />
                                                             <p style={{ marginTop: '12px'}}>Начало работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
                                                             {/*{!edit && <div className="button-calendar button-calendar-inline">*/}
@@ -242,7 +252,7 @@ class NewStaff extends React.Component {
                                                             {/*</div>*/}
                                                             {/*}*/}
                                                         </div>
-                                                        <div className="col-md-6 col-xl-4">
+                                                        <div className="col-md-6">
                                                             <div style={{ position: 'relative' }} className="desktop-visible">
                                                                 <p>Фамилия</p>
                                                                 <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} maxLength="100" />
@@ -303,7 +313,7 @@ class NewStaff extends React.Component {
                                                                        {/*className="datepicker-buttons-inline button-cal"/>*/}
                                                             {/*</div>*/}
                                                         </div>
-                                                        <div className="col-md-12 col-xl-4">
+                                                        <div className="col-md-12">
                                                             <div className="upload_container">
                                                                 <div className="setting image_picker">
                                                                     <div className="settings_wrap">

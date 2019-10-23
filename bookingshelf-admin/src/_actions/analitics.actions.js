@@ -7,6 +7,7 @@ export const analiticsActions = {
     getStaff,
     getRecordsAndClientsCount,
     getRecordsAndClientsChartCount,
+    getFinancialAnalyticChart,
     getStaffsAnalytic,
     getStaffsAnalyticForAll,
     getStaffsAnalyticChart,
@@ -107,6 +108,22 @@ function getStaffsAnalyticChart(staffId, daySelected, dayLast) {
     function success(count) { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS, count } }
     function request() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_REQUEST} }
     function failure() { return { type: analiticsConstants.GET_STAFFS_ANALYTICS_CHART_FAILURE } }
+}
+
+
+function getFinancialAnalyticChart(daySelected, dayLast) {
+    return dispatch => {
+        dispatch(request());
+        analiticsService.getFinancialAnalyticChart(daySelected, dayLast)
+            .then(
+                count => dispatch(success(count)),
+                () => dispatch(failure())
+            );
+    };
+
+    function success(count) { return { type: analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_SUCCESS, count } }
+    function request() { return { type: analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_REQUEST} }
+    function failure() { return { type: analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_FAILURE } }
 }
 
 function getStaffsAnalyticForAllChart(daySelected, dayLast) {
