@@ -5,7 +5,7 @@ class TabOne extends  PureComponent{
 
     render() {
 
-        const {staffId,staffs, subcompanies, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId,staffs, subcompanies, history, selectedSubcompany, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
 
         return(
@@ -15,6 +15,10 @@ class TabOne extends  PureComponent{
                         <span className="prev_block" onClick={() => {
                             clearStaff()
                             setScreen(0);
+                            let {bookingPage} = selectedSubcompany;
+                            let company = bookingPage.includes('_') ? bookingPage.split('_')[0] : bookingPage
+                            history.push(`/${company}`)
+
                         }}>Назад</span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>

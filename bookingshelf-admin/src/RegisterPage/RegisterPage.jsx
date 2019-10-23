@@ -113,31 +113,6 @@ class RegisterPage extends React.Component {
                                 <span>Название компании</span>
                                 <input type="text" className={'' + (user.countryCode && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
 
-                                <span>Введите email</span>
-                                <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
-                                       onKeyUp={() => this.setState({
-                                           emailIsValid: this.isValidEmailAddress(user.email)
-                                       })}
-                                />
-                                <span>Телефон</span>
-                                <ReactPhoneInput
-                                    enableLongNumbers={true}
-                                    // disableCountryCode={true}
-                                    regions={['america', 'europe']}
-                                    placeholder=""
-                                    disableAreaCodes={true}
-                                    countryCodeEditable={true}
-                                    inputClass={((!user.phone || isValidNumber(user.phone)) ? 'company_input ' : 'company_input redBorder')}
-                                    value={user.phone} defaultCountry={'by'} onChange={phone => {
-                                    this.setState({
-                                        user: {
-                                            ...user,
-                                            phone: phone.replace(/[() ]/g, '')
-                                        }
-                                    });
-                                }}/>
-
-
                                 <span>Cтрана</span>
                                 <div className="">
                                     <select className={"custom-select"+((user.countryCode && user.countryCode===''  ? ' redBorder' : ''))} value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
@@ -202,6 +177,31 @@ class RegisterPage extends React.Component {
                                     </select>
                                     }
                                 </div>
+
+                                <span>Телефон</span>
+                                <ReactPhoneInput
+                                    enableLongNumbers={true}
+                                    // disableCountryCode={true}
+                                    regions={['america', 'europe']}
+                                    placeholder=""
+                                    disableAreaCodes={true}
+                                    countryCodeEditable={true}
+                                    inputClass={((!user.phone || isValidNumber(user.phone)) ? 'company_input ' : 'company_input redBorder')}
+                                    value={user.phone} onChange={phone => {
+                                    this.setState({
+                                        user: {
+                                            ...user,
+                                            phone: phone.replace(/[() ]/g, '')
+                                        }
+                                    });
+                                }}/>
+
+                                <span>Введите email</span>
+                                <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
+                                       onKeyUp={() => this.setState({
+                                           emailIsValid: this.isValidEmailAddress(user.email)
+                                       })}
+                                />
 
                                 <span>Пароль</span>
                                 <input type="password" className={'' + ((user.countryCode || user.companyName) && !user.password ? ' redBorder' : '')} name="password" value={user.password} onChange={this.handleChange} />

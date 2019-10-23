@@ -252,12 +252,12 @@ class MainIndexPage extends Component {
                                                 <span className="company_counter">{subcompany.companyAddress3.length}/40</span>
                                             </div>
 
-                                            <p>Вид деятельности</p>
-                                            <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="template"
-                                                    value={subcompany && subcompany.template}>
-                                                <option value={1}>Сфера услуг</option>
-                                                <option value={2}>Коворкинг</option>
-                                            </select>
+                                            <p className="mt-2">Город</p>
+                                            <div className="name_company_wrapper form-control">
+                                                <input type="text" className="company_input" placeholder="" name="city" maxLength="40"
+                                                       value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
+                                                <span className="company_counter">{subcompany.city.length}/40</span>
+                                            </div>
                                         </div>
                                         <div className="col-sm-4">
                                             <p>Email</p>
@@ -339,12 +339,12 @@ class MainIndexPage extends Component {
                                                 </div>
                                                 <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                                             </div>
-                                            <p className="mt-2">Город</p>
-                                            <div className="name_company_wrapper form-control">
-                                                <input type="text" className="company_input" placeholder="" name="city" maxLength="40"
-                                                       value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
-                                                <span className="company_counter">{subcompany.city.length}/40</span>
-                                            </div>
+                                            <p>Вид деятельности</p>
+                                            <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="template"
+                                                    value={subcompany && subcompany.template}>
+                                                <option value={1}>Сфера услуг</option>
+                                                <option value={2}>Коворкинг</option>
+                                            </select>
                                         </div>
                                         <div className="col-sm-4">
                                             <p>Фото компании</p>

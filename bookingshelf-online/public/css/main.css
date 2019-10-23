@@ -232,6 +232,12 @@ q:before, q:after { content:''; }
     font-size: 20px;
     border-right: solid 1px #ffffff;
 }
+.modal_menu .firm_name.not-selected{
+    width: calc(100% - 120px);
+    border: none;
+    justify-content: center;
+    padding: 0;
+}
 .phones_firm a{
     margin-right: 0;
     display: block;
