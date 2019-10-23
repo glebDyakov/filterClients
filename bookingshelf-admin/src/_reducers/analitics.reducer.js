@@ -7,6 +7,10 @@ const initialState = {
         dateArrayChartFirst: [],
         recordsArrayChartFirst: []
     },
+    financialAnalyticChart: {
+        dateArrayChart: [],
+        recordsArrayChart: []
+    },
     staffsAnalyticChart: {
         dateArrayChart: [],
         recordsArrayChart: []
@@ -227,10 +231,31 @@ export function analitics(state = initialState, action) {
                 },
                 isLoadingSecond: false
             };
-        case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
+        case analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_SUCCESS:
             let dateArrayChart = [], recordsArrayChart = [], dateNormal = '';
 
             let length = Object.keys(action.count).length;
+
+            for(i = 0; i < length; i++){
+                dateNormal = moment(Object.keys(action.count)[i]).format("D MMM");
+                dateArrayChart.push(dateNormal);
+                recordsArrayChart.push(action.count[Object.keys(action.count)[i]].amount);
+            }
+
+            return{
+                ...state,
+                isLoadingSecond: false,
+                financialAnalyticChart:{
+                    dateArrayChart,
+                    recordsArrayChart
+                }
+            };
+        case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
+            dateArrayChart = [];
+            recordsArrayChart = [];
+            dateNormal = '';
+
+            length = Object.keys(action.count).length;
 
             for(i = 0; i < length; i++){
                 dateNormal = moment(Object.keys(action.count)[i]).format("D MMM");
@@ -245,7 +270,6 @@ export function analitics(state = initialState, action) {
                     dateArrayChart,
                     recordsArrayChart
                 }
-
             };
         case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_SUCCESS:
             dateArrayChart= [];

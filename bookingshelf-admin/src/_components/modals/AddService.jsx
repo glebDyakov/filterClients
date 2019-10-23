@@ -77,10 +77,10 @@ class AddService extends React.Component {
                                     }
                                     <div className="input_limited_wrapper_name">
                                     <p>Название услуги</p>
-                                        <input type="text" placeholder="" name="name" maxLength="60"
+                                        <input style={{ paddingRight: '60px'}} type="text" placeholder="" name="name" maxLength="128"
                                                value={service.name} onChange={this.handleChange} className={((service.priceFrom || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
                                             <span className="input_limited_name">
-                                                {service.name.length}/60
+                                                {service.name.length}/128
                                             </span>
                                     </div>
                                     <div className="row">
