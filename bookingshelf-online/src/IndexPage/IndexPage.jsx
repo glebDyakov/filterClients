@@ -263,7 +263,7 @@ class IndexPage extends PureComponent {
     }
 
     render() {
-        const { history } = this.props;
+        const { history, match } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies } = this.props.staff;
@@ -293,6 +293,7 @@ class IndexPage extends PureComponent {
                 <React.Fragment>
                     {screen === 0 &&
                     <TabCompanySelection
+                        match={match}
                         history={history}
                         selectSubcompany={this.selectSubcompany}
                         selectedSubcompany={selectedSubcompany}
