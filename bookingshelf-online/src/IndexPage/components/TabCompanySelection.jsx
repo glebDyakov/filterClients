@@ -1,10 +1,18 @@
 import React, {PureComponent} from 'react';
+import {staffActions} from "../../_actions";
+import { connect } from 'react-redux';
+
 
 
 class TabCompanySelection extends  PureComponent{
     constructor(props) {
         super(props)
         this.getPlace = this.getPlace.bind(this);
+    }
+    componentDidMount() {
+        let {company} = this.props.match.params
+
+        this.props.dispatch(staffActions.getInfo(company));
     }
 
     getPlace(subcompany) {
@@ -39,44 +47,49 @@ class TabCompanySelection extends  PureComponent{
                         //refreshTimetable();
                     }}>Вперед</span>}
                 </div>
-                <ul className={`staff_popup staff_popup_large`}>
+                <ul className={`staff_popup`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
-                        <li className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb'}
+                        <li className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
                             onClick={() => {
                                 selectSubcompany(subcompany)
                                 this.props.history.push(`/${subcompany.bookingPage}`)
                             }}
                             key={i}
                         >
+                            {subcompany.city && (
+                                <iframe
+                                    style={{ padding: '6px 12px 0'}}
+                                    id={`google-map-${i}`}
+                                    width="100%"
+                                    height="250"
+                                    frameBorder="0"
+                                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyAqRjBmS8aGyPsZqxDpZg9KsG9xiqgi95o
+                                                    &q=${this.getPlace(subcompany)}&zoom=14`}
+                                    allowFullScreen>
+                                </iframe>
+                            )}
                             <span className="staff_popup_item">
-                                    <div className="img_container">
-                                        {subcompany.city ? (
-                                            <iframe
-                                                width="100%"
-                                                height="300"
-                                                frameBorder="0"
-                                                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyAqRjBmS8aGyPsZqxDpZg9KsG9xiqgi95o
-                                                    &q=${this.getPlace(subcompany)}`}
-                                                allowFullScreen>
-                                            </iframe>
-                                        ) : (<img
-                                                src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                alt=""/>
-                                        )
-                                        }
-                                        <div style={{ position: 'relative'}}>
 
-                                        <span className="staff_popup_name">{subcompany.companyName}</span>
+                                <div className="img_container">
+                                    <img
+                                        src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt=""/>
 
-                                            <span className="next_block"></span>
-                                        </div>
+                                    <div>
+
+                                    <span style={{ fontWeight: 'bold' }} className="staff_popup_name">{subcompany.companyName}</span>
+
                                     </div>
+                                </div>
 
 
 
-                                    <div className="mobile_block">
-                                        <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                    </div>
+                                <div className="mobile_block">
+                                    <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                </div>
+                                <div style={{position: 'relative'}}>
+                                    <span style={{ right: 0 }} className="next_block" />
+                                </div>
 
                             </span>
                         </li>
@@ -86,4 +99,4 @@ class TabCompanySelection extends  PureComponent{
         );
     }
 }
-export default TabCompanySelection;
+export default connect()(TabCompanySelection);
