@@ -49,7 +49,7 @@ class TabCompanySelection extends  PureComponent{
                 </div>
                 <ul className={`staff_popup`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
-                        <li className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
+                        <li style={{ margin: '12px 0' }} className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
                             onClick={() => {
                                 selectSubcompany(subcompany)
                                 this.props.history.push(`/${subcompany.bookingPage}`)
