@@ -4,7 +4,11 @@ import moment from "moment";
 
 export const companyService = {
     add,
+    addSubcompany,
+    updateSubcompany,
+    switchSubcompany,
     get,
+    getSubcompanies,
     updateBookingInfo,
     getBookingInfo,
     getNewAppointments
@@ -30,6 +34,53 @@ function add(params) {
         .then(company => {
             return company;
         });
+}
+
+function addSubcompany(params) {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(params),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/subcompanies`, requestOptions)
+        .then(handleResponse);
+}
+
+function updateSubcompany(params) {
+    const requestOptions = {
+        method: 'PUT',
+        body: JSON.stringify(params),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
+        .then(handleResponse);
+}
+
+function switchSubcompany(params) {
+    const requestOptions = {
+        method: 'PUT',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/subcompanies/${params.companyId}/switch`, requestOptions)
+        .then(handleResponse);
 }
 
 function updateBookingInfo(params) {
@@ -64,6 +115,20 @@ function get() {
     };
 
     return fetch(`${config.apiUrl}/company`, requestOptions).then(handleResponse);
+}
+
+function getSubcompanies() {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/subcompanies`, requestOptions).then(handleResponse);
 }
 
 function getBookingInfo() {

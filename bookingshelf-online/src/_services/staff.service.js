@@ -6,8 +6,10 @@ export const staffService = {
     get,
     add,
     getServices,
+    getSubcompanies,
     getInfo,
     getTimetable,
+    getClientAppointments,
     _delete,
     getByCustomId,
     getTimetableAvailable,
@@ -41,6 +43,15 @@ function getInfo(id) {
     return fetch(`${config.apiUrl}/${id}`, requestOptions).then(handleResponse);
 }
 
+function getSubcompanies(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${id}/subcompanies`, requestOptions).then(handleResponse);
+}
+
 function getNearestTime(id) {
     const requestOptions = {
         method: 'GET',
@@ -50,7 +61,6 @@ function getNearestTime(id) {
     return fetch(`${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(3,'month').utc().format('x')}`, requestOptions).then(handleResponse);
 }
 
-
 function getTimetable(id, date1, date2) {
     const requestOptions = {
         method: 'GET',
@@ -59,6 +69,16 @@ function getTimetable(id, date1, date2) {
 
     return fetch(`${config.apiUrl}/${id}/timetables?dateFrom=${date1}&dateTo=${date2}`, requestOptions).then(handleResponse);
 }
+
+function getClientAppointments(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${id}/appointments/clients?dateFrom=1&dateTo=${moment().endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
 
 function getTimetableAvailable(id, staffId, date1, date2, service) {
     const requestOptions = {
@@ -107,7 +127,7 @@ function handleResponse(response) {
                 location.reload(true);
             }
 
-            const error = (data && data.message) || response.statusText;
+            const error = (data && data.message) || (data && data.exceptionMessage) || response.statusText;
             return Promise.reject(error);
         }
 

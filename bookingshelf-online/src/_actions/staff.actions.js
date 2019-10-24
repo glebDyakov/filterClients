@@ -7,8 +7,11 @@ export const staffActions = {
     add,
     _delete,
     getInfo,
+    getSubcompanies,
+    clearStaff,
     getServices,
     getTimetable,
+    getClientAppointments,
     getByCustomId,
     getNearestTime,
     getTimetableAvailable
@@ -29,6 +32,14 @@ function get(id) {
     function success(staff) { return { type: staffConstants.GET_SUCCESS, staff, } }
     function failure() { return { type: staffConstants.GET_FAILURE } }
 }
+function clearStaff() {
+    return dispatch => {
+        dispatch(success());
+
+    };
+
+    function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
+}
 
 function getInfo(id) {
     return dispatch => {
@@ -43,6 +54,21 @@ function getInfo(id) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+
+function getSubcompanies(id) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getSubcompanies(id)
+            .then(
+                subcompanies => dispatch(success(subcompanies)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_SUBCOMPANIES } }
+    function success(subcompanies) { return { type: staffConstants.GET_SUBCOMPANIES_SUCCESS, subcompanies } }
+    function failure() { return { type: staffConstants.GET_SUBCOMPANIES_FAILURE } }
 }
 
 function getServices(id) {
@@ -91,18 +117,22 @@ function add(id, staff, service, params) {
                     } else if (result.clientVerificationCode) {
                         dispatch(success(result))
                     } else {
-                        dispatch(failure());
+                        dispatch(failure('Извините, это время недоступно для записи'));
                     }
                 },
-                () => {
-                    dispatch(failure());
+                (err) => {
+                    if (err === 'client in blacklist') {
+                        dispatch(failure('Извините, ваша запись не может быть создана. Пожалуйста, свяжитесь с администратором заведения.'));
+                    } else {
+                        dispatch(failure('Извините, это время недоступно для записи'));
+                    }
                 }
             );
     };
 
     function request() { return { type: staffConstants.ADD_APPOINTMENT } }
     function success(payload) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, payload } }
-    function failure() { return { type: staffConstants.ADD_APPOINTMENT_FAILURE } }
+    function failure(error) { return { type: staffConstants.ADD_APPOINTMENT_FAILURE, error } }
 }
 
 function _delete(id) {
@@ -149,6 +179,22 @@ function getTimetable(company, date1, date2) {
     function success(timetable) { return { type: staffConstants.GET_TIMETABLE_SUCCESS, timetable } }
     function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
+
+function getClientAppointments(company) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getClientAppointments(company)
+            .then(
+                clients => dispatch(success(clients)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS } }
+    function success(clients) { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS, clients } }
+    function failure() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_FAILURE } }
+}
+
 
 function getTimetableAvailable(company, staffId, date1, date2, service) {
     return dispatch => {

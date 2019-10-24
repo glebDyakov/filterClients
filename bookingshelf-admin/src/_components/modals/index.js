@@ -1,4 +1,5 @@
 export * from './AddWorkTime';
+export * from './AddBlackList';
 export * from './NewStaff';
 export * from './EditStaff';
 export * from './UserSettings';

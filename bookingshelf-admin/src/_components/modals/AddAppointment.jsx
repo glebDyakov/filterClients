@@ -265,11 +265,19 @@ class AddAppointment extends React.Component {
         if (filteredServiceList.length) {
             return filteredServiceList.map((service, key) =>
 
-                <li className="dropdown-item" key={key}><a
-                    onClick={() => this.setService(service.serviceId, service, index)}><span
-                    className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/><span
-                    className={service.color && service.color.toLowerCase()}><span
-                    className="items-color"><span>{service.name}</span>    <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>  <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span></span></span></a>
+                <li className="dropdown-item" key={key}>
+                    <a onClick={() => this.setService(service.serviceId, service, index)}>
+                        <span className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/>
+                        <span className={service.color && service.color.toLowerCase()}>
+                            <span className="items-color">
+                                <span>{service.name} <br/>
+                                    <span style={{ fontSize: '10px'}}>{service.details}</span>
+                                </span>
+                                <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>
+                                <span>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                            </span>
+                        </span>
+                    </a>
                 </li>
             )
         }

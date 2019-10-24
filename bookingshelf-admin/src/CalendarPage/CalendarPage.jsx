@@ -209,8 +209,13 @@ class CalendarPage extends PureComponent {
         // setTimeout(() => this.updateCalendar(), 300000)
 
         initializeJs();
+        const { search } = this.props.location
+        if (search.includes('appointmentId')) {
+            this.props.dispatch(calendarActions.setScrollableAppointment(search.split('=')[1]))
+        }
 
         this.scrollToMyRef();
+
 
         setTimeout(() => {
             const {selectedDay} = this.state;

@@ -251,11 +251,13 @@ export function authentication(state = initialState, action) {
             };
         case userConstants.REGISTER_REQUEST:
             return {
+                ...state,
                 registering: true,
                 error: -1,
             };
         case userConstants.REGISTER_SUCCESS:
             return {
+                ...state,
                 status: 'register.company',
                 error: -1,
                 step: Math.random(),
@@ -263,6 +265,7 @@ export function authentication(state = initialState, action) {
             };
         case userConstants.REGISTER_FAILURE:
             return {
+                ...state,
                 error: JSON.parse(action.error),
                 step: Math.random(),
                 registering: false

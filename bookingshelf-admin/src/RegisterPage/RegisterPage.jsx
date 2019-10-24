@@ -5,6 +5,8 @@ import config from 'config';
 
 
 import { userActions } from '../_actions';
+import {isValidNumber} from "libphonenumber-js";
+import ReactPhoneInput from "react-phone-input-2";
 
 class RegisterPage extends React.Component {
     constructor(props) {
@@ -111,13 +113,6 @@ class RegisterPage extends React.Component {
                                 <span>Название компании</span>
                                 <input type="text" className={'' + (user.countryCode && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
 
-                                <span>Введите email</span>
-                                <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
-                                       onKeyUp={() => this.setState({
-                                           emailIsValid: this.isValidEmailAddress(user.email)
-                                       })}
-                                />
-
                                 <span>Cтрана</span>
                                 <div className="">
                                     <select className={"custom-select"+((user.countryCode && user.countryCode===''  ? ' redBorder' : ''))} value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
@@ -183,6 +178,31 @@ class RegisterPage extends React.Component {
                                     }
                                 </div>
 
+                                <span>Телефон</span>
+                                <ReactPhoneInput
+                                    enableLongNumbers={true}
+                                    // disableCountryCode={true}
+                                    regions={['america', 'europe']}
+                                    placeholder=""
+                                    disableAreaCodes={true}
+                                    countryCodeEditable={true}
+                                    inputClass={((!user.phone || isValidNumber(user.phone)) ? 'company_input ' : 'company_input redBorder')}
+                                    value={user.phone} onChange={phone => {
+                                    this.setState({
+                                        user: {
+                                            ...user,
+                                            phone: phone.replace(/[() ]/g, '')
+                                        }
+                                    });
+                                }}/>
+
+                                <span>Введите email</span>
+                                <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
+                                       onKeyUp={() => this.setState({
+                                           emailIsValid: this.isValidEmailAddress(user.email)
+                                       })}
+                                />
+
                                 <span>Пароль</span>
                                 <input type="password" className={'' + ((user.countryCode || user.companyName) && !user.password ? ' redBorder' : '')} name="password" value={user.password} onChange={this.handleChange} />
 
@@ -209,8 +229,8 @@ class RegisterPage extends React.Component {
                                     authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)  &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
                                 }
-                                <button className={((!emailIsValid || !user.companyName || user.countryCode==='' || user.timezoneId==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
-                                        type={emailIsValid && user.companyName && user.countryCode!=='' && user.timezoneId!=='' && agreed && 'submit'}
+                                <button className={((!isValidNumber(user.phone) || !emailIsValid || !user.companyName || user.countryCode==='' || user.timezoneId==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
+                                        type={isValidNumber(user.phone) && emailIsValid && user.companyName && user.countryCode!=='' && user.timezoneId!=='' && agreed && 'submit'}
                                 >Регистрация
                                 </button>
 

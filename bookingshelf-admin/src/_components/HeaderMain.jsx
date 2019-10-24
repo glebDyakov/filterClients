@@ -95,24 +95,54 @@ class HeaderMain extends React.PureComponent {
                         <img alt="" src={`${process.env.CONTEXT}public/img/icons/information.svg`}/>
                     </a>
                     <ul className="dropdown-menu">
+                        {company.subcompanies.map((subcompany, i) => {
+                            return (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? (
+                                <div onClick={() => {
+                                    this.props.dispatch(companyActions.switchSubcompany(subcompany))
+                                }}>
+                                    {subcompany.defaultAddress === 1 && subcompany.companyAddress1.length > 0 &&
+                                    <li>
+                                        <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                    {subcompany.defaultAddress === 2 && subcompany.companyAddress2.length > 0 &&
+                                    <li>
+                                        <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                    {subcompany.defaultAddress === 3 && subcompany.companyAddress3.length> 0 &&
+                                    <li>
+                                        <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                </div>
+                            ) : (
+                                <React.Fragment>
+                                    {company && company.settings && company.settings.defaultAddress === 1 && company.settings.companyAddress1.length > 0 &&
+                                    <li>
+                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                    {company && company.settings && company.settings.defaultAddress === 2 && company.settings.companyAddress2.length > 0 &&
+                                    <li>
+                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                    {company && company.settings && company.settings.defaultAddress === 3 && company.settings.companyAddress3.length>0 &&
+                                    <li>
+                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
+                                        </p>
+                                    </li>
+                                    }
+                                </React.Fragment>
+                            )
+                        })
 
-                        {company && company.settings && company.settings.defaultAddress !== 1 && company.settings.length!=='' &&
-                        <li>
-                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
-                            </p>
-                        </li>
-                        }
-                        {company && company.settings && company.settings.defaultAddress !== 2 && company.settings.companyAddress2.length!=='' &&
-                        <li>
-                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
-                            </p>
-                        </li>
-                        }
-                        {company && company.settings && company.settings.defaultAddress !== 3 && company.settings.companyAddress3.length>0 &&
-                        <li>
-                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
-                            </p>
-                        </li>
                         }
                     </ul>
                 </div>
@@ -120,29 +150,61 @@ class HeaderMain extends React.PureComponent {
                     <div className="dropdown">
                         <div className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
                              role="menu" aria-haspopup="true" aria-expanded="true">
-                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span></p>
+                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span></p>
                         </div>
 
                         <ul className="dropdown-menu">
+                            {company.subcompanies.map((subcompany, i) => {
+                                return (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? (
+                                   <div onClick={() => {
+                                           this.props.dispatch(companyActions.switchSubcompany(subcompany))
+                                   }}>
+                                       {subcompany.defaultAddress === 1 && subcompany.companyAddress1.length > 0 &&
+                                       <li>
+                                           <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
+                                           </p>
+                                       </li>
+                                       }
+                                       {subcompany.defaultAddress === 2 && subcompany.companyAddress2.length > 0 &&
+                                       <li>
+                                           <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
+                                           </p>
+                                       </li>
+                                       }
+                                       {subcompany.defaultAddress === 3 && subcompany.companyAddress3.length> 0 &&
+                                       <li>
+                                           <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
+                                           </p>
+                                       </li>
+                                       }
+                                   </div>
+                                ) : (
+                                    <React.Fragment>
+                                        {company && company.settings && company.settings.defaultAddress === 1 && company.settings.companyAddress1.length > 0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                        {company && company.settings && company.settings.defaultAddress === 2 && company.settings.companyAddress2.length > 0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                        {company && company.settings && company.settings.defaultAddress === 3 && company.settings.companyAddress3.length>0 &&
+                                        <li>
+                                            <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
+                                            </p>
+                                        </li>
+                                        }
+                                    </React.Fragment>
+                                )
+                            })
 
-                            {company && company.settings && company.settings.defaultAddress !== 1 && company.settings.length!=='' &&
-                                    <li>
-                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
-                                        </p>
-                                    </li>
                             }
-                            {company && company.settings && company.settings.defaultAddress !== 2 && company.settings.companyAddress2.length!=='' &&
-                                    <li>
-                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
-                                        </p>
-                                    </li>
-                            }
-                            {company && company.settings && company.settings.defaultAddress !== 3 && company.settings.companyAddress3.length>0 &&
-                            <li>
-                                <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
-                                </p>
-                            </li>
-                            }
+
+
                         </ul>
                     </div>
                 </div>

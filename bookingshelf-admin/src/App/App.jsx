@@ -99,6 +99,7 @@ class App extends React.Component {
                 this.notifications();
 
                 this.props.dispatch(companyActions.get());
+                this.props.dispatch(companyActions.getSubcompanies());
             }
             this.setState({...this.state, authentication: newProps.authentication})
         }
@@ -262,7 +263,7 @@ class App extends React.Component {
             <Router history={history} >
                 {authentication.loginChecked &&
                     <div>
-                        {authentication && authentication.user && authentication.menu && authentication.loggedIn &&
+                        {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <SidebarMain/>
                         }
                         <AppointmentFromSocket

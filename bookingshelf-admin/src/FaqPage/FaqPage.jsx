@@ -18,13 +18,15 @@ class FaqPage extends Component {
 
         if(props.match.params.activeTab &&
             props.match.params.activeTab!=='email_sms' &&
-            props.match.params.activeTab!=='system'
+            props.match.params.activeTab!=='system' &&
+            props.match.params.activeTab!=='staff'
         ){
             props.history.push('/nopage')
         }
 
         if(props.match.params.activeTab==='email_sms') {document.title = "Вопросы по Email и SMS | Онлайн-запись";}
-        if(props.match.params.activeTab==='system'){document.title = "Журнал записи | Онлайн-запись"}
+        if(props.match.params.activeTab==='system'){document.title = "Вопросы по журналу записи | Онлайн-запись"}
+        if(props.match.params.activeTab==='staff'){document.title = "Вопросы по сотрудникам | Онлайн-запись"}
 
         this.state = {
             isLoading: true,
@@ -49,7 +51,7 @@ class FaqPage extends Component {
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
                 ...this.state,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
+                userSettings: newProps.authentication && newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
             });
         }
     }
@@ -61,7 +63,8 @@ class FaqPage extends Component {
         })
 
         if(tab==='email_sms') {document.title = "Вопросы по Email и SMS | Онлайн-запись";}
-        if(tab==='system'){document.title = "Журнал записи | Онлайн-запись"}
+        if(tab==='system'){document.title = "Вопросы по журналу записи | Онлайн-запись"}
+        if(tab==='system'){document.title = "Вопросы по сотрудникам | Онлайн-запись"}
 
         history.pushState(null, '', '/faq/'+tab);
 
@@ -91,6 +94,10 @@ class FaqPage extends Component {
                                             <a className={"nav-link"+(activeTab==='system'?' active show':'')} data-toggle="tab"
                                                href="#system" onClick={()=>{this.setTab('system')}}>Журнал записи</a>
                                         </li>
+                                      <li className="nav-item">
+                                        <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab"
+                                           href="#staff" onClick={()=>{this.setTab('staff')}}>Сотрудники</a>
+                                      </li>
                                     </ul>
                                 </div>
                                 <div className="flex-content col-md-5">
@@ -98,20 +105,6 @@ class FaqPage extends Component {
                                 <div className="tab-content">
                                     <div className={"tab-pane content-pages-bg"+(activeTab==='email_sms'?' active':'')}  id="email_sms">
                                         <div className="templates-group">
-                                            <div className="templates-list row p-3">
-                                                <div className="col-4">
-                                            <span>
-                                                <strong>Вопрос</strong>
-Отличаются ли цены на E-mail рассылки и сообщения в разные страны?
-                                            </span>
-                                                </div>
-                                                <div className="col-8">
-                                            <span>
-                                                <strong className="sub-title">Ответ</strong>
-                                                <span className="massege-templates">Нет, цены одинаковы по всему миру.</span>
-                                            </span>
-                                                </div>
-                                            </div>
                                             <div className="templates-list row p-3">
                                                 <div className="col-4">
                                             <span>
@@ -180,21 +173,6 @@ class FaqPage extends Component {
                                                 <strong className="sub-title">Ответ</strong>
                                                 <span className="massege-templates">
 Нет, мы используем сторонние сервисы и несем финансовые обязательства. При этом, мы предлагаем более выгодные цены на SMS рассылки для наших клиентов.
-</span>
-                                            </span>
-                                                </div>
-                                            </div>
-                                            <div className="templates-list row p-3">
-                                                <div className="col-4">
-                                            <span>
-                                                <strong>Вопрос</strong>
-Включены ли E-mail сообщения в стоимость обслуживания?
-                                            </span>
-                                                </div>
-                                                <div className="col-8">
-                                            <span>
-                                                <strong className="sub-title">Ответ</strong>
-                                                <span className="massege-templates">Да, некоторое количество E-mail сообщений включено в каждый из пакетов. При превышении, вы получаете лучшую на рынке цену по E-mail рассылкам. Важно понимать, что мы используем только Авторизованные системы, что позволяет исключить попадание писем в спам.
 </span>
                                             </span>
                                                 </div>
@@ -279,6 +257,68 @@ class FaqPage extends Component {
 
                                         </div>
                                     </div>
+
+                                  <div className={"tab-pane content-pages-bg"+(activeTab==='staff'?' active':'')} id="system">
+                                    <div className="templates-group">
+                                      <div className="templates-list row p-3">
+                                        <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Как добавить сотрудника?
+                                                  </span>
+                                        </div>
+                                        <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Вы можете пригласить сотрудник по email или добавить вручную. Email является логином сотрудника. Если Email не добавлен, сотрудник будет зарегистрирован, но не сможет зайти в свой профиль для просмотра администраторской области.</span>
+                                                    </span>
+                                        </div>
+                                      </div>
+                                      <div className="templates-list row p-3">
+                                        <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Как создать расписание?
+                                                  </span>
+                                        </div>
+                                        <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">На вкладке рабочие часы создайте расписание для каждого сотрудника на каждый день. Создайте несколько промежутков, если нужно разбить расписание на несколько временных интервалов.  Выберите “повторять” если расписание постоянно не меняется.</span>
+                                                    </span>
+                                        </div>
+                                      </div>
+                                      <div className="templates-list row p-3">
+                                        <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                     Что такое доступы?
+                                                  </span>
+                                        </div>
+                                        <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Доступы необходимы, чтобы контролировать какая информация доступна сотруднику. При создании сотрудника выберите доступ. В настройках доступа, если необходимо, проставьте галочки какой уровень разрешает просматривать ту или иную информацию.</span>
+                                                    </span>
+                                        </div>
+                                      </div>
+                                      <div className="templates-list row p-3">
+                                        <div className="col-4">
+                                                  <span>
+                                                      <strong>Вопрос</strong>
+                                                      Что такое выходные дни?
+                                                  </span>
+                                        </div>
+                                        <div className="col-8">
+                                                    <span>
+                                                        <strong className="sub-title">Ответ</strong>
+                                                        <span className="massege-templates">Создание выходного дня делает этот день недоступным для записи ко всем сотрудникам.</span>
+                                                    </span>
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
                                 </div>
                                 <hr/>
                               <div style={{ position: 'absolute', bottom: '0' }} className="delimiter p-3"><span></span><p className="col-12">

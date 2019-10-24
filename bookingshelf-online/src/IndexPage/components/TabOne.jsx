@@ -5,12 +5,22 @@ class TabOne extends  PureComponent{
 
     render() {
 
-        const {staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId,staffs, subcompanies, history, selectedSubcompany, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
+                    {subcompanies.length > 1 && (
+                        <span className="prev_block" onClick={() => {
+                            clearStaff()
+                            setScreen(0);
+                            let {bookingPage} = selectedSubcompany;
+                            let company = bookingPage.includes('_') ? bookingPage.split('_')[0] : bookingPage
+                            history.push(`/${company}`)
+
+                        }}>Назад</span>
+                    )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
@@ -19,7 +29,7 @@ class TabOne extends  PureComponent{
                     }}>Вперед</span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                    {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
+                    {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
 
 
                         <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}

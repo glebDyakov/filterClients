@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
+import {ClientDetails} from "./ClientDetails";
 
 
 
@@ -14,12 +15,37 @@ class TabSix extends  PureComponent {
         };
         this.onCancelVisit = this.onCancelVisit.bind(this);
         this.setterApproveF = this.setterApproveF.bind(this);
+        this.toggleAllVisits = this.toggleAllVisits.bind(this);
+    }
+    toggleAllVisits() {
+        this.setState({ allVisits: !this.state.allVisits });
     }
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
             setScreen,refreshTimetable,_delete, setDefaultFlag} = this.props;
-        const {approveF} = this.state;
+        const {approveF, allVisits} = this.state;
+
+        let serviceInfo = null
+        if (selectedService.serviceId) {
+            let priceFrom = 0;
+            let priceTo= 0;
+            let duration = 0;
+            selectedServices.forEach((service) => {
+                priceFrom += parseInt(service.priceFrom)
+                priceTo += parseInt(service.priceTo)
+                duration += parseInt(service.duration)
+            })
+
+            serviceInfo = (
+                <div className="service_item">
+                    {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                        (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
+                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{selectedServices[0].currency}</span></p>
+                    <span className="runtime"><strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                </div>
+            )
+        }
 
 
         return (
@@ -38,14 +64,13 @@ class TabSix extends  PureComponent {
                     </div>
                     }
 
-                    {selectedService.serviceId &&
-                    <div className="supperVisDet" >
-                        {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                            (<p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>)}
+                    {/*{selectedService.serviceId &&*/}
+                    {/*<div className="supperVisDet" >*/}
+                    {/*    */}
 
-                    </div>
-                    }
+                    {/*</div>*/}
+                    {/*}*/}
+                    {serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
                         <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
@@ -69,6 +94,8 @@ class TabSix extends  PureComponent {
                     </button>
                 </div>
                 }
+                <input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
+                {allVisits && <ClientDetails />}
                 {/*<p className="skip_employee"  onClick={() => {*/}
                 {/*    setScreen(2);*/}
                 {/*    refreshTimetable();*/}
