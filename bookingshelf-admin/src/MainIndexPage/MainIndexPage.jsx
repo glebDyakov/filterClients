@@ -397,6 +397,7 @@ class MainIndexPage extends Component {
                                 if (!adding) {
                                     const newSubcompanies = subcompanies
                                     newSubcompanies.push({
+                                        city: '',
                                         companyName: '',
                                         companyAddress1: '',
                                         companyAddress2: '',
