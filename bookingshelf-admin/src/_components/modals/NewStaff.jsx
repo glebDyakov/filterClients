@@ -266,7 +266,7 @@ class NewStaff extends React.Component {
                                                                     name="email"
                                                                     value={staff.email}
                                                                     onChange={this.handleChange}
-                                                                    className={edit ? "disabledField" : ""}
+                                                                    className={(edit ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
                                                                     disabled={edit}
                                                                 />
                                                             </div>
@@ -355,7 +355,7 @@ class NewStaff extends React.Component {
                                                                         type="button" onClick={this.closeModal} data-dismiss="modal">Отменить
                                                                 </button>
                                                                 <button className={((!staff.firstName || (staff.email && !this.isValidEmailAddress(staff.email)) || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
-                                                                        onClick={staff.firstName && (staff.email && this.isValidEmailAddress(staff.email)) && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
+                                                                        onClick={staff.firstName && (!staff.email || (staff.email && this.isValidEmailAddress(staff.email))) && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
                                                                 >Сохранить
                                                                 </button>
                                                             </div>
