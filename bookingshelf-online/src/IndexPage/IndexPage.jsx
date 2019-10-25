@@ -145,7 +145,8 @@ class IndexPage extends PureComponent {
 
             })
         }
-        if (!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany)) {
+        if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
+        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== this.props.staff.info.subCompanies)))) {
             this.setScreen(1)
         }
     }
@@ -309,8 +310,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        match={match}
                         history={history}
-                        selectedSubcompany={selectedSubcompany}
                         clearStaff={this.clearStaff}
                         subcompanies={subcompanies}
                         info={info}

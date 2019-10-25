@@ -12,7 +12,7 @@ class TabCompanySelection extends  PureComponent{
     componentDidMount() {
         let {company} = this.props.match.params
 
-        this.props.dispatch(staffActions.getInfo(company));
+        this.props.dispatch(staffActions.getInfo(company, true));
     }
 
     getPlace(subcompany) {
