@@ -168,12 +168,12 @@ class NewStaff extends React.Component {
                                                                        className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
                                                                        maxLength="100"
                                                                 />
-                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.firstName.length}/100</span>
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.firstName ? staff.firstName.length : 0}/100</span>
                                                             </div>
                                                             <div style={{position: 'relative'}} className="mobile-visible">
                                                                 <p>Фамилия</p>
                                                                 <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.lastName} name="lastName" onChange={this.handleChange} maxLength="100" />
-                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName.length}/100</span>
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                             </div>
 
                                                             <p>Номер телефона</p>
@@ -256,7 +256,7 @@ class NewStaff extends React.Component {
                                                             <div style={{ position: 'relative' }} className="desktop-visible">
                                                                 <p>Фамилия</p>
                                                                 <input style={{paddingRight: '57px'}} type="text" placeholder="" value={staff.lastName} name="lastName"  onChange={this.handleChange} maxLength="100" />
-                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName.length}/100</span>
+                                                                <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                             </div>
                                                             <div className="desktop-visible">
                                                                 <p>Email</p>
@@ -352,10 +352,10 @@ class NewStaff extends React.Component {
                                                             }
                                                             <div className="buttons new-staff-buttons">
                                                                 <button className="small-button gray-button"
-                                                                        type="button" data-dismiss="modal">Отменить
+                                                                        type="button" onClick={this.closeModal} data-dismiss="modal">Отменить
                                                                 </button>
-                                                                <button className={((!staff.firstName || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
-                                                                        onClick={staff.firstName && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
+                                                                <button className={((!staff.firstName || (staff.email && !this.isValidEmailAddress(staff.email)) || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
+                                                                        onClick={staff.firstName && (staff.email && this.isValidEmailAddress(staff.email)) && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
                                                                 >Сохранить
                                                                 </button>
                                                             </div>
