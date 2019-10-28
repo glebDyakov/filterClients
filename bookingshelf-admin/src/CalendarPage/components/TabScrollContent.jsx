@@ -228,7 +228,7 @@ class TabScroll extends Component{
                                                     {clients && clients.map(client =>
                                                         ((client.clientId === appointment[0][0].clientId) &&
                                                     <span className={`${client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'old' : 'new'}-client-icon`}
-                                                          title="Онлайн-запись"/>)
+                                                          title={client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'Подтвержденный клиент' : 'Новый клиент'}/>)
                                                     )}
                                                     {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
