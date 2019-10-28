@@ -289,11 +289,14 @@ export function calendar(state = initialState, action) {
                 newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
             }
 
+
             newAppointmentsCanceled.push(newItem);
+            const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
+            const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
-                appointments: newAppointment,
-                appointmentsCanceled: newAppointmentsCanceled
+                appointments: finalAppointments,
+                appointmentsCanceled: finalAppointmentsCanceled
             };
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
@@ -326,7 +329,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_SUCCESS_CANCELED:
             return {
                 ...state,
-                appointmentsCanceled: action.appointments,
+                appointmentsCanceled: action.appointments || [],
                 isLoadingModalCanceled: false
             };
         case calendarConstants.GET_APPOINTMENT_FAILURE__CANCELED:

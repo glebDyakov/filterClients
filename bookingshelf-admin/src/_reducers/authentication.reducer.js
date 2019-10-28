@@ -4,7 +4,7 @@ import {access} from "../_helpers/access";
 
 let user = JSON.parse(localStorage.getItem('user'));
 let menu = JSON.parse(localStorage.getItem('menu'));
-let initialState = user ? {loggedIn: true, user, menu} : {};
+let initialState = {}
 
 if(user && !user.companyTimetables || (user && !user.profile.permissions) || !user || !user.companyName || !user.countryCode || !user.timezoneId){
     userActions.logout();
