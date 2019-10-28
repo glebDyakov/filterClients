@@ -225,6 +225,11 @@ class TabScroll extends Component{
                                                           data-target=".delete-notes-modal"
                                                           title="Отменить встречу"
                                                           onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}/>
+                                                    {clients && clients.map(client =>
+                                                        ((client.clientId === appointment[0][0].clientId) &&
+                                                    <span className={`${client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'old' : 'new'}-client-icon`}
+                                                          title="Онлайн-запись"/>)
+                                                    )}
                                                     {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
                                                                                     {moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
@@ -237,7 +242,8 @@ class TabScroll extends Component{
                                                     </textarea>
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
-                                                    { clients && clients.map((client) => (
+                                                    { clients && clients.map((client) => {
+                                                        return (
                                                         client.clientId === appointment[0][0].clientId &&
                                                         <div className="msg-inner">
                                                             <p>
@@ -276,7 +282,8 @@ class TabScroll extends Component{
                                                                 Перенести визит
                                                             </button>
                                                             }
-                                                        </div>))
+                                                        </div>)}
+                                                        )
                                                     }
                                                 </div> }
                                             </div>
