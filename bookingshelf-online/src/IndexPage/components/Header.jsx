@@ -15,7 +15,7 @@ class Header extends  PureComponent {
                     ? "data:image/png;base64," + info.imageBase64
                     : `${process.env.CONTEXT}public/img/image.png`}
                 />
-                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && info.companyName}</p>
+                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
                 {!(screen === 0) && (
                     <React.Fragment>
                         <div className="adress-phones">
