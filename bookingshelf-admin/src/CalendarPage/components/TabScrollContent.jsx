@@ -211,6 +211,11 @@ class TabScroll extends Component{
                                                 id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
                                             >
                                                 <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment[0][0].appointmentId === selectedNote ? null : appointment[0][0].appointmentId})}>
+                                                    <span className="delete"
+                                                          data-toggle="modal"
+                                                          data-target=".delete-notes-modal"
+                                                          title="Отменить встречу"
+                                                          onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}/>
                                                     {!appointment[0][0].online &&
                                                     <span className="pen"
                                                           title="Запись через журнал"/>}
@@ -220,11 +225,7 @@ class TabScroll extends Component{
                                                     <span className="globus"
                                                           title="Онлайн-запись"/>}
 
-                                                    <span className="delete"
-                                                          data-toggle="modal"
-                                                          data-target=".delete-notes-modal"
-                                                          title="Отменить встречу"
-                                                          onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}/>
+
                                                     {clients && clients.map(client =>
                                                         ((client.clientId === appointment[0][0].clientId) &&
                                                     <span className={`${client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'old' : 'new'}-client-icon`}
