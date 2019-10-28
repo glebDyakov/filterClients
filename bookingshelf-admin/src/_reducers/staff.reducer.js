@@ -247,13 +247,13 @@ export function staff(state = initialState, action) {
                         "permissionCode": 10
                     },
                     {
-                        "name": 'Клиенты',
+                        "name": 'Все клиенты',
                         "permissionCode": 4
                     },
-                    // {
-                    //     "name": 'Клиенты сотрудника',
-                    //     "permissionCode": 12
-                    // },
+                    {
+                        "name": 'Клиенты сотрудника',
+                        "permissionCode": 12
+                    },
                     {
                         "name": 'Скачивание базы даных клиентов',
                         "permissionCode": 5

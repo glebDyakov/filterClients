@@ -207,30 +207,6 @@ class MainIndexPage extends Component {
                                 onOpen={this.onOpen}
                             />
 
-                            {subcompanies[0] && <form className="content retreats company_fields" name="form">
-                                <div className="row">
-                                    <div className="col-sm-4">
-                                        <p>Заголовок компании</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <input type="text" className="company_input" name="onlineCompanyHeader" maxLength="40"
-                                                   value={subcompanies[0].onlineCompanyHeader} onChange={(e) => this.handleChange(e, 0)}/>
-                                                <span className="company_counter">{subcompanies[0].onlineCompanyHeader.length}/40</span>
-
-                                        </div>
-                                        <div className="buttons-container-setting">
-                                            {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' small-button'} onClick={(e) => {
-                                                if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
-                                                    this.handleSubmit(e, subcompanies[0], 0)
-                                                }
-                                            }
-                                            }>Сохранить</button>}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </form>}
                             {subcompanies.map((subcompany, i) => (
                                 <form className="content retreats company_fields" name="form">
                                     <h3 style={{ textAlign: 'center' }}>Филиал {i + 1}</h3>
