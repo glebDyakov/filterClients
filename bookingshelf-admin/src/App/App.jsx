@@ -108,20 +108,24 @@ class App extends React.Component {
             this.setState({...this.state, company: newProps.company})
         }
 
-        if (this.props.authentication && this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId
-          && this.state.flagStaffId) {
-            this.setState({flagStaffId: false});
+        if (newProps.authentication && newProps.authentication.user && newProps.authentication.user.profile && newProps.authentication.user.profile.staffId
+          && (newProps.authentication.loggedIn && (newProps.authentication.loggedIn !== this.props.authentication.loggedIn) || newProps.company.switchedStaffId)) {
+            // this.setState({flagStaffId: false});
             this.props.dispatch(notificationActions.getBalance());
 
 
+            const socketStaffId = newProps.company.switchedStaffId ? newProps.company.switchedStaffId : newProps.authentication.user.profile.staffId
             const options = {
-                url: `${config.apiSocket}/${this.props.authentication.user.profile.staffId}/`,
+                url: `${config.apiSocket}/${socketStaffId}/`,
                 pingTimeout: 15000,
                 pongTimeout: 10000,
                 reconnectTimeout: 2000,
                 pingMsg: "heartbeat"
             }
-            let socket = new WebsocketHeartbeatJs(options);
+            if (socket) {
+                socket.close()
+            }
+            socket = new WebsocketHeartbeatJs(options);
             // socket = createSocket(this.props.authentication.user.profile.staffId );
 
             console.log("Сокет. Создан");

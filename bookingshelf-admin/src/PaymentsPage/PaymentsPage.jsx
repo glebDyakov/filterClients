@@ -96,7 +96,7 @@ class PaymentsPage extends Component {
     }
 
     setDefaultWorkersCount(staff) {
-        const count = staff ? staff.length : 0;
+        const count = staff ? staff.length : -1;
         if (count <= 10) {
             this.setState({ rate: { ...this.state.rate, workersCount: count }})
         } else if (count > 10 && count <= 20) {
@@ -158,7 +158,9 @@ class PaymentsPage extends Component {
                     break;
             }
         }
-        packetId = packets && packets.find(item => item.staffAmount === staffAmount).packetId;
+        packetId = packets && packets
+            .filter(item=> item.packetType === 'USE_PACKET')
+            .find(item => item.staffAmount === staffAmount).packetId;
         let discountAmount
         switch (amount) {
             case 6:

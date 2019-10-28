@@ -895,6 +895,8 @@
                         }
 
                         .globus,
+                        .old-client-icon,
+                        .new-client-icon,
                         .super-visit,
                         .pen,
                         .men,
@@ -952,11 +954,25 @@
                         .delete {
                             background: url(../img/icons/16.svg) no-repeat center;
                             height: 12px!important;
+                            margin-right: 3px;
                             &:hover {
                                 opacity: 0.6;
                                 cursor: pointer;
                             }
                         }
+
+                        .old-client-icon {
+                            background: url(../img/icons/18.svg) no-repeat center;
+                            background-size: 13px;
+                            height: 13px!important;
+
+                        }
+                        .new-client-icon {
+                            background: url(../img/icons/19.svg) no-repeat center;
+                            background-size: 14px;
+                            height: 12px!important;
+                        }
+
 
                         .submit {
                             background: url(../img/icons/12.svg) no-repeat center;

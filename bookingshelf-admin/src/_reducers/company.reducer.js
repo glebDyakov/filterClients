@@ -74,7 +74,8 @@ export function company(state = initialState, action) {
             let companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
             return {
                 ...state,
-                settings: companyAllInfo
+                settings: companyAllInfo,
+                switchedStaffId: action.company.staffId
 
             }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
