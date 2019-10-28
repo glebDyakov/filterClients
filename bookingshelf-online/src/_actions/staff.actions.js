@@ -41,7 +41,7 @@ function clearStaff() {
     function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
 }
 
-function getInfo(id, loaded) {
+function getInfo(id) {
     return dispatch => {
         dispatch(request());
         staffService.getInfo(id)
@@ -52,7 +52,7 @@ function getInfo(id, loaded) {
     };
 
     function request() { return { type: staffConstants.GET_INFO } }
-    function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info, loaded } }
+    function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
 }
 
