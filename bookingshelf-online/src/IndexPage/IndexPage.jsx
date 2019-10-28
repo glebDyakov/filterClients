@@ -131,7 +131,7 @@ class IndexPage extends PureComponent {
 
             newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.availableDays.length===0 && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
-            if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.newAppointment)) {
+            if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.staff.newAppointment)) {
                 this.setState({ screen: 6})
             }
 
@@ -146,7 +146,7 @@ class IndexPage extends PureComponent {
             })
         }
         if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
-        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== this.props.staff.info.subCompanies)))) {
+        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies))))) {
             this.setScreen(1)
         }
     }
