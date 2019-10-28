@@ -87,7 +87,7 @@ class IndexPage extends PureComponent {
             let disabledDays=[];
             const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisOn && newProps.staff.info.onlineZapisEndTimeMillis)
                 ? newProps.staff.info.onlineZapisEndTimeMillis
-                : parseInt(moment().utc().add(3, 'month').format('x'))
+                : parseInt(moment().utc().add(6, 'month').format('x'))
             const monthMoment = moment(moment(this.state.month).format('MMMM'), 'MMMM')
             const year = parseInt(moment(this.state.month).format('YYYY'))
             const month = parseInt(moment(this.state.month).format('MM'))

@@ -318,7 +318,7 @@ class OnlinePage extends Component {
                                                 <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisOnDropdown")}>
                                                     <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
                                                     {this.state.isOnlineZapisOnDropdown && <span className="questions_dropdown">
-                                                                                    По умолчанию (если выключено), открытый период онлайн-записи составляет 3 мес.
+                                                                                    По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес.
                                                                                 </span>}
                                                 </div>
                                             </div>
