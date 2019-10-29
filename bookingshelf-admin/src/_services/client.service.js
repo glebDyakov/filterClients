@@ -96,7 +96,7 @@ function getClientWithInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=1&dateTo=${moment().endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=1&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {
