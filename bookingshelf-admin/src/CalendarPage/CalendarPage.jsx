@@ -613,7 +613,7 @@ class CalendarPage extends PureComponent {
 
         if(type==='day'){
             appointment.forEach((currentAppointment,i) => {
-                appointment[i].appointmentTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
+                appointment[i].appointmentTimeMillis=moment(selectedDayMoment.format('DD MM YYYY')+" "+moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x')
             });
             startTime = selectedDayMoment.startOf('day').format('x');
             endTime = selectedDayMoment.endOf('day').format('x')
@@ -1006,11 +1006,11 @@ class CalendarPage extends PureComponent {
         numbers.map((item)=>
             workingStaff.availableTimetable.map((timing)=>
                 timing.staffId===idStaff.staffId && timing.availableDays.map((availableDay)=>
-                parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x')) &&
+                parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) &&
 
                 availableDay.availableTimes && availableDay.availableTimes.map((time)=> {
 
-                    let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM HH:mm').format('x'));
+                    let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
                     return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().format('x'))
                         && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)

@@ -202,7 +202,7 @@ class AddAppointment extends React.Component {
 
     setTime(appointmentTimeMillis, minutes, index){
         const {appointment, serviceCurrent, timeNow}=this.state
-        let startTime=moment(moment(timeNow, 'x').format('DD/mm')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/mm HH:mm').format('x');
+        let startTime=moment(moment(timeNow, 'x').format('DD/mm/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/mm/YYYY HH:mm').format('x');
         let timing=this.getTimeArrange( moment(appointmentTimeMillis).format('x'), minutes)
         appointment[index].appointmentTimeMillis = startTime;
         serviceCurrent[index] = {
@@ -515,7 +515,7 @@ class AddAppointment extends React.Component {
                                                         <div className="visit-info row pl-4 pr-4 mb-2">
                                                             <div className="col-9">
                                                                 <p className="gray-bg">
-                                                                    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
+                                                                    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
                                                                     <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
                                                                 </p>
                                                                 <p className="visit-detail">
