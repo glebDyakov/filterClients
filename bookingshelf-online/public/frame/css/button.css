@@ -73,12 +73,7 @@
   cursor: pointer;
   background-color: #fff;
   z-index: 1003;
-  right: 912px;
-}
-@media screen and (max-width: 1650px){
-  .closer-modal{
-    right: 634px;
-  }
+  right: 634px;
 }
 @media screen and (max-width: 720px){
   #online-booking {
