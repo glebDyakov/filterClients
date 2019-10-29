@@ -105,7 +105,7 @@ class DatePicker extends PureComponent {
 
             selectedDaysText = (
                 <React.Fragment>
-                    {moment(selectedDay).format('dd, DD MMMM ')}
+                    {moment(selectedDay).format('dd, DD MMMM YYYY')}
                     {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
                 </React.Fragment>
             );
