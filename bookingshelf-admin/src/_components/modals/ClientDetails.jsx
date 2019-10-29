@@ -112,7 +112,7 @@ class ClientDetails extends React.Component {
                                     <div className="visit-info row pl-4 pr-4 mb-2">
                                         <div className="col-9">
                                             <p className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
-                                                <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMM')}</span>
+                                                <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
                                                 <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
                                             </p>
                                             <p className="visit-detail">
