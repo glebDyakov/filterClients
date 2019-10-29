@@ -214,7 +214,7 @@ class IndexPage extends PureComponent {
 
         const data = selectedServices.map((selectedService) => {
             const item = {...group, duration: selectedService.duration, serviceId: selectedService.serviceId,
-                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM'), 'HH:mm DD/MM').format('x')}
+                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')}
             resultTime += selectedService.duration * 1000;
             return item;
         });
