@@ -76,7 +76,7 @@ function getClientAppointments(id) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/${id}/appointments/clients?dateFrom=1&dateTo=${moment().endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/${id}/appointments/clients?dateFrom=1&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }
 
 
