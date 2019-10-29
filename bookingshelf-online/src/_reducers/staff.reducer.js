@@ -53,7 +53,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 info: action.info,
-                isLoading: !action.loaded,
+                isLoading: false
             };
         case staffConstants.GET:
         case staffConstants.GET_INFO:
