@@ -214,7 +214,7 @@ q:before, q:after { content:''; }
     background-color: #39434f;
     border: none;
     margin: auto;
-    width: 185px;
+    min-width: 185px;
     display: block;
     color: #fff;
     font-size: 20px;
