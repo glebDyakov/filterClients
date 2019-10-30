@@ -168,7 +168,7 @@ class ClientsPage extends Component {
                                         {client_user.phone}
                                     </div>
                                     <div>
-                                        {client_user.country&&(client_user.country)}{client_user.city&&(", "+client_user.city)}{client_user.province&&(", "+client_user.province)}
+                                        {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
                                     </div>
                                     <div className="delete dropdown">
                                         <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
