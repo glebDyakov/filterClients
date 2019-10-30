@@ -2,18 +2,11 @@ import React, {PureComponent} from 'react';
 
 
 class TabOne extends  PureComponent{
-    componentDidMount() {
-
-    }
 
     render() {
 
-        const {staffId,staffs: staffsFromProps, subcompanies, history, match, selectedServiceGroup, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId,staffs, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
-        let staffs = staffsFromProps
-        if (selectedServiceGroup.serviceGroupId && staffsFromProps && staffsFromProps.length > 0) {
-            staffs = staffsFromProps.filter(staff => selectedServiceGroup.services.some(service => (service.staffs || []).some(serviceStaff => serviceStaff.staffId === staff.staffId)))
-        }
 
         return(
             <div className="service_selection screen1">
@@ -21,9 +14,12 @@ class TabOne extends  PureComponent{
                     {subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
                             clearStaff()
-                            setScreen(0.5);
+                            setScreen(0);
+                            let {company} = match.params;
+                            let url = company.includes('_') ? company.split('_')[0] : company
+                            history.push(`/${url}`)
 
-                        }}>Назад</span>
+                        }}>К выбору филиала</span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&

@@ -7,7 +7,6 @@ import 'moment/locale/ru';
 import 'moment-timezone';
 
 import TabCompanySelection from "./components/TabCompanySelection";
-import TabServiceGroups from "./components/TabServiceGroups";
 import TabOne from "./components/TabOne";
 import TabTwo from "./components/TabTwo";
 import TabThird from "./components/TabThird";
@@ -24,7 +23,6 @@ class IndexPage extends PureComponent {
         super(props);
         this.state = {
             selectedStaff: [],
-            selectedServiceGroup: {},
             selectedSubcompany: {},
             selectedService: [],
             interval: 15,
@@ -46,7 +44,6 @@ class IndexPage extends PureComponent {
         this.clearStaff=this.clearStaff.bind(this);
         this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
-        this.selectServiceGroup=this.selectServiceGroup.bind(this);
         this.selectSubcompany=this.selectSubcompany.bind(this);
         this.handleDayClick=this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -143,20 +140,21 @@ class IndexPage extends PureComponent {
         }
         if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
         || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies))))) {
-            this.setScreen(0.5)
+            this.setScreen(1)
         }
     }
 
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if ((prevState.screen === 0) && this.state.screen === 0.5) {
+        if (prevState.screen === 0 && this.state.screen === 1) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
             this.props.dispatch(staffActions.get(company));
             this.props.dispatch(staffActions.getNearestTime(company));
             this.props.dispatch(staffActions.getServices(company));
+            this.props.dispatch(staffActions.getServiceGroups(company));
         }
     }
 
@@ -187,12 +185,9 @@ class IndexPage extends PureComponent {
     }
 
     selectSubcompany(subcompany) {
-        this.setState({ selectedSubcompany: subcompany, screen: 0.5, selectedServiceGroup: {} })
+        this.setState({ selectedSubcompany: subcompany, screen: 1 })
     }
 
-    selectServiceGroup(serviceGroup) {
-        this.setState({ selectedServiceGroup: serviceGroup, screen: 1 })
-    }
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -264,7 +259,7 @@ class IndexPage extends PureComponent {
 
     render() {
         const { history, match } = this.props;
-        const {selectedStaff, selectedSubcompany, selectedServiceGroup, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
+        const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies, serviceGroups } = this.props.staff;
 
@@ -303,33 +298,12 @@ class IndexPage extends PureComponent {
                         staffs={staffs}
                         nearestTime={nearestTime}
                         selectStaff={this.selectStaff}
-                        selectServiceGroup={this.selectServiceGroup}
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
                     />}
-                    {screen === 0.5 &&
-                    <TabServiceGroups
-                        selectedServiceGroup={selectedServiceGroup}
-                        match={match}
-                        history={history}
-                        clearStaff={this.clearStaff}
-                        subcompanies={subcompanies}
-                        info={info}
-                        serviceGroups={serviceGroups}
-                        staffId={selectedStaff.staffId }
-                        staffs={staffs}
-                        nearestTime={nearestTime}
-                        selectServiceGroup={this.selectServiceGroup}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        roundDown={this.roundDown}
-                    />
-                    }
                     {screen === 1 &&
                     <TabOne
-                        selectedServiceGroup={selectedServiceGroup}
-                        services={services}
                         match={match}
                         history={history}
                         clearStaff={this.clearStaff}
@@ -345,7 +319,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 2 &&
                     <TabTwo
-                        selectedServiceGroup={selectedServiceGroup}
+                        serviceGroups={serviceGroups}
                         selectedServices={selectedServices}
                         selectedStaff={selectedStaff}
                         services={services}

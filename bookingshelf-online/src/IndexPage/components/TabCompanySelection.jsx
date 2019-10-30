@@ -34,7 +34,7 @@ class TabCompanySelection extends  PureComponent{
 
     render() {
 
-        const { subcompanies, selectedSubcompany, history, selectServiceGroup, selectSubcompany, staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
@@ -42,7 +42,7 @@ class TabCompanySelection extends  PureComponent{
                     <p className="modal_title">Выберите филиал</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
-                        setScreen(0.5);
+                        setScreen(1);
                         this.props.history.push(`/${selectedSubcompany.bookingPage}`)
                         //refreshTimetable();
                     }}>Вперед</span>}

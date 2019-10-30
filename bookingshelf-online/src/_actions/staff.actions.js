@@ -1,7 +1,6 @@
 import {staffConstants} from '../_constants';
 import {staffService} from '../_services';
 import { alertActions } from './';
-import {authHeader, handleResponse} from "../../../bookingshelf-admin/src/_helpers";
 
 export const staffActions = {
     get,
