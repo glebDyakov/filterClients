@@ -29,7 +29,7 @@ class StaffChoice extends PureComponent {
                         )}
                         {typeSelected && typeSelected===1 && < p> Работающие сотрудники </p>}
                         {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
-                            <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>)
+                            <p>{currentSelectedStaff.firstName + " " + (currentSelectedStaff.lastName ? currentSelectedStaff.lastName : '')}</p>)
                         }
                         {typeSelected && typeSelected===2 && < p> Все сотрудники </p>}
 
@@ -46,7 +46,7 @@ class StaffChoice extends PureComponent {
                                 alt=""
                             />
                         </span>
-                        <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
+                        <p>{currentSelectedStaff.firstName + " " + (currentSelectedStaff.lastName ? currentSelectedStaff.lastName : '')}</p>
                     </div>
                 )}
                 {access(2) && (
@@ -76,7 +76,7 @@ class StaffChoice extends PureComponent {
                                                                      : `${process.env.CONTEXT}public/img/image.png`}
                                                                  alt=""/>
                                                         </span>
-                                        <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                        <p>{staffEl.firstName + " " + (staffEl.lastName ? staffEl.lastName : '')}</p>
                                     </a>
                                 </li>
                             )}
