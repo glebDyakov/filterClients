@@ -1,12 +1,14 @@
 import {staffConstants} from '../_constants';
 import {staffService} from '../_services';
 import { alertActions } from './';
+import {authHeader, handleResponse} from "../../../bookingshelf-admin/src/_helpers";
 
 export const staffActions = {
     get,
     add,
     _delete,
     getInfo,
+    getServiceGroups,
     getSubcompanies,
     clearStaff,
     getServices,
@@ -54,6 +56,21 @@ function getInfo(id, loaded) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info, loaded } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+
+function getServiceGroups(id) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getServiceGroups(id)
+            .then(
+                serviceGroups => dispatch(success(serviceGroups)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_SERVICE_GROUPS } }
+    function success(serviceGroups) { return { type: staffConstants.GET_SERVICE_GROUPS_SUCCESS, serviceGroups } }
+    function failure() { return { type: staffConstants.GET_SERVICE_GROUPS_FAILURE } }
 }
 
 function getSubcompanies(id) {

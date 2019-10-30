@@ -5,10 +5,15 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, setScreen,refreshTimetable,selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, selectedServiceGroup, setScreen,refreshTimetable,selectedStaff,services: servicesFromProps, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
+        }
+
+        let services = servicesFromProps;
+        if (selectedServiceGroup.serviceGroupId) {
+            services = selectedServiceGroup.services
         }
 
         return (

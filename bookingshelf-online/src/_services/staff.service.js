@@ -6,6 +6,7 @@ export const staffService = {
     get,
     add,
     getServices,
+    getServiceGroups,
     getSubcompanies,
     getInfo,
     getTimetable,
@@ -41,6 +42,15 @@ function getInfo(id) {
     };
 
     return fetch(`${config.apiUrl}/${id}`, requestOptions).then(handleResponse);
+}
+
+function getServiceGroups(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${id}/servicegroups`, requestOptions).then(handleResponse);
 }
 
 function getSubcompanies(id) {
