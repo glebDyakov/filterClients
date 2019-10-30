@@ -94,7 +94,7 @@ class App extends React.Component {
         if (this.state.paymentsOnly) {
             this.setState({paymentsOnly: false})
         }
-        if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked) {
+        if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication) && newProps.authentication.loginChecked && newProps.authentication.menu) {
             if (newProps.authentication.loggedIn) {
                 this.notifications();
 
@@ -139,7 +139,7 @@ class App extends React.Component {
 
 
             socket.onclose = function (event) {
-                if (event.wasClean) {
+                if (event && event.wasClean) {
                     console.log('Сокет. cоединение закрыто');
                 } else {
                     console.log('Сокет. соединения как-то закрыто');
