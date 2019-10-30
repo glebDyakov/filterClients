@@ -238,7 +238,7 @@ class ReservedTime extends React.Component {
                                             <div className="img-container">
                                                 <img className="rounded-circle"
                                                      src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                <span>{activeStaffCurrent.firstName+" "+activeStaffCurrent.lastName}</span>
+                                                <span>{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>
                                             </div>
                                         }
                                     </a>
@@ -251,7 +251,7 @@ class ReservedTime extends React.Component {
                                                         <div className="img-container">
                                                             <img className="rounded-circle"
                                                                  src={activeStaff && activeStaff.imageBase64?"data:image/png;base64,"+activeStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                            <span>{staff.firstName+" "+staff.lastName}</span>
+                                                            <span>{staff.firstName+" "+(staff.lastName ? staff.lastName : '')}</span>
                                                         </div>
                                                     </a>
                                                 </li>);}

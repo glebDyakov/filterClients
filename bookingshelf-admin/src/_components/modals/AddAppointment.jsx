@@ -379,7 +379,7 @@ class AddAppointment extends React.Component {
                                                                     <div className="img-container">
                                                                         <img className="rounded-circle"
                                                                              src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                        <span className="staff-name">{activeStaffCurrent.firstName+" "+activeStaffCurrent.lastName}</span>
+                                                                        <span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>
                                                                     </div>
                                                                 }
                                                             </a>
