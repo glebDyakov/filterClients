@@ -116,7 +116,7 @@ class EmailPage extends Component {
         this.props.dispatch(notificationActions.getBalance());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClient());
+        this.props.dispatch(clientActions.getClientWithInfo());
 
         setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();

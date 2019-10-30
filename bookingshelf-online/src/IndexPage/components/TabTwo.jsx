@@ -5,16 +5,16 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, selectedServiceGroup, setScreen,refreshTimetable,selectedStaff,services: servicesFromProps, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, setScreen,refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
         }
-
-        let services = servicesFromProps;
-        if (selectedServiceGroup.serviceGroupId) {
-            services = selectedServiceGroup.services
-        }
+        const isServiceList = serviceGroups.some(serviceGroup => {
+            let { services } = serviceGroup
+            return services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                !servicesForStaff && selectedStaff && selectedStaff.length === 0
+        })
 
         return (
             <div className="service_selection screen1">
@@ -47,65 +47,73 @@ class TabTwo extends Component {
 
                     </div>
                 </div>}
-                <ul className="service_list">
-                    {services && services.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
-                        selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId) &&
-                        <li
-                            className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
-                        >
-                            <div className="service_item">
-                                <label>
+                {isServiceList ? serviceGroups.map(serviceGroup => {
+                    let { services } = serviceGroup
+                    let condition =
+                        services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                        !servicesForStaff && selectedStaff && selectedStaff.length === 0
+                    return condition && (
+                        <ul className="service_list">
+                            <h3 style={{ fontSize: '24px', fontWeight: 'bold'}}>{serviceGroup.name}</h3>
+                            {services && services.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
+                                selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId) &&
+                                <li
+                                    className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
+                                >
+                                    <div className="service_item">
+                                        <label>
 
-                                    <p>{service.name}</p>
-                                    <p>
-                                        <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                        <span>{service.currency}</span>
-                                        <input onChange={(e) => selectService(e, service)} type="checkbox"
-                                               checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
-                                        <span className="checkHelper"/>
-                                    </p>
-                                    <span className="runtime">{service.details}</span>
+                                            <p>{service.name}</p>
+                                            <p>
+                                                <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                <span>{service.currency}</span>
+                                                <input onChange={(e) => selectService(e, service)} type="checkbox"
+                                                       checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
+                                                <span className="checkHelper"/>
+                                            </p>
+                                            <span className="runtime">{service.details}</span>
 
-                                    <span
-                                        className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                                            <span
+                                                className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
-                                </label>
-                            </div>
-                        </li>
-                    )}
-                    {
-                        ((!servicesForStaff && selectedStaff && selectedStaff.length!==0) || (services.length === 0)) && <div className="final-book">
-                            <p>Нет доступных услуг</p>
-                        </div>
-                    }
-                    {!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
-                        <li
-                            className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
-                        >
-                            <div className="service_item">
-                                <label>
+                                        </label>
+                                    </div>
+                                </li>
+                            )}
+                            {!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
+                                <li
+                                    className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
+                                >
+                                    <div className="service_item">
+                                        <label>
 
-                                    <p>{service.name}</p>
-                                    <p>
-                                        <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                        <span>{service.currency}</span>
-                                        <input onChange={(e) => selectService(e, service)} type="checkbox"
-                                               checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
-                                        <span className="checkHelper"/>
-                                    </p>
-                                    <span className="runtime">{service.details}</span>
+                                            <p>{service.name}</p>
+                                            <p>
+                                                <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                <span>{service.currency}</span>
+                                                <input onChange={(e) => selectService(e, service)} type="checkbox"
+                                                       checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
+                                                <span className="checkHelper"/>
+                                            </p>
+                                            <span className="runtime">{service.details}</span>
 
-                                    <span
-                                        className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                                            <span
+                                                className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
-                                </label>
-                            </div>
-                        </li>
-                    )}
+                                        </label>
+                                    </div>
+                                </li>
+                            )}
 
 
 
-                </ul>
+                        </ul>
+                    )
+                }) : (
+                    <div className="final-book">
+                        <p>Нет доступных услуг</p>
+                    </div>
+                )}
 
                 {!!selectedServices.length &&
                 <div className="button_block" onClick={() => {
