@@ -4,6 +4,7 @@ const initialState = {
     error: '',
     isLoading: false,
     subcompanies: [],
+    serviceGroups: [],
     superCompany: true
 }
 
@@ -26,6 +27,11 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 ...newState
+            }
+        case staffConstants.GET_SERVICE_GROUPS_SUCCESS:
+            return {
+                ...state,
+                serviceGroups: action.serviceGroups
             }
         case staffConstants.GET_SUCCESS:
             return {
