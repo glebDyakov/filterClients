@@ -59,14 +59,7 @@ class IndexPage extends PureComponent {
         this.setterPhone = this.setterPhone.bind(this);
         this.setterEmail = this.setterEmail.bind(this);
         this.setDefaultFlag = this.setDefaultFlag.bind(this);
-
-
-
-
-
     }
-
-
 
     componentDidMount () {
         let {company} = this.props.match.params
@@ -161,6 +154,7 @@ class IndexPage extends PureComponent {
             this.props.dispatch(staffActions.get(company));
             this.props.dispatch(staffActions.getNearestTime(company));
             this.props.dispatch(staffActions.getServices(company));
+            this.props.dispatch(staffActions.getServiceGroups(company));
         }
     }
 
@@ -267,7 +261,7 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies, serviceGroups } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -325,6 +319,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 2 &&
                     <TabTwo
+                        serviceGroups={serviceGroups}
                         selectedServices={selectedServices}
                         selectedStaff={selectedStaff}
                         services={services}

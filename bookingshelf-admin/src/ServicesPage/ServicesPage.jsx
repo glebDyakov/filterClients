@@ -151,9 +151,9 @@ class ServicesPage extends Component {
 
                                                 { collapse.indexOf(item.serviceGroupId)===-1 && item.services && item.services.length>0 && item.services.map((item2, keyService)=> {
                                                     return <div className="services_items" key={keyService}  id={"collapseService" + keyGroup}>
-                                                    <p className="gray-text">
-                                                    <span className="gray-text">{item2.name}</span>
-                                                    <span className="gray-text" style={{
+                                                    <p>
+                                                    <span>{item2.name}</span>
+                                                    <span style={{
                                                     fontSize: '11px',
                                                     width: '100%',
                                                     display: 'inline-block'
