@@ -12,7 +12,7 @@ class TabTwo extends Component {
         }
         const isServiceList = serviceGroups.some(serviceGroup => {
             let { services } = serviceGroup
-            return services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+            return services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
                 !servicesForStaff && selectedStaff && selectedStaff.length === 0
         })
 
@@ -49,8 +49,9 @@ class TabTwo extends Component {
                 </div>}
                 {isServiceList ? serviceGroups.map(serviceGroup => {
                     let { services } = serviceGroup
+                    debugger
                     let condition =
-                        services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                        services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
                         !servicesForStaff && selectedStaff && selectedStaff.length === 0
                     return condition && (
                         <ul className="service_list">
