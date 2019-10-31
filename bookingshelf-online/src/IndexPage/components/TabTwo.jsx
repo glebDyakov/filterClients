@@ -49,13 +49,12 @@ class TabTwo extends Component {
                 </div>}
                 {isServiceList ? serviceGroups.map(serviceGroup => {
                     let { services } = serviceGroup
-                    debugger
                     let condition =
                         services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
                         !servicesForStaff && selectedStaff && selectedStaff.length === 0
                     return condition && (
                         <ul className="service_list">
-                            <h3 style={{ fontSize: '22px', fontWeight: 'bold'}}>{serviceGroup.name}</h3>
+                            <h3 style={{ fontSize: '22px', fontWeight: 'bold', textDecoration: 'underline'}}>{serviceGroup.name}</h3>
                             {services && services.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
                                 selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId) &&
                                 <li
