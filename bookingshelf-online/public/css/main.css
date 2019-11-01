@@ -300,6 +300,9 @@ q:before, q:after { content:''; }
 
 }
 @media screen and (max-width: 480px) {
+    .modal_menu .firm_name.not-selected {
+        width: calc(100% - 60px)
+    }
     .prev_block:hover, .next_block:hover {
         opacity: 1;
     }
@@ -1193,6 +1196,7 @@ q:before, q:after { content:''; }
 }
 @media screen and (max-width: 720px){
     .modal_menu .firm_name {
+        font-size: 16px;
         width: calc(65% - 30px);
     }
     .mobile-visible {
