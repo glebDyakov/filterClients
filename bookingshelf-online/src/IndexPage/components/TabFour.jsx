@@ -6,7 +6,7 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, setScreen, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
 
         return (
@@ -14,10 +14,12 @@ class TabFour extends  PureComponent {
                 <div className="title_block">
                             <span className="prev_block" onClick={()=> {
                                 setScreen(3);
-                                refreshTimetable()
+                                //if (!isStartMovingVisit) {
+                                    refreshTimetable()
+                                //}
                             }}>Назад</span>
                     <p className="modal_title">Выбор времени</p>
-                    {selectedTime && <span className="next_block" onClick={()=>{
+                    {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         setScreen(5);
                         refreshTimetable();
                     }}>Вперед</span>}

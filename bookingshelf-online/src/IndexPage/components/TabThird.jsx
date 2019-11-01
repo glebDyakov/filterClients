@@ -6,22 +6,34 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 
 class TabThird extends  PureComponent {
 
+    componentDidMount() {
+        if (this.props.isStartMovingVisit) {
+            this.props.refreshTimetable()
+        }
+    }
+
     render() {
 
-        const {setScreen,refreshTimetable,selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
+        const {setScreen,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
         return (
             <div className="service_selection screen1">
                 <div className="title_block">
                             <span className="prev_block" onClick={()=>{
-                                setScreen(2);
-                                refreshTimetable()}}>
+                                setScreen(isStartMovingVisit ? 1 : 2);
+                                //if (!isStartMovingVisit) {
+                                    refreshTimetable()
+                                //}
+                            }
+                            }>
                                 Назад</span>
                     <p className="modal_title">Выбор даты</p>
                     {selectedDay && <span className="next_block" onClick={()=>{
                         setScreen(4);
-                        refreshTimetable()
+                        //if (!isStartMovingVisit) {
+                            refreshTimetable()
+                        //}
                     }}>Вперед</span>}
                 </div>
                 <div className="specialist">
