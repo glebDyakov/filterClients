@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../../public/scss/analytics.scss'
 import '../../public/scss/styles.scss'
 import {DatePicker} from "../_components/DatePicker";
+import {getWeekRange} from '../_helpers/time'
 import config from 'config';
 import { Line } from 'react-chartjs-2';
 
@@ -37,17 +38,6 @@ function getWeekDays(weekStart) {
         );
     }
     return days;
-}
-
-function getWeekRange(date) {
-    return {
-        from: moment(date).locale('ru')
-            .startOf('week')
-            .toDate(),
-        to: moment(date).locale('ru')
-            .endOf('week')
-            .toDate(),
-    };
 }
 
 class AnalyticsPage extends Component{
@@ -600,7 +590,6 @@ class AnalyticsPage extends Component{
                                 type={type}
                                 selectedDay={selectedDay}
                                 selectedDays={selectedDays}
-                                getWeekRange={getWeekRange}
                                 showPrevWeek={this.showPrevWeek}
                                 showNextWeek={this.showNextWeek}
                                 handleDayChange={this.handleDayChange}
