@@ -1,12 +1,20 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment'
 import DayPicker from "react-day-picker";
+import {staffActions} from "../../_actions";
 
 class TabFour extends  PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {
+            arrayTime: 0
+        }
+    }
 
     render() {
 
-        const {selectedTime, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
 
         return (
@@ -50,29 +58,51 @@ class TabFour extends  PureComponent {
                     </div>
                     }
                 </div>
-                <div className="choise_time">
+                {this.state.arrayTime ? (
+                    <div className="approveF">
+                        <button className="approveFYes"  onClick={()=>{
+                            setTime(this.state.arrayTime)
+                            this.setState({arrayTime: 0})
+                        }}>Да
+                        </button>
+                        <button className="approveFNo" onClick={()=>{
+                            selectStaff(staffs.find(staff => staff.staffId === movingVisit.staffId))
+                            handleDayClick(movingVisit.appointmentTimeMillis)
+                            this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                            setScreen(6)
+                        }}>Нет
+                        </button>
+                    </div>
+                ) : (
+                    <div className="choise_time">
+                        {workingStaff && workingStaff.map((workingStaffElement, i) =>
+                            parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
+                            workingStaffElement.availableTimes.map((workingTime) => {
+                                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                                    const arrayTimes = []
+                                    for( let i = 0 ; i< countTimes; i++) {
+                                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                                    }
 
-                    {workingStaff && workingStaff.map((workingStaffElement, i) =>
-                        parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
-                        workingStaffElement.availableTimes.map((workingTime) => {
-                                const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
-                                const arrayTimes = []
-                                for( let i = 0 ; i< countTimes; i++) {
-                                    arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                                    return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
+                                        <div key={i} onClick={() => {
+                                            if (isStartMovingVisit) {
+                                                this.setState({ arrayTime })
+                                            } else {
+                                                setTime(arrayTime)
+                                            }
+                                        }}>
+                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                        </div>)
                                 }
+                            )
 
-                                return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
-                                    <div key={i} onClick={() => setTime(arrayTime)}>
-                                        <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
-                                    </div>)
-                            }
                         )
-
-                    )
-                    }
-                </div>
+                        }
+                    </div>
+                )}
             </div>
         );
     }
 }
-export default  TabFour;
+export default connect()(TabFour);

@@ -368,6 +368,10 @@ class IndexPage extends PureComponent {
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         setTime={this.setTime}
+                        staffs={staffs}
+                        movingVisit={movingVisit}
+                        selectStaff={this.selectStaff}
+                        handleDayClick={this.handleDayClick}
 
                     />}
                     {screen === 5 &&
@@ -532,7 +536,7 @@ class IndexPage extends PureComponent {
 
         if (this.props.staff.isStartMovingVisit) {
             dispatch(staffActions._move(this.props.staff.movingVisit, time, selectedStaff.staffId, this.props.match.params.company))
-            this.setState({ screen: 6})
+            this.setState({ screen: 6, selectedTime: time,})
         } else {
             this.setState({
                 newAppointments: [],
