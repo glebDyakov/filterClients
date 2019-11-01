@@ -6,6 +6,7 @@ export const staffActions = {
     get,
     add,
     _delete,
+    _move,
     getInfo,
     getServiceGroups,
     getSubcompanies,
@@ -14,6 +15,8 @@ export const staffActions = {
     getTimetable,
     getClientAppointments,
     getByCustomId,
+    toggleStartMovingVisit,
+    toggleMovedVisitSuccess,
     getNearestTime,
     getTimetableAvailable
 };
@@ -40,6 +43,38 @@ function clearStaff() {
     };
 
     function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
+}
+
+function _move(appointment, time, staffId, companyId) {
+    return dispatch => {
+        dispatch(request())
+        staffService._move(appointment, time, staffId, companyId)
+            .then(
+                movingVisit => dispatch(success(movingVisit)),
+                (err) => dispatch(failure()));
+    };
+
+    function request() { return { type: staffConstants.MOVE_VISIT } }
+    function success(movingVisit) { return { type: staffConstants.MOVE_VISIT_SUCCESS, movingVisit } }
+    function failure() { return { type: staffConstants.MOVE_VISIT_FAILURE} }
+}
+
+function toggleStartMovingVisit(isStartMovingVisit, movingVisit = {}) {
+    return dispatch => {
+        dispatch(success(isStartMovingVisit));
+
+    };
+
+    function success(isStartMovingVisit) { return { type: staffConstants.TOGGLE_START_MOVING_VISIT, isStartMovingVisit, movingVisit } }
+}
+
+function toggleMovedVisitSuccess(movedVisitSuccess) {
+    return dispatch => {
+        dispatch(success(movedVisitSuccess));
+
+    };
+
+    function success(movedVisitSuccess) { return { type: staffConstants.TOGGLE_MOVED_VISIT, movedVisitSuccess } }
 }
 
 function getInfo(id, loaded) {

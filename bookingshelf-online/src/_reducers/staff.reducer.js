@@ -68,6 +68,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_APPOINTMENT_CUSTOM:
         case staffConstants.GET_TIMETABLE:
         case staffConstants.GET_TIMETABLE_AVAILABLE:
+        case staffConstants.MOVE_VISIT:
         case staffConstants.DELETE_APPOINTMENT:
             return {
                 ...state,
@@ -96,6 +97,17 @@ export function staff(state = initialState, action) {
                 isLoading: false,
                 error: 'Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.'
             }
+        case staffConstants.TOGGLE_MOVED_VISIT:
+            return {
+                ...state,
+                movedVisitSuccess: action.movedVisitSuccess
+            }
+        case staffConstants.TOGGLE_START_MOVING_VISIT:
+            return {
+                ...state,
+                isStartMovingVisit: action.isStartMovingVisit,
+                movingVisit: action.movingVisit,
+            }
         case staffConstants.GET_INFO_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
@@ -103,6 +115,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_FAILURE:
         case staffConstants.GET_TIMETABLE_AVAILABLE_FAILURE:
         case staffConstants.DELETE_APPOINTMENT_FAILURE:
+        case staffConstants.MOVE_VISIT_FAILURE:
             return {
                 ...state,
                 isLoading: false,
@@ -138,6 +151,14 @@ export function staff(state = initialState, action) {
                 appointment: action.appointment,
                 isLoading: false
             };
+        case staffConstants.MOVE_VISIT_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                isStartMovingVisit: false,
+                movedVisitSuccess: true,
+                movingVisit: action.movingVisit
+            }
         case staffConstants.GET_NEAREST_TIME_SUCCESS:
             return {
                 ...state,

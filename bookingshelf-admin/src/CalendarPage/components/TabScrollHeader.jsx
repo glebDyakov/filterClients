@@ -22,7 +22,7 @@ class TabScrollHeader extends PureComponent {
                             {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
-                                return <div>
+                                return <div className="tab-content-staff-item">
 
                                                                  <span className="img-container">
                                                                      <img className="rounded-circle"

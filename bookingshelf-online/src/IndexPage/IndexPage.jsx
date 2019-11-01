@@ -52,6 +52,7 @@ class IndexPage extends PureComponent {
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this._delete = this._delete.bind(this);
+        this._move = this._move.bind(this);
         this.roundDown = this.roundDown.bind(this);
         this.getServiceIdList = this.getServiceIdList.bind(this);
         this.setScreen = this.setScreen.bind(this);
@@ -68,6 +69,9 @@ class IndexPage extends PureComponent {
 
         this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
+        if (this.props.staff.isStartMovingVisit) {
+            this.setScreen(1)
+        }
     }
 
     componentWillReceiveProps(newProps) {
@@ -167,7 +171,9 @@ class IndexPage extends PureComponent {
     }
 
     selectStaff (staff){
+        const { isStartMovingVisit } = this.props.staff
         const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+
         let staffId=staff;
         if(staff.length === 0){
             this.setState({flagAllStaffs: true});
@@ -181,7 +187,8 @@ class IndexPage extends PureComponent {
         //             }
         //         }))
         // }
-        this.setState({selectedStaff:staffId, screen: 2})
+        this.setState({selectedStaff:staffId})
+        this.setScreen(isStartMovingVisit ? 3 : 2)
     }
 
     selectSubcompany(subcompany) {
@@ -225,6 +232,7 @@ class IndexPage extends PureComponent {
 
 
     handleDayClick(day, modifiers = {}) {
+        const { isStartMovingVisit } = this.props.staff
         if (modifiers.disabled) {
             return;
         }
@@ -236,7 +244,9 @@ class IndexPage extends PureComponent {
             selectedDay: daySelected ? daySelected.toDate() : this.state.selectedDay,
             screen: 4
         })
-        this.refreshTimetable();
+        //if (!isStartMovingVisit) {
+            this.refreshTimetable();
+        //}
     }
 
     setScreen (num) {
@@ -261,7 +271,7 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode, subcompanies, serviceGroups } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -311,6 +321,7 @@ class IndexPage extends PureComponent {
                         info={info}
                         staffId={selectedStaff.staffId }
                         staffs={staffs}
+                        isStartMovingVisit={isStartMovingVisit}
                         nearestTime={nearestTime}
                         selectStaff={this.selectStaff}
                         setScreen={this.setScreen}
@@ -332,6 +343,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 3 &&
                     <TabThird
+                        isStartMovingVisit={isStartMovingVisit}
                         selectedDay={selectedDay}
                         selectedStaff={selectedStaff}
                         selectedServices={selectedServices}
@@ -346,6 +358,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 4 &&
                     <TabFour
+                        isStartMovingVisit={isStartMovingVisit}
                         selectedTime={selectedTime}
                         selectedStaff={selectedStaff}
                         selectedService={selectedService}
@@ -378,8 +391,10 @@ class IndexPage extends PureComponent {
 
                     }
 
-                    {screen === 6 && newAppointments && !!newAppointments.length && !error &&
+                    {screen === 6 && ((newAppointments && !!newAppointments.length) || movedVisitSuccess) && !error &&
                     <TabSix
+                        movedVisitSuccess={movedVisitSuccess}
+                        movingVisit={movingVisit}
                         selectedStaff={selectedStaff}
                         selectedService={selectedService}
                         selectedServices={selectedServices}
@@ -390,6 +405,7 @@ class IndexPage extends PureComponent {
                         // onCancelVisit={this.onCancelVisit}
                         // approvedButtons={this.approvedButtons}
                         _delete={this._delete}
+                        _move={this._move}
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         setDefaultFlag={this.setDefaultFlag}
@@ -433,6 +449,12 @@ class IndexPage extends PureComponent {
     _delete(id) {
         this.props.dispatch(staffActions._delete(id));
         this.setScreen(7)
+    }
+
+    _move(visit) {
+        this.props.dispatch(staffActions.toggleStartMovingVisit(true, visit));
+        this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+        this.setScreen(1)
     }
 
     selectService (e, service) {
@@ -505,17 +527,26 @@ class IndexPage extends PureComponent {
     }
 
     setTime (time){
-        this.setState({
-            newAppointments: [],
-            selectedTime:time,
-            screen: 5
-        })
+        const { dispatch } = this.props
+        const { selectedStaff } = this.state;
+
+        if (this.props.staff.isStartMovingVisit) {
+            dispatch(staffActions._move(this.props.staff.movingVisit, time, selectedStaff.staffId, this.props.match.params.company))
+            this.setState({ screen: 6})
+        } else {
+            this.setState({
+                newAppointments: [],
+                selectedTime:time,
+                screen: 5
+            });
+        }
 
     }
 
     refreshTimetable(newMonth = this.state.month) {
         const { selectedServices, selectedStaff } = this.state;
-        const serviceIdList = this.getServiceIdList(selectedServices);
+        const services = this.props.staff.isStartMovingVisit ? [{serviceId: this.props.staff.movingVisit.serviceId}] : selectedServices;
+        const serviceIdList = this.getServiceIdList(services);
         const {company} = this.props.match.params;
         this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment(newMonth).startOf('month').format('x'), moment(newMonth).endOf('month').format('x'), serviceIdList));
     }
