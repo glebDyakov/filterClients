@@ -49,7 +49,7 @@ class TabSix extends  PureComponent {
             <div className="service_selection final-screen">
 
                 <div className="final-book">
-                    <p>Запись успешно {movedVisitSuccess ? 'перемещена' : 'создана'}</p>
+                    <p>Запись успешно {movedVisitSuccess ? 'перенесена' : 'создана'}</p>
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&
@@ -80,7 +80,7 @@ class TabSix extends  PureComponent {
                     }
                 </div>
                 <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
-                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Переместить визит" onClick={() => {
+                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments[0])
                     }}/>
                     <span className="move-white" />

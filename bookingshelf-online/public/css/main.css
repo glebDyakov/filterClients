@@ -217,7 +217,7 @@ q:before, q:after { content:''; }
     min-width: 210px;
     display: block;
     color: #fff;
-    font-size: 20px;
+    font-size: 14px !important;
     font-weight: bold;
     font-family: 'helvetica_medium';
     letter-spacing: 0;
