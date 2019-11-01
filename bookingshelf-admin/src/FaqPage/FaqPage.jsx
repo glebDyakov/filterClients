@@ -10,7 +10,6 @@ import {UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 
-
 class FaqPage extends Component {
 
     constructor(props) {

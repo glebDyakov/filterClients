@@ -17,11 +17,11 @@ import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
 import {MainIndexPage} from "../MainIndexPage";
-import {StaffPage} from "../StaffPage";
 import {ClientsPage} from "../ClientsPage";
 import {ServicesPage} from "../ServicesPage";
 import {CalendarPage} from "../CalendarPage";
 import {OnlinePage} from "../OnlinePage";
+import {StaffPage} from "../StaffPage";
 import {EmailPage} from "../EmailPage";
 import {NoPage} from "../NoPage";
 

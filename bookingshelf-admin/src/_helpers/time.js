@@ -10,3 +10,14 @@ export function diffTime(end, start) {
 
     return Math.round((parseInt(end)-parseInt(start))/(1000*60*60*24));
 }
+
+export function getWeekRange(date) {
+    return {
+        from: moment(date).utc()
+            .startOf('week')
+            .toDate(),
+        to: moment(date).utc()
+            .endOf('week')
+            .toDate(),
+    };
+}

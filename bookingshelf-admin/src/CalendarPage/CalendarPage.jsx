@@ -17,6 +17,7 @@ import {DatePicker} from "../_components/DatePicker";
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
+import {getWeekRange} from '../_helpers/time'
 import {CalendarModals} from '../_components/modals/CalendarModals';
 import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
 
@@ -38,17 +39,6 @@ function getWeekDays(weekStart) {
         );
     }
     return days;
-}
-
-function getWeekRange(date) {
-    return {
-        from: moment(date).locale('ru')
-            .startOf('week')
-            .toDate(),
-        to: moment(date).locale('ru')
-            .endOf('week')
-            .toDate(),
-    };
 }
 
 function getDayRange(date) {
@@ -529,7 +519,6 @@ class CalendarPage extends PureComponent {
                                         type={type}
                                         selectedDay={selectedDay}
                                         selectedDays={selectedDays}
-                                        getWeekRange={getWeekRange}
                                         showPrevWeek={this.showPrevWeek}
                                         showNextWeek={this.showNextWeek}
                                         handleDayChange={this.handleDayChange}
