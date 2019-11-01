@@ -124,7 +124,7 @@ class VisitPage extends React.Component {
                             }
                         </div>
                         <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
-                            <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Переместить визит" onClick={() => {
+                            <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                                 this._move(appointment)
                             }}/>
                             <span className="move-white" />

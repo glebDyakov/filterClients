@@ -319,12 +319,15 @@ class IndexPage extends PureComponent {
                         clearStaff={this.clearStaff}
                         subcompanies={subcompanies}
                         info={info}
+                        movingVisit={movingVisit}
+                        services={services}
                         staffId={selectedStaff.staffId }
                         staffs={staffs}
                         isStartMovingVisit={isStartMovingVisit}
                         nearestTime={nearestTime}
                         selectStaff={this.selectStaff}
                         setScreen={this.setScreen}
+                        selectService={this.selectService}
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
                     />}
@@ -549,8 +552,7 @@ class IndexPage extends PureComponent {
 
     refreshTimetable(newMonth = this.state.month) {
         const { selectedServices, selectedStaff } = this.state;
-        const services = this.props.staff.isStartMovingVisit ? [{serviceId: this.props.staff.movingVisit.serviceId}] : selectedServices;
-        const serviceIdList = this.getServiceIdList(services);
+        const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
         this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment(newMonth).startOf('month').format('x'), moment(newMonth).endOf('month').format('x'), serviceIdList));
     }
