@@ -9,6 +9,7 @@ export const calendarActions = {
     setScrollableAppointment,
     getAppointmentsCount,
     getAppointmentsCanceled,
+    toggleRefreshAvailableTimes,
     editAppointment,
     editAppointmentTime,
     approveAppointment,
@@ -19,6 +20,7 @@ export const calendarActions = {
     addReservedTime,
     deleteReservedTime,
     getAppointmentsNewSocket,
+    moveAppointmentsNewSocket,
     updateAppointment,
     toggleMoveVisit,
     toggleStartMovingVisit,
@@ -174,10 +176,16 @@ function getAppointments(dateFrom, dateTo) {
 function getAppointmentsNewSocket(payload) {
     return { type: calendarConstants.GET_APPOINTMENT_NEW_SOCKET, payload }
 }
+function moveAppointmentsNewSocket(payload) {
+    return { type: calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET, payload }
+}
 function deleteAppointmentsNewSocket(payload) {
     return { type: calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET, payload }
 }
 
+function toggleRefreshAvailableTimes(refreshAvailableTimes) {
+    return { type: calendarConstants.TOGGLE_REFRESH_AVAILABLE_TIMES, refreshAvailableTimes }
+}
 function getAppointmentsCount(dateFrom, dateTo) {
     return dispatch => {
         dispatch(request());

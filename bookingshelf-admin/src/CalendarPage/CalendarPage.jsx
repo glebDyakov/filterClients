@@ -433,6 +433,11 @@ class CalendarPage extends PureComponent {
             this.refreshTable(startTime, endTime);
         }
 
+        if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
+            this.checkAvaibleTime()
+            this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
+        }
+
 
         // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
         //     this.setState({flagStaffId: false});
