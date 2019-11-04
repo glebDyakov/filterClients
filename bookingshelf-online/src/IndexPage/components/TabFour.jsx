@@ -73,8 +73,6 @@ class TabFour extends  PureComponent {
 
                     let shouldMove = false;
 
-                    console.log(checkingTime, moment(checkingTime).format('HH:mm'))
-
                     workingStaff.forEach(item => {
                         item.availableTimes.forEach(time => {
                             const isFreeInterval = intervals.every(i => {
@@ -167,6 +165,7 @@ class TabFour extends  PureComponent {
                             selectStaff(staffs.find(staff => staff.staffId === movingVisit.staffId))
                             handleDayClick(movingVisit.appointmentTimeMillis)
                             this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                            this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
                             setScreen(6)
                         }}>Нет
                         </button>
