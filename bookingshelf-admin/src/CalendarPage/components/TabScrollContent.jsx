@@ -66,7 +66,6 @@ class TabScroll extends Component{
             const intervals = []
 
             for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
-                console.log(i)
                 intervals.push(i)
             }
             availableTimetableItem.availableDays.forEach(item => {

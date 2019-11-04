@@ -16,6 +16,104 @@ class TabFour extends  PureComponent {
 
         const {selectedTime, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
+        const availableTimes = []
+        if(!this.state.arrayTime && workingStaff) {
+            workingStaff.map((workingStaffElement, i) =>
+                parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
+                workingStaffElement.availableTimes.map((workingTime) => {
+
+                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                    const arrayTimes = []
+                    for( let i = 0 ; i< countTimes; i++) {
+                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                    }
+
+
+                    arrayTimes.forEach(arrayTime => {
+                        if (arrayTime >= parseInt(moment().format("x"))) {
+                            let isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
+                            if (!isAdded) {
+                                availableTimes.push({
+                                    time: moment(arrayTime).format('HH:mm'),
+                                    markup: (
+                                        <div key={arrayTime} onClick={() => {
+                                            if (isStartMovingVisit) {
+                                                this.setState({arrayTime})
+                                            } else {
+                                                setTime(arrayTime)
+                                            }
+                                        }}>
+                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                        </div>
+                                    )
+                                })
+                            }
+                        }
+                    })
+                    }
+                )
+
+            );
+
+
+            if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId)) {
+                const startTime = movingVisit.appointmentTimeMillis - (movingVisit.duration * 1000) + 15 * 60000;
+                const endTime = movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)
+
+
+                for (let checkingTime = startTime; checkingTime <= endTime; checkingTime += 15 * 60 * 1000) {
+
+                    const movingVisitMillis = checkingTime;
+                    const movingVisitEndTime = checkingTime + (movingVisit.duration * 1000);
+
+                    const intervals = []
+                    for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
+                        intervals.push(i)
+                    }
+
+                    let shouldMove = false;
+
+                    console.log(checkingTime, moment(checkingTime).format('HH:mm'))
+
+                    workingStaff.forEach(item => {
+                        item.availableTimes.forEach(time => {
+                            const isFreeInterval = intervals.every(i => {
+                                const conditionOne = (time.startTimeMillis <= i && time.endTimeMillis >= i)
+                                const conditionTwo = (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= i)
+
+                                return (conditionOne
+                                    || conditionTwo
+                                || ((movingVisit.appointmentTimeMillis -  (movingVisit.duration * 1000) <= i && movingVisit.appointmentTimeMillis > i)))
+                            });
+                            if (isFreeInterval) {
+                                shouldMove = true
+                            }
+                        })
+                    });
+                    if (checkingTime === movingVisit.appointmentTimeMillis) {
+                        shouldMove = false
+                    }
+
+                    if (shouldMove) {
+                        availableTimes.push({
+                            time: moment(checkingTime).format('HH:mm'),
+                            markup: (
+                                <div key={checkingTime} onClick={() => {
+                                    if (isStartMovingVisit) {
+                                        this.setState({arrayTime: checkingTime})
+                                    } else {
+                                        setTime(checkingTime)
+                                    }
+                                }}>
+                                    <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
+                                </div>
+                            )
+                        })
+                    }
+                }
+            }
+        }
+
 
         return (
             <div className="service_selection screen1">
@@ -58,7 +156,7 @@ class TabFour extends  PureComponent {
                     </div>
                     }
                 </div>
-                {this.state.arrayTime ? (
+                {!!this.state.arrayTime && (
                     <div className="approveF">
                         <button className="approveFYes"  onClick={()=>{
                             setTime(this.state.arrayTime)
@@ -73,32 +171,10 @@ class TabFour extends  PureComponent {
                         }}>Нет
                         </button>
                     </div>
-                ) : (
+                )}
+                {!this.state.arrayTime && (
                     <div className="choise_time">
-                        {workingStaff && workingStaff.map((workingStaffElement, i) =>
-                            parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
-                            workingStaffElement.availableTimes.map((workingTime) => {
-                                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
-                                    const arrayTimes = []
-                                    for( let i = 0 ; i< countTimes; i++) {
-                                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
-                                    }
-
-                                    return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
-                                        <div key={i} onClick={() => {
-                                            if (isStartMovingVisit) {
-                                                this.setState({ arrayTime })
-                                            } else {
-                                                setTime(arrayTime)
-                                            }
-                                        }}>
-                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
-                                        </div>)
-                                }
-                            )
-
-                        )
-                        }
+                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map( availableTime => availableTime.markup)}
                     </div>
                 )}
             </div>
