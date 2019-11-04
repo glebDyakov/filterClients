@@ -39,6 +39,7 @@ class TabScroll extends Component{
     }
 
     makeMovingVisitQuery() {
+        const { appointments } = this.props;
         const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
 
         let shouldMove = false
@@ -89,10 +90,44 @@ class TabScroll extends Component{
         }
 
         if (shouldMove) {
+            const appointmentsToMove = []
             this.props.dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
-                JSON.stringify({appointmentTimeMillis: movingVisitMillis, duration: movingVisitDuration, staffId: movingVisitStaffId, adminApproved: true, approved: true, moved: true, adminMoved: true}))
+                JSON.stringify({
+                    appointmentTimeMillis: movingVisitMillis,
+                    staffId: movingVisitStaffId,
+                    adminApproved: true,
+                    approved: true,
+                    moved: true,
+                    adminMoved: true
+                }))
             );
+
+            if (movingVisit.hasCoAppointments) {
+                const staffAppointments = appointments.find(appointment => appointment.staff.staffId === prevVisitStaffId);
+                if (staffAppointments) {
+                    staffAppointments.appointments.forEach(appointment => {
+                        if (appointment.coAppointmentId === movingVisit.appointmentId) {
+                            appointmentsToMove.push(appointment)
+                        }
+                    })
+                    appointmentsToMove.sort((a,b) => a.appointmentId - b.appointmentId).forEach((appointment, i) => {
+                        setTimeout(() => {
+                            this.props.dispatch(calendarActions.updateAppointment(
+                                appointment.appointmentId,
+                                JSON.stringify({
+                                    appointmentTimeMillis: appointment.appointmentTimeMillis + (movingVisitMillis - movingVisit.appointmentTimeMillis),
+                                    staffId: movingVisitStaffId,
+                                    adminApproved: true,
+                                    approved: true,
+                                    moved: true,
+                                    adminMoved: true
+                                }))
+                            );
+                        }, 1000 * (i + 1))
+                    })
+                }
+            }
         }
         this.props.dispatch(calendarActions.toggleMoveVisit(false))
         this.props.dispatch(calendarActions.toggleStartMovingVisit(false))

@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
 import {ClientDetails} from "./ClientDetails";
@@ -81,7 +82,8 @@ class TabSix extends  PureComponent {
                 </div>
                 <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                     <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
-                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments[0])
+                        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
+                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId)[0])
                     }}/>
                     <span className="move-white" />
                 </div>
@@ -124,4 +126,4 @@ class TabSix extends  PureComponent {
         this.setState({...this.state, approveF: false})
     }
 }
-export default withRouter(TabSix);
+export default connect()(withRouter(TabSix));

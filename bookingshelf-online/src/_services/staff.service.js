@@ -115,7 +115,6 @@ function _move(appointment, time, staffId, companyId) {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json' },
         body: JSON.stringify({
-            duration: appointment.duration,
             appointmentTimeMillis: time,
             staffId,
             adminApproved: true,
