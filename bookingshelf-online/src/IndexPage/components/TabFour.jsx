@@ -93,20 +93,23 @@ class TabFour extends  PureComponent {
                     }
 
                     if (shouldMove) {
-                        availableTimes.push({
-                            time: moment(checkingTime).format('HH:mm'),
-                            markup: (
-                                <div key={checkingTime} onClick={() => {
-                                    if (isStartMovingVisit) {
-                                        this.setState({arrayTime: checkingTime})
-                                    } else {
-                                        setTime(checkingTime)
-                                    }
-                                }}>
-                                    <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
-                                </div>
-                            )
-                        })
+                        let isAdded = availableTimes.find(availableTime => availableTime.time === moment(checkingTime).format('HH:mm'))
+                        if (!isAdded) {
+                            availableTimes.push({
+                                time: moment(checkingTime).format('HH:mm'),
+                                markup: (
+                                    <div key={checkingTime} onClick={() => {
+                                        if (isStartMovingVisit) {
+                                            this.setState({arrayTime: checkingTime})
+                                        } else {
+                                            setTime(checkingTime)
+                                        }
+                                    }}>
+                                        <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
+                                    </div>
+                                )
+                            })
+                        }
                     }
                 }
             }
