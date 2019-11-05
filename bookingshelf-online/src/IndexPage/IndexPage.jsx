@@ -554,7 +554,7 @@ class IndexPage extends PureComponent {
                 appointmentsToMove.forEach((appointment, i) => {
                     setTimeout(() => {
                         dispatch(staffActions._move(appointment, appointment.appointmentTimeMillis + (time - movingVisit.appointmentTimeMillis), selectedStaff.staffId, this.props.match.params.company))
-                    }, 5000 * (i + 1));
+                    }, 1000 * (i + 1));
                 })
             }
             this.setState({ screen: 6, selectedTime: time })
@@ -569,6 +569,7 @@ class IndexPage extends PureComponent {
     }
 
     refreshTimetable(newMonth = this.state.month) {
+        const { movingVisit } = this.props.staff
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;

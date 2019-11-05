@@ -286,6 +286,10 @@
 
             .tab-content-inner {
                 min-width: 890px;
+                max-height: 75vh;
+                @media screen and(max-width: $tablet-width) {
+                    max-height: 65vh;
+                }
             }
 
             .tab-content-list {

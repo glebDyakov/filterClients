@@ -193,7 +193,9 @@ class App extends React.Component {
             this.playSound();
             this.props.dispatch(socketActions.alertSocketMessage(payload));
             if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
-                this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+                payload.payload.forEach(item => {
+                    this.props.dispatch(calendarActions.getAppointmentsNewSocket(item));
+                })
                 this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
             } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED')) {
                 this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
