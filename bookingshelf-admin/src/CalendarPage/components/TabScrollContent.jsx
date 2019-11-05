@@ -233,7 +233,7 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const resultTextArea = `${appointment[0][0].serviceName} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
+                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 resultMarkup = (
                                     <div
                                         className={(currentTime <= moment().format("x")
