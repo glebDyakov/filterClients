@@ -6,6 +6,7 @@ import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
 import 'moment-duration-format';
 import PropTypes from "prop-types";
+import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 
@@ -289,7 +290,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps } =this.props;
+        const { status, adding, staff: staffFromProps, authentication } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients
@@ -467,7 +468,8 @@ class AddAppointment extends React.Component {
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
                                                                             <span className="email-user">{client_user.email}</span>
-                                                                            <span className="email-user">{client_user.phone}</span>
+                                                                                {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId)) &&
+                                                                                <span className="email-user">{client_user.phone}</span>}
                                                                             </span>
                                                                         </div>
                                                                         <div className="col-5">
@@ -731,9 +733,9 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert } = state;
+    const { alert, authentication } = state;
     return {
-        alert
+        alert, authentication
     };
 }
 
