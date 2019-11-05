@@ -56,7 +56,9 @@ class AppointmentFromSocket extends React.Component {
             return null
         }
 
-        const { payload, wsMessageType } = this.props.socket.appointmentSocketMessage;
+        const { payload: payloadFromProps, wsMessageType } = this.props.socket.appointmentSocketMessage;
+
+        const payload = payloadFromProps[0]
 
         const activeStaff = payload && payload.staffId && staff && staff.staff && staff.staff.find(item => {
             return((item.staffId) === (payload.staffId));});

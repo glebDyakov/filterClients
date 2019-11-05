@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import {access} from "../../_helpers/access";
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 import {calendarActions} from "../../_actions/calendar.actions";
 
@@ -140,7 +141,7 @@ class TabScroll extends Component{
         })
     }
     render(){
-        const {numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { authentication, numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId } = this.state;
 
         return(
@@ -290,7 +291,8 @@ class TabScroll extends Component{
                                                             </p>
                                                             <p className="client-name-book">Клиент</p>
                                                             <p className="name">{client.firstName} {client.lastName}</p>
-                                                            <p>{client.phone}</p>
+                                                            {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId))
+                                                            && <p>{client.phone}</p>}
 
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                             {appointmentServices.map(service =>
@@ -300,7 +302,7 @@ class TabScroll extends Component{
                                                             <p>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                             {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
-                                                            <a
+                                                            {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId)) && <a
                                                                 className="a-client-info"
                                                                 data-target=".client-detail"
                                                                 title="Просмотреть клиента"
@@ -310,10 +312,10 @@ class TabScroll extends Component{
 
 
                                                                 }}><p>Просмотреть клиента</p>
-                                                            </a>
+                                                            </a>}
                                                             {currentTime >= parseInt(moment().format("x")) && <button data-toggle="modal"
                                                                     data-target=".start-moving-modal"
-                                                                    onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '0 auto', display: 'block'}}>
+                                                                    onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '2px auto 0', display: 'block'}}>
                                                                 Перенести визит
                                                             </button>
                                                             }

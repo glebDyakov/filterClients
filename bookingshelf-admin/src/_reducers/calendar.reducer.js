@@ -233,7 +233,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
-            let newItem = action.payload.payload;
+            let newItem = action.payload;
             let isIncluded = false;
 
             let appointmentsToPush = []
