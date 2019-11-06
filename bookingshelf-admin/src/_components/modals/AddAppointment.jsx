@@ -468,7 +468,7 @@ class AddAppointment extends React.Component {
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
                                                                             <span className="email-user">{client_user.email}</span>
-                                                                                {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId)) &&
+                                                                                {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === activeStaffCurrent.staffId)) &&
                                                                                 <span className="email-user">{client_user.phone}</span>}
                                                                             </span>
                                                                         </div>
