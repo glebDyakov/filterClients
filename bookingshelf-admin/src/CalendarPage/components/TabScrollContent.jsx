@@ -291,7 +291,7 @@ class TabScroll extends Component{
                                                             </p>
                                                             <p className="client-name-book">Клиент</p>
                                                             <p className="name">{client.firstName} {client.lastName}</p>
-                                                            {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId))
+                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
                                                             && <p>{client.phone}</p>}
 
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
@@ -302,7 +302,7 @@ class TabScroll extends Component{
                                                             <p>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                             {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
-                                                            {(access(12) || (access(4) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === appointment[0][0].staffId)) && <a
+                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && <a
                                                                 className="a-client-info"
                                                                 data-target=".client-detail"
                                                                 title="Просмотреть клиента"

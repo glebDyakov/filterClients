@@ -9,8 +9,6 @@ export function access(permissionFromWeb) {
         return true
     }
 
-    debugger
-
 
     if (user && user.profile && user.profile.permissions) {
         return user.profile.permissions.some((permission)=>
