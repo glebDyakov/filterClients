@@ -278,19 +278,24 @@ export function calendar(state = initialState, action) {
             newAppointmentsCount = state.appointmentsCount
             let newAppointmentsCanceled = state.appointmentsCanceled
             newAppointment = state.appointments;
-            newItem = action.payload.payload;
+            let appointmentsToDelete = action.payload.payload;
 
-            let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-            let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-            if (indexElem) {
-                newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-            }
-            if (indexAppointmentsCount) {
-                newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-            }
+            appointmentsToDelete.forEach((newItem, i) => {
+                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                if (indexElem) {
+                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
+                if (indexAppointmentsCount) {
+                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
 
 
-            newAppointmentsCanceled.push(newItem);
+                if (i === 0 ){
+                    newAppointmentsCanceled.push(newItem);
+                }
+            })
+
             const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
             const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
