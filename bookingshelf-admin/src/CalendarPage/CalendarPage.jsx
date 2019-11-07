@@ -434,7 +434,7 @@ class CalendarPage extends PureComponent {
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
-            this.checkAvaibleTime()
+            setTimeout(() => this.checkAvaibleTime(), 600)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
 
@@ -662,42 +662,17 @@ class CalendarPage extends PureComponent {
     }
 
     deleteAppointment(id){
-        const { dispatch, calendar, appointments } = this.props;
+        const { dispatch } = this.props;
 
         const { selectedDays, type, selectedDayMoment } = this.state;
-        let activeAppointment = {};
-        let countTimeout = 0;
-        appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-            if (currentAppointment.appointmentId === id) {
-                activeAppointment = currentAppointment;
-            }
-        }));
 
         if(type==='day'){
             dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-
-            if (activeAppointment.hasCoAppointments) {
-                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
-                        countTimeout += 1000;
-                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x'))), countTimeout)
-                    }
-                }))
-            }
         } else {
             dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-
-            if (activeAppointment.hasCoAppointments) {
-                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
-                        countTimeout += 1000;
-                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.coAppointmentId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x'))), countTimeout)
-                    }
-                }))
-            }
         }
 
-        dispatch(companyActions.getNewAppointments());
+        //dispatch(companyActions.getNewAppointments());
 
     }
 
