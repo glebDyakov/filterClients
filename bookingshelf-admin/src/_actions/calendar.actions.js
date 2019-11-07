@@ -243,7 +243,7 @@ function deleteAppointment(id, time1, time2) {
         calendarService.deleteAppointment(id)
             .then(
                 client => {
-                    dispatch(success(id))
+                    setTimeout(() => dispatch(success(id)), 600)
                     // dispatch(staffActions.getTimetableStaffs(time1, time2));
                     // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                     // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
