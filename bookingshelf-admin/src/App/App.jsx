@@ -201,6 +201,7 @@ class App extends React.Component {
                 this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+                // this.props.dispatch(staffActions.getTimetable(moment().startOf('day').format('x'), moment().add('7').endOf('day').format('x')));
                 this.props.dispatch(companyActions.getNewAppointments());
             } else if (payload.wsMessageType === 'APPOINTMENT_MOVED') {
                 this.props.dispatch(calendarActions.moveAppointmentsNewSocket(payload));

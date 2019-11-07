@@ -95,7 +95,9 @@ class TabSix extends  PureComponent {
                     <button className="approveFYes"  onClick={()=>{
                         const resultAppointments = movingVisit ? [movingVisit] : newAppointments
                         if (resultAppointments.length ) {
-                            resultAppointments.forEach((newAppointment, i) => setTimeout(() => newAppointment && newAppointment.customId && _delete(newAppointment.customId), 1000 * i))
+                            if (resultAppointments[0] && resultAppointments[0].customId ) {
+                                _delete(resultAppointments[0].customId)
+                            }
                             this.props.dispatch(staffActions.toggleStartMovingVisit(false, {}));
                             this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                         }

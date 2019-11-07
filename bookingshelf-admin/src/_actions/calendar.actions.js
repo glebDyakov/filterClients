@@ -244,9 +244,9 @@ function deleteAppointment(id, time1, time2) {
             .then(
                 client => {
                     dispatch(success(id))
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                 },
 
                 error => dispatch(failure(id, error.toString()))

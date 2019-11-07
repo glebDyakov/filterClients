@@ -220,39 +220,139 @@ class AddAppointment extends React.Component {
         return this.state;
     }
 
-    disabledMinutes(h) {
-        const {minutes}=this.state
+    disabledMinutes(h, str = 'start') {
+        const {minutes: minutesReservedtime, reservedTime}=this.state
         let minutesArray=[];
 
-        minutes && minutes.map((minute)=>{
-            if (h == minute.split(':')[0]) {
-                minutesArray.push(parseInt(minute.split(':')[1]))
+        if(str==='start') {
+            minutesReservedtime && minutesReservedtime.map((minute)=>{
+                if (h == minute.split(':')[0]) {
+                    minutesArray.push(parseInt(minute.split(':')[1]))
+                }
+            })
+        } else if (str==='end') {
+            // const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+            // const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            // if (minHour === h) {
+            //     const localMinutesArray = ['00', '15', '30', '45'];
+            //     let findedMinute
+            //     localMinutesArray.forEach(minuteItem => {
+            //         const currentTime = `${h < 10 ? '0' : ''}${h}:${minuteItem}`
+            //         findedMinute = minutesReservedtime && minutesReservedtime.find(reservedTime => reservedTime === currentTime)
+            //
+            //         if (findedMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         } else if(parseInt(minuteItem) <= minMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         }
+            //     })
+            //
+            //
+            // } else {
+            //     minutesReservedtime && minutesReservedtime.map((minute)=>{
+            //         if (h == minute.split(':')[0]) {
+            //             minutesArray.push((minute.split(':')[1]))
+            //         }
+            //     })
+            // }
+
+
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            for(let i=0; i <= 45; i+=15) {
+                if ((h !==selectedHour && h === parseInt(findTime.split(':')[0]) && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i) || (h === parseInt(findTime.split(':')[0]) && findTime.split(':')[1] < i)) {
+                    minutesArray.push(i);
+                }
             }
-        })
+
+        }
 
         return minutesArray;
     }
 
-    disabledHours() {
-        const {minutes}=this.state
+    disabledHours(str = 'start') {
+        const {minutes: minutesReservedtime, reservedTime}=this.state
         let hoursArray=[];
         let firstElement=null;
         let countElements=0;
-        minutes && minutes.map((minute)=>{
+        if (str === 'start') {
+            minutesReservedtime && minutesReservedtime.map((minute) => {
 
-            if (countElements==3 && minute.split(':')[0]==firstElement) {
-                hoursArray.push(parseInt(minute.split(':')[0]))
-                countElements=0
-                firstElement=null;
+                if (countElements == 3 && minute.split(':')[0] == firstElement) {
+                    hoursArray.push(parseInt(minute.split(':')[0]))
+                    countElements = 0
+                    firstElement = null;
+                }
+                if (minute.split(':')[0] == firstElement) {
+                    countElements++
+                } else {
+                    countElements = 1
+                }
+                if (firstElement == null) {
+                    countElements++
+                }
+                firstElement = minute.split(':')[0];
+            })
+        }
+
+        for(let i=0; i<=23; i++){
+            if(str==='end' && reservedTime.startTimeMillis!=='' && i<moment(reservedTime.startTimeMillis, 'x').format('H')){
+                const isIncluded = hoursArray.find(hour => i === hour)
+                if (!isIncluded) {
+                    hoursArray.push(i);
+                }
             }
-            if(minute.split(':')[0]==firstElement){
-                countElements++
+        }
+
+        if(str==='end') {
+
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            const minutesArray = []
+
+
+            for(let i=0; i<=23; i++) {
+                if (i > findTime.split(':')[0]) {
+                    hoursArray.push(i);
+
+                }
+                for(let j=0; j<= 45; j+=15) {
+                    if (i === selectedHour && selectedMinute >= j) {
+                        minutesArray.push(j);
+                    }
+                }
             }
-            if(firstElement==null){
-                countElements++
+
+            if (minutesArray.length === 4) {
+                hoursArray.push(selectedHour);
             }
-            firstElement=minute.split(':')[0];
-        })
+        }
+
         return hoursArray;
     }
 

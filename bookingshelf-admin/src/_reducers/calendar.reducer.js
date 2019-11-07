@@ -176,20 +176,20 @@ export function calendar(state = initialState, action) {
                 isLoading: true
             }
         case calendarConstants.DELETE_APPOINTMENT_SUCCESS:
-            const appointmentsDeleted = state.appointments;
-
-            appointmentsDeleted.map((app, key1) =>
-                app['appointments'].map((appointments, key2) => {
-                    if (appointments.appointmentId === action.id) {
-                        appointmentsDeleted[key1]['appointments'].splice(key2, 1)
-                    }
-                })
-            );
+            // const appointmentsDeleted = state.appointments;
+            //
+            // appointmentsDeleted.map((app, key1) =>
+            //     app['appointments'].map((appointments, key2) => {
+            //         if (appointments.appointmentId === action.id) {
+            //             appointmentsDeleted[key1]['appointments'].splice(key2, 1)
+            //         }
+            //     })
+            // );
 
             return {
                 ...state,
                 isLoading: false,
-                appointments: appointmentsDeleted
+                //appointments: JSON.parse(JSON.stringify(appointmentsDeleted))
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
             const reservedDeleted = state.reservedTime;
@@ -281,17 +281,18 @@ export function calendar(state = initialState, action) {
             let appointmentsToDelete = action.payload.payload;
 
             appointmentsToDelete.forEach((newItem, i) => {
-                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                if (indexElem) {
-                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                }
-                if (indexAppointmentsCount) {
-                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                }
 
 
                 if (i === 0 ){
+                    let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                    let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                    if (indexElem) {
+                        newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                    }
+                    if (indexAppointmentsCount) {
+                        newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                    }
+
                     newAppointmentsCanceled.push(newItem);
                 }
             })
@@ -301,7 +302,8 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 appointments: finalAppointments,
-                appointmentsCanceled: finalAppointmentsCanceled
+                appointmentsCanceled: finalAppointmentsCanceled,
+                refreshAvailableTimes: true
             };
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
             newAppointment = state.appointments;
