@@ -55,8 +55,10 @@ class TabFour extends  PureComponent {
 
             );
 
+            const dayToMove = moment(selectedDay).format("DD/MM/YYYY")
+            const movingVisitDay = movingVisit && moment(movingVisit.appointmentTimeMillis).format("DD/MM/YYYY")
 
-            if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId)) {
+            if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId) && (dayToMove === movingVisitDay)) {
                 const startTime = movingVisit.appointmentTimeMillis - (movingVisit.duration * 1000) + 15 * 60000;
                 const endTime = movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)
 
