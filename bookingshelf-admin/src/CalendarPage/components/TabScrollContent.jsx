@@ -74,7 +74,7 @@ class TabScroll extends Component{
                 item.availableTimes.forEach(time => {
                     const isFreeInterval = intervals.every(i => {
                         return ((time.startTimeMillis <= i && time.endTimeMillis > i)
-                          || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= i))
+                          || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i))
                     });
                     if (isFreeInterval) {
                         shouldMove = true
@@ -203,7 +203,7 @@ class TabScroll extends Component{
                                     ));
 
                             let resultMarkup;
-                            if(appointment && appointment[0] && appointment[0].length > 0 && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment[0][0].appointmentId)) {
+                            if(appointment && appointment[0] && appointment[0].length > 0 && !appointment[0][0].coAppointmentId && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment[0][0].appointmentId)) {
                                 let totalDuration = appointment[0][0].duration;
                                 let appointmentServices = [];
                                 let totalCount = 0;
