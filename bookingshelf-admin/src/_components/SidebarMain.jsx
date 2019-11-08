@@ -209,7 +209,7 @@ class SidebarMain extends Component {
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
                                     <p style={{float: "none"}}>
-                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}
+                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                     </p>
                                 </div>
                                 <div style={{width: "40%"}}>
@@ -268,7 +268,7 @@ class SidebarMain extends Component {
                                         <strong>{extraServiceText}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
-                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}</p>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
