@@ -55,66 +55,66 @@ class TabFour extends  PureComponent {
 
             );
 
-            const dayToMove = moment(selectedDay).format("DD/MM/YYYY")
-            const movingVisitDay = movingVisit && moment(movingVisit.appointmentTimeMillis).format("DD/MM/YYYY")
-
-            if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId) && (dayToMove === movingVisitDay)) {
-                const startTime = movingVisit.appointmentTimeMillis - (movingVisit.duration * 1000) + 15 * 60000;
-                const endTime = movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)
-
-
-                for (let checkingTime = startTime; checkingTime <= endTime; checkingTime += 15 * 60 * 1000) {
-
-                    const movingVisitMillis = checkingTime;
-                    const movingVisitEndTime = checkingTime + (movingVisit.duration * 1000);
-
-                    const intervals = []
-                    for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
-                        intervals.push(i)
-                    }
-
-                    let shouldMove = false;
-
-                    workingStaff.forEach(item => {
-                        item.availableTimes.forEach(time => {
-                            const isFreeInterval = intervals.every(i => {
-                                const conditionOne = (time.startTimeMillis <= i && time.endTimeMillis >= i)
-                                const conditionTwo = (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= i)
-
-                                return (conditionOne
-                                    || conditionTwo
-                                || ((movingVisit.appointmentTimeMillis -  (movingVisit.duration * 1000) <= i && movingVisit.appointmentTimeMillis > i)))
-                            });
-                            if (isFreeInterval) {
-                                shouldMove = true
-                            }
-                        })
-                    });
-                    if (checkingTime === movingVisit.appointmentTimeMillis) {
-                        shouldMove = false
-                    }
-
-                    if (shouldMove) {
-                        let isAdded = availableTimes.find(availableTime => availableTime.time === moment(checkingTime).format('HH:mm'))
-                        if (!isAdded) {
-                            availableTimes.push({
-                                time: moment(checkingTime).format('HH:mm'),
-                                markup: (
-                                    <div key={checkingTime} onClick={() => {
-                                        if (isStartMovingVisit) {
-                                            this.setState({arrayTime: checkingTime})
-                                        } else {
-                                            setTime(checkingTime)
-                                        }
-                                    }}>
-                                        <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
-                                    </div>
-                                )
-                            })
-                        }
-                    }
-                }
-            }
+            // const dayToMove = moment(selectedDay).format("DD/MM/YYYY")
+            // const movingVisitDay = movingVisit && moment(movingVisit.appointmentTimeMillis).format("DD/MM/YYYY")
+            //
+            // if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId) && (dayToMove === movingVisitDay)) {
+            //     const startTime = movingVisit.appointmentTimeMillis - (movingVisit.duration * 1000) + 15 * 60000;
+            //     const endTime = movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)
+            //
+            //
+            //     for (let checkingTime = startTime; checkingTime <= endTime; checkingTime += 15 * 60 * 1000) {
+            //
+            //         const movingVisitMillis = checkingTime;
+            //         const movingVisitEndTime = checkingTime + (movingVisit.duration * 1000);
+            //
+            //         const intervals = []
+            //         for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
+            //             intervals.push(i)
+            //         }
+            //
+            //         let shouldMove = false;
+            //
+            //         workingStaff.forEach(item => {
+            //             item.availableTimes.forEach(time => {
+            //                 const isFreeInterval = intervals.every(i => {
+            //                     const conditionOne = (time.startTimeMillis <= i && time.endTimeMillis >= i)
+            //                     const conditionTwo = (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= i)
+            //
+            //                     return (conditionOne
+            //                         || conditionTwo
+            //                     || ((movingVisit.appointmentTimeMillis -  (movingVisit.duration * 1000) <= i && movingVisit.appointmentTimeMillis > i)))
+            //                 });
+            //                 if (isFreeInterval) {
+            //                     shouldMove = true
+            //                 }
+            //             })
+            //         });
+            //         if (checkingTime === movingVisit.appointmentTimeMillis) {
+            //             shouldMove = false
+            //         }
+            //
+            //         if (shouldMove) {
+            //             let isAdded = availableTimes.find(availableTime => availableTime.time === moment(checkingTime).format('HH:mm'))
+            //             if (!isAdded) {
+            //                 availableTimes.push({
+            //                     time: moment(checkingTime).format('HH:mm'),
+            //                     markup: (
+            //                         <div key={checkingTime} onClick={() => {
+            //                             if (isStartMovingVisit) {
+            //                                 this.setState({arrayTime: checkingTime})
+            //                             } else {
+            //                                 setTime(checkingTime)
+            //                             }
+            //                         }}>
+            //                             <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
+            //                         </div>
+            //                     )
+            //                 })
+            //             }
+            //         }
+            //     }
+            // }
         }
 
 
