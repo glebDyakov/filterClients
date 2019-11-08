@@ -540,23 +540,7 @@ class IndexPage extends PureComponent {
         const { selectedStaff } = this.state;
 
         if (isStartMovingVisit) {
-            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company))
-            if (movingVisit.hasCoAppointments) {
-                const appointmentsToMove = []
-                const clientAppointments = clients.find(client => client.clientId === movingVisit.clientId)
-                if (clientAppointments) {
-                    clientAppointments.appointments.sort((a, b) => a.appointmentId - b.appointmentId).forEach(appointment => {
-                        if (appointment.coAppointmentId === movingVisit.appointmentId) {
-                            appointmentsToMove.push(appointment)
-                        }
-                    })
-                }
-                appointmentsToMove.forEach((appointment, i) => {
-                    setTimeout(() => {
-                        dispatch(staffActions._move(appointment, appointment.appointmentTimeMillis + (time - movingVisit.appointmentTimeMillis), selectedStaff.staffId, this.props.match.params.company))
-                    }, 1000 * (i + 1));
-                })
-            }
+            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company));
             this.setState({ screen: 6, selectedTime: time })
         } else {
             this.setState({

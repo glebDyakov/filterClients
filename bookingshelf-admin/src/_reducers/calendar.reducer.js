@@ -281,17 +281,17 @@ export function calendar(state = initialState, action) {
             let appointmentsToDelete = action.payload.payload;
 
             appointmentsToDelete.forEach((newItem, i) => {
-
+                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                if (indexElem) {
+                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
+                if (indexAppointmentsCount) {
+                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
 
                 if (i === 0 ){
-                    let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                    let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                    if (indexElem) {
-                        newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                    }
-                    if (indexAppointmentsCount) {
-                        newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                    }
+
 
                     newAppointmentsCanceled.push(newItem);
                 }
@@ -308,29 +308,32 @@ export function calendar(state = initialState, action) {
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
             newAppointment = state.appointments;
             newAppointmentsCount = state.appointmentsCount
-            newItem = action.payload.payload;
+            let appointmentsToMove = action.payload.payload;
 
             appointmentsToPush = []
             appointmentsCountToPush = []
 
-            if (newAppointment && newAppointment.length) {
-                newAppointment.forEach(item => {
+            appointmentsToMove.forEach(newItem => {
+                if (newAppointment && newAppointment.length) {
+                    newAppointment.forEach(item => {
+                        if (item.staff.staffId === newItem.staffId) {
+                            let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                            item.appointments.splice(appointmentIndex, 1)
+                            item.appointments.push(newItem)
+                        }
+                        appointmentsToPush.push(item)
+                    })
+                }
+                newAppointmentsCount.forEach(item => {
                     if (item.staff.staffId === newItem.staffId) {
                         let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
                         item.appointments.splice(appointmentIndex, 1)
                         item.appointments.push(newItem)
                     }
-                    appointmentsToPush.push(item)
+                    appointmentsCountToPush.push(item)
                 })
-            }
-            newAppointmentsCount.forEach(item => {
-                if (item.staff.staffId === newItem.staffId) {
-                    let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
-                    item.appointments.splice(appointmentIndex, 1)
-                    item.appointments.push(newItem)
-                }
-                appointmentsCountToPush.push(item)
             })
+
             return {
                 ...state,
                 appointments: JSON.parse(JSON.stringify(appointmentsToPush)),

@@ -434,7 +434,7 @@ class CalendarPage extends PureComponent {
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
-            setTimeout(() => this.checkAvaibleTime(), 600)
+            setTimeout(() => this.updateCalendar(), 600)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
 
