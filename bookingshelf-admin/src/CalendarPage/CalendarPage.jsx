@@ -291,13 +291,15 @@ class CalendarPage extends PureComponent {
         }, 100);
     }
 
-    refreshTable(startTime, endTime) {
+    refreshTable(startTime, endTime, updateReservedTime = true) {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
-        this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
+        if (updateReservedTime) {
+            this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
+        }
     }
 
-    updateCalendar(){
+    updateCalendar(updateReservedTime){
         const {selectedDayMoment, selectedDays, type}=this.state;
         let startTime, endTime;
 
@@ -308,7 +310,7 @@ class CalendarPage extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime);
+        this.refreshTable(startTime, endTime, updateReservedTime);
         // setTimeout(()=>this.updateCalendar(), 300000)
 
     }
@@ -434,7 +436,7 @@ class CalendarPage extends PureComponent {
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
-            setTimeout(() => this.updateCalendar(), 600)
+            setTimeout(() => this.updateCalendar(false), 600)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
 

@@ -106,13 +106,19 @@ function editAppointment(params) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function updateAppointment(id, params) {
+function updateAppointment(id, params, timeout) {
     return dispatch => {
         dispatch(request());
         calendarService.updateAppointment(id, params)
             .then(
                 appointment => {
-                    dispatch(success());
+                    if (timeout) {
+                        setTimeout(() => {
+                            dispatch(success());
+                        }, 600)
+                    } else {
+                        dispatch(success());
+                    }
                 },
                 error => {
                     dispatch(failure(error));
