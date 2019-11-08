@@ -123,13 +123,13 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                        {false && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                                 this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
                                 this._move(appointment)
                             }}/>
                             <span className="move-white" />
-                        </div>
+                        </div>}
                         <div style={{ position: 'relative', width: '210px',  margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
                             <span className="cancel-white" />
