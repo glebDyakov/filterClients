@@ -298,10 +298,12 @@ export function calendar(state = initialState, action) {
             })
 
             const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
+            const finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
             const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
                 appointments: finalAppointments,
+                appointmentsCount: finalAppointmentsCount,
                 appointmentsCanceled: finalAppointmentsCanceled,
                 refreshAvailableTimes: true
             };
@@ -309,9 +311,6 @@ export function calendar(state = initialState, action) {
             newAppointment = state.appointments;
             newAppointmentsCount = state.appointmentsCount
             let appointmentsToMove = action.payload.payload;
-
-            appointmentsToPush = []
-            appointmentsCountToPush = []
 
             appointmentsToMove.forEach(newItem => {
                 if (newAppointment && newAppointment.length) {
@@ -321,7 +320,6 @@ export function calendar(state = initialState, action) {
                             item.appointments.splice(appointmentIndex, 1)
                             item.appointments.push(newItem)
                         }
-                        appointmentsToPush.push(item)
                     })
                 }
                 newAppointmentsCount.forEach(item => {
@@ -330,14 +328,13 @@ export function calendar(state = initialState, action) {
                         item.appointments.splice(appointmentIndex, 1)
                         item.appointments.push(newItem)
                     }
-                    appointmentsCountToPush.push(item)
                 })
             })
 
             return {
                 ...state,
-                appointments: JSON.parse(JSON.stringify(appointmentsToPush)),
-                appointmentsCount: JSON.parse(JSON.stringify(appointmentsCountToPush)),
+                appointments: JSON.parse(JSON.stringify(newAppointment)),
+                appointmentsCount: JSON.parse(JSON.stringify(newAppointmentsCount)),
                 refreshAvailableTimes: true
             };
         case calendarConstants.TOGGLE_REFRESH_AVAILABLE_TIMES:
