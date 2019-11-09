@@ -88,9 +88,6 @@ function approveAppointment(appointmentId, params) {
 
     return fetch(`${config.apiUrl}/appointments/${appointmentId}`, requestOptions)
         .then(handleResponse)
-        .then(appointment => {
-            return appointment;
-        });
 }
 
 function updateAppointment(appointmentId, params) {
