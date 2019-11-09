@@ -18,6 +18,8 @@ import 'react-day-picker/lib/style.css';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css'
+import {DatePicker} from '../_components/DatePicker'
+import {getWeekRange} from '../_helpers/time'
 import {isValidNumber} from "libphonenumber-js";
 import {access} from "../_helpers/access";
 
@@ -31,17 +33,6 @@ function getWeekDays(weekStart) {
         );
     }
     return days;
-}
-
-function getWeekRange(date) {
-    return {
-        from: moment(date).locale('ru')
-            .startOf('week')
-            .toDate(),
-        to: moment(date).locale('ru')
-            .endOf('week')
-            .toDate(),
-    };
 }
 
 class StaffPage extends Component {
@@ -239,33 +230,16 @@ class StaffPage extends Component {
                             <div className="retreats">
                                 <div className="tab-content">
                                     <div className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
-                                        <div className="select-date">
-                                            <div className="select-inner">
-                                                <span className="arrow-left" onClick={this.showPrevWeek}/>
-
-                                                <div className="button-calendar" onClick={this.showCalendar}>
-                                                    <span className="dates-full-width text-capitalize date-num">
-                                                        {moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') +' - '+ moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')}
-                                                    </span>
-                                                    <div className={(!opacity && 'visibility ')+" SelectedWeekExample"}>
-                                                        <i className="datepicker--pointer"></i>
-                                                        <DayPicker
-                                                            selectedDays={selectedDays}
-                                                            showOutsideDays
-                                                            modifiers={modifiers}
-                                                            onDayClick={this.handleDayChange}
-                                                            onDayMouseEnter={this.handleDayEnter}
-                                                            onDayMouseLeave={this.handleDayLeave}
-                                                            onWeekClick={this.handleWeekClick}
-                                                            localeUtils={MomentLocaleUtils}
-                                                            locale={'ru'}
-
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <span className="arrow-right" onClick={this.showNextWeek}/>
-                                            </div>
-                                        </div>
+                                        <DatePicker
+                                            type={'week'}
+                                            //selectedDay={selectedDay}
+                                            selectedDays={selectedDays}
+                                            showPrevWeek={this.showPrevWeek}
+                                            showNextWeek={this.showNextWeek}
+                                            handleDayChange={this.handleDayChange}
+                                            handleDayClick={this.handleDayClick}
+                                            handleWeekClick={this.handleWeekClick}
+                                        />
                                         <div className="content-tab-date">
                                             <div className="tab-content-inner">
                                                 <div className="tab-content-list">
@@ -310,11 +284,11 @@ class StaffPage extends Component {
                                                                      return (times.length===0 ?
                                                                          <div className="add-work-time-hover"
                                                                           key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                             date:moment(day, "x").format('DD/MM'),
+                                                                             date:moment(day, "x").format('DD/MM/YYYY'),
                                                                              editWorkingHours:false, editing_object:null, addWorkTime: true})
                                                                          }/> :
                                                                      <div className="dates-container" key={dayKey}  onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                         date:moment(day, "x").format('DD/MM'),
+                                                                         date:moment(day, "x").format('DD/MM/YYYY'),
                                                                          editWorkingHours:true, editing_object:times, addWorkTime: true})} >
                                                                          <a>
                                                                              {times.map(time=>

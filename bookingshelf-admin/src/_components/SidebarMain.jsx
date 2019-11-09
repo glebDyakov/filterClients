@@ -33,6 +33,7 @@ class SidebarMain extends Component {
         this.goToPageCalendar=this.goToPageCalendar.bind(this)
         this.logout=this.logout.bind(this)
         this.onClose=this.onClose.bind(this)
+        this.getExtraServiceText=this.getExtraServiceText.bind(this)
 
     }
     logout(){
@@ -116,6 +117,34 @@ class SidebarMain extends Component {
         this.setState({ [key]: !this.state[key]})
     }
 
+    getExtraServiceText(appointments, appointment) {
+        let totalCount = 0;
+        if (appointment.hasCoAppointments) {
+            appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                if (currentAppointment.coAppointmentId === appointment.appointmentId) {
+                    totalCount++;
+                }
+            }))
+        }
+        let extraServiceText = ''
+        switch (totalCount) {
+            case 0:
+                extraServiceText = '';
+                break;
+            case 1:
+                extraServiceText = 'и ещё 1 услуга';
+                break;
+            case 2:
+            case 3:
+            case 4:
+                extraServiceText = `и ещё ${totalCount} услуги`;
+                break;
+            default:
+                extraServiceText = `и ещё 5+ услуг`;
+        }
+        return extraServiceText
+    }
+
     render() {
         const { location, notification, calendar: { appointmentsCanceled }, staff, client, appointmentsCount }=this.props;
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
@@ -155,6 +184,8 @@ class SidebarMain extends Component {
                 } else {
                     condition = !appointment.approved && appointmentInfo.staff.staffId === authentication.user.profile.staffId
                 }
+                let extraServiceText = this.getExtraServiceText(appointmentsCount, appointment);
+
                 if (condition && !appointment.coAppointmentId) {
                     const activeClient = client && client.client && client.client.find(item => ((item.clientId) === (appointment.clientId)));
 
@@ -173,10 +204,12 @@ class SidebarMain extends Component {
                                            // wordWrap: "break-word"
                                        }}
                                     ><strong>{appointment.serviceName}</strong>
+                                        <br />
+                                        <strong>{extraServiceText}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
                                     <p style={{float: "none"}}>
-                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}
+                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                     </p>
                                 </div>
                                 <div style={{width: "40%"}}>
@@ -213,7 +246,8 @@ class SidebarMain extends Component {
                 } else {
                     condition = appointment.moved && appointmentInfo.staff.staffId === authentication.user.profile.staffId
                 }
-                if(condition) {
+                let extraServiceText = this.getExtraServiceText(appointmentsCount, appointment);
+                if(condition && !appointment.coAppointmentId) {
                     const activeClient = client && client.client && client.client.find(item => {
                         return((item.clientId) === (appointment.clientId));});
                     movedCount++;
@@ -230,10 +264,11 @@ class SidebarMain extends Component {
                                            // marginRight: "5%",
                                            // wordWrap: "break-word"
                                        }}
-                                    ><strong>{appointment.serviceName}</strong>
+                                    ><strong>{appointment.serviceName}</strong> <br />
+                                        <strong>{extraServiceText}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
-                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}</p>
+                                    <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}</p>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>

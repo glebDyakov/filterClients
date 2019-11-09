@@ -176,20 +176,20 @@ export function calendar(state = initialState, action) {
                 isLoading: true
             }
         case calendarConstants.DELETE_APPOINTMENT_SUCCESS:
-            const appointmentsDeleted = state.appointments;
-
-            appointmentsDeleted.map((app, key1) =>
-                app['appointments'].map((appointments, key2) => {
-                    if (appointments.appointmentId === action.id) {
-                        appointmentsDeleted[key1]['appointments'].splice(key2, 1)
-                    }
-                })
-            );
+            // const appointmentsDeleted = state.appointments;
+            //
+            // appointmentsDeleted.map((app, key1) =>
+            //     app['appointments'].map((appointments, key2) => {
+            //         if (appointments.appointmentId === action.id) {
+            //             appointmentsDeleted[key1]['appointments'].splice(key2, 1)
+            //         }
+            //     })
+            // );
 
             return {
                 ...state,
                 isLoading: false,
-                appointments: appointmentsDeleted
+                //appointments: JSON.parse(JSON.stringify(appointmentsDeleted))
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
             const reservedDeleted = state.reservedTime;
@@ -233,11 +233,11 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
             let newAppointment = state.appointments;
             let newAppointmentsCount = state.appointmentsCount
-            let newItem = action.payload.payload;
+            let newItem = action.payload;
             let isIncluded = false;
 
             let appointmentsToPush = []
-            const appointmentsCountToPush = []
+            let appointmentsCountToPush = []
             if (newAppointment && newAppointment.length) {
                 newAppointment.forEach(item => {
                     if (item.staff.staffId === newItem.staffId) {
@@ -278,26 +278,73 @@ export function calendar(state = initialState, action) {
             newAppointmentsCount = state.appointmentsCount
             let newAppointmentsCanceled = state.appointmentsCanceled
             newAppointment = state.appointments;
-            newItem = action.payload.payload;
+            let appointmentsToDelete = action.payload.payload;
 
-            let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-            let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-            if (indexElem) {
-                newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-            }
-            if (indexAppointmentsCount) {
-                newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-            }
+            appointmentsToDelete.forEach((newItem, i) => {
+                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                if (indexElem) {
+                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
+                if (indexAppointmentsCount) {
+                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                }
+
+                if (i === 0 ){
 
 
-            newAppointmentsCanceled.push(newItem);
+                    newAppointmentsCanceled.push(newItem);
+                }
+            })
+
             const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
             const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
                 appointments: finalAppointments,
-                appointmentsCanceled: finalAppointmentsCanceled
+                appointmentsCanceled: finalAppointmentsCanceled,
+                refreshAvailableTimes: true
             };
+        case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
+            newAppointment = state.appointments;
+            newAppointmentsCount = state.appointmentsCount
+            let appointmentsToMove = action.payload.payload;
+
+            appointmentsToPush = []
+            appointmentsCountToPush = []
+
+            appointmentsToMove.forEach(newItem => {
+                if (newAppointment && newAppointment.length) {
+                    newAppointment.forEach(item => {
+                        if (item.staff.staffId === newItem.staffId) {
+                            let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                            item.appointments.splice(appointmentIndex, 1)
+                            item.appointments.push(newItem)
+                        }
+                        appointmentsToPush.push(item)
+                    })
+                }
+                newAppointmentsCount.forEach(item => {
+                    if (item.staff.staffId === newItem.staffId) {
+                        let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                        item.appointments.splice(appointmentIndex, 1)
+                        item.appointments.push(newItem)
+                    }
+                    appointmentsCountToPush.push(item)
+                })
+            })
+
+            return {
+                ...state,
+                appointments: JSON.parse(JSON.stringify(appointmentsToPush)),
+                appointmentsCount: JSON.parse(JSON.stringify(appointmentsCountToPush)),
+                refreshAvailableTimes: true
+            };
+        case calendarConstants.TOGGLE_REFRESH_AVAILABLE_TIMES:
+            return {
+                ...state,
+                refreshAvailableTimes: action.refreshAvailableTimes
+            }
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
                 ...state,

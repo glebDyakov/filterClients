@@ -492,7 +492,7 @@ class PaymentsPage extends Component {
                                     <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
                                         <div className="payments-inner">
                                             <div className="payments-list-block">
-                                                <p className="title-payments">Количество сотрудников</p>
+                                                <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
                                                 <div id="range-staff">
                                                     <ul className="range-labels">
                                                         {options.map(option => (
@@ -621,7 +621,7 @@ class PaymentsPage extends Component {
                                         <div className="payments-inner">
                                             <div className="payments-list-block">
                                                 <div className="payments-content buttons-change">
-                                                    <p className="title-payments">SMS Пакеты</p>
+                                                    <p className="title-payments">SMS ПАКЕТЫ</p>
                                                     {/*<div>*/}
                                                     {/*    <label>*/}
                                                     {/*        <input type="radio" name="sms-price-radio"/>*/}

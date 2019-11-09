@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
 import {ClientDetails} from "./ClientDetails";
-
-
-
+import {staffActions} from "../../_actions";
 
 class TabSix extends  PureComponent {
     constructor(props){
@@ -23,7 +22,7 @@ class TabSix extends  PureComponent {
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
-            setScreen,refreshTimetable,_delete, setDefaultFlag} = this.props;
+            setScreen,refreshTimetable,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
         const {approveF, allVisits} = this.state;
 
         let serviceInfo = null
@@ -47,12 +46,11 @@ class TabSix extends  PureComponent {
             )
         }
 
-
         return (
             <div className="service_selection final-screen">
 
                 <div className="final-book">
-                    <p>Запись успешно создана</p>
+                    <p>Запись успешно {movedVisitSuccess ? 'перенесена' : 'создана'}</p>
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&
@@ -82,11 +80,26 @@ class TabSix extends  PureComponent {
                     </div>
                     }
                 </div>
-                <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                {false && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
+                        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
+                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId)[0])
+                    }}/>
+                    <span className="move-white" />
+                </div>}
+                <div style={{ position: 'relative', width: '210px',  margin: '0 auto' }}>
+                    <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                    <span className="cancel-white" />
+                </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                     <button className="approveFYes"  onClick={()=>{
-                        if (newAppointments.length) {
-                            newAppointments.forEach((newAppointment, i) => setTimeout(() => newAppointment && newAppointment.customId && _delete(newAppointment.customId), 1000 * i))
+                        const resultAppointments = movingVisit ? [movingVisit] : newAppointments
+                        if (resultAppointments.length ) {
+                            if (resultAppointments[0] && resultAppointments[0].customId ) {
+                                _delete(resultAppointments[0].customId)
+                            }
+                            this.props.dispatch(staffActions.toggleStartMovingVisit(false, {}));
+                            this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                         }
                     }}>Да
                     </button>
@@ -101,7 +114,9 @@ class TabSix extends  PureComponent {
                 {/*    refreshTimetable();*/}
                 {/*    setDefaultFlag();*/}
                 {/*}}> Создать запись</p>*/}
-                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >Создать запись</a>
+                <a href={`/online/${this.props.match.params.company}`} onClick={() => {
+                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                }} className="skip_employee" >Создать запись</a>
             </div>
         );
     }
@@ -113,4 +128,4 @@ class TabSix extends  PureComponent {
         this.setState({...this.state, approveF: false})
     }
 }
-export default withRouter(TabSix);
+export default connect()(withRouter(TabSix));

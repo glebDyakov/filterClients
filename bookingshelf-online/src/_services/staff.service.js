@@ -12,6 +12,7 @@ export const staffService = {
     getTimetable,
     getClientAppointments,
     _delete,
+    _move,
     getByCustomId,
     getTimetableAvailable,
     getNearestTime
@@ -107,6 +108,24 @@ function add(id, staff, service, params) {
     };
 
     return fetch(`${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestOptions).then(handleResponse);
+}
+
+function _move(appointment, time, staffId, companyId) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            appointmentTimeMillis: time,
+            staffId,
+            adminApproved: true,
+            adminMoved: true,
+            approved: true,
+            moved: true
+        }),
+        withCredentials: true
+    };
+
+    return fetch(`${config.apiUrl}/${companyId}/appointments/${appointment.appointmentId}`, requestOptions).then(handleResponse);
 }
 
 

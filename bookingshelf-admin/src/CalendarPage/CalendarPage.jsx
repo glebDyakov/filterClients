@@ -17,6 +17,7 @@ import {DatePicker} from "../_components/DatePicker";
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
+import {getWeekRange} from '../_helpers/time'
 import {CalendarModals} from '../_components/modals/CalendarModals';
 import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
 
@@ -38,17 +39,6 @@ function getWeekDays(weekStart) {
         );
     }
     return days;
-}
-
-function getWeekRange(date) {
-    return {
-        from: moment(date).locale('ru')
-            .startOf('week')
-            .toDate(),
-        to: moment(date).locale('ru')
-            .endOf('week')
-            .toDate(),
-    };
 }
 
 function getDayRange(date) {
@@ -301,13 +291,15 @@ class CalendarPage extends PureComponent {
         }, 100);
     }
 
-    refreshTable(startTime, endTime) {
+    refreshTable(startTime, endTime, updateReservedTime = true) {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
-        this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
+        if (updateReservedTime) {
+            this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
+        }
     }
 
-    updateCalendar(){
+    updateCalendar(updateReservedTime){
         const {selectedDayMoment, selectedDays, type}=this.state;
         let startTime, endTime;
 
@@ -318,7 +310,7 @@ class CalendarPage extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime);
+        this.refreshTable(startTime, endTime, updateReservedTime);
         // setTimeout(()=>this.updateCalendar(), 300000)
 
     }
@@ -443,6 +435,11 @@ class CalendarPage extends PureComponent {
             this.refreshTable(startTime, endTime);
         }
 
+        if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
+            setTimeout(() => this.updateCalendar(false), 600)
+            this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
+        }
+
 
         // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
         //     this.setState({flagStaffId: false});
@@ -487,7 +484,7 @@ class CalendarPage extends PureComponent {
 
 
     render() {
-        const { calendar, services, clients, staff, appointments } = this.props;
+        const { calendar, services, clients, staff, appointments, authentication } = this.props;
         const { approvedId, staffAll, workingStaff, reserved,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
@@ -529,7 +526,6 @@ class CalendarPage extends PureComponent {
                                         type={type}
                                         selectedDay={selectedDay}
                                         selectedDays={selectedDays}
-                                        getWeekRange={getWeekRange}
                                         showPrevWeek={this.showPrevWeek}
                                         showNextWeek={this.showNextWeek}
                                         handleDayChange={this.handleDayChange}
@@ -554,8 +550,9 @@ class CalendarPage extends PureComponent {
                                             staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
+                                            authentication={authentication}
                                             numbers={numbers}
-                                            availableTimetable={workingStaff.availableTimetable }
+                                            availableTimetable={workingStaff.availableTimetable}
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
                                             clients={clients && clients.client}
@@ -667,42 +664,17 @@ class CalendarPage extends PureComponent {
     }
 
     deleteAppointment(id){
-        const { dispatch, calendar, appointments } = this.props;
+        const { dispatch } = this.props;
 
         const { selectedDays, type, selectedDayMoment } = this.state;
-        let activeAppointment = {};
-        let countTimeout = 0;
-        appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-            if (currentAppointment.appointmentId === id) {
-                activeAppointment = currentAppointment;
-            }
-        }));
 
         if(type==='day'){
             dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-
-            if (activeAppointment.hasCoAppointments) {
-                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
-                        countTimeout += 1000;
-                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x'))), countTimeout)
-                    }
-                }))
-            }
         } else {
             dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-
-            if (activeAppointment.hasCoAppointments) {
-                appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                    if (activeAppointment.appointmentId === currentAppointment.coAppointmentId) {
-                        countTimeout += 1000;
-                        setTimeout(() => dispatch(calendarActions.deleteAppointment(currentAppointment.coAppointmentId, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x'))), countTimeout)
-                    }
-                }))
-            }
         }
 
-        dispatch(companyActions.getNewAppointments());
+        //dispatch(companyActions.getNewAppointments());
 
     }
 

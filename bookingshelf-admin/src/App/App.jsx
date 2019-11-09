@@ -17,11 +17,11 @@ import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
 import {MainIndexPage} from "../MainIndexPage";
-import {StaffPage} from "../StaffPage";
 import {ClientsPage} from "../ClientsPage";
 import {ServicesPage} from "../ServicesPage";
 import {CalendarPage} from "../CalendarPage";
 import {OnlinePage} from "../OnlinePage";
+import {StaffPage} from "../StaffPage";
 import {EmailPage} from "../EmailPage";
 import {NoPage} from "../NoPage";
 
@@ -189,20 +189,26 @@ class App extends React.Component {
     }
     handleSocketDispatch(payload){
         const { staffId, roleId } = this.props.authentication.user.profile
-        if (staffId === payload.payload.staffId || roleId === 3 || roleId === 4) {
+        if (staffId === payload.payload[0].staffId || roleId === 3 || roleId === 4) {
             this.playSound();
             this.props.dispatch(socketActions.alertSocketMessage(payload));
             if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
-
-                this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
+                payload.payload.forEach(item => {
+                    this.props.dispatch(calendarActions.getAppointmentsNewSocket(item));
+                })
                 this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
             } else if ((payload.wsMessageType === 'APPOINTMENT_DELETED')) {
                 this.props.dispatch(calendarActions.deleteAppointmentsNewSocket(payload));
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
                 // this.props.dispatch(companyActions.getAppointmentsCountMarkerDecrement());
+                // this.props.dispatch(staffActions.getTimetable(moment().startOf('day').format('x'), moment().add('7').endOf('day').format('x')));
                 this.props.dispatch(companyActions.getNewAppointments());
             } else if (payload.wsMessageType === 'APPOINTMENT_MOVED') {
-                this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                this.props.dispatch(calendarActions.moveAppointmentsNewSocket(payload));
+
+                this.props.dispatch(staffActions.getTimetable(moment().startOf('day').format('x'), moment().add('7').endOf('day').format('x')));
+
+                // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                 this.props.dispatch(companyActions.getNewAppointments());
             }
         }

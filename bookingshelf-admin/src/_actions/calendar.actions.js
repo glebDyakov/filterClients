@@ -9,6 +9,7 @@ export const calendarActions = {
     setScrollableAppointment,
     getAppointmentsCount,
     getAppointmentsCanceled,
+    toggleRefreshAvailableTimes,
     editAppointment,
     editAppointmentTime,
     approveAppointment,
@@ -19,6 +20,7 @@ export const calendarActions = {
     addReservedTime,
     deleteReservedTime,
     getAppointmentsNewSocket,
+    moveAppointmentsNewSocket,
     updateAppointment,
     toggleMoveVisit,
     toggleStartMovingVisit,
@@ -104,13 +106,19 @@ function editAppointment(params) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function updateAppointment(id, params) {
+function updateAppointment(id, params, timeout) {
     return dispatch => {
         dispatch(request());
         calendarService.updateAppointment(id, params)
             .then(
                 appointment => {
-                    dispatch(success());
+                    if (timeout) {
+                        setTimeout(() => {
+                            dispatch(success());
+                        }, 600)
+                    } else {
+                        dispatch(success());
+                    }
                 },
                 error => {
                     dispatch(failure(error));
@@ -174,10 +182,16 @@ function getAppointments(dateFrom, dateTo) {
 function getAppointmentsNewSocket(payload) {
     return { type: calendarConstants.GET_APPOINTMENT_NEW_SOCKET, payload }
 }
+function moveAppointmentsNewSocket(payload) {
+    return { type: calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET, payload }
+}
 function deleteAppointmentsNewSocket(payload) {
     return { type: calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET, payload }
 }
 
+function toggleRefreshAvailableTimes(refreshAvailableTimes) {
+    return { type: calendarConstants.TOGGLE_REFRESH_AVAILABLE_TIMES, refreshAvailableTimes }
+}
 function getAppointmentsCount(dateFrom, dateTo) {
     return dispatch => {
         dispatch(request());
@@ -235,10 +249,10 @@ function deleteAppointment(id, time1, time2) {
         calendarService.deleteAppointment(id)
             .then(
                 client => {
-                    dispatch(success(id))
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    setTimeout(() => dispatch(success(id)), 600)
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                 },
 
                 error => dispatch(failure(id, error.toString()))

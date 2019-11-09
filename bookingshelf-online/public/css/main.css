@@ -214,10 +214,10 @@ q:before, q:after { content:''; }
     background-color: #39434f;
     border: none;
     margin: auto;
-    min-width: 185px;
+    min-width: 210px;
     display: block;
     color: #fff;
-    font-size: 20px;
+    font-size: 14px !important;
     font-weight: bold;
     font-family: 'helvetica_medium';
     letter-spacing: 0;
@@ -300,6 +300,9 @@ q:before, q:after { content:''; }
 
 }
 @media screen and (max-width: 480px) {
+    .modal_menu .firm_name.not-selected {
+        width: calc(100% - 60px)
+    }
     .prev_block:hover, .next_block:hover {
         opacity: 1;
     }
@@ -1020,6 +1023,32 @@ q:before, q:after { content:''; }
 .mobile:hover{
     opacity: 0.7;
 }
+.move-white {
+    display: block;
+    width: 37px;
+    height: 37px;
+    background: url(../img/icons/move-white.svg) no-repeat;
+    background-size: 50%;
+    background-position: center;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2px;
+}
+.cancel-white {
+    display: block;
+    width: 37px;
+    height: 37px;
+    background: url(../img/icons/cancel-white.svg) no-repeat;
+    background-size: 50%;
+    background-position: center;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2px;
+}
 .modal_menu .phones_firm {
     display: none;
     position: absolute;
@@ -1193,6 +1222,7 @@ q:before, q:after { content:''; }
 }
 @media screen and (max-width: 720px){
     .modal_menu .firm_name {
+        font-size: 16px;
         width: calc(65% - 30px);
     }
     .mobile-visible {

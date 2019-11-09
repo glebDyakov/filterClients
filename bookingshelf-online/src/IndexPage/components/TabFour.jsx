@@ -1,12 +1,121 @@
 import React, {PureComponent} from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment'
 import DayPicker from "react-day-picker";
+import {staffActions} from "../../_actions";
 
 class TabFour extends  PureComponent {
+    constructor(props) {
+        super(props)
+        this.state = {
+            arrayTime: 0
+        }
+    }
 
     render() {
 
-        const {selectedTime, setScreen, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+
+        const availableTimes = []
+        if(!this.state.arrayTime && workingStaff) {
+            workingStaff.map((workingStaffElement, i) =>
+                parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
+                workingStaffElement.availableTimes.map((workingTime) => {
+
+                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                    const arrayTimes = []
+                    for( let i = 0 ; i< countTimes; i++) {
+                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                    }
+
+
+                    arrayTimes.forEach(arrayTime => {
+                        if (arrayTime >= parseInt(moment().format("x"))) {
+                            let isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
+                            if (!isAdded) {
+                                availableTimes.push({
+                                    time: moment(arrayTime).format('HH:mm'),
+                                    markup: (
+                                        <div key={arrayTime} onClick={() => {
+                                            if (isStartMovingVisit) {
+                                                this.setState({arrayTime})
+                                            } else {
+                                                setTime(arrayTime)
+                                            }
+                                        }}>
+                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                        </div>
+                                    )
+                                })
+                            }
+                        }
+                    })
+                    }
+                )
+
+            );
+
+            // const dayToMove = moment(selectedDay).format("DD/MM/YYYY")
+            // const movingVisitDay = movingVisit && moment(movingVisit.appointmentTimeMillis).format("DD/MM/YYYY")
+            //
+            // if (isStartMovingVisit && movingVisit && (selectedStaff.staffId === movingVisit.staffId) && (dayToMove === movingVisitDay)) {
+            //     const startTime = movingVisit.appointmentTimeMillis - (movingVisit.duration * 1000) + 15 * 60000;
+            //     const endTime = movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)
+            //
+            //
+            //     for (let checkingTime = startTime; checkingTime <= endTime; checkingTime += 15 * 60 * 1000) {
+            //
+            //         const movingVisitMillis = checkingTime;
+            //         const movingVisitEndTime = checkingTime + (movingVisit.duration * 1000);
+            //
+            //         const intervals = []
+            //         for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
+            //             intervals.push(i)
+            //         }
+            //
+            //         let shouldMove = false;
+            //
+            //         workingStaff.forEach(item => {
+            //             item.availableTimes.forEach(time => {
+            //                 const isFreeInterval = intervals.every(i => {
+            //                     const conditionOne = (time.startTimeMillis <= i && time.endTimeMillis >= i)
+            //                     const conditionTwo = (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisit.duration * 1000)) >= i)
+            //
+            //                     return (conditionOne
+            //                         || conditionTwo
+            //                     || ((movingVisit.appointmentTimeMillis -  (movingVisit.duration * 1000) <= i && movingVisit.appointmentTimeMillis > i)))
+            //                 });
+            //                 if (isFreeInterval) {
+            //                     shouldMove = true
+            //                 }
+            //             })
+            //         });
+            //         if (checkingTime === movingVisit.appointmentTimeMillis) {
+            //             shouldMove = false
+            //         }
+            //
+            //         if (shouldMove) {
+            //             let isAdded = availableTimes.find(availableTime => availableTime.time === moment(checkingTime).format('HH:mm'))
+            //             if (!isAdded) {
+            //                 availableTimes.push({
+            //                     time: moment(checkingTime).format('HH:mm'),
+            //                     markup: (
+            //                         <div key={checkingTime} onClick={() => {
+            //                             if (isStartMovingVisit) {
+            //                                 this.setState({arrayTime: checkingTime})
+            //                             } else {
+            //                                 setTime(checkingTime)
+            //                             }
+            //                         }}>
+            //                             <span>{moment(checkingTime, 'x').format('HH:mm')}</span>
+            //                         </div>
+            //                     )
+            //                 })
+            //             }
+            //         }
+            //     }
+            // }
+        }
 
 
         return (
@@ -14,10 +123,12 @@ class TabFour extends  PureComponent {
                 <div className="title_block">
                             <span className="prev_block" onClick={()=> {
                                 setScreen(3);
-                                refreshTimetable()
+                                //if (!isStartMovingVisit) {
+                                    refreshTimetable()
+                                //}
                             }}>Назад</span>
                     <p className="modal_title">Выбор времени</p>
-                    {selectedTime && <span className="next_block" onClick={()=>{
+                    {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         setScreen(5);
                         refreshTimetable();
                     }}>Вперед</span>}
@@ -48,29 +159,30 @@ class TabFour extends  PureComponent {
                     </div>
                     }
                 </div>
-                <div className="choise_time">
-
-                    {workingStaff && workingStaff.map((workingStaffElement, i) =>
-                        parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
-                        workingStaffElement.availableTimes.map((workingTime) => {
-                                const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
-                                const arrayTimes = []
-                                for( let i = 0 ; i< countTimes; i++) {
-                                    arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
-                                }
-
-                                return arrayTimes.map(arrayTime => arrayTime >= parseInt(moment().format("x")) &&
-                                    <div key={i} onClick={() => setTime(arrayTime)}>
-                                        <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
-                                    </div>)
-                            }
-                        )
-
-                    )
-                    }
-                </div>
+                {!!this.state.arrayTime && (
+                    <div className="approveF">
+                        <button className="approveFYes"  onClick={()=>{
+                            setTime(this.state.arrayTime)
+                            this.setState({arrayTime: 0})
+                        }}>Да
+                        </button>
+                        <button className="approveFNo" onClick={()=>{
+                            selectStaff(staffs.find(staff => staff.staffId === movingVisit.staffId))
+                            handleDayClick(movingVisit.appointmentTimeMillis)
+                            this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                            this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                            setScreen(6)
+                        }}>Нет
+                        </button>
+                    </div>
+                )}
+                {!this.state.arrayTime && (
+                    <div className="choise_time">
+                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map( availableTime => availableTime.markup)}
+                    </div>
+                )}
             </div>
         );
     }
 }
-export default  TabFour;
+export default connect()(TabFour);

@@ -77,17 +77,19 @@ class TabCompanySelection extends  PureComponent{
 
                                     <div>
 
-                                    <span style={{ fontWeight: 'bold' }} className="staff_popup_name">{subcompany.companyName}</span>
-
+                                    <div style={{ fontSize: '18px', fontWeight: 'bold'}} className="staff_popup_name">{subcompany.companyName}</div>
+                                        <div style={{ textAlign: 'left' }} className="mobile_block mobile-visible">
+                                            <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                        </div>
                                     </div>
                                 </div>
 
 
 
-                                <div className="mobile_block">
+                                <div className="mobile_block desktop-visible">
                                     <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
                                 </div>
-                                <div style={{position: 'relative'}}>
+                                <div style={{position: 'relative', width: '30px', height: '54px'}}>
                                     <span style={{ right: 0 }} className="next_block" />
                                 </div>
 

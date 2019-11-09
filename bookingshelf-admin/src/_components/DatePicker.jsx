@@ -12,7 +12,7 @@ import DayPicker from "react-day-picker";
 import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css'
 import classNames from "classnames";
-
+import {getWeekRange} from '../_helpers/time'
 
 class DatePicker extends PureComponent {
     constructor(props) {
@@ -81,8 +81,9 @@ class DatePicker extends PureComponent {
     }
 
     handleDayEnter (date) {
+        const hoverRange = getWeekRange(date)
         this.setState({
-            hoverRange: this.props.getWeekRange(date),
+            hoverRange
         });
     };
 

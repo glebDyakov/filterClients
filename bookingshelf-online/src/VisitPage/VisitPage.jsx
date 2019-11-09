@@ -24,6 +24,7 @@ class VisitPage extends React.Component {
         this._delete = this._delete.bind(this);
         this.setScreen = this.setScreen.bind(this);
         this.toggleAllVisits = this.toggleAllVisits.bind(this);
+        this._move = this._move.bind(this);
     }
 
     componentDidMount () {
@@ -68,6 +69,13 @@ class VisitPage extends React.Component {
     onCancelVisit () {
         this.setState({...this.state, approveF: true});
         setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+
+    _move(appointment) {
+        this.props.history.push(`/${this.props.match.params.company}`)
+        this.props.dispatch(staffActions.toggleStartMovingVisit(true, appointment));
+        this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+        this.setScreen(1)
     }
 
     render() {
@@ -115,7 +123,17 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                        {false && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                            <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
+                                this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
+                                this._move(appointment)
+                            }}/>
+                            <span className="move-white" />
+                        </div>}
+                        <div style={{ position: 'relative', width: '210px',  margin: '0 auto' }}>
+                            <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                            <span className="cancel-white" />
+                        </div>
                         {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
                             <button className="approveFYes" onClick={()=> {
                                 if (appointment.customId) {

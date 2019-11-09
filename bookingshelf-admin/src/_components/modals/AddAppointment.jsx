@@ -6,6 +6,7 @@ import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
 import 'moment-duration-format';
 import PropTypes from "prop-types";
+import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 
@@ -202,7 +203,7 @@ class AddAppointment extends React.Component {
 
     setTime(appointmentTimeMillis, minutes, index){
         const {appointment, serviceCurrent, timeNow}=this.state
-        let startTime=moment(moment(timeNow, 'x').format('DD/mm/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/mm/YYYY HH:mm').format('x');
+        let startTime=moment(moment(timeNow, 'x').format('DD/MM/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x');
         let timing=this.getTimeArrange( moment(appointmentTimeMillis).format('x'), minutes)
         appointment[index].appointmentTimeMillis = startTime;
         serviceCurrent[index] = {
@@ -219,39 +220,139 @@ class AddAppointment extends React.Component {
         return this.state;
     }
 
-    disabledMinutes(h) {
-        const {minutes}=this.state
+    disabledMinutes(h, str = 'start') {
+        const {minutes: minutesReservedtime, reservedTime}=this.state
         let minutesArray=[];
 
-        minutes && minutes.map((minute)=>{
-            if (h == minute.split(':')[0]) {
-                minutesArray.push(parseInt(minute.split(':')[1]))
+        if(str==='start') {
+            minutesReservedtime && minutesReservedtime.map((minute)=>{
+                if (h == minute.split(':')[0]) {
+                    minutesArray.push(parseInt(minute.split(':')[1]))
+                }
+            })
+        } else if (str==='end') {
+            // const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+            // const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            // if (minHour === h) {
+            //     const localMinutesArray = ['00', '15', '30', '45'];
+            //     let findedMinute
+            //     localMinutesArray.forEach(minuteItem => {
+            //         const currentTime = `${h < 10 ? '0' : ''}${h}:${minuteItem}`
+            //         findedMinute = minutesReservedtime && minutesReservedtime.find(reservedTime => reservedTime === currentTime)
+            //
+            //         if (findedMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         } else if(parseInt(minuteItem) <= minMinute) {
+            //             minutesArray.push(parseInt(minuteItem))
+            //         }
+            //     })
+            //
+            //
+            // } else {
+            //     minutesReservedtime && minutesReservedtime.map((minute)=>{
+            //         if (h == minute.split(':')[0]) {
+            //             minutesArray.push((minute.split(':')[1]))
+            //         }
+            //     })
+            // }
+
+
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            for(let i=0; i <= 45; i+=15) {
+                if ((h !==selectedHour && h === parseInt(findTime.split(':')[0]) && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i) || (h === parseInt(findTime.split(':')[0]) && findTime.split(':')[1] < i)) {
+                    minutesArray.push(i);
+                }
             }
-        })
+
+        }
 
         return minutesArray;
     }
 
-    disabledHours() {
-        const {minutes}=this.state
+    disabledHours(str = 'start') {
+        const {minutes: minutesReservedtime, reservedTime}=this.state
         let hoursArray=[];
         let firstElement=null;
         let countElements=0;
-        minutes && minutes.map((minute)=>{
+        if (str === 'start') {
+            minutesReservedtime && minutesReservedtime.map((minute) => {
 
-            if (countElements==3 && minute.split(':')[0]==firstElement) {
-                hoursArray.push(parseInt(minute.split(':')[0]))
-                countElements=0
-                firstElement=null;
+                if (countElements == 3 && minute.split(':')[0] == firstElement) {
+                    hoursArray.push(parseInt(minute.split(':')[0]))
+                    countElements = 0
+                    firstElement = null;
+                }
+                if (minute.split(':')[0] == firstElement) {
+                    countElements++
+                } else {
+                    countElements = 1
+                }
+                if (firstElement == null) {
+                    countElements++
+                }
+                firstElement = minute.split(':')[0];
+            })
+        }
+
+        for(let i=0; i<=23; i++){
+            if(str==='end' && reservedTime.startTimeMillis!=='' && i<moment(reservedTime.startTimeMillis, 'x').format('H')){
+                const isIncluded = hoursArray.find(hour => i === hour)
+                if (!isIncluded) {
+                    hoursArray.push(i);
+                }
             }
-            if(minute.split(':')[0]==firstElement){
-                countElements++
+        }
+
+        if(str==='end') {
+
+            const selectedHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
+
+            const selectedMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
+
+            const findTime = minutesReservedtime && minutesReservedtime.find(time => {
+                const timeHour = parseInt(time.split(':')[0]);
+                const timeMinute = parseInt(time.split(':')[1]);
+
+                if (timeHour === selectedHour) {
+                    return timeMinute > selectedMinute;
+                }
+
+                return timeHour > selectedHour
+            })
+
+            const minutesArray = []
+
+
+            for(let i=0; i<=23; i++) {
+                if (i > findTime.split(':')[0]) {
+                    hoursArray.push(i);
+
+                }
+                for(let j=0; j<= 45; j+=15) {
+                    if (i === selectedHour && selectedMinute >= j) {
+                        minutesArray.push(j);
+                    }
+                }
             }
-            if(firstElement==null){
-                countElements++
+
+            if (minutesArray.length === 4) {
+                hoursArray.push(selectedHour);
             }
-            firstElement=minute.split(':')[0];
-        })
+        }
+
         return hoursArray;
     }
 
@@ -289,7 +390,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps } =this.props;
+        const { status, adding, staff: staffFromProps, authentication } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients
@@ -461,13 +562,15 @@ class AddAppointment extends React.Component {
                                                     }
                                                     <ul>
                                                         { clients.client && clients.client.map((client_user, i) =>
+                                                            (access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) &&
+                                                                client_user.appointments.some(appointment => appointment.staffId === authentication.user.profile.staffId))) &&
                                                                 <li key={i}>
                                                                     <div className="row mb-3">
                                                                         <div className="col-7 clients-list">
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
-                                                                            <span className="email-user">{client_user.email}</span>
-                                                                            <span className="email-user">{client_user.phone}</span>
+                                                                                <span className="email-user">{client_user.email}</span>
+                                                                                <span className="email-user">{client_user.phone}</span>
                                                                             </span>
                                                                         </div>
                                                                         <div className="col-5">
@@ -731,9 +834,9 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert } = state;
+    const { alert, authentication } = state;
     return {
-        alert
+        alert, authentication
     };
 }
 

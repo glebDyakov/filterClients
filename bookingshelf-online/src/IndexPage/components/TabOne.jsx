@@ -2,16 +2,22 @@ import React, {PureComponent} from 'react';
 
 
 class TabOne extends  PureComponent{
+    componentWillReceiveProps(newProps) {
+        if (newProps.services && newProps.isStartMovingVisit && newProps.movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
+            this.props.selectService({target: { checked: true} }, newProps.services.find(service => service.serviceId === this.props.movingVisit.serviceId))
+            //this.props.refreshTimetable()
+        }
+    }
 
     render() {
 
-        const {staffId,staffs, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, staffs, isStartMovingVisit, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
-                    {subcompanies.length > 1 && (
+                    {!isStartMovingVisit && subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
                             clearStaff()
                             setScreen(0);
@@ -24,8 +30,8 @@ class TabOne extends  PureComponent{
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
-                        setScreen(2);
-                        refreshTimetable();
+                        setScreen(isStartMovingVisit ? 3 : 2);
+                            refreshTimetable();
                     }}>Вперед</span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
@@ -33,7 +39,9 @@ class TabOne extends  PureComponent{
 
 
                         <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
-                            onClick={() => selectStaff(staff)}
+                            onClick={() => {
+                                selectStaff(staff)
+                            }}
                             key={idStaff}
                         >
                             <span className="staff_popup_item">
@@ -128,7 +136,7 @@ class TabOne extends  PureComponent{
                   </li>
                 )}
               </ul>
-                {info.template === 1 && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
+                {info.template === 1 && !isStartMovingVisit && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
             </div>
         );
     }
