@@ -123,7 +123,7 @@ function approveAllAppointment(approved, canceled, params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    const dateTo = moment().endOf('year').format('x')
+    const dateTo = moment().add(7, 'month').endOf('month').format('x')
     return fetch(`${config.apiUrl}/appointments?dateFrom=1&dateTo=${dateTo}&canceled=${canceled}`, requestOptions)
         .then(handleResponse)
 }
@@ -140,7 +140,7 @@ function approveMovedAppointment(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    const dateTo = moment().endOf('year').format('x')
+    const dateTo = moment().add(7, 'month').endOf('month').format('x')
     return fetch(`${config.apiUrl}/appointments/moved?dateFrom=1&dateTo=${dateTo}`, requestOptions)
         .then(handleResponse)
 }

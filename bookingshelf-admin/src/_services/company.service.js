@@ -156,5 +156,5 @@ function getNewAppointments() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(1, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(7, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }

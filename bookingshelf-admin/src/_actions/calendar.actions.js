@@ -39,8 +39,8 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
                     dispatch(success(appointment, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 500)
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(12, 'month').endOf('month').format('x')));
-                    setTimeout(() => dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(12, 'month').endOf('month').format('x'))), 1000);
+                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    setTimeout(() => dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x'))), 1000);
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -286,7 +286,7 @@ function approveAppointment(id, params) {
                 client => {
                     dispatch(success(id))
 
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
                 },
                 error => dispatch(failure(id, error.toString()))
@@ -303,8 +303,8 @@ function approveAllAppointment(approved, canceled, params) {
             .then(
                 () => {
                     dispatch(companyActions.getNewAppointments())
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
                 },
             )
@@ -317,8 +317,8 @@ function approveMovedAppointment(params) {
             .then(
                 () => {
                     dispatch(companyActions.getNewAppointments())
-                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
                 },
             )
