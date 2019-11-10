@@ -57,15 +57,20 @@ class CalendarPage extends PureComponent {
 
         let staffFromUrl, param1, dateFrom, dateFr, dateTo, dateToType;
 
+        dateFrom=props.match.params.dateFrom ?
+            moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
+            moment().startOf('day').toDate()
+
+        dateFr=props.match.params.dateFrom ?
+            moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
+            moment();
+
+
+        dateTo=props.match.params.dateTo ? getWeekDays(getWeekRange(dateFr).from) :
+            [getDayRange(dateFr).from]
         if(!access(2)) {
             staffFromUrl = 2;
             param1 = 3;
-
-            dateFrom = moment().toDate();
-
-            dateFr = moment(getDayRange(moment()).from);
-
-            dateTo = [getDayRange(moment()).from];
 
             dateToType = 'day'
 
@@ -77,17 +82,7 @@ class CalendarPage extends PureComponent {
                     :3 )
                 : 1;
 
-            dateFrom=props.match.params.dateFrom ?
-                moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
-                moment().startOf('day').toDate()
 
-            dateFr=props.match.params.dateFrom ?
-                moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
-                moment();
-
-
-            dateTo=props.match.params.dateTo ? getWeekDays(getWeekRange(dateFr).from) :
-                [getDayRange(dateFr).from]
 
             dateToType=props.match.params.dateTo ? 'week' :
                 'day'
