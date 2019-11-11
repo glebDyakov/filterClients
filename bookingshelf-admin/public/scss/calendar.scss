@@ -629,6 +629,33 @@
                                 width: 200px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .move-white {
+                                    display: block;
+                                    width: 37px;
+                                    height: 37px;
+                                    background: url(../img/move-white.svg) no-repeat;
+                                    background-size: 50%;
+                                    background-position: center;
+                                    cursor: pointer;
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    right: 7px;
+                                }
+                                .cancel-white {
+                                    display: block;
+                                    width: 37px;
+                                    height: 37px;
+                                    background: url(../img/cancel-white.svg) no-repeat;
+                                    background-size: 50%;
+                                    background-position: center;
+                                    cursor: pointer;
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    right: 8px;
+                                }
+
                                 .close {
                                     margin: 0 5px 0 0!important;
                                     background: url(../img/icons/cancel.svg) no-repeat center;
@@ -660,7 +687,7 @@
                                     display: block;
                                     float: none;
                                     font-weight: normal;
-                                    font-size: 13px;
+                                    font-size: 12px;
                                     min-height: 23px;
                                     line-height: 23px;
                                     color: #555;

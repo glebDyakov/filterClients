@@ -545,6 +545,7 @@ class CalendarPage extends PureComponent {
                                             staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
+                                            services={services}
                                             authentication={authentication}
                                             numbers={numbers}
                                             availableTimetable={workingStaff.availableTimetable}
