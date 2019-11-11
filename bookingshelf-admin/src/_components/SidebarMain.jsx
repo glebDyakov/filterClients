@@ -606,6 +606,7 @@ class SidebarMain extends Component {
             }
             this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify(params)))
         }
+
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
     }
     openAppointments(event){

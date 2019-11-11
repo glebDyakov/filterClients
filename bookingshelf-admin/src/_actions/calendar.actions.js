@@ -118,6 +118,8 @@ function updateAppointment(id, params, timeout) {
                         }, 600)
                     } else {
                         dispatch(success());
+                        dispatch(companyActions.getNewAppointments())
+
                     }
                 },
                 error => {
@@ -285,13 +287,13 @@ function approveAppointment(id, params) {
             .then(
                 client => {
                     dispatch(success(id))
+                    dispatch(companyActions.getNewAppointments())
 
                     dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
                 },
                 error => dispatch(failure(id, error.toString()))
-            )
-            .then(dispatch(companyActions.getNewAppointments()));
+            );
     };
 
     function success(id) { return { type: calendarConstants.APPROVE_APPOINTMENT_SUCCESS, id } }
