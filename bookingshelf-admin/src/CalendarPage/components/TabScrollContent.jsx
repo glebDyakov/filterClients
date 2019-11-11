@@ -299,7 +299,7 @@ class TabScroll extends Component{
                                                                 <p>{service}</p>)}
                                                             <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
                                                                 {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                            <p>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                                                            <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                             {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && <a
@@ -313,11 +313,24 @@ class TabScroll extends Component{
 
                                                                 }}><p>Просмотреть клиента</p>
                                                             </a>}
-                                                            {currentTime >= parseInt(moment().format("x")) && <button data-toggle="modal"
-                                                                    data-target=".start-moving-modal"
-                                                                    onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button" style={{margin: '2px auto 0', display: 'block'}}>
-                                                                Перенести визит
-                                                            </button>
+                                                            {currentTime >= parseInt(moment().format("x")) && (
+                                                                <React.Fragment>
+                                                                    <button data-toggle="modal"
+                                                                            data-target=".start-moving-modal"
+                                                                            onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button"
+                                                                            style={{backgroundColor: '#f3a410', border: 'none', margin: '2px auto 0', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}>
+                                                                        Перенести визит
+                                                                    </button>
+                                                                    <button className="button"
+                                                                            data-toggle="modal"
+                                                                            data-target=".delete-notes-modal"
+                                                                            title="Отменить встречу"
+                                                                            style={{backgroundColor: '#d41316', border: 'none', margin: '2px auto 0', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}
+                                                                            onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                    >
+                                                                        Удалить визит
+                                                                    </button>
+                                                                </React.Fragment>)
                                                             }
                                                         </div>)}
                                                         )
