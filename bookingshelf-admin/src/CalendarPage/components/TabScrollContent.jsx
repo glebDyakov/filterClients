@@ -141,7 +141,7 @@ class TabScroll extends Component{
         })
     }
     render(){
-        const { authentication, numbers, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { authentication, numbers, services, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId } = this.state;
 
         return(
@@ -207,12 +207,12 @@ class TabScroll extends Component{
                                 let totalDuration = appointment[0][0].duration;
                                 let appointmentServices = [];
                                 let totalCount = 0;
-                                appointmentServices.push(appointment[0][0].serviceName);
+                                appointmentServices.push({ serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
                                 if (appointment[0][0].hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                                         if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                             totalDuration += currentAppointment.duration;
-                                            appointmentServices.push(currentAppointment.serviceName)
+                                            appointmentServices.push({serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
                                         }
                                     }))
@@ -233,7 +233,8 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
+                                const serviceDetails = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
+                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 resultMarkup = (
                                     <div
                                         className={(currentTime <= moment().format("x")
@@ -295,8 +296,13 @@ class TabScroll extends Component{
                                                             && <p>{client.phone}</p>}
 
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
-                                                            {appointmentServices.map(service =>
-                                                                <p>{service}</p>)}
+                                                            {appointmentServices.map(service => {
+                                                                const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
+                                                                return <p>
+                                                                    {service.serviceName} {details ? `(${details})` : ''}
+                                                                </p>
+                                                            })
+                                                            }
                                                             <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
                                                                 {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                             <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
@@ -309,27 +315,53 @@ class TabScroll extends Component{
                                                                 onClick={(e) => {
                                                                     $('.client-detail').modal('show')
                                                                     handleUpdateClient(client)
-
-
                                                                 }}><p>Просмотреть клиента</p>
                                                             </a>}
                                                             {currentTime >= parseInt(moment().format("x")) && (
                                                                 <React.Fragment>
-                                                                    <button data-toggle="modal"
-                                                                            data-target=".start-moving-modal"
-                                                                            onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button"
-                                                                            style={{backgroundColor: '#f3a410', border: 'none', margin: '2px auto 0', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}>
-                                                                        Перенести визит
-                                                                    </button>
-                                                                    <button className="button"
-                                                                            data-toggle="modal"
-                                                                            data-target=".delete-notes-modal"
-                                                                            title="Отменить встречу"
-                                                                            style={{backgroundColor: '#d41316', border: 'none', margin: '2px auto 0', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}
-                                                                            onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                    <div style={{
+                                                                        position: 'relative',
+                                                                        marginTop: '2px',
+                                                                        width: '100%',
+                                                                    }}
+                                                                         ref={(el) => {
+                                                                             if (el) {
+                                                                                 el.style.setProperty('min-width', 'unset', 'important');
+                                                                                 el.style.setProperty('max-width', 'unset', 'important');
+                                                                             }
+                                                                         }}
                                                                     >
-                                                                        Удалить визит
-                                                                    </button>
+                                                                        <button data-toggle="modal"
+                                                                                data-target=".start-moving-modal"
+                                                                                onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button"
+                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}>
+                                                                            Перенести визит
+                                                                        </button>
+                                                                        <span className="move-white"/>
+                                                                    </div>
+                                                                    <div style={{
+                                                                        position: 'relative',
+                                                                        marginTop: '5px',
+                                                                        width: '100%',
+                                                                    }}
+                                                                         ref={(el) => {
+                                                                             if (el) {
+                                                                                 el.style.setProperty('min-width', 'unset', 'important');
+                                                                                 el.style.setProperty('max-width', 'unset', 'important');
+                                                                             }
+                                                                         }}>
+                                                                        <button className="button"
+                                                                                data-toggle="modal"
+                                                                                data-target=".delete-notes-modal"
+                                                                                title="Отменить встречу"
+                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}
+                                                                                onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                        >
+                                                                            Удалить визит
+                                                                        </button>
+                                                                        <span className="cancel-white"/>
+                                                                    </div>
+
                                                                 </React.Fragment>)
                                                             }
                                                         </div>)}
