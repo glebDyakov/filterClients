@@ -335,7 +335,6 @@ export function calendar(state = initialState, action) {
                 ...state,
                 appointments: JSON.parse(JSON.stringify(newAppointment)),
                 appointmentsCount: JSON.parse(JSON.stringify(newAppointmentsCount)),
-                refreshAvailableTimes: true
             };
         case calendarConstants.TOGGLE_REFRESH_AVAILABLE_TIMES:
             return {
