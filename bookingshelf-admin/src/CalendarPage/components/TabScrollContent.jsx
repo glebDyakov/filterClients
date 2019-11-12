@@ -320,42 +320,29 @@ class TabScroll extends Component{
                                                             {currentTime >= parseInt(moment().format("x")) && (
                                                                 <React.Fragment>
                                                                     <div style={{
-                                                                        position: 'relative',
                                                                         marginTop: '2px',
-                                                                        width: '100%',
                                                                     }}
-                                                                         ref={(el) => {
-                                                                             if (el) {
-                                                                                 el.style.setProperty('min-width', 'unset', 'important');
-                                                                                 el.style.setProperty('max-width', 'unset', 'important');
-                                                                             }
-                                                                         }}
+                                                                         data-toggle="modal"
+                                                                         data-target=".start-moving-modal"
+                                                                         onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)}
+                                                                         className="msg-inner-button-wrapper"
                                                                     >
-                                                                        <button data-toggle="modal"
-                                                                                data-target=".start-moving-modal"
-                                                                                onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)} className="button"
+                                                                        <button className="button"
                                                                                 style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}>
                                                                             Перенести визит
                                                                         </button>
                                                                         <span className="move-white"/>
                                                                     </div>
                                                                     <div style={{
-                                                                        position: 'relative',
                                                                         marginTop: '5px',
-                                                                        width: '100%',
                                                                     }}
-                                                                         ref={(el) => {
-                                                                             if (el) {
-                                                                                 el.style.setProperty('min-width', 'unset', 'important');
-                                                                                 el.style.setProperty('max-width', 'unset', 'important');
-                                                                             }
-                                                                         }}>
+                                                                         className="msg-inner-button-wrapper"
+                                                                         data-toggle="modal"
+                                                                         data-target=".delete-notes-modal"
+                                                                         onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                    >
                                                                         <button className="button"
-                                                                                data-toggle="modal"
-                                                                                data-target=".delete-notes-modal"
-                                                                                title="Отменить встречу"
                                                                                 style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}
-                                                                                onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
                                                                         >
                                                                             Удалить визит
                                                                         </button>
