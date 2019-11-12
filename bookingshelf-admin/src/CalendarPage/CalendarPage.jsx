@@ -417,6 +417,7 @@ class CalendarPage extends PureComponent {
             }
         }
 
+
         if (newProps.calendar.isAppointmentUpdated) {
             let startTime, endTime;
             if (this.state.type === 'day') {
