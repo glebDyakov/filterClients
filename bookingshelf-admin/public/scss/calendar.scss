@@ -629,6 +629,16 @@
                                 width: 200px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .msg-inner-button-wrapper {
+                                    position: relative;
+                                    min-width: unset !important;
+                                    max-width: unset !important;
+                                    width: 150px;
+                                    margin: 0 auto;
+                                    cursor: pointer;
+                                    font-size: 14px;
+                                }
+
                                 .move-white {
                                     display: block;
                                     width: 37px;
@@ -640,7 +650,7 @@
                                     position: absolute;
                                     top: 50%;
                                     transform: translateY(-50%);
-                                    right: 7px;
+                                    right: -4px;
                                 }
                                 .cancel-white {
                                     display: block;
@@ -653,7 +663,7 @@
                                     position: absolute;
                                     top: 50%;
                                     transform: translateY(-50%);
-                                    right: 8px;
+                                    right: -3px;
                                 }
 
                                 .close {
