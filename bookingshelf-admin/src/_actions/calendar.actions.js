@@ -112,15 +112,8 @@ function updateAppointment(id, params, timeout) {
         calendarService.updateAppointment(id, params)
             .then(
                 appointment => {
-                    if (timeout) {
-                        setTimeout(() => {
-                            dispatch(success());
-                        }, 600)
-                    } else {
                         dispatch(success());
                         dispatch(companyActions.getNewAppointments())
-
-                    }
                 },
                 error => {
                     dispatch(failure(error));

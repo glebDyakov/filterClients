@@ -101,7 +101,7 @@ class TabScroll extends Component{
                     approved: true,
                     moved: true,
                     adminMoved: true
-                }), true)
+                }))
             );
 
             // if (movingVisit.hasCoAppointments) {
