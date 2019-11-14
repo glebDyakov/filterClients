@@ -262,11 +262,15 @@ class TabScroll extends Component{
                                                           title="Онлайн-запись"/>}
 
 
-                                                    {clients && clients.map(client =>
-                                                        ((client.clientId === appointment[0][0].clientId) &&
-                                                    <span className={`${client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'old' : 'new'}-client-icon`}
-                                                          title={client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x'))) ? 'Подтвержденный клиент' : 'Новый клиент'}/>)
-                                                    )}
+                                                    {clients && clients.map(client => {
+                                                        const isOldClient = client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x')))
+                                                        return ((client.clientId === appointment[0][0].clientId) &&
+                                                            <React.Fragment>
+                                                            <span
+                                                                className={`${isOldClient? 'old' : 'new'}-client-icon`}
+                                                                title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+                                                            </React.Fragment>)
+                                                    })}
                                                     {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
                                                                                     {moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
@@ -328,7 +332,7 @@ class TabScroll extends Component{
                                                                          className="msg-inner-button-wrapper"
                                                                     >
                                                                         <button className="button"
-                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}>
+                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
                                                                             Перенести визит
                                                                         </button>
                                                                         <span className="move-white"/>
@@ -342,7 +346,7 @@ class TabScroll extends Component{
                                                                          onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
                                                                     >
                                                                         <button className="button"
-                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px'}}
+                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
                                                                         >
                                                                             Удалить визит
                                                                         </button>
