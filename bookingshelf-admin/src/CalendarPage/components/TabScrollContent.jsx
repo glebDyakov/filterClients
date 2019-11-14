@@ -47,14 +47,59 @@ class TabScroll extends Component{
         document.getElementById(textAreaWrapper).style.height = res+"px";
     }
     handleMouseUp() {
+        const { appointments } = this.props;
         const { changingVisit, changingPos, offsetHeight } = this.state
         const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
         const newOffsetHeight = document.getElementById(textAreaWrapper).offsetHeight
         const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
-        this.props.dispatch(calendarActions.updateAppointment(
-            changingVisit.appointmentId,
-            JSON.stringify({ duration: (changingVisit.duration + (15 * 60 * offsetDifference)) })
-        ))
+
+        let newDuration = (15 * 60 * offsetDifference)
+        if (changingVisit.hasCoAppointments) {
+
+
+            const coAppointments = []
+            appointments.map((staffAppointment) => {
+
+                staffAppointment.appointments.sort((b, a) => a.appointmentId - b.appointmentId).forEach(appointment => {
+                    if (appointment.coAppointmentId === changingVisit.appointmentId) {
+                        coAppointments.push(appointment)
+                    }
+                })
+            })
+            coAppointments.push(changingVisit)
+
+            let shouldUpdateDuration = true
+            if (newDuration > 0) {
+                this.props.dispatch(calendarActions.updateAppointment(
+                    changingVisit.appointmentId,
+                    JSON.stringify({ duration: changingVisit.duration + newDuration })
+                ))
+            } else {
+                coAppointments.forEach(coAppointment => {
+                    if (shouldUpdateDuration) {
+                        newDuration = coAppointment.duration + newDuration
+                        if (newDuration > 0) {
+                            shouldUpdateDuration = false
+                            this.props.dispatch(calendarActions.updateAppointment(
+                                coAppointment.appointmentId,
+                                JSON.stringify({duration: newDuration})
+                            ))
+                        } else {
+                            this.props.dispatch(calendarActions.updateAppointment(
+                                coAppointment.appointmentId,
+                                JSON.stringify({duration: 0})
+                            ))
+                        }
+                    }
+                })
+            }
+        } else {
+            this.props.dispatch(calendarActions.updateAppointment(
+                changingVisit.appointmentId,
+                JSON.stringify({ duration: changingVisit.duration + newDuration })
+            ))
+        }
+
         this.setState({ changingVisit: null, changingPos:null, offsetHeight: null })
     }
 
@@ -314,7 +359,7 @@ class TabScroll extends Component{
                                                     </textarea>
                                                     <p onMouseDown={(e) => {
                                                         this.setState({ changingVisit: appointment[0][0], changingPos:e.pageY, offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight })
-                                                    }} style={{ cursor: 'ns-resize', height: '8px', position: 'absolute', bottom: 0, width: '100%'}} />
+                                                    }} style={{ cursor: 'ns-resize', height: '8px', position: 'absolute', bottom: 0, width: '100%', zIndex: 9999999}} />
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => {
