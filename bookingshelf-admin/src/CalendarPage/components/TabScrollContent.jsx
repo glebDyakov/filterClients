@@ -314,7 +314,7 @@ class TabScroll extends Component{
                                                     </textarea>
                                                     <p onMouseDown={(e) => {
                                                         this.setState({ changingVisit: appointment[0][0], changingPos:e.pageY, offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight })
-                                                    }} style={{ cursor: 'ns-resize', height: '8px'}} />
+                                                    }} style={{ cursor: 'ns-resize', height: '8px', position: 'absolute', bottom: 0, width: '100%'}} />
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => {
