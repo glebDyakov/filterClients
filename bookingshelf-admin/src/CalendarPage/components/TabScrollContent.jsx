@@ -18,6 +18,8 @@ class TabScroll extends Component{
         }
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
         this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
     }
     componentWillReceiveProps(newProps){
@@ -25,6 +27,35 @@ class TabScroll extends Component{
         if (newProps.isStartMovingVisit && newProps.isMoveVisit) {
             this.makeMovingVisitQuery()
         }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.changingVisit) {
+            document.addEventListener('mousemove', this.handleMouseMove, false);
+            document.addEventListener('mouseup', this.handleMouseUp, false);
+        } else {
+            document.removeEventListener('mousemove', this.handleMouseMove, false);
+            document.removeEventListener('mouseup', this.handleMouseUp, false);
+        }
+    }
+
+    handleMouseMove(e) {
+        const { changingVisit, changingPos, offsetHeight } = this.state
+        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
+        const res = offsetHeight + e.pageY - changingPos;
+// 'rez' = ширина div'a + кол-во пикселов смещения
+        document.getElementById(textAreaWrapper).style.height = res+"px";
+    }
+    handleMouseUp() {
+        const { changingVisit, changingPos, offsetHeight } = this.state
+        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
+        const newOffsetHeight = document.getElementById(textAreaWrapper).offsetHeight
+        const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
+        this.props.dispatch(calendarActions.updateAppointment(
+            changingVisit.appointmentId,
+            JSON.stringify({ duration: (changingVisit.duration + (15 * 60 * offsetDifference)) })
+        ))
+        this.setState({ changingVisit: null, changingPos:null, offsetHeight: null })
     }
 
     startMovingVisit(movingVisit, totalDuration) {
@@ -277,10 +308,13 @@ class TabScroll extends Component{
                                                         {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                                 </span>
                                                 </p>
-                                                <p className="notes-container"
+                                                <p id={`${appointment[0][0].appointmentId}-textarea-wrapper`} className="notes-container"
                                                    style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
+                                                    <p onMouseDown={(e) => {
+                                                        this.setState({ changingVisit: appointment[0][0], changingPos:e.pageY, offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight })
+                                                    }} style={{ cursor: 'ns-resize', height: '8px'}} />
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => {
