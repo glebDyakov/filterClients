@@ -4,6 +4,7 @@ import moment from 'moment';
 
 export const calendarService = {
     addAppointment,
+    editCalendarAppointment,
     editAppointment,
     getAppointments,
     getAppointmentsCanceled,
@@ -34,6 +35,22 @@ function addAppointment(params, serviceId, staffId, clientId) {
         .then(appointment => {
             return appointment;
         });
+}
+
+function editCalendarAppointment(params, mainAppointmentId, staffId, clientId) {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(params),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments/${mainAppointmentId}`, requestOptions)
+        .then(handleResponse)
 }
 
 function addReservedTime(params, staffId) {

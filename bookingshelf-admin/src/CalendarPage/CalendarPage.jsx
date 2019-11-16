@@ -481,14 +481,14 @@ class CalendarPage extends PureComponent {
 
     render() {
         const { calendar, services, clients, staff, appointments, authentication } = this.props;
-        const { approvedId, staffAll, workingStaff, reserved,
+        const { approvedId, staffAll, workingStaff, reserved, appointmentEdited,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
             reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
         } = this.state;
         const calendarModalsProps = {
-            appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
+            appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
