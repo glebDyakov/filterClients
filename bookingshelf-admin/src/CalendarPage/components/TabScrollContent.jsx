@@ -78,16 +78,18 @@ class TabScroll extends Component{
                 coAppointments.forEach(coAppointment => {
                     if (shouldUpdateDuration) {
                         newDuration = coAppointment.duration + newDuration
-                        if (newDuration > 0) {
+                        if (newDuration > 900) {
                             shouldUpdateDuration = false
                             this.props.dispatch(calendarActions.updateAppointment(
                                 coAppointment.appointmentId,
                                 JSON.stringify({duration: newDuration})
                             ))
                         } else {
+                            newDuration-=900
+
                             this.props.dispatch(calendarActions.updateAppointment(
                                 coAppointment.appointmentId,
-                                JSON.stringify({duration: 0})
+                                JSON.stringify({duration: 900})
                             ))
                         }
                     }
@@ -283,6 +285,7 @@ class TabScroll extends Component{
                                 let totalDuration = appointment[0][0].duration;
                                 let appointmentServices = [];
                                 let totalCount = 0;
+                                const currentAppointments = [appointment[0][0]]
                                 appointmentServices.push({ serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
                                 if (appointment[0][0].hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
@@ -290,8 +293,12 @@ class TabScroll extends Component{
                                             totalDuration += currentAppointment.duration;
                                             appointmentServices.push({serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
+
+                                            currentAppointments.push(currentAppointment)
                                         }
                                     }))
+
+
                                 }
                                 let extraServiceText;
                                 switch (totalCount) {
@@ -354,7 +361,10 @@ class TabScroll extends Component{
                                                                                 </span>
                                                 </p>
                                                 <p id={`${appointment[0][0].appointmentId}-textarea-wrapper`} className="notes-container"
-                                                   style={{height: ((totalDuration / 60 / 15) - 1) * 20 + "px"}}>
+                                                   style={{
+                                                       minHeight: 20 * (currentAppointments.length - 1) + "px",
+                                                       height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
+                                                   }}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
                                                     <p onMouseDown={(e) => {
@@ -415,6 +425,18 @@ class TabScroll extends Component{
                                                                             Перенести визит
                                                                         </button>
                                                                         <span className="move-white"/>
+                                                                    </div>
+                                                                    <div style={{
+                                                                        marginTop: '5px',
+                                                                    }}
+                                                                         onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
+                                                                         className="msg-inner-button-wrapper"
+                                                                    >
+                                                                        <button className="button"
+                                                                                style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                            Изменить визит
+                                                                        </button>
+                                                                        {/*<span className="move-white"/>*/}
                                                                     </div>
                                                                     <div style={{
                                                                         marginTop: '5px',

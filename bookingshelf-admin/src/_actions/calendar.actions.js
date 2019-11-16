@@ -5,6 +5,7 @@ import moment from "moment";
 
 export const calendarActions = {
     addAppointment,
+    editCalendarAppointment,
     getAppointments,
     setScrollableAppointment,
     getAppointmentsCount,
@@ -39,6 +40,31 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
                     dispatch(success(appointment, staffId));
                     dispatch(successTime(1))
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+    function request(appointment) { return { type: calendarConstants.ADD_APPOINTMENT_REQUEST, appointment } }
+    function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
+    function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
+}
+
+function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, time1, time2) {
+    return dispatch => {
+        //dispatch(request(true));
+
+        calendarService.editCalendarAppointment(params, mainAppointmentId, staffId, clientId)
+            .then(
+                appointment => {
+                    //dispatch(success(appointment, staffId));
+                    dispatch(successTime(1))
+                    //dispatch(staffActions.getTimetableStaffs(time1, time2));
                     dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
                     dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
