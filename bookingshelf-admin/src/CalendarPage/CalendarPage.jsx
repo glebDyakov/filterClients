@@ -666,9 +666,11 @@ class CalendarPage extends PureComponent {
         const { selectedDays, type, selectedDayMoment } = this.state;
 
         if(type==='day'){
-            dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
+            //dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
+            dispatch(calendarActions.deleteAppointment(id));
         } else {
-            dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            //dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            dispatch(calendarActions.deleteAppointment(id));
         }
 
         //dispatch(companyActions.getNewAppointments());

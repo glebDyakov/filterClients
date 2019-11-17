@@ -133,7 +133,7 @@ class AddAppointment extends React.Component {
                 const startTime =  parseInt(appointment[index].appointmentTimeMillis) + (extraDuration ? appointment[index].duration * 1000 : 0 );
 
                 const endTime = (startTime + service.duration * 1000)
-                for(let i = startTime; i <= endTime; i+= 15 * 60000) {
+                for(let i = startTime; i < endTime; i+= 15 * 60000) {
                     intervals.push(i)
                 }
 
@@ -176,11 +176,11 @@ class AddAppointment extends React.Component {
             appointment.push(newAppointment);
             services.push({
                 ...services[services.length -1],
-                servicesList: newServicesList
+                //servicesList: newServicesList
             })
             this.setService(
-                services[services.length - 1].servicesList[0].serviceId,
-                services[services.length - 1].servicesList[0],
+                newServicesList[0].serviceId,
+                newServicesList[0],
                 serviceCurrent.length,
                 appointment
             )
@@ -201,6 +201,7 @@ class AddAppointment extends React.Component {
         }
 
         const updatedAppointments = this.getAppointments(appointment);
+
         this.setState({
             appointmentsToDelete,
             serviceCurrent,
@@ -531,7 +532,7 @@ class AddAppointment extends React.Component {
                                                                         className={serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+'color-circle'}/><span
                                                                         className="yellow"><span className="items-color"><span>{serviceCurrent[index].service.name}</span>
                                                                         <span>{serviceCurrent[index].service.priceFrom} {serviceCurrent[index].service.priceFrom!==serviceCurrent[index].service.priceTo && " - "+serviceCurrent[index].service.priceTo} {serviceCurrent[index].service.currency}</span>  <span>
-                                                                        {moment.duration(parseInt(serviceCurrent[index].service.duration), "seconds").format("h[ ч] m[ мин]")}
+                                                                        {moment.duration(parseInt(appointment[index].duration), "seconds").format("h[ ч] m[ мин]")}
                                                                         </span></span></span>
                                                                     </a>
 
@@ -796,9 +797,7 @@ class AddAppointment extends React.Component {
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
         appointmentsToDelete.forEach((currentAppointment, i) => {
-            setTimeout(() => {
-                this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId))
-            }, 1000 * i)
+            this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
         })
         const appointmentsToAdd = []
         appointment.forEach((currentAppointment, i) => {
@@ -811,7 +810,8 @@ class AddAppointment extends React.Component {
                 appointmentsToAdd,
                 appointment[0].appointmentId,
                 staffCurrent.staffId,
-                clientChecked.clientId
+                clientChecked.clientId,
+                true
             ));
         }
 
@@ -827,7 +827,7 @@ class AddAppointment extends React.Component {
                 };
 
                 if (currentAppointment.appointmentId && currentAppointment.serviceId !== appointmentNew.serviceId) {
-                    this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify(appointmentNew)))
+                    this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify(appointmentNew), true))
                     timeout++;
                 }
             }, 1000 * timeout)
@@ -881,12 +881,12 @@ class AddAppointment extends React.Component {
         appointment.forEach((item, i) => {
             let shouldAdd = false;
             if (i !== 0) {
-                const startTime = parseInt(appointment[i - 1].appointmentTimeMillis)
+                const startTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000
                 const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
                 const intervals = []
 
-                const endTime = startTime + appointment[i - 1].duration * 1000;
+                const endTime = startTime + appointment[i].duration * 1000;
                 for(let i = startTime; i <= endTime; i+= 15 * 60000) {
                     intervals.push(i)
                 }
@@ -900,6 +900,10 @@ class AddAppointment extends React.Component {
                         ))
                     }
                 )
+
+                if (shouldAdd) {
+                    item.appointmentTimeMillis = startTime;
+                }
             }
             if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
                 appointmentMessage = 'Невозможно добавить ещё одну услугу';
