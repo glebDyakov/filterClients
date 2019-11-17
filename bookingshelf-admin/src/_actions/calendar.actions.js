@@ -132,10 +132,10 @@ function editAppointment(params) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function updateAppointment(id, params, timeout) {
+function updateAppointment(id, params, withoutNotify) {
     return dispatch => {
         dispatch(request());
-        calendarService.updateAppointment(id, params)
+        calendarService.updateAppointment(id, params, withoutNotify)
             .then(
                 appointment => {
                         dispatch(success());
@@ -264,10 +264,10 @@ function getReservedTime(dateFrom, dateTo) {
     function failure() { return { type: calendarConstants.GET_RESERVED_TIME_FAILURE} }
 }
 
-function deleteAppointment(id, time1, time2) {
+function deleteAppointment(id, withoutNotify) {
     return dispatch => {
         dispatch(request())
-        calendarService.deleteAppointment(id)
+        calendarService.deleteAppointment(id, withoutNotify)
             .then(
                 client => {
                      dispatch(success(id))
