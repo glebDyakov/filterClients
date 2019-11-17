@@ -37,7 +37,7 @@ function addAppointment(params, serviceId, staffId, clientId) {
         });
 }
 
-function editCalendarAppointment(params, mainAppointmentId, staffId, clientId) {
+function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify) {
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(params),
@@ -49,7 +49,7 @@ function editCalendarAppointment(params, mainAppointmentId, staffId, clientId) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments/${mainAppointmentId}`, requestOptions)
+    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments/${mainAppointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
         .then(handleResponse)
 }
 

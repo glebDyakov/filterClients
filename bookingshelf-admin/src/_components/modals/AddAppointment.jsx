@@ -133,7 +133,7 @@ class AddAppointment extends React.Component {
                 const startTime =  parseInt(appointment[index].appointmentTimeMillis) + (extraDuration ? appointment[index].duration * 1000 : 0 );
 
                 const endTime = (startTime + service.duration * 1000)
-                for(let i = startTime; i <= endTime; i+= 15 * 60000) {
+                for(let i = startTime; i < endTime; i+= 15 * 60000) {
                     intervals.push(i)
                 }
 
@@ -176,12 +176,11 @@ class AddAppointment extends React.Component {
             appointment.push(newAppointment);
             services.push({
                 ...services[services.length -1],
-                servicesList: newServicesList
+                //servicesList: newServicesList
             })
-            debugger
             this.setService(
-                services[services.length - 1].servicesList[0].serviceId,
-                services[services.length - 1].servicesList[0],
+                newServicesList[0].serviceId,
+                newServicesList[0],
                 serviceCurrent.length,
                 appointment
             )
@@ -202,8 +201,6 @@ class AddAppointment extends React.Component {
         }
 
         const updatedAppointments = this.getAppointments(appointment);
-
-        debugger
 
         this.setState({
             appointmentsToDelete,
@@ -800,9 +797,7 @@ class AddAppointment extends React.Component {
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
         appointmentsToDelete.forEach((currentAppointment, i) => {
-            setTimeout(() => {
-                this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
-            }, 1000 * i)
+            this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
         })
         const appointmentsToAdd = []
         appointment.forEach((currentAppointment, i) => {
@@ -815,7 +810,8 @@ class AddAppointment extends React.Component {
                 appointmentsToAdd,
                 appointment[0].appointmentId,
                 staffCurrent.staffId,
-                clientChecked.clientId
+                clientChecked.clientId,
+                true
             ));
         }
 
@@ -889,14 +885,11 @@ class AddAppointment extends React.Component {
                 const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
                 const intervals = []
-                debugger
 
                 const endTime = startTime + appointment[i].duration * 1000;
                 for(let i = startTime; i <= endTime; i+= 15 * 60000) {
                     intervals.push(i)
                 }
-
-                debugger
 
                 shouldAdd = intervals.every(interval => {
                         const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)

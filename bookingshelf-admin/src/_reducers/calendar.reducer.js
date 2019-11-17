@@ -189,6 +189,7 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 isLoading: false,
+                refreshAvailableTimes: true
                 //appointments: JSON.parse(JSON.stringify(appointmentsDeleted))
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
