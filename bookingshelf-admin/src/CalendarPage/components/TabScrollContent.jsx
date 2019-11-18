@@ -75,22 +75,28 @@ class TabScroll extends Component{
                     JSON.stringify({ duration: changingVisit.duration + newDuration })
                 ))
             } else {
+                let timeout = 0;
                 coAppointments.forEach(coAppointment => {
                     if (shouldUpdateDuration) {
                         newDuration = coAppointment.duration + newDuration
                         if (newDuration > 900) {
                             shouldUpdateDuration = false
-                            this.props.dispatch(calendarActions.updateAppointment(
-                                coAppointment.appointmentId,
-                                JSON.stringify({duration: newDuration})
-                            ))
+                            setTimeout(() => {
+                                this.props.dispatch(calendarActions.updateAppointment(
+                                    coAppointment.appointmentId,
+                                    JSON.stringify({duration: newDuration})
+                                ))
+                            }, 1000 * timeout)
                         } else {
                             newDuration-=900
 
-                            this.props.dispatch(calendarActions.updateAppointment(
-                                coAppointment.appointmentId,
-                                JSON.stringify({duration: 900})
-                            ))
+                            setTimeout(() => {
+                                this.props.dispatch(calendarActions.updateAppointment(
+                                    coAppointment.appointmentId,
+                                    JSON.stringify({duration: 900})
+                                ))
+                            }, 1000 * timeout)
+                            timeout++;
                         }
                     }
                 })

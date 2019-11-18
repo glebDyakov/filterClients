@@ -24,7 +24,8 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 200,
                 adding: false,
-                isLoading:false
+                isLoading:false,
+                refreshAvailableTimes: true
             }
         case calendarConstants.ADD_APPOINTMENT_SUCCESS:
 
@@ -216,6 +217,7 @@ export function calendar(state = initialState, action) {
                 reservedTime: reservedDeleted
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
+        case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
         case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
             return {...state, isLoading:false};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:

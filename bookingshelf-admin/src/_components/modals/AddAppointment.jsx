@@ -823,7 +823,6 @@ class AddAppointment extends React.Component {
             }, 2000 * timeout)
         })
 
-        timeout++;
         if (appointmentsToAdd.length) {
             setTimeout(() => {
                 this.props.dispatch(calendarActions.editCalendarAppointment(

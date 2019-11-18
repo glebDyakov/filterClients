@@ -65,8 +65,8 @@ function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, w
                     dispatch(success());
                     dispatch(successTime(1))
                     //dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
-                    dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
+                    // dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    // dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {
                     dispatch(failure(error.toString()));
