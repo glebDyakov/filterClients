@@ -413,7 +413,7 @@ class TabScroll extends Component{
                                                             {appointmentServices.map(service => {
                                                                 const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
                                                                 return <p>
-                                                                    {service.serviceName} {details ? `(${details})` : ''}, <span style={{display: 'inline', fontWeight: 'bold'}}>{service.priceFrom} {service.currency}</span>
+                                                                    {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>{service.priceFrom} {service.currency}</span>
                                                                 </p>
                                                             })
                                                             }
