@@ -223,7 +223,6 @@ export function authentication(state = initialState, action) {
             return {
                 ...state,
                 loginChecked: action.payload.loginChecked,
-                loggedIn: false,
                 loggingIn: false
             };
         case userConstants.LOGIN_FAILURE:
