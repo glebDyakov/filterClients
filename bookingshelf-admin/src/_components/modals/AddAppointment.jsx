@@ -15,7 +15,7 @@ import {calendarActions} from "../../_actions/calendar.actions";
 class AddAppointment extends React.Component {
     constructor(props) {
         super(props);
-        const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : []
+        const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
             appointmentsToDelete: [],
             serviceCurrent: [{
@@ -137,7 +137,6 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                debugger
                 return intervals.every(interval => {
                         const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
                         return (isFreeMinute || (
@@ -218,7 +217,6 @@ class AddAppointment extends React.Component {
         if (appointment && appointment[0]) {
             const startTime = appointment[0].appointmentTimeMillis
             const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
-            debugger
 
             for (let i = startTime; i <= endTime; i += 15 * 60 * 1000) {
                 visitFreeMinutes.push(i);
@@ -264,7 +262,7 @@ class AddAppointment extends React.Component {
     getInfo(appointments){
         const {appointmentEdited, clients, services}=this.state;
 
-        let client=clients.client && clients.client.find((client_user, i) => client_user.clientId===appointments[0].clientId);
+        let client=clients && clients.client && clients.client.find((client_user, i) => client_user.clientId===appointments[0].clientId);
         let newServices = []
         let newServicesCurrent = []
         appointments.forEach(appointment => {
