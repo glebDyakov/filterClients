@@ -57,12 +57,12 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
 
 function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify) {
     return dispatch => {
-        //dispatch(request(true));
+        dispatch(request());
 
         calendarService.editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify)
             .then(
                 appointment => {
-                    //dispatch(success(appointment, staffId));
+                    dispatch(success());
                     dispatch(successTime(1))
                     //dispatch(staffActions.getTimetableStaffs(time1, time2));
                     dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
@@ -74,10 +74,10 @@ function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, w
                 }
             );
     };
-    function request(appointment) { return { type: calendarConstants.ADD_APPOINTMENT_REQUEST, appointment } }
-    function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
+    function request(appointment) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_REQUEST } }
+    function success(appointment, staffId) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
-    function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
+    function failure(error) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE, error } }
 }
 
 

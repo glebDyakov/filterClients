@@ -286,12 +286,14 @@ class TabScroll extends Component{
                                 let appointmentServices = [];
                                 let totalCount = 0;
                                 const currentAppointments = [appointment[0][0]]
-                                appointmentServices.push({ serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
+                                const activeService = services && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
+                                appointmentServices.push({ ...activeService, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
                                 if (appointment[0][0].hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                                         if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                             totalDuration += currentAppointment.duration;
-                                            appointmentServices.push({serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
+                                            const activeCoService = services && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
+                                            appointmentServices.push({...activeCoService, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
 
                                             currentAppointments.push(currentAppointment)
@@ -362,14 +364,27 @@ class TabScroll extends Component{
                                                 </p>
                                                 <p id={`${appointment[0][0].appointmentId}-textarea-wrapper`} className="notes-container"
                                                    style={{
-                                                       minHeight: 20 * (currentAppointments.length - 1) + "px",
+                                                       minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
                                                        height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
                                                    }}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
-                                                    <p onMouseDown={(e) => {
-                                                        this.setState({ changingVisit: appointment[0][0], changingPos:e.pageY, offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight })
-                                                    }} style={{ cursor: 'ns-resize', height: '8px', position: 'absolute', bottom: 0, width: '100%', zIndex: 9999999}} />
+                                                    {currentTime >= parseInt(moment().format("x")) &&
+                                                        <p onMouseDown={(e) => {
+                                                            this.setState({
+                                                                changingVisit: appointment[0][0],
+                                                                changingPos: e.pageY,
+                                                                offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight
+                                                            })
+                                                        }} style={{
+                                                            cursor: 'ns-resize',
+                                                            height: '8px',
+                                                            position: 'absolute',
+                                                            bottom: 0,
+                                                            width: '100%',
+                                                            zIndex: 9999999
+                                                        }}/>
+                                                    }
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     { clients && clients.map((client) => {
@@ -392,7 +407,7 @@ class TabScroll extends Component{
                                                             {appointmentServices.map(service => {
                                                                 const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
                                                                 return <p>
-                                                                    {service.serviceName} {details ? `(${details})` : ''}
+                                                                    {service.serviceName} {details ? `(${details})` : ''}, <span style={{display: 'inline', fontWeight: 'bold'}}>{service.priceFrom} {service.currency}</span>
                                                                 </p>
                                                             })
                                                             }

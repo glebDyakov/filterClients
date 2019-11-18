@@ -272,8 +272,8 @@ class AddAppointment extends React.Component {
                     newServicesCurrent.push({
                         id: service.serviceId,
                         service: {
+                            ...service,
                             duration: appointment.duration,
-                            ...service
                         }
                     })
                 }
@@ -816,7 +816,7 @@ class AddAppointment extends React.Component {
                     currency: serviceCurrent[i].service.currency
                 };
 
-                if (currentAppointment.appointmentId && currentAppointment.serviceId !== appointmentNew.serviceId) {
+                if (currentAppointment.appointmentId && (currentAppointment.serviceId !== appointmentNew.serviceId || currentAppointment.duration !== appointmentNew.duration)) {
                     this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify(appointmentNew), true))
                     timeout++;
                 }

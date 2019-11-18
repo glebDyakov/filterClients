@@ -12,12 +12,20 @@ const initialState = {
 export function calendar(state = initialState, action) {
     switch (action.type) {
         case calendarConstants.ADD_APPOINTMENT_REQUEST:
+        case calendarConstants.EDIT_CALENDAR_APPOINTMENT_REQUEST:
             return {
                 ...state,
                 status: 208,
                 adding: true,
                 isLoading:true
             };
+        case calendarConstants.EDIT_CALENDAR_APPOINTMENT_SUCCESS:
+            return {
+                ...state,
+                status: 200,
+                adding: false,
+                isLoading:false
+            }
         case calendarConstants.ADD_APPOINTMENT_SUCCESS:
 
             let appointments = state.appointments;
