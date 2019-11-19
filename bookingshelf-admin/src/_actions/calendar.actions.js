@@ -5,6 +5,7 @@ import moment from "moment";
 
 export const calendarActions = {
     addAppointment,
+    editCalendarAppointment,
     getAppointments,
     setScrollableAppointment,
     getAppointmentsCount,
@@ -37,10 +38,10 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
             .then(
                 appointment => {
                     dispatch(success(appointment, staffId));
-                    setTimeout(()=>dispatch(successTime(1)), 500)
+                    dispatch(successTime(1))
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
                     dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
-                    setTimeout(() => dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x'))), 1000);
+                    dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -52,6 +53,31 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
     function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
+}
+
+function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify) {
+    return dispatch => {
+        dispatch(request());
+
+        calendarService.editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify)
+            .then(
+                appointment => {
+                    dispatch(success());
+                    dispatch(successTime(1))
+                    //dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    // dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+    function request(appointment) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_REQUEST } }
+    function success(appointment, staffId) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_SUCCESS, appointment, staffId } }
+    function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE, error } }
 }
 
 
@@ -106,21 +132,14 @@ function editAppointment(params) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function updateAppointment(id, params, timeout) {
+function updateAppointment(id, params, withoutNotify) {
     return dispatch => {
         dispatch(request());
-        calendarService.updateAppointment(id, params)
+        calendarService.updateAppointment(id, params, withoutNotify)
             .then(
                 appointment => {
-                    if (timeout) {
-                        setTimeout(() => {
-                            dispatch(success());
-                        }, 600)
-                    } else {
                         dispatch(success());
                         dispatch(companyActions.getNewAppointments())
-
-                    }
                 },
                 error => {
                     dispatch(failure(error));
@@ -245,13 +264,13 @@ function getReservedTime(dateFrom, dateTo) {
     function failure() { return { type: calendarConstants.GET_RESERVED_TIME_FAILURE} }
 }
 
-function deleteAppointment(id, time1, time2) {
+function deleteAppointment(id, withoutNotify) {
     return dispatch => {
         dispatch(request())
-        calendarService.deleteAppointment(id)
+        calendarService.deleteAppointment(id, withoutNotify)
             .then(
                 client => {
-                    setTimeout(() => dispatch(success(id)), 600)
+                     dispatch(success(id))
                     // dispatch(staffActions.getTimetableStaffs(time1, time2));
                     // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                     // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));

@@ -431,9 +431,9 @@
                         &::after {
                             background-size: 14px;
                         }
-                        .fade-time {
-                            display: flex;
-                        }
+                        //.fade-time {
+                        //    display: flex;
+                        //}
                     }
 
                     .fade-time {
@@ -629,6 +629,43 @@
                                 width: 200px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .msg-inner-button-wrapper {
+                                    position: relative;
+                                    min-width: unset !important;
+                                    max-width: unset !important;
+                                    width: 150px;
+                                    margin: 0 auto;
+                                    cursor: pointer;
+                                    font-size: 14px;
+                                }
+
+                                .move-white {
+                                    display: block;
+                                    width: 37px;
+                                    height: 37px;
+                                    background: url(../img/move-white.svg) no-repeat;
+                                    background-size: 50%;
+                                    background-position: center;
+                                    cursor: pointer;
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    right: -7px;
+                                }
+                                .cancel-white {
+                                    display: block;
+                                    width: 37px;
+                                    height: 37px;
+                                    background: url(../img/cancel-white.svg) no-repeat;
+                                    background-size: 50%;
+                                    background-position: center;
+                                    cursor: pointer;
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    right: -5px;
+                                }
+
                                 .close {
                                     margin: 0 5px 0 0!important;
                                     background: url(../img/icons/cancel.svg) no-repeat center;
@@ -660,9 +697,9 @@
                                     display: block;
                                     float: none;
                                     font-weight: normal;
-                                    font-size: 14px;
-                                    min-height: 25px;
-                                    line-height: 25px;
+                                    font-size: 12px;
+                                    min-height: 23px;
+                                    line-height: 20px;
                                     color: #555;
                                     border-bottom: 1px solid rgba(172, 172, 172, 0.5);
 
@@ -683,7 +720,7 @@
                                     &.name {
                                         /*border: none;*/
                                         /*font-weight: bold;*/
-                                        font-size: 16px;
+                                        font-size: 14px;
                                         height: 30px;
                                         line-height: 30px;
                                         /*color: #000;*/
@@ -968,9 +1005,10 @@
 
                         }
                         .new-client-icon {
+                            margin-top: 0 !important;
                             background: url(../img/icons/19.svg) no-repeat center;
                             background-size: 14px;
-                            height: 12px!important;
+                            height: 14px!important;
                         }
 
 
@@ -1002,8 +1040,8 @@
                     .notes-container {
                         background: rgba(222, 221, 221, 0.8);
                         /*изменения*/
-                        padding: 0 0px 0 3px;
-                        min-height: 0;
+                        padding: 0 0 0 3px;
+                        min-height: 1px;
                         border-radius: 0 0 4px 4px;
                         position: relative;
                         height: max-content;

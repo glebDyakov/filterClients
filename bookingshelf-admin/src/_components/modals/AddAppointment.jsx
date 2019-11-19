@@ -9,13 +9,15 @@ import PropTypes from "prop-types";
 import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
+import {calendarActions} from "../../_actions/calendar.actions";
 
 
 class AddAppointment extends React.Component {
     constructor(props) {
         super(props);
-
+        const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
+            appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
                 service: []
@@ -29,16 +31,19 @@ class AddAppointment extends React.Component {
             hours: [],
             staffId: props.staffId,
             clientChecked: [],
-            appointmentEdited: props.appointmentEdited,
-            timeArrange:props.clickedTime!==0?this.getTimeArrange(props.clickedTime, props.minutes):null,
+            appointmentEdited: sortedAppointment,
+            timeArrange:props.clickedTime!==0?this.getTimeArrange(props.clickedTime, props.minutes, sortedAppointment):null,
             timeNow:props.clickedTime===0?moment().format('x'):props.clickedTime,
             staffCurrent: props.staffId?props.staffId:{id:-1},
             edit_appointment: props.edit_appointment,
-            appointment: [{appointmentTimeMillis:props.clickedTime!==0?props.clickedTime:'',
-                duration: props.appointmentEdited?props.appointmentEdited[0][0].duration:'',
-                description: props.appointmentEdited?props.appointmentEdited[0][0].description:'',
-                customId: props.appointmentEdited?props.appointmentEdited[0][0].customId:''}],
-            editedElement: props.appointmentEdited
+            appointment: [{
+                appointmentTimeMillis:props.clickedTime!==0?props.clickedTime:'',
+                duration: '',
+                description: '',
+                customId: ''
+            }],
+            editedElement: sortedAppointment,
+            visitFreeMinutes: this.getVisitFreeMinutes(sortedAppointment)
         };
 
         this.addAppointment=this.addAppointment.bind(this);
@@ -52,8 +57,10 @@ class AddAppointment extends React.Component {
         this.getHours = this.getHours.bind(this);
         this.removeCheckedUser = this.removeCheckedUser.bind(this);
         this.checkUser = this.checkUser.bind(this);
+        this.getFilteredServicesList = this.getFilteredServicesList.bind(this);
         this.editClient = this.editClient.bind(this);
         this.getTimeArrange = this.getTimeArrange.bind(this);
+        this.getVisitFreeMinutes = this.getVisitFreeMinutes.bind(this);
         this.newClient = this.newClient.bind(this);
         this.editAppointment = this.editAppointment.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
@@ -64,7 +71,7 @@ class AddAppointment extends React.Component {
     componentDidMount() {
         const {appointmentEdited} = this.state;
 
-        appointmentEdited && this.getInfo(appointmentEdited[0][0])
+        appointmentEdited && this.getInfo(appointmentEdited)
     }
 
     componentWillReceiveProps(newProps) {
@@ -96,13 +103,13 @@ class AddAppointment extends React.Component {
                 // services:newProps.services,
                 minutes:newProps.minutes,
                 staffId:newProps.staffId,
-                timeArrange:newProps.clickedTime!==0?this.getTimeArrange(newProps.clickedTime, newProps.minutes):null,
+                timeArrange:newProps.clickedTime!==0?this.getTimeArrange(newProps.clickedTime, newProps.minutes, (newProps.appointmentEdited || []).sort((a, b) => a.appointmentId - b.appointmentId)):null,
                 timeNow:newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
                 staffCurrent: newProps.staffId?newProps.staffId:{id:-1},
                 edit_appointment: newProps.edit_appointment,
-                editedElement: newProps.appointmentEdited
+                editedElement: newProps.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId)
             });
-            newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
+            // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
         }
         // if ( (JSON.stringify(this.props.appointmentEdited) !==  JSON.stringify(newProps.appointmentEdited) ||
         //     JSON.stringify(this.props.clickedTime) !==  JSON.stringify(newProps.clickedTime))) {
@@ -115,10 +122,41 @@ class AddAppointment extends React.Component {
         // }
     }
 
-    addNewService(){
-        const { appointment, serviceCurrent, staffs, staffId, services, staffCurrent } = this.state;
-        const resultTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
+    getFilteredServicesList(index, extraDuration) {
+        const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services } = this.state;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
+
+        const result = services[index].servicesList
+            .filter(service => service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId))
+            .filter(service => {
+                const intervals = []
+                const startTime =  parseInt(appointment[index].appointmentTimeMillis) + (extraDuration ? appointment[index].duration * 1000 : 0 );
+
+                const endTime = (startTime + service.duration * 1000)
+                for(let i = startTime; i < endTime; i+= 15 * 60000) {
+                    intervals.push(i)
+                }
+
+                return intervals.every(interval => {
+                        const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
+                        return (isFreeMinute || (
+                            user.availableDays.some(day => day.availableTimes.some(availableTime =>
+                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis >= interval)
+                            ))
+                        ))
+                    }
+                )
+            });
+
+
+        return result
+    }
+
+
+
+    addNewService(){
+        const { appointment, serviceCurrent, services } = this.state;
+        const startTime =  parseInt(appointment[appointment.length - 1].appointmentTimeMillis) + appointment[appointment.length - 1].duration * 1000;
         const newAppointment = {
             duration: '',
             description: '',
@@ -130,39 +168,42 @@ class AddAppointment extends React.Component {
             this.setState({ appointmentMessage });
             return
         }
-        user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
-            if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
-                const newServicesList = services[services.length -1].servicesList.filter(service =>
-                    availableTime.endTimeMillis >= (resultTime + service.duration * 1000) && service.staffs && service.staffs.some(st => st.staffId===staffCurrent.staffId))
-                if (newServicesList.length) {
-                    newAppointment.appointmentTimeMillis = resultTime;
-                    appointment.push(newAppointment);
-                    services.push({
-                        ...services[services.length -1],
-                        servicesList: newServicesList
-                    })
-                    this.setService(
-                        services[services.length - 1].servicesList[0].serviceId,
-                        services[services.length - 1].servicesList[0],
-                        serviceCurrent.length,
-                        appointment
-                    )
-                    appointmentMessage = '';
-                }
-            }
-        }))
+        const newServicesList = this.getFilteredServicesList(appointment.length - 1, true)
+
+
+        if (newServicesList.length) {
+            newAppointment.appointmentTimeMillis = startTime;
+            appointment.push(newAppointment);
+            services.push({
+                ...services[services.length -1],
+                //servicesList: newServicesList
+            })
+            this.setService(
+                newServicesList[0].serviceId,
+                newServicesList[0],
+                serviceCurrent.length,
+                appointment
+            )
+            appointmentMessage = '';
+        }
         this.setState( { appointment, appointmentMessage, services })
     }
 
     removeService(index){
-        const { appointment, serviceCurrent, services } = this.state;
+        const { appointmentsToDelete, appointment, serviceCurrent, services } = this.state;
+        if (appointment[index].appointmentId) {
+            appointmentsToDelete.push(appointment[index])
+        }
         if(appointment.length !== 1) {
             appointment.splice(index, 1);
             serviceCurrent.splice(index, 1);
             services.splice(index, 1);
         }
+
         const updatedAppointments = this.getAppointments(appointment);
+
         this.setState({
+            appointmentsToDelete,
             serviceCurrent,
             services,
             appointment: updatedAppointments.newAppointments,
@@ -170,9 +211,34 @@ class AddAppointment extends React.Component {
         });
     }
 
-    getTimeArrange(time, minutes){
+    getVisitFreeMinutes(appointment) {
+        let visitFreeMinutes = []
+
+        if (appointment && appointment[0]) {
+            const startTime = appointment[0].appointmentTimeMillis
+            const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
+
+            for (let i = startTime; i <= endTime; i += 15 * 60 * 1000) {
+                visitFreeMinutes.push(i);
+            }
+        }
+        return visitFreeMinutes
+    }
+
+    getTimeArrange(time, minutes, appointment){
         let timeArrange=[];
 
+        if (appointment && appointment[0]) {
+            const startTime = appointment[0].appointmentTimeMillis
+            const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
+
+            for (let i = startTime; i <= endTime; i += 15 * 60 * 1000) {
+                const minutesIndex = minutes.findIndex(minute => minute === moment(i).format('HH:mm'))
+                if (minutesIndex) {
+                    minutes.splice(minutesIndex, 1)
+                }
+            }
+        }
 
         if(time && minutes.length!=0){
 
@@ -193,18 +259,34 @@ class AddAppointment extends React.Component {
         return moment.duration(timeArrange[1]-parseInt(timeArrange[0]), 'milliseconds').format("m").replace(/\s/g, '')
     }
 
-    getInfo(appointment){
-        const {serviceCurrent, clients, services}=this.state;
-        let client=clients.client && clients.client.filter((client_user, i) => client_user.clientId===appointment.clientId)[0];
-        let service=services[0].servicesList && services[0].servicesList.filter((service, i) => service.serviceId===appointment.serviceId);
+    getInfo(appointments){
+        const {appointmentEdited, clients, services}=this.state;
 
-        this.setState({serviceCurrent: [{...serviceCurrent[0], id:appointment.serviceId, service:service[0] }], clientChecked:client})
+        let client=clients && clients.client && clients.client.find((client_user, i) => client_user.clientId===appointments[0].clientId);
+        let newServices = []
+        let newServicesCurrent = []
+        appointments.forEach(appointment => {
+            services[0].servicesList.forEach(service => {
+                if (service.serviceId===appointment.serviceId) {
+                    newServices.push(services[0])
+                    newServicesCurrent.push({
+                        id: service.serviceId,
+                        service: {
+                            ...service,
+                            duration: appointment.duration,
+                        }
+                    })
+                }
+            })
+        })
+
+        this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices, clientChecked:client})
     }
 
     setTime(appointmentTimeMillis, minutes, index){
         const {appointment, serviceCurrent, timeNow}=this.state
         let startTime=moment(moment(timeNow, 'x').format('DD/MM/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x');
-        let timing=this.getTimeArrange( moment(appointmentTimeMillis).format('x'), minutes)
+        let timing=this.getTimeArrange( moment(appointmentTimeMillis).format('x'), minutes, appointment)
         appointment[index].appointmentTimeMillis = startTime;
         serviceCurrent[index] = {
             id:-1,
@@ -357,10 +439,12 @@ class AddAppointment extends React.Component {
     }
 
     getServiceList(index) {
-        const { services, staffCurrent, timeArrange } = this.state
+        const { services, staffCurrent } = this.state
 
-        const filteredServiceList = services[index].servicesList && services[index].servicesList.filter((service, key)=>
-            staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId && parseInt(service.duration) / 60 <= parseInt(timeArrange)));
+        const filteredServiceList = this.getFilteredServicesList(index, false)
+            // .filter((service, key)=>
+            // staffCurrent && staffCurrent.staffId && service.staffs &&
+            // service.staffs.some(st=>st.staffId===staffCurrent.staffId && parseInt(service.duration) / 60 <= parseInt(timeArrange)));
         const filteredServiceListWithoutTime = services[index].servicesList && services[index].servicesList.filter((service, key)=>
             staffCurrent && staffCurrent.staffId && service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId));
         if (filteredServiceList.length) {
@@ -430,7 +514,7 @@ class AddAppointment extends React.Component {
                                                             className={staffCurrent.id && staffCurrent.id===-1 ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
                                                             showSecond={false}
                                                             minuteStep={15}
-                                                            disabled={(staffCurrent.id && staffCurrent.id===-1)}
+                                                            disabled={(staffCurrent.id && staffCurrent.id===-1) || edit_appointment}
                                                             disabledHours={this.disabledHours}
                                                             disabledMinutes={this.disabledMinutes}
                                                             onChange={(appointmentTimeMillis)=>this.setTime(appointmentTimeMillis, minutes, index)}
@@ -448,7 +532,7 @@ class AddAppointment extends React.Component {
                                                                         className={serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+'color-circle'}/><span
                                                                         className="yellow"><span className="items-color"><span>{serviceCurrent[index].service.name}</span>
                                                                         <span>{serviceCurrent[index].service.priceFrom} {serviceCurrent[index].service.priceFrom!==serviceCurrent[index].service.priceTo && " - "+serviceCurrent[index].service.priceTo} {serviceCurrent[index].service.currency}</span>  <span>
-                                                                        {moment.duration(parseInt(serviceCurrent[index].service.duration), "seconds").format("h[ ч] m[ мин]")}
+                                                                        {moment.duration(parseInt(appointment[index].duration), "seconds").format("h[ ч] m[ мин]")}
                                                                         </span></span></span>
                                                                     </a>
 
@@ -633,11 +717,11 @@ class AddAppointment extends React.Component {
                                                     )}
                                                     </div>
                                                     <hr/>
-                                                    <div className="buttons p-4 justify-content-between">
+                                                    {!edit_appointment && <div className="buttons p-4 justify-content-between">
                                                         <button type="button" className="button" onClick={this.removeCheckedUser}>Удалить из встречи</button>
                                                         <button type="button" className="button" onClick={()=>this.editClient(cl.clientId)}>Редактировать
                                                         </button>
-                                                    </div>
+                                                    </div>}
 
                                                     <span className="closer"></span>
                                                 </div>
@@ -653,7 +737,8 @@ class AddAppointment extends React.Component {
                                             className={(status === 208 && !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                             type="button"
                                             onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Создать Запись
+                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !clientChecked.clientId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
+                                            {edit_appointment ? 'Обновить запись' : 'Создать Запись'}
                                         </button>
                                     </div>
                                 </div>
@@ -710,10 +795,49 @@ class AddAppointment extends React.Component {
     }
 
     editAppointment (){
-        const {appointment, serviceCurrent, clientChecked, editedElement, staffId }=this.state
-        const { editAppointment }=this.props;
+        const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        appointmentsToDelete.forEach((currentAppointment, i) => {
+            this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
+        })
+        const appointmentsToAdd = []
+        appointment.forEach((currentAppointment, i) => {
+            if (!currentAppointment.appointmentId) {
+                appointmentsToAdd.push({...currentAppointment, serviceId: serviceCurrent[i].id})
+            }
+        })
+        let timeout = 0
+        appointment.forEach((currentAppointment, i) => {
+            setTimeout(() => {
+                let appointmentNew = {
+                    serviceId: serviceCurrent[i].id,
+                    serviceName: serviceCurrent[i].service.name,
+                    duration: serviceCurrent[i].service.duration,
+                    color: serviceCurrent[i].service.color,
+                    currency: serviceCurrent[i].service.currency
+                };
 
-        return editAppointment({...appointment[0], appointmentId:editedElement&&editedElement[0][0].appointmentId, serviceId:serviceCurrent[0].id, staffId:staffId.staffId, clientId:clientChecked.clientId, approved: true})
+                if (currentAppointment.appointmentId && (currentAppointment.serviceId !== appointmentNew.serviceId || currentAppointment.duration !== appointmentNew.duration)) {
+                    this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify(appointmentNew), true))
+                    timeout++;
+                }
+            }, 2000 * timeout)
+        })
+
+        if (appointmentsToAdd.length) {
+            setTimeout(() => {
+                this.props.dispatch(calendarActions.editCalendarAppointment(
+                    appointmentsToAdd,
+                    appointment[0].appointmentId,
+                    staffCurrent.staffId,
+                    clientChecked.clientId,
+                    true
+                ));
+            }, 2000 * timeout)
+        }
+
+
+
+        // return editAppointment({...appointment[0], appointmentId:editedElement&&editedElement[0][0].appointmentId, serviceId:serviceCurrent[0].id, staffId:staffId.staffId, clientId:clientChecked.clientId, approved: true})
     }
 
 
@@ -755,21 +879,35 @@ class AddAppointment extends React.Component {
         this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: newStaffCurrent});
     }
     getAppointments(appointment) {
-        const { staffs, staffId } = this.state;
+        const { staffs, staffId, visitFreeMinutes } = this.state;
         const newAppointments = []
         let appointmentMessage = '';
         appointment.forEach((item, i) => {
             let shouldAdd = false;
             if (i !== 0) {
-                const resultTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000;
+                const startTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000
                 const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
-                user.availableDays.forEach(day => day.availableTimes.forEach(availableTime => {
-                    if (availableTime.startTimeMillis <= resultTime && availableTime.endTimeMillis > resultTime) {
-                        item.appointmentTimeMillis = resultTime;
-                        shouldAdd = true;
+                const intervals = []
+
+                const endTime = startTime + appointment[i].duration * 1000;
+                for(let i = startTime; i < endTime; i+= 15 * 60000) {
+                    intervals.push(i)
+                }
+
+                shouldAdd = intervals.every(interval => {
+                        const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
+                        return (isFreeMinute || (
+                            user.availableDays.some(day => day.availableTimes.some(availableTime =>
+                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval)
+                            ))
+                        ))
                     }
-                }))
+                )
+
+                if (shouldAdd) {
+                    item.appointmentTimeMillis = startTime;
+                }
             }
             if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
                 appointmentMessage = 'Невозможно добавить ещё одну услугу';
@@ -844,7 +982,6 @@ AddAppointment.propTypes ={
     staff: PropTypes.object,
     clients: PropTypes.object,
     addAppointment: PropTypes.func,
-    editAppointment: PropTypes.func,
     handleEditClient: PropTypes.func,
     getHours: PropTypes.func,
     clickedTime: PropTypes.number,

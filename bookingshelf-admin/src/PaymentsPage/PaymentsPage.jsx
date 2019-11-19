@@ -493,6 +493,7 @@ class PaymentsPage extends Component {
                                         <div className="payments-inner">
                                             <div className="payments-list-block">
                                                 <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
+                                                <p className="title-payments">Количество сотрудников</p>
                                                 <div id="range-staff">
                                                     <ul className="range-labels">
                                                         {options.map(option => (

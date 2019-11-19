@@ -4,6 +4,7 @@ import moment from 'moment';
 
 export const calendarService = {
     addAppointment,
+    editCalendarAppointment,
     editAppointment,
     getAppointments,
     getAppointmentsCanceled,
@@ -34,6 +35,22 @@ function addAppointment(params, serviceId, staffId, clientId) {
         .then(appointment => {
             return appointment;
         });
+}
+
+function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify) {
+    const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(params),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments/${mainAppointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
+        .then(handleResponse)
 }
 
 function addReservedTime(params, staffId) {
@@ -90,7 +107,7 @@ function approveAppointment(appointmentId, params) {
         .then(handleResponse)
 }
 
-function updateAppointment(appointmentId, params) {
+function updateAppointment(appointmentId, params, withoutNotify) {
     const requestOptions = {
         method: 'PATCH',
         body: params,
@@ -102,7 +119,7 @@ function updateAppointment(appointmentId, params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/appointments/${appointmentId}`, requestOptions)
+    return fetch(`${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
         .then(handleResponse)
         .then(appointment => {
             return appointment;
@@ -142,7 +159,7 @@ function approveMovedAppointment(params) {
         .then(handleResponse)
 }
 
-function deleteAppointment(appointmentId) {
+function deleteAppointment(appointmentId, withoutNotify) {
     const requestOptions = {
         method: 'DELETE',
         crossDomain: true,
@@ -153,7 +170,7 @@ function deleteAppointment(appointmentId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/${appointmentId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions).then(handleResponse);
 }
 
 function deleteReservedTime(staffId, reservedTimeId) {

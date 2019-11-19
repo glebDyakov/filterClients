@@ -417,6 +417,7 @@ class CalendarPage extends PureComponent {
             }
         }
 
+
         if (newProps.calendar.isAppointmentUpdated) {
             let startTime, endTime;
             if (this.state.type === 'day') {
@@ -431,7 +432,7 @@ class CalendarPage extends PureComponent {
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
-            setTimeout(() => this.updateCalendar(false), 600)
+            this.updateCalendar(false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
 
@@ -480,14 +481,14 @@ class CalendarPage extends PureComponent {
 
     render() {
         const { calendar, services, clients, staff, appointments, authentication } = this.props;
-        const { approvedId, staffAll, workingStaff, reserved,
+        const { approvedId, staffAll, workingStaff, reserved, appointmentEdited,
             clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
             reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
         } = this.state;
         const calendarModalsProps = {
-            appointmentModal, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
+            appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
@@ -545,6 +546,7 @@ class CalendarPage extends PureComponent {
                                             staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
+                                            services={services}
                                             authentication={authentication}
                                             numbers={numbers}
                                             availableTimetable={workingStaff.availableTimetable}
@@ -664,9 +666,11 @@ class CalendarPage extends PureComponent {
         const { selectedDays, type, selectedDayMoment } = this.state;
 
         if(type==='day'){
-            dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
+            //dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
+            dispatch(calendarActions.deleteAppointment(id));
         } else {
-            dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            //dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+            dispatch(calendarActions.deleteAppointment(id));
         }
 
         //dispatch(companyActions.getNewAppointments());
