@@ -107,7 +107,7 @@ class AddAppointment extends React.Component {
                 timeNow:newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
                 staffCurrent: newProps.staffId?newProps.staffId:{id:-1},
                 edit_appointment: newProps.edit_appointment,
-                editedElement: newProps.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId)
+                editedElement: newProps.appointmentEdited && newProps.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId)
             });
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
         }
