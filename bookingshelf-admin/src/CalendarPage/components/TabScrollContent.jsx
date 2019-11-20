@@ -292,13 +292,13 @@ class TabScroll extends Component{
                                 let appointmentServices = [];
                                 let totalCount = 0;
                                 const currentAppointments = [appointment[0][0]]
-                                const activeService = services && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
+                                const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
                                 appointmentServices.push({ ...activeService, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
                                 if (appointment[0][0].hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                                         if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                             totalDuration += currentAppointment.duration;
-                                            const activeCoService = services && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
+                                            const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
                                             appointmentServices.push({...activeCoService, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
 
