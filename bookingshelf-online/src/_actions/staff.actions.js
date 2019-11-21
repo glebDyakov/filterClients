@@ -247,10 +247,10 @@ function getClientAppointments(company) {
 }
 
 
-function getTimetableAvailable(company, staffId, date1, date2, service) {
+function getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList) {
     return dispatch => {
         dispatch(request());
-        staffService.getTimetableAvailable(company, staffId, date1, date2, service)
+        staffService.getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList)
             .then(
                 timetableAvailable => dispatch(success(timetableAvailable)),
                 () => dispatch(failure())

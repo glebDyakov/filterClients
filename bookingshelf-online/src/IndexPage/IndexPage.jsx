@@ -553,11 +553,29 @@ class IndexPage extends PureComponent {
     }
 
     refreshTimetable(newMonth = this.state.month) {
-        const { movingVisit } = this.props.staff
+        const { movingVisit, clients } = this.props.staff
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment(newMonth).startOf('month').format('x'), moment(newMonth).endOf('month').format('x'), serviceIdList));
+        const activeClient = clients && clients.find(client => client.clientId === movingVisit.clientId)
+        let appointmentsIdList = ''
+        appointmentsIdList += movingVisit ? movingVisit.appointmentId : ''
+        if (activeClient) {
+            activeClient.appointments.forEach(appointment => {
+                if (appointment.coAppointmentId === movingVisit.appointmentId) {
+                    appointmentsIdList += `,${appointment.appointmentId}`
+                }
+            })
+        }
+
+        this.props.dispatch(staffActions.getTimetableAvailable(
+            company,
+            selectedStaff && selectedStaff.staffId,
+            moment(newMonth).startOf('month').format('x'),
+            moment(newMonth).endOf('month').format('x'),
+            serviceIdList,
+            appointmentsIdList
+        ));
     }
 
     showPrevWeek (){
