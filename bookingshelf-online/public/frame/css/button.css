@@ -41,11 +41,11 @@
 #online-booking {
     top: 0;
     transition: width ease-in-out 0.3s;
-    max-width: 721px;
+    max-width: 621px;
     border: 0px;
     width: 0%;
     position: fixed;
-    right: -45px;
+    right: 0;
     z-index: 1001;
     height: 100%;
 }
@@ -75,7 +75,7 @@
   z-index: 1003;
   right: 634px;
 }
-@media screen and (max-width: 720px){
+@media screen and (max-width: 620px){
   #online-booking {
     right: 0;
   }
