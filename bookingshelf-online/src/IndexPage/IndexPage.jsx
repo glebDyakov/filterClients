@@ -557,12 +557,12 @@ class IndexPage extends PureComponent {
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
-        const activeClient = clients && clients.find(client => client.clientId === movingVisit.clientId)
+        const activeClient = clients && clients.find(client => client.clientId === movingVisit && movingVisit[0] && movingVisit[0].clientId)
         let appointmentsIdList = ''
-        appointmentsIdList += movingVisit ? movingVisit.appointmentId : ''
+        appointmentsIdList += movingVisit ? movingVisit && movingVisit[0] && movingVisit[0].appointmentId : ''
         if (activeClient) {
             activeClient.appointments.forEach(appointment => {
-                if (appointment.coAppointmentId === movingVisit.appointmentId) {
+                if (appointment.coAppointmentId === movingVisit && movingVisit[0] && movingVisit[0].appointmentId) {
                     appointmentsIdList += `,${appointment.appointmentId}`
                 }
             })

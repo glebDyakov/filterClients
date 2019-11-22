@@ -211,6 +211,7 @@ class App extends React.Component {
                 // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                 this.props.dispatch(companyActions.getNewAppointments());
             }
+            this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(true))
         }
     }
 

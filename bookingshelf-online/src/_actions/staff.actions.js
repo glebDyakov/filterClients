@@ -59,7 +59,7 @@ function _move(appointment, time, staffId, companyId) {
     function failure() { return { type: staffConstants.MOVE_VISIT_FAILURE} }
 }
 
-function toggleStartMovingVisit(isStartMovingVisit, movingVisit = {}) {
+function toggleStartMovingVisit(isStartMovingVisit, movingVisit = []) {
     return dispatch => {
         dispatch(success(isStartMovingVisit));
 
