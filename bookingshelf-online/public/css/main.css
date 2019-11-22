@@ -407,7 +407,7 @@ q:before, q:after { content:''; }
 }
 
 .service_item p{
-    font-size: 18px;
+    font-size: 14px;
     letter-spacing: 0;
     display: block;
     float: right;

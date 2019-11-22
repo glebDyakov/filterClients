@@ -19,6 +19,13 @@ class TabSix extends  PureComponent {
     toggleAllVisits() {
         this.setState({ allVisits: !this.state.allVisits });
     }
+    onCancelVisit() {
+        this.setState({...this.state, approveF: true});
+        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+    setterApproveF(){
+        this.setState({...this.state, approveF: false})
+    }
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
@@ -93,12 +100,12 @@ class TabSix extends  PureComponent {
                 </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                     <button className="approveFYes"  onClick={()=>{
-                        const resultAppointments = movingVisit ? [movingVisit] : newAppointments
+                        const resultAppointments = movingVisit ? movingVisit : newAppointments
                         if (resultAppointments.length ) {
                             if (resultAppointments[0] && resultAppointments[0].customId ) {
                                 _delete(resultAppointments[0].customId)
                             }
-                            this.props.dispatch(staffActions.toggleStartMovingVisit(false, {}));
+                            this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
                             this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                         }
                     }}>Да
@@ -119,13 +126,6 @@ class TabSix extends  PureComponent {
                 }} className="skip_employee" >Создать запись</a>
             </div>
         );
-    }
-    onCancelVisit() {
-        this.setState({...this.state, approveF: true});
-        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
-    }
-    setterApproveF(){
-        this.setState({...this.state, approveF: false})
     }
 }
 export default connect()(withRouter(TabSix));

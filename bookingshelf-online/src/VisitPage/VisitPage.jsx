@@ -80,10 +80,33 @@ class VisitPage extends React.Component {
 
     render() {
         const { staff : { staff } } = this.props;
-        const {appointment, info, screen, approveF, allVisits }=this.state;
+        const {appointment: visitAppointments, info, screen, approveF, allVisits }=this.state;
         const { isLoading, deleted, error } = this.props.staff;
 
-        const activeAppointment = appointment && staff && staff.find(item => item.staffId === appointment.staffId);
+        const activeAppointment = visitAppointments && visitAppointments[0] && staff && staff.find(item => item.staffId === visitAppointments[0].staffId);
+
+        let serviceInfo = null
+        if (visitAppointments && visitAppointments[0]) {
+            let priceFrom = 0;
+            let priceTo= 0;
+            let duration = 0;
+            visitAppointments.forEach((currentAppointment) => {
+                priceFrom += parseInt(currentAppointment.priceFrom)
+                priceTo += parseInt(currentAppointment.priceTo)
+                duration += parseInt(currentAppointment.duration)
+            })
+
+            serviceInfo = (
+                <div className="service_item">
+                    {(visitAppointments.length===1)?<p>{visitAppointments[0].name}</p>:
+                        (<p>Выбрано услуг: <strong>{visitAppointments.length}</strong></p>)}
+                    <p className={visitAppointments.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{visitAppointments[0].currency}</span></p>
+                    <span className="runtime"><strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                </div>
+            )
+        }
+
+        const appointment = visitAppointments ? visitAppointments[0] : {};
 
 
         return (
@@ -105,13 +128,7 @@ class VisitPage extends React.Component {
                                 </p>
                             </div>
                             }
-                            {appointment.serviceId &&
-                            <div className="service_item">
-                                <p>{appointment.serviceName}</p>
-                                <p className={appointment.priceFrom!==appointment.priceTo && 'sow'}><strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo} </strong> <span>{appointment.currency}</span></p>
-                                <span className="runtime"><strong>{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
-                            </div>
-                            }
+                            {appointment.serviceId && serviceInfo}
                             {appointment.appointmentTimeMillis &&
                             <div className="date_item_popup">
                                 <strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY')}</strong>
@@ -126,7 +143,7 @@ class VisitPage extends React.Component {
                         {<div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                                 this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
-                                this._move(appointment)
+                                this._move(visitAppointments)
                             }}/>
                             <span className="move-white" />
                         </div>}

@@ -198,7 +198,6 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 isLoading: false,
-                refreshAvailableTimes: true
                 //appointments: JSON.parse(JSON.stringify(appointmentsDeleted))
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
@@ -315,8 +314,7 @@ export function calendar(state = initialState, action) {
                 ...state,
                 appointments: finalAppointments,
                 appointmentsCount: finalAppointmentsCount,
-                appointmentsCanceled: finalAppointmentsCanceled,
-                refreshAvailableTimes: true
+                appointmentsCanceled: finalAppointmentsCanceled
             };
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
             newAppointment = state.appointments;
