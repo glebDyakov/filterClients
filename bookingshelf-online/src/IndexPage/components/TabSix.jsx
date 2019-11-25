@@ -43,7 +43,7 @@ class TabSix extends  PureComponent {
                 priceTo += parseInt(service.priceTo)
                 duration += parseInt(service.duration)
             })
-            newAppointments.forEach(( appointment => {
+            newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
                 totalAmount += appointment.totalAmount
             }))
 
