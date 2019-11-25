@@ -324,7 +324,7 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const serviceDetails = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
+                                const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
                                 const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 resultMarkup = (
                                     <div
