@@ -271,7 +271,7 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, clients } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -553,18 +553,14 @@ class IndexPage extends PureComponent {
     }
 
     refreshTimetable(newMonth = this.state.month) {
-        const { movingVisit, clients } = this.props.staff
+        const { movingVisit } = this.props.staff
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
-        const activeClient = clients && clients.find(client => client.clientId === movingVisit && movingVisit[0] && movingVisit[0].clientId)
         let appointmentsIdList = ''
-        appointmentsIdList += movingVisit ? movingVisit && movingVisit[0] && movingVisit[0].appointmentId : ''
-        if (activeClient) {
-            activeClient.appointments.forEach(appointment => {
-                if (appointment.coAppointmentId === movingVisit && movingVisit[0] && movingVisit[0].appointmentId) {
-                    appointmentsIdList += `,${appointment.appointmentId}`
-                }
+        if (movingVisit && movingVisit[0]) {
+            movingVisit.forEach((visit, i) => {
+                appointmentsIdList += `${i === 0 ? '' : ','}${visit.appointmentId}`
             })
         }
 
