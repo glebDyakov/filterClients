@@ -716,6 +716,13 @@ class AddAppointment extends React.Component {
                                                         </div>
                                                     )}
                                                     </div>
+                                                    {!!cl.discountPercent &&
+                                                        <div style={{
+                                                            textAlign: 'center',
+                                                            color: '#d41316',
+                                                            margin: '16px 0'
+                                                        }}>Персональная скидка клиента: {cl.discountPercent}%</div>
+                                                    }
                                                     <hr/>
                                                     {!edit_appointment && <div className="buttons p-4 justify-content-between">
                                                         <button type="button" className="button" onClick={this.removeCheckedUser}>Удалить из встречи</button>

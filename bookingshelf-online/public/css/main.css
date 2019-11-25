@@ -453,14 +453,15 @@ q:before, q:after { content:''; }
 .runtime{
     overflow: hidden;
     white-space: nowrap;
-    width: 60%;
     text-overflow: ellipsis;
-    display: block;
     clear: both;
     padding-top: 5px;
     font-size: 16px;
     text-align: left;
     text-align-last: left;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 .calendar_modal th{
     font-size: 24px;
@@ -1547,6 +1548,7 @@ q:before, q:after { content:''; }
     /*flex-direction: column;*/
     align-items: center;
 }
+.supperVisDet
 .supperVisDet p {
     text-align: left;
     text-align-last: left;
