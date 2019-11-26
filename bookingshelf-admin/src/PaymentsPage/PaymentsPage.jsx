@@ -675,6 +675,11 @@ class PaymentsPage extends Component {
                                                     })
 
                                                     }
+                                                    {authentication && authentication.user && authentication.user.countryCode !== "BLR" && (
+                                                        <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold'}}>
+                                                            Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.
+                                                        </div>)
+                                                    }
                                                 </div>
 
                                             </div>

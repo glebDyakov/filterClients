@@ -415,6 +415,8 @@ class TabScroll extends Component{
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
                                                             && <p>{client.phone}</p>}
 
+                                                            {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
+
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                             {appointmentServices.map(service => {
                                                                 const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
@@ -431,7 +433,6 @@ class TabScroll extends Component{
                                                                 {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                             <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                             {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
-                                                            {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
 
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && <a
                                                                 className="a-client-info"
