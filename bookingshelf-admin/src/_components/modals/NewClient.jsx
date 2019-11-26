@@ -126,6 +126,9 @@ class NewClient extends React.Component {
                                     <p className="title_block">Город</p>
                                     <input type="text" placeholder="Например: Москва" value={client.city} name="city"
                                            onChange={this.handleChange}/>
+                                    <p className="title_block">Персональная скидка, %</p>
+                                    <input type="text" value={client.discountPercent} step="1" min="1" max="100" name="discountPercent"
+                                           onChange={this.handleChange}/>
                                     <div className="check-box">
                                         <label>
                                             <input className="form-check-input" type="checkbox"
@@ -158,7 +161,14 @@ class NewClient extends React.Component {
         const { name, value } = e.target;
         const { client } = this.state;
 
-        this.setState({ client: {...client, [name]: value }});
+        let newValue = value
+
+        if (name === 'discountPercent') {
+            const result = String(value)
+            newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : this.state.client.discountPercent
+        }
+
+        this.setState({ client: {...client, [name]: newValue }});
     }
 
     isValidEmailAddress(address) {

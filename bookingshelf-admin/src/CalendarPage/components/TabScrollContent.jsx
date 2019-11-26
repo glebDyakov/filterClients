@@ -293,13 +293,13 @@ class TabScroll extends Component{
                                 let totalCount = 0;
                                 const currentAppointments = [appointment[0][0]]
                                 const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
-                                appointmentServices.push({ ...activeService, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
+                                appointmentServices.push({ ...activeService, discountPercent: appointment[0][0].discountPercent, totalAmount: appointment[0][0].totalAmount, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
                                 if (appointment[0][0].hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
                                         if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                             totalDuration += currentAppointment.duration;
                                             const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
-                                            appointmentServices.push({...activeCoService, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
+                                            appointmentServices.push({...activeCoService, discountPercent: appointment[0][0].discountPercent, totalAmount: appointment[0][0].totalAmount, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
 
                                             currentAppointments.push(currentAppointment)
@@ -324,7 +324,7 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const serviceDetails = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
+                                const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
                                 const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 resultMarkup = (
                                     <div
@@ -362,6 +362,12 @@ class TabScroll extends Component{
                                                                 title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
                                                             </React.Fragment>)
                                                     })}
+
+                                                    {!!appointment[0][0].discountPercent &&
+                                                    <span className="percentage"
+                                                          title={`${appointment[0][0].discountPercent}%`}
+                                                    />}
+
                                                     {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
                                                                                     {moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
@@ -409,11 +415,17 @@ class TabScroll extends Component{
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
                                                             && <p>{client.phone}</p>}
 
+                                                            {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
+
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                             {appointmentServices.map(service => {
                                                                 const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
                                                                 return <p>
-                                                                    {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>{service.priceFrom} {service.currency}</span>
+                                                                    {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
+                                                                    {service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                                            ({service.totalAmount} {service.currency})
+                                                                        </span>}
+                                                                    </span>
                                                                 </p>
                                                             })
                                                             }

@@ -19,6 +19,13 @@ class TabSix extends  PureComponent {
     toggleAllVisits() {
         this.setState({ allVisits: !this.state.allVisits });
     }
+    onCancelVisit() {
+        this.setState({...this.state, approveF: true});
+        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+    setterApproveF(){
+        this.setState({...this.state, approveF: false})
+    }
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
@@ -30,18 +37,25 @@ class TabSix extends  PureComponent {
             let priceFrom = 0;
             let priceTo= 0;
             let duration = 0;
+            let totalAmount = 0
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
                 duration += parseInt(service.duration)
             })
+            newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
+                totalAmount += appointment.totalAmount
+            }))
 
             serviceInfo = (
                 <div className="service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
                         (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{selectedServices[0].currency}</span></p>
-                    <span className="runtime"><strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                    <span className="runtime">
+                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
+                    </span>
                 </div>
             )
         }
@@ -80,10 +94,17 @@ class TabSix extends  PureComponent {
                     </div>
                     }
                 </div>
-                {false && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
+                    <p style={{
+                        textAlign: 'center',
+                        fontSize: '18px',
+                        marginBottom: '8px'
+                    }}>Ваша персональная скидка составит: {newAppointments[0].discountPercent}%</p>
+                }
+                {<div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                     <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
-                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId)[0])
+                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
                     }}/>
                     <span className="move-white" />
                 </div>}
@@ -93,12 +114,12 @@ class TabSix extends  PureComponent {
                 </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                     <button className="approveFYes"  onClick={()=>{
-                        const resultAppointments = movingVisit ? [movingVisit] : newAppointments
+                        const resultAppointments = movingVisit ? movingVisit : newAppointments
                         if (resultAppointments.length ) {
                             if (resultAppointments[0] && resultAppointments[0].customId ) {
                                 _delete(resultAppointments[0].customId)
                             }
-                            this.props.dispatch(staffActions.toggleStartMovingVisit(false, {}));
+                            this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
                             this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                         }
                     }}>Да
@@ -119,13 +140,6 @@ class TabSix extends  PureComponent {
                 }} className="skip_employee" >Создать запись</a>
             </div>
         );
-    }
-    onCancelVisit() {
-        this.setState({...this.state, approveF: true});
-        setTimeout(() => this.approvedButtons.scrollIntoView({ behavior: "smooth" }), 100);
-    }
-    setterApproveF(){
-        this.setState({...this.state, approveF: false})
     }
 }
 export default connect()(withRouter(TabSix));

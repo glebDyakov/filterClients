@@ -59,7 +59,7 @@ function _move(appointment, time, staffId, companyId) {
     function failure() { return { type: staffConstants.MOVE_VISIT_FAILURE} }
 }
 
-function toggleStartMovingVisit(isStartMovingVisit, movingVisit = {}) {
+function toggleStartMovingVisit(isStartMovingVisit, movingVisit = []) {
     return dispatch => {
         dispatch(success(isStartMovingVisit));
 
@@ -247,10 +247,10 @@ function getClientAppointments(company) {
 }
 
 
-function getTimetableAvailable(company, staffId, date1, date2, service) {
+function getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList) {
     return dispatch => {
         dispatch(request());
-        staffService.getTimetableAvailable(company, staffId, date1, date2, service)
+        staffService.getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList)
             .then(
                 timetableAvailable => dispatch(success(timetableAvailable)),
                 () => dispatch(failure())

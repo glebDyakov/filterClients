@@ -407,7 +407,7 @@ q:before, q:after { content:''; }
 }
 
 .service_item p{
-    font-size: 18px;
+    font-size: 14px;
     letter-spacing: 0;
     display: block;
     float: right;
@@ -453,14 +453,15 @@ q:before, q:after { content:''; }
 .runtime{
     overflow: hidden;
     white-space: nowrap;
-    width: 60%;
     text-overflow: ellipsis;
-    display: block;
     clear: both;
     padding-top: 5px;
     font-size: 16px;
     text-align: left;
     text-align-last: left;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 .calendar_modal th{
     font-size: 24px;
@@ -1215,12 +1216,12 @@ q:before, q:after { content:''; }
         padding-bottom: 40px;
     }
 }
-@media screen and (min-width: 721px) {
+@media screen and (min-width: 621px) {
     .adress-text-wrapper {
         display: block !important;
     }
 }
-@media screen and (max-width: 720px){
+@media screen and (max-width: 620px){
     .modal_menu .firm_name {
         font-size: 16px;
         width: calc(65% - 30px);
@@ -1547,6 +1548,7 @@ q:before, q:after { content:''; }
     /*flex-direction: column;*/
     align-items: center;
 }
+.supperVisDet
 .supperVisDet p {
     text-align: left;
     text-align-last: left;

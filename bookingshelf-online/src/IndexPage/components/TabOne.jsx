@@ -3,8 +3,12 @@ import React, {PureComponent} from 'react';
 
 class TabOne extends  PureComponent{
     componentWillReceiveProps(newProps) {
-        if (newProps.services && newProps.isStartMovingVisit && newProps.movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
-            this.props.selectService({target: { checked: true} }, newProps.services.find(service => service.serviceId === this.props.movingVisit.serviceId))
+        const { movingVisit } = newProps
+        if (newProps.services && newProps.isStartMovingVisit && movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
+            movingVisit && movingVisit.forEach(visit => {
+                this.props.selectService({target: { checked: true} }, newProps.services.find(service => service.serviceId === visit.serviceId))
+
+            })
             //this.props.refreshTimetable()
         }
     }

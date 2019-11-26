@@ -271,7 +271,7 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups } = this.props.staff;
+        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, clients } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -557,7 +557,21 @@ class IndexPage extends PureComponent {
         const { selectedServices, selectedStaff } = this.state;
         const serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
-        this.props.dispatch(staffActions.getTimetableAvailable(company, selectedStaff && selectedStaff.staffId, moment(newMonth).startOf('month').format('x'), moment(newMonth).endOf('month').format('x'), serviceIdList));
+        let appointmentsIdList = ''
+        if (movingVisit && movingVisit[0]) {
+            movingVisit.forEach((visit, i) => {
+                appointmentsIdList += `${i === 0 ? '' : ','}${visit.appointmentId}`
+            })
+        }
+
+        this.props.dispatch(staffActions.getTimetableAvailable(
+            company,
+            selectedStaff && selectedStaff.staffId,
+            moment(newMonth).startOf('month').format('x'),
+            moment(newMonth).endOf('month').format('x'),
+            serviceIdList,
+            appointmentsIdList
+        ));
     }
 
     showPrevWeek (){

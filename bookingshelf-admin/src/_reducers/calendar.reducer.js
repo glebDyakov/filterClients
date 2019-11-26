@@ -198,7 +198,6 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 isLoading: false,
-                refreshAvailableTimes: true
                 //appointments: JSON.parse(JSON.stringify(appointmentsDeleted))
             };
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
@@ -294,20 +293,18 @@ export function calendar(state = initialState, action) {
             appointmentsToDelete.forEach((newItem, i) => {
                 let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
                 let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                if (indexElem) {
+                if (indexElem !== -1) {
                     newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
                 }
-                if (indexAppointmentsCount) {
+                if (indexAppointmentsCount !== -1) {
                     newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
                 }
 
                 if (i === 0 ){
 
-
                     newAppointmentsCanceled.push(newItem);
                 }
             })
-
             const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
             const finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
             const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
@@ -315,8 +312,7 @@ export function calendar(state = initialState, action) {
                 ...state,
                 appointments: finalAppointments,
                 appointmentsCount: finalAppointmentsCount,
-                appointmentsCanceled: finalAppointmentsCanceled,
-                refreshAvailableTimes: true
+                appointmentsCanceled: finalAppointmentsCanceled
             };
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
             newAppointment = state.appointments;

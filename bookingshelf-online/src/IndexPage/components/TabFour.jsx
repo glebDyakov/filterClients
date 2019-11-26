@@ -160,21 +160,25 @@ class TabFour extends  PureComponent {
                     }
                 </div>
                 {!!this.state.arrayTime && (
-                    <div className="approveF">
-                        <button className="approveFYes"  onClick={()=>{
-                            setTime(this.state.arrayTime)
-                            this.setState({arrayTime: 0})
-                        }}>Да
-                        </button>
-                        <button className="approveFNo" onClick={()=>{
-                            selectStaff(staffs.find(staff => staff.staffId === movingVisit.staffId))
-                            handleDayClick(movingVisit.appointmentTimeMillis)
-                            this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                            this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                            setScreen(6)
-                        }}>Нет
-                        </button>
-                    </div>
+                    <React.Fragment>
+                        <p className="modal_title">Перенести визит?</p>
+                        <div className="approveF">
+
+                            <button className="approveFYes"  onClick={()=>{
+                                setTime(this.state.arrayTime)
+                                this.setState({arrayTime: 0})
+                            }}>Да
+                            </button>
+                            <button className="approveFNo" onClick={()=>{
+                                selectStaff(staffs.find(staff => staff.staffId === movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                setScreen(6)
+                            }}>Нет
+                            </button>
+                        </div>
+                    </React.Fragment>
                 )}
                 {!this.state.arrayTime && (
                     <div className="choise_time">

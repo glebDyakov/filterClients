@@ -99,7 +99,7 @@ class App extends React.Component {
                 this.notifications();
 
                 this.props.dispatch(companyActions.get());
-                if (newProps.authentication.user.profile.roleId === 4) {
+                if (newProps.authentication.user.profile && (newProps.authentication.user.profile.roleId === 4)) {
                     this.props.dispatch(companyActions.getSubcompanies());
                 }
             }
@@ -211,6 +211,7 @@ class App extends React.Component {
                 // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
                 this.props.dispatch(companyActions.getNewAppointments());
             }
+            this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(true))
         }
     }
 
