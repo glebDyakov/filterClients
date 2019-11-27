@@ -391,17 +391,20 @@ q:before, q:after { content:''; }
     margin: 0 !important;
 }
 
-.supperVisDet_info_title {
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-}
 
 .specialist .supperVisDet_info p {
-    display: inline-block !important;
+    display: flex !important;
     float: none !important;
-    justify-content: flex-start !important;
+    justify-content: flex-start;
     margin-top: 4px;
+}
+
+
+.specialist .supperVisDet_info_title {
+    text-align: center;
+    justify-content: flex-start;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .img_container{
@@ -1566,9 +1569,15 @@ q:before, q:after { content:''; }
     border: 1px solid red!important;
 }
 
-.specialist .supperVisDet, .specialist .supperVisDet p{
+.specialist .supperVisDet{
     display: flex;
     justify-content: center;
+    /*flex-direction: column;*/
+    align-items: center;
+}
+.specialist .supperVisDet p {
+    display: flex;
+    justify-content: flex-start;
     /*flex-direction: column;*/
     align-items: center;
 }
