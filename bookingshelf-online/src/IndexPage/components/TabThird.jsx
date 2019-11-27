@@ -49,11 +49,17 @@ class TabThird extends  PureComponent {
                     </div>
                     }
                     {selectedService.serviceId &&
-                    <div className="supperVisDet" >
-                        {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                    <div className="supperVisDet">
+                        {(selectedServices.length === 1) ? <p>{selectedServices[0].name && selectedServices[0].name.length > 85 ? `${selectedServices[0].name.slice(0, 85)}...` : selectedServices[0].name}</p> :
                             (<p>Выбрано услуг: <br/>
                                 <p><strong>{selectedServices.length}</strong></p></p>)}
-                        {/*<p>Стоимость<br/><strong>{this.state.allPriceFrom?this.state.allPriceFrom+'-'+this.state.allPriceTo: '0'}</strong></p>*/}
+                        <div className="supperVisDet_info">
+                            <p className="supperVisDet_info_title">Список услуг:</p>
+                            {selectedServices.map(service => (
+                                <p>{service.name}</p>
+                            ))}
+                            <span className="supperVisDet_closer" />
+                        </div>
                     </div>
                     }
 
