@@ -597,6 +597,9 @@ class AddAppointment extends React.Component {
                                                 </div>
                                                 <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
                                                 <textarea className="mb-3" placeholder="Например: Без окраски" name="description"  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                <p>Единоразовая скидка, %</p>
+                                                <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
+
                                                 {
                                                     status === 200 &&
                                                     <p className="alert-success p-1 rounded pl-3 mb-2">Запись сохранена</p>
@@ -869,7 +872,15 @@ class AddAppointment extends React.Component {
     handleChange(e, index) {
         const { name, value } = e.target;
         const { appointment } = this.state;
-        appointment[index] = {...appointment[index], [name]: value };
+        if (name === 'discountPercent') {
+            const result = String(value)
+            const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
+            appointment[index] = {...appointment[index], [name]: newValue };
+
+        } else {
+            appointment[index] = {...appointment[index], [name]: value };
+
+        }
 
         this.setState({ appointment });
     }
