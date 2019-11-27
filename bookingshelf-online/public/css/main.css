@@ -371,10 +371,37 @@ q:before, q:after { content:''; }
     float: right;
 }
 .specialist{
+    position: relative;
     display: inline-block;
     height: auto;
     width: 100%;
     margin-bottom: 6px;
+}
+.supperVisDet {
+    position: relative;
+    cursor: pointer;
+}
+.specialist .supperVisDet_info {
+    display: none;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 100%;
+    margin: 0 !important;
+}
+
+.supperVisDet_info_title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.specialist .supperVisDet_info p {
+    display: inline-block !important;
+    float: none !important;
+    justify-content: flex-start !important;
+    margin-top: 4px;
 }
 
 .img_container{
@@ -451,9 +478,6 @@ q:before, q:after { content:''; }
     text-align-last: left;
 }
 .runtime{
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     clear: both;
     padding-top: 5px;
     font-size: 16px;
@@ -461,7 +485,7 @@ q:before, q:after { content:''; }
     text-align-last: left;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 60%;
 }
 .calendar_modal th{
     font-size: 24px;
@@ -1072,7 +1096,7 @@ q:before, q:after { content:''; }
     display: inline-block;
     margin: 5px 4% 5px;
 }
-.closer{
+.supperVisDet_closer, .closer{
     background: url(../img/icons/close.svg) no-repeat;
     width: 15px;
     height: 15px;
@@ -1083,7 +1107,7 @@ q:before, q:after { content:''; }
     top: 10px;
     cursor: pointer;
 }
-.closer:hover{
+.supperVisDet_closer, .closer:hover{
     opacity: 0.7;
 }
 .adress-phones p{
