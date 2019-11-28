@@ -113,7 +113,7 @@ class VisitPage extends React.Component {
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">Список услуг:</p>
                         {visitAppointments.map(service => (
-                            <p>{service.serviceName}</p>
+                            <p>• {service.serviceName}</p>
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
@@ -124,12 +124,13 @@ class VisitPage extends React.Component {
         const appointment = visitAppointments ? visitAppointments[0] : {};
 
 
+
         return (
 
             <div className="container_popups">
                 {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
                 {info && <Header info={info}/>}
-                {appointment && screen===1 && !isLoading &&
+                {!error && !deleted && appointment && screen===1 && !isLoading &&
                     <div className="service_selection final-screen">
                         <div className="final-book">
                             <p>Ваша запись</p>
@@ -198,14 +199,14 @@ class VisitPage extends React.Component {
                 {/*</div>*/}
                 {/*}*/}
 
-                { screen === 2 && error &&
+                {error &&
                 <TabError
                     error={error}
                     setScreen={this.setScreen}
                     companyId={this.props.match.params.company}
                     isVisitPage
                 />}
-                {screen === 2 && deleted &&
+                {deleted &&
                 <TabCanceled
                     setScreen={this.setScreen}
                     companyId={this.props.match.params.company}

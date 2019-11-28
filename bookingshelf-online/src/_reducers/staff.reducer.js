@@ -111,7 +111,6 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_INFO_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
-        case staffConstants.GET_APPOINTMENT_CUSTOM_FAILURE:
         case staffConstants.GET_TIMETABLE_FAILURE:
         case staffConstants.GET_TIMETABLE_AVAILABLE_FAILURE:
         case staffConstants.DELETE_APPOINTMENT_FAILURE:
@@ -119,6 +118,13 @@ export function staff(state = initialState, action) {
                 ...state,
                 isLoading: false,
                 deleted: false
+            }
+        case staffConstants.GET_APPOINTMENT_CUSTOM_FAILURE:
+            return {
+                ...state,
+                isLoading: false,
+                deleted: false,
+                error: 'Записи не существует'
             }
         case staffConstants.MOVE_VISIT_FAILURE:
             return {
