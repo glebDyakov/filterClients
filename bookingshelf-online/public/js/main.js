@@ -14,6 +14,13 @@ function initializeJs() {
             $('.phones_firm').fadeOut(300);
             e.stopPropagation();
         });
+        $('.supperVisDet').click(function () {
+            $('.supperVisDet_info').fadeIn(300);
+        });
+        $('.supperVisDet_closer').click(function (e) {
+            $('.supperVisDet_info').fadeOut(300);
+            e.stopPropagation();
+        });
         $(".nb").click(function () {
             $('.service_selection').fadeOut(0);
             $(this).parent().parent('.service_selection').next('.service_selection').fadeIn(100);

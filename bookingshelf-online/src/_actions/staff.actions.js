@@ -207,7 +207,7 @@ function getByCustomId(id) {
         staffService.getByCustomId(id)
             .then(
                 appointment => dispatch(success(appointment)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 

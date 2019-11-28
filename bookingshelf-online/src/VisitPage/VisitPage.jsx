@@ -90,18 +90,33 @@ class VisitPage extends React.Component {
             let priceFrom = 0;
             let priceTo= 0;
             let duration = 0;
+            let totalAmount = 0;
             visitAppointments.forEach((currentAppointment) => {
                 priceFrom += parseInt(currentAppointment.priceFrom)
                 priceTo += parseInt(currentAppointment.priceTo)
                 duration += parseInt(currentAppointment.duration)
             })
 
+            visitAppointments && visitAppointments[0] && visitAppointments[0].discountPercent && visitAppointments.forEach(( appointment => {
+                totalAmount += appointment.totalAmount
+            }))
+
             serviceInfo = (
-                <div className="service_item">
-                    {(visitAppointments.length===1)?<p>{visitAppointments[0].name}</p>:
+                <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
+                    {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
                         (<p>Выбрано услуг: <strong>{visitAppointments.length}</strong></p>)}
                     <p className={visitAppointments.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{visitAppointments[0].currency}</span></p>
-                    <span className="runtime"><strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                    <span style={{ width: '100%' }} className="runtime">
+                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        {visitAppointments && visitAppointments[0] && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
+                    </span>
+                    <div className="supperVisDet_info">
+                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        {visitAppointments.map(service => (
+                            <p>• {service.serviceName}</p>
+                        ))}
+                        <span className="supperVisDet_closer" />
+                    </div>
                 </div>
             )
         }
@@ -109,12 +124,13 @@ class VisitPage extends React.Component {
         const appointment = visitAppointments ? visitAppointments[0] : {};
 
 
+
         return (
 
             <div className="container_popups">
                 {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
                 {info && <Header info={info}/>}
-                {appointment && screen===1 && !isLoading &&
+                {!error && !deleted && appointment && screen===1 && !isLoading &&
                     <div className="service_selection final-screen">
                         <div className="final-book">
                             <p>Ваша запись</p>
@@ -183,14 +199,14 @@ class VisitPage extends React.Component {
                 {/*</div>*/}
                 {/*}*/}
 
-                { screen === 2 && error &&
+                {error &&
                 <TabError
                     error={error}
                     setScreen={this.setScreen}
                     companyId={this.props.match.params.company}
                     isVisitPage
                 />}
-                {screen === 2 && deleted &&
+                {deleted &&
                 <TabCanceled
                     setScreen={this.setScreen}
                     companyId={this.props.match.params.company}
