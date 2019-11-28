@@ -155,21 +155,23 @@ class SidebarMain extends Component {
         let packetEnd, packetEndText;
         if (invoicePacket) {
             packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1
+
             packetEndText = packetEnd === 0
-              ? `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`
-              : 'Сегодня система будет отключена';
+                ? 'Сегодня система будет отключена'
+                : `До окончания действия пакета ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
+
         } else if (!forceActive) {
             packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1
             if (packetEnd < 0) {
               packetEndText = 'Компания не активна. Чтобы активировать, выберите и оплатите пакет'
             } else {
               packetEndText = packetEnd === 0
-                ? `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`
-                : 'Сегодня система будет отключена';
+                ? 'Сегодня система будет отключена'
+                : `До окончания тестового периода ${packetEnd === 1 ? 'остался 1 день' : `осталось ${packetEnd} дня`}`;
             }
         }
 
-        const packetShowCondition = packetEnd ? packetEnd <= 3 : false;
+        const packetShowCondition = packetEnd <= 3;
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
             const activeStaff = staff && staff.staff && staff.staff.find(item =>
