@@ -397,13 +397,14 @@ q:before, q:after { content:''; }
     float: none !important;
     justify-content: flex-start;
     margin-top: 4px;
+    font-size: 15px;
 }
 
 
-.specialist .supperVisDet_info_title {
+.specialist .supperVisDet .supperVisDet_info_title {
     text-align: center;
     justify-content: flex-start;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
 }
 

@@ -59,7 +59,7 @@ class TabSix extends  PureComponent {
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">Список услуг:</p>
                         {selectedServices.map(service => (
-                            <p>{service.name}</p>
+                            <p>• {service.name}</p>
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
