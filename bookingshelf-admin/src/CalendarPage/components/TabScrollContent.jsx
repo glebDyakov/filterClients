@@ -419,7 +419,7 @@ class TabScroll extends Component{
 
                                                             <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                             {appointmentServices.map(service => {
-                                                                const details = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId).details
+                                                                const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
                                                                 return <p>
                                                                     {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
                                                                     {service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
