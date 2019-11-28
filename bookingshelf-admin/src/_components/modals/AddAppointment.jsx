@@ -141,7 +141,7 @@ class AddAppointment extends React.Component {
                         const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
                         return (isFreeMinute || (
                             user.availableDays.some(day => day.availableTimes.some(availableTime =>
-                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis >= interval)
+                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval)
                             ))
                         ))
                     }
