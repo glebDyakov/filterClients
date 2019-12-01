@@ -57,17 +57,22 @@ class AddWorkTime extends React.Component {
                 hoursArray.push(i);
             }
 
-            if(str==='end' && times[key] && times[key].startTimeMillis && i<=moment(times[key].startTimeMillis, 'x').format('H')){
+            if(str==='end' && times[key] && times[key].startTimeMillis && i<moment(times[key].startTimeMillis, 'x').format('H')){
                 hoursArray.push(i);
             }
 
             if(str==='start' && times[key] && times[key].startTimeMillis && i>=moment(times[key].endTimeMillis, 'x').format('H')){
                 hoursArray.push(i);
             }
-
-
         }
 
+        if (str === 'end') {
+            let workEndMilisH= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('H'));
+            let workEndMilisM= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('mm'));
+            if (workEndMilisM === 45) {
+                hoursArray.push(workEndMilisH)
+            }
+        }
 
         times && times.map((time, keyTime) => {
             let timeEnd=parseInt(moment(time.endTimeMillis, 'x').format('k'))
@@ -93,29 +98,35 @@ class AddWorkTime extends React.Component {
         return hoursArray;
     }
 
-    disabledMinutes(h) {
+    disabledMinutes(h, key, str) {
         const {countTimes, staff, repeat, date, editWorkingHours, editing_object, times}=this.state;
 
         let num=parseInt(moment(date, 'DD/MM/YYYY').zone("+0800").isoWeekday())-1
         let minutesArray=[];
 
-        let workEndMilisH=23;
-        let workEndMilisM=45;
+
         // let workEndMilisH=parseInt(moment(JSON.parse(localStorage.getItem('user')).companyTimetables[num].endTimeMillis, 'x').format('H'));
         // let workEndMilisM=parseInt(moment(JSON.parse(localStorage.getItem('user')).companyTimetables[num].endTimeMillis, 'x').format('mm'));
-        if(h === workEndMilisH) {
-            if (workEndMilisM == '00') {
-                minutesArray.push(15, 30, 45)
-            }
 
-            if (workEndMilisM === 15) {
-                minutesArray.push(30, 45)
-            }
+        if (str === 'end') {
+            let workEndMilisH= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('H'));
+            let workEndMilisM= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('mm'));
 
-            if (workEndMilisM === 30) {
-                minutesArray.push(45)
+            if(h === workEndMilisH) {
+                if (workEndMilisM === 0) {
+                    minutesArray.push(0)
+                }
+
+                if (workEndMilisM === 15) {
+                    minutesArray.push(0, 15)
+                }
+
+                if (workEndMilisM === 30) {
+                    minutesArray.push(0, 15, 30)
+                }
             }
         }
+
         return minutesArray;
     }
 
@@ -177,7 +188,7 @@ class AddWorkTime extends React.Component {
                                                 minuteStep={15}
                                                 className="col-md-12 p-0"
                                                 showSecond={false}
-                                                disabledMinutes={this.disabledMinutes}
+                                                disabledMinutes={(h) => this.disabledMinutes(h, key, 'end')}
                                                 onChange={(endTimeMillis) => this.onChangeTime('endTimeMillis', key, moment(endTimeMillis).format('x'))}
                                             />
                                         </div>
