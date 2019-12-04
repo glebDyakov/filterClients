@@ -325,7 +325,8 @@ class TabScroll extends Component{
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
                                 const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
-                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) : ''}\n${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
+                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) + '\n' : ''}${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText}${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
+                                const activeClient = clients && clients.find((client) => client.clientId === appointment[0][0].clientId)
                                 resultMarkup = (
                                     <div
                                         className={(currentTime <= moment().format("x")
@@ -362,6 +363,11 @@ class TabScroll extends Component{
                                                                 title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
                                                             </React.Fragment>)
                                                     })}
+                                                    {!activeClient &&
+                                                            <span
+                                                                className="no-client-icon"
+                                                                title="Визит от двери"/>
+                                                    }
 
                                                     {!!appointment[0][0].discountPercent &&
                                                     <span className="percentage"
@@ -399,99 +405,97 @@ class TabScroll extends Component{
                                                     }
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
-                                                    { clients && clients.map((client) => {
-                                                        return (
-                                                        client.clientId === appointment[0][0].clientId &&
-                                                        <div className="msg-inner">
-                                                            <p>
-                                                                <p className="new-text">Запись</p>
-                                                                <button type="button" onClick={()=> {
-                                                                    this.setState({ selectedNote: null })
-                                                                    this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
-                                                                }} className="close" />
+                                                    <div className="msg-inner">
+                                                        <p>
+                                                            <p className="new-text">Запись</p>
+                                                            <button type="button" onClick={()=> {
+                                                                this.setState({ selectedNote: null })
+                                                                this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                                            }} className="close" />
+                                                        </p>
+
+
+                                                        {activeClient && <p className="client-name-book">Клиент</p>}
+                                                        {activeClient && <p className="name">{activeClient.firstName} {activeClient.lastName}</p>}
+                                                        {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
+                                                        && activeClient && <p>{activeClient.phone}</p>}
+
+                                                        {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
+
+                                                        <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
+                                                        {appointmentServices.map(service => {
+                                                            const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
+                                                            return <p>
+                                                                {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
+                                                                {service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                                        ({service.totalAmount} {service.currency})
+                                                                    </span>}
+                                                                </span>
                                                             </p>
-                                                            <p className="client-name-book">Клиент</p>
-                                                            <p className="name">{client.firstName} {client.lastName}</p>
-                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
-                                                            && <p>{client.phone}</p>}
+                                                        })
+                                                        }
+                                                        <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                            {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                                                        <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                                                        {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
-                                                            {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
+                                                        {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient && <a
+                                                            className="a-client-info"
+                                                            data-target=".client-detail"
+                                                            title="Просмотреть клиента"
+                                                            onClick={(e) => {
+                                                                $('.client-detail').modal('show')
+                                                                handleUpdateClient(activeClient)
+                                                            }}><p>Просмотреть клиента</p>
+                                                        </a>}
 
-                                                            <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
-                                                            {appointmentServices.map(service => {
-                                                                const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
-                                                                return <p>
-                                                                    {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
-                                                                    {service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
-                                                                            ({service.totalAmount} {service.currency})
-                                                                        </span>}
-                                                                    </span>
-                                                                </p>
-                                                            })
-                                                            }
-                                                            <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                            <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
-                                                            {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
-
-                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && <a
-                                                                className="a-client-info"
-                                                                data-target=".client-detail"
-                                                                title="Просмотреть клиента"
-                                                                onClick={(e) => {
-                                                                    $('.client-detail').modal('show')
-                                                                    handleUpdateClient(client)
-                                                                }}><p>Просмотреть клиента</p>
-                                                            </a>}
-                                                            {currentTime >= parseInt(moment().format("x")) && (
-                                                                <React.Fragment>
-                                                                    <div style={{
-                                                                        marginTop: '2px',
-                                                                    }}
-                                                                         data-toggle="modal"
-                                                                         data-target=".start-moving-modal"
-                                                                         onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)}
-                                                                         className="msg-inner-button-wrapper"
+                                                        {currentTime >= parseInt(moment().format("x")) && (
+                                                            <React.Fragment>
+                                                                <div style={{
+                                                                    marginTop: '2px',
+                                                                }}
+                                                                     data-toggle="modal"
+                                                                     data-target=".start-moving-modal"
+                                                                     onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)}
+                                                                     className="msg-inner-button-wrapper"
+                                                                >
+                                                                    <button className="button"
+                                                                            style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                        Перенести визит
+                                                                    </button>
+                                                                    <span className="move-white"/>
+                                                                </div>
+                                                                <div style={{
+                                                                    marginTop: '5px',
+                                                                }}
+                                                                     onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
+                                                                     className="msg-inner-button-wrapper"
+                                                                >
+                                                                    <button className="button"
+                                                                            style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                        Изменить визит
+                                                                    </button>
+                                                                    {/*<span className="move-white"/>*/}
+                                                                </div>
+                                                                <div style={{
+                                                                    marginTop: '5px',
+                                                                }}
+                                                                     className="msg-inner-button-wrapper"
+                                                                     data-toggle="modal"
+                                                                     data-target=".delete-notes-modal"
+                                                                     onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                >
+                                                                    <button className="button"
+                                                                            style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
                                                                     >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                            Перенести визит
-                                                                        </button>
-                                                                        <span className="move-white"/>
-                                                                    </div>
-                                                                    <div style={{
-                                                                        marginTop: '5px',
-                                                                    }}
-                                                                         onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                                                         className="msg-inner-button-wrapper"
-                                                                    >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                            Изменить визит
-                                                                        </button>
-                                                                        {/*<span className="move-white"/>*/}
-                                                                    </div>
-                                                                    <div style={{
-                                                                        marginTop: '5px',
-                                                                    }}
-                                                                         className="msg-inner-button-wrapper"
-                                                                         data-toggle="modal"
-                                                                         data-target=".delete-notes-modal"
-                                                                         onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
-                                                                    >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
-                                                                        >
-                                                                            Удалить визит
-                                                                        </button>
-                                                                        <span className="cancel-white"/>
-                                                                    </div>
+                                                                        Удалить визит
+                                                                    </button>
+                                                                    <span className="cancel-white"/>
+                                                                </div>
 
-                                                                </React.Fragment>)
-                                                            }
-                                                        </div>)}
-                                                        )
-                                                    }
+                                                            </React.Fragment>)
+                                                        }
+                                                    </div>
                                                 </div> }
                                             </div>
                                         )}

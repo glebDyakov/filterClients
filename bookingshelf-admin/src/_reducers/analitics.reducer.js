@@ -54,7 +54,10 @@ export function analitics(state = initialState, action) {
                 recordsTodayCanceled = 0,
                 approvedAllRecordsToday = 0,
                 approvedRecordsOnlineToday = 0,
-                approvedRecordsToday = 0;
+                approvedRecordsToday = 0,
+                withoutClientPercent = 0,
+                withoutClientToday = 0,
+                withoutClientYesterday= 0;
             const countRecAndCli = action.count;
             const countLength = Object.keys(action.count).length;
 
@@ -80,6 +83,10 @@ export function analitics(state = initialState, action) {
                 approvedRecordsOnlineToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsOnlineTodayCompleted;
                 approvedRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].recordsJournalTodayCompleted;
 
+                withoutClientPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].withoutClientPercent;
+                withoutClientToday += countRecAndCli[Object.keys(countRecAndCli)[i]].withoutClientToday;
+                withoutClientYesterday += countRecAndCli[Object.keys(countRecAndCli)[i]].withoutClientYesterday;
+
 
 
 
@@ -96,6 +103,7 @@ export function analitics(state = initialState, action) {
             permanentClientsPercent/=countLength;
             recordsOnlinePercent/=countLength;
             recordsPercent/=countLength;
+            withoutClientPercent/=countLength;
 
 
             return{
@@ -117,7 +125,10 @@ export function analitics(state = initialState, action) {
                     recordsTodayCanceled,
                     approvedAllRecordsToday,
                     approvedRecordsOnlineToday,
-                    approvedRecordsToday
+                    approvedRecordsToday,
+                    withoutClientPercent,
+                    withoutClientToday,
+                    withoutClientYesterday
 
                 }
             };
