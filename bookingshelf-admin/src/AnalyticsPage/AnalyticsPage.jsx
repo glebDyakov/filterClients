@@ -699,6 +699,20 @@ class AnalyticsPage extends Component{
                             {/*// <!--end analytics_list-->*/}
                             <div className="analytics_list tablet-full">
                                 <div className="list-group-statistics">
+                                    <strong>Без <br/>клиентов</strong>
+                                    <span>
+                                        {analitics.counter && analitics.counter.withoutClientToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.withoutClientPercent > 0?"+":"")
+                                            + analitics.counter.withoutClientPercent.toFixed(2))}% со вчера</span>
+                                    </span>
+                                </div>
+                            </div>
+                            {/*// <!--end analytics_list-->*/}
+                        </div>
+                        <div className="group-container">
+
+                            <div style={{ width: '100%', marginRight: 0 }} className="analytics_list tablet-full">
+                                <div className="list-group-statistics">
                                     <div className="dropdown">
                                         <strong>Загруженность</strong>
                                         <div className="bth dropdown-toggle rounded-button select-menu"
@@ -736,7 +750,7 @@ class AnalyticsPage extends Component{
                                         ({analitics.staffsAnalytic?analitics.staffsAnalytic.percentWorkload.toFixed(2):"0"}%)
                                         <span className="small">
                                             {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")
-                                            + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% со вчера
+                                                + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% со вчера
 
                                             {/*{analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")*/}
                                             {/*    + analitics.staffsAnalytic.ratioToYesterday.toFixed(2))}*/}
