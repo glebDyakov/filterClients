@@ -387,7 +387,7 @@ class TabScroll extends Component{
                                                    }}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
-                                                    {currentTime >= parseInt(moment().format("x")) &&
+                                                    {currentTime >= parseInt(moment().startOf('day').format("x")) &&
                                                         <p onMouseDown={(e) => {
                                                             this.setState({
                                                                 changingVisit: appointment[0][0],
