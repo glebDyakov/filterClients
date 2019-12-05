@@ -449,7 +449,7 @@ class TabScroll extends Component{
                                                             }}><p>Просмотреть клиента</p>
                                                         </a>}
 
-                                                        {currentTime >= parseInt(moment().format("x")) && (
+                                                        {moment(currentTime).add(10, 'minutes').format('x') >= parseInt(moment().format("x")) && (
                                                             <React.Fragment>
                                                                 <div style={{
                                                                     marginTop: '2px',
