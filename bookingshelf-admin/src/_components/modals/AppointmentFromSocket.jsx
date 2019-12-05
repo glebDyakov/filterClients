@@ -109,9 +109,11 @@ class AppointmentFromSocket extends React.Component {
                             {staffName}
                         </p>
 
-                        {clientName && <p><strong>Клиент: </strong>
-                            {clientName}
-                        </p>}
+                        {clientName
+                            ? <p><strong>Клиент: </strong>
+                                {clientName}
+                              </p>
+                            : <p>Без клиента</p>}
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>

@@ -215,7 +215,7 @@ class SidebarMain extends Component {
                                     </p>
                                 </div>
                                 <div style={{width: "40%"}}>
-                                    <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
+                                    {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/></React.Fragment> : 'Без клиента'}
                                     {activeClient && activeClient.phone &&
                                     <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
@@ -273,7 +273,7 @@ class SidebarMain extends Component {
                                     <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}</p>
                                 </div>
                                 <div style={{width: "40%"}}>
-                                    <p><strong>Клиент:</strong> {appointment.clientName}</p><br/>
+                                    {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/></React.Fragment> : 'Без клиента'}
                                     {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
@@ -475,7 +475,7 @@ class SidebarMain extends Component {
                                                             </p>
                                                         </div>
                                                         <div style={{width: "40%"}}>
-                                                            {activeClient && <React.Fragment><p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/> </React.Fragment>}
+                                                            {activeClient ? <React.Fragment><p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {activeClient && activeClient.phone &&
                                                             <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
