@@ -387,7 +387,7 @@ class TabScroll extends Component{
                                                    }}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
-                                                    {currentTime >= parseInt(moment().format("x")) &&
+                                                    {currentTime >= parseInt(moment().startOf('day').format("x")) &&
                                                         <p onMouseDown={(e) => {
                                                             this.setState({
                                                                 changingVisit: appointment[0][0],
@@ -449,7 +449,7 @@ class TabScroll extends Component{
                                                             }}><p>Просмотреть клиента</p>
                                                         </a>}
 
-                                                        {currentTime >= parseInt(moment().format("x")) && (
+                                                        {moment(currentTime).add(10, 'minutes').format('x') >= parseInt(moment().format("x")) && (
                                                             <React.Fragment>
                                                                 <div style={{
                                                                     marginTop: '2px',
