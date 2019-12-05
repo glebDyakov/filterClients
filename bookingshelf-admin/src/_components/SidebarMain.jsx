@@ -475,7 +475,7 @@ class SidebarMain extends Component {
                                                             </p>
                                                         </div>
                                                         <div style={{width: "40%"}}>
-                                                            <p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/>
+                                                            {activeClient && <React.Fragment><p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/> </React.Fragment>}
                                                             {activeClient && activeClient.phone &&
                                                             <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
