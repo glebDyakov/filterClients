@@ -76,7 +76,6 @@ export function calendar(state = initialState, action) {
                 isLoading: true
             };
         case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
-
             return {
                 ...state,
                 isAppointmentUpdated: action.isAppointmentUpdated,
@@ -218,7 +217,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
         case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
-            return {...state, isLoading:false};
+            return {...state, isLoading:false, adding: false, status: null};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:
             return {...state, isLoading:false};
         case calendarConstants.EDIT_APPOINTMENT_FAILURE:

@@ -77,7 +77,7 @@ class AppointmentFromSocket extends React.Component {
                 break;
             case "APPOINTMENT_DELETED":
                 staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff ? activeStaff.lastName : ''}`
-                clientName = `${activeClient.firstName} ${activeClient.lastName}`
+                clientName = activeClient ? `${activeClient.firstName} ${activeClient.lastName}` : ''
                 socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;
@@ -109,9 +109,11 @@ class AppointmentFromSocket extends React.Component {
                             {staffName}
                         </p>
 
-                        <p><strong>Клиент: </strong>
-                            {clientName}
-                        </p>
+                        {clientName
+                            ? <p><strong>Клиент: </strong>
+                                {clientName}
+                              </p>
+                            : <p>Без клиента</p>}
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
