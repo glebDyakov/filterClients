@@ -806,8 +806,13 @@ class AddAppointment extends React.Component {
 
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        let timeout = 0
+
         appointmentsToDelete.forEach((currentAppointment, i) => {
             this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
+            if (i === 0) {
+                timeout++;
+            }
         })
         const appointmentsToAdd = []
         appointment.forEach((currentAppointment, i) => {
@@ -815,7 +820,6 @@ class AddAppointment extends React.Component {
                 appointmentsToAdd.push({...currentAppointment, serviceId: serviceCurrent[i].id})
             }
         })
-        let timeout = 0
         appointment.forEach((currentAppointment, i) => {
             setTimeout(() => {
                 let appointmentNew = {

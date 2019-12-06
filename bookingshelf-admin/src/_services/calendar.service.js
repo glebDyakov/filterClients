@@ -49,7 +49,7 @@ function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, w
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/staffs/${staffId}/clients/${clientId}/appointments/${mainAppointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
+    return fetch(`${config.apiUrl}/staffs/${staffId}/${!!clientId ? `clients/${clientId}/` : ''}appointments/${mainAppointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
         .then(handleResponse)
 }
 
