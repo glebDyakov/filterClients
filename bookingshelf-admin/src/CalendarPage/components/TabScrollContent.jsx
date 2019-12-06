@@ -387,22 +387,20 @@ class TabScroll extends Component{
                                                    }}>
                                                     <textarea disabled>{resultTextArea}
                                                     </textarea>
-                                                    {currentTime >= parseInt(moment().startOf('day').format("x")) &&
-                                                        <p onMouseDown={(e) => {
-                                                            this.setState({
-                                                                changingVisit: appointment[0][0],
-                                                                changingPos: e.pageY,
-                                                                offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight
-                                                            })
-                                                        }} style={{
-                                                            cursor: 'ns-resize',
-                                                            height: '8px',
-                                                            position: 'absolute',
-                                                            bottom: 0,
-                                                            width: '100%',
-                                                            zIndex: 9999999
-                                                        }}/>
-                                                    }
+                                                    <p onMouseDown={(e) => {
+                                                        this.setState({
+                                                            changingVisit: appointment[0][0],
+                                                            changingPos: e.pageY,
+                                                            offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight
+                                                        })
+                                                    }} style={{
+                                                        cursor: 'ns-resize',
+                                                        height: '8px',
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        width: '100%',
+                                                        zIndex: 9999999
+                                                    }}/>
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     <div className="msg-inner">
