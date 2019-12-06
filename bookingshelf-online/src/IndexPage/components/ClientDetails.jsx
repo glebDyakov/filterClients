@@ -28,8 +28,8 @@ class ClientDetails extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.staff.clients && (newProps.staff.appointment || (newProps.staff.newAppointment && newProps.staff.newAppointment[0]))) {
-            const id = (newProps.staff.appointment && newProps.staff.appointment.clientId) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)
+        if (newProps.staff.clients && ((newProps.staff.appointment && newProps.staff.appointment[0]) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0]))) {
+            const id = (newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)
             const client = newProps.staff.clients.find(item => item.clientId === id);
             this.setState({ client, defaultClientsList: client });
             if (client) {
