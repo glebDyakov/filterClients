@@ -1,5 +1,13 @@
 @import "styles-group";
 
+
+.payments-message {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
 .tab-content{
   overflow: visible;
 }
