@@ -378,7 +378,7 @@ class PaymentsPage extends Component {
                             <HeaderMain
                                 onOpen={this.onOpen}
                             />
-                            <div className="payments-message">
+                            <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
                                 Срок действия лицензии истек
                             </div>
                         </div>
