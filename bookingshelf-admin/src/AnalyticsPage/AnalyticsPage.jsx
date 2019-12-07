@@ -127,6 +127,10 @@ class AnalyticsPage extends Component{
 
     componentDidMount() {
         this.getChartData()
+        const { pathname } = this.props.location;
+        if (pathname === '/analytics') {
+            document.title = "Аналитика | Онлайн-запись";
+        }
     }
 
     getChartData() {
