@@ -104,7 +104,7 @@ ul{
     margin: auto;
     display: block;
     position: relative;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     z-index: 1;
 }
@@ -1127,10 +1127,10 @@ input{
             padding-left: 250px;
         }
         @media (max-width: $tablet-width){
-            padding: 64px 0px 0 0;
+            padding: 64px 0 0 0;
         }
         @media (max-width: $mob-width){
-            padding-top: 60px;
+            padding-top: 0;
         }
     }
 
