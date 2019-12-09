@@ -385,8 +385,9 @@ class TabScroll extends Component{
                                                        minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
                                                        height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
                                                    }}>
-                                                    <textarea disabled>{resultTextArea}
-                                                    </textarea>
+                                                    <span className="notes-container-message">
+                                                        {resultTextArea}
+                                                    </span>
                                                     <p onMouseDown={(e) => {
                                                         this.setState({
                                                             changingVisit: appointment[0][0],
