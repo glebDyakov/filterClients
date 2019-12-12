@@ -34,6 +34,7 @@ class VisitPage extends React.Component {
         this.props.dispatch(staffActions.get(company));
         this.props.dispatch(staffActions.getByCustomId(visit));
         this.props.dispatch(staffActions.getInfo(company));
+        this.props.dispatch(staffActions.getServices(company));
 
     }
 

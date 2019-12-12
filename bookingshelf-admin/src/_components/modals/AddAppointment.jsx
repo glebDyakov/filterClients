@@ -474,7 +474,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, authentication } =this.props;
+        const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients
@@ -596,7 +596,13 @@ class AddAppointment extends React.Component {
                                                     </div>
                                                 </div>
                                                 <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
-                                                <textarea className="mb-3" placeholder="Например: Без окраски" name="description"  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                <div className="company_fields">
+                                                    <div className="name_company_wrapper form-control">
+                                                        <textarea className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                        <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
+                                                    </div>
+                                                </div>
+
                                                 <p>Единоразовая скидка, %</p>
                                                 <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
 
@@ -701,22 +707,29 @@ class AddAppointment extends React.Component {
                                                     {cl.appointments && cl.appointments
                                                         .filter(appointment => appointment.id===cl.id && appointment.appointmentTimeMillis < moment().format('x'))
                                                         .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
-                                                        .map((appointment)=>
-                                                        <div className="visit-info row pl-4 pr-4 mb-2">
-                                                            <div className="col-9">
-                                                                <p className="gray-bg">
-                                                                    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
-                                                                    <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                                                </p>
-                                                                <p className="visit-detail">
-                                                                    <strong>{appointment.serviceName}</strong>
-                                                                    <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                                </p>
-                                                            </div>
-                                                            <div className="col-3">
-                                                                <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo} {appointment.currency}</strong>
-                                                            </div>
-                                                        </div>
+                                                        .map((appointment)=> {
+                                                            const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
+
+                                                            return(
+                                                                <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
+                                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
+                                                                        <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
+                                                                            <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
+                                                                            <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
+                                                                        </p>
+                                                                        <p className="visit-detail">
+                                                                            <strong>{appointment.serviceName}</strong>
+                                                                            {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
+                                                                            {appointment.description ? <span>Заметка: {appointment.description}</span> : ''}
+                                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="col-3">
+                                                                        <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
                                                     )}
                                                     </div>
                                                     {!!cl.discountPercent &&
@@ -994,9 +1007,9 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication } = state;
+    const { alert, services, authentication } = state;
     return {
-        alert, authentication
+        alert, services, authentication
     };
 }
 
