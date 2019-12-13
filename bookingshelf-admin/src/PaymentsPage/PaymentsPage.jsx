@@ -70,6 +70,9 @@ class PaymentsPage extends Component {
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
         }
+        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+            this.props.dispatch(companyActions.getSubcompanies());
+        }
 
         const { user } = this.props.authentication
         if (user && (user.forceActive
