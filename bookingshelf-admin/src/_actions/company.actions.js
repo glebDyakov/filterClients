@@ -80,6 +80,7 @@ function switchSubcompany(companyInfo) {
             .then(
                 () => {
                     dispatch(success());
+                    localStorage.setItem('companyId', companyInfo.companyId)
                     location.reload()
                 },
                 error => {

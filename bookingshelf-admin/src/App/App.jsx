@@ -88,6 +88,9 @@ class App extends React.Component {
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
         )) {
         } else {
+            if (newProps.authentication.user.profile && (newProps.authentication.user.profile.roleId === 4)) {
+                this.props.dispatch(companyActions.getSubcompanies());
+            }
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
