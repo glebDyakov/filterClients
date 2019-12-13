@@ -43,8 +43,9 @@ function checkLogin() {
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' }
     };
+    const companyId = localStorage.getItem('companyId') ? localStorage.getItem('companyId') : null
 
-    return fetch(`${config.apiUrl}/login/check`,  requestOptions)
+    return fetch(`${config.apiUrl}/login/check${companyId ? `?companyId=${companyId}` : ''}`,  requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response

@@ -1130,7 +1130,10 @@ input{
             padding: 64px 0 0 0;
         }
         @media (max-width: $mob-width){
-            padding-top: 0;
+            padding-top: 60px;
+            .calendar &  {
+                padding-top: 0;
+            }
         }
     }
 

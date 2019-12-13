@@ -24,6 +24,7 @@ function login(login, password) {
         userService.login(login, password)
             .then(
                 user => {
+                    localStorage.removeItem('companyId');
                     dispatch(success(user));
                     history.push('/calendar');
                 },

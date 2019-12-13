@@ -48,6 +48,7 @@ class MainIndexPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeTime = this.onChangeTime.bind(this);
         this.handleChangeAddress = this.handleChangeAddress.bind(this);
+        this.handleChangePhone = this.handleChangePhone.bind(this);
         this.handleWeekPicker = this.handleWeekPicker.bind(this);
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
@@ -125,6 +126,29 @@ class MainIndexPage extends Component {
         }
         const newSubcompanies = subcompanies
         newSubcompanies[i].defaultAddress = address
+
+        this.setState({...this.state, subcompanies: newSubcompanies});
+    }
+
+    handleChangePhone(e, i) {
+        const { name, value } = e.target;
+        const { subcompanies } = this.state;
+
+        let phone;
+
+        if(name==='defaultPhone1' && value){
+            phone=1
+        }
+
+        if(name==='defaultPhone2' && value){
+            phone=2
+        }
+
+        if(name==='defaultPhone3' && value){
+            phone=3
+        }
+        const newSubcompanies = subcompanies
+        newSubcompanies[i].defaultPhone = phone
 
         this.setState({...this.state, subcompanies: newSubcompanies});
     }
@@ -293,10 +317,13 @@ class MainIndexPage extends Component {
                                             </div>
                                             <p className="phone_hint_wrapper">
                                                 <span>Номер телефона </span>
-                                                <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>
+                                                {subcompany.defaultPhone===1 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
                                             </p>
                                             <div className="name_company_wrapper form-control">
-                                                <div className="input-text2">
+                                                <div className="check-box-group2 input-text2">
+                                                    <div className="input-text2">
+                                                        <input type="radio" aria-label="" name="defaultPhone1" disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}  checked={subcompany.defaultPhone===1} onChange={(e) => this.handleChangePhone(e, i)}/>
+                                                    </div>
                                                     <ReactPhoneInput
                                                         enableLongNumbers={true}
                                                         // disableCountryCode={true}
@@ -317,9 +344,15 @@ class MainIndexPage extends Component {
                                             </div>
 
 
-                                            <p className="mt-2">Номер телефона</p>
+                                            <p className="phone_hint_wrapper">
+                                                <span>Номер телефона </span>
+                                                {subcompany.defaultPhone===2 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
+                                            </p>
                                             <div className="name_company_wrapper form-control">
-                                                <div className="input-text2">
+                                                <div className="check-box-group2 input-text2">
+                                                    <div className="input-text2">
+                                                        <input type="radio" aria-label="" name="defaultPhone2" disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}  checked={subcompany.defaultPhone===2} onChange={(e) => this.handleChangePhone(e, i)}/>
+                                                    </div>
                                                     <ReactPhoneInput
                                                         enableLongNumbers={true}
                                                         // disableCountryCode={true}
@@ -340,9 +373,15 @@ class MainIndexPage extends Component {
                                                 </div>
                                                 <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
                                             </div>
-                                            <p className="mt-2">Номер телефона</p>
+                                            <p className="phone_hint_wrapper">
+                                                <span>Номер телефона </span>
+                                                {subcompany.defaultPhone===3 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
+                                            </p>
                                             <div className="name_company_wrapper form-control">
-                                                <div className="input-text2">
+                                                <div className="check-box-group2 input-text2">
+                                                    <div className="input-text2">
+                                                        <input type="radio" aria-label="" name="defaultPhone3" disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}  checked={subcompany.defaultPhone===3} onChange={(e) => this.handleChangePhone(e, i)}/>
+                                                    </div>
                                                     <ReactPhoneInput
                                                         enableLongNumbers={true}
                                                         regions={['america', 'europe']}
