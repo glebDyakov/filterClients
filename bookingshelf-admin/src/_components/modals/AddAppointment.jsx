@@ -843,8 +843,8 @@ class AddAppointment extends React.Component {
                     currency: serviceCurrent[i].service.currency
                 };
 
-                if (currentAppointment.appointmentId && (currentAppointment.serviceId !== appointmentNew.serviceId || currentAppointment.duration !== appointmentNew.duration)) {
-                    this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify(appointmentNew), true))
+                if (currentAppointment.appointmentId) {
+                    this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify({...currentAppointment, ...appointmentNew}), true))
                     timeout++;
                 }
             }, 2000 * timeout)
