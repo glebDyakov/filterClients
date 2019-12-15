@@ -13,6 +13,7 @@ export function calendar(state = initialState, action) {
     switch (action.type) {
         case calendarConstants.ADD_APPOINTMENT_REQUEST:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_REQUEST:
+        case calendarConstants.EDIT_APPOINTMENT_2_REQUEST:
             return {
                 ...state,
                 status: 208,
@@ -20,6 +21,7 @@ export function calendar(state = initialState, action) {
                 isLoading:true
             };
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_SUCCESS:
+        case calendarConstants.EDIT_APPOINTMENT_2_SUCCESS:
             return {
                 ...state,
                 status: 200,
@@ -217,6 +219,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
         case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
+        case calendarConstants.EDIT_APPOINTMENT_2_FAILURE:
             return {...state, isLoading:false, adding: false, status: null};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:
             return {...state, isLoading:false};

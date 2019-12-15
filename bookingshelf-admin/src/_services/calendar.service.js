@@ -6,6 +6,7 @@ export const calendarService = {
     addAppointment,
     editCalendarAppointment,
     editAppointment,
+    editAppointment2,
     getAppointments,
     getAppointmentsCanceled,
     approveAppointment,
@@ -86,9 +87,22 @@ function editAppointment(params) {
 
     return fetch(`${config.apiUrl}/appointments`, requestOptions)
         .then(handleResponse)
-        .then(appointment => {
-            return appointment;
-        });
+}
+
+function editAppointment2(params, id) {
+    const requestOptions = {
+        method: 'PATCH',
+        body: params,
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${config.apiUrlv2}/appointments/${id}`, requestOptions)
+        .then(handleResponse)
 }
 
 function approveAppointment(appointmentId, params) {
