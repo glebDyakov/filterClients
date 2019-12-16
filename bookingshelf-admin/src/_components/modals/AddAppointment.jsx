@@ -820,6 +820,7 @@ class AddAppointment extends React.Component {
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
         let appointmentNew = appointment.map((item, i) => { return {...item,
+            staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
             duration: serviceCurrent[i].service.duration,
