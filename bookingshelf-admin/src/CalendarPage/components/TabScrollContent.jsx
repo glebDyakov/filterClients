@@ -299,7 +299,7 @@ class TabScroll extends Component{
                                         if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
                                             totalDuration += currentAppointment.duration;
                                             const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
-                                            appointmentServices.push({...activeCoService, discountPercent: appointment[0][0].discountPercent, totalAmount: appointment[0][0].totalAmount, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
+                                            appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, serviceId: currentAppointment.serviceId})
                                             totalCount++;
 
                                             currentAppointments.push(currentAppointment)
