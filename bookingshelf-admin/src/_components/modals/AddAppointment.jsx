@@ -17,6 +17,7 @@ class AddAppointment extends React.Component {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
+            disabledFields : {},
             appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
@@ -477,7 +478,7 @@ class AddAppointment extends React.Component {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
-            allClients
+            allClients, disabledFields
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
@@ -606,6 +607,9 @@ class AddAppointment extends React.Component {
                                                 <p>Единоразовая скидка, %</p>
                                                 <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
 
+                                                {serviceCurrent[index].service.priceTo  && (<React.Fragment><p>Фактическая цена (от {serviceCurrent[index].service.priceFrom} до {serviceCurrent[index].service.priceTo})</p>
+                                                <input type="text" className={"mb-3" + (disabledFields[index] && disabledFields[index].price ? ' redBorder' : '')} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
+                                                </React.Fragment>)}
                                                 {
                                                     status === 200 &&
                                                     <p className="alert-success p-1 rounded pl-3 mb-2">Запись сохранена</p>
@@ -619,10 +623,10 @@ class AddAppointment extends React.Component {
                                                 </button>
                                                 <button
 
-                                                    className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
+                                                    className={(status === 208 && !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
                                                     onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                                    disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
+                                                    disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || Object.keys(disabledFields).some(key => disabledFields[key].price) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
                                         {adding &&
@@ -757,10 +761,10 @@ class AddAppointment extends React.Component {
                                     <div className="mobileButton">
                                         <button
 
-                                            className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                            className={(status === 208 && !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                             type="button"
                                             onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
+                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis}>
                                             {edit_appointment ? 'Обновить запись' : 'Создать Запись'}
                                         </button>
                                     </div>
@@ -798,7 +802,11 @@ class AddAppointment extends React.Component {
         const { addAppointment }=this.props;
 
 
-        let appointmentNew = appointment.map((item, i) => { return {...item, serviceId: serviceCurrent[i].id} });
+        let appointmentNew = appointment.map((item, i) => { return {...item,
+            discountPercent: i === 0
+                ? item.discountPercent
+                : (item.discountPercent || appointment[0].discountPercent),
+            serviceId: serviceCurrent[i].id} });
 
         this.setState({
             serviceCurrent: [{
@@ -819,7 +827,11 @@ class AddAppointment extends React.Component {
 
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        debugger
         let appointmentNew = appointment.map((item, i) => { return {...item,
+            discountPercent: i === 0
+                ? item.discountPercent
+                : (item.discountPercent || appointment[0].discountPercent),
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
@@ -897,18 +909,23 @@ class AddAppointment extends React.Component {
 
     handleChange(e, index) {
         const { name, value } = e.target;
-        const { appointment } = this.state;
+        const { appointment, serviceCurrent, disabledFields } = this.state;
+        debugger
         if (name === 'discountPercent') {
             const result = String(value)
             const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
             appointment[index] = {...appointment[index], [name]: newValue };
 
+        } else if (name === 'price') {
+            disabledFields[index] = {}
+            disabledFields[index].price = !(value >= serviceCurrent[index].service.priceFrom && value <= serviceCurrent[index].service.priceTo);
+            appointment[index] = {...appointment[index], [name]: value };
         } else {
             appointment[index] = {...appointment[index], [name]: value };
 
         }
 
-        this.setState({ appointment });
+        this.setState({ appointment, disabledFields });
     }
 
     setStaff(staffId, firstName, lastName, imageBase64) {
@@ -966,6 +983,7 @@ class AddAppointment extends React.Component {
     setService(serviceId, service, index, appointment = this.state.appointment) {
         const { serviceCurrent } = this.state;
         appointment[index].duration = service.duration;
+        appointment[index].price = service.priceFrom;
         serviceCurrent[index] = { id: serviceId, service};
         const updatedAppointments = this.getAppointments(appointment);
         this.setState({
