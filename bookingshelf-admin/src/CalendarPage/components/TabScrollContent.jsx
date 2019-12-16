@@ -388,6 +388,7 @@ class TabScroll extends Component{
                                                     <span className="notes-container-message">
                                                         {resultTextArea}
                                                     </span>
+                                                    {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
                                                     <p onMouseDown={(e) => {
                                                         this.setState({
                                                             changingVisit: appointment[0][0],
@@ -402,6 +403,7 @@ class TabScroll extends Component{
                                                         width: '100%',
                                                         zIndex: 9999999
                                                     }}/>
+                                                    }
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
                                                     <div className="msg-inner">
@@ -448,7 +450,7 @@ class TabScroll extends Component{
                                                             }}><p>Просмотреть клиента</p>
                                                         </a>}
 
-                                                        {moment(currentTime).add(10, 'minutes').format('x') >= parseInt(moment().format("x")) && (
+                                                        {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                                                             <React.Fragment>
                                                                 <div style={{
                                                                     marginTop: '2px',
