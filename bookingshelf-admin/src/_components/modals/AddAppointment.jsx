@@ -724,12 +724,12 @@ class AddAppointment extends React.Component {
                                                                         <p className="visit-detail">
                                                                             <strong>{appointment.serviceName}</strong>
                                                                             {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
-                                                                            {appointment.description ? <span>Заметка: {appointment.description}</span> : ''}
+                                                                            {appointment.description ? <span className="visit-description">Заметка: {appointment.description}</span> : ''}
                                                                             <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
                                                                         </p>
                                                                     </div>
                                                                     <div className="col-3">
-                                                                        <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
+                                                                        <strong>{`${appointment.price ? appointment.price : (appointment.priceFrom ? appointment.priceFrom : '')}`}  {appointment.currency}</strong>
                                                                     </div>
                                                                 </div>
                                                             )
