@@ -291,6 +291,8 @@ class TabScroll extends Component{
                                 let totalDuration = appointment[0][0].duration;
                                 let appointmentServices = [];
                                 let totalCount = 0;
+                                let totalPrice = appointment[0][0].price
+                                let totalAmount = appointment[0][0].totalAmount
                                 const currentAppointments = [appointment[0][0]]
                                 const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
                                 appointmentServices.push({ ...activeService, discountPercent: appointment[0][0].discountPercent, totalAmount: appointment[0][0].totalAmount, price: appointment[0][0].price, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
@@ -301,6 +303,8 @@ class TabScroll extends Component{
                                             const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
                                             appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})
                                             totalCount++;
+                                            totalPrice += currentAppointment.price;
+                                            totalAmount += currentAppointment.totalAmount;
 
                                             currentAppointments.push(currentAppointment)
                                         }
@@ -325,7 +329,7 @@ class TabScroll extends Component{
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
                                 const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
-                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) + '\n' : ''}${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + (appointment[0][0].price ? appointment[0][0].price : appointment[0][0].priceFrom) + ' ' + appointment[0][0].currency)} ${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
+                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) + '\n' : ''}${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment[0][0].currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment[0][0].currency + ')') : ''} ${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
                                 const activeClient = clients && clients.find((client) => client.clientId === appointment[0][0].clientId)
                                 resultMarkup = (
                                     <div
@@ -421,17 +425,22 @@ class TabScroll extends Component{
                                                         {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
                                                         && activeClient && <p>{activeClient.phone}</p>}
 
-                                                        {!!appointment[0][0].discountPercent && <p style={{ color: 'rgb(212, 19, 22)'}}>{`Скидка клиента: ${appointment[0][0].discountPercent}%`}</p>}
 
                                                         <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                         {appointmentServices.map(service => {
                                                             const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
                                                             return <p>
-                                                                {service.serviceName} {details ? `(${details})` : ''} <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
+
+                                                                {service.serviceName} {details ? `(${details})` : ''}
+
+                                                                <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
                                                                 {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
                                                                         ({service.totalAmount} {service.currency})
                                                                     </span>}
                                                                 </span>
+                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (activeClient && activeClient.discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+
+
                                                             </p>
                                                         })
                                                         }
