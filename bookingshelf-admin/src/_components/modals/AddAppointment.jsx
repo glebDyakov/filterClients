@@ -803,9 +803,6 @@ class AddAppointment extends React.Component {
 
 
         let appointmentNew = appointment.map((item, i) => { return {...item,
-            discountPercent: i === 0
-                ? item.discountPercent
-                : (item.discountPercent || appointment[0].discountPercent),
             serviceId: serviceCurrent[i].id} });
 
         this.setState({
@@ -827,11 +824,8 @@ class AddAppointment extends React.Component {
 
     editAppointment (){
         const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
-        debugger
+
         let appointmentNew = appointment.map((item, i) => { return {...item,
-            discountPercent: i === 0
-                ? item.discountPercent
-                : (item.discountPercent || appointment[0].discountPercent),
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
@@ -910,7 +904,7 @@ class AddAppointment extends React.Component {
     handleChange(e, index) {
         const { name, value } = e.target;
         const { appointment, serviceCurrent, disabledFields } = this.state;
-        debugger
+
         if (name === 'discountPercent') {
             const result = String(value)
             const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
