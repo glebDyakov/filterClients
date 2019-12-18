@@ -3065,10 +3065,7 @@ textarea {
             float: right;
 
             span{
-                background: rgba(32, 93, 216, 0.15)  url(../img/plus_blue.png) no-repeat 10px center;
-                border-radius: 20px;
-                padding: 5px 10px 5px 30px;
-                width: 120px;
+                background: url(../img/add.svg) no-repeat 5px center;
                 font-size: 14px;
                 display: block;
                 -webkit-touch-callout: none;
@@ -3079,13 +3076,10 @@ textarea {
                 user-select: none;
                 cursor: pointer;
 
-                @media screen and(max-width: $laptop-width){
-                    padding: 4px 0 4px 0 !important;
-                    width: 42px;
-                    background-position: center !important;
-                    text-indent: 781px;
-                }
-
+                padding: 4px 0 !important;
+                width: 42px;
+                height: 16px;
+                background-position: center !important;
 
             }
             input{
