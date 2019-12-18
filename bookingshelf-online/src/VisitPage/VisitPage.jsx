@@ -88,13 +88,12 @@ class VisitPage extends React.Component {
 
         let serviceInfo = null
         if (visitAppointments && visitAppointments[0]) {
-            let priceFrom = 0;
+            let price = 0;
             let priceTo= 0;
             let duration = 0;
             let totalAmount = 0;
             visitAppointments.forEach((currentAppointment) => {
-                priceFrom += parseInt(currentAppointment.priceFrom)
-                priceTo += parseInt(currentAppointment.priceTo)
+                price += parseInt(currentAppointment.price)
                 duration += parseInt(currentAppointment.duration)
             })
 
@@ -106,7 +105,7 @@ class VisitPage extends React.Component {
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
                         (<p>Выбрано услуг: <strong>{visitAppointments.length}</strong></p>)}
-                    <p className={visitAppointments.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{visitAppointments[0].currency}</span></p>
+                    <p><strong>{price}</strong> <span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
                         {visitAppointments && visitAppointments[0] && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}

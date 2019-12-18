@@ -17,6 +17,35 @@ class TabThird extends  PureComponent {
         const {setScreen,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
+        let serviceInfo = null
+        if (selectedService.serviceId) {
+            let priceFrom = 0;
+            let priceTo= 0;
+            let duration = 0;
+            selectedServices.forEach((service) => {
+                priceFrom += parseInt(service.priceFrom)
+                priceTo += parseInt(service.priceTo)
+                duration += parseInt(service.duration)
+            })
+
+            serviceInfo = (
+                <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
+                    {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                        (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
+                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo} </strong> <span>{selectedServices[0].currency}</span></p>
+                    <span style={{ width: '100%' }} className="runtime">
+                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                    </span>
+                    <div className="supperVisDet_info">
+                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        {selectedServices.map(service => (
+                            <p>• {service.name}</p>
+                        ))}
+                        <span className="supperVisDet_closer" />
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className="service_selection screen1">
                 <div className="title_block">
@@ -48,20 +77,7 @@ class TabThird extends  PureComponent {
                         </p>
                     </div>
                     }
-                    {selectedService.serviceId &&
-                    <div className="supperVisDet">
-                        {(selectedServices.length === 1) ? <p>{selectedServices[0].name && selectedServices[0].name.length > 85 ? `${selectedServices[0].name.slice(0, 85)}...` : selectedServices[0].name}</p> :
-                            (<p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>)}
-                        <div className="supperVisDet_info">
-                            <p className="supperVisDet_info_title">Список услуг:</p>
-                            {selectedServices.map(service => (
-                                <p>• {service.name}</p>
-                            ))}
-                            <span className="supperVisDet_closer" />
-                        </div>
-                    </div>
-                    }
+                    {serviceInfo && serviceInfo}
 
                 </div>
                 <div className="calendar_modal">

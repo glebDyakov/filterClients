@@ -34,7 +34,7 @@ class ClientDetails extends React.Component {
             this.setState({ client, defaultClientsList: client });
             if (client) {
                 let allPrice = 0;
-                client.appointments.forEach((appointment) => allPrice += appointment.priceFrom);
+                client.appointments.forEach((appointment) => allPrice += appointment.price);
                 this.setState({ allPrice: allPrice });
             }
         }
@@ -135,7 +135,7 @@ class ClientDetails extends React.Component {
                                                         </p>
                                                     </div>
                                                     <div className="col-3">
-                                                        <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
+                                                        <strong style={{ fontSize: '12px'}}>{`${appointment.price ? appointment.price : (appointment.priceFrom ? appointment.priceFrom : '')}`}  {appointment.currency}</strong>
                                                     </div>
                                                 </div>
                                             )}
