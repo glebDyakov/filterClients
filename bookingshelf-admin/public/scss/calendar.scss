@@ -1078,7 +1078,7 @@
                             background: none;
                             min-height: 0;
                             font-weight: normal;
-                            white-space: normal;
+                            white-space: pre-line;
                             height: 90%;
                             font-size: 10px;
                             line-height: 1.5;
@@ -1407,6 +1407,10 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                .visit-description {
+                    font-size: 12px;
+                    white-space: normal;
+                }
 
                 span {
                     display: block;
@@ -1618,6 +1622,11 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+
+                .visit-description {
+                    font-size: 12px;
+                    white-space: normal;
+                }
 
                 span {
                     display: block;
