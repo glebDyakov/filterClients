@@ -555,12 +555,14 @@ class IndexPage extends PureComponent {
     refreshTimetable(newMonth = this.state.month) {
         const { movingVisit } = this.props.staff
         const { selectedServices, selectedStaff } = this.state;
-        const serviceIdList = this.getServiceIdList(selectedServices);
+        let serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
         let appointmentsIdList = ''
         if (movingVisit && movingVisit[0]) {
+            serviceIdList = ''
             movingVisit.forEach((visit, i) => {
                 appointmentsIdList += `${i === 0 ? '' : ','}${visit.appointmentId}`
+                serviceIdList += `${i === 0 ? '' : ','}${visit.serviceId}`
             })
         }
 
