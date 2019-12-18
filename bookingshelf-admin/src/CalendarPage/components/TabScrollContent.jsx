@@ -438,7 +438,7 @@ class TabScroll extends Component{
                                                                         ({service.totalAmount} {service.currency})
                                                                     </span>}
                                                                 </span>
-                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (activeClient && activeClient.discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (activeClient && activeClient.discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
 
 
                                                             </p>
