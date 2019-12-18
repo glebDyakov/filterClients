@@ -405,7 +405,7 @@ class TabScroll extends Component{
                                                         position: 'absolute',
                                                         bottom: 0,
                                                         width: '100%',
-                                                        zIndex: 9999999
+                                                        zIndex: 9990
                                                     }}/>
                                                     }
                                                 </p>

@@ -673,8 +673,7 @@ class AddAppointment extends React.Component {
                                                                         <div className="col-5">
                                                                             <label className="add-person">
                                                                                 <input className="form-check-input" type="checkbox" checked={clientChecked.clientId && client_user.clientId===clientChecked.clientId} onChange={()=>this.checkUser(client_user)}/>
-                                                                                <span>Добавить</span>
-                                                                                <span>Добавлен</span>
+                                                                                <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>
                                                                             </label>
                                                                         </div>
                                                                     </div>
