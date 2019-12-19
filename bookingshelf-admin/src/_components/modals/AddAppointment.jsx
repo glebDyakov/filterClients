@@ -17,12 +17,12 @@ class AddAppointment extends React.Component {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
-            disabledFields : {},
             appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
                 service: []
             }],
+            servicesSearch: '',
             staffs: props.staffs,
             clients: props.clients && props.clients,
             allClients: props.clients,
@@ -59,6 +59,7 @@ class AddAppointment extends React.Component {
         this.removeCheckedUser = this.removeCheckedUser.bind(this);
         this.checkUser = this.checkUser.bind(this);
         this.getFilteredServicesList = this.getFilteredServicesList.bind(this);
+        this.handleServicesSearch = this.handleServicesSearch.bind(this);
         this.editClient = this.editClient.bind(this);
         this.getTimeArrange = this.getTimeArrange.bind(this);
         this.getVisitFreeMinutes = this.getVisitFreeMinutes.bind(this);
@@ -124,11 +125,12 @@ class AddAppointment extends React.Component {
     }
 
     getFilteredServicesList(index, extraDuration) {
-        const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services } = this.state;
+        const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services, servicesSearch } = this.state;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
         const result = services[index].servicesList
             .filter(service => service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId))
+            .filter(service => service.name.toLowerCase().includes(servicesSearch.toLowerCase()))
             .filter(service => {
                 const intervals = []
                 const startTime =  parseInt(appointment[index].appointmentTimeMillis) + (extraDuration ? appointment[index].duration * 1000 : 0 );
@@ -478,7 +480,7 @@ class AddAppointment extends React.Component {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
-            allClients, disabledFields
+            allClients, servicesSearch
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
@@ -528,8 +530,8 @@ class AddAppointment extends React.Component {
 
                                                             {
                                                                 serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
-                                                                    <a className={serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+'select-button dropdown-toggle'}
-                                                                       data-toggle={"dropdown"} href="#" ><span
+                                                                    <a onClick={() => this.setState({ servicesSearch: '' })} className={serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+'select-button dropdown-toggle'}
+                                                                       data-toggle={"dropdown"}><span
                                                                         className={serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+'color-circle'}/><span
                                                                         className="yellow"><span className="items-color"><span>{serviceCurrent[index].service.name}</span>
                                                                         <span>{serviceCurrent[index].service.priceFrom} {serviceCurrent[index].service.priceFrom!==serviceCurrent[index].service.priceTo && " - "+serviceCurrent[index].service.priceTo} {serviceCurrent[index].service.currency}</span>  <span>
@@ -537,13 +539,22 @@ class AddAppointment extends React.Component {
                                                                         </span></span></span>
                                                                     </a>
 
-                                                                    : <a className={!servicesDisabling?'disabledField select-button dropdown-toggle yellow':"select-button dropdown-toggle yellow"}
+                                                                    : <a onClick={() => this.setState({ servicesSearch: '' })} className={!servicesDisabling?'disabledField select-button dropdown-toggle yellow':"select-button dropdown-toggle yellow"}
                                                                          data-toggle={(servicesDisabling)&&"dropdown"}><span
                                                                         className="color-circle yellow"/><span
                                                                         className="yellow"><span className="items-color"><span>Выберите услугу</span>    <span></span>  <span></span></span></span>
                                                                     </a>
                                                             }
                                                             <ul className="dropdown-menu">
+                                                                <li className="dropdown-item">
+                                                                    <div className="row align-items-center content clients" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                                                        <div className="search col-7">
+                                                                            <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
+                                                                                   aria-label="Search" value={servicesSearch} onChange={this.handleServicesSearch}/>
+                                                                            <button className="search-icon" type="submit"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
                                                                 {this.getServiceList(index)}
                                                             </ul>
                                                             <div className="arrow-dropdown"><i></i></div>
@@ -608,7 +619,7 @@ class AddAppointment extends React.Component {
                                                 <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
 
                                                 {serviceCurrent[index].service.priceTo  && (<React.Fragment><p>Фактическая цена (от {serviceCurrent[index].service.priceFrom} до {serviceCurrent[index].service.priceTo})</p>
-                                                <input type="text" className={"mb-3" + (disabledFields[index] && disabledFields[index].price ? ' redBorder' : '')} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
+                                                <input type="text" className={"mb-3"} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
                                                 </React.Fragment>)}
                                                 {
                                                     status === 200 &&
@@ -623,10 +634,10 @@ class AddAppointment extends React.Component {
                                                 </button>
                                                 <button
 
-                                                    className={(status === 208 && !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
+                                                    className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
                                                     onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                                    disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || Object.keys(disabledFields).some(key => disabledFields[key].price) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
+                                                    disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
                                         {adding &&
@@ -760,10 +771,10 @@ class AddAppointment extends React.Component {
                                     <div className="mobileButton">
                                         <button
 
-                                            className={(status === 208 && !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                            className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                             type="button"
                                             onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || Object.keys(disabledFields).some(key => disabledFields[key].price) || !appointment[0] || !appointment[0].appointmentTimeMillis}>
+                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
                                             {edit_appointment ? 'Обновить запись' : 'Создать Запись'}
                                         </button>
                                     </div>
@@ -902,23 +913,19 @@ class AddAppointment extends React.Component {
 
     handleChange(e, index) {
         const { name, value } = e.target;
-        const { appointment, serviceCurrent, disabledFields } = this.state;
+        const { appointment, serviceCurrent } = this.state;
 
         if (name === 'discountPercent') {
             const result = String(value)
             const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
             appointment[index] = {...appointment[index], [name]: newValue };
 
-        } else if (name === 'price') {
-            disabledFields[index] = {}
-            disabledFields[index].price = !(value >= serviceCurrent[index].service.priceFrom && value <= serviceCurrent[index].service.priceTo);
-            appointment[index] = {...appointment[index], [name]: value };
         } else {
             appointment[index] = {...appointment[index], [name]: value };
 
         }
 
-        this.setState({ appointment, disabledFields });
+        this.setState({ appointment });
     }
 
     setStaff(staffId, firstName, lastName, imageBase64) {
@@ -993,6 +1000,12 @@ class AddAppointment extends React.Component {
         return getHours(timeNow, idStaff, [], false)
     }
 
+    handleServicesSearch({target: { value }}) {
+        this.setState({
+            servicesSearch: value,
+        });
+
+    }
 
     handleSearch () {
         const {allClients}= this.state;
