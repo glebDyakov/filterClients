@@ -105,7 +105,7 @@ class VisitPage extends React.Component {
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
                         (<p>Выбрано услуг: <strong>{visitAppointments.length}</strong></p>)}
-                    <p><strong>{price}</strong> <span>{visitAppointments[0].currency}</span></p>
+                    <p><strong>{price}</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
                         {visitAppointments && visitAppointments[0] && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
