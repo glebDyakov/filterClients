@@ -549,7 +549,7 @@ class AddAppointment extends React.Component {
                                                                 <li className="dropdown-item">
                                                                     <div className="row align-items-center content clients" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
                                                                         <div className="search col-7">
-                                                                            <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
+                                                                            <input type="search" placeholder="Введите название услуги" style={{width: "185%"}}
                                                                                    aria-label="Search" value={servicesSearch} onChange={this.handleServicesSearch}/>
                                                                             <button className="search-icon" type="submit"/>
                                                                         </div>
@@ -618,7 +618,7 @@ class AddAppointment extends React.Component {
                                                 <p>Единоразовая скидка, %</p>
                                                 <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
 
-                                                {serviceCurrent[index].service.priceTo  && (<React.Fragment><p>Фактическая цена (от {serviceCurrent[index].service.priceFrom} до {serviceCurrent[index].service.priceTo})</p>
+                                                {serviceCurrent[index].service.priceTo  && (<React.Fragment><p>Фактическая цена</p>
                                                 <input type="text" className={"mb-3"} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
                                                 </React.Fragment>)}
                                                 {
