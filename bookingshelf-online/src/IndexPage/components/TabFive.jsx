@@ -29,6 +29,36 @@ class TabFive extends PureComponent {
           $('.phones_country').css({ display: 'flex' })
         }
 
+        let serviceInfo = null
+        if (selectedServices[0]) {
+            let priceFrom = 0;
+            let priceTo= 0;
+            let duration = 0;
+            selectedServices.forEach((service) => {
+                priceFrom += parseInt(service.priceFrom)
+                priceTo += parseInt(service.priceTo)
+                duration += parseInt(service.duration)
+            })
+
+            serviceInfo = (
+                <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
+                    {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
+                        (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
+                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0].currency}</span></p>
+                    <span style={{ width: '100%' }} className="runtime">
+                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                    </span>
+                    <div className="supperVisDet_info">
+                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        {selectedServices.map(service => (
+                            <p>• {service.name}</p>
+                        ))}
+                        <span className="supperVisDet_closer" />
+                    </div>
+                </div>
+            )
+        }
+
         return (
             <div className="service_selection screen5">
                 <div className="title_block">
@@ -47,20 +77,7 @@ class TabFive extends PureComponent {
                         </p>
                     </div>
                     }
-                    {serviceId &&
-                    <div className="supperVisDet">
-                        {(selectedServices.length === 1) ? <p>{selectedServices[0].name && selectedServices[0].name.length > 85 ? `${selectedServices[0].name.slice(0, 85)}...` : selectedServices[0].name}</p> :
-                            (<p>Выбрано услуг: <br/>
-                                <p><strong>{selectedServices.length}</strong></p></p>)}
-                        <div className="supperVisDet_info">
-                            <p className="supperVisDet_info_title">Список услуг:</p>
-                            {selectedServices.map(service => (
-                                <p>• {service.name}</p>
-                            ))}
-                            <span className="supperVisDet_closer" />
-                        </div>
-                    </div>
-                    }
+                    {serviceInfo && serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
                         <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>

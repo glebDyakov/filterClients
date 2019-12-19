@@ -30,6 +30,7 @@
             }
 
             @media screen and(max-width: $mob-width) {
+                margin-top: 50px;
                 padding-bottom: 40px;
                 height: 90px;
             }
@@ -305,6 +306,7 @@
     }
 
     .days-container {
+        -webkit-overflow-scrolling: touch;
         overflow: auto;
         width: 100%;
         position: relative;
@@ -320,7 +322,7 @@
 
     .calendar-list {
         position: relative;
-        overflow: auto;
+        //overflow: auto;
         padding-top: 42px;
         .tab-content-list {
             position: static;
@@ -496,6 +498,7 @@
 
         .fixed-tab{
             position: absolute;
+            overflow: hidden;
             z-index: -1;
             min-width: 100%;
             height: 40px;
@@ -516,7 +519,7 @@
             }
 
             .tab-content-list-first {
-                overflow-y: scroll;
+                // overflow-y: scroll;
                 .tab-content-staff-item {
                     justify-content: flex-start;
                 }
@@ -546,11 +549,15 @@
             display: inline-block;
             height: 76vh;
             position: sticky;
+            position: -webkit-sticky;
             top: 42px;
             min-width: 100%;
             z-index: 0;
             overflow-y: scroll;
             overflow-x: hidden;
+            @media screen and(max-width: $mob-width) {
+                height: calc(100% - 210px);
+            }
             .tab-content-list {
                 div {
                     &.selectedNote {
@@ -1065,11 +1072,13 @@
                             text-align: left;
                         }
 
-                        textarea {
+                        .notes-container-message {
                             padding: 2px 34px 0 0;
                             border: none;
                             background: none;
-                            min-height: 0px;
+                            min-height: 0;
+                            font-weight: normal;
+                            white-space: pre-line;
                             height: 90%;
                             font-size: 10px;
                             line-height: 1.5;
@@ -1189,7 +1198,7 @@
     #weeks {
 
         .calendar-list {
-            overflow: auto;
+            //overflow: auto;
 
             .fixed-tab {
 
@@ -1398,6 +1407,10 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                .visit-description {
+                    font-size: 12px;
+                    white-space: normal;
+                }
 
                 span {
                     display: block;
@@ -1609,6 +1622,11 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+
+                .visit-description {
+                    font-size: 12px;
+                    white-space: normal;
+                }
 
                 span {
                     display: block;

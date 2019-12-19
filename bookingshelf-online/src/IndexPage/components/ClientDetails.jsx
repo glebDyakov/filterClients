@@ -34,7 +34,7 @@ class ClientDetails extends React.Component {
             this.setState({ client, defaultClientsList: client });
             if (client) {
                 let allPrice = 0;
-                client.appointments.forEach((appointment) => allPrice += appointment.priceFrom);
+                client.appointments.forEach((appointment) => allPrice += appointment.price);
                 this.setState({ allPrice: allPrice });
             }
         }
@@ -67,16 +67,12 @@ class ClientDetails extends React.Component {
         location.href = url
     }
 
-
-
-
     render() {
+        const { staff } = this.props;
         const {client, defaultClientsList, allVisits}=this.state;
 
         return (
-
             <div style={{  marginBottom: '20px'}} className="client-detail">
-
                     <div>
                         <div className="">
                             <div className="modal-header"></div>
@@ -123,25 +119,27 @@ class ClientDetails extends React.Component {
                                         .filter(appointment => appointment.id===client.id)
                                         .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                         .map((appointment)=>{
+                                            const activeService = staff && staff.services && staff.services.find(service => service.serviceId === appointment.serviceId)
 
-                                        return(
-                                        <div onClick={() => appointment.appointmentTimeMillis > moment().format('x') && this.goToVisit(appointment)}
-                                             className={"visit-info row mx-2 mb-2 " + (appointment.appointmentTimeMillis > moment().format('x') ? 'clickable' : '')}>
-                                            <div className="col-9">
-                                                <p className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
-                                                    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
-                                                    <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                                </p>
-                                                <p className="visit-detail">
-                                                    <strong>{appointment.serviceName}</strong>
-                                                    <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                </p>
-                                            </div>
-                                            <div className="col-3">
-                                                <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
-                                            </div>
-                                        </div>
-                                    )})}
+                                            return(
+                                                <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
+                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
+                                                        <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
+                                                            <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
+                                                            <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
+                                                        </p>
+                                                        <p className="visit-detail">
+                                                            <strong>{appointment.serviceName}</strong>
+                                                            {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
+                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                        </p>
+                                                    </div>
+                                                    <div className="col-3">
+                                                        <strong style={{ fontSize: '12px'}}>{`${appointment.price ? appointment.price : (appointment.priceFrom ? appointment.priceFrom : '')}`}  {appointment.currency}</strong>
+                                                    </div>
+                                                </div>
+                                            )}
+                                    )}
                                 </div>
 
                                 <span className="closer"/>

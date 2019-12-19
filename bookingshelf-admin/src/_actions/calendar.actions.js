@@ -12,6 +12,7 @@ export const calendarActions = {
     getAppointmentsCanceled,
     toggleRefreshAvailableTimes,
     editAppointment,
+    editAppointment2,
     editAppointmentTime,
     approveAppointment,
     approveAllAppointment,
@@ -130,6 +131,27 @@ function editAppointment(params) {
 
     function success(appointment) { return { type: calendarConstants.EDIT_APPOINTMENT_SUCCESS, appointment } }
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
+}
+
+function editAppointment2(params, id) {
+    return dispatch => {
+        dispatch(request());
+        calendarService.editAppointment2(params, id)
+            .then(
+                appointment => {
+                    dispatch(success(appointment));
+                    setTimeout(()=>dispatch(successTime(1)), 100)
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request() { return { type: calendarConstants.EDIT_APPOINTMENT_2_REQUEST, } }
+    function success(appointment) { return { type: calendarConstants.EDIT_APPOINTMENT_2_SUCCESS, appointment } }
+    function successTime(id) { return { type: calendarConstants.ADD_RESERVED_TIME_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_2_FAILURE, error } }
 }
 
 function updateAppointment(id, params, withoutNotify) {

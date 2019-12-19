@@ -23,7 +23,7 @@ class ClientDetails extends React.Component {
             this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client});
             if (newProps.client) {
                 let allPrice = 0;
-                newProps.client.appointments.forEach((appointment) => allPrice += appointment.priceFrom);
+                newProps.client.appointments.forEach((appointment) => allPrice += appointment.price);
                 this.setState({ allPrice: allPrice });
             }
         }
@@ -51,7 +51,7 @@ class ClientDetails extends React.Component {
 
     render() {
         const {client, defaultClientsList}=this.state;
-        const {editClient}=this.props;
+        const {editClient, services}=this.props;
         return (
 
             <div className="modal fade client-detail">
@@ -108,23 +108,28 @@ class ClientDetails extends React.Component {
                                     .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
-                                    return(
-                                    <div className="visit-info row pl-4 pr-4 mb-2">
-                                        <div className="col-9">
-                                            <p className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
-                                                <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
-                                                <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                            </p>
-                                            <p className="visit-detail">
-                                                <strong>{appointment.serviceName}</strong>
-                                                <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                            </p>
-                                        </div>
-                                        <div className="col-3">
-                                            <strong>{appointment.priceFrom}{appointment.priceFrom!==appointment.priceTo && " - "+appointment.priceTo}  {appointment.currency}</strong>
-                                        </div>
-                                    </div>
-                                )})}
+                                        const activeService = services && services.servicesList.find(service => service.serviceId === appointment.serviceId)
+
+                                        return(
+                                            <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
+                                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
+                                                    <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
+                                                        <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
+                                                        <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
+                                                    </p>
+                                                    <p className="visit-detail">
+                                                        <strong>{appointment.serviceName}</strong>
+                                                        {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
+                                                        {appointment.description ? <span className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                    </p>
+                                                </div>
+                                                <div className="col-3">
+                                                    <strong style={{ fontSize: '12px'}}>{`${appointment.price ? appointment.price : (appointment.priceFrom ? appointment.priceFrom : '')}`}  {appointment.currency}</strong>
+                                                </div>
+                                            </div>
+                                        )}
+                                )}
                             </div>
 
                             <span className="closer"/>
@@ -144,9 +149,9 @@ class ClientDetails extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert,  calendar} = state;
+    const { alert, services, calendar} = state;
     return {
-        alert, calendar
+        alert, services, calendar
     };
 }
 

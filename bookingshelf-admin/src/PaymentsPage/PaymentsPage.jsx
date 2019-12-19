@@ -70,6 +70,9 @@ class PaymentsPage extends Component {
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
         }
+        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+            this.props.dispatch(companyActions.getSubcompanies());
+        }
 
         const { user } = this.props.authentication
         if (user && (user.forceActive
@@ -365,6 +368,27 @@ class PaymentsPage extends Component {
         } else if (pathname === '/invoices' ) {
             document.title = "Счета | Онлайн-запись";
         }
+        const currentPacket = activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбраного пакета')
+        const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id ==='payments_menu_id')
+        if (!paymentId && currentPacket === 'Нет выбраного пакета') {
+            return (
+                <div className="container_wrapper">
+
+
+                    <div className="content-wrapper">
+                        <div className="container-fluid">
+
+                            <HeaderMain
+                                onOpen={this.onOpen}
+                            />
+                            <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
+                                Срок действия лицензии истек
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
 
         const chosenPacket = packets && packets.find(packet => packet.packetId === (chosenInvoice.invoicePackets && chosenInvoice.invoicePackets[0].packetId)) || {};
 
@@ -483,7 +507,7 @@ class PaymentsPage extends Component {
                                     </ul>
                                     </div>
                                     <div className="col-sm-6 mb-2">
-                                        <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : ' Нет выбраного пакета')}</div>
+                                        <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {currentPacket}</div>
                                         <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
                                     </div>
                                 </div>

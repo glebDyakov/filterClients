@@ -88,6 +88,7 @@ class App extends React.Component {
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
         )) {
         } else {
+
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
