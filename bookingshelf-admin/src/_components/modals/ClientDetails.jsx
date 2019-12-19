@@ -23,7 +23,7 @@ class ClientDetails extends React.Component {
             this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client});
             if (newProps.client) {
                 let allPrice = 0;
-                newProps.client.appointments.forEach((appointment) => allPrice += appointment.priceFrom);
+                newProps.client.appointments.forEach((appointment) => allPrice += appointment.price);
                 this.setState({ allPrice: allPrice });
             }
         }
