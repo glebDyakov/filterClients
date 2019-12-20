@@ -543,8 +543,8 @@ class TabScroll extends Component{
                                             </p>
                                             <p className="notes-container"
                                                style={{height: textAreaHeight+ "px"}}>
-                                                                            <textarea
-                                                                                style={{color: '#5d5d5d'}}>{reservedTime[0][0].description}</textarea>
+                                                                            <span
+                                                                                style={{color: '#5d5d5d'}}>{reservedTime[0][0].description}</span>
                                                 {textAreaHeight > 0 && <span className="delete-notes"
                                                       style={{right: '5px'}}
                                                       data-toggle="modal"
