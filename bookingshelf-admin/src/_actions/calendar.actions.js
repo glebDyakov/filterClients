@@ -30,12 +30,11 @@ export const calendarActions = {
     deleteAppointmentsNewSocket
 };
 
-function addAppointment(params, serviceId, staffId, clientId, time1, time2) {
+function addAppointment(params, serviceId, staffId, clientId, time1, time2, coStaffs) {
     return dispatch => {
         dispatch(request(true));
 
-
-        calendarService.addAppointment(params, serviceId, staffId, clientId)
+        calendarService.addAppointment(params, serviceId, staffId, clientId, coStaffs)
             .then(
                 appointment => {
                     dispatch(success(appointment, staffId));

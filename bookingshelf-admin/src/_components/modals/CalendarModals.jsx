@@ -73,9 +73,8 @@ class CalendarModals extends Component {
             this.setState({ editClient: false, isModalShouldPassClient, client_working: {}, newClientModal: true});
         }
     }
-    newAppointment(appointment, serviceId, staffId, clientId) {
-
-        this.props.newAppointment(appointment, serviceId, staffId, clientId);
+    newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
+        this.props.newAppointment(appointment, serviceId, staffId, clientId, coStaffs);
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment) {
