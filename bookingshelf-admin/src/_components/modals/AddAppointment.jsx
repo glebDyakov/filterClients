@@ -18,6 +18,7 @@ class AddAppointment extends React.Component {
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
             coStaffs: props.appointmentEdited ? (props.appointmentEdited[0].coStaffs || []) : [],
+            isAddCostaff: props.appointmentEdited && props.appointmentEdited[0].coStaffs && props.appointmentEdited[0].coStaffs.length > 0 ,
             appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
@@ -498,7 +499,7 @@ class AddAppointment extends React.Component {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
-            allClients, servicesSearch, coStaffs
+            allClients, servicesSearch, coStaffs, isAddCostaff
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
@@ -788,17 +789,34 @@ class AddAppointment extends React.Component {
 
                                         <div style={{ width: '100%' }} className="block-style2 container">
                                             <div className="row">
-                                                <div className="col-sm-12"><p className="title mb-2">Добавить сотрудника</p></div>
+                                                <div className="col-sm-12 mt-2">
+                                                    <span className="title mb-2">Добавить помощников</span>
+
+                                                    <span className="justify-content-end check-box">
+                                                        <label>
+                                                            <input className="form-check-input" type="checkbox"
+                                                                   checked={isAddCostaff}
+                                                                   onChange={() => this.setState({ isAddCostaff: !this.state.isAddCostaff})}
+                                                            />
+                                                            <span style={{ margin: '0 0 0 4px' }} className="check" />
+                                                        </label>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            {staffFromProps && staffFromProps.length > 0 &&
-                                            <div className="search dropdown row">
-                                                <form className="col-sm-12 form-inline" data-toggle="dropdown">
-                                                    <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
-                                                    <button className="search-icon" type="button" />
-                                                </form>
-                                            </div>
-                                            }
-                                            <ul className="clients-list-container">
+                                            {/*{staffFromProps && staffFromProps.length > 0 &&*/}
+                                            {/*<div className="search dropdown row">*/}
+                                            {/*    <form className="col-sm-12 form-inline" data-toggle="dropdown">*/}
+                                            {/*        <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>*/}
+                                            {/*        <button className="search-icon" type="button" />*/}
+                                            {/*    </form>*/}
+                                            {/*</div>*/}
+                                            {/*}*/}
+
+                                            {isAddCostaff && <ul style={{
+                                                maxHeight: '175px',
+                                                overflowY: 'auto',
+                                                overflowX: 'hidden'
+                                            }} className="clients-list-container">
                                                 {staffFromProps && staffFromProps
                                                     .filter(item => item.staffId !== staffCurrent.staffId)
                                                     .map((item, keyStaffs) =>
@@ -822,7 +840,7 @@ class AddAppointment extends React.Component {
                                                         </div>
                                                     </li>
                                                 )}
-                                            </ul>
+                                            </ul>}
                                         </div>
 
                                     </div>
@@ -866,7 +884,7 @@ class AddAppointment extends React.Component {
     }
 
     addAppointment (){
-        const {appointment, staffCurrent, serviceCurrent, clientChecked, coStaffs }=this.state
+        const {appointment, staffCurrent, serviceCurrent, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
 
@@ -888,14 +906,14 @@ class AddAppointment extends React.Component {
             }]
         });
         this.closeModal();
-        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, coStaffs)
+        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, isAddCostaff ? coStaffs : [])
     }
 
     editAppointment (){
-        const {appointment, coStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        const {appointment, coStaffs, isAddCostaff, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
 
         let appointmentNew = appointment.map((item, i) => { return {...item,
-            coStaffs,
+            coStaffs : isAddCostaff ? coStaffs : [],
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
