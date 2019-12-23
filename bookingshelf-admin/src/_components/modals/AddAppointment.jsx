@@ -17,6 +17,7 @@ class AddAppointment extends React.Component {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
+            coStaffs: [],
             appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
@@ -476,11 +477,28 @@ class AddAppointment extends React.Component {
         return <p className="staffAlert-noService">Нет доступных услуг. Выберите сотрудника в настройках услуг</p>
     }
 
+    toggleChangeStaff(e, staff) {
+        const { checked } = e.target;
+        const { coStaffs } = this.state;
+
+        if (checked) {
+            coStaffs.push(staff)
+        } else {
+            const staffIndex = coStaffs.findIndex(item => item.staffId === staff.staffId);
+
+            if (staffIndex !== -1) {
+                coStaffs.splice(staffIndex, 1);
+            }
+        }
+
+        this.setState({ coStaffs });
+    }
+
     render() {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
-            allClients, servicesSearch
+            allClients, servicesSearch, coStaffs
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
@@ -767,6 +785,46 @@ class AddAppointment extends React.Component {
                                                 Создать клиента
                                             </button>
                                         </div>
+
+                                        <div style={{ width: '100%' }} className="block-style2 container">
+                                            <div className="row">
+                                                <div className="col-sm-12"><p className="title mb-2">Добавить сотрудника</p></div>
+                                            </div>
+                                            {staffFromProps && staffFromProps.length > 0 &&
+                                            <div className="search dropdown row">
+                                                <form className="col-sm-12 form-inline" data-toggle="dropdown">
+                                                    <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
+                                                    <button className="search-icon" type="button" />
+                                                </form>
+                                            </div>
+                                            }
+                                            <ul className="clients-list-container">
+                                                {staffFromProps && staffFromProps
+                                                    .filter(item => item.staffId !== staffCurrent.staffId)
+                                                    .map((item, keyStaffs) =>
+                                                    <li className="row" key={keyStaffs}>
+                                                        <div className="col-9">
+                                                            <span style={{ position: 'static' }} className="img-container">
+                                                                 <img className="rounded-circle"
+                                                                      src={item.imageBase64?"data:image/png;base64,"+item.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                            </span>
+                                                            <span style={{ marginLeft: '6px' }}>{item.firstName} {item.lastName ? item.lastName : ''}</span>
+                                                        </div>
+
+                                                        <div className="col-3 justify-content-end check-box">
+                                                            <label>
+                                                                <input className="form-check-input" type="checkbox"
+                                                                       checked={coStaffs && coStaffs.some((staff) => staff.staffId === item.staffId)}
+                                                                       onChange={(e) => this.toggleChangeStaff(e, item)}
+                                                                />
+                                                                <span className="check" />
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                )}
+                                            </ul>
+                                        </div>
+
                                     </div>
                                     <div className="mobileButton">
                                         <button
@@ -808,7 +866,7 @@ class AddAppointment extends React.Component {
     }
 
     addAppointment (){
-        const {appointment, staffCurrent, serviceCurrent, clientChecked }=this.state
+        const {appointment, staffCurrent, serviceCurrent, clientChecked, coStaffs }=this.state
         const { addAppointment }=this.props;
 
 
@@ -821,6 +879,7 @@ class AddAppointment extends React.Component {
                 service:[]
             }],
             clientChecked: [],
+            coStaffs: [],
             appointment: [{
                 appointmentTimeMillis: '',
                 duration: '',
@@ -829,7 +888,7 @@ class AddAppointment extends React.Component {
             }]
         });
         this.closeModal();
-        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId)
+        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, coStaffs)
     }
 
     editAppointment (){
@@ -937,7 +996,7 @@ class AddAppointment extends React.Component {
         }))
         const newStaffCurrent = {...staffCurrent, staffId:staffId.staffId, firstName:firstName, lastName:lastName, imageBase64 }
 
-        this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: newStaffCurrent});
+        this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: newStaffCurrent, coStaffs: [] });
     }
     getAppointments(appointment) {
         const { staffs, staffId, visitFreeMinutes } = this.state;
