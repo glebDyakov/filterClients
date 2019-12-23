@@ -17,7 +17,7 @@ class AddAppointment extends React.Component {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
-            coStaffs: [],
+            coStaffs: props.appointmentEdited ? (props.appointmentEdited[0].coStaffs || []) : [],
             appointmentsToDelete: [],
             serviceCurrent: [{
                 id: -1,
@@ -513,7 +513,7 @@ class AddAppointment extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 {edit_appointment?<h4 className="modal-title">Редактировать запись</h4>:<h4 className="modal-title">Новая запись</h4>}
-                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
@@ -892,9 +892,10 @@ class AddAppointment extends React.Component {
     }
 
     editAppointment (){
-        const {appointment, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        const {appointment, coStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
 
         let appointmentNew = appointment.map((item, i) => { return {...item,
+            coStaffs,
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
