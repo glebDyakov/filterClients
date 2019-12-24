@@ -927,7 +927,7 @@ class AddAppointment extends React.Component {
         return handleEditClient(id, true);
     }
 
-    addAppointment (){addAppo
+    addAppointment (){
         const {appointment, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
