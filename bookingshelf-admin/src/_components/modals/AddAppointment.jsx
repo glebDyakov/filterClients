@@ -755,7 +755,7 @@ class AddAppointment extends React.Component {
 
                                                     className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
-                                                    onClick={edit_appointment ? this.editAppointment : this.intment}
+                                                    onClick={edit_appointment ? this.editAppointment : this.addAppointment}
                                                     disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
