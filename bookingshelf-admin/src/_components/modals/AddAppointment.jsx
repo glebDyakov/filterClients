@@ -755,7 +755,7 @@ class AddAppointment extends React.Component {
 
                                                     className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
-                                                    onClick={edit_appointment ? this.editAppointment : this.addAppointment}
+                                                    onClick={edit_appointment ? this.editAppointment : this.intment}
                                                     disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
@@ -927,8 +927,8 @@ class AddAppointment extends React.Component {
         return handleEditClient(id, true);
     }
 
-    addAppointment (){
-        const {appointment, staffCurrent, serviceCurrent, clientChecked, coStaffs, isAddCostaff }=this.state
+    addAppointment (){addAppo
+        const {appointment, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
 
@@ -950,14 +950,17 @@ class AddAppointment extends React.Component {
             }]
         });
         this.closeModal();
-        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, isAddCostaff ? coStaffs : [])
+        const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
+        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, isAddCostaff ? finalCoStaffs : [])
     }
 
     editAppointment (){
-        const {appointment, coStaffs, isAddCostaff, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked }=this.state
+        const {appointment, coStaffs, isAddCostaff, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff }=this.state
+
+        const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
 
         let appointmentNew = appointment.map((item, i) => { return {...item,
-            coStaffs : isAddCostaff ? coStaffs : [],
+            coStaffs : isAddCostaff ? finalCoStaffs : [],
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
@@ -965,6 +968,8 @@ class AddAppointment extends React.Component {
             color: serviceCurrent[i].service.color,
             currency: serviceCurrent[i].service.currency
         } });
+
+
         this.props.dispatch(calendarActions.editAppointment2(JSON.stringify(appointmentNew), appointment[0].appointmentId))
         // let timeout = 0
         //
