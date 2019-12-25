@@ -110,7 +110,7 @@ class VisitPage extends React.Component {
                         (<p>Выбрано услуг: <strong className="service_item_price">{visitAppointments.length}</strong></p>)}
                     <p><strong className="service_item_price">{priceFrom!==priceTo
                         ? priceFrom+" - "+priceTo
-                        : price}
+                        : price
                     }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
