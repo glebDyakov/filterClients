@@ -473,13 +473,17 @@ q:before, q:after { content:''; }
 }
 
 .service_item p:first-of-type{
-    max-width: 167px;
+    font-size: 14px;
+    max-width: 135px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     float: left;
     text-align: left;
     text-align-last: left;
+}
+.service_item_price {
+    font-size: 14px !important;
 }
 .runtime{
     clear: both;

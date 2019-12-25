@@ -89,11 +89,14 @@ class VisitPage extends React.Component {
         let serviceInfo = null
         if (visitAppointments && visitAppointments[0]) {
             let price = 0;
+            let priceFrom = 0;
             let priceTo= 0;
             let duration = 0;
             let totalAmount = 0;
             visitAppointments.forEach((currentAppointment) => {
                 price += parseInt(currentAppointment.price)
+                priceFrom += parseInt(currentAppointment.priceFrom)
+                priceTo += parseInt(currentAppointment.priceTo)
                 duration += parseInt(currentAppointment.duration)
             })
 
@@ -104,8 +107,12 @@ class VisitPage extends React.Component {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
-                        (<p>Выбрано услуг: <strong>{visitAppointments.length}</strong></p>)}
-                    <p><strong>{price}</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
+                        (<p>Выбрано услуг: <strong className="service_item_price">{visitAppointments.length}</strong></p>)}
+                    <p><strong className="service_item_price">{
+                        price > 0
+                            ? price
+                            : `${priceFrom}${priceFrom!==priceTo ? " - "+priceTo : ''}`
+                    }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
                         {visitAppointments && visitAppointments[0] && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
@@ -156,6 +163,15 @@ class VisitPage extends React.Component {
                             </div>
                             }
                         </div>
+
+                        {appointment && !!appointment.discountPercent &&
+                        <p style={{
+                            textAlign: 'center',
+                            fontSize: '18px',
+                            marginBottom: '8px'
+                        }}>Ваша персональная скидка составит: {appointment.discountPercent}%</p>
+                        }
+
                         {<div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                                 this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
