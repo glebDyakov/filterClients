@@ -108,10 +108,9 @@ class VisitPage extends React.Component {
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
                         (<p>Выбрано услуг: <strong className="service_item_price">{visitAppointments.length}</strong></p>)}
-                    <p><strong className="service_item_price">{
-                        price > 0
-                            ? price
-                            : `${priceFrom}${priceFrom!==priceTo ? " - "+priceTo : ''}`
+                    <p><strong className="service_item_price">{priceFrom!==priceTo
+                        ? priceFrom+" - "+priceTo
+                        : price}
                     }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
