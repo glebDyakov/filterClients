@@ -546,6 +546,16 @@ class AddAppointment extends React.Component {
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
+        const cl = clientChecked && clientChecked.clientId && clients.client && clients.client.find(cl => cl.clientId === clientChecked.clientId);
+
+        let allPrice = 0;
+        if (cl) {
+            cl.appointments.map(appointment => {
+                if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                    allPrice += appointment.price;
+                }
+            })
+        }
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
 
@@ -813,80 +823,129 @@ class AddAppointment extends React.Component {
 
                                                 </div>
                                             }
-                                            { clientChecked && clientChecked.clientId && clients.client && clients.client.map((cl)=>cl.clientId===clientChecked.clientId &&
+                                            {cl &&
                                                 <div className="client-info content-pages-bg">
                                                     <div className="client-title">
-                                                        <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
+                                                        <p>Клиент</p>
+                                                        <div className="img-create-client"
+                                                             onClick={(e) => this.newClient(null, e)}></div>
                                                     </div>
                                                     <div className="clients-list pt-4 pl-4 pr-4">
                                                         <div className="client">
-                                                            <span className="abbreviation">{cl.firstName.substr(0, 1)}</span>
-                                                            <span className="name_container">{cl.firstName} {cl.lastName}<span
-                                                                className="email-user">{cl.email}</span></span>
+                                                            <span
+                                                                className="abbreviation">{cl.firstName.substr(0, 1)}</span>
+                                                            <span
+                                                                className="name_container">{cl.firstName} {cl.lastName}
+                                                                <span className="email-user">{cl.email}</span>
+                                                                <span className="email-user">{cl.phone}</span>
+                                                            </span>
                                                         </div>
                                                         <div className="row">
-                                                            <div className="col-12">
+                                                            <div className="col-6">
                                                                 <strong>{cl.appointments && cl.appointments.length}</strong>
                                                                 <span className="gray-text">Всего визитов</span>
+                                                            </div>
+                                                            <div className="col-6">
+                                                                <strong>{allPrice} {cl.appointments[0].currency}</strong>
+                                                                <span className="gray-text">Всего оплачено</span>
                                                             </div>
 
                                                         </div>
                                                     </div>
                                                     <hr className="gray"/>
-                                                    {cl.appointments && cl.appointments.length!==0 ?
-                                                        <p className="pl-4 pr-4">Визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
+                                                    {cl.appointments && cl.appointments.length !== 0 ?
+                                                        <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Все визиты</p> :
+                                                        <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Нет визитов</p>
                                                     }
+
+                                                    <hr className="gray"/>
                                                     <div className='last-visit-list'>
-                                                    {cl.appointments && cl.appointments
-                                                        .filter(appointment => appointment.id===cl.id )
-                                                        .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
-                                                        .map((appointment)=> {
-                                                            const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
+                                                        {cl.appointments && cl.appointments
+                                                            .filter(appointment => appointment.id === cl.id)
+                                                            .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
+                                                            .map((appointment) => {
+                                                                const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
+                                                                const activeAppointmentStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === appointment.staffId);
 
-                                                            return(
-                                                                <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
-                                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-8">
-                                                                        <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
-                                                                            <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
-                                                                            <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                                                        </p>
-                                                                        <p className="visit-detail">
-                                                                            <strong style={{ fontSize: '13px'}}>{appointment.serviceName}</strong>
-                                                                            {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
-                                                                            {appointment.description ? <span className="visit-description">Заметка: {appointment.description}</span> : ''}
-                                                                            <span style={{ whiteSpace: 'normal' }}>Сотрудник: {appointment.staffName}</span>
+                                                                return (
+                                                                    <div style={{
+                                                                        paddingTop: '4px',
+                                                                        borderBottom: '10px solid rgb(245, 245, 246)'
+                                                                    }} className="visit-info row pl-4 pr-4 mb-2">
+                                                                        <div style={{
+                                                                            display: 'flex',
+                                                                            alignItems: 'center'
+                                                                        }} className="col-9">
+                                                                            {/*<p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>*/}
+                                                                            {/*    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>*/}
+                                                                            {/*    <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>*/}
+                                                                            {/*</p>*/}
 
-                                                                        </p>
-                                                                    </div>
+                                                                            {/*{*/}
+                                                                            {/*    activeStaffCurrent && activeStaffCurrent.staffId &&*/}
+                                                                            {/*    <div style={{ position: 'static', marginRight: '12px' }} className="img-container">*/}
+                                                                            {/*        <img className="rounded-circle"*/}
+                                                                            {/*             src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>*/}
+                                                                            {/*        /!*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*!/*/}
+                                                                            {/*    </div>*/}
+                                                                            {/*}*/}
 
-                                                                    <div style={{ padding: 0 }} className="col-2">
-                                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                                            <p className="visit-detail">
+                                                                                <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                                                <span style={{
+                                                                                    whiteSpace: 'normal',
+                                                                                    fontSize: '12px'
+                                                                                }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
+                                                                                <strong
+                                                                                    style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
+                                                                                {(activeService && activeService.details) ?
+                                                                                    <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
+                                                                                {appointment.description ? <span
+                                                                                    className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div style={{padding: 0}} className="col-3">
+                                                                            {
+                                                                                activeAppointmentStaff && activeAppointmentStaff.staffId &&
+                                                                                <div style={{ position: 'static', marginRight: '12px' }} className="img-container">
+                                                                                    <img className="rounded-circle"
+                                                                                         src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                                    {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
+                                                                                </div>
+                                                                            }
+
+                                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+
+                                                                            <br />
+
+                                                                            <strong style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
+                                                                        </div>
                                                                     </div>
-                                                                    <div style={{ padding: '0 4px' }} className="col-2">
-                                                                        <strong style={{ fontSize: '12px'}}>{appointment.priceFrom!==appointment.priceTo ? appointment.priceFrom+" - "+appointment.priceTo : appointment.price}  {appointment.currency}</strong>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    )}
+                                                                )}
+                                                            )}
                                                     </div>
                                                     {!!cl.discountPercent &&
-                                                        <div style={{
-                                                            textAlign: 'center',
-                                                            color: '#d41316',
-                                                            margin: '16px 0'
-                                                        }}>Персональная скидка клиента: {cl.discountPercent}%</div>
+                                                    <div style={{
+                                                        textAlign: 'center',
+                                                        color: '#d41316',
+                                                        margin: '16px 0'
+                                                    }}>Персональная скидка клиента: {cl.discountPercent}%</div>
                                                     }
                                                     <hr/>
-                                                    {!edit_appointment && <div className="buttons p-4 justify-content-between">
-                                                        <button type="button" className="button" onClick={this.removeCheckedUser}>Удалить из встречи</button>
-                                                        <button type="button" className="button" onClick={()=>this.editClient(cl.clientId)}>Редактировать
+                                                    {!edit_appointment &&
+                                                    <div className="buttons p-4 justify-content-between">
+                                                        <button type="button" className="button"
+                                                                onClick={this.removeCheckedUser}>Удалить из встречи
+                                                        </button>
+                                                        <button type="button" className="button"
+                                                                onClick={() => this.editClient(cl.clientId)}>Редактировать
                                                         </button>
                                                     </div>}
 
                                                     <span className="closer"></span>
                                                 </div>
-                                            )}
+                                            }
                                             <button className="button text-center button-absolute float-right create-client" type="button"  onClick={(e)=>this.newClient(null, e)}>
                                                 Создать клиента
                                             </button>
