@@ -184,7 +184,8 @@ class TabScroll extends Component{
                     adminApproved: true,
                     approved: true,
                     moved: true,
-                    adminMoved: true
+                    adminMoved: true,
+                    movedOnline: false
                 }))
             );
 
