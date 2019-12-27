@@ -703,7 +703,7 @@ class AddAppointment extends React.Component {
                                                                             </span>}
                                                     </div>
 
-                                                    <span style={{ width: 'auto', margin: '0 0 0 auto'}} className="justify-content-end check-box">
+                                                    <span style={{ width: 'auto', margin: '0 4px 0 auto'}} className="justify-content-end check-box">
                                                         <label>
                                                             <input className="form-check-input" type="checkbox"
                                                                    checked={isAddCostaff}
@@ -724,7 +724,7 @@ class AddAppointment extends React.Component {
                                                     .filter(item => item.staffId !== staffCurrent.staffId)
                                                     .filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId))
                                                     .map((item, keyStaffs) =>
-                                                        <li className="row" key={keyStaffs}>
+                                                        <li className="row mt-3" key={keyStaffs}>
                                                             <div className="col-9">
                                                             <span style={{ position: 'static' }} className="img-container">
                                                                  <img className="rounded-circle"
@@ -733,7 +733,7 @@ class AddAppointment extends React.Component {
                                                                 <span style={{ marginLeft: '6px' }}>{item.firstName} {item.lastName ? item.lastName : ''}</span>
                                                             </div>
 
-                                                            <div className="col-3 justify-content-end check-box">
+                                                            <div style={{ marginTop: '15px' }} className="col-3 justify-content-end check-box">
                                                                 <label>
                                                                     <input className="form-check-input" type="checkbox"
                                                                            checked={coStaffs && coStaffs.some((staff) => staff.staffId === item.staffId)}
@@ -834,18 +834,18 @@ class AddAppointment extends React.Component {
                                                     </div>
                                                     <hr className="gray"/>
                                                     {cl.appointments && cl.appointments.length!==0 ?
-                                                        <p className="pl-4 pr-4">Прошлые визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
+                                                        <p className="pl-4 pr-4">Визиты</p> : <p className="pl-4 pr-4">Нет визитов</p>
                                                     }
                                                     <div className='last-visit-list'>
                                                     {cl.appointments && cl.appointments
-                                                        .filter(appointment => appointment.id===cl.id && appointment.appointmentTimeMillis < moment().format('x'))
+                                                        .filter(appointment => appointment.id===cl.id )
                                                         .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                                         .map((appointment)=> {
                                                             const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
 
                                                             return(
                                                                 <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
-                                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
+                                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-8">
                                                                         <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
                                                                             <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
                                                                             <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
@@ -854,10 +854,15 @@ class AddAppointment extends React.Component {
                                                                             <strong style={{ fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                                             {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
                                                                             {appointment.description ? <span className="visit-description">Заметка: {appointment.description}</span> : ''}
-                                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                                            <span style={{ whiteSpace: 'normal' }}>Сотрудник: {appointment.staffName}</span>
+
                                                                         </p>
                                                                     </div>
-                                                                    <div className="col-3">
+
+                                                                    <div style={{ padding: 0 }} className="col-2">
+                                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                                    </div>
+                                                                    <div style={{ padding: '0 4px' }} className="col-2">
                                                                         <strong style={{ fontSize: '12px'}}>{appointment.priceFrom!==appointment.priceTo ? appointment.priceFrom+" - "+appointment.priceTo : appointment.price}  {appointment.currency}</strong>
                                                                     </div>
                                                                 </div>

@@ -54,7 +54,7 @@ class TabSix extends  PureComponent {
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
-                        {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
+                        {newAppointments && newAppointments[0] && priceFrom===priceTo && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">Список услуг:</p>
