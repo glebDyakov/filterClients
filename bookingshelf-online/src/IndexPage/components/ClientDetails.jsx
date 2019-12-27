@@ -120,22 +120,47 @@ class ClientDetails extends React.Component {
                                         .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                         .map((appointment)=>{
                                             const activeService = staff && staff.services && staff.services.find(service => service.serviceId === appointment.serviceId)
+                                            const activeAppointmentStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === appointment.staffId);
 
                                             return(
-                                                <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
-                                                    <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
-                                                        <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
-                                                            <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
-                                                            <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
-                                                        </p>
+                                                <div style={{
+                                                    paddingTop: '4px',
+                                                    borderBottom: '10px solid rgb(245, 245, 246)'
+                                                }} className="visit-info row pl-4 pr-4 mb-2">
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center'
+                                                    }} className="col-9">
                                                         <p className="visit-detail">
-                                                            <strong>{appointment.serviceName}</strong>
-                                                            {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
-                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                            <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                            <span style={{
+                                                                whiteSpace: 'normal',
+                                                                fontSize: '12px'
+                                                            }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
+                                                            <strong
+                                                                style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
+                                                            {(activeService && activeService.details) ?
+                                                                <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
+                                                            {appointment.description ? <span
+                                                                className="visit-description">Заметка: {appointment.description}</span> : ''}
                                                         </p>
                                                     </div>
-                                                    <div className="col-3">
-                                                        <strong style={{ fontSize: '12px'}}>{appointment.priceFrom!==appointment.priceTo ? appointment.priceFrom+" - "+appointment.priceTo : appointment.price}  {appointment.currency}</strong>
+
+                                                    <div style={{ padding: 0, textAlign: 'right' }} className="col-2">
+                                                        {
+                                                            activeAppointmentStaff && activeAppointmentStaff.staffId &&
+                                                            <div style={{ position: 'static' }} className="img-container">
+                                                                <img style={{ width: '50px', height: '50px' }} className="rounded-circle"
+                                                                     src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
+                                                            </div>
+                                                        }
+
+                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+
+                                                        <br />
+
+                                                        <strong style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
                                                     </div>
                                                 </div>
                                             )}
