@@ -546,7 +546,6 @@ class AddAppointment extends React.Component {
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
-        console.log(activeStaffCurrent);
         const cl = clientChecked && clientChecked.clientId && clients.client && clients.client.find(cl => cl.clientId === clientChecked.clientId);
 
         let allPrice = 0;
