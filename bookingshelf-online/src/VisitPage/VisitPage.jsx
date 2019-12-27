@@ -114,7 +114,7 @@ class VisitPage extends React.Component {
                     }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
-                        {visitAppointments && visitAppointments[0] && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
+                        {visitAppointments && visitAppointments[0] && priceFrom===priceTo && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">Список услуг:</p>

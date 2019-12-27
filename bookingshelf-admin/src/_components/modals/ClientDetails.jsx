@@ -23,7 +23,11 @@ class ClientDetails extends React.Component {
             this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client});
             if (newProps.client) {
                 let allPrice = 0;
-                newProps.client.appointments.forEach((appointment) => allPrice += appointment.price);
+                newProps.client.appointments.forEach((appointment) => {
+                    if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                        allPrice += appointment.price
+                    }
+                });
                 this.setState({ allPrice: allPrice });
             }
         }
@@ -112,7 +116,7 @@ class ClientDetails extends React.Component {
 
                                         return(
                                             <div style={{ paddingTop: '4px', borderBottom: '10px solid rgb(245, 245, 246)' }} className="visit-info row pl-4 pr-4 mb-2">
-                                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-9">
+                                                <div style={{ display: 'flex', alignItems: 'center' }} className="col-8">
                                                     <p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>
                                                         <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>
                                                         <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>
@@ -121,10 +125,13 @@ class ClientDetails extends React.Component {
                                                         <strong>{appointment.serviceName}</strong>
                                                         {(activeService && activeService.details) ? <span>{activeService.details}</span> : ''}
                                                         {appointment.description ? <span className="visit-description">Заметка: {appointment.description}</span> : ''}
-                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                        <span style={{ whiteSpace: 'normal' }}>Сотрудник: {appointment.staffName}</span>
                                                     </p>
                                                 </div>
-                                                <div className="col-3">
+                                                <div style={{ padding: 0 }} className="col-2">
+                                                    <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                </div>
+                                                <div style={{ padding: '0 4px' }} className="col-2">
                                                     <strong style={{ fontSize: '12px'}}>{appointment.priceFrom!==appointment.priceTo ? appointment.priceFrom+" - "+appointment.priceTo : appointment.price} {appointment.currency}</strong>
                                                 </div>
                                             </div>
