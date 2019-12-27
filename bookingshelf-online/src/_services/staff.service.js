@@ -120,7 +120,8 @@ function _move(appointment, time, staffId, companyId) {
             adminApproved: true,
             adminMoved: true,
             approved: true,
-            moved: true
+            moved: true,
+            movedOnline: true
         }),
         withCredentials: true
     };

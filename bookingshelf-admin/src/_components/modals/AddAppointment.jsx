@@ -876,20 +876,6 @@ class AddAppointment extends React.Component {
                                                                             display: 'flex',
                                                                             alignItems: 'center'
                                                                         }} className="col-9">
-                                                                            {/*<p style={{ float: 'unset' }} className={appointment.appointmentTimeMillis > moment().format('x')?"blue-bg":"gray-bg"}>*/}
-                                                                            {/*    <span className="visit-date">{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD.MM.YYYY')}</span>*/}
-                                                                            {/*    <span>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('HH:mm')}</span>*/}
-                                                                            {/*</p>*/}
-
-                                                                            {/*{*/}
-                                                                            {/*    activeStaffCurrent && activeStaffCurrent.staffId &&*/}
-                                                                            {/*    <div style={{ position: 'static', marginRight: '12px' }} className="img-container">*/}
-                                                                            {/*        <img className="rounded-circle"*/}
-                                                                            {/*             src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>*/}
-                                                                            {/*        /!*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*!/*/}
-                                                                            {/*    </div>*/}
-                                                                            {/*}*/}
-
                                                                             <p className="visit-detail">
                                                                                 <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
                                                                                 <span style={{
@@ -905,10 +891,10 @@ class AddAppointment extends React.Component {
                                                                             </p>
                                                                         </div>
 
-                                                                        <div style={{padding: 0}} className="col-3">
+                                                                        <div style={{padding: 0, textAlign: 'right'}} className="col-2">
                                                                             {
                                                                                 activeAppointmentStaff && activeAppointmentStaff.staffId &&
-                                                                                <div style={{ position: 'static', marginRight: '12px' }} className="img-container">
+                                                                                <div style={{ position: 'static' }} className="img-container">
                                                                                     <img className="rounded-circle"
                                                                                          src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
                                                                                     {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
