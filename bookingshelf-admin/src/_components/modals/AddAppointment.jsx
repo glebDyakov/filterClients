@@ -846,7 +846,7 @@ class AddAppointment extends React.Component {
                                                                 <span className="gray-text">Всего визитов</span>
                                                             </div>
                                                             <div className="col-6">
-                                                                <strong>{allPrice} {cl.appointments[0].currency}</strong>
+                                                                <strong>{allPrice} {cl.appointments[0] && cl.appointments[0].currency}</strong>
                                                                 <span className="gray-text">Всего оплачено</span>
                                                             </div>
 

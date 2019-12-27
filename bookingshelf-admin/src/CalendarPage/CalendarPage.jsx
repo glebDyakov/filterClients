@@ -625,8 +625,8 @@ class CalendarPage extends PureComponent {
         const {selectedDayMoment, type, selectedDays} = this.state;
 
         if(type==='day'){
-            reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
-            reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
+            reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM YYYY')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x')
+            reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM YYYY')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x')
         }
 
 
