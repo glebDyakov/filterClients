@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import PropTypes from 'prop-types';
 import moment from "moment";
 import {access} from "../../_helpers/access";
@@ -16,6 +17,7 @@ class ClientDetails extends React.Component {
         };
 
         this.handleSearch = this.handleSearch.bind(this);
+        this.goToPageCalendar = this.goToPageCalendar.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -51,6 +53,16 @@ class ClientDetails extends React.Component {
                 client: defaultClientsList
             })
         }
+    }
+
+    goToPageCalendar(appointment, appointmentStaffId){
+        $('.client-detail').modal('hide')
+        const { appointmentId, appointmentTimeMillis } = appointment
+
+        const url = "/page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY')
+        this.props.history.push(url);
+
+        this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
     }
 
     render() {
@@ -119,8 +131,11 @@ class ClientDetails extends React.Component {
                                         return(
                                             <div style={{
                                                 paddingTop: '4px',
+                                                cursor: 'pointer',
                                                 borderBottom: '10px solid rgb(245, 245, 246)'
-                                            }} className="visit-info row pl-4 pr-4 mb-2">
+                                            }} className="visit-info row pl-4 pr-4 mb-2"
+                                                 onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
+                                            >
                                                 <div style={{
                                                     display: 'flex',
                                                     alignItems: 'center'
@@ -189,5 +204,5 @@ ClientDetails.propTypes ={
     editClient: PropTypes.func
 };
 
-const connectedApp = connect(mapStateToProps)(ClientDetails);
+const connectedApp = connect(mapStateToProps)(withRouter(ClientDetails));
 export { connectedApp as ClientDetails };

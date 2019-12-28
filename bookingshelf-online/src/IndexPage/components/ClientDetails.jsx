@@ -70,6 +70,7 @@ class ClientDetails extends React.Component {
     render() {
         const { staff } = this.props;
         const {client, defaultClientsList, allVisits}=this.state;
+        const { info } = staff;
 
         return (
             <div style={{  marginBottom: '20px'}} className="client-detail">
@@ -136,7 +137,7 @@ class ClientDetails extends React.Component {
                                                             <span style={{
                                                                 whiteSpace: 'normal',
                                                                 fontSize: '12px'
-                                                            }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
+                                                            }}><strong>{info.template === 1 ? 'Сотрудник' : 'Рабочее место'}: </strong>{appointment.staffName}</span>
                                                             <strong
                                                                 style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                             {(activeService && activeService.details) ?
