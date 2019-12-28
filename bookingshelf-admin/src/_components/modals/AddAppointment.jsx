@@ -154,6 +154,9 @@ class AddAppointment extends React.Component {
                 )
             })
 
+        console.log(availableCoStaffs)
+        debugger
+
         this.setState({ availableCoStaffs });
     }
 
@@ -1020,7 +1023,7 @@ class AddAppointment extends React.Component {
     }
 
     editAppointment (){
-        const {appointment, coStaffs, isAddCostaff, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff }=this.state
+        const {appointment, coStaffs, isAddCostaff, availableCoStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff }=this.state
 
         const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
 
