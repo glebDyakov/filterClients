@@ -558,6 +558,7 @@ class IndexPage extends PureComponent {
         let serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
         let appointmentsIdList = ''
+        let staffsIdList = '';
         if (movingVisit && movingVisit[0]) {
             serviceIdList = ''
             movingVisit.forEach((visit, i) => {
@@ -568,7 +569,14 @@ class IndexPage extends PureComponent {
                     this.selectService({target: {checked: true}}, activeService)
                 }
                 serviceIdList += `${i === 0 ? '' : ','}${visit.serviceId}`
+
             })
+
+            staffsIdList = selectedStaff.staffId === movingVisit[0].staffId ? '' : `,${movingVisit[0].staffId}`
+            movingVisit[0].coStaffs.forEach(item => {
+                staffsIdList += item.staffId === selectedStaff.staffId ? '' : `,${item.staffId}`
+            })
+
         }
 
         this.props.dispatch(staffActions.getTimetableAvailable(
@@ -577,7 +585,8 @@ class IndexPage extends PureComponent {
             moment(newMonth).startOf('month').format('x'),
             moment(newMonth).endOf('month').format('x'),
             serviceIdList,
-            appointmentsIdList
+            appointmentsIdList,
+            staffsIdList
         ));
     }
 

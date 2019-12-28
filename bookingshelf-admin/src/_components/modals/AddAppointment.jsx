@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import TimePicker from 'rc-time-picker';
 
 import 'rc-time-picker/assets/index.css'
@@ -72,6 +73,7 @@ class AddAppointment extends React.Component {
         this.getInfo = this.getInfo.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.goToPageCalendar = this.goToPageCalendar.bind(this);
     }
 
     componentDidMount() {
@@ -538,6 +540,16 @@ class AddAppointment extends React.Component {
         this.setState({ [dropdownKey]: !this.state[dropdownKey] });
     }
 
+    goToPageCalendar(appointment, appointmentStaffId){
+        $('.client-detail').modal('hide')
+        const { appointmentId, appointmentTimeMillis } = appointment
+
+        const url = "/page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY')
+        this.props.history.push(url);
+
+        this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
+    }
+
     render() {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
         const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
@@ -870,8 +882,11 @@ class AddAppointment extends React.Component {
                                                                 return (
                                                                     <div style={{
                                                                         paddingTop: '4px',
+                                                                        cursor: 'pointer',
                                                                         borderBottom: '10px solid rgb(245, 245, 246)'
-                                                                    }} className="visit-info row pl-4 pr-4 mb-2">
+                                                                    }} className="visit-info row pl-4 pr-4 mb-2"
+                                                                         onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
+                                                                    >
                                                                         <div style={{
                                                                             display: 'flex',
                                                                             alignItems: 'center'
@@ -1238,5 +1253,5 @@ AddAppointment.propTypes ={
     onClose: PropTypes.func
 };
 
-const connectedApp = connect(mapStateToProps)(AddAppointment);
+const connectedApp = connect(mapStateToProps)(withRouter(AddAppointment));
 export { connectedApp as AddAppointment };

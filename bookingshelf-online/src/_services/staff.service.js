@@ -91,13 +91,13 @@ function getClientAppointments(id) {
 }
 
 
-function getTimetableAvailable(id, staffId, date1, date2, service, appointmentsIdList) {
+function getTimetableAvailable(id, staffId, date1, date2, service, appointmentsIdList, staffsIdList) {
     const requestOptions = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/${id}/staffs/${staffId}/services/${service}/${!!appointmentsIdList ? ('appointments/' + appointmentsIdList + '/') : ''}availabletimes?dateFrom=${date1}&dateTo=${date2}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/${id}/staffs/${staffId}${!!staffsIdList ? staffsIdList : ''}/services/${service}/${!!appointmentsIdList ? ('appointments/' + appointmentsIdList + '/') : ''}availabletimes?dateFrom=${date1}&dateTo=${date2}`, requestOptions).then(handleResponse);
 }
 
 function add(id, staff, service, params) {
