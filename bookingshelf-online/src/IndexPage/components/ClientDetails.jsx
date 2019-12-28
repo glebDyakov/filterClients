@@ -141,8 +141,6 @@ class ClientDetails extends React.Component {
                                                                 style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                             {(activeService && activeService.details) ?
                                                                 <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
-                                                            {appointment.description ? <span
-                                                                className="visit-description">Заметка: {appointment.description}</span> : ''}
                                                         </p>
                                                     </div>
 
