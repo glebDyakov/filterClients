@@ -130,17 +130,22 @@ class TabScroll extends Component{
         let shouldMove = false
         const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
-        const availableTimetableItem = this.props.availableTimetable.find(item => item.staffId === movingVisitStaffId);
-        availableTimetableItem.availableDays.forEach(item => {
-            item.availableTimes.forEach(time => {
-                if (time.startTimeMillis <= movingVisitEndTime && time.startTimeMillis <= movingVisitMillis
-                    && time.endTimeMillis >= movingVisitEndTime && time.endTimeMillis >= movingVisitMillis) {
-                    shouldMove = true
-                }
+        const availableTimetableItems = this.props.availableTimetable
+            .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
+
+        availableTimetableItems.forEach(availableTimetableItem => {
+            availableTimetableItem.availableDays.forEach(item => {
+                item.availableTimes.forEach(time => {
+                    if (time.startTimeMillis <= movingVisitEndTime && time.startTimeMillis <= movingVisitMillis
+                        && time.endTimeMillis >= movingVisitEndTime && time.endTimeMillis >= movingVisitMillis) {
+                        shouldMove = true
+                    }
+                })
             })
         })
 
-        if (!shouldMove && prevVisitStaffId === movingVisitStaffId) {
+
+        if (!shouldMove && (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === movingVisitStaffId)))) {
             // if (movingVisit.appointmentTimeMillis <= movingVisitEndTime
             //     && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= movingVisitEndTime) {
             //     shouldMove = true
@@ -154,18 +159,20 @@ class TabScroll extends Component{
             for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
                 intervals.push(i)
             }
-            availableTimetableItem.availableDays.forEach(item => {
+
+            const activeAvailableTimetableItem = availableTimetableItems.find(item => item.staffId === movingVisitStaffId);
+            activeAvailableTimetableItem.availableDays.forEach(item => {
                 item.availableTimes.forEach(time => {
                     const isFreeInterval = intervals.every(i => {
                         return ((time.startTimeMillis <= i && time.endTimeMillis > i)
-                          || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i))
+                            || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i))
                     });
                     if (isFreeInterval) {
                         shouldMove = true
                     }
 
                 })
-            });
+            })
 
             const startDay = moment(movingVisitMillis, 'x').format('D')
             const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
@@ -284,7 +291,7 @@ class TabScroll extends Component{
                                     parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
                                     availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
                                         workingTimeEnd=workingTime.endTimeMillis;
-                                        if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId)) {
+                                        if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
                                             const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
                                             const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
 

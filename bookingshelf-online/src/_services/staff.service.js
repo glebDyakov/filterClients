@@ -110,11 +110,12 @@ function add(id, staff, service, params) {
     return fetch(`${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestOptions).then(handleResponse);
 }
 
-function _move(appointment, time, staffId, companyId) {
+function _move(appointment, time, staffId, companyId, coStaffs) {
     const requestOptions = {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json' },
         body: JSON.stringify({
+            coStaffs,
             appointmentTimeMillis: time,
             staffId,
             adminApproved: true,
