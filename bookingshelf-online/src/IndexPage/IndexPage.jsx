@@ -544,13 +544,14 @@ class IndexPage extends PureComponent {
             if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
                 const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
                 const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
-                if (oldStaffIndex !== -1) {
-                    movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
-                }
                 coStaffs = [
                     ...movingVisit[0].coStaffs,
-                    updatedCoStaff
                 ]
+                if (oldStaffIndex !== -1) {
+                    movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
+                    coStaffs.push(updatedCoStaff)
+                }
+
             }
             dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
             this.setState({ screen: 6, selectedTime: time })
