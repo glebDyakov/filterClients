@@ -187,7 +187,6 @@ class TabScroll extends Component{
                 const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
                 const oldStaffIndex = movingVisit.coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
 
-                console.log(oldStaffIndex)
                 let coStaffsWithRemoved = JSON.parse(JSON.stringify(movingVisit.coStaffs))
                 coStaffs = [
                     ...coStaffsWithRemoved,
