@@ -154,9 +154,6 @@ class AddAppointment extends React.Component {
                 )
             })
 
-        console.log(availableCoStaffs)
-        debugger
-
         this.setState({ availableCoStaffs });
     }
 
