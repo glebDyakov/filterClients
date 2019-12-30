@@ -17,6 +17,8 @@ class TabOne extends  PureComponent{
 
         const {staffId, staffs, isStartMovingVisit, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
+        console.log(movingVisit)
+
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
@@ -40,11 +42,8 @@ class TabOne extends  PureComponent{
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                     {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
                         .filter(staff => {
-                            if (movingVisit) {
-                                const activeServices = services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId));
-                                return activeServices && activeServices.every(item => item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId))
-                            }
-                            return true
+                            const activeServices = movingVisit ?services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
+                            return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true
                         })
                         .map((staff, idStaff) =>
 
@@ -98,7 +97,12 @@ class TabOne extends  PureComponent{
                     )}
                 </ul>
               <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
+                {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
+                    .filter(staff => {
+                        const activeServices = movingVisit ?services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
+                        return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true
+                    })
+                    .map((staff, idStaff) =>
 
 
                   <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}

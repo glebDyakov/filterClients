@@ -193,7 +193,8 @@ class TabFour extends  PureComponent {
                             }}>Да
                             </button>
                             <button className="approveFNo" onClick={()=>{
-                                selectStaff(staffs.find(staff => staff.staffId === movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                const activeStaff=staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                selectStaff(activeStaff)
                                 handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
                                 this.props.dispatch(staffActions.toggleStartMovingVisit(false))
                                 this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
