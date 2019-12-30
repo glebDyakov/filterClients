@@ -15,8 +15,7 @@ class TabOne extends  PureComponent{
 
     render() {
 
-        const {staffId, staffs, isStartMovingVisit, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
-
+        const {staffId, staffs, isStartMovingVisit, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
@@ -39,7 +38,15 @@ class TabOne extends  PureComponent{
                     }}>Вперед</span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                    {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
+                    {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
+                        .filter(staff => {
+                            if (movingVisit) {
+                                const activeServices = services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId));
+                                return activeServices && activeServices.every(item => item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId))
+                            }
+                            return true
+                        })
+                        .map((staff, idStaff) =>
 
 
                         <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}

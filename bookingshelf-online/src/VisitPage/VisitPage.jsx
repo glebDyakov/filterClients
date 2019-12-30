@@ -171,7 +171,7 @@ class VisitPage extends React.Component {
                         }}>Ваша персональная скидка составит: {appointment.discountPercent}%</p>
                         }
 
-                        {<div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                        {!(appointment && appointment.coStaffs && appointment.coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                                 this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
                                 this._move(visitAppointments)
