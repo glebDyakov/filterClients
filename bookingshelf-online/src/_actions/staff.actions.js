@@ -45,10 +45,10 @@ function clearStaff() {
     function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
 }
 
-function _move(appointment, time, staffId, companyId) {
+function _move(appointment, time, staffId, companyId, coStaffs) {
     return dispatch => {
         dispatch(request())
-        staffService._move(appointment, time, staffId, companyId)
+        staffService._move(appointment, time, staffId, companyId, coStaffs)
             .then(
                 movingVisit => dispatch(success(movingVisit)),
                 (err) => dispatch(failure()));
@@ -247,10 +247,10 @@ function getClientAppointments(company) {
 }
 
 
-function getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList) {
+function getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList, staffsIdList) {
     return dispatch => {
         dispatch(request());
-        staffService.getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList)
+        staffService.getTimetableAvailable(company, staffId, date1, date2, service, appointmentsIdList, staffsIdList)
             .then(
                 timetableAvailable => dispatch(success(timetableAvailable)),
                 () => dispatch(failure())

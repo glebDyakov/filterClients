@@ -19,7 +19,7 @@ export const calendarService = {
     addReservedTime
 };
 
-function addAppointment(params, serviceId, staffId, clientId) {
+function addAppointment(params, serviceId, staffId, clientId, coStaffs) {
     const requestOptions = {
         method: 'POST',
         body: params,
@@ -31,7 +31,13 @@ function addAppointment(params, serviceId, staffId, clientId) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/staffs/${staffId}/${!!clientId ? `clients/${clientId}/` : ''}appointments`, requestOptions)
+    let extraStaffIds = ''
+
+    coStaffs.forEach(item => {
+        extraStaffIds +=`,${item.staffId}`
+    })
+
+    return fetch(`${config.apiUrl}/staffs/${staffId}${extraStaffIds}/${!!clientId ? `clients/${clientId}/` : ''}appointments`, requestOptions)
         .then(handleResponse)
         .then(appointment => {
             return appointment;

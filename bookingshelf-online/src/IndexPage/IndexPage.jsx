@@ -175,7 +175,7 @@ class IndexPage extends PureComponent {
         const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
 
         let staffId=staff;
-        if(staff.length === 0){
+        if((staff && staff.length) === 0){
             this.setState({flagAllStaffs: true});
         }
 
@@ -536,11 +536,24 @@ class IndexPage extends PureComponent {
 
     setTime (time){
         const { dispatch } = this.props
-        const { isStartMovingVisit, clients, movingVisit } = this.props.staff
+        const { isStartMovingVisit, clients, movingVisit, staff } = this.props.staff
         const { selectedStaff } = this.state;
 
         if (isStartMovingVisit) {
-            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company));
+            let coStaffs;
+            if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
+                const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
+                const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
+                coStaffs = [
+                    ...movingVisit[0].coStaffs,
+                ]
+                if (oldStaffIndex !== -1) {
+                    movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
+                    coStaffs.push(updatedCoStaff)
+                }
+
+            }
+            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
             this.setState({ screen: 6, selectedTime: time })
         } else {
             this.setState({
@@ -558,6 +571,7 @@ class IndexPage extends PureComponent {
         let serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
         let appointmentsIdList = ''
+        let staffsIdList = '';
         if (movingVisit && movingVisit[0]) {
             serviceIdList = ''
             movingVisit.forEach((visit, i) => {
@@ -568,7 +582,16 @@ class IndexPage extends PureComponent {
                     this.selectService({target: {checked: true}}, activeService)
                 }
                 serviceIdList += `${i === 0 ? '' : ','}${visit.serviceId}`
+
             })
+
+            staffsIdList = selectedStaff.staffId === movingVisit[0].staffId ? '' : `,${movingVisit[0].staffId}`
+            if (movingVisit[0].coStaffs) {
+                movingVisit[0].coStaffs.forEach(item => {
+                    staffsIdList += item.staffId === selectedStaff.staffId ? '' : `,${item.staffId}`
+                })
+            }
+
         }
 
         this.props.dispatch(staffActions.getTimetableAvailable(
@@ -577,7 +600,8 @@ class IndexPage extends PureComponent {
             moment(newMonth).startOf('month').format('x'),
             moment(newMonth).endOf('month').format('x'),
             serviceIdList,
-            appointmentsIdList
+            appointmentsIdList,
+            staffsIdList
         ));
     }
 

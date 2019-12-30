@@ -50,11 +50,11 @@ class TabSix extends  PureComponent {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                        (<p>Выбрано услуг: <strong>{selectedServices.length}</strong></p>)}
-                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong>{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0].currency}</span></p>
+                        (<p>Выбрано услуг: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
+                    <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
-                        {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
+                        {newAppointments && newAppointments[0] && priceFrom===priceTo && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">Список услуг:</p>
@@ -108,7 +108,7 @@ class TabSix extends  PureComponent {
                         marginBottom: '8px'
                     }}>Ваша персональная скидка составит: {newAppointments[0].discountPercent}%</p>
                 }
-                {<div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
+                {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                     <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
                         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))

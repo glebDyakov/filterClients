@@ -600,7 +600,7 @@ class CalendarPage extends PureComponent {
         this.setState({...this.state, userSettings: true});
     }
 
-    newAppointment(appointment, serviceId, staffId, clientId) {
+    newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
         const {dispatch} = this.props;
         const {selectedDays, type, selectedDayMoment} = this.state;
         let startTime, endTime;
@@ -616,7 +616,8 @@ class CalendarPage extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, startTime, endTime));
+
+        dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, startTime, endTime, coStaffs));
     }
 
     newReservedTime(staffId, reservedTime) {
@@ -624,8 +625,8 @@ class CalendarPage extends PureComponent {
         const {selectedDayMoment, type, selectedDays} = this.state;
 
         if(type==='day'){
-            reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
-            reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM HH:mm').format('x')
+            reservedTime.startTimeMillis=moment(selectedDayMoment.format('DD MM YYYY')+" "+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x')
+            reservedTime.endTimeMillis=moment(selectedDayMoment.format('DD MM YYYY')+" "+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x')
         }
 
 

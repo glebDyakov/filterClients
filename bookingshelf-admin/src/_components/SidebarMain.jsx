@@ -271,6 +271,8 @@ class SidebarMain extends Component {
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
                                     <p style={{float: "none"}} ><strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}</p>
+                                    <span
+                                        className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
                                 <div style={{width: "40%"}}>
                                     {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/></React.Fragment> : 'Без клиента'}

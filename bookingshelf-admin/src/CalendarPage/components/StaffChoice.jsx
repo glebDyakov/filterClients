@@ -64,9 +64,10 @@ class StaffChoice extends PureComponent {
 
                         {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl =>{
                             const activeStaff = staff && staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                            const activeStaffEl = availableTimetable.filter(item => item.staffId === staffEl.staffId)
                             return(
                                 <li>
-                                    <a onClick={() => setWorkingStaff([activeStaff], 3)}>
+                                    <a onClick={() => setWorkingStaff(activeStaffEl, 3)}>
                                                         <span className="img-container">
                                                             <img className="rounded-circle"
                                                                  src={activeStaff && activeStaff.imageBase64
