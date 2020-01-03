@@ -101,6 +101,13 @@ class TabSix extends  PureComponent {
                     </div>
                     }
                 </div>
+
+                <p style={{
+                    textAlign: 'center',
+                    fontSize: '18px',
+                    marginBottom: '8px'
+                }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
+
                 {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
                     <p style={{
                         textAlign: 'center',
