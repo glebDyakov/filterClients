@@ -445,8 +445,7 @@ class TabScroll extends Component{
 
                                                         {activeClient && <p className="client-name-book">Клиент</p>}
                                                         {activeClient && <p className="name">{activeClient.firstName} {activeClient.lastName}</p>}
-                                                        {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId))
-                                                        && activeClient && <p>{activeClient.phone}</p>}
+                                                        {access(4) && activeClient && <p>{activeClient.phone}</p>}
 
 
                                                         <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
