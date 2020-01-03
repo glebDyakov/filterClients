@@ -818,8 +818,12 @@ class AddAppointment extends React.Component {
                                                                         <div className="col-7 clients-list">
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
-                                                                                <span className="email-user">{client_user.email}</span>
-                                                                                <span className="email-user">{client_user.phone}</span>
+                                                                                {access(4) && (
+                                                                                    <React.Fragment>
+                                                                                        <span className="email-user">{client_user.email}</span>
+                                                                                        <span className="email-user">{client_user.phone}</span>
+                                                                                    </React.Fragment>
+                                                                                )}
                                                                             </span>
                                                                         </div>
                                                                         <div className="col-5">

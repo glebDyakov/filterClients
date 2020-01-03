@@ -1,5 +1,10 @@
 @import "styles-group";
 .staff {
+    .min-width-desktop {
+        @media screen and(min-width: $tablet-width) {
+            min-width: 100% !important;
+        }
+    }
     .staff-list-tab{
         height: 70vh;
     }
