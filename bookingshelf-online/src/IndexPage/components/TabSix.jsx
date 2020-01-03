@@ -103,6 +103,7 @@ class TabSix extends  PureComponent {
                 </div>
 
                 <p style={{
+                    textDecoration: 'underline',
                     textAlign: 'center',
                     fontSize: '18px',
                     marginBottom: '8px'
