@@ -12,7 +12,6 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
-import Papa from 'papaparse';
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -33,7 +32,6 @@ class ClientsPage extends Component {
             search: false,
             defaultClientsList:  props.client,
             activeTab: 'clients',
-            isLoading: true,
             openedModal: false,
             blackListModal: false,
             userSettings: false,
@@ -61,7 +59,6 @@ class ClientsPage extends Component {
 
         // this.props.dispatch(clientActions.getClient());
         this.props.dispatch(clientActions.getClientWithInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
