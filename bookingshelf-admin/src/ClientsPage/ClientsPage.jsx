@@ -12,7 +12,6 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
-import Papa from 'papaparse';
 
 class ClientsPage extends Component {
     constructor(props) {
