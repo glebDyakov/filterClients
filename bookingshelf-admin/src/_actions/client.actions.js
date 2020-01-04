@@ -8,7 +8,8 @@ export const clientActions = {
     getClient,
     deleteClient,
     getClientWithInfo,
-    downloadFile
+    downloadFile,
+    uploadFile
 };
 
 function addClient(params) {
@@ -68,6 +69,15 @@ function getClient() {
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
 }
 
+function uploadFile(uploadFile) {
+    return dispatch => {
+        clientService.uploadFile(uploadFile)
+            .then(
+                // client => dispatch(success(client)),
+            );
+    };
+}
+
 
 function downloadFile() {
     return dispatch => {
@@ -80,13 +90,17 @@ function downloadFile() {
 
 function getClientWithInfo() {
     return dispatch => {
+        dispatch(request())
         clientService.getClientWithInfo()
             .then(
                 client => dispatch(success(client)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
             );
     };
 
+    function request() { return { type: clientConstants.GET_CLIENT } }
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
+    function failure(error) { return { type: clientConstants.GET_CLIENT_FAILURE, error } }
 }
 
 function deleteClient(clientId) {

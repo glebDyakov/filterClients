@@ -13,11 +13,25 @@ export function client(state= {}, action) {
               status: 208,
               adding: true
           };
+
+      case clientConstants.GET_CLIENT:
+          return {
+              ...state,
+              isLoading: true
+          }
       case clientConstants.GET_CLIENT_SUCCESS:
           return {
               ...state,
-              client: action.client
+              client: action.client,
+              isLoading: false,
+              error: null
           };
+      case clientConstants.GET_CLIENT_FAILURE:
+          return {
+              ...state,
+              isLoading: false,
+              error: action.error
+          }
       case clientConstants.ADD_CLIENT_SUCCESS:
           let client=state.client;
           client ? client.push(action.client) : client=[action.client];

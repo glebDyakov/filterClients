@@ -9,7 +9,8 @@ export const clientService = {
     getClient,
     deleteClient,
     getClientWithInfo,
-    downloadFile
+    downloadFile,
+    uploadFile
 };
 
 function addClient(params) {
@@ -66,6 +67,20 @@ function getClient() {
     return fetch(`${config.apiUrl}/clients`, requestOptions).then(handleResponse);
 }
 
+function uploadFile(uploadFile) {
+    const requestOptions = {
+        method: 'POST',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader(),
+        body: uploadFile
+    };
+
+    return fetch(`${config.apiUrl}/clients/upload`, requestOptions)
+}
 
 function downloadFile() {
     const requestOptions = {

@@ -100,9 +100,6 @@ class App extends React.Component {
                 this.notifications();
 
                 this.props.dispatch(companyActions.get());
-                if (newProps.authentication.user.profile && (newProps.authentication.user.profile.roleId === 4)) {
-                    this.props.dispatch(companyActions.getSubcompanies());
-                }
             }
             this.setState({...this.state, authentication: newProps.authentication})
         }
