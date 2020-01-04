@@ -5,7 +5,7 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import moment from "moment";
 import {LogoutPage} from "../LogoutPage";
-import {calendarActions, companyActions} from "../_actions";
+import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
 
 class HeaderMain extends React.PureComponent {
     constructor(props) {
@@ -91,7 +91,11 @@ class HeaderMain extends React.PureComponent {
                         </p>
                 </div>
                 <div className="mob-info dropdown">
-                    <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a onClick={() => {
+                        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+                            this.props.dispatch(companyActions.getSubcompanies());
+                        }
+                    }} href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img alt="" src={`${process.env.CONTEXT}public/img/icons/information.svg`}/>
                     </a>
                     <ul className="dropdown-menu">
@@ -148,7 +152,11 @@ class HeaderMain extends React.PureComponent {
                 </div>
                 <div className="col firm-chosen">
                     <div className="dropdown">
-                        <div className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
+                        <div onClick={() => {
+                            if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+                                this.props.dispatch(companyActions.getSubcompanies());
+                            }
+                        }} className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
                              role="menu" aria-haspopup="true" aria-expanded="true">
                             <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span></p>
                         </div>
@@ -242,9 +250,14 @@ class HeaderMain extends React.PureComponent {
         return onOpen();
     }
     openAppointments(){
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(clientActions.getClientWithInfo())
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
-        this.props.dispatch(companyActions.getNewAppointments());
+
+        // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+        // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+        // this.props.dispatch(companyActions.getNewAppointments());
     }
 }
 

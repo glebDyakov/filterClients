@@ -203,7 +203,9 @@ class MainIndexPage extends Component {
 
     componentDidMount(){
         document.title = "Настройки компании | Онлайн-запись";
-
+        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+            this.props.dispatch(companyActions.getSubcompanies());
+        }
 
         this.props.dispatch(notificationActions.getSMS_EMAIL())
         setTimeout(() => this.setState({ isLoading: false }), 800);

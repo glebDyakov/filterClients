@@ -83,14 +83,9 @@ class SidebarMain extends Component {
           return;
         }
 
-        this.props.dispatch(companyActions.getBookingInfo());
-        this.props.dispatch(companyActions.getNewAppointments());
+        // this.props.dispatch(companyActions.getNewAppointments());
         this.props.dispatch(menuActions.getMenu());
-        this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo());
-
-        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
-        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+        // this.props.dispatch(clientActions.getClientWithInfo());
 
     }
 
@@ -615,6 +610,11 @@ class SidebarMain extends Component {
     }
     openAppointments(event){
         event.stopPropagation()
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(clientActions.getClientWithInfo())
+        this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+
         // setTimeout(() => {
         //     this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
         //     this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));

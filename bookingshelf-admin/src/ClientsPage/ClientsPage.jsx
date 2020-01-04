@@ -12,6 +12,7 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
+import Papa from 'papaparse';
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -40,6 +41,8 @@ class ClientsPage extends Component {
 
         };
 
+        this.uploadFile = React.createRef();
+        this.onFileChange = this.onFileChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -51,6 +54,7 @@ class ClientsPage extends Component {
         this.onOpen = this.onOpen.bind(this);
         this.closeBlackListModal = this.closeBlackListModal.bind(this);
         this.openBlackListModal = this.openBlackListModal.bind(this);
+        this.handleFileSubmit = this.handleFileSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -92,9 +96,40 @@ class ClientsPage extends Component {
 
     }
 
+    getData(result) {
+        this.setState({data: result.data});
+    }
+
+    onFileChange(e) {
+        let uploadFile = e.target.files[0]
+
+        this.setState({ uploadFile })
+        //
+        // Papa.parse(csvData, {
+        //     complete: this.getData
+        // });
+    }
+
+    handleFileSubmit(e) {
+        e.preventDefault();
+        console.log(e)
+        debugger
+        console.log(this.state.uploadFile)
+        const formData = new FormData();
+        formData.append('file', this.state.uploadFile);
+
+        debugger
+        const reader = new FileReader();
+
+        this.props.dispatch(clientActions.uploadFile(formData))
+        // this.props.dispatch(clientActions.uploadFile(reader.readAsDataURL(this.state.uploadFile)))
+        // this.props.dispatch(clientActions.uploadFile(this.state.uploadFile))
+    }
+
     render() {
         const { staff } = this.props;
-        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, isLoading, openedModal, userSettings, infoClient } = this.state;
+        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, userSettings, infoClient } = this.state;
+        const isLoading = client ? client.isLoading : false;
         return (
             <div className="clients-page">
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
@@ -134,6 +169,13 @@ class ClientsPage extends Component {
                                         <button className="search-icon" type="submit"/>
                                     </div>
                                     <div className="col-2 d-flex justify-content-end">
+                                        {/*{access(5) &&*/}
+                                        {/*<div className="export">*/}
+                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                                        {/*        <input type="submit" value="Загрузить" />*/}
+                                        {/*    </form>*/}
+                                        {/*</div>}*/}
                                         {access(5) &&
                                         <div className="export">
 
@@ -190,7 +232,7 @@ class ClientsPage extends Component {
                                 (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
                                 <div className="no-holiday">
                                                 <span>
-                                                    Клиенты не добавлены
+                                                    {client.error ? client.error : 'Клиенты не добавлены'}
                                                     <button type="button"
                                                             className="button mt-3 p-3"
                                                             onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
