@@ -169,12 +169,38 @@ class EmailPage extends Component {
 
         let notify={...notifications, [type]: !notifications[type]}
 
-        if (type === 'clientVerification' && notify.clientVerification) {
-            notify.smsOn = true;
+
+        if (type === 'smsOn') {
+            if(notify.smsOn) {
+                notify.appointmentCreate = true;
+                notify.appointmentMove = true;
+                notify.appointmentDelete = true;
+                notify.appointmentRemind = true;
+            } else {
+                notify.clientVerification = false;
+                notify.appointmentCreate = false;
+                notify.appointmentMove = false;
+                notify.appointmentDelete = false;
+                notify.appointmentRemind = false;
+            }
+        } else {
+
+            if ((type === 'clientVerification' && notify.clientVerification)) {
+                notify.smsOn = true
+                notify.appointmentCreate = true;
+                notify.appointmentMove = true;
+                notify.appointmentDelete = true;
+                notify.appointmentRemind = true;
+            } else {
+                const fourFlagsOn = (notify.appointmentCreate && notify.appointmentMove && notify.appointmentDelete && notify.appointmentRemind)
+                notify.smsOn = (fourFlagsOn);
+
+                if (!notify[type]) {
+                    notify.clientVerification = false
+                }
+            }
         }
-        if (type === 'smsOn' && !notify.smsOn) {
-            notify.clientVerification = false;
-        }
+
 
 
         this.setState({...this.state, notifications: notify});
@@ -399,6 +425,53 @@ class EmailPage extends Component {
                                                                     <span className="check"></span>
                                                                     Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                                 </label>
+                                                            </div>
+
+
+                                                            <div className="row">
+                                                                <div className="col-md-6">
+                                                                    <div className="check-box">
+                                                                        <label>
+                                                                            <input className="form-check-input" checked={notifications && notifications.appointmentCreate} onChange={()=>this.toggleChange('appointmentCreate')}
+                                                                                   type="checkbox"/>
+                                                                            <span className="check"></span>
+                                                                            Уведомления при записи
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-md-6">
+                                                                    <div className="check-box">
+                                                                        <label>
+                                                                            <input className="form-check-input" checked={notifications && notifications.appointmentMove} onChange={()=>this.toggleChange('appointmentMove')}
+                                                                                   type="checkbox"/>
+                                                                            <span className="check"></span>
+                                                                            Уведомления при переносе визита
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="row">
+                                                                <div className="col-md-6">
+                                                                    <div className="check-box">
+                                                                        <label>
+                                                                            <input className="form-check-input" checked={notifications && notifications.appointmentDelete} onChange={()=>this.toggleChange('appointmentDelete')}
+                                                                                   type="checkbox"/>
+                                                                            <span className="check"></span>
+                                                                            Уведомления при удалении визита
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="col-md-6">
+                                                                    <div className="check-box">
+                                                                        <label>
+                                                                            <input className="form-check-input" checked={notifications && notifications.appointmentRemind} onChange={()=>this.toggleChange('appointmentRemind')}
+                                                                                   type="checkbox"/>
+                                                                            <span className="check"></span>
+                                                                            SMS напоминания о визитах
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                             {/*<span className="mb-2 codeButton">Образец:</span>*/}
