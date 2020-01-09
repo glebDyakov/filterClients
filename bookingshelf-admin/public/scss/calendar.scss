@@ -486,6 +486,10 @@
                         background-color: rgba(191, 210, 237, 0.11)
                     }
                 }
+                &.calendar-client-checkbox {
+                    max-width: unset!important;
+                    width: auto;
+                }
             }
 
             &:nth-child(4n) {
