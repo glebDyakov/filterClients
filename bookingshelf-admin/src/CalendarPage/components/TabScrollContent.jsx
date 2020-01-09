@@ -443,9 +443,32 @@ class TabScroll extends Component{
                                                         </p>
 
 
-                                                        {activeClient && <p className="client-name-book">Клиент</p>}
+                                                        {activeClient && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                            <span style={{ textAlign: 'left'}}>Клиент</span>
+                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient &&
+                                                            <span
+                                                                className="clientEye"
+                                                                data-target=".client-detail"
+                                                                title="Просмотреть клиента"
+                                                                onClick={(e) => {
+                                                                    $('.client-detail').modal('show')
+                                                                    handleUpdateClient(activeClient)
+                                                                }} />
+                                                            }
+                                                        </p>}
                                                         {activeClient && <p className="name">{activeClient.firstName} {activeClient.lastName}</p>}
                                                         {access(4) && activeClient && <p>{activeClient.phone}</p>}
+                                                        {activeClient && <p>
+                                                            <div className="check-box calendar-client-checkbox">
+                                                                Клиент не пришел
+
+                                                                <label>
+                                                                    <input className="form-check-input" checked={appointment[0][0].clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointment(appointment[0][0].appointmentId, JSON.stringify({ clientNotCome: !appointment[0][0].clientNotCome } )))}
+                                                                           type="checkbox"/>
+                                                                    <span style={{ width: '20px', margin: '-3px 0 0 42px'}} className="check" />
+                                                                </label>
+                                                            </div>
+                                                        </p>}
 
 
                                                         <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
@@ -471,15 +494,15 @@ class TabScroll extends Component{
                                                         <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                         {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
-                                                        {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient && <a
-                                                            className="a-client-info"
-                                                            data-target=".client-detail"
-                                                            title="Просмотреть клиента"
-                                                            onClick={(e) => {
-                                                                $('.client-detail').modal('show')
-                                                                handleUpdateClient(activeClient)
-                                                            }}><p>Просмотреть клиента</p>
-                                                        </a>}
+                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient && <a*/}
+                                                        {/*    className="a-client-info"*/}
+                                                        {/*    data-target=".client-detail"*/}
+                                                        {/*    title="Просмотреть клиента"*/}
+                                                        {/*    onClick={(e) => {*/}
+                                                        {/*        $('.client-detail').modal('show')*/}
+                                                        {/*        handleUpdateClient(activeClient)*/}
+                                                        {/*    }}><p>Просмотреть клиента</p>*/}
+                                                        {/*</a>}*/}
 
                                                         {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                                                             <React.Fragment>
@@ -495,7 +518,7 @@ class TabScroll extends Component{
                                                                             style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
                                                                         Перенести визит
                                                                     </button>
-                                                                    <span className="move-white"/>
+                                                                    {/*<span className="move-white"/>*/}
                                                                 </div>
                                                                 <div style={{
                                                                     marginTop: '5px',
@@ -522,7 +545,7 @@ class TabScroll extends Component{
                                                                     >
                                                                         Удалить визит
                                                                     </button>
-                                                                    <span className="cancel-white"/>
+                                                                    {/*<span className="cancel-white"/>*/}
                                                                 </div>
 
                                                             </React.Fragment>)

@@ -57,7 +57,10 @@ export function analitics(state = initialState, action) {
                 approvedRecordsToday = 0,
                 withoutClientPercent = 0,
                 withoutClientToday = 0,
-                withoutClientYesterday= 0;
+                withoutClientYesterday= 0,
+                clientNotComePercent = 0,
+                clientNotComeToday = 0,
+                clientNotComeYesterday= 0;
             const countRecAndCli = action.count;
             const countLength = Object.keys(action.count).length;
 
@@ -87,7 +90,9 @@ export function analitics(state = initialState, action) {
                 withoutClientToday += countRecAndCli[Object.keys(countRecAndCli)[i]].withoutClientToday;
                 withoutClientYesterday += countRecAndCli[Object.keys(countRecAndCli)[i]].withoutClientYesterday;
 
-
+                clientNotComePercent += countRecAndCli[Object.keys(countRecAndCli)[i]].clientNotComePercent;
+                clientNotComeToday += countRecAndCli[Object.keys(countRecAndCli)[i]].clientNotComeToday;
+                clientNotComeYesterday += countRecAndCli[Object.keys(countRecAndCli)[i]].clientNotComeYesterday;
 
 
 
@@ -104,6 +109,7 @@ export function analitics(state = initialState, action) {
             recordsOnlinePercent/=countLength;
             recordsPercent/=countLength;
             withoutClientPercent/=countLength;
+            clientNotComePercent/=countLength;
 
 
             return{
@@ -128,7 +134,10 @@ export function analitics(state = initialState, action) {
                     approvedRecordsToday,
                     withoutClientPercent,
                     withoutClientToday,
-                    withoutClientYesterday
+                    withoutClientYesterday,
+                    clientNotComePercent,
+                    clientNotComeToday,
+                    clientNotComeYesterday
 
                 }
             };
