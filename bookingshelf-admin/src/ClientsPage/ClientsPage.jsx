@@ -12,6 +12,9 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
+import Paginator from '../_components/paginator/Paginator'
+import ReactPaginate from 'react-paginate';
+
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -53,12 +56,16 @@ class ClientsPage extends Component {
         this.closeBlackListModal = this.closeBlackListModal.bind(this);
         this.openBlackListModal = this.openBlackListModal.bind(this);
         this.handleFileSubmit = this.handleFileSubmit.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
+        this.updateClients = this.updateClients.bind(this);
     }
 
     componentDidMount() {
 
         // this.props.dispatch(clientActions.getClient());
-        this.props.dispatch(clientActions.getClientWithInfo());
+        //this.props.dispatch(clientActions.getClientWithInfo());
+        this.props.dispatch(clientActions.getClientV2(1));
         initializeJs();
 
     }
@@ -123,6 +130,32 @@ class ClientsPage extends Component {
         // this.props.dispatch(clientActions.uploadFile(this.state.uploadFile))
     }
 
+    onChangePage (pageOfItems) {
+        this.setState({ pageOfItems: pageOfItems });
+    };
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+        debugger
+        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue));
+    }
+
+    handleSearch () {
+        if (this.search.value.length >= 3) {
+            this.updateClients();
+        } else if (this.search.value.length === 0) {
+            this.updateClients();
+        }
+    }
+
     render() {
         const { staff } = this.props;
         const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, userSettings, infoClient } = this.state;
@@ -149,8 +182,6 @@ class ClientsPage extends Component {
                                     </li>
                                 </ul>
                             </div>
-                            {
-                                (defaultClientsList.client && defaultClientsList!=="" &&
                                 <div className="row align-items-center content clients mb-2">
                                     <StaffChoice
                                       selectedStaff={JSON.stringify(selectedStaffList[0])}
@@ -183,7 +214,6 @@ class ClientsPage extends Component {
                                         }
                                     </div>
                                 </div>
-                                )}
                             { client.client && client.client.map((client_user, i) =>{
                                 let condition = true;
                                 if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
@@ -248,8 +278,36 @@ class ClientsPage extends Component {
                                 </div>
                                 <div className="arrow"/>
                             </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                {client.totalPages > 1 &&
+                                    <ReactPaginate
+                                        previousLabel={'previous'}
+                                        nextLabel={'next'}
+                                        breakLabel={'...'}
+                                        pageCount={client.totalPages}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        subContainerClassName={'pages pagination'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        containerClassName={'pagination'}
+                                        pageClassName={'page-item'}
+                                        pageLinkClassName={'page-link'}
+                                        previousClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextClassName={'page-item'}
+                                        nextLinkClassName={'page-link'}
+                                        activeClassName={'active'}
+                                    />
+                                }
+                            </div>
+                            {/*<Paginator items={[]} onChangePage={(pageOfItems) => this.onChangePage(pageOfItems)}/>*/}
                         </div>
                     </div>
+
+
 
                 </div>
                 {openedModal &&
@@ -282,28 +340,6 @@ class ClientsPage extends Component {
                 <UserPhoto/>
             </div>
         );
-    }
-
-    handleSearch () {
-        const {defaultClientsList}= this.state;
-
-        const searchClientList=defaultClientsList.client.filter((item)=>{
-            return item.email.toLowerCase().includes(this.search.value.toLowerCase()) ||
-            item.firstName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-            item.phone.toLowerCase().includes(this.search.value.toLowerCase())
-        });
-
-        this.setState({
-            search: true,
-            client: {client: searchClientList}
-        });
-
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                client: defaultClientsList
-            })
-        }
     }
 
     handleSubmit(e) {

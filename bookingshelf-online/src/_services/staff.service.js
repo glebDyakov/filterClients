@@ -69,7 +69,7 @@ function getNearestTime(id) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(3,'month').utc().format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(2,'week').utc().format('x')}`, requestOptions).then(handleResponse);
 }
 
 function getTimetable(id, date1, date2) {
