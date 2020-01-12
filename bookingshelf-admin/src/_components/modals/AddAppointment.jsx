@@ -818,7 +818,6 @@ class AddAppointment extends React.Component {
                                                             <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
                                                         </div>
                                                     </div>
-                                                    {allClients.client && allClients.client.length > 0 &&
                                                     <div className="search dropdown row">
                                                         <form className="col-sm-12 form-inline" data-toggle="dropdown">
                                                             <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
@@ -826,7 +825,6 @@ class AddAppointment extends React.Component {
 
                                                         </form>
                                                     </div>
-                                                    }
                                                     <ul>
                                                         { clients.client && clients.client.map((client_user, i) =>
                                                             (access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) &&
@@ -854,31 +852,32 @@ class AddAppointment extends React.Component {
                                                                 </li>
                                                         )}
                                                     </ul>
-
-                                                    {clients.totalPages > 1 &&
-                                                        <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                                            <ReactPaginate
-                                                                previousLabel={'⟨'}
-                                                                nextLabel={'⟩'}
-                                                                breakLabel={'...'}
-                                                                pageCount={clients.totalPages}
-                                                                marginPagesDisplayed={2}
-                                                                pageRangeDisplayed={5}
-                                                                onPageChange={this.handlePageClick}
-                                                                subContainerClassName={'pages pagination'}
-                                                                breakClassName={'page-item'}
-                                                                breakLinkClassName={'page-link'}
-                                                                containerClassName={'pagination'}
-                                                                pageClassName={'page-item'}
-                                                                pageLinkClassName={'page-link'}
-                                                                previousClassName={'page-item'}
-                                                                previousLinkClassName={'page-link'}
-                                                                nextClassName={'page-item'}
-                                                                nextLinkClassName={'page-link'}
-                                                                activeClassName={'active'}
-                                                            />
-                                                        </div>
-                                                    }
+                                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                                        {(this.search && this.search.value.length > 0) && !clients.client &&
+                                                            <span>Поиск результатов не дал</span>}
+                                                        {clients.totalPages > 1 &&
+                                                                <ReactPaginate
+                                                                    previousLabel={'⟨'}
+                                                                    nextLabel={'⟩'}
+                                                                    breakLabel={'...'}
+                                                                    pageCount={clients.totalPages}
+                                                                    marginPagesDisplayed={2}
+                                                                    pageRangeDisplayed={5}
+                                                                    onPageChange={this.handlePageClick}
+                                                                    subContainerClassName={'pages pagination'}
+                                                                    breakClassName={'page-item'}
+                                                                    breakLinkClassName={'page-link'}
+                                                                    containerClassName={'pagination'}
+                                                                    pageClassName={'page-item'}
+                                                                    pageLinkClassName={'page-link'}
+                                                                    previousClassName={'page-item'}
+                                                                    previousLinkClassName={'page-link'}
+                                                                    nextClassName={'page-item'}
+                                                                    nextLinkClassName={'page-link'}
+                                                                    activeClassName={'active'}
+                                                                />
+                                                        }
+                                                    </div>
                                                 </div>
                                             }
                                             {cl &&
