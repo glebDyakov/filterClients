@@ -254,12 +254,15 @@ class ClientsPage extends Component {
                             {
                                 (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
                                 <div className="no-holiday">
-                                                <span>
-                                                    {client.error ? client.error : 'Клиенты не добавлены'}
-                                                    <button type="button"
-                                                            className="button mt-3 p-3"
-                                                            onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
-                                                </span>
+                                    {(this.search && this.search.value.length > 0)
+                                        ? <span>Поиск результатов не дал</span>
+                                        : <span>
+                                                {client.error ? client.error : 'Клиенты не добавлены'}
+                                                <button type="button"
+                                                    className="button mt-3 p-3"
+                                                    onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
+                                          </span>}
+
                                 </div>
                             }
                             </div>
@@ -274,31 +277,31 @@ class ClientsPage extends Component {
                                 </div>
                                 <div className="arrow"/>
                             </div>
-
+                            <div style={{ display: 'flex', justifyContent: 'center'}}>
                                 {client.totalPages > 1 &&
-                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                        <ReactPaginate
-                                            previousLabel={'⟨'}
-                                            nextLabel={'⟩'}
-                                            breakLabel={'...'}
-                                            pageCount={client.totalPages}
-                                            marginPagesDisplayed={2}
-                                            pageRangeDisplayed={5}
-                                            onPageChange={this.handlePageClick}
-                                            subContainerClassName={'pages pagination'}
-                                            breakClassName={'page-item'}
-                                            breakLinkClassName={'page-link'}
-                                            containerClassName={'pagination'}
-                                            pageClassName={'page-item'}
-                                            pageLinkClassName={'page-link'}
-                                            previousClassName={'page-item'}
-                                            previousLinkClassName={'page-link'}
-                                            nextClassName={'page-item'}
-                                            nextLinkClassName={'page-link'}
-                                            activeClassName={'active'}
-                                        />
-                                    </div>
+                                    <ReactPaginate
+                                        previousLabel={'⟨'}
+                                        nextLabel={'⟩'}
+                                        breakLabel={'...'}
+                                        pageCount={client.totalPages}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        subContainerClassName={'pages pagination'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        containerClassName={'pagination'}
+                                        pageClassName={'page-item'}
+                                        pageLinkClassName={'page-link'}
+                                        previousClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextClassName={'page-item'}
+                                        nextLinkClassName={'page-link'}
+                                        activeClassName={'active'}
+                                    />
                                 }
+                            </div>
+
                             {/*<Paginator items={[]} onChangePage={(pageOfItems) => this.onChangePage(pageOfItems)}/>*/}
                         </div>
                     </div>
