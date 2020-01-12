@@ -9,6 +9,7 @@ export const clientService = {
     getClient,
     deleteClient,
     getClientWithInfo,
+    getClientV2,
     downloadFile,
     uploadFile
 };
@@ -112,6 +113,21 @@ function getClientWithInfo() {
     };
 
     return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
+function getClientV2(pageNum, searchValue) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+    debugger
+
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=2${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {

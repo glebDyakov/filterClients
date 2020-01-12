@@ -8,6 +8,7 @@ export const clientActions = {
     getClient,
     deleteClient,
     getClientWithInfo,
+    getClientV2,
     downloadFile,
     uploadFile
 };
@@ -101,6 +102,21 @@ function getClientWithInfo() {
     function request() { return { type: clientConstants.GET_CLIENT } }
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
     function failure(error) { return { type: clientConstants.GET_CLIENT_FAILURE, error } }
+}
+
+function getClientV2(pageNum, searchValue) {
+    return dispatch => {
+        dispatch(request())
+        clientService.getClientV2(pageNum, searchValue)
+            .then(
+                client => dispatch(success(client)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
+            );
+    };
+
+    function request() { return { type: clientConstants.GET_CLIENT_V2 } }
+    function success(client) { return { type: clientConstants.GET_CLIENT_V2_SUCCESS, client } }
+    function failure(error) { return { type: clientConstants.GET_CLIENT_V2_FAILURE, error } }
 }
 
 function deleteClient(clientId) {

@@ -353,7 +353,7 @@ class TabScroll extends Component{
                                 }
                                 const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
                                 const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) + '\n' : ''}${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment[0][0].currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment[0][0].currency + ')') : ''} ${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
-                                const activeClient = clients && clients.find((client) => client.clientId === appointment[0][0].clientId)
+                                // const appointment[0][0] = clients && clients.find((client) => client.clientId === appointment[0][0].clientId)
                                 resultMarkup = (
                                     <div
                                         className={(currentTime <= moment().format("x")
@@ -381,16 +381,21 @@ class TabScroll extends Component{
                                                           title="Онлайн-запись"/>}
 
 
-                                                    {clients && clients.map(client => {
-                                                        const isOldClient = client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x')))
-                                                        return ((client.clientId === appointment[0][0].clientId) &&
-                                                            <React.Fragment>
+                                                    {/*{clients && clients.map(client => {*/}
+                                                    {/*    const isOldClient = client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x')))*/}
+                                                    {/*    return ((client.clientId === appointment[0][0].clientId) &&*/}
+                                                    {/*        <React.Fragment>*/}
+                                                    {/*        <span*/}
+                                                    {/*            className={`${isOldClient? 'old' : 'new'}-client-icon`}*/}
+                                                    {/*            title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>*/}
+                                                    {/*        </React.Fragment>)*/}
+                                                    {/*})}*/}
+
                                                             <span
-                                                                className={`${isOldClient? 'old' : 'new'}-client-icon`}
-                                                                title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
-                                                            </React.Fragment>)
-                                                    })}
-                                                    {!activeClient &&
+                                                                className={`${true? 'old' : 'new'}-client-icon`}
+                                                                title={true ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+
+                                                    {!appointment[0][0] &&
                                                             <span
                                                                 className="no-client-icon"
                                                                 title="Визит от двери"/>
@@ -443,22 +448,22 @@ class TabScroll extends Component{
                                                         </p>
 
 
-                                                        {activeClient && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                        {appointment[0][0] && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient &&
+                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] &&
                                                             <span
                                                                 className="clientEye"
                                                                 data-target=".client-detail"
                                                                 title="Просмотреть клиента"
                                                                 onClick={(e) => {
                                                                     $('.client-detail').modal('show')
-                                                                    handleUpdateClient(activeClient)
+                                                                    handleUpdateClient(appointment[0][0])
                                                                 }} />
                                                             }
                                                         </p>}
-                                                        {activeClient && <p className="name">{activeClient.firstName} {activeClient.lastName}</p>}
-                                                        {access(4) && activeClient && <p>{activeClient.phone}</p>}
-                                                        {activeClient && <p>
+                                                        {appointment[0][0] && <p className="name">{appointment[0][0].clientName}</p>}
+                                                        {access(4) && appointment[0][0] && <p>{appointment[0][0].clientPhone}</p>}
+                                                        {appointment[0][0] && <p>
                                                             <div className="check-box calendar-client-checkbox">
                                                                 Клиент не пришел
 
@@ -483,7 +488,7 @@ class TabScroll extends Component{
                                                                         ({service.totalAmount} {service.currency})
                                                                     </span>}
                                                                 </span>
-                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (activeClient && activeClient.discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment[0][0] && appointment[0][0].discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
 
 
                                                             </p>
@@ -494,13 +499,13 @@ class TabScroll extends Component{
                                                         <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                         {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
 
-                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && activeClient && <a*/}
+                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] && <a*/}
                                                         {/*    className="a-client-info"*/}
                                                         {/*    data-target=".client-detail"*/}
                                                         {/*    title="Просмотреть клиента"*/}
                                                         {/*    onClick={(e) => {*/}
                                                         {/*        $('.client-detail').modal('show')*/}
-                                                        {/*        handleUpdateClient(activeClient)*/}
+                                                        {/*        handleUpdateClient(appointment[0][0])*/}
                                                         {/*    }}><p>Просмотреть клиента</p>*/}
                                                         {/*</a>}*/}
 

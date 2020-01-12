@@ -15,6 +15,7 @@ export function client(state= {}, action) {
           };
 
       case clientConstants.GET_CLIENT:
+      case clientConstants.GET_CLIENT_V2:
           return {
               ...state,
               isLoading: true
@@ -26,7 +27,16 @@ export function client(state= {}, action) {
               isLoading: false,
               error: null
           };
+      case clientConstants.GET_CLIENT_V2_SUCCESS:
+          return {
+              ...state,
+              client: action.client.content,
+              totalPages: action.client.totalPages,
+              isLoading: false,
+              error: null
+          };
       case clientConstants.GET_CLIENT_FAILURE:
+      case clientConstants.GET_CLIENT_V2_FAILURE:
           return {
               ...state,
               isLoading: false,

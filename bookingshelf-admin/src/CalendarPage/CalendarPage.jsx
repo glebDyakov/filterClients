@@ -175,7 +175,7 @@ class CalendarPage extends PureComponent {
         document.title = "Журнал записи | Онлайн-запись";
 
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo());
+        //this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
 

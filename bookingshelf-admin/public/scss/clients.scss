@@ -325,6 +325,20 @@
 
     }
 }
+.page-item {
+    .page-link {
+        color: #0a1330;
+        &:focus {
+            box-shadow: none !important;
+        }
+    }
+    &.active {
+        .page-link {
+            background-color: #0a1330;
+            border-color: #0a1330;
+        }
+    }
+}
 .tab-content-list{
     .clientEye{
         background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
