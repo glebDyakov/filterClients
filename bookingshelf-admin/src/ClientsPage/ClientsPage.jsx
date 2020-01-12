@@ -9,10 +9,8 @@ import '../../public/scss/clients.scss'
 
 import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
-import Paginator from '../_components/paginator/Paginator'
 import ReactPaginate from 'react-paginate';
 
 
@@ -144,7 +142,6 @@ class ClientsPage extends Component {
         if (this.search.value.length >= 3) {
             searchValue = this.search.value.toLowerCase()
         }
-        debugger
         this.props.dispatch(clientActions.getClientV2(currentPage, searchValue));
     }
 
@@ -279,30 +276,30 @@ class ClientsPage extends Component {
                                 <div className="arrow"/>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'center'}}>
                                 {client.totalPages > 1 &&
-                                    <ReactPaginate
-                                        previousLabel={'previous'}
-                                        nextLabel={'next'}
-                                        breakLabel={'...'}
-                                        pageCount={client.totalPages}
-                                        marginPagesDisplayed={2}
-                                        pageRangeDisplayed={5}
-                                        onPageChange={this.handlePageClick}
-                                        subContainerClassName={'pages pagination'}
-                                        breakClassName={'page-item'}
-                                        breakLinkClassName={'page-link'}
-                                        containerClassName={'pagination'}
-                                        pageClassName={'page-item'}
-                                        pageLinkClassName={'page-link'}
-                                        previousClassName={'page-item'}
-                                        previousLinkClassName={'page-link'}
-                                        nextClassName={'page-item'}
-                                        nextLinkClassName={'page-link'}
-                                        activeClassName={'active'}
-                                    />
+                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                        <ReactPaginate
+                                            previousLabel={'⟨'}
+                                            nextLabel={'⟩'}
+                                            breakLabel={'...'}
+                                            pageCount={client.totalPages}
+                                            marginPagesDisplayed={2}
+                                            pageRangeDisplayed={5}
+                                            onPageChange={this.handlePageClick}
+                                            subContainerClassName={'pages pagination'}
+                                            breakClassName={'page-item'}
+                                            breakLinkClassName={'page-link'}
+                                            containerClassName={'pagination'}
+                                            pageClassName={'page-item'}
+                                            pageLinkClassName={'page-link'}
+                                            previousClassName={'page-item'}
+                                            previousLinkClassName={'page-link'}
+                                            nextClassName={'page-item'}
+                                            nextLinkClassName={'page-link'}
+                                            activeClassName={'active'}
+                                        />
+                                    </div>
                                 }
-                            </div>
                             {/*<Paginator items={[]} onChangePage={(pageOfItems) => this.onChangePage(pageOfItems)}/>*/}
                         </div>
                     </div>

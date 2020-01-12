@@ -141,7 +141,7 @@ class SidebarMain extends Component {
     }
 
     render() {
-        const { location, notification, calendar: { appointmentsCanceled }, staff, client, appointmentsCount }=this.props;
+        const { location, notification, calendar: { appointmentsCanceled }, staff, appointmentsCount }=this.props;
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
         const { authentication, menu, company, collapse, openedTab,  count, userSettings, isNotificationDropdown, isPaymentDropdown }=this.state;
         let path="/"+location.pathname.split('/')[1]
@@ -184,8 +184,6 @@ class SidebarMain extends Component {
                 let extraServiceText = this.getExtraServiceText(appointmentsCount, appointment);
 
                 if (condition && !appointment.coAppointmentId) {
-                    const activeClient = client && client.client && client.client.find(item => ((item.clientId) === (appointment.clientId)));
-
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
@@ -211,8 +209,7 @@ class SidebarMain extends Component {
                                 </div>
                                 <div style={{width: "40%"}}>
                                     {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/></React.Fragment> : 'Без клиента'}
-                                    {activeClient && activeClient.phone &&
-                                    <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                    {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -245,8 +242,6 @@ class SidebarMain extends Component {
                 }
                 let extraServiceText = this.getExtraServiceText(appointmentsCount, appointment);
                 if(condition && !appointment.coAppointmentId) {
-                    const activeClient = client && client.client && client.client.find(item => {
-                        return((item.clientId) === (appointment.clientId));});
                     movedCount++;
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
@@ -271,7 +266,7 @@ class SidebarMain extends Component {
                                 </div>
                                 <div style={{width: "40%"}}>
                                     {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/></React.Fragment> : 'Без клиента'}
-                                    {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                    {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -446,8 +441,6 @@ class SidebarMain extends Component {
                                         appointmentsCanceled.map((appointment) => {
                                             const activeStaff = staff && staff.staff && staff.staff.find(item =>
                                                 ((item.staffId) === (appointment.staffId)));
-                                            const activeClient = client && client.client && client.client.find(item => {
-                                                return((item.clientId) === (appointment.clientId));});
                                             const { roleId } = authentication.user.profile
                                             let condition;
                                             if (roleId === 3 || roleId === 4) {
@@ -472,9 +465,8 @@ class SidebarMain extends Component {
                                                             </p>
                                                         </div>
                                                         <div style={{width: "40%"}}>
-                                                            {activeClient ? <React.Fragment><p><strong>Клиент:</strong> {activeClient.firstName} {activeClient.lastName}</p><br/> </React.Fragment> : 'Без клиента'}
-                                                            {activeClient && activeClient.phone &&
-                                                            <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+                                                            {appointment.clientName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientName}</p><br/> </React.Fragment> : 'Без клиента'}
+                                                            {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
                                                             >
@@ -611,7 +603,7 @@ class SidebarMain extends Component {
     openAppointments(event){
         event.stopPropagation()
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo())
+        // this.props.dispatch(clientActions.getClientWithInfo())
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
@@ -624,10 +616,10 @@ class SidebarMain extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, menu, authentication, company, calendar, notification, staff, client} = state;
+    const { alert, menu, authentication, company, calendar, notification, staff } = state;
 
     return {
-        alert, menu, authentication, company, calendar, notification, appointmentsCount: calendar.appointmentsCount, staff, client
+        alert, menu, authentication, company, calendar, notification, appointmentsCount: calendar.appointmentsCount, staff
     };
 }
 

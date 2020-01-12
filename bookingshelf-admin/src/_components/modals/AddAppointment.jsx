@@ -11,6 +11,7 @@ import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 import {calendarActions} from "../../_actions/calendar.actions";
+import ReactPaginate from 'react-paginate';
 
 
 class AddAppointment extends React.Component {
@@ -74,12 +75,15 @@ class AddAppointment extends React.Component {
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
+        this.updateClients = this.updateClients.bind(this);
     }
 
     componentDidMount() {
         const {appointmentEdited} = this.state;
 
         appointmentEdited && this.getInfo(appointmentEdited)
+        this.props.dispatch(clientActions.getClientV2(1));
     }
 
     componentWillReceiveProps(newProps) {
@@ -129,6 +133,20 @@ class AddAppointment extends React.Component {
         //             customId: newProps.appointmentEdited?newProps.appointmentEdited[0][0].customId:this.state.appointment[0].customId}],
         //     })
         // }
+    }
+
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue));
     }
 
     updateAvailableCoStaffs(appointment = this.state.appointment) {
@@ -837,6 +855,30 @@ class AddAppointment extends React.Component {
                                                         )}
                                                     </ul>
 
+                                                    {clients.totalPages > 1 &&
+                                                        <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                                            <ReactPaginate
+                                                                previousLabel={'⟨'}
+                                                                nextLabel={'⟩'}
+                                                                breakLabel={'...'}
+                                                                pageCount={clients.totalPages}
+                                                                marginPagesDisplayed={2}
+                                                                pageRangeDisplayed={5}
+                                                                onPageChange={this.handlePageClick}
+                                                                subContainerClassName={'pages pagination'}
+                                                                breakClassName={'page-item'}
+                                                                breakLinkClassName={'page-link'}
+                                                                containerClassName={'pagination'}
+                                                                pageClassName={'page-item'}
+                                                                pageLinkClassName={'page-link'}
+                                                                previousClassName={'page-item'}
+                                                                previousLinkClassName={'page-link'}
+                                                                nextClassName={'page-item'}
+                                                                nextLinkClassName={'page-link'}
+                                                                activeClassName={'active'}
+                                                            />
+                                                        </div>
+                                                    }
                                                 </div>
                                             }
                                             {cl &&
@@ -1209,27 +1251,11 @@ class AddAppointment extends React.Component {
     }
 
     handleSearch () {
-        const {allClients}= this.state;
-
-        const allClientsList=allClients.client.filter((item)=>{
-            return item.lastName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-                item.firstName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-                item.phone.toLowerCase().includes(this.search.value.toLowerCase())
-        });
-
-        this.setState({
-            search: true,
-            clients: {client:allClientsList}
-        });
-
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                clients: allClients
-            })
+        if (this.search.value.length >= 3) {
+            this.updateClients();
+        } else if (this.search.value.length === 0) {
+            this.updateClients();
         }
-
-
     }
 
     closeModal () {

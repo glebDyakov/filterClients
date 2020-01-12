@@ -10,6 +10,7 @@ export const clientService = {
     deleteClient,
     getClientWithInfo,
     getClientV2,
+    getActiveClient,
     downloadFile,
     uploadFile
 };
@@ -125,9 +126,22 @@ function getClientV2(pageNum, searchValue) {
         },
         headers: authHeader()
     };
-    debugger
 
     return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=2${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
+}
+
+function getActiveClient(clientId = 280) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/clients/${clientId}/appointments`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {

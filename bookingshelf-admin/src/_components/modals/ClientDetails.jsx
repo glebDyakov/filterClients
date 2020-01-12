@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import PropTypes from 'prop-types';
 import moment from "moment";
 import {access} from "../../_helpers/access";
-import {calendarActions} from "../../_actions";
+import {calendarActions, clientActions} from "../../_actions";
 
 class ClientDetails extends React.Component {
     constructor(props) {
@@ -21,17 +21,16 @@ class ClientDetails extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client});
-            if (newProps.client) {
-                let allPrice = 0;
-                newProps.client.appointments.forEach((appointment) => {
-                    if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                        allPrice += appointment.price
-                    }
-                });
-                this.setState({ allPrice: allPrice });
-            }
+        if (newProps.clientId && (this.props.clientId !== newProps.clientId)) {
+            this.props.dispatch(clientActions.getActiveClient(this.props.clientId));
+
+            let allPrice = 0;
+            newProps.client.appointments.forEach((appointment) => {
+                if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                    allPrice += appointment.price
+                }
+            });
+            this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client, allPrice: allPrice });
         }
     }
 
@@ -68,7 +67,7 @@ class ClientDetails extends React.Component {
     render() {
         const {client, defaultClientsList}=this.state;
         const {editClient, services, staff}=this.props;
-        console.log(staff)
+
         return (
 
             <div className="modal fade client-detail">
