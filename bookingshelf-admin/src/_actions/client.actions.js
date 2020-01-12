@@ -6,6 +6,7 @@ export const clientActions = {
     addClient,
     updateClient,
     getClient,
+    getActiveClient,
     deleteClient,
     getClientWithInfo,
     getClientV2,
@@ -108,6 +109,21 @@ function getClientV2(pageNum, searchValue) {
     return dispatch => {
         dispatch(request())
         clientService.getClientV2(pageNum, searchValue)
+            .then(
+                client => dispatch(success(client)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
+            );
+    };
+
+    function request() { return { type: clientConstants.GET_CLIENT_V2 } }
+    function success(client) { return { type: clientConstants.GET_CLIENT_V2_SUCCESS, client } }
+    function failure(error) { return { type: clientConstants.GET_CLIENT_V2_FAILURE, error } }
+}
+
+function getActiveClient(clientId) {
+    return dispatch => {
+        dispatch(request())
+        clientService.getActiveClient(clientId)
             .then(
                 client => dispatch(success(client)),
                 () => dispatch(failure('Ошибка при подгрузке клиентов'))

@@ -248,7 +248,7 @@ class TabScroll extends Component{
         })
     }
     render(){
-        const { authentication, numbers, services, availableTimetable,selectedDays, closedDates, clients, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { authentication, numbers, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId } = this.state;
 
         return(
@@ -452,7 +452,7 @@ class TabScroll extends Component{
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] &&
                                                             <span
-                                                                className="clientEye"
+                                                                className="clientEye clientEye-info"
                                                                 data-target=".client-detail"
                                                                 title="Просмотреть клиента"
                                                                 onClick={(e) => {
@@ -463,15 +463,19 @@ class TabScroll extends Component{
                                                         </p>}
                                                         {appointment[0][0] && <p className="name">{appointment[0][0].clientName}</p>}
                                                         {access(4) && appointment[0][0] && <p>{appointment[0][0].clientPhone}</p>}
-                                                        {appointment[0][0] && <p>
-                                                            <div className="check-box calendar-client-checkbox">
+                                                        {appointment[0][0] && <p style={{ height: '30px' }}>
+                                                            <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox">
                                                                 Клиент не пришел
 
-                                                                <label>
-                                                                    <input className="form-check-input" checked={appointment[0][0].clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointment(appointment[0][0].appointmentId, JSON.stringify({ clientNotCome: !appointment[0][0].clientNotCome } )))}
-                                                                           type="checkbox"/>
-                                                                    <span style={{ width: '20px', margin: '-3px 0 0 42px'}} className="check" />
-                                                                </label>
+                                                                {isClientNotComeLoading ?
+                                                                    <div style={{ margin: '0 0 0 auto', left: '15px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                                    :
+                                                                    <label>
+                                                                        <input className="form-check-input" checked={appointment[0][0].clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment[0][0].appointmentId, JSON.stringify({ clientNotCome: !appointment[0][0].clientNotCome } )))}
+                                                                               type="checkbox"/>
+                                                                        <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
+                                                                    </label>
+                                                                }
                                                             </div>
                                                         </p>}
 

@@ -251,7 +251,7 @@ class HeaderMain extends React.PureComponent {
     }
     openAppointments(){
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo())
+        // this.props.dispatch(clientActions.getClientWithInfo())
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
