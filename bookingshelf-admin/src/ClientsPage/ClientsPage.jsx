@@ -13,7 +13,6 @@ import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
 import ReactPaginate from 'react-paginate';
 
-
 class ClientsPage extends Component {
     constructor(props) {
         super(props);
