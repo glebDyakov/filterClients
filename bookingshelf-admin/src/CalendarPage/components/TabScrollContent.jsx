@@ -457,7 +457,7 @@ class TabScroll extends Component{
                                                                 title="Просмотреть клиента"
                                                                 onClick={(e) => {
                                                                     $('.client-detail').modal('show')
-                                                                    handleUpdateClient(appointment[0][0])
+                                                                    handleUpdateClient(appointment[0][0].clientId)
                                                                 }} />
                                                             }
                                                         </p>}
@@ -492,7 +492,7 @@ class TabScroll extends Component{
                                                                         ({service.totalAmount} {service.currency})
                                                                     </span>}
                                                                 </span>
-                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment[0][0] && appointment[0][0].discountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment[0][0] && appointment[0][0].clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
 
 
                                                             </p>

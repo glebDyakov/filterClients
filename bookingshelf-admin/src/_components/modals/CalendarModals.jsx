@@ -188,7 +188,7 @@ class CalendarModals extends Component {
                     />
                     }
                     <ClientDetails
-                        client={infoClient}
+                        clientId={infoClient}
                         editClient={this.handleEditClient}
                     />
                     {(reservedFromProps || reserved) &&

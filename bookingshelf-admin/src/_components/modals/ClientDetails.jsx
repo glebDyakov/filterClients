@@ -10,8 +10,8 @@ class ClientDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: props.client,
-            defaultClientsList:  props.client,
+            client: {},
+            defaultAppointmentsList: [],
             allPrice: 0,
             search: false,
         };
@@ -22,22 +22,32 @@ class ClientDetails extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (newProps.clientId && (this.props.clientId !== newProps.clientId)) {
-            this.props.dispatch(clientActions.getActiveClient(this.props.clientId));
-
+            this.props.dispatch(clientActions.getActiveClient(newProps.clientId));
+            this.props.dispatch(clientActions.getActiveClientAppointments(newProps.clientId));
+        }
+        if (newProps.client.activeClientAppointments || newProps.client.activeClient) {
             let allPrice = 0;
-            newProps.client.appointments.forEach((appointment) => {
+            newProps.client.activeClientAppointments && newProps.client.activeClientAppointments.forEach((appointment) => {
                 if (appointment.appointmentTimeMillis <= moment().format('x')) {
                     allPrice += appointment.price
                 }
             });
-            this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client, allPrice: allPrice });
+            this.setState({
+                allPrice,
+                client: {
+                    ...this.state.client,
+                    ...newProps.client.activeClient,
+                    appointments: newProps.client.activeClientAppointments,
+                },
+                defaultAppointmentsList: newProps.client.activeClientAppointments
+            });
         }
     }
 
     handleSearch () {
-        const {defaultClientsList}= this.state;
+        const {defaultAppointmentsList}= this.state;
 
-        const searchClientList=defaultClientsList.appointments.filter((item)=>{
+        const searchClientList=defaultAppointmentsList.filter((item)=>{
             return item.serviceName.toLowerCase().includes(this.search.value.toLowerCase())
         });
 
@@ -46,12 +56,15 @@ class ClientDetails extends React.Component {
             client: {...this.state.client ,appointments: searchClientList}
         });
 
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                client: defaultClientsList
-            })
-        }
+        // if(this.search.value===''){
+        //     this.setState({
+        //         search: true,
+        //         client: {
+        //             ...this.state.client,
+        //             appointments: defaultAppointmentsList
+        //         }
+        //     })
+        // }
     }
 
     goToPageCalendar(appointment, appointmentStaffId){
@@ -65,7 +78,7 @@ class ClientDetails extends React.Component {
     }
 
     render() {
-        const {client, defaultClientsList}=this.state;
+        const {client, defaultAppointmentsList}=this.state;
         const {editClient, services, staff}=this.props;
 
         return (
@@ -97,11 +110,11 @@ class ClientDetails extends React.Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-6" style={{textAlign:'center'}}>
-                                        <strong>{defaultClientsList.appointments.length} </strong><br/>
+                                        <strong>{defaultAppointmentsList.length} </strong><br/>
                                         <span className="gray-text">Всего визитов</span>
                                     </div>
                                     <div className="col-6"  style={{textAlign:'center'}}>
-                                        <strong>{this.state.allPrice} {defaultClientsList.appointments[0] && defaultClientsList.appointments[0].currency}</strong><br/>
+                                        <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
                                         <span className="gray-text">Всего оплачено</span>
                                     </div>
                                 </div>
@@ -112,7 +125,7 @@ class ClientDetails extends React.Component {
                                 <p className="pl-4 pr-4">Список визитов</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
 
-                            {(defaultClientsList && defaultClientsList.appointments && defaultClientsList.appointments.length!==0 && defaultClientsList!=="" &&
+                            {(defaultAppointmentsList && defaultAppointmentsList.length!==0 && defaultAppointmentsList!=="" &&
                                     <div className="row align-items-center content clients mb-2 search-block">
                                         <div className="search col-7">
                                             <input type="search" placeholder="Введите название услуги"
@@ -196,9 +209,9 @@ class ClientDetails extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, calendar, staff} = state;
+    const { alert, services, calendar, staff, client} = state;
     return {
-        alert, services, calendar, staff
+        alert, services, calendar, staff, client
     };
 }
 
