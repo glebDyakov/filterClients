@@ -38,10 +38,17 @@ export function client(state= { activeClientAppointments: [] }, action) {
               error: null
           };
       case clientConstants.GET_CLIENT_V2_SUCCESS:
+          let clientState = {}
+          if (action.blacklisted) {
+              clientState.blacklistedClients = action.client.content;
+              clientState.blacklistedTotalPages = action.client.totalPages;
+          } else {
+              clientState.client = action.client.content;
+              clientState.totalPages = action.client.totalPages;
+          }
           return {
               ...state,
-              client: action.client.content,
-              totalPages: action.client.totalPages,
+              ...clientState,
               isLoading: false,
               error: null
           };
