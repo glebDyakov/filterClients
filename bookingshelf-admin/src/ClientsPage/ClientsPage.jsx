@@ -12,6 +12,7 @@ import {UserPhoto} from "../_components/modals/UserPhoto";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
 import ReactPaginate from 'react-paginate';
+import {servicesActions} from "../_actions/services.actions";
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -63,6 +64,7 @@ class ClientsPage extends Component {
         // this.props.dispatch(clientActions.getClient());
         //this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(clientActions.getClientV2(1));
+        this.props.dispatch(servicesActions.getServices());
         initializeJs();
 
     }
@@ -87,6 +89,8 @@ class ClientsPage extends Component {
         this.setState({
             activeTab: tab
         })
+
+        this.updateClients(1, tab);
 
         // if(tab==='clients') {document.title = "Доступы | Онлайн-запись";}
         // if(tab==='blacklist'){document.title = "Выходные дни | Онлайн-запись"}
@@ -136,12 +140,14 @@ class ClientsPage extends Component {
         this.updateClients(currentPage);
     };
 
-    updateClients(currentPage = 1) {
+    updateClients(currentPage = 1, tab = this.state.activeTab) {
         let searchValue = ''
         if (this.search.value.length >= 3) {
             searchValue = this.search.value.toLowerCase()
         }
-        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue));
+
+        const blacklisted = tab === 'blacklist';
+        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue, blacklisted));
     }
 
     handleSearch () {
@@ -332,7 +338,7 @@ class ClientsPage extends Component {
                 />
                 }
                 <ClientDetails
-                    client={infoClient}
+                    clientId={infoClient}
                     // editClient={this.handleEditClient}
                     editClient={this.handleClick}
                 />
@@ -384,7 +390,7 @@ class ClientsPage extends Component {
     }
     openClientStats(client){
 
-        this.setState({...this.state, infoClient: client});
+        this.setState({ infoClient: client.clientId });
         $('.client-detail').modal('show')
 
     }

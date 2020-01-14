@@ -1,6 +1,6 @@
-import {calendarConstants, clientConstants} from '../_constants';
+import {clientConstants} from '../_constants';
 
-export function client(state= {}, action) {
+export function client(state= { activeClientAppointments: [] }, action) {
   switch (action.type) {
       case clientConstants.CLIENT_SUCCESS_TIME:
           return {
@@ -19,6 +19,16 @@ export function client(state= {}, action) {
           return {
               ...state,
               isLoading: true
+          }
+      case clientConstants.GET_ACTIVE_CLIENT_SUCCESS:
+          return {
+              ...state,
+              activeClient: action.activeClient
+          }
+      case clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS_SUCCESS:
+          return {
+              ...state,
+              activeClientAppointments: action.activeClientAppointments
           }
       case clientConstants.GET_CLIENT_SUCCESS:
           return {

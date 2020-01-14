@@ -11,6 +11,7 @@ export const clientService = {
     getClientWithInfo,
     getClientV2,
     getActiveClient,
+    getActiveClientAppointments,
     downloadFile,
     uploadFile
 };
@@ -116,7 +117,7 @@ function getClientWithInfo() {
     return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }
 
-function getClientV2(pageNum, searchValue) {
+function getClientV2(pageNum, searchValue, blacklisted) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -127,10 +128,10 @@ function getClientV2(pageNum, searchValue) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=2${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=2${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
 }
 
-function getActiveClient(clientId = 280) {
+function getActiveClientAppointments(clientId) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -141,7 +142,21 @@ function getActiveClient(clientId = 280) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${clientId}/appointments`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
+function getActiveClient(clientId) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/clients/${clientId}`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {

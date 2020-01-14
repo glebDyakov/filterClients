@@ -27,6 +27,7 @@ class AddAppointment extends React.Component {
                 id: -1,
                 service: []
             }],
+            allPrice: 0,
             servicesSearch: '',
             staffs: props.staffs,
             clients: props.clients && props.clients,
@@ -36,7 +37,7 @@ class AddAppointment extends React.Component {
             minutes: props.minutes,
             hours: [],
             staffId: props.staffId,
-            clientChecked: [],
+            clientChecked: null,
             appointmentEdited: sortedAppointment,
             timeArrange:props.clickedTime!==0?this.getTimeArrange(props.clickedTime, props.minutes, sortedAppointment):null,
             timeNow:props.clickedTime===0?moment().format('x'):props.clickedTime,
@@ -97,11 +98,29 @@ class AddAppointment extends React.Component {
 
         if(this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
             const user = newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
-            this.setState({ clientChecked: user, shouldUpdateCheckedUser: false})
+            this.setState({ clientChecked: { ...this.state.clientChecked, ...user }, shouldUpdateCheckedUser: false})
         }
 
         if(JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
             this.setState({ shouldUpdateCheckedUser: true })
+        }
+
+        if ((newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.length && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments))) ||
+            (newProps.clients.activeClient && (JSON.stringify(this.props.clients.activeClient) !== JSON.stringify(newProps.clients.activeClient)))) {
+            let allPrice = 0;
+            newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.forEach((appointment) => {
+                if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                    allPrice += appointment.price
+                }
+            });
+            this.setState({
+                allPrice,
+                clientChecked: {
+                    ...this.state.clientChecked,
+                    ...newProps.clients.activeClient,
+                    appointments: newProps.clients.activeClientAppointments,
+                }
+            });
         }
 
 
@@ -319,7 +338,6 @@ class AddAppointment extends React.Component {
     getInfo(appointments){
         const {appointmentEdited, clients, services}=this.state;
 
-        let client= (clients && clients.client && clients.client.find((client_user, i) => client_user.clientId===appointments[0].clientId)) || [];
         let newServices = []
         let newServicesCurrent = []
         appointments.forEach(appointment => {
@@ -338,8 +356,10 @@ class AddAppointment extends React.Component {
         })
 
         this.updateAvailableCoStaffs(appointmentEdited)
+        this.props.dispatch(clientActions.getActiveClient(appointments[0].clientId))
+        this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId))
 
-        this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices, clientChecked:client})
+        this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices})
     }
 
     setTime(appointmentTimeMillis, minutes, index){
@@ -570,22 +590,13 @@ class AddAppointment extends React.Component {
 
     render() {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
-        const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
+        const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
-        const cl = clientChecked && clientChecked.clientId && clients.client && clients.client.find(cl => cl.clientId === clientChecked.clientId);
-
-        let allPrice = 0;
-        if (cl) {
-            cl.appointments.map(appointment => {
-                if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                    allPrice += appointment.price;
-                }
-            })
-        }
+        const cl = clientChecked
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
 
@@ -808,7 +819,7 @@ class AddAppointment extends React.Component {
 
                                         <div className="calendar">
 
-                                            {!clientChecked || clientChecked.length==0 && !edit_appointment &&
+                                            {!clientChecked && !edit_appointment &&
                                                 <div className="list-block-right mb-3">
 
                                                     <div className="row">
@@ -844,7 +855,7 @@ class AddAppointment extends React.Component {
                                                                         </div>
                                                                         <div className="col-5">
                                                                             <label className="add-person">
-                                                                                <input className="form-check-input" type="checkbox" checked={clientChecked.clientId && client_user.clientId===clientChecked.clientId} onChange={()=>this.checkUser(client_user)}/>
+                                                                                <input className="form-check-input" type="checkbox" checked={clientChecked && clientChecked.clientId && (client_user.clientId===clientChecked.clientId)} onChange={()=>this.checkUser(client_user)}/>
                                                                                 <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>
                                                                             </label>
                                                                         </div>
@@ -907,7 +918,7 @@ class AddAppointment extends React.Component {
                                                                 <span className="gray-text">Всего визитов</span>
                                                             </div>
                                                             <div className="col-6">
-                                                                <strong>{allPrice} {cl.appointments[0] && cl.appointments[0].currency}</strong>
+                                                                <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
                                                                 <span className="gray-text">Всего оплачено</span>
                                                             </div>
 
@@ -1023,11 +1034,12 @@ class AddAppointment extends React.Component {
     }
 
     checkUser(client){
+        this.props.dispatch(clientActions.getActiveClientAppointments(client.clientId))
         this.setState({ clientChecked: client });
     }
 
     removeCheckedUser(){
-        this.setState({ clientChecked: [] });
+        this.setState({ clientChecked: null });
     }
 
     editClient(id){
@@ -1259,6 +1271,7 @@ class AddAppointment extends React.Component {
 
     closeModal () {
         const {onClose} = this.props;
+        this.setState({ clientChecked: null })
 
         return onClose()
     }
