@@ -220,7 +220,7 @@ function getAppointments(dateFrom, dateTo) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrlv2}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
 
 function getAppointmentsCanceled(dateFrom, dateTo, id) {
