@@ -470,7 +470,7 @@ class EmailPage extends Component {
                                                                     <input className="form-check-input" checked={notifications && notifications.appointmentRemind} onChange={()=>this.toggleChange('appointmentRemind')}
                                                                            type="checkbox"/>
                                                                     <span className="check"></span>
-                                                                    SMS напоминания о визитах
+                                                                    Напоминания о визитах
                                                                 </label>
                                                             </div>
                                                         </div>
