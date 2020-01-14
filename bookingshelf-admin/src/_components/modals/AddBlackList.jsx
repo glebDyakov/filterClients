@@ -98,7 +98,7 @@ class AddBlackList extends React.Component {
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
                             <div className="form-group mr-3 ml-3">
-                                <div style={{ width: '100%' }} className="block-style2 col-md-12 col-lg-12 col-xl-6">
+                                <div style={{ width: '100%' }} className="block-style2 col-md-12 col-lg-12">
 
                                     <div className="calendar">
                                         <div className="list-block-right mb-3">

@@ -381,19 +381,11 @@ class TabScroll extends Component{
                                                           title="Онлайн-запись"/>}
 
 
-                                                    {/*{clients && clients.map(client => {*/}
-                                                    {/*    const isOldClient = client.appointments.some(item => item.appointmentTimeMillis < parseInt(moment().format('x')))*/}
-                                                    {/*    return ((client.clientId === appointment[0][0].clientId) &&*/}
-                                                    {/*        <React.Fragment>*/}
-                                                    {/*        <span*/}
-                                                    {/*            className={`${isOldClient? 'old' : 'new'}-client-icon`}*/}
-                                                    {/*            title={isOldClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>*/}
-                                                    {/*        </React.Fragment>)*/}
-                                                    {/*})}*/}
 
-                                                            <span
-                                                                className={`${true? 'old' : 'new'}-client-icon`}
-                                                                title={true ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+                                                    <span
+                                                        className={`${appointment[0][0].regularClient? 'old' : 'new'}-client-icon`}
+                                                        title={appointment[0][0].regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+
 
                                                     {!appointment[0][0] &&
                                                             <span
