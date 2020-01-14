@@ -385,9 +385,9 @@ class SidebarMain extends Component {
                     </div>
                 </li>
 
-                {company.booking && <div className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && 'Id компании:'} <a target="_blank"
-                                                            href={"https://online-zapis.com/online/" + company.booking.bookingPage}
-                                                            className="">{company.booking.bookingPage}
+                {authentication && authentication.user && authentication.user && authentication.user.bookingPage && <div className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && 'Id компании:'} <a target="_blank"
+                                                            href={"https://online-zapis.com/online/" + authentication.user.bookingPage}
+                                                            className="">{authentication.user.bookingPage}
                 </a>
                 </div>}
                 <div className="questions"><Link to="/faq">
