@@ -37,7 +37,7 @@ function addClient(params) {
     function failure(error) { return { type: clientConstants.ADD_CLIENT_FAILURE, error } }
 }
 
-function updateClient(params) {
+function updateClient(params, blacklisted) {
     return dispatch => {
         dispatch(request(0));
 
@@ -45,6 +45,9 @@ function updateClient(params) {
             .then(
                 client => {
                     dispatch(success(client));
+                    if (blacklisted) {
+                        dispatch(getClientV2(1, '', true));
+                    }
                     setTimeout(()=>dispatch(successTime(client)), 500);
 
                 },
@@ -117,7 +120,7 @@ function getClientV2(pageNum, searchValue, blacklisted) {
     };
 
     function request() { return { type: clientConstants.GET_CLIENT_V2 } }
-    function success(client) { return { type: clientConstants.GET_CLIENT_V2_SUCCESS, client } }
+    function success(client) { return { type: clientConstants.GET_CLIENT_V2_SUCCESS, client, blacklisted } }
     function failure(error) { return { type: clientConstants.GET_CLIENT_V2_FAILURE, error } }
 }
 
