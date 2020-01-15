@@ -19,9 +19,9 @@ class TabFour extends  PureComponent {
         const availableTimes = []
 
         let interval = 15;
-        if (serviceIntervalOn) {
+        if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
-            selectedServices && selectedServices.forEach(item => {
+            selectedServices.forEach(item => {
                 interval += (item.duration / 60)
             })
         }
@@ -33,7 +33,10 @@ class TabFour extends  PureComponent {
                     const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                     const arrayTimes = []
                     for( let i = 0 ; i< countTimes; i++) {
-                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * interval * i))
+                        const localCountTime = workingTime.startTimeMillis + (1000 * 60 * interval * i)
+                        if (localCountTime <= workingTime.endTimeMillis) {
+                            arrayTimes.push(localCountTime)
+                        }
                     }
 
 

@@ -360,7 +360,7 @@ class OnlinePage extends Component {
                                             <div style={{ position: 'relative' }} className="check-box">
                                                 <label>
                                                     {isServiceIntervalLoading
-                                                        ? <div style={{ position: 'absolute', left: '-10px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                                         : <React.Fragment>
                                                             <input className="form-check-input" type="checkbox" checked={!serviceIntervalOn} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>
                                                             <span className="check"/>
@@ -372,7 +372,7 @@ class OnlinePage extends Component {
                                             <div style={{ position: 'relative' }} className="check-box">
                                                 <label>
                                                     {isServiceIntervalLoading
-                                                        ? <div style={{ position: 'absolute', left: '-10px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                                         : <React.Fragment>
                                                             <input className="form-check-input" type="checkbox" checked={serviceIntervalOn} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>
                                                             <span className="check"/>
