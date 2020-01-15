@@ -220,7 +220,7 @@ class EmailPage extends Component {
         const { sms, client, staff, count_sms, receivers } = this.state;
         let receivers_all=receivers
         if(type==='toClients'){
-            receivers_all=receivers+client.client.length;
+            receivers_all=receivers+ (client.client && client.client.length);
         }else if(type==='toStaffs'){
             receivers_all=receivers+staff.staff.length;
 
