@@ -361,6 +361,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 4 &&
                     <TabFour
+                        serviceIntervalOn={info.serviceIntervalOn}
                         isStartMovingVisit={isStartMovingVisit}
                         selectedTime={selectedTime}
                         selectedStaff={selectedStaff}

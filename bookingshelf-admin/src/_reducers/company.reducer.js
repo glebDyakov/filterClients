@@ -78,6 +78,24 @@ export function company(state = initialState, action) {
                 switchedStaffId: action.company.staffId
 
             }
+        case companyConstants.UPDATE_SERVICE_INTERVAL_REQUEST:
+            return {
+                ...state,
+                isServiceIntervalLoading: true
+            }
+        case companyConstants.UPDATE_SERVICE_INTERVAL_SUCCESS:
+            companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
+            return {
+                ...state,
+                settings: companyAllInfo,
+                isServiceIntervalLoading: false
+            }
+        case companyConstants.UPDATE_SERVICE_INTERVAL_FAILURE:
+            return {
+                ...state,
+                isServiceIntervalLoading: false,
+                error: action.error
+            }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
             return {
                 ...state,

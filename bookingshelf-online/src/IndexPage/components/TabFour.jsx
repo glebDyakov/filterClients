@@ -14,18 +14,26 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, serviceIntervalOn, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
         const availableTimes = []
+
+        let interval = 15;
+        if (serviceIntervalOn) {
+            interval = 0
+            selectedServices && selectedServices.forEach(item => {
+                interval += (item.duration / 60)
+            })
+        }
         if(!this.state.arrayTime && workingStaff) {
             workingStaff.map((workingStaffElement, i) =>
                 parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                 workingStaffElement.availableTimes.map((workingTime) => {
 
-                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                     const arrayTimes = []
                     for( let i = 0 ; i< countTimes; i++) {
-                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * interval * i))
                     }
 
 
