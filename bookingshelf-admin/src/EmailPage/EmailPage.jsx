@@ -116,6 +116,7 @@ class EmailPage extends Component {
         this.props.dispatch(notificationActions.getBalance());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.get());
+        this.props.dispatch(notificationActions.getClientAmount());
         // this.props.dispatch(clientActions.getClientWithInfo());
 
         setTimeout(() => this.setState({ isLoading: false }), 800);
@@ -217,10 +218,11 @@ class EmailPage extends Component {
     }
 
     handleChangeSMStoggle (type) {
+        const { clientAmount } = this.props.notification
         const { sms, client, staff, count_sms, receivers } = this.state;
         let receivers_all=receivers
         if(type==='toClients'){
-            receivers_all=receivers+ (client.client && client.client.length);
+            receivers_all=receivers+ (clientAmount);
         }else if(type==='toStaffs'){
             receivers_all=receivers+staff.staff.length;
 
@@ -236,10 +238,11 @@ class EmailPage extends Component {
     }
 
     handleChangeEmailtoggle (type) {
-        const { email, receivers_email, client, staff } = this.state;
+        const { clientAmount } = this.props.notification
+        const { email, receivers_email, staff } = this.state;
         let receivers_all_email=receivers_email;
         if(type==='toClients'){
-            receivers_all_email=receivers_email+client.client.length;
+            receivers_all_email=receivers_email+clientAmount;
         }else if(type==='toStaffs'){
             receivers_all_email=receivers_email+staff.staff.length;
 
