@@ -24,13 +24,22 @@ class ClientDetails extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
+        const clientId = (this.props.staff.appointment && this.props.staff.appointment[0] && this.props.staff.appointment[0].clientId) || (this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId)
+        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId))
     }
 
     componentWillReceiveProps(newProps) {
-        if (newProps.staff.clients && ((newProps.staff.appointment && newProps.staff.appointment[0]) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0]))) {
-            const id = (newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)
-            const client = newProps.staff.clients.find(item => item.clientId === id);
+        if (((newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId && (this.props.staff.appointment && this.props.staff.appointment[0] && this.props.staff.appointment[0].clientId) !== (newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId)))
+            || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId && ((this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId) !== (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)))) {
+            const clientId = (newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)
+
+            this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId))
+        }
+
+        if (newProps.staff.clientAppointments && (JSON.stringify(this.props.staff.clientAppointments) !== JSON.stringify(newProps.staff.clientAppointments))) {
+            const client = {
+                appointments: newProps.staff.clientAppointments
+            };
             this.setState({ client, defaultClientsList: client });
             if (client) {
                 let allPrice = 0;
@@ -117,7 +126,6 @@ class ClientDetails extends React.Component {
 
                                 <div className="visit-info-wrapper">
                                     {client && client.appointments && client.appointments
-                                        .filter(appointment => appointment.id===client.id)
                                         .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                         .map((appointment)=>{
                                             const activeService = staff && staff.services && staff.services.find(service => service.serviceId === appointment.serviceId)
