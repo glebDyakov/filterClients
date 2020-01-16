@@ -63,7 +63,7 @@ class TabThird extends  PureComponent {
                         //if (!isStartMovingVisit) {
                             refreshTimetable()
                         //}
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <div className="specialist">
 

@@ -22,21 +22,26 @@ class TabOne extends  PureComponent{
                 <div className="title_block n">
                     {!isStartMovingVisit && subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
-                            clearStaff();
-                            setDefaultFlag();
-                            setScreen(0);
-                            let {company} = match.params;
-                            let url = company.includes('_') ? company.split('_')[0] : company
-                            history.push(`/${url}`)
+                            if (flagAllStaffs) {
+                                setScreen(2);
+                            } else {
+                                clearStaff();
+                                setDefaultFlag();
+                                setScreen(0);
+                                let {company} = match.params;
+                                let url = company.includes('_') ? company.split('_')[0] : company
+                                history.push(`/${url}`)
+                            }
 
-                        }}>К выбору филиала</span>
+
+                        }}>{flagAllStaffs ? 'Назад' : 'К выбору филиала'}</span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
                             refreshTimetable();
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                     {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
