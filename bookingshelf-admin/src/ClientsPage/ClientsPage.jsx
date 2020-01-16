@@ -181,40 +181,77 @@ class ClientsPage extends Component {
                                     </li>
                                 </ul>
                             </div>
-                            {(!isLoading || blackListModal) && (
-                                <React.Fragment>
-                                    <div className="row align-items-center content clients mb-2">
-                                        <StaffChoice
-                                            selectedStaff={JSON.stringify(selectedStaffList[0])}
-                                            typeSelected={typeSelected}
-                                            staff={staff.staff}
-                                            availableTimetable={staff.staff}
-                                            setWorkingStaff={this.setWorkingStaff}
-                                            hideWorkingStaff={true}
-                                        />
-                                        <div className="search col-7">
-                                            <input type="search" placeholder="Искать по имени, email, номеру телефона"
-                                                   aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
-                                            <button className="search-icon" type="submit"/>
-                                        </div>
-                                        <div className="col-2 d-flex justify-content-end">
-                                            {/*{access(5) &&*/}
-                                            {/*<div className="export">*/}
-                                            {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-                                            {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
-                                            {/*        <input type="submit" value="Загрузить" />*/}
-                                            {/*    </form>*/}
-                                            {/*</div>}*/}
-                                            {access(5) &&
-                                            <div className="export">
 
-                                                <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                                >Экспорт в CSV
-                                                </button>
-                                            </div>
-                                            }
-                                        </div>
+
+                            <div style={{ position: 'relative' }}>
+                                <div style={{ position: 'absolute', zIndex: 2 }} className="row align-items-center content clients mb-2">
+                                    <StaffChoice
+                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                                        typeSelected={typeSelected}
+                                        staff={staff.staff}
+                                        availableTimetable={staff.staff}
+                                        setWorkingStaff={this.setWorkingStaff}
+                                        hideWorkingStaff={true}
+                                    />
+                                    <div className="search col-7">
+                                        <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                                               aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
+                                        <button className="search-icon" type="submit"/>
                                     </div>
+                                    <div className="col-2 d-flex justify-content-end">
+                                        {/*{access(5) &&*/}
+                                        {/*<div className="export">*/}
+                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                                        {/*        <input type="submit" value="Загрузить" />*/}
+                                        {/*    </form>*/}
+                                        {/*</div>}*/}
+                                        {access(5) &&
+                                        <div className="export">
+
+                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                            >Экспорт в CSV
+                                            </button>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div className="row align-items-center content clients mb-2">
+                                    <StaffChoice
+                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                                        typeSelected={typeSelected}
+                                        staff={staff.staff}
+                                        availableTimetable={staff.staff}
+                                        setWorkingStaff={this.setWorkingStaff}
+                                        hideWorkingStaff={true}
+                                    />
+                                    <div className="search col-7">
+                                        <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                                               aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
+                                        <button className="search-icon" type="submit"/>
+                                    </div>
+                                    <div className="col-2 d-flex justify-content-end">
+                                        {/*{access(5) &&*/}
+                                        {/*<div className="export">*/}
+                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                                        {/*        <input type="submit" value="Загрузить" />*/}
+                                        {/*    </form>*/}
+                                        {/*</div>}*/}
+                                        {access(5) &&
+                                        <div className="export">
+
+                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                            >Экспорт в CSV
+                                            </button>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+
+
+                                <div style={{ maxHeight: 'calc(100vh - 225px)', overflowY: 'auto' }}>
                                     {finalClients && finalClients.map((client_user, i) =>{
                                         let condition = true;
                                         if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
@@ -254,50 +291,52 @@ class ClientsPage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        )})}
-                                    <div className="tab-content">
-                                        {
-                                            (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
-                                            <div className="no-holiday">
-                                                {(this.search && this.search.value.length > 0)
-                                                    ? <span>Поиск результатов не дал</span>
-                                                    : <span>
-                                                {client.error ? client.error : 'Клиенты не добавлены'}
-                                                        <button type="button"
-                                                                className="button mt-3 p-3"
-                                                                onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
-                                          </span>}
+                                        )}
+                                    )}
+                                </div>
 
-                                            </div>
-                                        }
-                                    </div>
+                                <div className="tab-content">
+                                    {
+                                        (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
+                                        <div className="no-holiday">
+                                            {(this.search && this.search.value.length > 0)
+                                                ? <span>Поиск результатов не дал</span>
+                                                : <span>
+                                            {client.error ? client.error : 'Клиенты не добавлены'}
+                                                    <button type="button"
+                                                            className="button mt-3 p-3"
+                                                            onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
+                                      </span>}
 
-                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                        {finalTotalPages > 1 &&
-                                        <ReactPaginate
-                                            previousLabel={'⟨'}
-                                            nextLabel={'⟩'}
-                                            breakLabel={'...'}
-                                            pageCount={finalTotalPages}
-                                            marginPagesDisplayed={2}
-                                            pageRangeDisplayed={5}
-                                            onPageChange={this.handlePageClick}
-                                            subContainerClassName={'pages pagination'}
-                                            breakClassName={'page-item'}
-                                            breakLinkClassName={'page-link'}
-                                            containerClassName={'pagination'}
-                                            pageClassName={'page-item'}
-                                            pageLinkClassName={'page-link'}
-                                            previousClassName={'page-item'}
-                                            previousLinkClassName={'page-link'}
-                                            nextClassName={'page-item'}
-                                            nextLinkClassName={'page-link'}
-                                            activeClassName={'active'}
-                                        />
-                                        }
-                                    </div>
-                                </React.Fragment>
-                            )}
+                                        </div>
+                                    }
+                                </div>
+
+                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                    {finalTotalPages > 1 &&
+                                    <ReactPaginate
+                                        previousLabel={'⟨'}
+                                        nextLabel={'⟩'}
+                                        breakLabel={'...'}
+                                        pageCount={finalTotalPages}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        subContainerClassName={'pages pagination'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        containerClassName={'pagination'}
+                                        pageClassName={'page-item'}
+                                        pageLinkClassName={'page-link'}
+                                        previousClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextClassName={'page-item'}
+                                        nextLinkClassName={'page-link'}
+                                        activeClassName={'active'}
+                                    />
+                                    }
+                                </div>
+                            </div>
                             <a className="add"/>
                             <div className="hide buttons-container">
                                 <div className="p-4">

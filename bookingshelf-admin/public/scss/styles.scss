@@ -326,11 +326,10 @@ input{
         height: 50px;
         margin-bottom: 0;
         border: none;
-
+        position: initial;
+        width: -webkit-fill-available;
         @media screen and(max-width: 1650px){
             height: 35px;
-            position: initial;
-            width: -webkit-fill-available;
         }
     }
 }

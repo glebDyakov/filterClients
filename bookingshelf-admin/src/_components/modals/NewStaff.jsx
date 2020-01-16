@@ -101,8 +101,11 @@ class NewStaff extends React.Component {
     }
 
     render() {
+        const { authentication } = this.props;
         const { staff, edit, emailIsValid, staffs }=this.state;
 
+        const isOwner = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 4
+        const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email);
 
         const options = [];
         let option = [];
@@ -192,8 +195,8 @@ class NewStaff extends React.Component {
                                                                   name="email"
                                                                   value={staff.email}
                                                                   onChange={this.handleChange}
-                                                                  className={edit ? "disabledField" : ""}
-                                                                  disabled={edit}
+                                                                  className={((edit && !canUpdateEmail) ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
+                                                                  disabled={(edit && !canUpdateEmail)}
                                                                 />
                                                             </div>
                                                             <p>Доступ</p>
@@ -266,8 +269,8 @@ class NewStaff extends React.Component {
                                                                     name="email"
                                                                     value={staff.email}
                                                                     onChange={this.handleChange}
-                                                                    className={(edit ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
-                                                                    disabled={edit}
+                                                                    className={((edit && !canUpdateEmail) ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
+                                                                    disabled={(edit && !canUpdateEmail)}
                                                                 />
                                                             </div>
                                                             <div className="input_limited_wrapper_3_digital">
@@ -448,9 +451,9 @@ class NewStaff extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, staff } = state;
+    const { alert, staff, authentication } = state;
     return {
-        alert, staff
+        alert, staff, authentication
     };
 }
 

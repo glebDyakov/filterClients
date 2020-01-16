@@ -97,7 +97,7 @@ function updateWorkingHours(timing, id) {
         });
 }
 
-function update(params) {
+function update(params, staffId) {
     const requestOptions = {
         method: 'PATCH',
         crossDomain: true,
@@ -109,7 +109,7 @@ function update(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/staffs`, requestOptions)
+    return fetch(`${config.apiUrl}/staffs/${staffId}`, requestOptions)
         .then(handleResponse)
         .then(staff => {
             return staff;

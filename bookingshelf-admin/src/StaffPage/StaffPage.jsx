@@ -644,7 +644,7 @@ class StaffPage extends Component {
     updateStaff(staff){
         const { dispatch } = this.props;
 
-        dispatch(staffActions.update(JSON.stringify(staff)));
+        dispatch(staffActions.update(JSON.stringify(staff), staff.staffId));
     };
 
     addStaff(staff){
