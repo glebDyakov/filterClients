@@ -172,9 +172,10 @@ class IndexPage extends PureComponent {
 
     selectStaff (staff){
         const { isStartMovingVisit } = this.props.staff
-        const {staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointment, nearestTime }=this.state;
+        const { flagAllStaffs }=this.state;
+        let screen = 2;
 
-        let staffId=staff;
+        // let staffId=staff;
         if((staff && staff.length) === 0){
             this.setState({flagAllStaffs: true});
         }
@@ -187,8 +188,16 @@ class IndexPage extends PureComponent {
         //             }
         //         }))
         // }
-        this.setState({selectedStaff:staffId})
-        this.setScreen(isStartMovingVisit ? 3 : 2)
+        if (flagAllStaffs) {
+            screen = 3;
+            this.setDefaultFlag();
+            this.refreshTimetable(this.state.month, staff)
+        }
+        if (isStartMovingVisit) {
+            screen = 3;
+        }
+        this.setState({selectedStaff: staff})
+        this.setScreen(screen)
     }
 
     selectSubcompany(subcompany) {
@@ -269,7 +278,7 @@ class IndexPage extends PureComponent {
 
     render() {
         const { history, match } = this.props;
-        const {selectedStaff, selectedSubcompany, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
+        const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, clients } = this.props.staff;
 
@@ -314,10 +323,13 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        setDefaultFlag={this.setDefaultFlag}
                         match={match}
                         history={history}
                         clearStaff={this.clearStaff}
                         subcompanies={subcompanies}
+                        flagAllStaffs={flagAllStaffs}
+                        selectedServices={selectedServices}
                         info={info}
                         movingVisit={movingVisit}
                         services={services}
@@ -333,6 +345,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 2 &&
                     <TabTwo
+                        flagAllStaffs={flagAllStaffs}
                         serviceGroups={serviceGroups}
                         selectedServices={selectedServices}
                         selectedStaff={selectedStaff}
@@ -482,7 +495,7 @@ class IndexPage extends PureComponent {
         let allPriceTo = 0;
 
         let numbers = [];
-        let changedStaff = selectedStaff;
+        //let changedStaff = selectedStaff;
 
         if (selectedServices && selectedServices.length) {
 
@@ -490,23 +503,23 @@ class IndexPage extends PureComponent {
             //     changedStaff = staffs.filter((staff) => selectedServices[0].staffs[0].staffId === staff.staffId)[0]
             // }
 
-            if(this.state.flagAllStaffs){
-            selectedServices && selectedServices[0] && selectedServices[0].staffs.map((staff, idStaff) =>
-                nearestTime && nearestTime.map((time, id)=>{
-                    if(time.staffId===staff.staffId && time.availableDays.length!==0){
-                        if (changedStaff.length === 0){
-                            changedStaff = time;
-                        } else if(time.availableDays[0].availableTimes[0].startTimeMillis < changedStaff.availableDays[0].availableTimes[0].startTimeMillis){
-                            changedStaff = time;
-                        }
-                    }
-            }))} else {
-                if (selectedServices && selectedServices[0] && selectedServices[0].staffs && staffs) {
-                        changedStaff = staffs.filter((staff) => selectedServices[0].staffs[0].staffId === staff.staffId)[0]
-                    }
-            }
-            let imgChangedStaff = staffs && staffs.find(item => item.staffId === changedStaff.staffId).imageBase64;
-            changedStaff.imageBase64 = imgChangedStaff;
+            // if(this.state.flagAllStaffs){
+            // selectedServices && selectedServices[0] && selectedServices[0].staffs && selectedServices[0].staffs.map((staff, idStaff) =>
+            //     nearestTime && nearestTime.map((time, id)=>{
+            //         if(time.staffId===staff.staffId && time.availableDays.length!==0){
+            //             if (changedStaff.length === 0){
+            //                 changedStaff = time;
+            //             } else if(time.availableDays[0].availableTimes[0].startTimeMillis < changedStaff.availableDays[0].availableTimes[0].startTimeMillis){
+            //                 changedStaff = time;
+            //             }
+            //         }
+            // }))} else {
+            //     if (selectedServices && selectedServices[0] && selectedServices[0].staffs && staffs) {
+            //             changedStaff = staffs.filter((staff) => selectedServices[0].staffs[0].staffId === staff.staffId)[0]
+            //         }
+            // }
+            // let imgChangedStaff = staffs && staffs.find(item => item.staffId === changedStaff.staffId).imageBase64;
+            // changedStaff.imageBase64 = imgChangedStaff;
 
             let totalDuration = 0;
             selectedServices.forEach(service => {
@@ -519,7 +532,7 @@ class IndexPage extends PureComponent {
             }
 
         }
-        this.setState({selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers, selectedStaff: selectedStaff && selectedStaff.staffId ? selectedStaff : changedStaff,
+        this.setState({selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers,
             month:moment().utc().startOf('month').toDate()})
 
         if(selectedServices.length === 0 && this.state.flagAllStaffs){
@@ -566,9 +579,9 @@ class IndexPage extends PureComponent {
 
     }
 
-    refreshTimetable(newMonth = this.state.month) {
+    refreshTimetable(newMonth = this.state.month, selectedStaff = this.state.selectedStaff) {
         const { movingVisit } = this.props.staff
-        const { selectedServices, services, selectedStaff } = this.state;
+        const { selectedServices, services } = this.state;
         let serviceIdList = this.getServiceIdList(selectedServices);
         const {company} = this.props.match.params;
         let appointmentsIdList = ''
@@ -595,15 +608,17 @@ class IndexPage extends PureComponent {
 
         }
 
-        this.props.dispatch(staffActions.getTimetableAvailable(
-            company,
-            selectedStaff && selectedStaff.staffId,
-            moment(newMonth).startOf('month').format('x'),
-            moment(newMonth).endOf('month').format('x'),
-            serviceIdList,
-            appointmentsIdList,
-            staffsIdList
-        ));
+        if (selectedStaff && selectedStaff.staffId && serviceIdList) {
+            this.props.dispatch(staffActions.getTimetableAvailable(
+                company,
+                selectedStaff.staffId,
+                moment(newMonth).startOf('month').format('x'),
+                moment(newMonth).endOf('month').format('x'),
+                serviceIdList,
+                appointmentsIdList,
+                staffsIdList
+            ));
+        }
     }
 
     showPrevWeek (){

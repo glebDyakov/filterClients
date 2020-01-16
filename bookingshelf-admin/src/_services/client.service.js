@@ -128,7 +128,7 @@ function getClientV2(pageNum, searchValue, blacklisted) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=20${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=10${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
 }
 
 function getActiveClientAppointments(clientId) {

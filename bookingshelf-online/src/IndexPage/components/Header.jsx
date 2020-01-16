@@ -29,7 +29,7 @@ class Header extends  PureComponent {
                             <span className="mobile" />
                         </div>
                         <p className="phones_firm">
-                            {info.companyPhone1 && info.companyPhone1.length > 4 && <a href={"tel:" + info.companyPhone1}>{info.companyPhone1}</a>}
+                            {/*{info.companyPhone1 && info.companyPhone1.length > 4 && <a href={"tel:" + info.companyPhone1}>{info.companyPhone1}</a>}*/}
                             {info.companyPhone2 && info.companyPhone2.length > 4 && <a href={"tel:" + info.companyPhone2}>{info.companyPhone2}</a>}
                             {info.companyPhone3 && info.companyPhone3.length > 4 && <a href={"tel:" + info.companyPhone3}>{info.companyPhone3}</a>}
                             <span className="closer" />
