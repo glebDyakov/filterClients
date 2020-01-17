@@ -1077,7 +1077,7 @@ class AddAppointment extends React.Component {
         });
         this.closeModal();
         const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
-        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, isAddCostaff ? finalCoStaffs : [])
+        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked ? clientChecked.clientId : -1, isAddCostaff ? finalCoStaffs : [])
     }
 
     editAppointment (){
