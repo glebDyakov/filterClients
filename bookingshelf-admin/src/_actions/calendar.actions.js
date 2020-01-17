@@ -41,7 +41,7 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
                     dispatch(success(appointment, staffId));
                     dispatch(successTime(1))
                     dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+                    // dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
                     dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {

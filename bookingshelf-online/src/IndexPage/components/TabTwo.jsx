@@ -81,7 +81,7 @@ class TabTwo extends Component {
                         services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
                         flagAllStaffs
 
-                    let finalServices = services
+                    let finalServices
 
                     if (flagAllStaffs) {
                         if (selectedServices && selectedServices.length) {
@@ -89,6 +89,8 @@ class TabTwo extends Component {
                         } else {
                             finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
                         }
+                    } else {
+                        finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
                     }
 
                     return condition && finalServices && finalServices.length > 0 && (

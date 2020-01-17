@@ -320,7 +320,8 @@ export function calendar(state = initialState, action) {
 
             appointmentsToDelete.forEach((newItem, i) => {
                 let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                let activeAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId)
+                let indexAppointmentsCount = activeAppointmentsCount ? activeAppointmentsCount.appointments.findIndex(item=>item.appointmentId === newItem.appointmentId) : -1
                 if (indexElem !== -1) {
                     newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
                 }
