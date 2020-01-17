@@ -440,7 +440,7 @@ class TabScroll extends Component{
                                                         </p>
 
 
-                                                        {appointment[0][0] && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                        {appointment[0][0].clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
                                                             {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] &&
                                                             <span
@@ -453,9 +453,9 @@ class TabScroll extends Component{
                                                                 }} />
                                                             }
                                                         </p>}
-                                                        {appointment[0][0] && <p className="name">{appointment[0][0].clientName}</p>}
-                                                        {access(4) && appointment[0][0] && <p>{appointment[0][0].clientPhone}</p>}
-                                                        {appointment[0][0] && <p style={{ height: '30px' }}>
+                                                        {appointment[0][0].clientId && <p className="name">{appointment[0][0].clientName}</p>}
+                                                        {access(4) && appointment[0][0].clientId && <p>{appointment[0][0].clientPhone}</p>}
+                                                        {appointment[0][0].clientId && <p style={{ height: '30px' }}>
                                                             <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox">
                                                                 Клиент не пришел
 
