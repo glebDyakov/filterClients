@@ -8,6 +8,7 @@ export const calendarService = {
     editAppointment,
     editAppointment2,
     getAppointments,
+    getAppointmentsV1,
     getAppointmentsCanceled,
     approveAppointment,
     approveAllAppointment,
@@ -221,6 +222,20 @@ function getAppointments(dateFrom, dateTo) {
     };
 
     return fetch(`${config.apiUrlv2}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+}
+
+function getAppointmentsV1(dateFrom, dateTo) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
 }
 
 function getAppointmentsCanceled(dateFrom, dateTo, id) {

@@ -256,7 +256,7 @@ function toggleRefreshAvailableTimes(refreshAvailableTimes) {
 function getAppointmentsCount(dateFrom, dateTo) {
     return dispatch => {
         dispatch(request());
-        calendarService.getAppointments(dateFrom, dateTo)
+        calendarService.getAppointmentsV1(dateFrom, dateTo)
             .then(
                 appointments => dispatch(success(appointments)),
                 () => dispatch(failure())
