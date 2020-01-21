@@ -302,68 +302,26 @@ class TabScroll extends Component{
                         <TabScrollLeftMenu time={time}/>
                         {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
                             let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
-                            let appointment = appointments &&
-                                appointments.map((appointmentStaff) =>
-                                    appointmentStaff.appointments &&
-                                    (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId) &&
-                                    appointmentStaff.appointments.filter((appointment)=>{
-                                        return currentTime <= parseInt(appointment.appointmentTimeMillis)
-                                            && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
-                                    })
-                                );
+                            const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
+                                (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
+                            );
+                            let appointment = staffAppointments && staffAppointments.appointments.find((appointment)=>
+                                currentTime <= parseInt(appointment.appointmentTimeMillis)
+                                && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
+                            );
 
-                            let reservedTime = reservedTimeFromProps &&
-                                reservedTimeFromProps.map((reserve) =>
-                                    reserve.reservedTimes &&
-                                    reserve.staff.staffId === workingStaffElement.staffId &&
-                                    reserve.reservedTimes.filter((localReservedTime)=>{
-                                        return currentTime <= parseInt(localReservedTime.startTimeMillis)
-                                            && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(localReservedTime.startTimeMillis)
-                                    })
-                                );
-
-                            appointment = appointment && appointment.filter(Boolean)
-                            reservedTime = reservedTime && reservedTime.filter(Boolean)
-
-                            let clDate = closedDates && closedDates.some((st) =>
-                                parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-                                parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
-
-
-                            let workingTimeEnd=null;
-                            let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                workingStaffElement.availableDays.some((availableDay)=>
-                                    parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                    availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                        workingTimeEnd=workingTime.endTimeMillis;
-                                        if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                            const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-
-                                            if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                                return true
-                                            }
-                                        }
-                                        return currentTime>=parseInt(moment().format("x"))
-                                            && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    }
-
-                                    ));
-
-                            let resultMarkup;
-                            if(appointment && appointment[0] && appointment[0].length > 0 && !appointment[0][0].coAppointmentId && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment[0][0].appointmentId)) {
-                                let totalDuration = appointment[0][0].duration;
+                            if(appointment && !appointment.coAppointmentId && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment.appointmentId)) {
+                                let totalDuration = appointment.duration;
                                 let appointmentServices = [];
                                 let totalCount = 0;
-                                let totalPrice = appointment[0][0].price
-                                let totalAmount = appointment[0][0].totalAmount
-                                const currentAppointments = [appointment[0][0]]
-                                const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId)
-                                appointmentServices.push({ ...activeService, discountPercent: appointment[0][0].discountPercent, totalAmount: appointment[0][0].totalAmount, price: appointment[0][0].price, serviceName: appointment[0][0].serviceName, serviceId: appointment[0][0].serviceId});
-                                if (appointment[0][0].hasCoAppointments) {
+                                let totalPrice = appointment.price
+                                let totalAmount = appointment.totalAmount
+                                const currentAppointments = [appointment]
+                                const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
+                                appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
+                                if (appointment.hasCoAppointments) {
                                     appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                                        if (currentAppointment.coAppointmentId === appointment[0][0].appointmentId) {
+                                        if (currentAppointment.coAppointmentId === appointment.appointmentId) {
                                             totalDuration += currentAppointment.duration;
                                             const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
                                             appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})
@@ -374,8 +332,6 @@ class TabScroll extends Component{
                                             currentAppointments.push(currentAppointment)
                                         }
                                     }))
-
-
                                 }
                                 let extraServiceText;
                                 switch (totalCount) {
@@ -393,60 +349,60 @@ class TabScroll extends Component{
                                     default:
                                         extraServiceText = `и ещё 5+ услуг`;
                                 }
-                                const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
-                                const resultTextArea = `${appointment[0][0].clientName ? ('Клиент: ' + appointment[0][0].clientName) + '\n' : ''}${appointment[0][0].serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment[0][0].currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment[0][0].currency + ')') : ''} ${appointment[0][0].description ? `\nЗаметка: ${appointment[0][0].description}` : ''}`;
-                                // const appointment[0][0] = clients && clients.find((client) => client.clientId === appointment[0][0].clientId)
-                                resultMarkup = (
+                                const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
+                                const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+                                // const appointment = clients && clients.find((client) => client.clientId === appointment.clientId)
+                                return (
                                     <div
                                         className={(currentTime <= moment().format("x")
-                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment[0][0].appointmentId === selectedNote ? 'selectedNote' : '')}
+                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')}
                                     >
-                                        {!appointment[0][0].coAppointmentId && (
+                                        {!appointment.coAppointmentId && (
                                             <div
-                                                className={"notes " + appointment[0][0].appointmentId + " " + appointment[0][0].color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment[0][0].duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment[0][0].appointmentId === selectedNote ? ' selected' : '')}
-                                                key={appointment[0][0].appointmentId + "_" + key}
-                                                id={appointment[0][0].appointmentId + "_" + workingStaffElement.staffId + "_" + appointment[0][0].duration + "_" + appointment[0][0].appointmentTimeMillis + "_" + moment(appointment[0][0].appointmentTimeMillis, 'x').add(appointment[0][0].duration, 'seconds').format('x')}
+                                                className={"notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
+                                                key={appointment.appointmentId + "_" + key}
+                                                id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
                                             >
-                                                <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment[0][0].appointmentId === selectedNote ? null : appointment[0][0].appointmentId})}>
+                                                <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment.appointmentId === selectedNote ? null : appointment.appointmentId})}>
                                                     <span className="delete"
                                                           data-toggle="modal"
                                                           data-target=".delete-notes-modal"
                                                           title="Отменить встречу"
-                                                          onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}/>
-                                                    {!appointment[0][0].online &&
+                                                          onClick={() => approveAppointmentSetter(appointment.appointmentId)}/>
+                                                    {!appointment.online &&
                                                     <span className="pen"
                                                           title="Запись через журнал"/>}
                                                     {/*<span className="men"*/}
                                                     {/*title="Постоянный клиент"/>*/}
-                                                    {appointment[0][0].online &&
+                                                    {appointment.online &&
                                                     <span className="globus"
                                                           title="Онлайн-запись"/>}
 
 
 
                                                     <span
-                                                        className={`${appointment[0][0].regularClient? 'old' : 'new'}-client-icon`}
-                                                        title={appointment[0][0].regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+                                                        className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
+                                                        title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
 
 
-                                                    {!appointment[0][0] &&
+                                                    {!appointment.clientId &&
                                                             <span
                                                                 className="no-client-icon"
                                                                 title="Визит от двери"/>
                                                     }
 
-                                                    {!!appointment[0][0].discountPercent &&
+                                                    {!!appointment.discountPercent &&
                                                     <span className="percentage"
-                                                          title={`${appointment[0][0].discountPercent}%`}
+                                                          title={`${appointment.discountPercent}%`}
                                                     />}
 
-                                                    {appointment[0][0].hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                                                    {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
-                                                                                    {moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                        {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                                                                                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                        {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                                 </span>
                                                 </p>
-                                                <p id={`${appointment[0][0].appointmentId}-textarea-wrapper`} className="notes-container"
+                                                <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
                                                    style={{
                                                        minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
                                                        height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
@@ -457,9 +413,9 @@ class TabScroll extends Component{
                                                     {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
                                                     <p onMouseDown={(e) => {
                                                         this.setState({
-                                                            changingVisit: appointment[0][0],
+                                                            changingVisit: appointment,
                                                             changingPos: e.pageY,
-                                                            offsetHeight: document.getElementById(`${appointment[0][0].appointmentId}-textarea-wrapper`).offsetHeight
+                                                            offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
                                                         })
                                                     }} style={{
                                                         cursor: 'ns-resize',
@@ -482,22 +438,22 @@ class TabScroll extends Component{
                                                         </p>
 
 
-                                                        {appointment[0][0].clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                        {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] &&
+                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment &&
                                                             <span
                                                                 className="clientEye clientEye-info"
                                                                 data-target=".client-detail"
                                                                 title="Просмотреть клиента"
                                                                 onClick={(e) => {
                                                                     $('.client-detail').modal('show')
-                                                                    handleUpdateClient(appointment[0][0].clientId)
+                                                                    handleUpdateClient(appointment.clientId)
                                                                 }} />
                                                             }
                                                         </p>}
-                                                        {appointment[0][0].clientId && <p className="name">{appointment[0][0].clientName}</p>}
-                                                        {access(4) && appointment[0][0].clientId && <p>{appointment[0][0].clientPhone}</p>}
-                                                        {appointment[0][0].clientId && <p style={{ height: '30px' }}>
+                                                        {appointment.clientId && <p className="name">{appointment.clientName}</p>}
+                                                        {access(4) && appointment.clientId && <p>{appointment.clientPhone}</p>}
+                                                        {appointment.clientId && <p style={{ height: '30px' }}>
                                                             <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
                                                                 Клиент не пришел
 
@@ -505,7 +461,7 @@ class TabScroll extends Component{
                                                                     <div style={{ margin: '0 0 0 auto', left: '15px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                                                     :
                                                                     <label>
-                                                                        <input className="form-check-input" checked={appointment[0][0].clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment[0][0].appointmentId, JSON.stringify({ clientNotCome: !appointment[0][0].clientNotCome } )))}
+                                                                        <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
                                                                                type="checkbox"/>
                                                                         <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
                                                                     </label>
@@ -516,7 +472,7 @@ class TabScroll extends Component{
 
                                                         <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
                                                         {appointmentServices.map(service => {
-                                                            const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment[0][0].serviceId) || {}).details
+                                                            const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
                                                             return <p>
 
                                                                 {service.serviceName} {details ? `(${details})` : ''}
@@ -526,24 +482,24 @@ class TabScroll extends Component{
                                                                         ({service.totalAmount} {service.currency})
                                                                     </span>}
                                                                 </span>
-                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment[0][0] && appointment[0][0].clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment && appointment.clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
 
 
                                                             </p>
                                                         })
                                                         }
-                                                        <p>{moment(appointment[0][0].appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                            {moment(appointment[0][0].appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                                                        <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                            {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                         <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
-                                                        {appointment[0][0].description && <p>Заметка: {appointment[0][0].description}</p>}
+                                                        {appointment.description && <p>Заметка: {appointment.description}</p>}
 
-                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment[0][0] && <a*/}
+                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment && <a*/}
                                                         {/*    className="a-client-info"*/}
                                                         {/*    data-target=".client-detail"*/}
                                                         {/*    title="Просмотреть клиента"*/}
                                                         {/*    onClick={(e) => {*/}
                                                         {/*        $('.client-detail').modal('show')*/}
-                                                        {/*        handleUpdateClient(appointment[0][0])*/}
+                                                        {/*        handleUpdateClient(appointment)*/}
                                                         {/*    }}><p>Просмотреть клиента</p>*/}
                                                         {/*</a>}*/}
 
@@ -554,7 +510,7 @@ class TabScroll extends Component{
                                                                 }}
                                                                      data-toggle="modal"
                                                                      data-target=".start-moving-modal"
-                                                                     onClick={() => this.startMovingVisit(appointment[0][0], totalDuration)}
+                                                                     onClick={() => this.startMovingVisit(appointment, totalDuration)}
                                                                      className="msg-inner-button-wrapper"
                                                                 >
                                                                     <button className="button"
@@ -581,7 +537,7 @@ class TabScroll extends Component{
                                                                      className="msg-inner-button-wrapper"
                                                                      data-toggle="modal"
                                                                      data-target=".delete-notes-modal"
-                                                                     onClick={() => approveAppointmentSetter(appointment[0][0].appointmentId)}
+                                                                     onClick={() => approveAppointmentSetter(appointment.appointmentId)}
                                                                 >
                                                                     <button className="button"
                                                                             style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
@@ -599,10 +555,19 @@ class TabScroll extends Component{
                                         )}
                                     </div>
                                 )
-                            } else if ( reservedTime && reservedTime[0] && reservedTime[0].length > 0 ) {
-                                const textAreaHeight = (parseInt(((moment.utc(reservedTime[0][0].endTimeMillis - reservedTime[0][0].startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
+                            }
 
-                                resultMarkup = (
+                            const staffReservedTimes = reservedTimeFromProps && reservedTimeFromProps.find((reserve) => reserve.reservedTimes && reserve.staff.staffId === workingStaffElement.staffId);
+
+                            let reservedTime = staffReservedTimes && staffReservedTimes.reservedTimes && staffReservedTimes.reservedTimes.find((localReservedTime)=>
+                                currentTime <= parseInt(localReservedTime.startTimeMillis)
+                                && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(localReservedTime.startTimeMillis)
+                            )
+
+                            if (reservedTime) {
+                                const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
+
+                                return (
                                     <div className='reserve'>
                                         <div className="notes color-grey"
                                              style={{backgroundColor: "darkgrey"}}>
@@ -615,7 +580,7 @@ class TabScroll extends Component{
                                                                              data-target=".delete-reserve-modal"
                                                                              title="Удалить"
                                                                              onClick={() => updateReservedId(
-                                                                                 reservedTime[0][0].reservedTimeId,
+                                                                                 reservedTime.reservedTimeId,
                                                                                  workingStaffElement.staffId
                                                                              )}
                                                 />}
@@ -623,23 +588,23 @@ class TabScroll extends Component{
                                                 <span
                                                     className="service_time"
                                                 >
-                                                    {moment(reservedTime[0][0].startTimeMillis, 'x').format('HH:mm')}
+                                                    {moment(reservedTime.startTimeMillis, 'x').format('HH:mm')}
                                                     -
-                                                    {moment(reservedTime[0][0].endTimeMillis, 'x').format('HH:mm')}
+                                                    {moment(reservedTime.endTimeMillis, 'x').format('HH:mm')}
                                                 </span>
 
                                             </p>
                                             <p className="notes-container"
                                                style={{height: textAreaHeight+ "px"}}>
                                                                             <span
-                                                                                style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime[0][0].description}</span>
+                                                                                style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime.description}</span>
                                                 {textAreaHeight > 0 && <span className="delete-notes"
                                                       style={{right: '5px'}}
                                                       data-toggle="modal"
                                                       data-target=".delete-reserve-modal"
                                                       title="Удалить"
                                                       onClick={() => updateReservedId(
-                                                          reservedTime[0][0].reservedTimeId,
+                                                          reservedTime.reservedTimeId,
                                                           workingStaffElement.staffId
                                                       )}
                                                 />}
@@ -648,7 +613,33 @@ class TabScroll extends Component{
                                     </div>
                                 )
                             } else {
-                                resultMarkup = (
+                                let clDate = closedDates && closedDates.some((st) =>
+                                    parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+                                    parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+
+
+                                let workingTimeEnd=null;
+                                let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                    workingStaffElement.availableDays.some((availableDay)=>
+                                        parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                        availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                            workingTimeEnd=workingTime.endTimeMillis;
+                                            if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                                const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+
+                                                if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                                    return true
+                                                }
+                                            }
+                                            return currentTime>=parseInt(moment().format("x"))
+                                                && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                        }
+
+                                        ));
+
+                                return (
                                     <div
                                         id={currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                         className={`col-tab ${currentTime <= moment().format("x")
@@ -668,7 +659,6 @@ class TabScroll extends Component{
                                     </div>
                                 )
                             }
-                            return resultMarkup;
 
                         }))
                         }
