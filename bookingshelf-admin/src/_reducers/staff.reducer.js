@@ -207,14 +207,12 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
                 ...state,
-                isLoading: true
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
 
             return {
                 ...state,
-                isLoading:false,
                 availableTimetable: action.payload.availableTimetable,
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
