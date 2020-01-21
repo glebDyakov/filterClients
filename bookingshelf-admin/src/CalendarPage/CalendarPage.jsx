@@ -280,10 +280,11 @@ class CalendarPage extends PureComponent {
     }
 
     refreshTable(startTime, endTime, updateReservedTime = true) {
+        const { type } = this.state
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
         if (updateReservedTime) {
-            this.props.dispatch(staffActions.getTimetable(startTime, moment(endTime, 'x').startOf('day').format('x')));
+            this.props.dispatch(staffActions.getTimetable(startTime, type === 'day' ? moment(endTime, 'x').add(1, 'week').startOf('day').format('x') : moment(endTime, 'x').startOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
         }
     }
