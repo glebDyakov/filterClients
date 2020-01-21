@@ -14,18 +14,23 @@ class TabScroll extends Component{
             movingVisitMillis: 0,
             movingVisitStaffId: null,
             prevVisitStaffId: null,
-            selectedNote: null
+            selectedNote: null,
+            numbers: []
         }
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
+        this.getHours24 = this.getHours24.bind(this);
     }
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
         if (newProps.isStartMovingVisit && newProps.isMoveVisit) {
             this.makeMovingVisitQuery()
+        }
+        if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
+            this.getHours24(newProps.timetable);
         }
     }
 
@@ -37,6 +42,41 @@ class TabScroll extends Component{
             document.removeEventListener('mousemove', this.handleMouseMove, false);
             document.removeEventListener('mouseup', this.handleMouseUp, false);
         }
+    }
+
+    getHours24 (timetable){
+        let minTime = 0
+        let maxTime = 0
+        timetable.forEach(timetableItem => {
+            timetableItem.timetables.forEach(time => {
+                if (!minTime || (time.startTimeMillis < minTime)) {
+                    minTime = time.startTimeMillis
+                }
+
+                if (!maxTime || (time.endTimeMillis > maxTime)) {
+                    maxTime = time.endTimeMillis
+                }
+
+            })
+        })
+        let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
+        let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
+
+        let numbers =[];
+
+        let startNumber = startTime % 60
+            ? (startTime - parseInt(moment(minTime).format('mm')))
+            : (startTime - 60);
+
+        let endNumber = endTime % 60
+            ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
+            : (endTime + 60);
+
+        for (let i = startNumber; i < endNumber; i = i + 15) {
+            numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
+        }
+
+        this.setState({ numbers });
     }
 
     handleMouseMove(e) {
@@ -247,9 +287,11 @@ class TabScroll extends Component{
             prevVisitStaffId: null
         })
     }
+
     render(){
-        const { authentication, numbers, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId } = this.state;
+        const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers } = this.state;
+
 
         return(
             <div className="tabs-scroll"
