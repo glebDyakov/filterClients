@@ -17,7 +17,7 @@ class TabScrollHeader extends PureComponent {
                         }}
                     >
                         <div className="tab-content-list tab-content-list-first">
-                            <div style={{ visibility: 'hidden' }} className="hours"><span></span></div>
+                            {availableTimetable && <div className="hours"><span></span></div>}
 
                             {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
@@ -41,7 +41,7 @@ class TabScrollHeader extends PureComponent {
                 )}
                 <div className="fixed-tab" style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}>
                     <div className="tab-content-list">
-                        <div style={{ visibility: 'hidden' }}  className="hours"><span></span></div>
+                        {selectedDays.length>1 && <div className="hours"><span></span></div>}
 
                         {
                             selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
