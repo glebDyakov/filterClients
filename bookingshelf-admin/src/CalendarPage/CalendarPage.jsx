@@ -411,20 +411,6 @@ class CalendarPage extends PureComponent {
             }
         }
 
-
-        if (newProps.calendar.isAppointmentUpdated) {
-            let startTime, endTime;
-            if (this.state.type === 'day') {
-                startTime = this.state.selectedDayMoment.startOf('day').format('x');
-                endTime = this.state.selectedDayMoment.endOf('day').format('x');
-            } else {
-                startTime = moment(this.state.selectedDays[0]).startOf('day').format('x');
-                endTime = moment(this.state.selectedDays[6]).endOf('day').format('x');
-            }
-            this.props.dispatch(calendarActions.updateAppointmentFinish())
-            this.refreshTable(startTime, endTime);
-        }
-
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
             this.updateCalendar(false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
