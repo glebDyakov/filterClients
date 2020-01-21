@@ -122,7 +122,9 @@ class TabScroll extends Component{
             if (newDuration > 0) {
                 this.props.dispatch(calendarActions.updateAppointment(
                     changingVisit.appointmentId,
-                    JSON.stringify({ duration: changingVisit.duration + newDuration })
+                    JSON.stringify({ duration: changingVisit.duration + newDuration }),
+                    false,
+                    true
                 ))
             } else {
                 let timeout = 0;
@@ -134,7 +136,9 @@ class TabScroll extends Component{
                             setTimeout(() => {
                                 this.props.dispatch(calendarActions.updateAppointment(
                                     coAppointment.appointmentId,
-                                    JSON.stringify({duration: newDuration})
+                                    JSON.stringify({duration: newDuration}),
+                                    false,
+                                    true
                                 ))
                             }, 1000 * timeout)
                         } else {
@@ -143,7 +147,9 @@ class TabScroll extends Component{
                             setTimeout(() => {
                                 this.props.dispatch(calendarActions.updateAppointment(
                                     coAppointment.appointmentId,
-                                    JSON.stringify({duration: 900})
+                                    JSON.stringify({duration: 900}),
+                                    false,
+                                    true
                                 ))
                             }, 1000 * timeout)
                             timeout++;
@@ -154,7 +160,9 @@ class TabScroll extends Component{
         } else {
             this.props.dispatch(calendarActions.updateAppointment(
                 changingVisit.appointmentId,
-                JSON.stringify({ duration: changingVisit.duration + newDuration })
+                JSON.stringify({ duration: changingVisit.duration + newDuration }),
+                false,
+                true
             ))
         }
 

@@ -106,6 +106,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
             return {
                 ...state,
+                isAppointmentUpdated: action.isAppointmentUpdated,
                 isLoading: false
             };
         case calendarConstants.ADD_RESERVED_TIME_REQUEST:
