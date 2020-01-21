@@ -963,6 +963,8 @@ class AddAppointment extends React.Component {
                                                                                     <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
                                                                                 {appointment.description ? <span
                                                                                     className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                                                {appointment.clientNotCome ? <span
+                                                                                    style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
                                                                             </p>
                                                                         </div>
 

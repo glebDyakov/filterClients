@@ -10,7 +10,7 @@ class NewClient extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: props.client_working && this.props.edit ?props.client_working: {
+            client: props.client.activeClient && this.props.edit ?props.client.activeClient: {
                 "firstName": "",
                 "lastName": "",
                 "email": "",
@@ -53,7 +53,7 @@ class NewClient extends React.Component {
         const {client, edit, alert, clients}=this.state;
 
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="">
                 {client  &&
                 <div>

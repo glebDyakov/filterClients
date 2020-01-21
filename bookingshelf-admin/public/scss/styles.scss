@@ -333,6 +333,9 @@ input{
         }
     }
 }
+.red-text {
+    color: red;
+}
 .company_fields{
     .input-text2, input{
         height: 100%;
@@ -4031,7 +4034,7 @@ textarea {
 .modal---modal-overlay---3D5Nr{
     z-index: 1!important;
 }
-.modal---modal-overlay---3D5Nr, .client-detail, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal{
+.modal---modal-overlay---3D5Nr, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal{
     //margin-right: -125px;
     margin-left: 250px;
     //z-index: 2!important;

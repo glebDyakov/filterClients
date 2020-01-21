@@ -110,12 +110,10 @@ class ClientsPage extends Component {
     handleFileSubmit(e) {
         e.preventDefault();
         console.log(e)
-        debugger
         console.log(this.state.uploadFile)
         const formData = new FormData();
         formData.append('file', this.state.uploadFile);
 
-        debugger
         const reader = new FileReader();
 
         this.props.dispatch(clientActions.uploadFile(formData))

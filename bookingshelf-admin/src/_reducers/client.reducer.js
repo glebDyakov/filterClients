@@ -81,11 +81,25 @@ export function client(state= { activeClientAppointments: [] }, action) {
       case clientConstants.UPDATE_CLIENT_SUCCESS:
           const clients=state.client;
 
-          clients.find((item, key)=>{
-              if(item.clientId===action.client.clientId){
-                  clients[key]={...clients[key], discountPercent: action.client.discountPercent, firstName: action.client.firstName, lastName: action.client.lastName, phone: action.client.phone, email: action.client.email, acceptNewsletter: action.client.acceptNewsletter, city: action.client.city, country: action.client.country, province: action.client.province, blacklisted: action.client.blacklisted};
-              }
-          });
+          if (clients && clients.length) {
+              clients.find((item, key) => {
+                  if (item.clientId === action.client.clientId) {
+                      clients[key] = {
+                          ...clients[key],
+                          discountPercent: action.client.discountPercent,
+                          firstName: action.client.firstName,
+                          lastName: action.client.lastName,
+                          phone: action.client.phone,
+                          email: action.client.email,
+                          acceptNewsletter: action.client.acceptNewsletter,
+                          city: action.client.city,
+                          country: action.client.country,
+                          province: action.client.province,
+                          blacklisted: action.client.blacklisted
+                      };
+                  }
+              });
+          }
 
           return {
               ...state,
