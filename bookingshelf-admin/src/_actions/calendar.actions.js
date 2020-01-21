@@ -39,10 +39,11 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
             .then(
                 appointment => {
                     dispatch(success(appointment, staffId));
-                    dispatch(successTime(1))
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    setTimeout(()=>dispatch(successTime(1)), 3000);
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                     // dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
-                    dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
+                    // dispatch(companyActions.getAppointmentsCountMarkerIncrement())
+                    // dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {
                     dispatch(failure(error.toString()));

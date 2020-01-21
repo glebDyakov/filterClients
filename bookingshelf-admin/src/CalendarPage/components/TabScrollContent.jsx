@@ -24,6 +24,12 @@ class TabScroll extends Component{
         this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
         this.getHours24 = this.getHours24.bind(this);
     }
+    componentDidMount() {
+        if (this.props.timetable && this.props.timetable.length) {
+            this.getHours24(this.props.timetable);
+        }
+    }
+
     componentWillReceiveProps(newProps){
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
         if (newProps.isStartMovingVisit && newProps.isMoveVisit) {
@@ -49,11 +55,11 @@ class TabScroll extends Component{
         let maxTime = 0
         timetable.forEach(timetableItem => {
             timetableItem.timetables.forEach(time => {
-                if (!minTime || (time.startTimeMillis < minTime)) {
+                if (!minTime || (moment(time.startTimeMillis).format('HH:mm') < moment(minTime).format('HH:mm'))) {
                     minTime = time.startTimeMillis
                 }
 
-                if (!maxTime || (time.endTimeMillis > maxTime)) {
+                if (!maxTime || (moment(time.endTimeMillis).format('HH:mm') > moment(maxTime).format('HH:mm'))) {
                     maxTime = time.endTimeMillis
                 }
 
@@ -61,6 +67,10 @@ class TabScroll extends Component{
         })
         let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
         let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
+
+        // let startTime2 = moment(minTime).format('DD HH:mm')
+        // let endTime2 = moment(maxTime).format('DD HH:mm')
+        // debugger
 
         let numbers =[];
 
