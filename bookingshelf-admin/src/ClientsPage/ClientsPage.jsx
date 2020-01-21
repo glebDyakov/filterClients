@@ -182,7 +182,7 @@ class ClientsPage extends Component {
 
 
                             <div style={{ position: 'relative' }}>
-                                <div style={{ position: 'absolute', zIndex: 2 }} className="row align-items-center content clients mb-2">
+                                <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
                                     <StaffChoice
                                         selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
                                         typeSelected={typeSelected}

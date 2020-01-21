@@ -27,6 +27,7 @@ export const calendarActions = {
     updateAppointmentCheckbox,
     toggleMoveVisit,
     toggleStartMovingVisit,
+    updateAppointmentFinish,
     deleteAppointmentsNewSocket
 };
 
@@ -154,7 +155,7 @@ function editAppointment2(params, id) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_2_FAILURE, error } }
 }
 
-function updateAppointment(id, params, withoutNotify) {
+function updateAppointment(id, params, withoutNotify, isAppointmentUpdated) {
     return dispatch => {
         dispatch(request());
         calendarService.updateAppointment(id, params, withoutNotify)
@@ -171,7 +172,7 @@ function updateAppointment(id, params, withoutNotify) {
     };
     function request(reservedTime) { return { type: calendarConstants.UPDATE_APPOINTMENT, reservedTime } }
 
-    function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS } }
+    function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
 }
 
@@ -191,6 +192,15 @@ function updateAppointmentCheckbox(id, params, withoutNotify) {
     function request() { return { type: calendarConstants.UPDATE_APPOINTMENT_CHECKBOX } }
     function success(appointment) { return { type: calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_SUCCESS, appointment } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_FAILURE, error } }
+}
+
+function updateAppointmentFinish(id, params) {
+    return dispatch => {
+        dispatch(success());
+    };
+
+    function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated: false } }
+    // function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
 function editAppointmentTime(params, time1, time2) {
