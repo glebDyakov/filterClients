@@ -258,14 +258,14 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,
-                isLoading: true,
+                isLoadingAppointments: true,
                 isLoadingModal: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS:
             return {
                 ...state,
                 appointments: action.appointments,
-                isLoading: false,
+                isLoadingAppointments: false,
                 isLoadingModal: false
             };
         case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
@@ -379,7 +379,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                isLoading: false,
+                isLoadingAppointments: false,
                 isLoadingModal: false
             };
 
@@ -418,16 +418,18 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_RESERVED_TIME_REQUEST:
             return {
                 ...state,
+                isLoadingReservedTime: true
             }
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {
                 ...state,
                 reservedTime: action.reservedTime,
+                isLoadingReservedTime: false
             };
         case calendarConstants.GET_RESERVED_TIME_FAILURE:
             return {
                 ...state,
-                isLoading: false
+                isLoadingReservedTime: false
             };
         default:
             return state

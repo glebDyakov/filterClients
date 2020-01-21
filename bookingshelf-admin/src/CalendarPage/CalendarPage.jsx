@@ -490,7 +490,7 @@ class CalendarPage extends PureComponent {
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
         };
-        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading;
+        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading || this.props.calendar.isLoadingAppointments || this.props.calendar.isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
             <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
