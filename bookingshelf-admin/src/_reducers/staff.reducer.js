@@ -190,36 +190,41 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_REQUEST:
             return {
                 ...state,
-                isLoadingStaffInit: true
+                isLoadingStaffInit: true,
+                isLoadingTimetable: true,
             };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
                 timetable: action.timetable,
+                isLoadingTimetable: false,
                 isLoadingStaffInit: false
             };
         case staffConstants.GET_TIMETABLE_FAILURE:
             return {
                 ...state,
                 isLoadingStaffInit: false,
+                isLoadingTimetable: false,
                 error: true
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
                 ...state,
+                isLoadingAvailableTime: true
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
 
             return {
                 ...state,
+                isLoadingAvailableTime:false,
                 availableTimetable: action.payload.availableTimetable,
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
             return {
                 ...state,
-                isLoading:false,
+                isLoadingAvailableTime:false,
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS:
             return {
