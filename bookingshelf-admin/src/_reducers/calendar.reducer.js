@@ -418,13 +418,11 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_RESERVED_TIME_REQUEST:
             return {
                 ...state,
-                isLoading: true
             }
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {
                 ...state,
                 reservedTime: action.reservedTime,
-                isLoading: false
             };
         case calendarConstants.GET_RESERVED_TIME_FAILURE:
             return {
