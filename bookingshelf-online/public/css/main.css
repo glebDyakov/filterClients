@@ -391,6 +391,15 @@ q:before, q:after { content:''; }
     margin: 0 !important;
 }
 
+.tap-service-icon {
+    height: 20px;
+    position: absolute;
+    bottom: 2px;
+    width: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 .specialist .supperVisDet_info p {
     display: flex !important;

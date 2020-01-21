@@ -157,8 +157,12 @@ function update(params, staffId) {
 
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    try {
+                        dispatch(failure(JSON.parse(error)));
+
+                    } catch (e) {
+                        dispatch(failure(error.toString()));
+                    }
                 }
             );
     };

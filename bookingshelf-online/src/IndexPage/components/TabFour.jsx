@@ -155,6 +155,7 @@ class TabFour extends  PureComponent {
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`}/>
                 </div>
             )
         }

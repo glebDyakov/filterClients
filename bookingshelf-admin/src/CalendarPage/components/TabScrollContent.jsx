@@ -456,7 +456,7 @@ class TabScroll extends Component{
                                                         {appointment[0][0].clientId && <p className="name">{appointment[0][0].clientName}</p>}
                                                         {access(4) && appointment[0][0].clientId && <p>{appointment[0][0].clientPhone}</p>}
                                                         {appointment[0][0].clientId && <p style={{ height: '30px' }}>
-                                                            <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox">
+                                                            <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
                                                                 Клиент не пришел
 
                                                                 {isClientNotComeLoading ?

@@ -87,6 +87,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 status: 200,
+                errorMessageKey: null,
                 adding: false
             };
         case staffConstants.GET:
@@ -118,7 +119,8 @@ export function staff(state = initialState, action) {
         case staffConstants.UPDATE_FAILURE:
             return {
                 ...state,
-                status: 209
+                adding: false,
+                errorMessageKey: action.error.messageKey
             };
         case staffConstants.UPDATE_ACCESS_FAILURE:
             return {

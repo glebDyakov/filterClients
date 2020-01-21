@@ -168,6 +168,8 @@ class ClientDetails extends React.Component {
                                                             <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
                                                         {appointment.description ? <span
                                                             className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                        {appointment.clientNotCome ? <span
+                                                            style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
                                                     </p>
                                                 </div>
 
@@ -196,7 +198,7 @@ class ClientDetails extends React.Component {
                         </div>
                         <hr/>
                         <div className="buttons p-4">
-                            <button type="button" className="button" data-toggle="modal"
+                            <button type="button" className="button" data-toggle="modal" data-dismiss="modal"
                                     data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
                             </button>
                         </div>

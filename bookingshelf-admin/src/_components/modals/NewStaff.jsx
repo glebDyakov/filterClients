@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactPhoneInput from "react-phone-input-2";
 import Avatar from 'react-avatar-edit'
 
-import { formatNumber, isValidNumber } from 'libphonenumber-js'
+import { isValidNumber } from 'libphonenumber-js'
 import DayPicker from "react-day-picker";
 import 'react-day-picker/lib/style.css';
 import MomentLocaleUtils from 'react-day-picker/moment';
@@ -13,7 +13,10 @@ import moment from "moment";
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
-import Link from "react-router-dom/es/Link";
+
+const staffErrors = {
+    emailFound: 'validation.email.found'
+}
 
 class NewStaff extends React.Component {
     constructor(props) {
@@ -38,8 +41,7 @@ class NewStaff extends React.Component {
             isQuestionsDropdown: false,
             isCoworkerDropdown: false,
             isOnlineZapisDropdown: false,
-            selectedItems: [],
-            staffs:props.staff && props.staff
+            selectedItems: []
 
         };
 
@@ -61,13 +63,6 @@ class NewStaff extends React.Component {
     onCrop(preview) {
         const {staff}=this.state;
         this.setState({...this.state, staff: {...staff, imageBase64: preview.split(',')[1]} })
-    }
-
-    componentWillReceiveProps(newProps) {
-
-        if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
-            this.setState({staffs:newProps.staff});
-        }
     }
 
     componentDidUpdate() {
@@ -101,8 +96,8 @@ class NewStaff extends React.Component {
     }
 
     render() {
-        const { authentication } = this.props;
-        const { staff, edit, emailIsValid, staffs }=this.state;
+        const { authentication, staffs } = this.props;
+        const { staff, edit, emailIsValid }=this.state;
 
         const isOwner = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 4
         const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email);
@@ -130,6 +125,22 @@ class NewStaff extends React.Component {
                 }
             }
         }
+
+        const emailInput = (
+            <React.Fragment>
+                <p>Email</p>
+                {staffs.errorMessageKey === staffErrors.emailFound && <span className="red-text"> Такой имейл уже используется в системе</span>}
+                <input
+                    type="email"
+                    placeholder=""
+                    name="email"
+                    value={staff.email}
+                    onChange={this.handleChange}
+                    className={((edit && !canUpdateEmail) ? "disabledField" : "") + (((!staff.email || this.isValidEmailAddress(staff.email)) && (staffs.errorMessageKey !== staffErrors.emailFound)) ? '': ' redBorder')}
+                    disabled={(edit && !canUpdateEmail)}
+                />
+            </React.Fragment>
+        )
 
         return (
             <Modal size="lg" style={{maxWidth: '90%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -188,16 +199,7 @@ class NewStaff extends React.Component {
                                                                 inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone.replace(/[() ]/g, '')} })}
                                                                 />
                                                             <div className="mobile-visible">
-                                                                <p>Email</p>
-                                                                <input
-                                                                  type="email"
-                                                                  placeholder=""
-                                                                  name="email"
-                                                                  value={staff.email}
-                                                                  onChange={this.handleChange}
-                                                                  className={((edit && !canUpdateEmail) ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
-                                                                  disabled={(edit && !canUpdateEmail)}
-                                                                />
+                                                                {emailInput}
                                                             </div>
                                                             <p>Доступ</p>
                                                             <select className="custom-select" value={staff.roleId} disabled={staff.roleId===4&&true} name="roleId" onChange={this.handleChange}>
@@ -262,16 +264,7 @@ class NewStaff extends React.Component {
                                                                 <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                             </div>
                                                             <div className="desktop-visible">
-                                                                <p>Email</p>
-                                                                <input
-                                                                    type="email"
-                                                                    placeholder=""
-                                                                    name="email"
-                                                                    value={staff.email}
-                                                                    onChange={this.handleChange}
-                                                                    className={((edit && !canUpdateEmail) ? "disabledField" : "") + ((!staff.email || this.isValidEmailAddress(staff.email)) ? '': ' redBorder')}
-                                                                    disabled={(edit && !canUpdateEmail)}
-                                                                />
+                                                                {emailInput}
                                                             </div>
                                                             <div className="input_limited_wrapper_3_digital">
                                                                 <p>Описание (специализация) <div className="questions_black" onClick={() => this.toggleDropdown("isQuestionsDropdown")}>
@@ -453,7 +446,7 @@ class NewStaff extends React.Component {
 function mapStateToProps(state) {
     const { alert, staff, authentication } = state;
     return {
-        alert, staff, authentication
+        alert, staffs: staff, authentication
     };
 }
 

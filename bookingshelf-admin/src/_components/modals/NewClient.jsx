@@ -53,7 +53,7 @@ class NewClient extends React.Component {
         const {client, edit, alert, clients}=this.state;
 
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="">
                 {client  &&
                 <div>
