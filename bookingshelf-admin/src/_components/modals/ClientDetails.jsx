@@ -198,8 +198,11 @@ class ClientDetails extends React.Component {
                         </div>
                         <hr/>
                         <div className="buttons p-4">
-                            <button type="button" className="button" data-toggle="modal" data-dismiss="modal"
-                                    data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
+                            <button type="button" className="button" data-toggle="modal"
+                                    data-target=".new-client"  onClick={()=> {
+                                $('.client-detail').modal('hide')
+                                editClient(client && client.clientId)
+                            }}>Редактировать клиента
                             </button>
                         </div>
                     </div>

@@ -21,7 +21,6 @@ class CalendarModals extends Component {
 
         this.state = {
             newClientModal: false,
-            client_working: {},
             editClient: false,
             appointmentModal: false,
             clients: props.client,
@@ -63,14 +62,10 @@ class CalendarModals extends Component {
     }
 
     handleEditClient(id, isModalShouldPassClient) {
-        const { clients } = this.props;
-
         if(id!=null) {
-            const client_working = clients.client.find((item) => {return id === item.clientId});
-
-            this.setState({ editClient: true, isModalShouldPassClient, client_working: client_working, newClientModal: true});
+            this.setState({ editClient: true, isModalShouldPassClient, newClientModal: true});
         } else {
-            this.setState({ editClient: false, isModalShouldPassClient, client_working: {}, newClientModal: true});
+            this.setState({ editClient: false, isModalShouldPassClient, newClientModal: true});
         }
     }
     newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
@@ -133,7 +128,7 @@ class CalendarModals extends Component {
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps
         } = this.props;
 
-        const {newClientModal, appointmentModal, reserved, userSettings, client_working, editClient, checkedUser, isModalShouldPassClient} = this.state;
+        const {newClientModal, appointmentModal, reserved, userSettings, editClient, checkedUser, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
                     {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
@@ -153,7 +148,6 @@ class CalendarModals extends Component {
                     </div>
                     {newClientModal &&
                     <NewClient
-                        client_working={client_working}
                         edit={editClient}
                         isModalShouldPassClient={isModalShouldPassClient}
                         updateClient={this.updateClient}

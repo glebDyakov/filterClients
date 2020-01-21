@@ -10,7 +10,7 @@ class NewClient extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: props.client_working && this.props.edit ?props.client_working: {
+            client: props.client.activeClient && this.props.edit ?props.client.activeClient: {
                 "firstName": "",
                 "lastName": "",
                 "email": "",
