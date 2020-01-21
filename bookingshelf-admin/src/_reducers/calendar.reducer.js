@@ -31,23 +31,23 @@ export function calendar(state = initialState, action) {
             }
         case calendarConstants.ADD_APPOINTMENT_SUCCESS:
 
-            let appointments = state.appointments;
-            if (appointments) {
-                let boolAppointments = appointments.filter((app, key) =>
-                    action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
-                );
-
-                if (boolAppointments.length !== 0) {
-                } else {
-                    action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
-                }
-            } else {
-                appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
-            }
+            // let appointments = state.appointments;
+            // if (appointments) {
+            //     let boolAppointments = appointments.filter((app, key) =>
+            //         action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
+            //     );
+            //
+            //     if (boolAppointments.length !== 0) {
+            //     } else {
+            //         action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
+            //     }
+            // } else {
+            //     appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
+            // }
             return {
                 ...state,
                 status: 200,
-                appointments: appointments,
+                // appointments: appointments,
                 adding: false,
                 isLoading:false
             };
@@ -309,8 +309,7 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 appointments: appointmentsToPush,
-                appointmentsCount: appointmentsCountToPush,
-                appointmentShouldChange: !state.appointmentShouldChange
+                appointmentsCount: appointmentsCountToPush
             };
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
             newAppointmentsCount = state.appointmentsCount
