@@ -99,7 +99,7 @@ class ClientDetails extends React.Component {
                                 <div className="client">
                                     <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
                                     <span className="name_container">{client.firstName} {client.lastName}
-                                        {access(4) && (
+                                        {access(12) && (
                                             <React.Fragment>
                                                 <span className="email-user">{client.email}</span>
                                                 <span>{client.phone}</span>

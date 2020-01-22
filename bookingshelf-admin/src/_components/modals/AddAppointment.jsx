@@ -838,14 +838,12 @@ class AddAppointment extends React.Component {
                                                     </div>
                                                     <ul>
                                                         { clients.client && clients.client.map((client_user, i) =>
-                                                            (access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) &&
-                                                                client_user.appointments && client_user.appointments.some(appointment => appointment.staffId === authentication.user.profile.staffId))) &&
                                                                 <li key={i}>
                                                                     <div className="row mb-3">
                                                                         <div className="col-7 clients-list">
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
-                                                                                {access(4) && (
+                                                                                {access(12) && (
                                                                                     <React.Fragment>
                                                                                         <span className="email-user">{client_user.email}</span>
                                                                                         <span className="email-user">{client_user.phone}</span>
@@ -904,7 +902,7 @@ class AddAppointment extends React.Component {
                                                                 className="abbreviation">{cl.firstName.substr(0, 1)}</span>
                                                             <span
                                                                 className="name_container">{cl.firstName} {cl.lastName}
-                                                                {access(4) && (
+                                                                {access(12) && (
                                                                     <React.Fragment>
                                                                         <span className="email-user">{cl.email}</span>
                                                                         <span className="email-user">{cl.phone}</span>
