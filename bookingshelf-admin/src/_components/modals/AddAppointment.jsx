@@ -839,7 +839,7 @@ class AddAppointment extends React.Component {
                                                     <ul>
                                                         { clients.client && clients.client.map((client_user, i) =>
                                                             (access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) &&
-                                                                client_user.appointments.some(appointment => appointment.staffId === authentication.user.profile.staffId))) &&
+                                                                client_user.appointments && client_user.appointments.some(appointment => appointment.staffId === authentication.user.profile.staffId))) &&
                                                                 <li key={i}>
                                                                     <div className="row mb-3">
                                                                         <div className="col-7 clients-list">
