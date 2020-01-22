@@ -614,32 +614,32 @@ class EmailPage extends Component {
                                             </ul>
                                             <div className={"tab-pane"+(activeTab==='smsletter'?' active':'')} id="sms_tab1">
                                                 <div className="block-style1  pl-4 pr-4">
-                                                    <p className="mb-2">Выбрать услугу</p>
-                                                    <div className="select-color mb-3 dropdown border-color">
-                                                        {serviceCurrent && serviceCurrent.id !== -1 ?
-                                                            <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}
-                                                               data-toggle={"dropdown"} href="#"><span
-                                                                className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span
-                                                                className="yellow"><span
-                                                                className="items-color"><span>{serviceCurrent.service.name}</span></span></span>
-                                                            </a>: <a className="select-button dropdown-toggle yellow"
-                                                                     data-toggle="dropdown" href="#"><span
-                                                                className="color-circle yellow"/><span
-                                                                className="yellow">Выбрать услугу</span></a>
-                                                        }
-                                                        <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>
-                                                            {
-                                                                services.servicesList && services.servicesList.map((service, key)=>
-                                                                    <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceSMS(service.serviceId, service)}><span
-                                                                        className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>
-                                                                    </li>
+                                                    {/*<p className="mb-2">Выбрать услугу</p>*/}
+                                                    {/*<div className="select-color mb-3 dropdown border-color">*/}
+                                                    {/*    {serviceCurrent && serviceCurrent.id !== -1 ?*/}
+                                                    {/*        <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}*/}
+                                                    {/*           data-toggle={"dropdown"} href="#"><span*/}
+                                                    {/*            className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span*/}
+                                                    {/*            className="yellow"><span*/}
+                                                    {/*            className="items-color"><span>{serviceCurrent.service.name}</span></span></span>*/}
+                                                    {/*        </a>: <a className="select-button dropdown-toggle yellow"*/}
+                                                    {/*                 data-toggle="dropdown" href="#"><span*/}
+                                                    {/*            className="color-circle yellow"/><span*/}
+                                                    {/*            className="yellow">Выбрать услугу</span></a>*/}
+                                                    {/*    }*/}
+                                                    {/*    <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>*/}
+                                                    {/*        {*/}
+                                                    {/*            services.servicesList && services.servicesList.map((service, key)=>*/}
+                                                    {/*                <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceSMS(service.serviceId, service)}><span*/}
+                                                    {/*                    className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>*/}
+                                                    {/*                </li>*/}
 
 
-                                                                )
-                                                            }
-                                                        </ul>
-                                                        <div className="arrow-dropdown"><i></i></div>
-                                                    </div>
+                                                    {/*            )*/}
+                                                    {/*        }*/}
+                                                    {/*    </ul>*/}
+                                                    {/*    <div className="arrow-dropdown"><i></i></div>*/}
+                                                    {/*</div>*/}
                                                     <p className="">Текст СМС</p>
                                                     <textarea spellCheck="off" autoCorrect="off" style={{'height': '100px'}}
                                                               className="copy-code" placeholder="" name="description" onChange={this.handleChangeSMS_text} value={sms.description}/>
@@ -703,32 +703,32 @@ class EmailPage extends Component {
                                             </div>
                                             <div className={"tab-pane"+(activeTab==='newsletter'?' active':'')} id="sms_tab1">
                                                 <div className="block-style1  pl-4 pr-4">
-                                                    <p className="mb-2">Выбрать услугу</p>
-                                                    <div className="select-color mb-3 dropdown border-color">
-                                                        {serviceCurrent && serviceCurrent.id !== -1 ?
-                                                            <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}
-                                                               data-toggle={"dropdown"} href="#"><span
-                                                                className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span
-                                                                className="yellow"><span
-                                                                className="items-color"><span>{serviceCurrent.service.name}</span></span></span>
-                                                            </a>: <a className="select-button dropdown-toggle yellow"
-                                                                     data-toggle="dropdown" href="#"><span
-                                                                className="color-circle yellow"/><span
-                                                                className="yellow">Выбрать услугу</span></a>
-                                                        }
-                                                        <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>
-                                                            {
-                                                                services.servicesList && services.servicesList.map((service, key)=>
-                                                                    <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceEmail(service.serviceId, service)}><span
-                                                                        className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>
-                                                                    </li>
+                                                    {/*<p className="mb-2">Выбрать услугу</p>*/}
+                                                    {/*<div className="select-color mb-3 dropdown border-color">*/}
+                                                    {/*    {serviceCurrent && serviceCurrent.id !== -1 ?*/}
+                                                    {/*        <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}*/}
+                                                    {/*           data-toggle={"dropdown"} href="#"><span*/}
+                                                    {/*            className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span*/}
+                                                    {/*            className="yellow"><span*/}
+                                                    {/*            className="items-color"><span>{serviceCurrent.service.name}</span></span></span>*/}
+                                                    {/*        </a>: <a className="select-button dropdown-toggle yellow"*/}
+                                                    {/*                 data-toggle="dropdown" href="#"><span*/}
+                                                    {/*            className="color-circle yellow"/><span*/}
+                                                    {/*            className="yellow">Выбрать услугу</span></a>*/}
+                                                    {/*    }*/}
+                                                    {/*    <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>*/}
+                                                    {/*        {*/}
+                                                    {/*            services.servicesList && services.servicesList.map((service, key)=>*/}
+                                                    {/*                <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceEmail(service.serviceId, service)}><span*/}
+                                                    {/*                    className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>*/}
+                                                    {/*                </li>*/}
 
 
-                                                                )
-                                                            }
-                                                        </ul>
-                                                        <div className="arrow-dropdown"><i></i></div>
-                                                    </div>
+                                                    {/*            )*/}
+                                                    {/*        }*/}
+                                                    {/*    </ul>*/}
+                                                    {/*    <div className="arrow-dropdown"><i></i></div>*/}
+                                                    {/*</div>*/}
                                                     <p className="mb-3">Текст Email</p>
                                                     <Editor
                                                         editorState={editorState}
