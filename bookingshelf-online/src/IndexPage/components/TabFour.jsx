@@ -29,11 +29,18 @@ class TabFour extends  PureComponent {
             workingStaff.map((workingStaffElement, i) =>
                 parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                 workingStaffElement.availableTimes.map((workingTime) => {
+                    const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
+                    const currentTime = parseInt(moment((moment().format("YYYY MMMM DD HH:") + (currentMinutes)), 'YYYY MMMM DD HH:mm').format('x'));
 
                     const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                     const arrayTimes = []
-                    for( let i = 0 ; i< countTimes; i++) {
-                        const localCountTime = workingTime.startTimeMillis + (1000 * 60 * interval * i)
+                    let startTime = workingTime.startTimeMillis
+                    if (workingTime.startTimeMillis < currentTime) {
+                        startTime = currentTime
+                    }
+
+                    for( let i = 0 ; i< Math.ceil(countTimes); i++) {
+                        const localCountTime = startTime + (1000 * 60 * interval * i)
                         if (localCountTime <= workingTime.endTimeMillis) {
                             arrayTimes.push(localCountTime)
                         }
@@ -41,7 +48,7 @@ class TabFour extends  PureComponent {
 
 
                     arrayTimes.forEach(arrayTime => {
-                        if (arrayTime >= parseInt(moment().format("x"))) {
+                        //if (arrayTime >= currentTime) {
                             let isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
                             if (!isAdded) {
                                 availableTimes.push({
@@ -59,7 +66,7 @@ class TabFour extends  PureComponent {
                                     )
                                 })
                             }
-                        }
+                        //}
                     })
                     }
                 )
