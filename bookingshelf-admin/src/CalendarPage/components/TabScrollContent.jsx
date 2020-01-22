@@ -458,7 +458,7 @@ class TabScroll extends Component{
 
                                                         {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                            {(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment &&
+                                                            {(((authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment &&
                                                             <span
                                                                 className="clientEye clientEye-info"
                                                                 data-target=".client-detail"
@@ -470,7 +470,7 @@ class TabScroll extends Component{
                                                             }
                                                         </p>}
                                                         {appointment.clientId && <p className="name">{appointment.clientName}</p>}
-                                                        {access(4) && appointment.clientId && <p>{appointment.clientPhone}</p>}
+                                                        {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
                                                         {appointment.clientId && <p style={{ height: '30px' }}>
                                                             <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
                                                                 Клиент не пришел
