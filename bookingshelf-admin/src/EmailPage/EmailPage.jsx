@@ -219,17 +219,19 @@ class EmailPage extends Component {
 
     handleChangeSMStoggle (type) {
         const { clientAmount } = this.props.notification
-        const { sms, client, staff, count_sms, receivers } = this.state;
-        let receivers_all=receivers
-        if(type==='toClients'){
-            receivers_all=receivers+ (clientAmount);
-        }else if(type==='toStaffs'){
-            receivers_all=receivers+staff.staff.length;
+        const { sms, staff, count_sms, receivers } = this.state;
+        let receivers_all=0
+        const updatedSms = {...sms, [type]: !sms[type]}
 
+        if(updatedSms.toClients){
+            receivers_all += clientAmount;
+        }
+        if(updatedSms.toStaffs){
+            receivers_all += staff.staff.length;
         }
 
-        this.setState({...this.state, sms: {...sms, [type]: !sms[type]},
-
+        this.setState({
+            sms: updatedSms,
             receivers: receivers_all,
             count_sms_all: count_sms*receivers_all,
             letters_all: sms.description.length*receivers_all
@@ -239,15 +241,18 @@ class EmailPage extends Component {
 
     handleChangeEmailtoggle (type) {
         const { clientAmount } = this.props.notification
-        const { email, receivers_email, staff } = this.state;
-        let receivers_all_email=receivers_email;
-        if(type==='toClients'){
-            receivers_all_email=receivers_email+clientAmount;
-        }else if(type==='toStaffs'){
-            receivers_all_email=receivers_email+staff.staff.length;
+        const { email, staff } = this.state;
+        let receivers_all_email= 0;
 
+        const updatedEmail = {...email, [type]: !email[type]}
+
+        if(updatedEmail.toClients){
+            receivers_all_email += clientAmount;
         }
-        this.setState({...this.state, email: {...email, [type]: !email[type]}, receivers_email: receivers_all_email});
+        if(updatedEmail.toStaffs){
+            receivers_all_email += staff.staff.length;
+        }
+        this.setState({ email: updatedEmail, receivers_email: receivers_all_email});
     }
 
     handleChange(e) {
