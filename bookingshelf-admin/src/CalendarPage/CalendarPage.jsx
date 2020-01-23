@@ -388,7 +388,8 @@ class CalendarPage extends PureComponent {
             this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
         }
 
-        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !newProps.staff.isLoading) {
+        const isLoading = newProps.calendar.isLoading || newProps.staff.isLoading || newProps.calendar.isLoadingAppointments || newProps.calendar.isLoadingReservedTime || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
+        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
                 this.setState({
                     staffAll: newProps.staff,
@@ -890,7 +891,7 @@ class CalendarPage extends PureComponent {
 
             newState = {
                 workingStaff: {...workingStaff, availableTimetable:[]},
-                availableTimetableMessage: 'qwe',
+                availableTimetableMessage: '',
                 type: 'day',
                 typeSelected: typeSelected,
                 selectedDay: moment().utc().startOf('day').toDate(),
