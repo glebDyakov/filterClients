@@ -46,8 +46,6 @@ class TabFour extends  PureComponent {
                         }
                     }
 
-                    debugger
-
 
                     arrayTimes.forEach(arrayTime => {
                         //if (arrayTime >= currentTime) {
