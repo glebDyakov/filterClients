@@ -30,7 +30,7 @@ class TabFour extends  PureComponent {
                 parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                 workingStaffElement.availableTimes.map((workingTime) => {
                     const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
-                    const currentTime = parseInt(moment((moment().format("YYYY MMMM DD HH:") + (currentMinutes)), 'YYYY MMMM DD HH:mm').format('x'));
+                    const currentTime = parseInt(moment((moment().add(currentMinutes === 60 ? 1 : 0, 'hour').format("YYYY MMMM DD HH:") + (currentMinutes % 60)), 'YYYY MMMM DD HH:mm').format('x'));
 
                     const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                     const arrayTimes = []
@@ -45,6 +45,8 @@ class TabFour extends  PureComponent {
                             arrayTimes.push(localCountTime)
                         }
                     }
+
+                    debugger
 
 
                     arrayTimes.forEach(arrayTime => {
