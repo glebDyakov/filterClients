@@ -416,7 +416,7 @@ class NewStaff extends React.Component {
         const {staff} = this.state;
 
         if(staff.costaffs && staff.costaffs.length===0) {
-            delete staff.costaffs;
+            staff.costaffs = [];
         }
         return updateStaff(staff);
     };
