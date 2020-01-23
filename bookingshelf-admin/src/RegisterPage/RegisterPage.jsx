@@ -87,9 +87,9 @@ class RegisterPage extends React.Component {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { user, agreed, authentication } = this.state;
+        const { user, agreed, authentication, emailIsValid } = this.state;
         const { dispatch } = this.props;
-        if (user.companyName && user.email && user.password && user.timezoneId!=='' && user.countryCode!=='' && agreed && !authentication.registering) {
+        if (isValidNumber(user.phone) && emailIsValid && user.companyName && user.email && user.password && user.timezoneId!=='' && user.countryCode!=='' && agreed && !authentication.registering) {
             dispatch(userActions.register(user));
         }
     }

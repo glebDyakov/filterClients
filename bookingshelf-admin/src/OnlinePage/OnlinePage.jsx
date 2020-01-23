@@ -59,6 +59,7 @@ class OnlinePage extends Component {
                     ? parseInt(moment(this.state.selectedDay).format('x'))
                     : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
                 onlineZapisOn: newProps.company.settings.onlineZapisOn,
+                serviceIntervalOn: newProps.company.settings.serviceIntervalOn
             })
         }
         if (newProps.company && newProps.company.status==='saved.settings') {
@@ -69,11 +70,22 @@ class OnlinePage extends Component {
         }
     }
 
-    handleCheckboxChange() {
+    handleCheckboxChange(checkboxKey) {
         const newState = {
-            onlineZapisOn: !this.state.onlineZapisOn
+            [checkboxKey]: !this.state[checkboxKey]
         }
         this.setState(newState)
+    }
+
+    handleServiceCheckboxChange(checkboxKey) {
+        const newState = {
+            [checkboxKey]: !this.state[checkboxKey]
+        }
+        this.setState(newState)
+        this.props.dispatch(companyActions.updateServiceIntervalOn({
+            ...this.props.company.settings,
+            [checkboxKey]: newState[checkboxKey]
+        }));
     }
 
     handleChange(e) {
@@ -155,9 +167,12 @@ class OnlinePage extends Component {
     }
 
     render() {
-        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn, status } = this.state;
+        const { company } = this.props
+        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
+
+        const { isServiceIntervalLoading } = company;
 
         const dayPickerProps = {
             month: new Date(),
@@ -307,11 +322,11 @@ class OnlinePage extends Component {
                                             <div className="clearfix" />
 
                                         </div>
-                                        <div className=" content-pages-bg p-4 h-auto">
+                                        <div className=" content-pages-bg p-4 mb-3 h-auto">
                                             <p className="title mb-3">Ограничить время онлайн-записи</p>
                                             <div className="check-box">
                                                 <label>
-                                                    <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={this.handleCheckboxChange}/>
+                                                    <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
                                                     <span className="check"/>
                                                     Включить ограничение
                                                 </label>&nbsp;
@@ -338,6 +353,34 @@ class OnlinePage extends Component {
                                             <button className="ahref button mt-3 mb-3" onClick={this.handleSubmit}>
                                                 Сохранить
                                             </button>
+                                        </div>
+
+                                        <div className=" content-pages-bg p-4 h-auto">
+                                            <p className="title mb-3">Интервал записи</p>
+                                            <div style={{ position: 'relative' }} className="check-box">
+                                                <label>
+                                                    {isServiceIntervalLoading
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        : <React.Fragment>
+                                                            <input className="form-check-input" type="checkbox" checked={!serviceIntervalOn} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>
+                                                            <span className="check"/>
+                                                        </React.Fragment>
+                                                    }
+                                                    15 минут
+                                                </label>
+                                            </div>
+                                            <div style={{ position: 'relative' }} className="check-box">
+                                                <label>
+                                                    {isServiceIntervalLoading
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        : <React.Fragment>
+                                                            <input className="form-check-input" type="checkbox" checked={serviceIntervalOn} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>
+                                                            <span className="check"/>
+                                                        </React.Fragment>
+                                                    }
+                                                    Равен времени услуги
+                                                </label>
+                                            </div>
                                         </div>
 
                                     </div>

@@ -4,6 +4,7 @@ import { alertActions } from './';
 
 export const companyActions = {
     add,
+    updateServiceIntervalOn,
     addSubcompany,
     updateSubcompany,
     switchSubcompany,
@@ -35,6 +36,28 @@ function add(companyInfo) {
     };
 
     function success(company, menu, profile) { return { type: userConstants.UPDATE_COMPANY_SUCCESS, company, menu, profile } }
+}
+
+function updateServiceIntervalOn(companyInfo) {
+    const menu = JSON.parse(localStorage.getItem('user')).menu
+    const profile = JSON.parse(localStorage.getItem('user')).profile
+    return dispatch => {
+        dispatch(request())
+        companyService.add(companyInfo)
+            .then(
+                company => {
+                    dispatch(success(companyInfo, menu, profile));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            )
+
+    };
+
+    function request() { return { type: companyConstants.UPDATE_SERVICE_INTERVAL_REQUEST } }
+    function success(company, menu, profile) { return { type: companyConstants.UPDATE_SERVICE_INTERVAL_SUCCESS, company, menu, profile } }
+    function failure(error) { return { type: companyConstants.UPDATE_SERVICE_INTERVAL_FAILURE, error } }
 }
 
 function addSubcompany(companyInfo) {

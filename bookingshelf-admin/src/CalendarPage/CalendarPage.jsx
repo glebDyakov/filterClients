@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 
 import {calendarActions, staffActions, clientActions, servicesActions, companyActions} from '../_actions';
 import {HeaderMain} from "../_components/HeaderMain";
-import { createSocket } from '../_helpers/createSocket';
 
 import '../../public/scss/calendar.scss'
 import '../../public/scss/styles.scss'
@@ -19,14 +18,11 @@ import '../../public/css_admin/date.css'
 import {access} from '../_helpers/access';
 import {getWeekRange} from '../_helpers/time'
 import {CalendarModals} from '../_components/modals/CalendarModals';
-import {AppointmentFromSocket} from '../_components/modals/AppointmentFromSocket';
 
-import {userActions} from '../_actions/user.actions';
 import TabScrollContent from './components/TabScrollContent';
 import StaffChoice from './components/StaffChoice';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
-// import AppointmentFromSocket from "./components/AppointmentFromSocket";
 
 
 function getWeekDays(weekStart) {
@@ -143,7 +139,6 @@ class CalendarPage extends PureComponent {
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this.scrollToMyRef = this.scrollToMyRef.bind(this);
-        this.getHours24 = this.getHours24.bind(this);
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
@@ -175,7 +170,7 @@ class CalendarPage extends PureComponent {
         document.title = "Журнал записи | Онлайн-запись";
 
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo());
+        //this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
 
@@ -188,8 +183,6 @@ class CalendarPage extends PureComponent {
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
         this.refreshTable(startTime, endTime);
-
-        this.getHours24();
 
         // setTimeout(() => this.updateCalendar(), 300000)
 
@@ -287,9 +280,11 @@ class CalendarPage extends PureComponent {
     }
 
     refreshTable(startTime, endTime, updateReservedTime = true) {
+        const { type } = this.state
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
         if (updateReservedTime) {
+            this.props.dispatch(staffActions.getTimetable(startTime, type === 'day' ? moment(endTime, 'x').add(1, 'week').startOf('day').format('x') : moment(endTime, 'x').startOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
         }
     }
@@ -393,7 +388,8 @@ class CalendarPage extends PureComponent {
             this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
         }
 
-        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !newProps.staff.isLoading) {
+        const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
+        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
                 this.setState({
                     staffAll: newProps.staff,
@@ -428,7 +424,7 @@ class CalendarPage extends PureComponent {
                 endTime = moment(this.state.selectedDays[6]).endOf('day').format('x');
             }
             this.props.dispatch(calendarActions.updateAppointmentFinish())
-            this.refreshTable(startTime, endTime);
+            this.refreshTable(startTime, endTime, false);
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
@@ -482,20 +478,20 @@ class CalendarPage extends PureComponent {
     render() {
         const { calendar, services, clients, staff, appointments, authentication } = this.props;
         const { approvedId, staffAll, workingStaff, reserved, appointmentEdited,
-            clickedTime, numbers, minutes, minutesReservedtime, staffClicked,
+            clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
             reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
-            clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, minutes, reserved, type, infoClient, minutesReservedtime,
+            clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
         };
-        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading;
+        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading || this.props.calendar.isLoadingAppointments || this.props.calendar.isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
             <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
@@ -546,9 +542,10 @@ class CalendarPage extends PureComponent {
                                             staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
+                                            timetable={staff.timetable}
+                                            isClientNotComeLoading={calendar.isClientNotComeLoading}
                                             services={services}
                                             authentication={authentication}
-                                            numbers={numbers}
                                             availableTimetable={workingStaff.availableTimetable}
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
@@ -808,7 +805,6 @@ class CalendarPage extends PureComponent {
         const endTime = daySelected.endOf('day').format('x');
 
         this.refreshTable(startTime, endTime);
-        this.getHours24();
 
         this.setState({
             selectedDay: daySelected.utc().startOf('day').toDate(),
@@ -895,7 +891,7 @@ class CalendarPage extends PureComponent {
 
             newState = {
                 workingStaff: {...workingStaff, availableTimetable:[]},
-                availableTimetableMessage: 'qwe',
+                availableTimetableMessage: '',
                 type: 'day',
                 typeSelected: typeSelected,
                 selectedDay: moment().utc().startOf('day').toDate(),
@@ -992,16 +988,6 @@ class CalendarPage extends PureComponent {
         );
 
         return hoursArray;
-    }
-
-    getHours24 (){
-        let numbers =[];
-
-        for (let i = 0; i < 24*60; i = i + 15) {
-            numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
-        }
-
-        this.setState({ numbers });
     }
 }
 

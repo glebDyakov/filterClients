@@ -45,7 +45,7 @@ class TabCompanySelection extends  PureComponent{
                         setScreen(1);
                         this.props.history.push(`/${selectedSubcompany.bookingPage}`)
                         //refreshTimetable();
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <ul className={`staff_popup`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>

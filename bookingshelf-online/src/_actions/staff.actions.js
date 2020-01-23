@@ -231,18 +231,18 @@ function getTimetable(company, date1, date2) {
     function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
 
-function getClientAppointments(company) {
+function getClientAppointments(company, clientId) {
     return dispatch => {
         dispatch(request());
-        staffService.getClientAppointments(company)
+        staffService.getClientAppointments(company, clientId)
             .then(
-                clients => dispatch(success(clients)),
+                clientAppointments => dispatch(success(clientAppointments)),
                 () => failure()
             );
     };
 
     function request() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS } }
-    function success(clients) { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS, clients } }
+    function success(clientAppointments) { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS, clientAppointments } }
     function failure() { return { type: staffConstants.GET_CLIENT_APPOINTMENTS_FAILURE } }
 }
 

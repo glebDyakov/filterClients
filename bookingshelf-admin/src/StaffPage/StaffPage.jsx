@@ -65,12 +65,10 @@ class StaffPage extends Component {
 
         this.state = {
             staff: props.staff,
-            alert: props.alert,
             edit: false,
             staff_working: {},
             closedDates: {},
             timetable: {},
-            isLoading: true,
             hoverRange: undefined,
             opacity: false,
             selectedDays: getWeekDays(getWeekRange(moment().format()).from),
@@ -130,7 +128,6 @@ class StaffPage extends Component {
             timetableFrom: moment(selectedDays[0]).startOf('day').format('x'),
             timetableTo:moment(selectedDays[6]).endOf('day').format('x')
         })
-        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
     }
@@ -144,12 +141,6 @@ class StaffPage extends Component {
                 newStaffByMail: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaffByMail,
                 newStaff: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaff,
             })
-        }
-        if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
-            this.setState({alert: newProps.alert})
-            setTimeout(() => {
-                this.setState({alert: {}})
-            }, 3000)
         }
     }
 
@@ -173,7 +164,7 @@ class StaffPage extends Component {
     }
 
     render() {
-        const { alert, staff, emailNew, emailIsValid, userSettings, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { staff, emailNew, emailIsValid, userSettings, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -196,7 +187,6 @@ class StaffPage extends Component {
 
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
-                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
                 {this.props.staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
@@ -644,7 +634,7 @@ class StaffPage extends Component {
     updateStaff(staff){
         const { dispatch } = this.props;
 
-        dispatch(staffActions.update(JSON.stringify(staff)));
+        dispatch(staffActions.update(JSON.stringify([staff]), staff.staffId));
     };
 
     addStaff(staff){
@@ -871,10 +861,10 @@ class StaffPage extends Component {
 }
 
 function mapStateToProps(store) {
-    const {staff, timetable, alert, authentication}=store;
+    const {staff, timetable, authentication}=store;
 
     return {
-        staff, timetable, alert, authentication
+        staff, timetable, authentication
     };
 }
 

@@ -5,6 +5,7 @@ export const notificationService = {
     getSMS_EMAIL,
     updateSMS_EMAIL,
     updateSubcompanySMS_EMAIL,
+    getClientAmount,
     setSMS,
     getBalance
 };
@@ -89,4 +90,18 @@ function getBalance() {
     };
 
     return fetch(`${config.apiUrl}/notifications/balances`, requestOptions).then(handleResponse);
+}
+
+function getClientAmount() {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/company/state`, requestOptions).then(handleResponse);
 }

@@ -15,35 +15,42 @@ class TabOne extends  PureComponent{
 
     render() {
 
-        const {staffId, staffs, isStartMovingVisit, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
-
-        console.log(movingVisit)
+        const {staffId, staffs, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
                     {!isStartMovingVisit && subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
-                            clearStaff()
-                            setScreen(0);
-                            let {company} = match.params;
-                            let url = company.includes('_') ? company.split('_')[0] : company
-                            history.push(`/${url}`)
+                            if (flagAllStaffs) {
+                                setScreen(2);
+                            } else {
+                                clearStaff();
+                                setDefaultFlag();
+                                setScreen(0);
+                                let {company} = match.params;
+                                let url = company.includes('_') ? company.split('_')[0] : company
+                                history.push(`/${url}`)
+                            }
 
-                        }}>К выбору филиала</span>
+
+                        }}>{flagAllStaffs ? 'Назад' : 'К выбору филиала'}</span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
                             refreshTimetable();
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                     {staffs && staffs.length > 0 && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
                         .filter(staff => {
                             const activeServices = movingVisit ?services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
                             return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true
+                        })
+                        .filter(staff => {
+                            return flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true
                         })
                         .map((staff, idStaff) =>
 
@@ -99,8 +106,11 @@ class TabOne extends  PureComponent{
               <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                 {staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName))
                     .filter(staff => {
-                        const activeServices = movingVisit ?services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
+                        const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
                         return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true
+                    })
+                    .filter(staff => {
+                        return flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true
                     })
                     .map((staff, idStaff) =>
 

@@ -11,6 +11,7 @@ import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 import {calendarActions} from "../../_actions/calendar.actions";
+import ReactPaginate from 'react-paginate';
 
 
 class AddAppointment extends React.Component {
@@ -26,6 +27,7 @@ class AddAppointment extends React.Component {
                 id: -1,
                 service: []
             }],
+            allPrice: 0,
             servicesSearch: '',
             staffs: props.staffs,
             clients: props.clients && props.clients,
@@ -35,7 +37,7 @@ class AddAppointment extends React.Component {
             minutes: props.minutes,
             hours: [],
             staffId: props.staffId,
-            clientChecked: [],
+            clientChecked: null,
             appointmentEdited: sortedAppointment,
             timeArrange:props.clickedTime!==0?this.getTimeArrange(props.clickedTime, props.minutes, sortedAppointment):null,
             timeNow:props.clickedTime===0?moment().format('x'):props.clickedTime,
@@ -74,12 +76,15 @@ class AddAppointment extends React.Component {
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
+        this.updateClients = this.updateClients.bind(this);
     }
 
     componentDidMount() {
         const {appointmentEdited} = this.state;
 
         appointmentEdited && this.getInfo(appointmentEdited)
+        this.props.dispatch(clientActions.getClientV2(1));
     }
 
     componentWillReceiveProps(newProps) {
@@ -93,11 +98,29 @@ class AddAppointment extends React.Component {
 
         if(this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
             const user = newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
-            this.setState({ clientChecked: user, shouldUpdateCheckedUser: false})
+            this.setState({ clientChecked: { ...this.state.clientChecked, ...user, appointments: newProps.clients.activeClientAppointments, }, shouldUpdateCheckedUser: false})
         }
 
         if(JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
             this.setState({ shouldUpdateCheckedUser: true })
+        }
+
+        if ((newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.length && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments))) ||
+            (newProps.clients.activeClient && (JSON.stringify(this.props.clients.activeClient) !== JSON.stringify(newProps.clients.activeClient)))) {
+            let allPrice = 0;
+            newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.forEach((appointment) => {
+                if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                    allPrice += appointment.price
+                }
+            });
+            this.setState({
+                allPrice,
+                clientChecked: {
+                    ...this.state.clientChecked,
+                    ...newProps.clients.activeClient,
+                    appointments: newProps.clients.activeClientAppointments,
+                }
+            });
         }
 
 
@@ -129,6 +152,20 @@ class AddAppointment extends React.Component {
         //             customId: newProps.appointmentEdited?newProps.appointmentEdited[0][0].customId:this.state.appointment[0].customId}],
         //     })
         // }
+    }
+
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue));
     }
 
     updateAvailableCoStaffs(appointment = this.state.appointment) {
@@ -301,7 +338,6 @@ class AddAppointment extends React.Component {
     getInfo(appointments){
         const {appointmentEdited, clients, services}=this.state;
 
-        let client= (clients && clients.client && clients.client.find((client_user, i) => client_user.clientId===appointments[0].clientId)) || [];
         let newServices = []
         let newServicesCurrent = []
         appointments.forEach(appointment => {
@@ -320,8 +356,10 @@ class AddAppointment extends React.Component {
         })
 
         this.updateAvailableCoStaffs(appointmentEdited)
+        this.props.dispatch(clientActions.getActiveClient(appointments[0].clientId))
+        this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId))
 
-        this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices, clientChecked:client})
+        this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices})
     }
 
     setTime(appointmentTimeMillis, minutes, index){
@@ -552,22 +590,13 @@ class AddAppointment extends React.Component {
 
     render() {
         const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
-        const { appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
+        const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
-        const cl = clientChecked && clientChecked.clientId && clients.client && clients.client.find(cl => cl.clientId === clientChecked.clientId);
-
-        let allPrice = 0;
-        if (cl) {
-            cl.appointments.map(appointment => {
-                if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                    allPrice += appointment.price;
-                }
-            })
-        }
+        const cl = clientChecked
 
         let servicesDisabling=services[0].servicesList && services[0].servicesList.some((service)=>parseInt(service.duration)/60<=parseInt(timeArrange));
 
@@ -790,7 +819,7 @@ class AddAppointment extends React.Component {
 
                                         <div className="calendar">
 
-                                            {!clientChecked || clientChecked.length==0 && !edit_appointment &&
+                                            {!clientChecked && !edit_appointment &&
                                                 <div className="list-block-right mb-3">
 
                                                     <div className="row">
@@ -800,7 +829,6 @@ class AddAppointment extends React.Component {
                                                             <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
                                                         </div>
                                                     </div>
-                                                    {allClients.client && allClients.client.length > 0 &&
                                                     <div className="search dropdown row">
                                                         <form className="col-sm-12 form-inline" data-toggle="dropdown">
                                                             <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
@@ -808,17 +836,14 @@ class AddAppointment extends React.Component {
 
                                                         </form>
                                                     </div>
-                                                    }
                                                     <ul>
                                                         { clients.client && clients.client.map((client_user, i) =>
-                                                            (access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) &&
-                                                                client_user.appointments.some(appointment => appointment.staffId === authentication.user.profile.staffId))) &&
                                                                 <li key={i}>
                                                                     <div className="row mb-3">
                                                                         <div className="col-7 clients-list">
                                                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
-                                                                                {access(4) && (
+                                                                                {access(12) && (
                                                                                     <React.Fragment>
                                                                                         <span className="email-user">{client_user.email}</span>
                                                                                         <span className="email-user">{client_user.phone}</span>
@@ -828,7 +853,7 @@ class AddAppointment extends React.Component {
                                                                         </div>
                                                                         <div className="col-5">
                                                                             <label className="add-person">
-                                                                                <input className="form-check-input" type="checkbox" checked={clientChecked.clientId && client_user.clientId===clientChecked.clientId} onChange={()=>this.checkUser(client_user)}/>
+                                                                                <input className="form-check-input" type="checkbox" checked={clientChecked && clientChecked.clientId && (client_user.clientId===clientChecked.clientId)} onChange={()=>this.checkUser(client_user)}/>
                                                                                 <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>
                                                                             </label>
                                                                         </div>
@@ -836,7 +861,32 @@ class AddAppointment extends React.Component {
                                                                 </li>
                                                         )}
                                                     </ul>
-
+                                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                                        {(this.search && this.search.value.length > 0) && !clients.client &&
+                                                            <span>Поиск результатов не дал</span>}
+                                                        {clients.totalPages > 1 &&
+                                                                <ReactPaginate
+                                                                    previousLabel={'⟨'}
+                                                                    nextLabel={'⟩'}
+                                                                    breakLabel={'...'}
+                                                                    pageCount={clients.totalPages}
+                                                                    marginPagesDisplayed={2}
+                                                                    pageRangeDisplayed={5}
+                                                                    onPageChange={this.handlePageClick}
+                                                                    subContainerClassName={'pages pagination'}
+                                                                    breakClassName={'page-item'}
+                                                                    breakLinkClassName={'page-link'}
+                                                                    containerClassName={'pagination'}
+                                                                    pageClassName={'page-item'}
+                                                                    pageLinkClassName={'page-link'}
+                                                                    previousClassName={'page-item'}
+                                                                    previousLinkClassName={'page-link'}
+                                                                    nextClassName={'page-item'}
+                                                                    nextLinkClassName={'page-link'}
+                                                                    activeClassName={'active'}
+                                                                />
+                                                        }
+                                                    </div>
                                                 </div>
                                             }
                                             {cl &&
@@ -852,7 +902,7 @@ class AddAppointment extends React.Component {
                                                                 className="abbreviation">{cl.firstName.substr(0, 1)}</span>
                                                             <span
                                                                 className="name_container">{cl.firstName} {cl.lastName}
-                                                                {access(4) && (
+                                                                {access(12) && (
                                                                     <React.Fragment>
                                                                         <span className="email-user">{cl.email}</span>
                                                                         <span className="email-user">{cl.phone}</span>
@@ -866,7 +916,7 @@ class AddAppointment extends React.Component {
                                                                 <span className="gray-text">Всего визитов</span>
                                                             </div>
                                                             <div className="col-6">
-                                                                <strong>{allPrice} {cl.appointments[0] && cl.appointments[0].currency}</strong>
+                                                                <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
                                                                 <span className="gray-text">Всего оплачено</span>
                                                             </div>
 
@@ -911,6 +961,8 @@ class AddAppointment extends React.Component {
                                                                                     <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
                                                                                 {appointment.description ? <span
                                                                                     className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                                                {appointment.clientNotCome ? <span
+                                                                                    style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
                                                                             </p>
                                                                         </div>
 
@@ -982,11 +1034,12 @@ class AddAppointment extends React.Component {
     }
 
     checkUser(client){
-        this.setState({ clientChecked: client });
+        this.props.dispatch(clientActions.getActiveClientAppointments(client.clientId))
+        this.setState({ clientChecked: { ...client, appointments: this.props.clients.activeClientAppointments} });
     }
 
     removeCheckedUser(){
-        this.setState({ clientChecked: [] });
+        this.setState({ clientChecked: null });
     }
 
     editClient(id){
@@ -1024,7 +1077,7 @@ class AddAppointment extends React.Component {
         });
         this.closeModal();
         const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
-        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked.clientId, isAddCostaff ? finalCoStaffs : [])
+        return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked ? clientChecked.clientId : -1, isAddCostaff ? finalCoStaffs : [])
     }
 
     editAppointment (){
@@ -1209,31 +1262,16 @@ class AddAppointment extends React.Component {
     }
 
     handleSearch () {
-        const {allClients}= this.state;
-
-        const allClientsList=allClients.client.filter((item)=>{
-            return item.lastName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-                item.firstName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-                item.phone.toLowerCase().includes(this.search.value.toLowerCase())
-        });
-
-        this.setState({
-            search: true,
-            clients: {client:allClientsList}
-        });
-
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                clients: allClients
-            })
+        if (this.search.value.length >= 3) {
+            this.updateClients();
+        } else if (this.search.value.length === 0) {
+            this.updateClients();
         }
-
-
     }
 
     closeModal () {
         const {onClose} = this.props;
+        this.setState({ clientChecked: null })
 
         return onClose()
     }

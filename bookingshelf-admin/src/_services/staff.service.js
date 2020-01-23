@@ -109,7 +109,7 @@ function update(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/staffs`, requestOptions)
+    return fetch(`${config.apiUrlv2}/staffs`, requestOptions)
         .then(handleResponse)
         .then(staff => {
             return staff;

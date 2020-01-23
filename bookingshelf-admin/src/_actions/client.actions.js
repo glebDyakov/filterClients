@@ -6,9 +6,13 @@ export const clientActions = {
     addClient,
     updateClient,
     getClient,
+    getActiveClient,
+    getActiveClientAppointments,
     deleteClient,
     getClientWithInfo,
-    downloadFile
+    getClientV2,
+    downloadFile,
+    uploadFile
 };
 
 function addClient(params) {
@@ -33,7 +37,7 @@ function addClient(params) {
     function failure(error) { return { type: clientConstants.ADD_CLIENT_FAILURE, error } }
 }
 
-function updateClient(params) {
+function updateClient(params, blacklisted) {
     return dispatch => {
         dispatch(request(0));
 
@@ -41,6 +45,9 @@ function updateClient(params) {
             .then(
                 client => {
                     dispatch(success(client));
+                    if (blacklisted) {
+                        dispatch(getClientV2(1, '', true));
+                    }
                     setTimeout(()=>dispatch(successTime(client)), 500);
 
                 },
@@ -68,6 +75,15 @@ function getClient() {
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
 }
 
+function uploadFile(uploadFile) {
+    return dispatch => {
+        clientService.uploadFile(uploadFile)
+            .then(
+                // client => dispatch(success(client)),
+            );
+    };
+}
+
 
 function downloadFile() {
     return dispatch => {
@@ -80,14 +96,64 @@ function downloadFile() {
 
 function getClientWithInfo() {
     return dispatch => {
+        dispatch(request())
         clientService.getClientWithInfo()
             .then(
                 client => dispatch(success(client)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
             );
     };
 
+    function request() { return { type: clientConstants.GET_CLIENT } }
     function success(client) { return { type: clientConstants.GET_CLIENT_SUCCESS, client } }
+    function failure(error) { return { type: clientConstants.GET_CLIENT_FAILURE, error } }
 }
+
+function getClientV2(pageNum, searchValue, blacklisted) {
+    return dispatch => {
+        dispatch(request())
+        clientService.getClientV2(pageNum, searchValue, blacklisted)
+            .then(
+                client => dispatch(success(client)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
+            );
+    };
+
+    function request() { return { type: clientConstants.GET_CLIENT_V2 } }
+    function success(client) { return { type: clientConstants.GET_CLIENT_V2_SUCCESS, client, blacklisted } }
+    function failure(error) { return { type: clientConstants.GET_CLIENT_V2_FAILURE, error } }
+}
+
+function getActiveClientAppointments(clientId) {
+    return dispatch => {
+        dispatch(request())
+        clientService.getActiveClientAppointments(clientId)
+            .then(
+                activeClientAppointments => dispatch(success(activeClientAppointments)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
+            );
+    };
+
+    function request() { return { type: clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS } }
+    function success(activeClientAppointments) { return { type: clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS_SUCCESS, activeClientAppointments } }
+    function failure(error) { return { type: clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS_FAILURE, error } }
+}
+
+function getActiveClient(clientId) {
+    return dispatch => {
+        dispatch(request())
+        clientService.getActiveClient(clientId)
+            .then(
+                activeClient => dispatch(success(activeClient)),
+                () => dispatch(failure('Ошибка при подгрузке клиентов'))
+            );
+    };
+
+    function request() { return { type: clientConstants.GET_ACTIVE_CLIENT } }
+    function success(activeClient) { return { type: clientConstants.GET_ACTIVE_CLIENT_SUCCESS, activeClient } }
+    function failure(error) { return { type: clientConstants.GET_ACTIVE_CLIENT_FAILURE, error } }
+}
+
 
 function deleteClient(clientId) {
     return dispatch => {

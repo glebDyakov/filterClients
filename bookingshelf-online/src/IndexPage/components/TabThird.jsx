@@ -43,6 +43,7 @@ class TabThird extends  PureComponent {
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`}/>
                 </div>
             )
         }
@@ -63,7 +64,7 @@ class TabThird extends  PureComponent {
                         //if (!isStartMovingVisit) {
                             refreshTimetable()
                         //}
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <div className="specialist">
 

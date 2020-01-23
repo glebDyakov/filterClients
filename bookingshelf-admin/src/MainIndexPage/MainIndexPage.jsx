@@ -203,7 +203,9 @@ class MainIndexPage extends Component {
 
     componentDidMount(){
         document.title = "Настройки компании | Онлайн-запись";
-
+        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+            this.props.dispatch(companyActions.getSubcompanies());
+        }
 
         this.props.dispatch(notificationActions.getSMS_EMAIL())
         setTimeout(() => this.setState({ isLoading: false }), 800);
@@ -316,14 +318,14 @@ class MainIndexPage extends Component {
                                                 </div>
                                             </div>
                                             <p className="phone_hint_wrapper">
-                                                <span>Номер телефона </span>
+                                                <span>Номер телефона владельца </span>
                                                 {subcompany.defaultPhone===1 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
                                             </p>
                                             <div className="name_company_wrapper form-control">
                                                 <div className="check-box-group2 input-text2">
-                                                    <div className="input-text2">
-                                                        <input type="radio" aria-label="" name="defaultPhone1" disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}  checked={subcompany.defaultPhone===1} onChange={(e) => this.handleChangePhone(e, i)}/>
-                                                    </div>
+                                                    {/*<div className="input-text2">*/}
+                                                    {/*    <input type="radio" aria-label="" name="defaultPhone1" disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}  checked={subcompany.defaultPhone===1} onChange={(e) => this.handleChangePhone(e, i)}/>*/}
+                                                    {/*</div>*/}
                                                     <ReactPhoneInput
                                                         enableLongNumbers={true}
                                                         // disableCountryCode={true}

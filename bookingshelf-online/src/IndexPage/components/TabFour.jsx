@@ -14,23 +14,41 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, serviceIntervalOn, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
         const availableTimes = []
+
+        let interval = 15;
+        if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
+            interval = 0
+            selectedServices.forEach(item => {
+                interval += (item.duration / 60)
+            })
+        }
         if(!this.state.arrayTime && workingStaff) {
             workingStaff.map((workingStaffElement, i) =>
                 parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                 workingStaffElement.availableTimes.map((workingTime) => {
+                    const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
+                    const currentTime = parseInt(moment((moment().add(currentMinutes === 60 ? 1 : 0, 'hour').format("YYYY MMMM DD HH:") + (currentMinutes % 60)), 'YYYY MMMM DD HH:mm').format('x'));
 
-                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / 15 + 1;
+                    const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                     const arrayTimes = []
-                    for( let i = 0 ; i< countTimes; i++) {
-                        arrayTimes.push(workingTime.startTimeMillis + (1000 * 60 * 15 * i))
+                    let startTime = workingTime.startTimeMillis
+                    if (workingTime.startTimeMillis < currentTime) {
+                        startTime = currentTime
+                    }
+
+                    for( let i = 0 ; i< Math.ceil(countTimes); i++) {
+                        const localCountTime = startTime + (1000 * 60 * interval * i)
+                        if (localCountTime <= workingTime.endTimeMillis) {
+                            arrayTimes.push(localCountTime)
+                        }
                     }
 
 
                     arrayTimes.forEach(arrayTime => {
-                        if (arrayTime >= parseInt(moment().format("x"))) {
+                        //if (arrayTime >= currentTime) {
                             let isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
                             if (!isAdded) {
                                 availableTimes.push({
@@ -48,7 +66,7 @@ class TabFour extends  PureComponent {
                                     )
                                 })
                             }
-                        }
+                        //}
                     })
                     }
                 )
@@ -144,6 +162,7 @@ class TabFour extends  PureComponent {
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`}/>
                 </div>
             )
         }
@@ -161,7 +180,7 @@ class TabFour extends  PureComponent {
                     {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         setScreen(5);
                         refreshTimetable();
-                    }}>Вперед</span>}
+                    }}>Далее</span>}
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&

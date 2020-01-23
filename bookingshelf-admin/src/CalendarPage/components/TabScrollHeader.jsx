@@ -12,12 +12,12 @@ class TabScrollHeader extends PureComponent {
                 {selectedDays.length === 1 && (
                     <div
                         className="fixed-tab"
-                        style={{
-                            'minWidth': (120*parseInt(timetable && timetable.length))+'px'
-                        }}
+                        // style={{
+                        //     'minWidth': (120*parseInt(timetable && timetable.length))+'px'
+                        // }}
                     >
                         <div className="tab-content-list tab-content-list-first">
-                            <div className="hours"><span></span></div>
+                            {(availableTimetable || availableTimetableMessage) && <div className="hours"><span></span></div>}
 
                             {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
@@ -39,9 +39,11 @@ class TabScrollHeader extends PureComponent {
                     </div>
 
                 )}
-                <div className="fixed-tab" style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}>
+                <div className="fixed-tab"
+                     //style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}
+                >
                     <div className="tab-content-list">
-                        <div className="hours"><span></span></div>
+                        {selectedDays.length>1 && <div className="hours"><span></span></div>}
 
                         {
                             selectedDays.length>1 && selectedDays.map((item, weekKey)=> {

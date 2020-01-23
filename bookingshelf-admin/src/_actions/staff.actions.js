@@ -132,11 +132,11 @@ function updateWorkingHours(timing, id) {
     function failure(error) { return { type: staffConstants.UPDATE_WORKING_HOURS_FAILURE, error } }
 }
 
-function update(params) {
+function update(params, staffId) {
     return dispatch => {
         dispatch(request(0));
 
-        staffService.update(params)
+        staffService.update(params, staffId)
             .then(
                 staff => {
                     dispatch(success(staff));
@@ -157,8 +157,12 @@ function update(params) {
 
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    try {
+                        dispatch(failure(JSON.parse(error)));
+
+                    } catch (e) {
+                        dispatch(failure(error.toString()));
+                    }
                 }
             );
     };

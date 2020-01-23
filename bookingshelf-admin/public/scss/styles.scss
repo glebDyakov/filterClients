@@ -326,13 +326,15 @@ input{
         height: 50px;
         margin-bottom: 0;
         border: none;
-
+        position: initial;
+        width: -webkit-fill-available;
         @media screen and(max-width: 1650px){
             height: 35px;
-            position: initial;
-            width: -webkit-fill-available;
         }
     }
+}
+.red-text {
+    color: red;
 }
 .company_fields{
     .input-text2, input{
@@ -4032,7 +4034,7 @@ textarea {
 .modal---modal-overlay---3D5Nr{
     z-index: 1!important;
 }
-.modal---modal-overlay---3D5Nr, .client-detail, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal{
+.modal---modal-overlay---3D5Nr, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal{
     //margin-right: -125px;
     margin-left: 250px;
     //z-index: 2!important;
@@ -4045,8 +4047,8 @@ textarea {
 .loader-client{
     margin-top: 140px;
     margin-left: 40px;
-    background-color: #f2f3f5!important;
-    z-index: 2!important;
+    // background-color: #f2f3f5!important;
+    // z-index: 2!important;
     @media screen and (max-width: 960px){
        margin-left: 0;
         margin-top: 115px;

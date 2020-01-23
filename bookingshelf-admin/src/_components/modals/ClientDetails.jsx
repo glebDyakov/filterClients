@@ -4,14 +4,14 @@ import { withRouter } from "react-router";
 import PropTypes from 'prop-types';
 import moment from "moment";
 import {access} from "../../_helpers/access";
-import {calendarActions} from "../../_actions";
+import {calendarActions, clientActions} from "../../_actions";
 
 class ClientDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            client: props.client,
-            defaultClientsList:  props.client,
+            client: {},
+            defaultAppointmentsList: [],
             allPrice: 0,
             search: false,
         };
@@ -21,24 +21,33 @@ class ClientDetails extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, client:newProps.client, defaultClientsList: newProps.client});
-            if (newProps.client) {
-                let allPrice = 0;
-                newProps.client.appointments.forEach((appointment) => {
-                    if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                        allPrice += appointment.price
-                    }
-                });
-                this.setState({ allPrice: allPrice });
-            }
+        if (newProps.clientId && (this.props.clientId !== newProps.clientId)) {
+            this.props.dispatch(clientActions.getActiveClient(newProps.clientId));
+            this.props.dispatch(clientActions.getActiveClientAppointments(newProps.clientId));
+        }
+        if (newProps.client.activeClientAppointments || newProps.client.activeClient) {
+            let allPrice = 0;
+            newProps.client.activeClientAppointments && newProps.client.activeClientAppointments.forEach((appointment) => {
+                if (appointment.appointmentTimeMillis <= moment().format('x')) {
+                    allPrice += appointment.price
+                }
+            });
+            this.setState({
+                allPrice,
+                client: {
+                    ...this.state.client,
+                    ...newProps.client.activeClient,
+                    appointments: newProps.client.activeClientAppointments,
+                },
+                defaultAppointmentsList: newProps.client.activeClientAppointments
+            });
         }
     }
 
     handleSearch () {
-        const {defaultClientsList}= this.state;
+        const {defaultAppointmentsList}= this.state;
 
-        const searchClientList=defaultClientsList.appointments.filter((item)=>{
+        const searchClientList=defaultAppointmentsList.filter((item)=>{
             return item.serviceName.toLowerCase().includes(this.search.value.toLowerCase())
         });
 
@@ -47,12 +56,15 @@ class ClientDetails extends React.Component {
             client: {...this.state.client ,appointments: searchClientList}
         });
 
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                client: defaultClientsList
-            })
-        }
+        // if(this.search.value===''){
+        //     this.setState({
+        //         search: true,
+        //         client: {
+        //             ...this.state.client,
+        //             appointments: defaultAppointmentsList
+        //         }
+        //     })
+        // }
     }
 
     goToPageCalendar(appointment, appointmentStaffId){
@@ -66,9 +78,9 @@ class ClientDetails extends React.Component {
     }
 
     render() {
-        const {client, defaultClientsList}=this.state;
+        const {client, defaultAppointmentsList}=this.state;
         const {editClient, services, staff}=this.props;
-        console.log(staff)
+
         return (
 
             <div className="modal fade client-detail">
@@ -87,7 +99,7 @@ class ClientDetails extends React.Component {
                                 <div className="client">
                                     <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
                                     <span className="name_container">{client.firstName} {client.lastName}
-                                        {access(4) && (
+                                        {access(12) && (
                                             <React.Fragment>
                                                 <span className="email-user">{client.email}</span>
                                                 <span>{client.phone}</span>
@@ -98,11 +110,11 @@ class ClientDetails extends React.Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-6" style={{textAlign:'center'}}>
-                                        <strong>{defaultClientsList.appointments.length} </strong><br/>
+                                        <strong>{defaultAppointmentsList.length} </strong><br/>
                                         <span className="gray-text">Всего визитов</span>
                                     </div>
                                     <div className="col-6"  style={{textAlign:'center'}}>
-                                        <strong>{this.state.allPrice} {defaultClientsList.appointments[0] && defaultClientsList.appointments[0].currency}</strong><br/>
+                                        <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
                                         <span className="gray-text">Всего оплачено</span>
                                     </div>
                                 </div>
@@ -113,7 +125,7 @@ class ClientDetails extends React.Component {
                                 <p className="pl-4 pr-4">Список визитов</p> : <p className="pl-4 pr-4">Нет визитов</p>
                             }
 
-                            {(defaultClientsList && defaultClientsList.appointments && defaultClientsList.appointments.length!==0 && defaultClientsList!=="" &&
+                            {(defaultAppointmentsList && defaultAppointmentsList.length!==0 && defaultAppointmentsList!=="" &&
                                     <div className="row align-items-center content clients mb-2 search-block">
                                         <div className="search col-7">
                                             <input type="search" placeholder="Введите название услуги"
@@ -156,6 +168,8 @@ class ClientDetails extends React.Component {
                                                             <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
                                                         {appointment.description ? <span
                                                             className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                        {appointment.clientNotCome ? <span
+                                                            style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
                                                     </p>
                                                 </div>
 
@@ -185,7 +199,10 @@ class ClientDetails extends React.Component {
                         <hr/>
                         <div className="buttons p-4">
                             <button type="button" className="button" data-toggle="modal"
-                                    data-target=".new-client"  onClick={()=>editClient(client && client.clientId)}>Редактировать клиента
+                                    data-target=".new-client"  onClick={()=> {
+                                $('.client-detail').modal('hide')
+                                editClient(client && client.clientId)
+                            }}>Редактировать клиента
                             </button>
                         </div>
                     </div>
@@ -197,9 +214,9 @@ class ClientDetails extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, calendar, staff} = state;
+    const { alert, services, calendar, staff, client} = state;
     return {
-        alert, services, calendar, staff
+        alert, services, calendar, staff, client
     };
 }
 

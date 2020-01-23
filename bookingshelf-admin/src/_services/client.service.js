@@ -9,7 +9,11 @@ export const clientService = {
     getClient,
     deleteClient,
     getClientWithInfo,
-    downloadFile
+    getClientV2,
+    getActiveClient,
+    getActiveClientAppointments,
+    downloadFile,
+    uploadFile
 };
 
 function addClient(params) {
@@ -66,6 +70,20 @@ function getClient() {
     return fetch(`${config.apiUrl}/clients`, requestOptions).then(handleResponse);
 }
 
+function uploadFile(uploadFile) {
+    const requestOptions = {
+        method: 'POST',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader(),
+        body: uploadFile
+    };
+
+    return fetch(`${config.apiUrl}/clients/upload`, requestOptions)
+}
 
 function downloadFile() {
     const requestOptions = {
@@ -96,7 +114,49 @@ function getClientWithInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=1&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
+function getClientV2(pageNum, searchValue, blacklisted) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=10${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
+}
+
+function getActiveClientAppointments(clientId) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+}
+
+function getActiveClient(clientId) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/clients/${clientId}`, requestOptions).then(handleResponse);
 }
 
 function deleteClient(id) {

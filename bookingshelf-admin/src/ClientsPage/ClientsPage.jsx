@@ -9,9 +9,10 @@ import '../../public/scss/clients.scss'
 
 import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from "react-pace-progress";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
+import ReactPaginate from 'react-paginate';
+import {servicesActions} from "../_actions/services.actions";
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -32,7 +33,6 @@ class ClientsPage extends Component {
             search: false,
             defaultClientsList:  props.client,
             activeTab: 'clients',
-            isLoading: true,
             openedModal: false,
             blackListModal: false,
             userSettings: false,
@@ -40,6 +40,8 @@ class ClientsPage extends Component {
 
         };
 
+        this.uploadFile = React.createRef();
+        this.onFileChange = this.onFileChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -51,13 +53,18 @@ class ClientsPage extends Component {
         this.onOpen = this.onOpen.bind(this);
         this.closeBlackListModal = this.closeBlackListModal.bind(this);
         this.openBlackListModal = this.openBlackListModal.bind(this);
+        this.handleFileSubmit = this.handleFileSubmit.bind(this);
+        this.onChangePage = this.onChangePage.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
+        this.updateClients = this.updateClients.bind(this);
     }
 
     componentDidMount() {
 
         // this.props.dispatch(clientActions.getClient());
-        this.props.dispatch(clientActions.getClientWithInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 800);
+        //this.props.dispatch(clientActions.getClientWithInfo());
+        this.props.dispatch(clientActions.getClientV2(1));
+        this.props.dispatch(servicesActions.getServices());
         initializeJs();
 
     }
@@ -83,22 +90,77 @@ class ClientsPage extends Component {
             activeTab: tab
         })
 
-        // if(tab==='clients') {document.title = "Доступы | Онлайн-запись";}
-        // if(tab==='blacklist'){document.title = "Выходные дни | Онлайн-запись"}
-        // if(tab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
-        // if(tab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
+        this.updateClients(1, tab);
+    }
 
-        //history.pushState(null, '', '/staff/'+tab);
+    getData(result) {
+        this.setState({data: result.data});
+    }
 
+    onFileChange(e) {
+        let uploadFile = e.target.files[0]
+
+        this.setState({ uploadFile })
+        //
+        // Papa.parse(csvData, {
+        //     complete: this.getData
+        // });
+    }
+
+    handleFileSubmit(e) {
+        e.preventDefault();
+        console.log(e)
+        console.log(this.state.uploadFile)
+        const formData = new FormData();
+        formData.append('file', this.state.uploadFile);
+
+        const reader = new FileReader();
+
+        this.props.dispatch(clientActions.uploadFile(formData))
+        // this.props.dispatch(clientActions.uploadFile(reader.readAsDataURL(this.state.uploadFile)))
+        // this.props.dispatch(clientActions.uploadFile(this.state.uploadFile))
+    }
+
+    onChangePage (pageOfItems) {
+        this.setState({ pageOfItems: pageOfItems });
+    };
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1, tab = this.state.activeTab) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+
+        const blacklisted = tab === 'blacklist';
+        this.props.dispatch(clientActions.getClientV2(currentPage, searchValue, blacklisted));
+    }
+
+    handleSearch () {
+        if (this.search.value.length >= 3) {
+            this.updateClients();
+        } else if (this.search.value.length === 0) {
+            this.updateClients();
+        }
     }
 
     render() {
         const { staff } = this.props;
-        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, isLoading, openedModal, userSettings, infoClient } = this.state;
+        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, userSettings, infoClient } = this.state;
+        const isLoading = client ? client.isLoading : false;
+
+        const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client
+
+        const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages
+
         return (
             <div className="clients-page">
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
-                {isLoading && <div className="loader loader-client"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
 
                 <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
@@ -117,16 +179,17 @@ class ClientsPage extends Component {
                                     </li>
                                 </ul>
                             </div>
-                            {
-                                (defaultClientsList.client && defaultClientsList!=="" &&
-                                <div className="row align-items-center content clients mb-2">
+
+
+                            <div style={{ position: 'relative' }}>
+                                <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
                                     <StaffChoice
-                                      selectedStaff={JSON.stringify(selectedStaffList[0])}
-                                      typeSelected={typeSelected}
-                                      staff={staff.staff}
-                                      availableTimetable={staff.staff}
-                                      setWorkingStaff={this.setWorkingStaff}
-                                      hideWorkingStaff={true}
+                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                                        typeSelected={typeSelected}
+                                        staff={staff.staff}
+                                        availableTimetable={staff.staff}
+                                        setWorkingStaff={this.setWorkingStaff}
+                                        hideWorkingStaff={true}
                                     />
                                     <div className="search col-7">
                                         <input type="search" placeholder="Искать по имени, email, номеру телефона"
@@ -134,69 +197,143 @@ class ClientsPage extends Component {
                                         <button className="search-icon" type="submit"/>
                                     </div>
                                     <div className="col-2 d-flex justify-content-end">
+                                        {/*{access(5) &&*/}
+                                        {/*<div className="export">*/}
+                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                                        {/*        <input type="submit" value="Загрузить" />*/}
+                                        {/*    </form>*/}
+                                        {/*</div>}*/}
                                         {access(5) &&
                                         <div className="export">
 
                                             <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                               >Экспорт в CSV
+                                            >Экспорт в CSV
                                             </button>
                                         </div>
                                         }
                                     </div>
                                 </div>
-                                )}
-                            { client.client && client.client.map((client_user, i) =>{
-                                let condition = true;
-                                if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 
-                                    condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+                                <div className="row align-items-center content clients mb-2">
+                                    <StaffChoice
+                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                                        typeSelected={typeSelected}
+                                        staff={staff.staff}
+                                        availableTimetable={staff.staff}
+                                        setWorkingStaff={this.setWorkingStaff}
+                                        hideWorkingStaff={true}
+                                    />
+                                    <div className="search col-7">
+                                        <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                                               aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
+                                        <button className="search-icon" type="submit"/>
+                                    </div>
+                                    <div className="col-2 d-flex justify-content-end">
+                                        {/*{access(5) &&*/}
+                                        {/*<div className="export">*/}
+                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                                        {/*        <input type="submit" value="Загрузить" />*/}
+                                        {/*    </form>*/}
+                                        {/*</div>}*/}
+                                        {access(5) &&
+                                        <div className="export">
 
-                                }
-                                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
-                                    <div style={{position: "relative"}}>
-                                        <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
-                                            <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
-                                            <p> {client_user.firstName} {client_user.lastName}</p>
-                                        </a>
-                                        <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
-                                    </div>
-                                    <div>
-                                        {client_user.email}
-                                    </div>
-                                    <div>
-                                        {client_user.phone}
-                                    </div>
-                                    <div>
-                                        {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
-                                    </div>
-                                    <div className="delete dropdown">
-                                        <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
-                                        <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                        </a>
-                                        <div className="dropdown-menu delete-menu p-3">
-                                            {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                            {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
-                                                delete client_user.appointments;
-                                                this.updateClient({...client_user, blacklisted: false})
-                                            }}>Удалить</button>}
+                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                            >Экспорт в CSV
+                                            </button>
                                         </div>
+                                        }
                                     </div>
                                 </div>
-                                )})}
-                            <div className="tab-content">
-                            {
-                                (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
-                                <div className="no-holiday">
-                                                <span>
-                                                    Клиенты не добавлены
+
+
+                                <div style={{ maxHeight: 'calc(100vh - 225px)', overflowY: 'auto' }}>
+                                    {finalClients && finalClients.map((client_user, i) =>{
+                                        let condition = true;
+                                        if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
+
+                                            condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+
+                                        }
+                                        return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                                            <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
+                                                <div style={{position: "relative"}}>
+                                                    <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
+                                                        <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
+                                                        <p> {client_user.firstName} {client_user.lastName}</p>
+                                                    </a>
+                                                    <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
+                                                </div>
+                                                <div>
+                                                    {client_user.email}
+                                                </div>
+                                                <div>
+                                                    {client_user.phone}
+                                                </div>
+                                                <div>
+                                                    {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
+                                                </div>
+                                                <div className="delete dropdown">
+                                                    <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
+                                                    <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                                    </a>
+                                                    <div className="dropdown-menu delete-menu p-3">
+                                                        {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
+                                                        {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
+                                                            delete client_user.appointments;
+                                                            this.updateClient({...client_user, blacklisted: false}, true)
+                                                        }}>Удалить</button>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    )}
+                                </div>
+
+                                <div className="tab-content">
+                                    {
+                                        (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
+                                        <div className="no-holiday">
+                                            {(this.search && this.search.value.length > 0)
+                                                ? <span>Поиск результатов не дал</span>
+                                                : <span>
+                                            {client.error ? client.error : 'Клиенты не добавлены'}
                                                     <button type="button"
                                                             className="button mt-3 p-3"
                                                             onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
-                                                </span>
+                                      </span>}
+
+                                        </div>
+                                    }
                                 </div>
-                            }
+
+                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                    {finalTotalPages > 1 &&
+                                    <ReactPaginate
+                                        previousLabel={'⟨'}
+                                        nextLabel={'⟩'}
+                                        breakLabel={'...'}
+                                        pageCount={finalTotalPages}
+                                        marginPagesDisplayed={2}
+                                        pageRangeDisplayed={5}
+                                        onPageChange={this.handlePageClick}
+                                        subContainerClassName={'pages pagination'}
+                                        breakClassName={'page-item'}
+                                        breakLinkClassName={'page-link'}
+                                        containerClassName={'pagination'}
+                                        pageClassName={'page-item'}
+                                        pageLinkClassName={'page-link'}
+                                        previousClassName={'page-item'}
+                                        previousLinkClassName={'page-link'}
+                                        nextClassName={'page-item'}
+                                        nextLinkClassName={'page-link'}
+                                        activeClassName={'active'}
+                                    />
+                                    }
+                                </div>
                             </div>
                             <a className="add"/>
                             <div className="hide buttons-container">
@@ -205,12 +342,17 @@ class ClientsPage extends Component {
                                     {activeTab==='blacklist' && <button type="button" className="button"
                                                                         data-target=".add-black-list-modal"
                                                                         data-toggle="modal"
-                                                                        onClick={()=>this.openBlackListModal()}>Добавить в blacklist</button>}
+                                                                        onClick={()=>{
+                                                                            this.updateClients(1, 'clients')
+                                                                            this.openBlackListModal()
+                                                                        }}>Добавить в blacklist</button>}
                                 </div>
                                 <div className="arrow"/>
                             </div>
                         </div>
                     </div>
+
+
 
                 </div>
                 {openedModal &&
@@ -224,7 +366,8 @@ class ClientsPage extends Component {
                 }
                 {blackListModal &&
                     <AddBlackList
-                        clients={client.client}
+                        isLoading={isLoading}
+                        clients={client}
                         updateClient={this.updateClient}
                         addClient={this.addClient}
                         onClose={this.closeBlackListModal}
@@ -236,35 +379,13 @@ class ClientsPage extends Component {
                 />
                 }
                 <ClientDetails
-                    client={infoClient}
+                    clientId={infoClient}
                     // editClient={this.handleEditClient}
                     editClient={this.handleClick}
                 />
                 <UserPhoto/>
             </div>
         );
-    }
-
-    handleSearch () {
-        const {defaultClientsList}= this.state;
-
-        const searchClientList=defaultClientsList.client.filter((item)=>{
-            return item.email.toLowerCase().includes(this.search.value.toLowerCase()) ||
-            item.firstName.toLowerCase().includes(this.search.value.toLowerCase()) ||
-            item.phone.toLowerCase().includes(this.search.value.toLowerCase())
-        });
-
-        this.setState({
-            search: true,
-            client: {client: searchClientList}
-        });
-
-        if(this.search.value===''){
-            this.setState({
-                search: true,
-                client: defaultClientsList
-            })
-        }
     }
 
     handleSubmit(e) {
@@ -310,15 +431,15 @@ class ClientsPage extends Component {
     }
     openClientStats(client){
 
-        this.setState({...this.state, infoClient: client});
+        this.setState({ infoClient: client.clientId });
         $('.client-detail').modal('show')
 
     }
 
-    updateClient(client){
+    updateClient(client, blacklisted){
         const { dispatch } = this.props;
 
-        dispatch(clientActions.updateClient(JSON.stringify(client)));
+        dispatch(clientActions.updateClient(JSON.stringify(client), blacklisted));
     };
 
     addClient(client){

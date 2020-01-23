@@ -3,11 +3,6 @@ import React, {PureComponent} from 'react';
 import moment from 'moment';
 
 class TabScrollLeftMenu extends PureComponent {
-
-    shouldComponentUpdate() {
-        return false;
-    }
-
     render(){
         const { time } = this.props;
 

@@ -20,8 +20,8 @@ function getInvoiceList() {
         },
         headers: authHeader()
     };
-    let dataFrom = moment().startOf('year').format('x');
-    let dataTo = moment().endOf('year').format('x');
+    let dataFrom = moment().subtract(1,'year').format('x');
+    let dataTo = moment().add(1,'year').format('x');
 
     return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then(handleResponse);
 }

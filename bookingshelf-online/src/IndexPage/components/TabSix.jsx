@@ -63,6 +63,7 @@ class TabSix extends  PureComponent {
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`}/>
                 </div>
             )
         }
@@ -118,7 +119,8 @@ class TabSix extends  PureComponent {
                 }
                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                     <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
-                        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company))
+                        const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
+                        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId))
                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
                     }}/>
                     <span className="move-white" />

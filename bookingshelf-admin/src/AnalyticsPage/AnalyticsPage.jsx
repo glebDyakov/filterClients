@@ -712,6 +712,19 @@ class AnalyticsPage extends Component{
                                 </div>
                             </div>
                             {/*// <!--end analytics_list-->*/}
+
+                            {/*// <!--end analytics_list-->*/}
+                            <div style={{ margin: '15px 0 0 15px' }} className="analytics_list tablet-full">
+                                <div className="list-group-statistics">
+                                    <strong>Клиенты <br/>не пришли</strong>
+                                    <span>
+                                        {analitics.counter && analitics.counter.clientNotComeToday}
+                                        <span className="small">{analitics.counter && ((analitics.counter.clientNotComePercent > 0?"+":"")
+                                            + analitics.counter.clientNotComePercent.toFixed(2))}% со вчера</span>
+                                    </span>
+                                </div>
+                            </div>
+                            {/*// <!--end analytics_list-->*/}
                         </div>
                         <div className="group-container">
 

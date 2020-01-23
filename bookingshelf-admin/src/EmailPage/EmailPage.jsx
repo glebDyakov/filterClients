@@ -116,7 +116,8 @@ class EmailPage extends Component {
         this.props.dispatch(notificationActions.getBalance());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(clientActions.getClientWithInfo());
+        this.props.dispatch(notificationActions.getClientAmount());
+        // this.props.dispatch(clientActions.getClientWithInfo());
 
         setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
@@ -217,17 +218,20 @@ class EmailPage extends Component {
     }
 
     handleChangeSMStoggle (type) {
-        const { sms, client, staff, count_sms, receivers } = this.state;
-        let receivers_all=receivers
-        if(type==='toClients'){
-            receivers_all=receivers+client.client.length;
-        }else if(type==='toStaffs'){
-            receivers_all=receivers+staff.staff.length;
+        const { clientAmount } = this.props.notification
+        const { sms, staff, count_sms, receivers } = this.state;
+        let receivers_all=0
+        const updatedSms = {...sms, [type]: !sms[type]}
 
+        if(updatedSms.toClients){
+            receivers_all += clientAmount;
+        }
+        if(updatedSms.toStaffs){
+            receivers_all += staff.staff.length;
         }
 
-        this.setState({...this.state, sms: {...sms, [type]: !sms[type]},
-
+        this.setState({
+            sms: updatedSms,
             receivers: receivers_all,
             count_sms_all: count_sms*receivers_all,
             letters_all: sms.description.length*receivers_all
@@ -236,15 +240,19 @@ class EmailPage extends Component {
     }
 
     handleChangeEmailtoggle (type) {
-        const { email, receivers_email, client, staff } = this.state;
-        let receivers_all_email=receivers_email;
-        if(type==='toClients'){
-            receivers_all_email=receivers_email+client.client.length;
-        }else if(type==='toStaffs'){
-            receivers_all_email=receivers_email+staff.staff.length;
+        const { clientAmount } = this.props.notification
+        const { email, staff } = this.state;
+        let receivers_all_email= 0;
 
+        const updatedEmail = {...email, [type]: !email[type]}
+
+        if(updatedEmail.toClients){
+            receivers_all_email += clientAmount;
         }
-        this.setState({...this.state, email: {...email, [type]: !email[type]}, receivers_email: receivers_all_email});
+        if(updatedEmail.toStaffs){
+            receivers_all_email += staff.staff.length;
+        }
+        this.setState({ email: updatedEmail, receivers_email: receivers_all_email});
     }
 
     handleChange(e) {
@@ -429,6 +437,53 @@ class EmailPage extends Component {
 
                                                         </div>
                                                     </div>
+
+
+                                                    <hr/>
+
+                                                    <div className="row">
+                                                        <div className="col-md-3">
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" checked={notifications && notifications.appointmentCreate} onChange={()=>this.toggleChange('appointmentCreate')}
+                                                                           type="checkbox"/>
+                                                                    <span className="check"></span>
+                                                                    Уведомления при записи
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-3">
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" checked={notifications && notifications.appointmentMove} onChange={()=>this.toggleChange('appointmentMove')}
+                                                                           type="checkbox"/>
+                                                                    <span className="check"></span>
+                                                                    Уведомления при переносе визита
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-3">
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" checked={notifications && notifications.appointmentDelete} onChange={()=>this.toggleChange('appointmentDelete')}
+                                                                           type="checkbox"/>
+                                                                    <span className="check"></span>
+                                                                    Уведомления при удалении визита
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-3">
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" checked={notifications && notifications.appointmentRemind} onChange={()=>this.toggleChange('appointmentRemind')}
+                                                                           type="checkbox"/>
+                                                                    <span className="check"></span>
+                                                                    Напоминания о визитах
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <hr/>
                                                     <div className="row">
                                                         <div className="col-md-6">
@@ -559,32 +614,32 @@ class EmailPage extends Component {
                                             </ul>
                                             <div className={"tab-pane"+(activeTab==='smsletter'?' active':'')} id="sms_tab1">
                                                 <div className="block-style1  pl-4 pr-4">
-                                                    <p className="mb-2">Выбрать услугу</p>
-                                                    <div className="select-color mb-3 dropdown border-color">
-                                                        {serviceCurrent && serviceCurrent.id !== -1 ?
-                                                            <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}
-                                                               data-toggle={"dropdown"} href="#"><span
-                                                                className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span
-                                                                className="yellow"><span
-                                                                className="items-color"><span>{serviceCurrent.service.name}</span></span></span>
-                                                            </a>: <a className="select-button dropdown-toggle yellow"
-                                                                     data-toggle="dropdown" href="#"><span
-                                                                className="color-circle yellow"/><span
-                                                                className="yellow">Выбрать услугу</span></a>
-                                                        }
-                                                        <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>
-                                                            {
-                                                                services.servicesList && services.servicesList.map((service, key)=>
-                                                                    <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceSMS(service.serviceId, service)}><span
-                                                                        className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>
-                                                                    </li>
+                                                    {/*<p className="mb-2">Выбрать услугу</p>*/}
+                                                    {/*<div className="select-color mb-3 dropdown border-color">*/}
+                                                    {/*    {serviceCurrent && serviceCurrent.id !== -1 ?*/}
+                                                    {/*        <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}*/}
+                                                    {/*           data-toggle={"dropdown"} href="#"><span*/}
+                                                    {/*            className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span*/}
+                                                    {/*            className="yellow"><span*/}
+                                                    {/*            className="items-color"><span>{serviceCurrent.service.name}</span></span></span>*/}
+                                                    {/*        </a>: <a className="select-button dropdown-toggle yellow"*/}
+                                                    {/*                 data-toggle="dropdown" href="#"><span*/}
+                                                    {/*            className="color-circle yellow"/><span*/}
+                                                    {/*            className="yellow">Выбрать услугу</span></a>*/}
+                                                    {/*    }*/}
+                                                    {/*    <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>*/}
+                                                    {/*        {*/}
+                                                    {/*            services.servicesList && services.servicesList.map((service, key)=>*/}
+                                                    {/*                <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceSMS(service.serviceId, service)}><span*/}
+                                                    {/*                    className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>*/}
+                                                    {/*                </li>*/}
 
 
-                                                                )
-                                                            }
-                                                        </ul>
-                                                        <div className="arrow-dropdown"><i></i></div>
-                                                    </div>
+                                                    {/*            )*/}
+                                                    {/*        }*/}
+                                                    {/*    </ul>*/}
+                                                    {/*    <div className="arrow-dropdown"><i></i></div>*/}
+                                                    {/*</div>*/}
                                                     <p className="">Текст СМС</p>
                                                     <textarea spellCheck="off" autoCorrect="off" style={{'height': '100px'}}
                                                               className="copy-code" placeholder="" name="description" onChange={this.handleChangeSMS_text} value={sms.description}/>
@@ -648,32 +703,32 @@ class EmailPage extends Component {
                                             </div>
                                             <div className={"tab-pane"+(activeTab==='newsletter'?' active':'')} id="sms_tab1">
                                                 <div className="block-style1  pl-4 pr-4">
-                                                    <p className="mb-2">Выбрать услугу</p>
-                                                    <div className="select-color mb-3 dropdown border-color">
-                                                        {serviceCurrent && serviceCurrent.id !== -1 ?
-                                                            <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}
-                                                               data-toggle={"dropdown"} href="#"><span
-                                                                className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span
-                                                                className="yellow"><span
-                                                                className="items-color"><span>{serviceCurrent.service.name}</span></span></span>
-                                                            </a>: <a className="select-button dropdown-toggle yellow"
-                                                                     data-toggle="dropdown" href="#"><span
-                                                                className="color-circle yellow"/><span
-                                                                className="yellow">Выбрать услугу</span></a>
-                                                        }
-                                                        <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>
-                                                            {
-                                                                services.servicesList && services.servicesList.map((service, key)=>
-                                                                    <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceEmail(service.serviceId, service)}><span
-                                                                        className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>
-                                                                    </li>
+                                                    {/*<p className="mb-2">Выбрать услугу</p>*/}
+                                                    {/*<div className="select-color mb-3 dropdown border-color">*/}
+                                                    {/*    {serviceCurrent && serviceCurrent.id !== -1 ?*/}
+                                                    {/*        <a className={serviceCurrent.service.color.toLowerCase() + " " + 'select-button dropdown-toggle'}*/}
+                                                    {/*           data-toggle={"dropdown"} href="#"><span*/}
+                                                    {/*            className={serviceCurrent.service.color.toLowerCase() + " " + 'color-circle'}/><span*/}
+                                                    {/*            className="yellow"><span*/}
+                                                    {/*            className="items-color"><span>{serviceCurrent.service.name}</span></span></span>*/}
+                                                    {/*        </a>: <a className="select-button dropdown-toggle yellow"*/}
+                                                    {/*                 data-toggle="dropdown" href="#"><span*/}
+                                                    {/*            className="color-circle yellow"/><span*/}
+                                                    {/*            className="yellow">Выбрать услугу</span></a>*/}
+                                                    {/*    }*/}
+                                                    {/*    <ul className="dropdown-menu" style={{'maxHeight':'150px'}}>*/}
+                                                    {/*        {*/}
+                                                    {/*            services.servicesList && services.servicesList.map((service, key)=>*/}
+                                                    {/*                <li className="dropdown-item"  key={key}><a  onClick={()=>this.setServiceEmail(service.serviceId, service)}><span*/}
+                                                    {/*                    className={service.color && service.color.toLowerCase() + " "+'color-circle'}/><span className={service.color && service.color.toLowerCase()}>{service.name}</span></a>*/}
+                                                    {/*                </li>*/}
 
 
-                                                                )
-                                                            }
-                                                        </ul>
-                                                        <div className="arrow-dropdown"><i></i></div>
-                                                    </div>
+                                                    {/*            )*/}
+                                                    {/*        }*/}
+                                                    {/*    </ul>*/}
+                                                    {/*    <div className="arrow-dropdown"><i></i></div>*/}
+                                                    {/*</div>*/}
                                                     <p className="mb-3">Текст Email</p>
                                                     <Editor
                                                         editorState={editorState}

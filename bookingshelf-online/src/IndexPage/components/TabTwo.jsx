@@ -5,7 +5,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, setScreen,refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
@@ -13,7 +13,7 @@ class TabTwo extends Component {
         const isServiceList = serviceGroups.some(serviceGroup => {
             let { services } = serviceGroup
             return services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
-                !servicesForStaff && selectedStaff && selectedStaff.length === 0
+                (!servicesForStaff && selectedStaff && selectedStaff.length === 0)
         })
 
         let serviceInfo = null
@@ -42,6 +42,7 @@ class TabTwo extends Component {
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`}/>
                 </div>
             )
         }
@@ -56,9 +57,11 @@ class TabTwo extends Component {
                     }}>Назад</span>
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
-                        setScreen(3);
-                        refreshTimetable()
-                    }}>Вперед</span>}
+                        if (selectedServices.length) {
+                            setScreen(flagAllStaffs ? 1 : 3);
+                        }
+                        refreshTimetable();
+                    }}>Далее</span>}
                 </div>
                 {selectedStaff.staffId && <div className="specialist">
                     <div>
@@ -77,12 +80,24 @@ class TabTwo extends Component {
                     let { services } = serviceGroup
                     let condition =
                         services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
-                        !servicesForStaff && selectedStaff && selectedStaff.length === 0
-                    return condition && (
+                        flagAllStaffs
+
+                    let finalServices
+
+                    if (flagAllStaffs) {
+                        if (selectedServices && selectedServices.length) {
+                            finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
+                        } else {
+                            finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
+                        }
+                    } else {
+                        finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
+                    }
+
+                    return condition && finalServices && finalServices.length > 0 && (
                         <ul className="service_list">
                             <h3 style={{ fontSize: '22px', fontWeight: 'bold', textDecoration: 'underline'}}>{serviceGroup.name}</h3>
-                            {services && services.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
-                                selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId) &&
+                            {finalServices.sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
                                 <li
                                     className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                                 >
@@ -106,30 +121,31 @@ class TabTwo extends Component {
                                     </div>
                                 </li>
                             )}
-                            {!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>
-                                <li
-                                    className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
-                                >
-                                    <div className="service_item">
-                                        <label>
 
-                                            <p>{service.name}</p>
-                                            <p>
-                                                <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                <span>{service.currency}</span>
-                                                <input onChange={(e) => selectService(e, service)} type="checkbox"
-                                                       checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>
-                                                <span className="checkHelper"/>
-                                            </p>
-                                            <span className="runtime">{service.details}</span>
+                            {/*{!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>*/}
+                            {/*    <li*/}
+                            {/*        className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}*/}
+                            {/*    >*/}
+                            {/*        <div className="service_item">*/}
+                            {/*            <label>*/}
 
-                                            <span
-                                                className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                            {/*                <p>{service.name}</p>*/}
+                            {/*                <p>*/}
+                            {/*                    <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>*/}
+                            {/*                    <span>{service.currency}</span>*/}
+                            {/*                    <input onChange={(e) => selectService(e, service)} type="checkbox"*/}
+                            {/*                           checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>*/}
+                            {/*                    <span className="checkHelper"/>*/}
+                            {/*                </p>*/}
+                            {/*                <span className="runtime">{service.details}</span>*/}
 
-                                        </label>
-                                    </div>
-                                </li>
-                            )}
+                            {/*                <span*/}
+                            {/*                    className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>*/}
+
+                            {/*            </label>*/}
+                            {/*        </div>*/}
+                            {/*    </li>*/}
+                            {/*)}*/}
 
 
 
@@ -143,7 +159,9 @@ class TabTwo extends Component {
 
                 {!!selectedServices.length &&
                 <div className="button_block" onClick={() => {
-                    selectedServices.length && setScreen(3);
+                    if (selectedServices.length) {
+                        setScreen(flagAllStaffs ? 1 : 3);
+                    }
                     refreshTimetable();
                 }}>
                     <button className="button load">Продолжить</button>

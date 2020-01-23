@@ -77,7 +77,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_CLIENT_APPOINTMENTS_SUCCESS:
             return {
                 ...state,
-                clients: action.clients
+                clientAppointments: action.clientAppointments
             }
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {

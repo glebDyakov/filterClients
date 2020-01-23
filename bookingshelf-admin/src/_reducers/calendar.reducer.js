@@ -31,23 +31,23 @@ export function calendar(state = initialState, action) {
             }
         case calendarConstants.ADD_APPOINTMENT_SUCCESS:
 
-            let appointments = state.appointments;
-            if (appointments) {
-                let boolAppointments = appointments.filter((app, key) =>
-                    action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
-                );
-
-                if (boolAppointments.length !== 0) {
-                } else {
-                    action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
-                }
-            } else {
-                appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
-            }
+            // let appointments = state.appointments;
+            // if (appointments) {
+            //     let boolAppointments = appointments.filter((app, key) =>
+            //         action.appointment.filter(item => app.staff.staffId === action.staffId && app['appointments'].push(item))
+            //     );
+            //
+            //     if (boolAppointments.length !== 0) {
+            //     } else {
+            //         action.appointment.forEach(item => appointments.push({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
+            //     }
+            // } else {
+            //     appointments = action.appointment.map(item => ({'staff': {'staffId': action.staffId}, 'appointments': [item]}))
+            // }
             return {
                 ...state,
                 status: 200,
-                appointments: appointments,
+                // appointments: appointments,
                 adding: false,
                 isLoading:false
             };
@@ -70,6 +70,32 @@ export function calendar(state = initialState, action) {
                 ...state,
                 isMoveVisit: action.isMoveVisit
             };
+
+        case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX:
+            return {
+                ...state,
+                isClientNotComeLoading: true
+            }
+        case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_SUCCESS:
+            let staffIndex = state.appointments.findIndex(item => item.staff.staffId === action.appointment[0].staffId)
+            if (staffIndex !== -1) {
+                let appointmentIndex = state.appointments[staffIndex].appointments.findIndex(item => item.appointmentId === action.appointment[0].appointmentId)
+                state.appointments[staffIndex].appointments[appointmentIndex] = {
+                    ...state.appointments[staffIndex].appointments[appointmentIndex],
+                    clientNotCome: action.appointment[0].clientNotCome
+                }
+            }
+            return {
+                ...state,
+                appointments: JSON.parse(JSON.stringify(state.appointments)),
+                isClientNotComeLoading: false
+            }
+        case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_FAILURE:
+            return {
+                ...state,
+                isClientNotComeLoading: false
+            }
+
         case calendarConstants.UPDATE_APPOINTMENT:
 
             return {
@@ -232,14 +258,14 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,
-                isLoading: true,
+                isLoadingAppointments: true,
                 isLoadingModal: true
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS:
             return {
                 ...state,
                 appointments: action.appointments,
-                isLoading: false,
+                isLoadingAppointments: false,
                 isLoadingModal: false
             };
         case calendarConstants.GET_APPOINTMENT_NEW_SOCKET:
@@ -283,8 +309,7 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 appointments: appointmentsToPush,
-                appointmentsCount: appointmentsCountToPush,
-                appointmentShouldChange: !state.appointmentShouldChange
+                appointmentsCount: appointmentsCountToPush
             };
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
             newAppointmentsCount = state.appointmentsCount
@@ -294,7 +319,8 @@ export function calendar(state = initialState, action) {
 
             appointmentsToDelete.forEach((newItem, i) => {
                 let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                let indexAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+                let activeAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId)
+                let indexAppointmentsCount = activeAppointmentsCount ? activeAppointmentsCount.appointments.findIndex(item=>item.appointmentId === newItem.appointmentId) : -1
                 if (indexElem !== -1) {
                     newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
                 }
@@ -353,7 +379,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                isLoading: false,
+                isLoadingAppointments: false,
                 isLoadingModal: false
             };
 
@@ -392,18 +418,18 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_RESERVED_TIME_REQUEST:
             return {
                 ...state,
-                isLoading: true
+                isLoadingReservedTime: true
             }
         case calendarConstants.GET_RESERVED_TIME_SUCCESS:
             return {
                 ...state,
                 reservedTime: action.reservedTime,
-                isLoading: false
+                isLoadingReservedTime: false
             };
         case calendarConstants.GET_RESERVED_TIME_FAILURE:
             return {
                 ...state,
-                isLoading: false
+                isLoadingReservedTime: false
             };
         default:
             return state

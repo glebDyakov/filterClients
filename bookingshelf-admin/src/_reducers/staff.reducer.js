@@ -87,6 +87,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 status: 200,
+                errorMessageKey: null,
                 adding: false
             };
         case staffConstants.GET:
@@ -118,7 +119,8 @@ export function staff(state = initialState, action) {
         case staffConstants.UPDATE_FAILURE:
             return {
                 ...state,
-                status: 209
+                adding: false,
+                errorMessageKey: action.error.messageKey
             };
         case staffConstants.UPDATE_ACCESS_FAILURE:
             return {
@@ -188,38 +190,41 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_REQUEST:
             return {
                 ...state,
-                isLoadingStaffInit: true
+                isLoadingStaffInit: true,
+                isLoadingTimetable: true,
             };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
                 timetable: action.timetable,
+                isLoadingTimetable: false,
                 isLoadingStaffInit: false
             };
         case staffConstants.GET_TIMETABLE_FAILURE:
             return {
                 ...state,
                 isLoadingStaffInit: false,
+                isLoadingTimetable: false,
                 error: true
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
                 ...state,
-                isLoading: true
+                isLoadingAvailableTime: true
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:
 
             return {
                 ...state,
-                isLoading:false,
+                isLoadingAvailableTime:false,
                 availableTimetable: action.payload.availableTimetable,
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
             return {
                 ...state,
-                isLoading:false,
+                isLoadingAvailableTime:false,
             };
         case staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS:
             return {
@@ -250,12 +255,8 @@ export function staff(state = initialState, action) {
                         "name": 'Все клиенты',
                         "permissionCode": 4
                     },
-                    // {
-                    //     "name": 'Клиенты сотрудника',
-                    //     "permissionCode": 12
-                    // },
                     {
-                        "name": 'Клиенты сотрудника',
+                        "name": 'Клиенты с контактами',
                         "permissionCode": 12
                     },
                     {

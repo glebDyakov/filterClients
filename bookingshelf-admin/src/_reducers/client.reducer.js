@@ -1,6 +1,6 @@
-import {calendarConstants, clientConstants} from '../_constants';
+import {clientConstants} from '../_constants';
 
-export function client(state= {}, action) {
+export function client(state= { activeClientAppointments: [] }, action) {
   switch (action.type) {
       case clientConstants.CLIENT_SUCCESS_TIME:
           return {
@@ -13,11 +13,52 @@ export function client(state= {}, action) {
               status: 208,
               adding: true
           };
+
+      case clientConstants.GET_CLIENT:
+      case clientConstants.GET_CLIENT_V2:
+          return {
+              ...state,
+              isLoading: true
+          }
+      case clientConstants.GET_ACTIVE_CLIENT_SUCCESS:
+          return {
+              ...state,
+              activeClient: action.activeClient
+          }
+      case clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS_SUCCESS:
+          return {
+              ...state,
+              activeClientAppointments: action.activeClientAppointments
+          }
       case clientConstants.GET_CLIENT_SUCCESS:
           return {
               ...state,
-              client: action.client
+              client: action.client,
+              isLoading: false,
+              error: null
           };
+      case clientConstants.GET_CLIENT_V2_SUCCESS:
+          let clientState = {}
+          if (action.blacklisted) {
+              clientState.blacklistedClients = action.client.content;
+              clientState.blacklistedTotalPages = action.client.totalPages;
+          } else {
+              clientState.client = action.client.content;
+              clientState.totalPages = action.client.totalPages;
+          }
+          return {
+              ...state,
+              ...clientState,
+              isLoading: false,
+              error: null
+          };
+      case clientConstants.GET_CLIENT_FAILURE:
+      case clientConstants.GET_CLIENT_V2_FAILURE:
+          return {
+              ...state,
+              isLoading: false,
+              error: action.error
+          }
       case clientConstants.ADD_CLIENT_SUCCESS:
           let client=state.client;
           client ? client.push(action.client) : client=[action.client];
@@ -40,11 +81,25 @@ export function client(state= {}, action) {
       case clientConstants.UPDATE_CLIENT_SUCCESS:
           const clients=state.client;
 
-          clients.find((item, key)=>{
-              if(item.clientId===action.client.clientId){
-                  clients[key]={...clients[key], discountPercent: action.client.discountPercent, firstName: action.client.firstName, lastName: action.client.lastName, phone: action.client.phone, email: action.client.email, acceptNewsletter: action.client.acceptNewsletter, city: action.client.city, country: action.client.country, province: action.client.province, blacklisted: action.client.blacklisted};
-              }
-          });
+          if (clients && clients.length) {
+              clients.find((item, key) => {
+                  if (item.clientId === action.client.clientId) {
+                      clients[key] = {
+                          ...clients[key],
+                          discountPercent: action.client.discountPercent,
+                          firstName: action.client.firstName,
+                          lastName: action.client.lastName,
+                          phone: action.client.phone,
+                          email: action.client.email,
+                          acceptNewsletter: action.client.acceptNewsletter,
+                          city: action.client.city,
+                          country: action.client.country,
+                          province: action.client.province,
+                          blacklisted: action.client.blacklisted
+                      };
+                  }
+              });
+          }
 
           return {
               ...state,
