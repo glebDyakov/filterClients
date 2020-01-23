@@ -12,9 +12,9 @@ class TabScrollHeader extends PureComponent {
                 {selectedDays.length === 1 && (
                     <div
                         className="fixed-tab"
-                        style={{
-                            'minWidth': (120*parseInt(timetable && timetable.length))+'px'
-                        }}
+                        // style={{
+                        //     'minWidth': (120*parseInt(timetable && timetable.length))+'px'
+                        // }}
                     >
                         <div className="tab-content-list tab-content-list-first">
                             {(availableTimetable || availableTimetableMessage) && <div className="hours"><span></span></div>}
@@ -39,7 +39,9 @@ class TabScrollHeader extends PureComponent {
                     </div>
 
                 )}
-                <div className="fixed-tab" style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}>
+                <div className="fixed-tab"
+                     //style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}
+                >
                     <div className="tab-content-list">
                         {selectedDays.length>1 && <div className="hours"><span></span></div>}
 
