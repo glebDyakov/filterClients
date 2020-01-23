@@ -388,7 +388,7 @@ class CalendarPage extends PureComponent {
             this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
         }
 
-        const isLoading = newProps.calendar.isLoading || newProps.staff.isLoading || newProps.calendar.isLoadingAppointments || newProps.calendar.isLoadingReservedTime || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
+        const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {
             if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
                 this.setState({
