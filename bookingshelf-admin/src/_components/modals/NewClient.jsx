@@ -9,8 +9,13 @@ import Modal from '@trendmicro/react-modal';
 class NewClient extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-            client: props.client.activeClient && this.props.edit ?props.client.activeClient: {
+        let client;
+        if (props.client_working && props.edit) {
+            client = props.client_working
+        } else if (props.client.activeClient && props.edit) {
+            client = props.client.activeClient
+        } else {
+            client = {
                 "firstName": "",
                 "lastName": "",
                 "email": "",
@@ -19,7 +24,10 @@ class NewClient extends React.Component {
                 "city": "",
                 "province": "",
                 "acceptNewsletter": true
-            },
+            }
+        }
+        this.state={
+            client: client,
             edit: props.edit,
             clients: props.client,
             isUserEditedPhone: false

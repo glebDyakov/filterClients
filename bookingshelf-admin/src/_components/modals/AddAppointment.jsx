@@ -97,21 +97,23 @@ class AddAppointment extends React.Component {
         }
 
         if(this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
-            const user = newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
-            this.setState({ clientChecked: { ...this.state.clientChecked, ...user, appointments: newProps.clients.activeClientAppointments, }, shouldUpdateCheckedUser: false})
+            let user = newProps.clients.client && newProps.clients.client.length > 0 && newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
+            let finalUser = {}
+            if (user) {
+                finalUser = { ...user, appointments: newProps.clients.activeClientAppointments, }
+            }
+            this.setState({ clientChecked: finalUser, shouldUpdateCheckedUser: false})
         }
 
         if(JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
             this.setState({ shouldUpdateCheckedUser: true })
         }
 
-        if ((newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.length && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments))) ||
+        if ((newProps.clients.activeClientAppointments && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments))) ||
             (newProps.clients.activeClient && (JSON.stringify(this.props.clients.activeClient) !== JSON.stringify(newProps.clients.activeClient)))) {
             let allPrice = 0;
             newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.forEach((appointment) => {
-                if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                    allPrice += appointment.price
-                }
+                allPrice += appointment.price
             });
             this.setState({
                 allPrice,
@@ -841,7 +843,7 @@ class AddAppointment extends React.Component {
                                                                 <li key={i}>
                                                                     <div className="row mb-3">
                                                                         <div className="col-7 clients-list">
-                                                                            <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
+                                                                            <span className="abbreviation">{client_user.firstName ? client_user.firstName.substr(0, 1) : ''}</span>
                                                                             <span className="name_container">{client_user.firstName} {client_user.lastName}
                                                                                 {access(12) && (
                                                                                     <React.Fragment>
@@ -899,7 +901,7 @@ class AddAppointment extends React.Component {
                                                     <div className="clients-list pt-4 pl-4 pr-4">
                                                         <div className="client">
                                                             <span
-                                                                className="abbreviation">{cl.firstName.substr(0, 1)}</span>
+                                                                className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>
                                                             <span
                                                                 className="name_container">{cl.firstName} {cl.lastName}
                                                                 {access(12) && (
@@ -917,7 +919,7 @@ class AddAppointment extends React.Component {
                                                             </div>
                                                             <div className="col-6">
                                                                 <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
-                                                                <span className="gray-text">Всего оплачено</span>
+                                                                <span className="gray-text">Сумма визитов</span>
                                                             </div>
 
                                                         </div>
@@ -1000,7 +1002,7 @@ class AddAppointment extends React.Component {
                                                                 onClick={this.removeCheckedUser}>Удалить из встречи
                                                         </button>
                                                         <button type="button" className="button"
-                                                                onClick={() => this.editClient(cl.clientId)}>Редактировать
+                                                                onClick={() => this.editClient(cl)}>Редактировать
                                                         </button>
                                                     </div>}
 
@@ -1042,10 +1044,10 @@ class AddAppointment extends React.Component {
         this.setState({ clientChecked: null });
     }
 
-    editClient(id){
+    editClient(client){
         const {handleEditClient}=this.props;
         this.closeModal();
-        return handleEditClient(id)
+        return handleEditClient(client)
     }
 
     newClient(id){

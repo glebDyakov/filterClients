@@ -52,7 +52,6 @@ export function calendar(state = initialState, action) {
                 isLoading:false
             };
         case calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME:
-            $('.new_appointment').modal('hide')
 
             return {
                 ...state,

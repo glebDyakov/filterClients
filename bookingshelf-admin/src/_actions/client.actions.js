@@ -129,7 +129,9 @@ function getActiveClientAppointments(clientId) {
         dispatch(request())
         clientService.getActiveClientAppointments(clientId)
             .then(
-                activeClientAppointments => dispatch(success(activeClientAppointments)),
+                activeClientAppointments => {
+                    dispatch(success(activeClientAppointments))
+                },
                 () => dispatch(failure('Ошибка при подгрузке клиентов'))
             );
     };
