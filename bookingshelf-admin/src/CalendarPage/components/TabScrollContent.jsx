@@ -51,8 +51,11 @@ class TabScroll extends Component{
     }
 
     getHours24 (timetable){
+        const numbers =[];
+
         let minTime = 0
         let maxTime = 0
+
         timetable.forEach(timetableItem => {
             timetableItem.timetables.forEach(time => {
                 if (!minTime || (moment(time.startTimeMillis).format('HH:mm') < moment(minTime).format('HH:mm'))) {
@@ -65,25 +68,21 @@ class TabScroll extends Component{
 
             })
         })
-        let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
-        let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
+        if (minTime > 0 && maxTime > 0) {
+            let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
+            let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
 
-        // let startTime2 = moment(minTime).format('DD HH:mm')
-        // let endTime2 = moment(maxTime).format('DD HH:mm')
-        // debugger
+            let startNumber = startTime % 60
+                ? (startTime - parseInt(moment(minTime).format('mm')))
+                : (startTime - 60);
 
-        let numbers =[];
+            let endNumber = endTime % 60
+                ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
+                : (endTime + 60);
 
-        let startNumber = startTime % 60
-            ? (startTime - parseInt(moment(minTime).format('mm')))
-            : (startTime - 60);
-
-        let endNumber = endTime % 60
-            ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
-            : (endTime + 60);
-
-        for (let i = startNumber; i < endNumber; i = i + 15) {
-            numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
+            for (let i = startNumber; i < endNumber; i = i + 15) {
+                numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
+            }
         }
 
         this.setState({ numbers });
@@ -398,9 +397,9 @@ class TabScroll extends Component{
 
 
 
-                                                    {/*<span*/}
-                                                    {/*    className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}*/}
-                                                    {/*    title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>*/}
+                                                    <span
+                                                        className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
+                                                        title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
 
 
                                                     {!appointment.clientId &&
