@@ -104,7 +104,7 @@ class ClientDetails extends React.Component {
                                         </div>
                                         <div className="col-6"  style={{textAlign:'center'}}>
                                             <strong>{this.state.allPrice} {defaultClientsList.appointments[0] && defaultClientsList.appointments[0].currency}</strong><br/>
-                                            <span className="gray-text">Всего оплачено</span>
+                                            <span className="gray-text">Сумма визитов</span>
                                         </div>
                                     </div>
                                 </div>
