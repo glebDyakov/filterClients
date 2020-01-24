@@ -28,9 +28,7 @@ class ClientDetails extends React.Component {
         if (newProps.client.activeClientAppointments || newProps.client.activeClient) {
             let allPrice = 0;
             newProps.client.activeClientAppointments && newProps.client.activeClientAppointments.forEach((appointment) => {
-                if (appointment.appointmentTimeMillis <= moment().format('x')) {
-                    allPrice += appointment.price
-                }
+                allPrice += appointment.price
             });
             this.setState({
                 allPrice,
@@ -115,7 +113,7 @@ class ClientDetails extends React.Component {
                                     </div>
                                     <div className="col-6"  style={{textAlign:'center'}}>
                                         <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
-                                        <span className="gray-text">Всего оплачено</span>
+                                        <span className="gray-text">Сумма визитов</span>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +199,7 @@ class ClientDetails extends React.Component {
                             <button type="button" className="button" data-toggle="modal"
                                     data-target=".new-client"  onClick={()=> {
                                 $('.client-detail').modal('hide')
-                                editClient(client && client.clientId)
+                                editClient(client)
                             }}>Редактировать клиента
                             </button>
                         </div>

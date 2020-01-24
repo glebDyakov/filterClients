@@ -384,9 +384,9 @@ class CalendarPage extends PureComponent {
                 newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal
             });
         }
-        if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
-            this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
-        }
+        // if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
+        //     this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
+        // }
 
         const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {

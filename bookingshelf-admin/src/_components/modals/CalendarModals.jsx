@@ -12,7 +12,7 @@ import {DeleteReserve} from "./DeleteReserve";
 import {MoveVisit} from "./MoveVisit";
 import {StartMovingVisit} from "./StartMovingVisit";
 import moment from 'moment';
-import {staffActions} from "../../_actions";
+import {clientActions, staffActions} from "../../_actions";
 
 
 class CalendarModals extends Component {
@@ -61,11 +61,11 @@ class CalendarModals extends Component {
         this.props.deleteAppointment(id);
     }
 
-    handleEditClient(id, isModalShouldPassClient) {
-        if(id!=null) {
-            this.setState({ editClient: true, isModalShouldPassClient, newClientModal: true});
+    handleEditClient(client, isModalShouldPassClient) {
+        if(client) {
+            this.setState({ editClient: true, client_working: client, isModalShouldPassClient, newClientModal: true});
         } else {
-            this.setState({ editClient: false, isModalShouldPassClient, newClientModal: true});
+            this.setState({ editClient: false, client_working: null, isModalShouldPassClient, newClientModal: true});
         }
     }
     newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
@@ -128,7 +128,7 @@ class CalendarModals extends Component {
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps
         } = this.props;
 
-        const {newClientModal, appointmentModal, reserved, userSettings, editClient, checkedUser, isModalShouldPassClient} = this.state;
+        const {newClientModal, appointmentModal, reserved, userSettings, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
                     {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
@@ -148,6 +148,7 @@ class CalendarModals extends Component {
                     </div>
                     {newClientModal &&
                     <NewClient
+                        client_working={client_working}
                         edit={editClient}
                         isModalShouldPassClient={isModalShouldPassClient}
                         updateClient={this.updateClient}

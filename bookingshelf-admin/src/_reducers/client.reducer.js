@@ -1,6 +1,6 @@
 import {clientConstants} from '../_constants';
 
-export function client(state= { activeClientAppointments: [] }, action) {
+export function client(state= { activeClientAppointments: [], client: [] }, action) {
   switch (action.type) {
       case clientConstants.CLIENT_SUCCESS_TIME:
           return {
@@ -28,12 +28,12 @@ export function client(state= { activeClientAppointments: [] }, action) {
       case clientConstants.GET_ACTIVE_CLIENT_APPOINTMENTS_SUCCESS:
           return {
               ...state,
-              activeClientAppointments: action.activeClientAppointments
+              activeClientAppointments: action.activeClientAppointments || []
           }
       case clientConstants.GET_CLIENT_SUCCESS:
           return {
               ...state,
-              client: action.client,
+              client: action.client || [],
               isLoading: false,
               error: null
           };
@@ -66,7 +66,7 @@ export function client(state= { activeClientAppointments: [] }, action) {
           return {
               ...state,
               status: 200,
-              client: client,
+              client: client || [],
               error: null,
               adding: false
           };
@@ -104,7 +104,7 @@ export function client(state= { activeClientAppointments: [] }, action) {
           return {
               ...state,
               status: 200,
-              client: clients,
+              client: clients || [],
               adding: false
           };
       case clientConstants.UPDATE_CLIENT_FAILURE:
@@ -112,12 +112,12 @@ export function client(state= { activeClientAppointments: [] }, action) {
       case clientConstants.DELETE_CLIENT_SUCCESS:
           return {
               ...state,
-              client: state.client.filter(client => client.clientId !== action.clientId)
+              client: state.client.filter(client => client.clientId !== action.clientId) || []
           };
       case clientConstants.DELETE_CLIENT_FAILURE:
           return {
               ...state,
-              client: action.client
+              client: action.client || []
           };
       default:
           return state
