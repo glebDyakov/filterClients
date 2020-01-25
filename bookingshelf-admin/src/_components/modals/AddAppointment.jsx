@@ -100,7 +100,8 @@ class AddAppointment extends React.Component {
             let user = newProps.clients.client && newProps.clients.client.length > 0 && newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
             let finalUser = {}
             if (user) {
-                finalUser = { ...user, appointments: newProps.clients.activeClientAppointments, }
+                finalUser = { ...user, appointments: [], }
+                this.props.dispatch(clientActions.getActiveClientAppointments(user.clientId))
             }
             this.setState({ clientChecked: finalUser, shouldUpdateCheckedUser: false})
         }
