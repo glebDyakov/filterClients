@@ -203,7 +203,7 @@ class StaffPage extends Component {
         staff.staff && staff.staff.forEach((staff_user, i) => {
             let staffGroupIndex = staff.costaff && staff.costaff.findIndex(staffGroup => staffGroup.some(item => item.staffId === staff_user.staffId));
 
-            let isGroup = staff.costaff && staff.costaff[staffGroupIndex].length > 1
+            let isGroup = staff.costaff && staff.costaff[staffGroupIndex] && staff.costaff[staffGroupIndex].length > 1
             let groupIndex;
             if (isGroup) {
                 const localIndex = staffGroups.findIndex(staffGroup => staffGroup.some(staffInGroup => staffInGroup.staffId === staff_user.staffId));
