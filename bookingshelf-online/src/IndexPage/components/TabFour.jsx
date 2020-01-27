@@ -14,7 +14,7 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, serviceIntervalOn, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
+        const {selectedTime, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, workingStaff, setTime} = this.props;
 
         const availableTimes = []
 
@@ -22,9 +22,10 @@ class TabFour extends  PureComponent {
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
             selectedServices.forEach(item => {
-                interval += (item.duration / 60)
+                interval += (getDurationForCurrentStaff(item) / 60)
             })
         }
+
         if(!this.state.arrayTime && workingStaff) {
             workingStaff.map((workingStaffElement, i) =>
                 parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
@@ -144,7 +145,7 @@ class TabFour extends  PureComponent {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (

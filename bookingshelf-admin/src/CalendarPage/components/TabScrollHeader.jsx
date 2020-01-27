@@ -19,7 +19,7 @@ class TabScrollHeader extends PureComponent {
                         <div className="tab-content-list tab-content-list-first">
                             {(availableTimetable || availableTimetableMessage) && <div className="hours"><span></span></div>}
 
-                            {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement) => {
+                            {availableTimetable && availableTimetable.map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
                                 return <div>

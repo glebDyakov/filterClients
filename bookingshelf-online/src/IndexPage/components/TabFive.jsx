@@ -21,7 +21,7 @@ class TabFive extends PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime,
+        const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
             group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, clientVerificationCode} = this.props;
         const { enteredCode, enteredCodeError } = this.state;
 
@@ -37,7 +37,7 @@ class TabFive extends PureComponent {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (

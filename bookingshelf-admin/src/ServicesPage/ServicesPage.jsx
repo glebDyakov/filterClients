@@ -14,6 +14,7 @@ import moment from 'moment';
 import 'moment-duration-format';
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
+import DragDrop from "../_components/DragDrop";
 
 class ServicesPage extends Component {
     constructor(props) {
@@ -51,6 +52,7 @@ class ServicesPage extends Component {
         this.newService = this.newService.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.handleDrogEnd = this.handleDrogEnd.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
 
@@ -92,9 +94,104 @@ class ServicesPage extends Component {
         this.setState({collapse:arrayCollapsed})
     }
 
+    handleDrogEnd(dragDropGroupsItems) {
+        const updatedSortOrderStaffs = []
+        dragDropGroupsItems.forEach((item, i) => {
+            updatedSortOrderStaffs.push({
+                serviceGroupId: item.serviceGroupId,
+                sortOrder: i + 1
+            })
+        })
+        this.props.dispatch(servicesActions.updateServiceGroups(updatedSortOrderStaffs))
+    }
+
     render() {
         const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
         const isLoading = staff.isLoading || services.isLoading
+
+        const dragDropGroupsItems = []
+
+        services.services && services.services.forEach((item, keyGroup)=> {
+            dragDropGroupsItems.push({
+                serviceGroupId: item.serviceGroupId,
+                id: `service-group-${keyGroup}`,
+                content: (
+                    <div className={item.color.toLowerCase() + " " + 'row mb-3 service_one collapsible'} key={keyGroup}>
+
+                        <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
+                            <div
+                                className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3"}
+                                onClick={() => this.onCollapse(item.serviceGroupId)}>
+                                {collapse.indexOf(item.serviceGroupId) === -1 ? '-' : '+'}
+                            </div>
+                            <p className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
+                        </div>
+                        <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
+                            <a className="edit_service" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
+                            <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                            </a>
+                            <div className="dropdown-menu delete-menu p-3">
+                                <button type="button" className="button delete-tab"
+                                        onClick={() => this._delete(item.serviceGroupId)}>Удалить
+                                </button>
+                            </div>
+                            <a className="new-service" onClick={(e) => this.newService(null, item, e, this)}>Новая услуга</a>
+                            {/*<span className="ellipsis">*/}
+                            {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
+                            {/*</span>*/}
+
+                        </div>
+
+                        {collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
+                            item.services
+                                .sort((a, b) => a.duration - b.duration)
+                                .map((item2, keyService) => {
+                                return <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
+                                    <p>
+                                        <span>{item2.name}</span>
+                                        <span style={{
+                                            fontSize: '11px',
+                                            width: '100%',
+                                            display: 'inline-block'
+                                        }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
+                                        <span className="hide-item">
+                                                <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
+                                                <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                </span>
+                                    </p>
+                                    <div className="list-inner">
+                                        <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
+                                        <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                        <a className="edit_service" onClick={(e) => this.newService(item2, item, e, this)}/>
+                                        <a className="delete-icon" id="menu-delete6633"
+                                           data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false">
+                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                        </a>
+                                        <div className="dropdown-menu delete-menu p-3">
+                                            <button type="button"
+                                                    className="button delete-tab"
+                                                    onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        )}
+                        {(collapse.indexOf(item.serviceGroupId) === -1 && (!item.services || item.services.length === 0)) &&
+                        <div className="services_items">
+                            <p>
+                                Нет услуг
+                            </p>
+                        </div>
+                        }
+                    </div>
+                )
+            })
+        })
+
         return (
             <div>
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
@@ -122,75 +219,12 @@ class ServicesPage extends Component {
                                                     <button className="search-icon" type="submit"/>
                                                 </div>
                                             </div>
-                                        )}
-                                    {
-                                        services.services && services.services.map((item, keyGroup)=>
-                                            <div className={item.color.toLowerCase() + " "+'row mb-3 service_one collapsible'} key={keyGroup} >
-
-                                                <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
-                                                    <div className={item.color.toLowerCase() + "ButtonEdit "+"btn btn-warning text-light float-left mr-3"} onClick={()=>this.onCollapse(item.serviceGroupId)}>
-                                                        {collapse.indexOf(item.serviceGroupId)===-1?'-':'+'}
-                                                    </div>
-                                                    <p className="title_block mt-1">{item.name} {item.description.length===0 ?"": ("("+item.description+")")}</p>
-                                                </div>
-                                                <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
-                                                    <a className="edit_service"   onClick={(e)=>this.handleClick(item.serviceGroupId, false, e, this)}/>
-                                                    <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
-                                                       aria-haspopup="true" aria-expanded="false">
-                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                    </a>
-                                                    <div className="dropdown-menu delete-menu p-3">
-                                                        <button type="button" className="button delete-tab"  onClick={()=>this._delete(item.serviceGroupId)}>Удалить</button>
-                                                    </div>
-                                                    <a className="new-service"  onClick={(e)=>this.newService(null, item, e, this)}>Новая услуга</a>
-                                                    {/*<span className="ellipsis">*/}
-                                                        {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
-                                                    {/*</span>*/}
-
-                                                </div>
-
-                                                { collapse.indexOf(item.serviceGroupId)===-1 && item.services && item.services.length>0 && item.services.map((item2, keyService)=> {
-                                                    return <div className="services_items" key={keyService}  id={"collapseService" + keyGroup}>
-                                                    <p>
-                                                    <span>{item2.name}</span>
-                                                    <span style={{
-                                                    fontSize: '11px',
-                                                    width: '100%',
-                                                    display: 'inline-block'
-                                                }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
-                                                    <span className="hide-item">
-                                                    <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo}  {item2.currency}</span>
-                                                    <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                    </span>
-                                                    </p>
-                                                    <div className="list-inner">
-                                                    <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo}  {item2.currency}</span>
-                                                    <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                    <a className="edit_service"  onClick={(e) => this.newService(item2, item, e, this)}/>
-                                                    <a className="delete-icon" id="menu-delete6633"
-                                                    data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                    </a>
-                                                    <div className="dropdown-menu delete-menu p-3">
-                                                    <button type="button"
-                                                    className="button delete-tab" onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
-                                                    </button>
-                                                    </div>
-                                                    </div>
-                                                    </div>
-                                                }
-                                                )}
-                                                { (collapse.indexOf(item.serviceGroupId)===-1 && (!item.services || item.services.length===0)) &&
-                                                    <div className="services_items" >
-                                                        <p>
-                                                            Нет услуг
-                                                        </p>
-                                                    </div>
-                                                }
-                                            </div>
                                         )
                                     }
+                                    <DragDrop
+                                        dragDropItems={dragDropGroupsItems}
+                                        handleDrogEnd={this.handleDrogEnd}
+                                    />
                                 </div>
                                 <a className="add"></a>
                                 <div className="hide buttons-container">

@@ -4,6 +4,7 @@ import { authHeader, handleResponse } from '../_helpers';
 export const servicesService = {
     add,
     update,
+    updateServiceGroups,
     get,
     _delete,
     getService,
@@ -80,6 +81,22 @@ function update(params) {
         .then(staff => {
             return staff;
         });
+}
+
+function updateServiceGroups(params) {
+    const requestOptions = {
+        method: 'PATCH',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
+        .then(handleResponse)
 }
 
 function _delete(id) {

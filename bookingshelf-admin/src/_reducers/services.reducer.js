@@ -24,9 +24,10 @@ export function services(state= {}, action) {
                 isLoading: true
             }
         case servicesConstants.GET_GROUP_SUCCESS:
+            services = state.services
             return {
                 ...state,
-                services: action.services,
+                services: (action.services || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
         case servicesConstants.GET_GROUP_FAILURE:
@@ -47,13 +48,29 @@ export function services(state= {}, action) {
             return {
                 ...state,
                 status: 200,
-                services: servicesCurrent,
+                services: (servicesCurrent || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 adding: false
             };
         case servicesConstants.ADD_GROUP_FAILURE:
             return state;
+        case servicesConstants.UPDATE_SERVICE_GROUPS_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case servicesConstants.UPDATE_SERVICE_GROUPS_SUCCESS:
+            services = state.services
+            services.forEach((item, key) => {
+                const activeGroup = action.services.find(service => service.serviceGroupId === item.serviceGroupId)
+                services[key].sortOrder = activeGroup.sortOrder
+            })
+            return {
+                ...state,
+                services: (services || []).sort((a, b) => a.sortOrder - b.sortOrder),
+                isLoading: false
+            };
         case servicesConstants.UPDATE_GROUP_SUCCESS:
-            const services=state.services;
+            let services=state.services;
 
             services.find((item, key)=>{
                 if(item.serviceGroupId===action.services.serviceGroupId){
@@ -64,7 +81,7 @@ export function services(state= {}, action) {
             return {
                 ...state,
                 status: 200,
-                services: services,
+                services: (services || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 adding: false
             };
         case servicesConstants.UPDATE_GROUP_FAILURE:

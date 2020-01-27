@@ -14,6 +14,13 @@ export function staff(state = initialState, action) {
                 ...state,
                 status: 209
             };
+        case staffConstants.UPDATE_REQUEST:
+            return {
+                ...state,
+                status: 208,
+                adding: true,
+                isLoadingStaff: true
+            };
         case staffConstants.STAFF_REQUEST:
             return {
                 ...state,
@@ -44,7 +51,7 @@ export function staff(state = initialState, action) {
                 ...state,
                 status: 200,
                 adding: false,
-                timetable: timetableCurrent
+                timetable: timetableCurrent.sort((a, b) => a.sortOrder - b.sortOrder)
             };
         case staffConstants.UPDATE_WORKING_HOURS_SUCCESS:
             let timetableCurrent2=state.timetable;
@@ -72,7 +79,7 @@ export function staff(state = initialState, action) {
                 ...state,
                 status: 200,
                 adding: false,
-                timetable: timetableCurrent2
+                timetable: timetableCurrent2.sort((a, b) => a.sortOrder - b.sortOrder)
             };
         case staffConstants.UPDATE_SUCCESS:
             // const staff=state.staff;
@@ -136,7 +143,7 @@ export function staff(state = initialState, action) {
 
 
 
-            staffs.map(st1=>
+            staffs.sort((a, b) => a.sortOrder - b.sortOrder).map(st1=>
                 st2.push(st1)
             );
 
@@ -158,7 +165,8 @@ export function staff(state = initialState, action) {
                 staff: st2,
                 costaff: costaffs,
                 code: Math.random(),
-                isLoading: false
+                isLoading: false,
+                isLoadingStaff: false
             };
         case staffConstants.GET_FAILURE:
             return {
@@ -196,7 +204,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
-                timetable: action.timetable,
+                timetable: action.timetable.sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoadingTimetable: false,
                 isLoadingStaffInit: false
             };
@@ -218,7 +226,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 isLoadingAvailableTime:false,
-                availableTimetable: action.payload.availableTimetable,
+                availableTimetable: action.payload.availableTimetable.sort((a, b) => a.sortOrder - b.sortOrder),
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
@@ -252,7 +260,7 @@ export function staff(state = initialState, action) {
                         "permissionCode": 10
                     },
                     {
-                        "name": 'Все клиенты',
+                        "name": 'Клиенты',
                         "permissionCode": 4
                     },
                     {

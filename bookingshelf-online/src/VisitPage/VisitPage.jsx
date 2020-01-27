@@ -74,7 +74,7 @@ class VisitPage extends React.Component {
 
     _move(appointment) {
         this.props.history.push(`/${this.props.match.params.company}`)
-        this.props.dispatch(staffActions.toggleStartMovingVisit(true, appointment));
+        this.props.dispatch(staffActions.toggleStartMovingVisit(true, appointment, true));
         this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
         this.setScreen(1)
     }

@@ -169,7 +169,7 @@
             transition: right ease-in-out 0s;
         }
         .services_items{/*изменения*/
-            width: 100%;
+            width: calc(100% - 30px);
             border-bottom: 1px solid #b5b9be;
             padding: 5px;
             display: inline-flex;

@@ -14,7 +14,7 @@ class TabThird extends  PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
+        const {setScreen,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, getDurationForCurrentStaff, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
         let serviceInfo = null
@@ -25,7 +25,7 @@ class TabThird extends  PureComponent {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (

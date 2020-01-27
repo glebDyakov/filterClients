@@ -41,6 +41,7 @@ class IndexPage extends PureComponent {
 
 
         this.selectStaff=this.selectStaff.bind(this);
+        this.getDurationForCurrentStaff = this.getDurationForCurrentStaff.bind(this);
         this.clearStaff=this.clearStaff.bind(this);
         this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
@@ -162,6 +163,17 @@ class IndexPage extends PureComponent {
         }
     }
 
+    getDurationForCurrentStaff(service) {
+        const { selectedStaff } = this.state
+        let durationForCurrentStaff = service.duration;
+        selectedStaff && selectedStaff.staffId && service.staffs && service.staffs.forEach(item => {
+            if ((item.staffId === selectedStaff.staffId) && item.serviceDuration) {
+                durationForCurrentStaff = item.serviceDuration
+            }
+        })
+        return durationForCurrentStaff;
+    }
+
     clearStaff() {
         this.props.dispatch(staffActions.clearStaff());
     }
@@ -223,9 +235,9 @@ class IndexPage extends PureComponent {
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
         const data = selectedServices.map((selectedService) => {
-            const item = {...group, duration: selectedService.duration, serviceId: selectedService.serviceId,
+            const item = {...group, duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
                 appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')}
-            resultTime += selectedService.duration * 1000;
+            resultTime += this.getDurationForCurrentStaff(selectedService) * 1000;
             return item;
         });
 
@@ -356,6 +368,7 @@ class IndexPage extends PureComponent {
                         refreshTimetable={this.refreshTimetable}
                         selectService={this.selectService}
                         setDefaultFlag={this.setDefaultFlag}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />}
                     {screen === 3 &&
                     <TabThird
@@ -371,6 +384,7 @@ class IndexPage extends PureComponent {
                         handleDayClick={this.handleDayClick}
                         showPrevWeek={this.showPrevWeek}
                         showNextWeek={this.showNextWeek}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />}
                     {screen === 4 &&
                     <TabFour
@@ -389,7 +403,7 @@ class IndexPage extends PureComponent {
                         movingVisit={movingVisit}
                         selectStaff={this.selectStaff}
                         handleDayClick={this.handleDayClick}
-
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />}
                     {screen === 5 &&
                     <TabFive
@@ -408,6 +422,7 @@ class IndexPage extends PureComponent {
                         setterPhone={this.setterPhone}
                         setterEmail={this.setterEmail}
                         handleSave={this.handleSave}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />
 
                     }
@@ -431,6 +446,7 @@ class IndexPage extends PureComponent {
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}
                         setDefaultFlag={this.setDefaultFlag}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                         // setterApproveF={this.setterApproveF}
                     />}
 
@@ -525,7 +541,7 @@ class IndexPage extends PureComponent {
             selectedServices.forEach(service => {
                 allPriceFrom += service.priceFrom
                 allPriceTo += service.priceTo
-                totalDuration += service.duration
+                totalDuration += this.getDurationForCurrentStaff(service)
             })
             for (let i = parseInt(moment().utc().startOf('day').format('H')) * 60; i <= parseInt(moment().utc().endOf('day').format('H')) * 60; i = i + parseInt(totalDuration)) {
                 numbers.push(moment(moment().utc().startOf('day').utc().format('x'), "x").add(i, 'minutes').format('x'))

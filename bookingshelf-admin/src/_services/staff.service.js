@@ -111,9 +111,6 @@ function update(params) {
 
     return fetch(`${config.apiUrlv2}/staffs`, requestOptions)
         .then(handleResponse)
-        .then(staff => {
-            return staff;
-        });
 }
 
 

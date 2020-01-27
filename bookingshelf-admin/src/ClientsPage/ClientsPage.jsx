@@ -42,6 +42,7 @@ class ClientsPage extends Component {
 
         this.uploadFile = React.createRef();
         this.onFileChange = this.onFileChange.bind(this);
+        this.addToBlackList = this.addToBlackList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -138,6 +139,11 @@ class ClientsPage extends Component {
 
         const blacklisted = tab === 'blacklist';
         this.props.dispatch(clientActions.getClientV2(currentPage, searchValue, blacklisted));
+    }
+
+    addToBlackList() {
+        this.updateClients(1, 'clients')
+        this.openBlackListModal()
     }
 
     handleSearch () {
@@ -295,16 +301,35 @@ class ClientsPage extends Component {
 
                                 <div className="tab-content">
                                     {
-                                        (!isLoading && (!defaultClientsList.client || defaultClientsList.client.length===0)) &&
+                                        (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length===0)) &&
                                         <div className="no-holiday">
                                             {(this.search && this.search.value.length > 0)
                                                 ? <span>Поиск результатов не дал</span>
-                                                : <span>
-                                            {client.error ? client.error : 'Клиенты не добавлены'}
-                                                    <button type="button"
-                                                            className="button mt-3 p-3"
-                                                            onClick={(e)=>this.handleClick(null, e)} >Добавить нового клиента</button>
-                                      </span>}
+                                                : (
+                                                    <span>
+                                                        {client.error ? client.error : 'Клиенты не добавлены'}
+                                                        {activeTab==='clients' &&
+                                                            <button
+                                                                type="button"
+                                                                className="button mt-3 p-3"
+                                                                onClick={(e)=>this.handleClick(null, e)}
+                                                            >
+                                                                Добавить нового клиента
+                                                            </button>
+                                                        }
+                                                        {activeTab==='blacklist' &&
+                                                            <button
+                                                                type="button"
+                                                                className="button mt-3 p-3"
+                                                                data-target=".add-black-list-modal"
+                                                                data-toggle="modal"
+                                                                onClick={this.addToBlackList}
+                                                            >
+                                                                Добавить в blacklist
+                                                            </button>
+                                                        }
+                                                    </span>)
+                                            }
 
                                         </div>
                                     }
@@ -342,10 +367,7 @@ class ClientsPage extends Component {
                                     {activeTab==='blacklist' && <button type="button" className="button"
                                                                         data-target=".add-black-list-modal"
                                                                         data-toggle="modal"
-                                                                        onClick={()=>{
-                                                                            this.updateClients(1, 'clients')
-                                                                            this.openBlackListModal()
-                                                                        }}>Добавить в blacklist</button>}
+                                                                        onClick={this.addToBlackList}>Добавить в blacklist</button>}
                                 </div>
                                 <div className="arrow"/>
                             </div>
