@@ -113,8 +113,7 @@ class AddAppointment extends React.Component {
             this.setState({ shouldUpdateCheckedUser: true })
         }
 
-        if ((newProps.clients.activeClientAppointments && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments))) ||
-            (newProps.clients.activeClient && (JSON.stringify(this.props.clients.activeClient) !== JSON.stringify(newProps.clients.activeClient)))) {
+        if ((newProps.clients.activeClientAppointments && (JSON.stringify(this.props.clients.activeClientAppointments) !== JSON.stringify(newProps.clients.activeClientAppointments)))) {
             let allPrice = 0;
             newProps.clients.activeClientAppointments && newProps.clients.activeClientAppointments.forEach((appointment) => {
                 allPrice += appointment.price
@@ -123,8 +122,16 @@ class AddAppointment extends React.Component {
                 allPrice,
                 clientChecked: {
                     ...this.state.clientChecked,
-                    ...newProps.clients.activeClient,
                     appointments: newProps.clients.activeClientAppointments,
+                }
+            });
+        }
+
+        if (newProps.clients.activeClient && (JSON.stringify(this.props.clients.activeClient) !== JSON.stringify(newProps.clients.activeClient))) {
+            this.setState({
+                clientChecked: {
+                    ...this.state.clientChecked,
+                    ...newProps.clients.activeClient,
                 }
             });
         }
