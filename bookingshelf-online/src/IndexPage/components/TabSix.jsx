@@ -28,7 +28,7 @@ class TabSix extends  PureComponent {
     }
     render() {
 
-        const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
+        const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments, getDurationForCurrentStaff,
             setScreen,refreshTimetable,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
         const {approveF, allVisits} = this.state;
 
@@ -41,7 +41,7 @@ class TabSix extends  PureComponent {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
             newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
                 totalAmount += appointment.totalAmount

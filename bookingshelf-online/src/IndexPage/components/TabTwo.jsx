@@ -5,7 +5,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
@@ -24,7 +24,7 @@ class TabTwo extends Component {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (
@@ -115,7 +115,7 @@ class TabTwo extends Component {
                                             <span className="runtime">{service.details}</span>
 
                                             <span
-                                                className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                                                className="runtime"><strong>{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
                                         </label>
                                     </div>
