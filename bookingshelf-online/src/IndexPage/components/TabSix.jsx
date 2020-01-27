@@ -28,7 +28,7 @@ class TabSix extends  PureComponent {
     }
     render() {
 
-        const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments,
+        const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments, getDurationForCurrentStaff,
             setScreen,refreshTimetable,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
         const {approveF, allVisits} = this.state;
 
@@ -41,7 +41,7 @@ class TabSix extends  PureComponent {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
             newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
                 totalAmount += appointment.totalAmount
@@ -131,7 +131,7 @@ class TabSix extends  PureComponent {
                 </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                     <button className="approveFYes"  onClick={()=>{
-                        const resultAppointments = movingVisit ? movingVisit : newAppointments
+                        const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
                         if (resultAppointments.length ) {
                             if (resultAppointments[0] && resultAppointments[0].customId ) {
                                 _delete(resultAppointments[0].customId)

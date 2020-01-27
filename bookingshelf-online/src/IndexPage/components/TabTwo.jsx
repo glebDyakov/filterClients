@@ -5,15 +5,18 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
         }
-        const isServiceList = serviceGroups.some(serviceGroup => {
+        const isServiceList = serviceGroups && serviceGroups.some(serviceGroup => {
             let { services } = serviceGroup
-            return services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
-                (!servicesForStaff && selectedStaff && selectedStaff.length === 0)
+            const hasActiveServices = services && services.some(service => service.staffs && service.staffs.length > 0);
+            return hasActiveServices &&
+                (services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                    (!servicesForStaff && selectedStaff && selectedStaff.length === 0)
+                )
         })
 
         let serviceInfo = null
@@ -24,7 +27,7 @@ class TabTwo extends Component {
             selectedServices.forEach((service) => {
                 priceFrom += parseInt(service.priceFrom)
                 priceTo += parseInt(service.priceTo)
-                duration += parseInt(service.duration)
+                duration += parseInt(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (
@@ -76,7 +79,7 @@ class TabTwo extends Component {
                     {serviceInfo && serviceInfo}
 
                 </div>}
-                {isServiceList ? serviceGroups.map(serviceGroup => {
+                {isServiceList ? serviceGroups.length > 0 && serviceGroups.map(serviceGroup => {
                     let { services } = serviceGroup
                     let condition =
                         services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
@@ -115,7 +118,7 @@ class TabTwo extends Component {
                                             <span className="runtime">{service.details}</span>
 
                                             <span
-                                                className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>
+                                                className="runtime"><strong>{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format("h[ ч] m[ мин]")}</strong></span>
 
                                         </label>
                                     </div>

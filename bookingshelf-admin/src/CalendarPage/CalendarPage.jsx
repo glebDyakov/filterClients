@@ -55,7 +55,7 @@ class CalendarPage extends PureComponent {
 
         dateFrom=props.match.params.dateFrom ?
             moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
-            moment().startOf('day').toDate()
+            moment().utc().startOf('day').toDate()
 
         dateFr=props.match.params.dateFrom ?
             moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
@@ -902,9 +902,11 @@ class CalendarPage extends PureComponent {
             url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
         } else {
             if (typeSelected === 1) {
-                let staffWorking = staffEl.filter((item) => item.availableDays.length && item.availableDays.some((time) =>
-                        parseInt(moment(time.dayMillis, 'x').format('DD')) === parseInt(moment(selectedDay).format('DD'))
-                    )
+                let staffWorking = staffEl.filter((item) => item.availableDays.length && item.availableDays.some((time) => {
+                        const checkingDay = parseInt(moment(time.dayMillis, 'x').format('DD'));
+                        const currentDay = parseInt(moment(selectedDay).format('DD'));
+                        return checkingDay === currentDay;
+                    })
                 );
 
                 newState = {

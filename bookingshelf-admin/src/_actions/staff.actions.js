@@ -166,7 +166,7 @@ function update(params, staffId) {
                 }
             );
     };
-    function request(id) { return { type: staffConstants.STAFF_REQUEST, id } }
+    function request(id) { return { type: staffConstants.UPDATE_REQUEST, id } }
     function successTime(id) { return { type: staffConstants.STAFF_SUCCESS_TIME, id } }
     function success(staff) { return { type: staffConstants.UPDATE_SUCCESS, staff } }
     function successUser(user) { return { type: userConstants.UPDATE_PROFILE_SUCCESS, user } }

@@ -22,6 +22,7 @@ import {DatePicker} from '../_components/DatePicker'
 import {getWeekRange} from '../_helpers/time'
 import {isValidNumber} from "libphonenumber-js";
 import {access} from "../_helpers/access";
+import DragDrop from "../_components/DragDrop";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -113,6 +114,7 @@ class StaffPage extends Component {
         this.handleResetClick = this.handleResetClick.bind(this);
         this.setTab = this.setTab.bind(this);
         this.onOpen = this.onOpen.bind(this);
+        this.handleDrogEnd = this.handleDrogEnd.bind(this);
         this.onClose = this.onClose.bind(this);
     }
 
@@ -163,6 +165,17 @@ class StaffPage extends Component {
 
     }
 
+    handleDrogEnd(dragDropItems) {
+        const updatedSortOrderStaffs = []
+        dragDropItems.forEach((item, i) => {
+            updatedSortOrderStaffs.push({
+                staffId: item.staffId,
+                sortOrder: i + 1
+            })
+        })
+        this.props.dispatch(staffActions.update(JSON.stringify(updatedSortOrderStaffs)))
+    }
+
     render() {
         const { staff, emailNew, emailIsValid, userSettings, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
@@ -184,6 +197,77 @@ class StaffPage extends Component {
         const modifiersClosed = { start: from, end: enteredTo };
         const disabledDays = { before: this.state.from };
         const selectedDaysClosed = [from, { from, to: enteredTo }];
+
+        const dragDropItems = []
+        let staffGroups = [];
+        staff.staff && staff.staff.forEach((staff_user, i) => {
+            let staffGroupIndex = staff.costaff && staff.costaff.findIndex(staffGroup => staffGroup.some(item => item.staffId === staff_user.staffId));
+
+            let isGroup = staff.costaff && staff.costaff[staffGroupIndex].length > 1
+            let groupIndex;
+            if (isGroup) {
+                const localIndex = staffGroups.findIndex(staffGroup => staffGroup.some(staffInGroup => staffInGroup.staffId === staff_user.staffId));
+
+                if (localIndex === -1) {
+                    staffGroups.push(staff.costaff[staffGroupIndex]);
+                    groupIndex = staffGroups.length - 1
+                } else {
+                    groupIndex = localIndex;
+                }
+            }
+            dragDropItems.push({
+                staffId: staff_user.staffId,
+                id: `staff-user-${i}`,
+                content: (
+                    <div className="tab-content-list" key={i}>
+                        {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
+                        <div style={{ display: 'block' }}>
+                            <a style={{ paddingBottom: isGroup ? '4px' : '10px' }} key={i} onClick={(e) => this.handleClick(staff_user.staffId, false, e, this)}>
+                                                <span className="img-container">
+                                                    <img className="rounded-circle"
+                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                         alt=""/>
+                                                </span>
+                                <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
+                            </a>
+                            {isGroup && <p className="staff-group">Группа напарников {groupIndex + 1}</p>}
+                        </div>
+                        <div>
+                            {staff_user.phone}
+                        </div>
+                        <div>
+                            {staff_user.email}
+                        </div>
+                        <div>
+                                                    <span>
+                                                        {this.renderSwitch(staff_user.roleId)}
+                                                    </span>
+                        </div>
+
+                        <div className="delete dropdown">
+
+                            <a className="delete-icon menu-delete-icon"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                {staff_user.roleId !== 4 &&
+                                <img
+                                    src={`${process.env.CONTEXT}public/img/delete_new.svg`}
+                                    alt=""/>
+                                }
+                            </a>
+                            {staff_user.roleId !== 4 &&
+                            <div className="dropdown-menu delete-menu p-3">
+                                <button type="button"
+                                        className="button delete-tab"
+                                        onClick={() => this.deleteStaff(staff_user.staffId)}>Удалить
+                                </button>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                )
+            })
+        });
 
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
@@ -318,53 +402,10 @@ class StaffPage extends Component {
                                     </div>
                                     <div className={"tab-pane staff-list-tab"+(activeTab==='staff'?' active':'')} id="tab2">
                                         <div className=" content tabs-container" >
-                                            { staff.costaff && staff.costaff.map((staffGroup, i1) =>
-                                                staffGroup && staffGroup.map((staff_user, i) =>
-                                                <div className="tab-content-list" key={i}>
-                                                    {staffGroup.length>i+1 && <span className="line_connect"/>}
-                                                    <div>
-                                                        <a key={i} onClick={(e)=>this.handleClick(staff_user.staffId, false, e, this)}>
-                                                    <span className="img-container">
-                                                        <img className="rounded-circle" src={staff_user.imageBase64?"data:image/png;base64,"+staff_user.imageBase64:`${process.env.CONTEXT}public/img/image.png`} alt=""/>
-                                                    </span>
-                                                            <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
-                                                        </a>
-                                                    </div>
-                                                    <div>
-                                                        {staff_user.phone}
-                                                    </div>
-                                                    <div>
-                                                        {staff_user.email}
-                                                    </div>
-                                                    <div>
-                                                        <span>
-                                                            {this.renderSwitch(staff_user.roleId)}
-                                                        </span>
-                                                    </div>
-
-                                                        <div className="delete dropdown">
-
-                                                            <a className="delete-icon menu-delete-icon"
-                                                               data-toggle="dropdown" aria-haspopup="true"
-                                                               aria-expanded="false">
-                                                                {staff_user.roleId !== 4 &&
-                                                                <img
-                                                                    src={`${process.env.CONTEXT}public/img/delete_new.svg`}
-                                                                    alt=""/>
-                                                                }
-                                                            </a>
-                                                            {staff_user.roleId!==4 &&
-                                                            <div className="dropdown-menu delete-menu p-3">
-                                                                <button type="button"
-                                                                        className="button delete-tab"
-                                                                        onClick={() => this.deleteStaff(staff_user.staffId)}>Удалить
-                                                                </button>
-                                                            </div>
-                                                                }
-                                                        </div>
-                                                </div>
-
-                                                ))}
+                                            <DragDrop
+                                                dragDropItems={dragDropItems}
+                                                handleDrogEnd={this.handleDrogEnd}
+                                            />
                                         </div>
                                     </div>
                                     <div className={"tab-pane"+(activeTab==='holidays'?' active':'')}  id="tab3">
@@ -490,7 +531,7 @@ class StaffPage extends Component {
                                         </div>
                                     </div>
                                     }
-                                    {this.props.isLoading && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                    {this.props.staff.isLoadingStaff && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                                     {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                                 </div>
                             </div>

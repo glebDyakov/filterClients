@@ -5,6 +5,7 @@ import { alertActions } from './';
 export const servicesActions = {
     add,
     update,
+    updateServiceGroups,
     get,
     _delete,
     getService,
@@ -63,6 +64,29 @@ function add(params) {
     function successTime(id) { return { type: servicesConstants.GROUP_SUCCESS_TIME, id } }
     function success(services) { return { type: servicesConstants.ADD_GROUP_SUCCESS, services } }
     function failure(error) { return { type: servicesConstants.ADD_GROUP_FAILURE, error } }
+}
+
+function updateServiceGroups(params) {
+    return dispatch => {
+        dispatch(request(0));
+
+        servicesService.updateServiceGroups(params)
+            .then(
+                services => {
+
+                    dispatch(success(services));
+
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request(id) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_REQUEST, id } }
+    function success(services) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_SUCCESS, services } }
+    function failure(error) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_FAILURE, error } }
 }
 
 function update(params) {

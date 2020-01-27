@@ -1,5 +1,11 @@
 @import "styles-group";
 .staff {
+    .staff-group {
+        font-size: 9px;
+        text-align: left;
+        font-weight: normal !important;
+        margin: 0 0 2px 12px !important;
+    }
     .min-width-desktop {
         @media screen and(min-width: $tablet-width) {
             min-width: 100% !important;
