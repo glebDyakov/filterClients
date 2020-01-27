@@ -397,9 +397,9 @@ class TabScroll extends Component{
 
 
 
-                                                    <span
+                                                    {appointment.clientId && <span
                                                         className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                                                        title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>
+                                                        title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
 
 
                                                     {!appointment.clientId &&
