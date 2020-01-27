@@ -144,7 +144,10 @@ class ServicesPage extends Component {
 
                         </div>
 
-                        {collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 && item.services.map((item2, keyService) => {
+                        {collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
+                            item.services
+                                .sort((a, b) => a.duration - b.duration)
+                                .map((item2, keyService) => {
                                 return <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
                                     <p>
                                         <span>{item2.name}</span>
