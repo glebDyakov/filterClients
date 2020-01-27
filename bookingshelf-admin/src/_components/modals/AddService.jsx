@@ -327,7 +327,6 @@ class AddService extends React.Component {
         if (staffIndex !== -1) {
             staffs[staffIndex].serviceDuration = value
         }
-        debugger
         this.setState({ staffs })
     }
 

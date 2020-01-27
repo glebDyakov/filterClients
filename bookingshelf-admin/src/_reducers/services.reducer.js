@@ -27,7 +27,7 @@ export function services(state= {}, action) {
             services = state.services
             return {
                 ...state,
-                services: action.services,
+                services: (action.services || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
         case servicesConstants.GET_GROUP_FAILURE:

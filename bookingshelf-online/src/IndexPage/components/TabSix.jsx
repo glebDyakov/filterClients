@@ -131,7 +131,7 @@ class TabSix extends  PureComponent {
                 </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
                     <button className="approveFYes"  onClick={()=>{
-                        const resultAppointments = movingVisit ? movingVisit : newAppointments
+                        const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
                         if (resultAppointments.length ) {
                             if (resultAppointments[0] && resultAppointments[0].customId ) {
                                 _delete(resultAppointments[0].customId)

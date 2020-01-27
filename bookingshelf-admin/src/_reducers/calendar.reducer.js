@@ -390,7 +390,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_SUCCESS_COUNT:
             return {
                 ...state,
-                appointmentsCount: action.appointments,
+                appointmentsCount: action.appointments || [],
                 isLoadingModalCount: false
             };
             case calendarConstants.GET_APPOINTMENT_FAILURE_COUNT:
