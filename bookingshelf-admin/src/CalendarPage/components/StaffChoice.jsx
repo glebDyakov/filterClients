@@ -62,7 +62,7 @@ class StaffChoice extends PureComponent {
                             </a>
                         </li>}
 
-                        {availableTimetable && availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map(staffEl =>{
+                        {availableTimetable && availableTimetable.map(staffEl =>{
                             const activeStaff = staff && staff.find(staffItem => staffItem.staffId === staffEl.staffId);
                             const activeStaffEl = availableTimetable.filter(item => item.staffId === staffEl.staffId)
                             return(

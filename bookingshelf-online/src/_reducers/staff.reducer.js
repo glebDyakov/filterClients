@@ -31,12 +31,12 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_SERVICE_GROUPS_SUCCESS:
             return {
                 ...state,
-                serviceGroups: action.serviceGroups
+                serviceGroups: (action.serviceGroups || []).sort((a, b) => a.sortOrder - b.sortOrder)
             }
         case staffConstants.GET_SUCCESS:
             return {
                 ...state,
-                staff: action.staff,
+                staff: (action.staff || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
         case staffConstants.GET_SERVICES_SUCCESS:

@@ -317,7 +317,7 @@ class TabScroll extends Component{
                 {numbers && numbers.map((time, key) =>
                     <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                         <TabScrollLeftMenu time={time}/>
-                        {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((workingStaffElement, staffKey) => {
+                        {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
                             let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
                             const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
                                 (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
