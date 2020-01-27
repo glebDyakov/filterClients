@@ -59,13 +59,13 @@ function _move(appointment, time, staffId, companyId, coStaffs) {
     function failure() { return { type: staffConstants.MOVE_VISIT_FAILURE} }
 }
 
-function toggleStartMovingVisit(isStartMovingVisit, movingVisit = []) {
+function toggleStartMovingVisit(isStartMovingVisit, movingVisit = [], fromVisitPage) {
     return dispatch => {
         dispatch(success(isStartMovingVisit));
 
     };
 
-    function success(isStartMovingVisit) { return { type: staffConstants.TOGGLE_START_MOVING_VISIT, isStartMovingVisit, movingVisit } }
+    function success(isStartMovingVisit) { return { type: staffConstants.TOGGLE_START_MOVING_VISIT, isStartMovingVisit, movingVisit, fromVisitPage } }
 }
 
 function toggleMovedVisitSuccess(movedVisitSuccess) {

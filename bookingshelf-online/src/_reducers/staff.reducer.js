@@ -103,10 +103,15 @@ export function staff(state = initialState, action) {
                 movedVisitSuccess: action.movedVisitSuccess
             }
         case staffConstants.TOGGLE_START_MOVING_VISIT:
+            let toggleStartState = {}
+            if (action.fromVisitPage) {
+                toggleStartState.newAppointment = action.movingVisit
+            }
             return {
                 ...state,
                 isStartMovingVisit: action.isStartMovingVisit,
                 movingVisit: action.movingVisit,
+                ...toggleStartState
             }
         case staffConstants.GET_INFO_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
