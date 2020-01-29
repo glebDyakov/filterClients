@@ -55,7 +55,7 @@ class CalendarPage extends PureComponent {
 
         dateFrom=props.match.params.dateFrom ?
             moment(props.match.params.dateFrom, 'DD-MM-YYYY').utc().toDate() :
-            moment().utc().startOf('day').toDate()
+            moment().startOf('day').utc().toDate()
 
         dateFr=props.match.params.dateFrom ?
             moment(props.match.params.dateFrom, 'DD-MM-YYYY') :

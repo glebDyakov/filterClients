@@ -54,6 +54,7 @@ class AddAppointment extends React.Component {
         };
 
         this.addAppointment=this.addAppointment.bind(this);
+        this.handleDurationChange=this.handleDurationChange.bind(this);
         this.getAppointments=this.getAppointments.bind(this);
         this.setStaff=this.setStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -207,6 +208,100 @@ class AddAppointment extends React.Component {
         this.setState({ availableCoStaffs });
     }
 
+    getOptionList(index) {
+        const { appointment, staffs, staffCurrent, edit_appointment } = this.state;
+        const optionList = [
+            { duration: 900, label: '15 мин'},
+            { duration: 1800, label: '30 мин'},
+            { duration: 2700, label: '45 мин'},
+            { duration: 3600, label: '1 ч 00 мин'},
+            { duration: 4500, label: '1 ч 15 мин'},
+            { duration: 5400, label: '1 ч 30 мин'},
+            { duration: 6300, label: '1 ч 45 мин'},
+            { duration: 7200, label: '2 ч 00 мин'},
+            { duration: 8100, label: '2 ч 15 мин'},
+            { duration: 9000, label: '2 ч 30 мин'},
+            { duration: 9900, label: '2 ч 45 мин'},
+            { duration: 10800, label: '3 ч 00 мин'},
+            { duration: 11700, label: '3 ч 15 мин'},
+            { duration: 12600, label: '3 ч 30 мин'},
+            { duration: 13500, label: '3 ч 30 мин'},
+            { duration: 14400, label: '4 ч 00 мин'},
+            { duration: 15300, label: '4 ч 15 мин'},
+            { duration: 16200, label: '4 ч 30 мин'},
+            { duration: 17100, label: '4 ч 45 мин'},
+            { duration: 18000, label: '5 ч 00 мин'},
+            { duration: 18900, label: '5 ч 15 мин'},
+            { duration: 19800, label: '5 ч 30 мин'},
+            { duration: 20700, label: '5 ч 45 мин'},
+            { duration: 21600, label: '6 ч 00 мин'},
+            { duration: 22500, label: '6 ч 15 мин'},
+            { duration: 23400, label: '6 ч 30 мин'},
+            { duration: 24300, label: '6 ч 45 мин'},
+            { duration: 25200, label: '7 ч 00 мин'},
+            { duration: 26100, label: '7 ч 15 мин'},
+            { duration: 27000, label: '7 ч 30 мин'},
+            { duration: 27900, label: '7 ч 45 мин'},
+            { duration: 28800, label: '8 ч 00 мин'},
+            { duration: 29700, label: '8 ч 15 мин'},
+            { duration: 30600, label: '8 ч 30 мин'},
+            { duration: 31500, label: '8 ч 45 мин'},
+            { duration: 32400, label: '9 ч 00 мин'},
+            { duration: 33300, label: '9 ч 15 мин'},
+            { duration: 34200, label: '9 ч 30 мин'},
+            { duration: 35100, label: '9 ч 45 мин'},
+            { duration: 36000, label: '10 ч 00 мин'},
+            { duration: 36900, label: '10 ч 15 мин'},
+            { duration: 37800, label: '10 ч 30 мин'},
+            { duration: 38700, label: '10 ч 45 мин'},
+            { duration: 39600, label: '11 ч 00 мин'},
+            { duration: 40500, label: '11 ч 15 мин'},
+            { duration: 41400, label: '11 ч 30 мин'},
+            { duration: 42300, label: '11 ч 45 мин'},
+            { duration: 43200, label: '12 ч 00 мин'},
+            { duration: 44100, label: '12 ч 15 мин'},
+            { duration: 45000, label: '12 ч 30 мин'},
+            { duration: 45900, label: '12 ч 45 мин'},
+            { duration: 46800, label: '13 ч 00 мин'},
+            { duration: 47700, label: '13 ч 15 мин'},
+            { duration: 48600, label: '13 ч 30 мин'},
+            { duration: 49500, label: '13 ч 45 мин'},
+            { duration: 50400, label: '14 ч 00 мин'},
+            { duration: 51300, label: '14 ч 15 мин'},
+            { duration: 52200, label: '14 ч 30 мин'},
+            { duration: 53100, label: '14 ч 45 мин'},
+            { duration: 54000, label: '15 ч 00 мин'},
+        ];
+
+        const activeStaffTimetable = staffs.availableTimetable.find(item => item.staffId === staffCurrent.staffId)
+
+        let finalOptionList = optionList
+        if (activeStaffTimetable) {
+            finalOptionList = optionList.filter(option => {
+                const intervals = []
+                const startTime =  parseInt(appointment[index].appointmentTimeMillis)
+
+                const endTime = parseInt(appointment[index].appointmentTimeMillis) + (option.duration * 1000)
+                const lastAppointmentIndex = appointment.length - 1
+                let lastAppointmentEndTime = appointment[lastAppointmentIndex].appointmentTimeMillis + (appointment[lastAppointmentIndex].duration * 1000)
+                for(let i = startTime; i < endTime; i+= 15 * 60000) {
+                    intervals.push(i)
+                }
+
+
+                return intervals.every(interval => {
+                        return activeStaffTimetable.availableDays.some(day => day.availableTimes.some(availableTime =>
+                            (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval) ||
+                            (edit_appointment && (interval < lastAppointmentEndTime))
+                        ))
+                    }
+                )
+            })
+        }
+
+        return finalOptionList.map(option => <option value={option.duration}>{option.label}</option>)
+    }
+
     getFilteredServicesList(index, extraDuration) {
         const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services, servicesSearch } = this.state;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
@@ -301,6 +396,18 @@ class AddAppointment extends React.Component {
         });
     }
 
+    handleDurationChange(e, appointment, index) {
+        const { value } = e.target
+        appointment[index].duration = parseInt(value)
+
+        const updatedAppointments = this.getAppointments(appointment);
+        this.updateAvailableCoStaffs(updatedAppointments.newAppointments)
+        this.setState({
+            appointment: updatedAppointments.newAppointments,
+            appointmentMessage: updatedAppointments.appointmentMessage
+        });
+    }
+
     getVisitFreeMinutes(appointment) {
         let visitFreeMinutes = []
 
@@ -370,9 +477,10 @@ class AddAppointment extends React.Component {
         })
 
         this.updateAvailableCoStaffs(appointmentEdited)
-        this.props.dispatch(clientActions.getActiveClient(appointments[0].clientId))
-        this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId))
-
+        if (appointments[0].clientId) {
+            this.props.dispatch(clientActions.getActiveClient(appointments[0].clientId))
+            this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId))
+        }
         this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices})
     }
 
@@ -705,8 +813,11 @@ class AddAppointment extends React.Component {
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-md-4">
-                                                        <p className={!servicesDisabling&&'disabledField'}>Длительность</p>
-                                                        <input className={!servicesDisabling&&'disabledField'} type="text" disabled="disabled" placeholder=""  name="duration" value={serviceCurrent[index].service && serviceCurrent[index].service.length!==0 ? moment.duration(parseInt(this.getDurationForCurrentStaff(serviceCurrent[index].service)), "seconds").format("h[ ч] m[ мин]") : ''}/>
+                                                        <p className={!servicesDisabling&&'disabledField'} >Длительность</p>
+                                                        <select disabled={serviceCurrent[index].id === -1} className="custom-select" onChange={(e) =>this.handleDurationChange(e, appointment, index)} name="duration"
+                                                                value={appointment[index].duration}>
+                                                            {this.getOptionList(index)}
+                                                        </select>
                                                     </div>
                                                     <div className="col-md-8">
                                                         <p>Сотрудник</p>
@@ -1118,7 +1229,7 @@ class AddAppointment extends React.Component {
             staffId: staffCurrent.staffId,
             serviceId: serviceCurrent[i].id,
             serviceName: serviceCurrent[i].service.name,
-            duration: this.getDurationForCurrentStaff(serviceCurrent[i].service),
+            duration: item.duration ? item.duration : this.getDurationForCurrentStaff(serviceCurrent[i].service),
             color: serviceCurrent[i].service.color,
             currency: serviceCurrent[i].service.currency
         } });
