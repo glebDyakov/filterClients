@@ -12,6 +12,7 @@ import {clientActions, staffActions} from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 import {calendarActions} from "../../_actions/calendar.actions";
 import ReactPaginate from 'react-paginate';
+import Paginator from "../Paginator";
 
 
 class AddAppointment extends React.Component {
@@ -74,6 +75,9 @@ class AddAppointment extends React.Component {
         this.newClient = this.newClient.bind(this);
         this.editAppointment = this.editAppointment.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleSearchAppointments = this.handleSearchAppointments.bind(this);
+        this.updateAppointments = this.updateAppointments.bind(this);
+        this.handlePageClickAppointments = this.handlePageClickAppointments.bind(this);
         this.getInfo = this.getInfo.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -104,7 +108,7 @@ class AddAppointment extends React.Component {
             const updatedState = { shouldUpdateCheckedUser: false }
             if (user) {
                 finalUser = { ...user, appointments: [] }
-                this.props.dispatch(clientActions.getActiveClientAppointments(user.clientId))
+                this.props.dispatch(clientActions.getActiveClientAppointments(user.clientId, 1))
                 updatedState.clientChecked = finalUser
             }
             this.setState(updatedState)
@@ -166,6 +170,28 @@ class AddAppointment extends React.Component {
         //             customId: newProps.appointmentEdited?newProps.appointmentEdited[0][0].customId:this.state.appointment[0].customId}],
         //     })
         // }
+    }
+
+    handlePageClickAppointments(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateAppointments(currentPage);
+    };
+
+    updateAppointments(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+        this.props.dispatch(clientActions.getActiveClientAppointments(this.state.clientChecked.clientId, currentPage, searchValue));
+    }
+
+    handleSearchAppointments () {
+        if (this.search.value.length >= 3) {
+            this.updateAppointments();
+        } else if (this.search.value.length === 0) {
+            this.updateAppointments();
+        }
     }
 
     handlePageClick(data) {
@@ -479,7 +505,7 @@ class AddAppointment extends React.Component {
         this.updateAvailableCoStaffs(appointmentEdited)
         if (appointments[0].clientId) {
             this.props.dispatch(clientActions.getActiveClient(appointments[0].clientId))
-            this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId))
+            this.props.dispatch(clientActions.getActiveClientAppointments(appointments[0].clientId, 1))
         }
         this.setState({ appointment: appointmentEdited, serviceCurrent: newServicesCurrent, services: newServices})
     }
@@ -1070,8 +1096,6 @@ class AddAppointment extends React.Component {
                                                     <hr className="gray"/>
                                                     <div className='last-visit-list'>
                                                         {cl.appointments && cl.appointments
-                                                            .filter(appointment => appointment.id === cl.id)
-                                                            .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                                             .map((appointment) => {
                                                                 const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
                                                                 const activeAppointmentStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === appointment.staffId);
@@ -1124,6 +1148,10 @@ class AddAppointment extends React.Component {
                                                                     </div>
                                                                 )}
                                                             )}
+                                                            <Paginator
+                                                                finalTotalPages={2}
+                                                                onPageChange={this.handlePageClickAppointments}
+                                                            />
                                                     </div>
                                                     {!!cl.discountPercent &&
                                                     <div style={{
@@ -1173,7 +1201,7 @@ class AddAppointment extends React.Component {
     }
 
     checkUser(client){
-        this.props.dispatch(clientActions.getActiveClientAppointments(client.clientId))
+        this.props.dispatch(clientActions.getActiveClientAppointments(client.clientId, 1))
         this.setState({ clientChecked: { ...client, appointments: this.props.clients.activeClientAppointments} });
     }
 

@@ -11,8 +11,8 @@ import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_componen
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
-import ReactPaginate from 'react-paginate';
 import {servicesActions} from "../_actions/services.actions";
+import Paginator from "../_components/Paginator";
 
 class ClientsPage extends Component {
     constructor(props) {
@@ -335,30 +335,10 @@ class ClientsPage extends Component {
                                     }
                                 </div>
 
-                                <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                    {finalTotalPages > 1 &&
-                                    <ReactPaginate
-                                        previousLabel={'⟨'}
-                                        nextLabel={'⟩'}
-                                        breakLabel={'...'}
-                                        pageCount={finalTotalPages}
-                                        marginPagesDisplayed={2}
-                                        pageRangeDisplayed={5}
-                                        onPageChange={this.handlePageClick}
-                                        subContainerClassName={'pages pagination'}
-                                        breakClassName={'page-item'}
-                                        breakLinkClassName={'page-link'}
-                                        containerClassName={'pagination'}
-                                        pageClassName={'page-item'}
-                                        pageLinkClassName={'page-link'}
-                                        previousClassName={'page-item'}
-                                        previousLinkClassName={'page-link'}
-                                        nextClassName={'page-item'}
-                                        nextLinkClassName={'page-link'}
-                                        activeClassName={'active'}
-                                    />
-                                    }
-                                </div>
+                                <Paginator
+                                    finalTotalPages={finalTotalPages}
+                                    onPageChange={this.handlePageClick}
+                                />
                             </div>
                             <a className="add"/>
                             <div className="hide buttons-container">

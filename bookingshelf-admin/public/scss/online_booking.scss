@@ -211,11 +211,12 @@ textarea{
     }
 
 }
-.exemple-buton{
+.but button.exemple-buton{
+    left: unset !important;
+    margin-left: unset !important;
     font-family: 'pfd_din_display_pro';
     line-height: 16px;
 }
-.exemple-buton,
 .copy-code,
 .button-url{
     @media screen and(max-width: $tablet-width){

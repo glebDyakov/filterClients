@@ -181,7 +181,7 @@ class VisitPage extends React.Component {
 
                         {!(appointment && appointment.coStaffs && appointment.coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
-                                this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, appointment.clientId))
+                                this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, appointment.clientId, 1))
                                 this._move(visitAppointments)
                             }}/>
                             <span className="move-white" />
