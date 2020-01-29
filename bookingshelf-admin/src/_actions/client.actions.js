@@ -124,10 +124,10 @@ function getClientV2(pageNum, searchValue, blacklisted) {
     function failure(error) { return { type: clientConstants.GET_CLIENT_V2_FAILURE, error } }
 }
 
-function getActiveClientAppointments(clientId) {
+function getActiveClientAppointments(clientId, pageNum) {
     return dispatch => {
         dispatch(request())
-        clientService.getActiveClientAppointments(clientId)
+        clientService.getActiveClientAppointments(clientId, pageNum)
             .then(
                 activeClientAppointments => {
                     dispatch(success(activeClientAppointments))

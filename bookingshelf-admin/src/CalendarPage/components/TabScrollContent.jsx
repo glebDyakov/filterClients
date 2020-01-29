@@ -441,7 +441,7 @@ class TabScroll extends Component{
                                                         bottom: 0,
                                                         width: '100%',
                                                         zIndex: 9990
-                                                    }}/>
+                                                    }}><img className="drag-vert" src={`${process.env.CONTEXT}public/img/drag-vert.png`}/></p>
                                                     }
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">

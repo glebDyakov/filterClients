@@ -231,10 +231,10 @@ function getTimetable(company, date1, date2) {
     function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
 
-function getClientAppointments(company, clientId) {
+function getClientAppointments(company, clientId, pageNum) {
     return dispatch => {
         dispatch(request());
-        staffService.getClientAppointments(company, clientId)
+        staffService.getClientAppointments(company, clientId, pageNum)
             .then(
                 clientAppointments => dispatch(success(clientAppointments)),
                 () => failure()
