@@ -37,6 +37,10 @@
 .color23D2CC {
   --border: rgba(35, 210, 204, 0.8);
   --color: rgba(35, 210, 204, 1); }
+.left {
+  left: 20px !important;
+  right: unset !important;
+}
 
 #online-booking {
     top: 0;

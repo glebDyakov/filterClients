@@ -141,13 +141,18 @@ function getSubcompanies() {
 
 function getBookingInfo() {
     return dispatch => {
+        dispatch(request())
         companyService.getBookingInfo()
             .then(
                 booking => dispatch(success(booking)),
+                error => dispatch(failure(error))
             );
     };
 
+
+    function request() { return { type: companyConstants.GET_BOOKING_REQUEST } }
     function success(booking) { return { type: companyConstants.GET_BOOKING_SUCCESS, booking } }
+    function failure(error) { return { type: companyConstants.GET_BOOKING_FAILURE, error } }
 }
 
 function getNewAppointments() {
@@ -172,13 +177,17 @@ function getAppointmentsCountMarkerDecrement() {
 }
 
 
-function updateBookingInfo(params) {
+function updateBookingInfo(params, isBookingInfoLoading) {
     return dispatch => {
+        dispatch(request())
         companyService.updateBookingInfo(params)
             .then(
                 booking => dispatch(success(booking)),
+                error => dispatch(failure(error))
             );
     };
 
-    function success(booking) { return booking }
+    function request() { return { type: companyConstants.UPDATE_BOOKING_INFO_REQUEST, isBookingInfoLoading } }
+    function success(booking) { return { type: companyConstants.UPDATE_BOOKING_INFO_SUCCESS, booking } }
+    function failure(error) { return { type: companyConstants.UPDATE_BOOKING_INFO_FAILURE, error } }
 }

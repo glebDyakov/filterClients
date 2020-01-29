@@ -5,6 +5,11 @@ const initialState = {
 
 export function company(state = initialState, action) {
     switch (action.type) {
+        case companyConstants.UPDATE_BOOKING_INFO_REQUEST:
+            return {
+                ...state,
+                isBookingInfoLoading: action.isBookingInfoLoading
+            }
         case companyConstants.ADD_COMPANY_SUCCESS:
             localStorage.setItem('user', action.company);
 
@@ -26,10 +31,18 @@ export function company(state = initialState, action) {
                 settings: action.settings
             };
         case companyConstants.GET_BOOKING_SUCCESS:
+        case companyConstants.UPDATE_BOOKING_INFO_SUCCESS:
             return {
                 ...state,
-                booking: action.booking
+                booking: action.booking,
+                isBookingInfoLoading: false
             };
+        case companyConstants.GET_BOOKING_FAILURE:
+        case companyConstants.UPDATE_BOOKING_INFO_FAILURE:
+            return {
+                ...state,
+                isBookingInfoLoading: false
+            }
         case companyConstants.GET_NEW_APPOINMENTS_SUCCESS:
             return {
                 ...state,
