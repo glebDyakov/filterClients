@@ -8,6 +8,8 @@ import moment from "moment";
 import Link from "react-router-dom/es/Link";
 import classNames from "classnames";
 import {UserSettings} from "./modals/UserSettings";
+import '../../public/scss/styles.scss'
+
 
 class SidebarMain extends Component {
     constructor(props) {
@@ -627,5 +629,4 @@ SidebarMain.proptypes = {
     location: PropTypes.object.isRequired,
 };
 
-const connectedApp = connect(mapStateToProps)(withRouter(SidebarMain));
-export { connectedApp as SidebarMain };
+export default connect(mapStateToProps)(withRouter(SidebarMain));

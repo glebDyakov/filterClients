@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import LogoutPage from "../LogoutPage";
 import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
+import '../../public/scss/styles.scss'
+
 
 class HeaderMain extends React.PureComponent {
     constructor(props) {

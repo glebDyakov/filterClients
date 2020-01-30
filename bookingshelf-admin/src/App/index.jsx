@@ -12,8 +12,8 @@ import {
     socketActions
 } from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
+import 'moment-duration-format';
 
-import '../../public/scss/styles.scss'
 import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
@@ -34,7 +34,8 @@ const PaymentsPage = React.lazy(() => import("../PaymentsPage"));
 
 import {Router, Route, Switch, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
-import {SidebarMain} from "../_components/SidebarMain";
+const SidebarMain = React.lazy(() => import("../_components/SidebarMain"));
+
 import {access} from "../_helpers/access";
 const ActivationPage = React.lazy(() => import("../ActivationPage"));
 
@@ -273,7 +274,9 @@ class Index extends React.Component {
                 {authentication.loginChecked &&
                     <div>
                         {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
-                        <SidebarMain/>
+                        <Suspense fallback={null}>
+                            <SidebarMain/>
+                        </Suspense>
                         }
                         <Suspense fallback={null}>
                             <AppointmentFromSocket

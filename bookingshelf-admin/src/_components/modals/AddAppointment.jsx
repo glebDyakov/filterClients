@@ -5,7 +5,6 @@ import TimePicker from 'rc-time-picker';
 
 import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
-import 'moment-duration-format';
 import PropTypes from "prop-types";
 import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
