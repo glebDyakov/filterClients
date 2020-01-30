@@ -11,7 +11,6 @@ import '../../public/scss/services.scss'
 import {AddGroup, AddService, UserSettings, CreatedService} from "../_components/modals";
 
 import moment from 'moment';
-import 'moment-duration-format';
 import {UserPhoto} from "../_components/modals/UserPhoto";
 import Pace from "react-pace-progress";
 import DragDrop from "../_components/DragDrop";
