@@ -141,5 +141,4 @@ function mapStateToProps(state) {
 }
 
 
-const connectedApp = connect(mapStateToProps)(withRouter(AppointmentFromSocket));
-export { connectedApp as AppointmentFromSocket };
+export default connect(mapStateToProps)(withRouter(AppointmentFromSocket));

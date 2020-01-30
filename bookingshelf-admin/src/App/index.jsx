@@ -13,6 +13,7 @@ import {
 } from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 
+import '../../public/scss/styles.scss'
 import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
@@ -46,8 +47,8 @@ const CalendarPrePage = React.lazy(() => import("../CalendarPrePage"));
 const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
+const AppointmentFromSocket = React.lazy(() => import("../_components/modals/AppointmentFromSocket"));
 
-import {AppointmentFromSocket} from "../_components/modals";
 var socket;
 
 import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
@@ -274,11 +275,13 @@ class Index extends React.Component {
                         {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <SidebarMain/>
                         }
-                        <AppointmentFromSocket
-                            closeAppointmentFromSocket={this.closeAppointmentFromSocket}
-                        />
+                        <Suspense fallback={null}>
+                            <AppointmentFromSocket
+                                closeAppointmentFromSocket={this.closeAppointmentFromSocket}
+                            />
+                        </Suspense>
                         {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={null}>
                             <Switch>
                                     {!paymentsOnly && <PrivateRoute exact path="/" component={MainIndex} refresh={false} />}
                                     {!paymentsOnly && <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />}
