@@ -37,7 +37,7 @@ class OnlinePage extends Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.setType = this.setType.bind(this);
+        this.setBookingCode = this.setBookingCode.bind(this);
         this.copyToClipboard = this.copyToClipboard.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -143,15 +143,18 @@ class OnlinePage extends Component {
 
     }
 
-    setType (type) {
-        const {booking}=this.state;
-
+    setBookingCode (type, updatePosition) {
         const { dispatch } = this.props;
+        const { booking } = this.state;
+        const { bookingCode } = booking;
 
-        const bookElement={...booking, bookingCode: type}
+        const bookingCodeClassNames = bookingCode.split(' ')
+        bookingCodeClassNames[updatePosition ? 1 : 0] = type
 
-        this.setState({booking: bookElement})
-        dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
+        const bookElement={...booking, bookingCode: bookingCodeClassNames[0] + ' ' + bookingCodeClassNames[1]}
+
+        // this.setState({booking: bookElement})
+        dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement), updatePosition));
     }
 
     copyToClipboard () {
@@ -172,7 +175,7 @@ class OnlinePage extends Component {
 
         const isOnlineZapisChecked = !onlineZapisOn
 
-        const { isServiceIntervalLoading } = company;
+        const { isServiceIntervalLoading, isBookingInfoLoading } = company;
 
         const dayPickerProps = {
             month: new Date(),
@@ -234,47 +237,78 @@ class OnlinePage extends Component {
                                             </div>
                                             <div className="buttons">
                                                 <button type="button"
-                                                        className={(booking.bookingCode === "button-standart" && 'active') + " button-standart mb-3 ml-0 mr-2 mt-0"}
-                                                        onClick={() => this.setType("button-standart")} style={{
+                                                        className={(booking.bookingCode.includes("button-standart") && 'active') + " button-standart mb-3 ml-0 mr-2 mt-0"}
+                                                        onClick={() => this.setBookingCode("button-standart")} style={{
                                                     'animation': 'unset',
                                                     'height': '40px',
                                                     'width': '55px'
                                                 }}/>
                                                 <button type="button"
-                                                        className={(booking.bookingCode === "button-site" && 'active') + " button-site mb-3 ml-0 mr-2 mt-0 "}
-                                                        onClick={() => this.setType("button-site")} style={{
+                                                        className={(booking.bookingCode.includes("button-site") && 'active') + " button-site mb-3 ml-0 mr-2 mt-0 "}
+                                                        onClick={() => this.setBookingCode("button-site")} style={{
                                                     'animation': 'unset',
                                                     'height': '40px',
                                                     'width': '55px'
                                                 }}/>
                                                 <button type="button"
-                                                        className={(booking.bookingCode === "button-round-border" && 'active') + " button-round-border mb-3 ml-0 mr-2 mt-0"}
-                                                        onClick={() => this.setType("button-round-border")} style={{
+                                                        className={(booking.bookingCode.includes("button-round-border") && 'active') + " button-round-border mb-3 ml-0 mr-2 mt-0"}
+                                                        onClick={() => this.setBookingCode("button-round-border")} style={{
                                                     'animation': 'unset',
                                                     'height': '40px',
                                                     'width': '55px'
                                                 }}/>
                                                 <button type="button"
-                                                        className={(booking.bookingCode === "small-button-standart" && 'active') + " small-button-standart mb-3 ml-0 mr-2 mt-0"}
-                                                        onClick={() => this.setType("small-button-standart")} style={{
+                                                        className={(booking.bookingCode.includes("small-button-standart") && 'active') + " small-button-standart mb-3 ml-0 mr-2 mt-0"}
+                                                        onClick={() => this.setBookingCode("small-button-standart")} style={{
                                                     'animation': 'unset',
                                                     'height': '50px',
                                                     'width': '50px'
                                                 }}/>
                                                 <button type="button"
-                                                        className={(booking.bookingCode === "small-button-round" && 'active') + " small-button-round mb-3 ml-0 mr-2 mt-0"}
-                                                        onClick={() => this.setType("small-button-round")} style={{
+                                                        className={(booking.bookingCode.includes("small-button-round") && 'active') + " small-button-round mb-3 ml-0 mr-2 mt-0"}
+                                                        onClick={() => this.setBookingCode("small-button-round")} style={{
                                                     'animation': 'unset',
                                                     'height': '50px',
                                                     'width': '50px'
                                                 }}/>
                                             </div>
                                         </div>
+
+                                        <div className="form-button">
+                                            <div>
+                                                <p className="sub-title mb-3 mt-3">Расположение</p>
+                                            </div>
+                                            <div style={{ position: 'relative' }} className="check-box">
+                                                <label>
+                                                    {isBookingInfoLoading
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        : <React.Fragment>
+                                                            <input className="form-check-input" type="checkbox" checked={booking.bookingCode.includes('left')} onChange={() => this.setBookingCode('left', true)}/>
+                                                            <span className="check"/>
+                                                        </React.Fragment>
+                                                    }
+                                                    Слева
+                                                </label>
+                                            </div>
+                                            <div style={{ position: 'relative' }} className="check-box">
+                                                <label>
+                                                    {isBookingInfoLoading
+                                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                        : <React.Fragment>
+                                                            <input className="form-check-input" type="checkbox" checked={!booking.bookingCode.includes('left')} onChange={() => this.setBookingCode('right', true)}/>
+                                                            <span className="check"/>
+                                                        </React.Fragment>
+                                                    }
+                                                    Справа
+                                                </label>
+                                            </div>
+                                        </div>
+
                                         <div className="">
                                             {/*<p className="sub-title mb-3">Название кнопки</p>*/}
                                             {/*<input type="text" placeholder="Например: Онлайн-запись" value={booking.bookingButton} name="bookingButton" onChange={this.handleChange}/>*/}
                                             <strong className="sub-title mb-4 mt-4">Пример</strong>
-                                            <div className="buttons-container-color-form mb-4 but">
+                                            <div style={{ display: 'flex', justifyContent: (booking.bookingCode.includes('left') ? 'flex-start' : 'flex-end')}} className="buttons-container-color-form mb-4 but">
                                                 <button type="button"
                                                         className={"exemple-buton " + booking.bookingCode + " color" + booking.bookingColor.toString(16)}>Онлайн
                                                     запись

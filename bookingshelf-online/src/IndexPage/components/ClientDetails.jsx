@@ -6,6 +6,7 @@ import config from 'config'
 import {staffActions} from "../../_actions";
 import './ClientDetails.scss'
 import '../../../public/css/bootstrap.css'
+import Paginator from "./Paginator";
 
 
 class ClientDetails extends React.Component {
@@ -19,13 +20,15 @@ class ClientDetails extends React.Component {
             allVisits: false
         };
 
-        this.handleSearch = this.handleSearch.bind(this);
         this.goToVisit = this.goToVisit.bind(this);
+        this.handleSearchAppointmentsAppointments = this.handleSearchAppointmentsAppointments.bind(this);
+        this.updateAppointments = this.updateAppointments.bind(this);
+        this.handlePageClickAppointments = this.handlePageClickAppointments.bind(this);
     }
 
     componentDidMount() {
         const clientId = (this.props.staff.appointment && this.props.staff.appointment[0] && this.props.staff.appointment[0].clientId) || (this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId)
-        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId))
+        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
     }
 
     componentWillReceiveProps(newProps) {
@@ -33,7 +36,7 @@ class ClientDetails extends React.Component {
             || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId && ((this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId) !== (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)))) {
             const clientId = (newProps.staff.appointment && newProps.staff.appointment[0] && newProps.staff.appointment[0].clientId) || (newProps.staff.newAppointment && newProps.staff.newAppointment[0] && newProps.staff.newAppointment[0].clientId)
 
-            this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId))
+            this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
         }
 
         if (newProps.staff.clientAppointments && (JSON.stringify(this.props.staff.clientAppointments) !== JSON.stringify(newProps.staff.clientAppointments))) {
@@ -49,7 +52,7 @@ class ClientDetails extends React.Component {
         }
     }
 
-    handleSearch () {
+    handleSearchAppointments () {
         const {defaultClientsList}= this.state;
 
         const searchClientList=defaultClientsList.appointments.filter((item)=>{
@@ -74,6 +77,31 @@ class ClientDetails extends React.Component {
 
         const url = `https://${config.apiUrl.includes('staging') ? 'staging.' : ''}online-zapis.com` + `/online/visits/${this.props.match.params.company}/${customId}`
         location.href = url
+    }
+
+    handlePageClickAppointments(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateAppointments(currentPage);
+    };
+
+    updateAppointments(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+
+        const clientId = (this.props.staff.appointment && this.props.staff.appointment[0] && this.props.staff.appointment[0].clientId) || (this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId)
+
+        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, currentPage, searchValue));
+    }
+
+    handleSearchAppointmentsAppointments () {
+        if (this.search.value.length >= 3) {
+            this.updateAppointments();
+        } else if (this.search.value.length === 0) {
+            this.updateAppointments();
+        }
     }
 
     render() {
@@ -118,7 +146,7 @@ class ClientDetails extends React.Component {
                                         <div className="row align-items-center content clients mb-2 search-block">
                                             <div className="search col-7">
                                                 <input type="search" placeholder="Введите название услуги"
-                                                       aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
+                                                       aria-label="Search" ref={input => this.search = input} onChange={this.handleSearchAppointments}/>
                                                 <button className="search-icon" type="submit"/>
                                             </div>
                                         </div>
@@ -172,6 +200,10 @@ class ClientDetails extends React.Component {
                                                 </div>
                                             )}
                                     )}
+                                    {/*<Paginator*/}
+                                    {/*    finalTotalPages={2}*/}
+                                    {/*    onPageChange={this.handlePageClickAppointments}*/}
+                                    {/*/>*/}
                                 </div>
 
                                 <span className="closer"/>

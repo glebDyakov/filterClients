@@ -107,13 +107,13 @@ class NewStaff extends React.Component {
 
         staffs && staffs.staff && staffs.staff.map(staffr=>{
 
-            staff.staffId !== staffr.staffId && options.push({value: staffr.staffId, label: staffr.firstName+" "+staffr.lastName});
+            staff.staffId !== staffr.staffId && options.push({value: staffr.staffId, label: staffr.firstName+" "+(staffr.lastName ? staffr.lastName : '')});
 
         });
 
         staff && staff.costaffs && staff.costaffs.map(st=>
             staffs && staffs.staff && staffs.staff.map(staffr=>{
-                st.staffId===staffr.staffId && option.push({value: staffr.staffId, label: staffr.firstName+" "+staffr.lastName})
+                st.staffId===staffr.staffId && option.push({value: staffr.staffId, label: staffr.firstName+" "+(staffr.lastName ? staffr.lastName : '')})
             })
         )
 

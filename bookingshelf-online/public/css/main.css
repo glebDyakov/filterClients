@@ -199,6 +199,10 @@ q:before, q:after { content:''; }
     box-shadow: none;
     height: auto;
 }
+.search {
+    display: flex;
+    align-items: center;
+}
 .final-screen{
     margin-bottom: 10px;
 }
@@ -806,6 +810,12 @@ q:before, q:after { content:''; }
 
 
 
+input[type="search"]::-webkit-input-placeholder {
+    color: #3b4b5c;
+}
+input[type="search"]::-moz-placeholder {
+    color: #3b4b5c;
+}
 .screen5 > p{
     margin-bottom: 10px;
 }

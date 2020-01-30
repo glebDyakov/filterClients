@@ -18,12 +18,14 @@ class ClientDetails extends React.Component {
 
         this.handleSearch = this.handleSearch.bind(this);
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
+        this.updateClients = this.updateClients.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
         if (newProps.clientId && (this.props.clientId !== newProps.clientId)) {
             this.props.dispatch(clientActions.getActiveClient(newProps.clientId));
-            this.props.dispatch(clientActions.getActiveClientAppointments(newProps.clientId));
+            this.props.dispatch(clientActions.getActiveClientAppointments(newProps.clientId, 1));
         }
         if (newProps.client.activeClientAppointments || newProps.client.activeClient) {
             let allPrice = 0;
@@ -42,6 +44,21 @@ class ClientDetails extends React.Component {
         }
     }
 
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+
+        this.props.dispatch(clientActions.getActiveClientAppointments(this.props.clientId, currentPage, searchValue));
+    }
+
     handleSearch () {
         const {defaultAppointmentsList}= this.state;
 
@@ -53,15 +70,10 @@ class ClientDetails extends React.Component {
             search: true,
             client: {...this.state.client ,appointments: searchClientList}
         });
-
-        // if(this.search.value===''){
-        //     this.setState({
-        //         search: true,
-        //         client: {
-        //             ...this.state.client,
-        //             appointments: defaultAppointmentsList
-        //         }
-        //     })
+        // if (this.search.value.length >= 3) {
+        //     this.updateClients();
+        // } else if (this.search.value.length === 0) {
+        //     this.updateClients();
         // }
     }
 

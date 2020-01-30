@@ -428,20 +428,23 @@ class TabScroll extends Component{
                                                         {resultTextArea}
                                                     </span>
                                                     {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
-                                                    <p onMouseDown={(e) => {
-                                                        this.setState({
-                                                            changingVisit: appointment,
-                                                            changingPos: e.pageY,
-                                                            offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
-                                                        })
-                                                    }} style={{
-                                                        cursor: 'ns-resize',
-                                                        height: '8px',
-                                                        position: 'absolute',
-                                                        bottom: 0,
-                                                        width: '100%',
-                                                        zIndex: 9990
-                                                    }}/>
+                                                    <React.Fragment>
+                                                        <p onMouseDown={(e) => {
+                                                            this.setState({
+                                                                changingVisit: appointment,
+                                                                changingPos: e.pageY,
+                                                                offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+                                                            })
+                                                        }} style={{
+                                                            cursor: 'ns-resize',
+                                                            height: '8px',
+                                                            position: 'absolute',
+                                                            bottom: 0,
+                                                            width: '100%',
+                                                            zIndex: 9990
+                                                        }} />
+                                                        <img className="drag-vert" src={`${process.env.CONTEXT}public/img/drag-vert.png`}/>
+                                                    </React.Fragment>
                                                     }
                                                 </p>
                                                 {!this.props.isStartMovingVisit && <div className="msg-client-info">
