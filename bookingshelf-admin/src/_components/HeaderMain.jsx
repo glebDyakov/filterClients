@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import moment from "moment";
-import {LogoutPage} from "../LogoutPage";
+import LogoutPage from "../LogoutPage";
 import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
 
 class HeaderMain extends React.PureComponent {
