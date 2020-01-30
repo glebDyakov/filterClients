@@ -138,6 +138,7 @@ class ClientDetails extends React.Component {
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
                                     .filter(appointment => appointment.id===client.id)
+                                    .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
                                         const activeService = services && services.servicesList.find(service => service.serviceId === appointment.serviceId)

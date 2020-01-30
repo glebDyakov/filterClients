@@ -142,7 +142,8 @@ function getActiveClientAppointments(clientId, pageNum) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    // return fetch(`${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 }
 
 function getActiveClient(clientId) {
