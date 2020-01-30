@@ -1096,6 +1096,7 @@ class AddAppointment extends React.Component {
                                                     <hr className="gray"/>
                                                     <div className='last-visit-list'>
                                                         {cl.appointments && cl.appointments
+                                                            .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                                             .map((appointment) => {
                                                                 const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
                                                                 const activeAppointmentStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === appointment.staffId);
@@ -1148,10 +1149,10 @@ class AddAppointment extends React.Component {
                                                                     </div>
                                                                 )}
                                                             )}
-                                                            <Paginator
-                                                                finalTotalPages={2}
-                                                                onPageChange={this.handlePageClickAppointments}
-                                                            />
+                                                            {/*<Paginator*/}
+                                                            {/*    finalTotalPages={2}*/}
+                                                            {/*    onPageChange={this.handlePageClickAppointments}*/}
+                                                            {/*/>*/}
                                                     </div>
                                                     {!!cl.discountPercent &&
                                                     <div style={{

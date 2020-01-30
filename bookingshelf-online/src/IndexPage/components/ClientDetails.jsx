@@ -154,6 +154,7 @@ class ClientDetails extends React.Component {
 
                                 <div className="visit-info-wrapper">
                                     {client && client.appointments && client.appointments
+                                        .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                         .map((appointment)=>{
                                             const activeService = staff && staff.services && staff.services.find(service => service.serviceId === appointment.serviceId)
                                             const activeAppointmentStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === appointment.staffId);
@@ -199,10 +200,10 @@ class ClientDetails extends React.Component {
                                                 </div>
                                             )}
                                     )}
-                                    <Paginator
-                                        finalTotalPages={2}
-                                        onPageChange={this.handlePageClickAppointments}
-                                    />
+                                    {/*<Paginator*/}
+                                    {/*    finalTotalPages={2}*/}
+                                    {/*    onPageChange={this.handlePageClickAppointments}*/}
+                                    {/*/>*/}
                                 </div>
 
                                 <span className="closer"/>

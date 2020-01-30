@@ -60,11 +60,21 @@ class ClientDetails extends React.Component {
     }
 
     handleSearch () {
-        if (this.search.value.length >= 3) {
-            this.updateClients();
-        } else if (this.search.value.length === 0) {
-            this.updateClients();
-        }
+        const {defaultAppointmentsList}= this.state;
+
+        const searchClientList=defaultAppointmentsList.filter((item)=>{
+            return item.serviceName.toLowerCase().includes(this.search.value.toLowerCase())
+        });
+
+        this.setState({
+            search: true,
+            client: {...this.state.client ,appointments: searchClientList}
+        });
+        // if (this.search.value.length >= 3) {
+        //     this.updateClients();
+        // } else if (this.search.value.length === 0) {
+        //     this.updateClients();
+        // }
     }
 
     goToPageCalendar(appointment, appointmentStaffId){
@@ -138,6 +148,7 @@ class ClientDetails extends React.Component {
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
                                     .filter(appointment => appointment.id===client.id)
+                                    .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
                                     .map((appointment)=>{
 
                                         const activeService = services && services.servicesList.find(service => service.serviceId === appointment.serviceId)
