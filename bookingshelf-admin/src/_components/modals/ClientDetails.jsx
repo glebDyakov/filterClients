@@ -60,11 +60,21 @@ class ClientDetails extends React.Component {
     }
 
     handleSearch () {
-        if (this.search.value.length >= 3) {
-            this.updateClients();
-        } else if (this.search.value.length === 0) {
-            this.updateClients();
-        }
+        const {defaultAppointmentsList}= this.state;
+
+        const searchClientList=defaultAppointmentsList.filter((item)=>{
+            return item.serviceName.toLowerCase().includes(this.search.value.toLowerCase())
+        });
+
+        this.setState({
+            search: true,
+            client: {...this.state.client ,appointments: searchClientList}
+        });
+        // if (this.search.value.length >= 3) {
+        //     this.updateClients();
+        // } else if (this.search.value.length === 0) {
+        //     this.updateClients();
+        // }
     }
 
     goToPageCalendar(appointment, appointmentStaffId){
