@@ -6,7 +6,6 @@ import {HeaderMain} from "../_components/HeaderMain";
 import {AddWorkTime} from "../_components/modals/AddWorkTime";
 import {NewStaff} from "../_components/modals/NewStaff";
 
-import '../../public/scss/styles.scss'
 import '../../public/scss/staff.scss'
 
 import moment from "moment";

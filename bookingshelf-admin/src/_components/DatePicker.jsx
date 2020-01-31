@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 
 import '../../public/scss/calendar.scss'
-import '../../public/scss/styles.scss'
 
 import moment from 'moment';
 import 'moment/locale/ru';

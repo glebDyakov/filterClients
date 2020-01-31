@@ -5,7 +5,6 @@ import {companyActions, notificationActions} from '../_actions';
 import {HeaderMain} from "../_components/HeaderMain";
 import { isValidNumber } from 'libphonenumber-js'
 
-import '../../public/scss/styles.scss'
 import ReactPhoneInput from "react-phone-input-2";
 import {UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";

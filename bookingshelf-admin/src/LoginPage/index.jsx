@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../_actions';
-import '../../public/scss/styles.scss'
 import '../../public/scss/log_in.scss'
 import {Link} from "react-router-dom";
 declare var $ : any;

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import config from 'config';
 
-import '../../public/scss/styles.scss'
 import '../../public/scss/log_in.scss'
 
 

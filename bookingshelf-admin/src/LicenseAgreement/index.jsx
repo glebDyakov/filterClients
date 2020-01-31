@@ -3,8 +3,6 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
 import '../../public/scss/licenseAgreement.scss'
-import '../../public/scss/styles.scss'
-
 
 class Index extends Component{
 
