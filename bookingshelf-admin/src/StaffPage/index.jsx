@@ -11,7 +11,6 @@ import '../../public/scss/staff.scss'
 import moment from "moment";
 import {NewStaffByMail, UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from "react-pace-progress";
 
 import 'react-day-picker/lib/style.css';
 import DayPicker, { DateUtils } from 'react-day-picker';
@@ -19,7 +18,6 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css'
 import {DatePicker} from '../_components/DatePicker'
 import {getWeekRange} from '../_helpers/time'
-import {isValidNumber} from "libphonenumber-js";
 import {access} from "../_helpers/access";
 import DragDrop from "../_components/DragDrop";
 

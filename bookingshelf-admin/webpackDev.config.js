@@ -93,7 +93,7 @@ module.exports = {
             filename: "[path].gz[query]",
             algorithm: "gzip",
             test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        }), new webpack.NoErrorsPlugin(),
+        }), new webpack.NoEmitOnErrorsPlugin(),
         new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
         new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
         new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/)

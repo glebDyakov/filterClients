@@ -7,16 +7,12 @@ import '../../public/scss/email.scss'
 
 import {UserSettings} from "../_components/modals";
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from "react-pace-progress";
-import ContentEditable from 'react-contenteditable'
-import {notificationActions, servicesActions, clientActions, staffActions, companyActions} from "../_actions";
-import moment from "moment";
+import {notificationActions, servicesActions, staffActions } from "../_actions";
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import {stateToHTML} from 'draft-js-export-html';
 import draftToHtml from 'draftjs-to-html';
 
-import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import { convertToRaw, EditorState } from 'draft-js';
 
 
 
