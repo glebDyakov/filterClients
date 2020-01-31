@@ -278,6 +278,8 @@ class Index extends PureComponent {
     }
 
     refreshTable(startTime, endTime, updateReservedTime = true) {
+        startTime = moment().startOf('month').format('x')
+        endTime = moment().endOf('month').format('x')
         const { type } = this.state
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
@@ -802,7 +804,7 @@ class Index extends PureComponent {
         const startTime = daySelected.startOf('day').format('x');
         const endTime = daySelected.endOf('day').format('x');
 
-        this.refreshTable(startTime, endTime);
+        // this.refreshTable(startTime, endTime);
 
         this.setState({
             selectedDay: daySelected.utc().startOf('day').toDate(),
