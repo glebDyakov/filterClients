@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {staffActions} from "../../../bookingshelf-online/src/_actions";
 import moment from 'moment';
+import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
 import TabError from "../IndexPage/components/TabError";
