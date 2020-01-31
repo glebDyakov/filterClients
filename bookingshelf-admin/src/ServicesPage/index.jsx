@@ -2,16 +2,13 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import {servicesActions, staffActions} from '../_actions';
-import {SidebarMain} from "../_components/SidebarMain";
 import {HeaderMain} from "../_components/HeaderMain";
-import { parseNumber, formatNumber, isValidNumber } from 'libphonenumber-js'
 
 import '../../public/scss/services.scss'
 import {AddGroup, AddService, UserSettings, CreatedService} from "../_components/modals";
 
 import moment from 'moment';
 import {UserPhoto} from "../_components/modals/UserPhoto";
-import Pace from "react-pace-progress";
 import DragDrop from "../_components/DragDrop";
 
 class Index extends Component {
@@ -196,7 +193,6 @@ class Index extends Component {
                 {isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                 <div className={"container_wrapper services "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                    {/*<SidebarMain/>*/}
                     <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}
                          style={{overflowX: isLoading?"visible":"hidden"}}>
                         <div className="container-fluid">

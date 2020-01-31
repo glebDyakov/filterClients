@@ -48,7 +48,7 @@ const CalendarPrePage = React.lazy(() => import("../CalendarPrePage"));
 const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
-const AppointmentFromSocket = React.lazy(() => import("../_components/modals/AppointmentFromSocket"));
+import AppointmentFromSocket from '../_components/modals/AppointmentFromSocket'
 import '../../public/scss/styles.scss'
 
 var socket;
@@ -270,11 +270,9 @@ class Index extends React.Component {
                             <SidebarMain/>
                         </Suspense>
                         }
-                        <Suspense fallback={null}>
-                            <AppointmentFromSocket
-                                closeAppointmentFromSocket={this.closeAppointmentFromSocket}
-                            />
-                        </Suspense>
+                        <AppointmentFromSocket
+                            closeAppointmentFromSocket={this.closeAppointmentFromSocket}
+                        />
                         {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
                         <Suspense fallback={null}>
                             <Switch>

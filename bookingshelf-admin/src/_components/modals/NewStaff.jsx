@@ -5,9 +5,7 @@ import ReactPhoneInput from "react-phone-input-2";
 import Avatar from 'react-avatar-edit'
 
 import { isValidNumber } from 'libphonenumber-js'
-import DayPicker from "react-day-picker";
 import 'react-day-picker/lib/style.css';
-import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../../public/css_admin/date.css'
 import moment from "moment";
 import Select from 'react-select';
