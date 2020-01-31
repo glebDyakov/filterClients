@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import {HeaderMain} from "../_components/HeaderMain";
 
 
-import '../../public/scss/styles.scss'
 import '../../public/scss/email.scss'
 
 import {UserSettings} from "../_components/modals";

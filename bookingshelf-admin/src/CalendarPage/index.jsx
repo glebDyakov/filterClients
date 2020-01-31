@@ -5,7 +5,6 @@ import {calendarActions, staffActions, clientActions, servicesActions, companyAc
 import {HeaderMain} from "../_components/HeaderMain";
 
 import '../../public/scss/calendar.scss'
-import '../../public/scss/styles.scss'
 
 import moment from 'moment';
 import 'moment/locale/ru';

@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
 import '../../public/scss/payments.scss'
-import '../../public/scss/styles.scss'
 
 import moment from 'moment';
 import {HeaderMain} from "../_components/HeaderMain";

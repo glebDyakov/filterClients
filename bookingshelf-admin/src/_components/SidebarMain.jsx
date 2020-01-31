@@ -8,7 +8,6 @@ import moment from "moment";
 import Link from "react-router-dom/es/Link";
 import classNames from "classnames";
 import {UserSettings} from "./modals/UserSettings";
-import '../../public/scss/styles.scss'
 
 
 class SidebarMain extends Component {

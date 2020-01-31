@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {clientActions} from '../_actions';
 import {HeaderMain} from "../_components/HeaderMain";
 
-import '../../public/scss/styles.scss'
 import '../../public/scss/clients.scss'
 
 import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_components/modals";

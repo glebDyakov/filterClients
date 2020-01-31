@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../../public/scss/analytics.scss'
-import '../../public/scss/styles.scss'
 import {DatePicker} from "../_components/DatePicker";
 import {getWeekRange} from '../_helpers/time'
 import config from 'config';

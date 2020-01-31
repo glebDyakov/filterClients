@@ -6,7 +6,6 @@ import {SidebarMain} from "../_components/SidebarMain";
 import {HeaderMain} from "../_components/HeaderMain";
 import { parseNumber, formatNumber, isValidNumber } from 'libphonenumber-js'
 
-import '../../public/scss/styles.scss'
 import '../../public/scss/services.scss'
 import {AddGroup, AddService, UserSettings, CreatedService} from "../_components/modals";
 

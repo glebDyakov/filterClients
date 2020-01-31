@@ -49,6 +49,7 @@ const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
 const AppointmentFromSocket = React.lazy(() => import("../_components/modals/AppointmentFromSocket"));
+import '../../public/scss/styles.scss'
 
 var socket;
 
