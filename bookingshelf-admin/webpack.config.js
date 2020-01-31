@@ -63,6 +63,11 @@ module.exports = {
                 CONTEXT: JSON.stringify(process.env.CONTEXT)
             }
         }),
+        new webpack.optimize.CommonsChunkPlugin({
+            children: true,
+            async: true,
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             output: {
                 comments: false
