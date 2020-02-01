@@ -371,20 +371,8 @@ class Index extends Component {
         const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id ==='payments_menu_id')
         if (!paymentId && currentPacket === 'Нет выбраного пакета') {
             return (
-                <div className="container_wrapper">
-
-
-                    <div className="content-wrapper">
-                        <div className="container-fluid">
-
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-                            <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
-                                Срок действия лицензии истек
-                            </div>
-                        </div>
-                    </div>
+                <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
+                    Срок действия лицензии истек
                 </div>
             )
         }
@@ -481,518 +469,497 @@ class Index extends Component {
         const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         return (
             <React.Fragment>
-                <div className="container_wrapper">
+                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {!isLoading && <div className="retreats">
+                    <div className="row">
+                        <div className="col-sm-6">
+                        <ul className="nav nav-tabs">
+                            <li className="nav-item" >
+                                <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
+                            </li>
+
+                        </ul>
+                        </div>
+                        <div className="col-sm-6 mb-2">
+                            <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {currentPacket}</div>
+                            <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
+                        </div>
+                    </div>
+
+                    <div className="tab-content">
+                        <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
+                            <div className="payments-inner">
+                                <div className="payments-list-block">
+                                    <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
+                                    <p className="title-payments">Количество сотрудников</p>
+                                    <div id="range-staff">
+                                        <ul className="range-labels">
+                                            {options.map(option => (
+                                              <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
+                                                  onClick={() => {
+                                                      if ((staffCount) <= option) {
+                                                          this.setState({
+                                                              rate: {
+                                                                  ...this.state.rate,
+                                                                  workersCount: option,
+                                                                  specialWorkersCount: ''
+                                                              }
+                                                          })
+                                                      }
+                                                  }}>{option}
+                                              </li>
+                                            ))}
+                                        </ul>
+
+                                        <div
+                                            className={(specialWorkersCount !== '') ? "range range-hidden" : "range"}
+                                            style={{position: "relative"}}>
+                                            <input type="range" min="1" max="10" value={workersCount}
+                                                   onChange={(e) => {
+                                                       if ((staffCount) <= e.target.value) {
+                                                           this.rateChangeWorkersCount(e)
+                                                       }
+                                                   }}/>
+                                            <div
+                                                className={(specialWorkersCount !== '') ? "rateLine rateLineHidden" : "rateLine"}
+                                                style={{width: ((workersCount - 1) * 11) + "%"}} />
+                                        </div>
 
 
-                    <div className="content-wrapper">
-                        <div className="container-fluid">
-
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-
-                            {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                            {!isLoading && <div className="retreats">
-                                <div className="row">
-                                    <div className="col-sm-6">
-                                    <ul className="nav nav-tabs">
-                                        <li className="nav-item" >
-                                            <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
-                                        </li>
-
-                                    </ul>
                                     </div>
-                                    <div className="col-sm-6 mb-2">
-                                        <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {currentPacket}</div>
-                                        <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
+                                    <div className="radio-buttons">
+                                        <div onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
+                                            <input type="radio" className="radio" id="radio"
+                                                   name="staff-radio"
+                                                   checked={specialWorkersCount === 'to 20'}/>
+                                            <label className={(staffCount) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
+                                        </div>
+                                        <div onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
+                                            <input type="radio" className="radio" id="radio2"
+                                                   name="staff-radio"
+                                                   checked={specialWorkersCount === 'to 30'}/>
+                                            <label className={(staffCount) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
+                                        </div>
+                                        <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
+                                            <input type="radio" className="radio" id="radio3"
+                                                   name="staff-radio"
+                                                   checked={specialWorkersCount === 'from 30'}/>
+                                            <label htmlFor="radio3">Больше 30</label>
+                                        </div>
+                                    </div>
+
+                                    <p className="title-payments">Срок действия лицензии</p>
+                                    <div id="range-month">
+                                        <ul className="range-labels">
+                                            <li className={period === '1' ? "active selected" : ""}
+                                                onClick={() => this.setState({
+                                                    rate: {
+                                                        ...this.state.rate,
+                                                        period: "1"
+                                                    }
+                                                })}>3 месяца
+                                            </li>
+                                            <li className={period === '2' ? "active selected" : ""}
+                                                onClick={() => this.setState({
+                                                    rate: {
+                                                        ...this.state.rate,
+                                                        period: "2"
+                                                    }
+                                                })}>6 месяцев <span>+1 месяц бесплатно</span></li>
+                                            <li className={period === '3' ? "active selected" : ""}
+                                                onClick={() => this.setState({
+                                                    rate: {
+                                                        ...this.state.rate,
+                                                        period: "3"
+                                                    }
+                                                })}>12 месяцев <span>+3 месяца бесплатно</span></li>
+                                        </ul>
+
+                                        <div className="range" style={{position: "relative"}}>
+                                            <input type="range" min="1" max="3" value={period}
+                                                   onChange={(e) => this.rateChangePeriod(e)}/>
+                                            <div className="rateLine"
+                                                 style={{width: ((period - 1) * 50) + "%"}}></div>
+                                        </div>
+
                                     </div>
                                 </div>
 
-                                <div className="tab-content">
-                                    <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
-                                        <div className="payments-inner">
-                                            <div className="payments-list-block">
-                                                <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
-                                                <p className="title-payments">Количество сотрудников</p>
-                                                <div id="range-staff">
-                                                    <ul className="range-labels">
-                                                        {options.map(option => (
-                                                          <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
-                                                              onClick={() => {
-                                                                  if ((staffCount) <= option) {
-                                                                      this.setState({
-                                                                          rate: {
-                                                                              ...this.state.rate,
-                                                                              workersCount: option,
-                                                                              specialWorkersCount: ''
-                                                                          }
-                                                                      })
-                                                                  }
-                                                              }}>{option}
-                                                          </li>
-                                                        ))}
-                                                    </ul>
-
-                                                    <div
-                                                        className={(specialWorkersCount !== '') ? "range range-hidden" : "range"}
-                                                        style={{position: "relative"}}>
-                                                        <input type="range" min="1" max="10" value={workersCount}
-                                                               onChange={(e) => {
-                                                                   if ((staffCount) <= e.target.value) {
-                                                                       this.rateChangeWorkersCount(e)
-                                                                   }
-                                                               }}/>
-                                                        <div
-                                                            className={(specialWorkersCount !== '') ? "rateLine rateLineHidden" : "rateLine"}
-                                                            style={{width: ((workersCount - 1) * 11) + "%"}} />
-                                                    </div>
-
-
-                                                </div>
-                                                <div className="radio-buttons">
-                                                    <div onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
-                                                        <input type="radio" className="radio" id="radio"
-                                                               name="staff-radio"
-                                                               checked={specialWorkersCount === 'to 20'}/>
-                                                        <label className={(staffCount) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
-                                                    </div>
-                                                    <div onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
-                                                        <input type="radio" className="radio" id="radio2"
-                                                               name="staff-radio"
-                                                               checked={specialWorkersCount === 'to 30'}/>
-                                                        <label className={(staffCount) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
-                                                    </div>
-                                                    <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
-                                                        <input type="radio" className="radio" id="radio3"
-                                                               name="staff-radio"
-                                                               checked={specialWorkersCount === 'from 30'}/>
-                                                        <label htmlFor="radio3">Больше 30</label>
-                                                    </div>
-                                                </div>
-
-                                                <p className="title-payments">Срок действия лицензии</p>
-                                                <div id="range-month">
-                                                    <ul className="range-labels">
-                                                        <li className={period === '1' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    period: "1"
-                                                                }
-                                                            })}>3 месяца
-                                                        </li>
-                                                        <li className={period === '2' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    period: "2"
-                                                                }
-                                                            })}>6 месяцев <span>+1 месяц бесплатно</span></li>
-                                                        <li className={period === '3' ? "active selected" : ""}
-                                                            onClick={() => this.setState({
-                                                                rate: {
-                                                                    ...this.state.rate,
-                                                                    period: "3"
-                                                                }
-                                                            })}>12 месяцев <span>+3 месяца бесплатно</span></li>
-                                                    </ul>
-
-                                                    <div className="range" style={{position: "relative"}}>
-                                                        <input type="range" min="1" max="3" value={period}
-                                                               onChange={(e) => this.rateChangePeriod(e)}/>
-                                                        <div className="rateLine"
-                                                             style={{width: ((period - 1) * 50) + "%"}}></div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div className="payments-list-block2">
-                                                <div className="payments-content">
-                                                    <p className="title-payments">К оплате</p>
-                                                    <div>
-                                                        <p>Срок действия лицензии: </p>
-                                                        <span>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
-                                                    </div>
-                                                    <div>
-                                                        <p>Стоимость в месяц: </p>
-                                                        <span>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
-                                                    </div>
-                                                    <hr/>
-                                                    <div>
-                                                        <p className="total-price">Итоговая стоимость:
-                                                            <span>{finalPrice} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
-                                                        </p>
-
-                                                    </div>
-                                                    <button className={"button " + (workersCount === -1 ? 'disabledField' : '')} type="button"
-                                                            disabled={workersCount === -1}
-                                                            onClick={() => this.AddingInvoiceStaff()}>Оплатить
-                                                    </button>
-                                                    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
-                                                        </div>
-                                                    }
-                                                </div>
-
-                                            </div>
+                                <div className="payments-list-block2">
+                                    <div className="payments-content">
+                                        <p className="title-payments">К оплате</p>
+                                        <div>
+                                            <p>Срок действия лицензии: </p>
+                                            <span>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
+                                        </div>
+                                        <div>
+                                            <p>Стоимость в месяц: </p>
+                                            <span>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                        </div>
+                                        <hr/>
+                                        <div>
+                                            <p className="total-price">Итоговая стоимость:
+                                                <span>{finalPrice} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            </p>
 
                                         </div>
-
-                                        <div className="payments-inner">
-                                            <div className="payments-list-block">
-                                                <div className="payments-content buttons-change">
-                                                    <p className="title-payments">SMS ПАКЕТЫ</p>
-                                                    {/*<div>*/}
-                                                    {/*    <label>*/}
-                                                    {/*        <input type="radio" name="sms-price-radio"/>*/}
-                                                    {/*        <span className="sms-price">Старт</span>*/}
-                                                    {/*        <span>1000 <span>SMS</span> 17 руб</span>*/}
-                                                    {/*    </label>*/}
-                                                    {/*    <button className={(SMSCountChose === 1)?"button button-selected":"button"}*/}
-                                                    {/*            type="button"*/}
-                                                    {/*    onClick={()=>this.setState({SMSCountChose: 1})}>Выбрать</button>*/}
-                                                    {/*</div>*/}
-                                                    {/*<div>*/}
-                                                    {/*    <label>*/}
-                                                    {/*        <input checked type="radio" name="sms-price-radio"/>*/}
-                                                    {/*        <span className="sms-price">Экспресс</span>*/}
-                                                    {/*        <span>5000 <span>SMS</span> 75 руб</span>*/}
-                                                    {/*    </label>*/}
-                                                    {/*    <button className={(SMSCountChose === 2)?"button button-selected":"button"}*/}
-                                                    {/*            type="button"*/}
-                                                    {/*            onClick={()=>this.setState({SMSCountChose: 2})}>Выбрано*/}
-                                                    {/*    </button>*/}
-                                                    {/*</div>*/}
-                                                    {/*<div>*/}
-                                                    {/*    <label>*/}
-                                                    {/*        <input type="radio" name="sms-price-radio"/>*/}
-                                                    {/*        <span className="sms-price">Профессионал</span>*/}
-                                                    {/*        <span>10000 <span>SMS</span> 140 руб</span>*/}
-                                                    {/*    </label>*/}
-                                                    {/*    <button className={(SMSCountChose === 3)?"button button-selected":"button"}*/}
-                                                    {/*            type="button"*/}
-                                                    {/*            onClick={()=>this.setState({SMSCountChose: 3})}>Выбрать</button>*/}
-                                                    {/*</div>*/}
-                                                    {packets && packets.filter(packet => packet.packetType === 'SMS_PACKET')
-                                                        .sort((a, b) => a.smsAmount - b.smsAmount)
-                                                        .map(packet => {
-                                                        return (
-                                                            <div>
-                                                                <label>
-                                                                    <input type="radio" name="sms-price-radio"/>
-                                                                    <span
-                                                                        className="sms-price">{packet.packetName}</span>
-                                                                    <span>{packet.smsAmount} <span>SMS</span> {packet.price} {packet.currency}</span>
-                                                                </label>
-                                                                <button
-                                                                    className={(this.state.chosenAct.packetId === packet.packetId) ? "button button-selected" : "button"}
-                                                                    type="button"
-                                                                    onClick={() => this.setState({chosenAct: packet})}>Выбрать
-                                                                </button>
-                                                            </div>
-                                                        );
-                                                    })
-
-                                                    }
-                                                    {authentication && authentication.user && authentication.user.countryCode !== "BLR" && (
-                                                        <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold'}}>
-                                                            Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.
-                                                        </div>)
-                                                    }
-                                                </div>
-
+                                        <button className={"button " + (workersCount === -1 ? 'disabledField' : '')} type="button"
+                                                disabled={workersCount === -1}
+                                                onClick={() => this.AddingInvoiceStaff()}>Оплатить
+                                        </button>
+                                        {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                                                    Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
                                             </div>
-
-                                            <div className="payments-list-block2">
-                                                <div className="payments-content">
-                                                    {chosenAct.packetName && <p className="title-payments">К оплате</p>}
-                                                    <div>
-                                                        {chosenAct.packetName ?
-                                                            <p>Пакет {chosenAct.packetName} {chosenAct.smsAmount} SMS</p> : <p className="payment-choose-packet">Выберите SMS пакет</p>}
-                                                    </div>
-                                                    <hr/>
-                                                    {chosenAct.packetName &&
-                                                        <React.Fragment>
-                                                            <div>
-                                                                <p className="total-price">Итоговая
-                                                                    стоимость <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
-                                                                </p>
-                                                            </div>
-                                                            <button className="button" type="button"
-                                                                    onClick={() => this.AddingInvoice()}>Оплатить
-                                                            </button>
-                                                            {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
-                                                            </div>
-                                                            }
-                                                        </React.Fragment>
-                                                    }
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
-
-
-                                        {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
-                                            return (
-                                                <div className="invoice" onClick={() => this.setState({
-                                                    chosenInvoice: invoice,
-                                                    invoiceSelected: true
-                                                })}>
-                                                    <div className="inv-number"><p>Счёт {invoice.customId}</p></div>
-                                                    <div className="inv-date">
-                                                        <p>{moment(invoice.createdDateMillis).format('DD.MM.YYYY')}</p>
-                                                    </div>
-                                                    <div className="inv-date">
-                                                        <p>{invoice.totalSum} {invoice.currency}</p></div>
-                                                    <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}>
-                                                        <p style={{
-                                                            color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000',
-                                                        }}>
-                                                        {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                                                            (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }) : (
-                                            <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
-                                        )}
-
-                                        {/*--------------------*/}
-
-
-                                        {invoiceSelected &&
-                                        // !!0 && list.map(invoice => {
-                                        //  return(
-
-
-                                        <div className="chosen-invoice">
-                                            <div className="modal-header">
-                                                <h4 className="modal-title">Счёт</h4>
-                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
-                                                     className="close" style={{height: "50px"}}
-                                                     onClick={() => this.closeModalActs()}
-                                                />
-                                            </div>
-                                            <div className="act-body-wrapper">
-                                                <div className="acts-body">
-
-                                                    {pdfMarkup}
-
-                                                    <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                            // );})
                                         }
                                     </div>
 
-
                                 </div>
 
-                            </div>}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div className="modal fade modal-new-subscription" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <p>Новый абонемент</p>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
                             </div>
-                            <div className="container pl-4 pr-4">
-                                <p className="title mb-2">Среда 14 августа, 2018</p>
-                                <div className="check-box row">
-                                    <div className="form-check col">
-                                        <input type="radio" className="form-check-input" name="radio422" id="radio2281"
-                                               checked=""/>
-                                        <label className="form-check-label" htmlFor="radio2281">Новый</label>
-                                    </div>
-                                    <div className="form-check-inline col">
-                                        <input type="radio" className="form-check-input" name="radio422"
-                                               id="radio8021"/>
-                                        <label className="form-check-label" htmlFor="radio8021">Продление</label>
-                                    </div>
-                                </div>
-                                <p className="title mb-2">Клиент</p>
-                                <div className="row">
-                                    <div className="col-sm-6">
-                                        <p>Имя</p>
-                                        <input type="text" placeholder="Например: Иван"/>
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <p>Фамилия</p>
-                                        <input type="text" placeholder="Например: Иванов"/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-sm-6">
-                                        <p>Номер телефона</p>
-                                        <input type="text" placeholder="Например: +44095959599"/>
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <p>Дата рождения</p>
-                                        <input type="text" placeholder="Например: 14.06.1991"/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <p>Параметр</p>
-                                        <input type="text" data-range="true" value="___"
-                                               data-multiple-dates-separator=" - "
-                                               className="datepicker-buttons-inline button-cal"/>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>Срок действия</p>
-                                        <input type="text" placeholder=""/>
-                                        <button type="button" className="button mt-3 mb-3">Сохранить</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-
-                <div className="modal fade modal_dates_change">
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Изменить / продлить абонемент</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div className="form-group mr-3 ml-3">
-                                <div className="row">
-                                    <div className="calendar col-xl-12">
-                                        <div className="select-date">
-                                            <div className="select-inner">
-                                                <div className="button-calendar mb-2">
-                                                    <label><span>Дата приобретения - Дата окончания</span>
-                                                        <input type="button" data-range="true" value=""
-                                                               data-multiple-dates-separator=" - "
-                                                               className="datepicker-here calendar_modal_button button-cal"/>
+                            <div className="payments-inner">
+                                <div className="payments-list-block">
+                                    <div className="payments-content buttons-change">
+                                        <p className="title-payments">SMS ПАКЕТЫ</p>
+                                        {/*<div>*/}
+                                        {/*    <label>*/}
+                                        {/*        <input type="radio" name="sms-price-radio"/>*/}
+                                        {/*        <span className="sms-price">Старт</span>*/}
+                                        {/*        <span>1000 <span>SMS</span> 17 руб</span>*/}
+                                        {/*    </label>*/}
+                                        {/*    <button className={(SMSCountChose === 1)?"button button-selected":"button"}*/}
+                                        {/*            type="button"*/}
+                                        {/*    onClick={()=>this.setState({SMSCountChose: 1})}>Выбрать</button>*/}
+                                        {/*</div>*/}
+                                        {/*<div>*/}
+                                        {/*    <label>*/}
+                                        {/*        <input checked type="radio" name="sms-price-radio"/>*/}
+                                        {/*        <span className="sms-price">Экспресс</span>*/}
+                                        {/*        <span>5000 <span>SMS</span> 75 руб</span>*/}
+                                        {/*    </label>*/}
+                                        {/*    <button className={(SMSCountChose === 2)?"button button-selected":"button"}*/}
+                                        {/*            type="button"*/}
+                                        {/*            onClick={()=>this.setState({SMSCountChose: 2})}>Выбрано*/}
+                                        {/*    </button>*/}
+                                        {/*</div>*/}
+                                        {/*<div>*/}
+                                        {/*    <label>*/}
+                                        {/*        <input type="radio" name="sms-price-radio"/>*/}
+                                        {/*        <span className="sms-price">Профессионал</span>*/}
+                                        {/*        <span>10000 <span>SMS</span> 140 руб</span>*/}
+                                        {/*    </label>*/}
+                                        {/*    <button className={(SMSCountChose === 3)?"button button-selected":"button"}*/}
+                                        {/*            type="button"*/}
+                                        {/*            onClick={()=>this.setState({SMSCountChose: 3})}>Выбрать</button>*/}
+                                        {/*</div>*/}
+                                        {packets && packets.filter(packet => packet.packetType === 'SMS_PACKET')
+                                            .sort((a, b) => a.smsAmount - b.smsAmount)
+                                            .map(packet => {
+                                            return (
+                                                <div>
+                                                    <label>
+                                                        <input type="radio" name="sms-price-radio"/>
+                                                        <span
+                                                            className="sms-price">{packet.packetName}</span>
+                                                        <span>{packet.smsAmount} <span>SMS</span> {packet.price} {packet.currency}</span>
                                                     </label>
+                                                    <button
+                                                        className={(this.state.chosenAct.packetId === packet.packetId) ? "button button-selected" : "button"}
+                                                        type="button"
+                                                        onClick={() => this.setState({chosenAct: packet})}>Выбрать
+                                                    </button>
                                                 </div>
-                                            </div>
+                                            );
+                                        })
 
-                                        </div>
+                                        }
+                                        {authentication && authentication.user && authentication.user.countryCode !== "BLR" && (
+                                            <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold'}}>
+                                                Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.
+                                            </div>)
+                                        }
                                     </div>
+
                                 </div>
-                                <div className="row">
-                                    <div className="calendar col-xl-6">
-                                        <div className="modal-content-input  p-1  mb-2">
-                                            <span>Тип</span>
-                                            <select className="custom-select">
-                                                <option>60 дней</option>
-                                                <option>30 дней</option>
-                                                <option>25 дней</option>
-                                                <option>20 дней</option>
-                                                <option>15 дней</option>
-                                                <option selected="">12 дней</option>
-                                                <option>10 дней</option>
-                                                <option>8 дней</option>
-                                                <option>6 дней</option>
-                                            </select>
+
+                                <div className="payments-list-block2">
+                                    <div className="payments-content">
+                                        {chosenAct.packetName && <p className="title-payments">К оплате</p>}
+                                        <div>
+                                            {chosenAct.packetName ?
+                                                <p>Пакет {chosenAct.packetName} {chosenAct.smsAmount} SMS</p> : <p className="payment-choose-packet">Выберите SMS пакет</p>}
                                         </div>
+                                        <hr/>
+                                        {chosenAct.packetName &&
+                                            <React.Fragment>
+                                                <div>
+                                                    <p className="total-price">Итоговая
+                                                        стоимость <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
+                                                    </p>
+                                                </div>
+                                                <button className="button" type="button"
+                                                        onClick={() => this.AddingInvoice()}>Оплатить
+                                                </button>
+                                                {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                                                    Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
+                                                </div>
+                                                }
+                                            </React.Fragment>
+                                        }
                                     </div>
-                                    <div className="calendar col-xl-6">
-                                        <div className="modal-content-input p-1  mb-2">
-                                            <span>Осталось дней</span>
-                                            <p>6 дней</p>
-                                        </div>
-                                    </div>
+
                                 </div>
-                                <div className="row">
-                                    <div className="col-xl-12">
-                                        <div className="modal-content-input p-1  mb-2">
-                                            <span>Срок действия</span>
-                                            <p>12 июля - 12 сентября</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button className="button text-center" type="button">Продлить</button>
+
                             </div>
+
                         </div>
-                    </div>
-                </div>
-                <div className="modal fade modal_user_setting">
-                    <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Настройки профиля</h4>
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+
+                        <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
+
+
+                            {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
+                                return (
+                                    <div className="invoice" onClick={() => this.setState({
+                                        chosenInvoice: invoice,
+                                        invoiceSelected: true
+                                    })}>
+                                        <div className="inv-number"><p>Счёт {invoice.customId}</p></div>
+                                        <div className="inv-date">
+                                            <p>{moment(invoice.createdDateMillis).format('DD.MM.YYYY')}</p>
+                                        </div>
+                                        <div className="inv-date">
+                                            <p>{invoice.totalSum} {invoice.currency}</p></div>
+                                        <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}>
+                                            <p style={{
+                                                color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000',
+                                            }}>
+                                            {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                                                (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            }) : (
+                                <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
+                            )}
+
+                            {/*--------------------*/}
+
+
+                            {invoiceSelected &&
+                            // !!0 && list.map(invoice => {
+                            //  return(
+
+
+                            <div className="chosen-invoice">
+                                <div className="modal-header">
+                                    <h4 className="modal-title">Счёт</h4>
+                                    <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
+                                         className="close" style={{height: "50px"}}
+                                         onClick={() => this.closeModalActs()}
+                                    />
+                                </div>
+                                <div className="act-body-wrapper">
+                                    <div className="acts-body">
+
+                                        {pdfMarkup}
+
+                                        <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                                    </div>
+
+                                </div>
+
                             </div>
-                            <div className="form-group mr-3 ml-3">
-                                <div className="row">
-                                    <div className="calendar col-xl-6">
-                                        <p>Имя</p>
-                                        <input type="text" placeholder="Например: Иван"/>
-                                    </div>
-                                    <div className="calendar col-xl-6">
-                                        <p>Номер телефона</p>
-                                        <input type="text" placeholder="Например: +44-65-44-324-88"/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="calendar col-xl-6">
-                                        <p>Фамилия</p>
-                                        <input type="text" placeholder="Например: Иванов"/>
-                                    </div>
-                                    <div className="calendar col-xl-6">
-                                        <p>Электронный адрес</p>
-                                        <input type="text" placeholder="Например: ivanov@gmail.com"/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xl-12">
-                                        <p>Текущий пароль</p>
-                                        <p>
-                                            <input data-toggle="password" data-placement="after" type="password"
-                                                   placeholder="password" data-eye-class="material-icons"
-                                                   data-eye-open-class="visibility"
-                                                   data-eye-close-class="visibility_off"
-                                                   data-eye-class-position-inside="true"/>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="calendar col-xl-6">
-                                        <p>Новый пароль</p>
-                                        <input type="password" placeholder=""/>
-                                    </div>
-                                    <div className="calendar col-xl-6">
-                                        <p>Повторить пароль</p>
-                                        <input type="password" placeholder=""/>
-                                    </div>
-                                </div>
-                                <button className="button text-center" type="button">Сохранить</button>
-                            </div>
+                                // );})
+                            }
                         </div>
+
+
                     </div>
-                </div>
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />
-                }
+
+                </div>}
+
+
+                {/*<div className="modal fade modal-new-subscription" role="dialog" aria-hidden="true">*/}
+                {/*    <div className="modal-dialog modal-lg modal-dialog-centered">*/}
+                {/*        <div className="modal-content">*/}
+                {/*            <div className="modal-header">*/}
+                {/*                <p>Новый абонемент</p>*/}
+                {/*                <button type="button" className="close" data-dismiss="modal">&times;</button>*/}
+                {/*            </div>*/}
+                {/*            <div className="container pl-4 pr-4">*/}
+                {/*                <p className="title mb-2">Среда 14 августа, 2018</p>*/}
+                {/*                <div className="check-box row">*/}
+                {/*                    <div className="form-check col">*/}
+                {/*                        <input type="radio" className="form-check-input" name="radio422" id="radio2281"*/}
+                {/*                               checked=""/>*/}
+                {/*                        <label className="form-check-label" htmlFor="radio2281">Новый</label>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="form-check-inline col">*/}
+                {/*                        <input type="radio" className="form-check-input" name="radio422"*/}
+                {/*                               id="radio8021"/>*/}
+                {/*                        <label className="form-check-label" htmlFor="radio8021">Продление</label>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <p className="title mb-2">Клиент</p>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="col-sm-6">*/}
+                {/*                        <p>Имя</p>*/}
+                {/*                        <input type="text" placeholder="Например: Иван"/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="col-sm-6">*/}
+                {/*                        <p>Фамилия</p>*/}
+                {/*                        <input type="text" placeholder="Например: Иванов"/>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="col-sm-6">*/}
+                {/*                        <p>Номер телефона</p>*/}
+                {/*                        <input type="text" placeholder="Например: +44095959599"/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="col-sm-6">*/}
+                {/*                        <p>Дата рождения</p>*/}
+                {/*                        <input type="text" placeholder="Например: 14.06.1991"/>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="col-md-6">*/}
+                {/*                        <p>Параметр</p>*/}
+                {/*                        <input type="text" data-range="true" value="___"*/}
+                {/*                               data-multiple-dates-separator=" - "*/}
+                {/*                               className="datepicker-buttons-inline button-cal"/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="col-md-6">*/}
+                {/*                        <p>Срок действия</p>*/}
+                {/*                        <input type="text" placeholder=""/>*/}
+                {/*                        <button type="button" className="button mt-3 mb-3">Сохранить</button>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+
+
+                {/*<div className="modal fade modal_dates_change">*/}
+                {/*    <div className="modal-dialog modal-dialog-centered">*/}
+                {/*        <div className="modal-content">*/}
+                {/*            <div className="modal-header">*/}
+                {/*                <h4 className="modal-title">Изменить / продлить абонемент</h4>*/}
+                {/*                <button type="button" className="close" data-dismiss="modal">&times;</button>*/}
+                {/*            </div>*/}
+                {/*            <div className="form-group mr-3 ml-3">*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="calendar col-xl-12">*/}
+                {/*                        <div className="select-date">*/}
+                {/*                            <div className="select-inner">*/}
+                {/*                                <div className="button-calendar mb-2">*/}
+                {/*                                    <label><span>Дата приобретения - Дата окончания</span>*/}
+                {/*                                        <input type="button" data-range="true" value=""*/}
+                {/*                                               data-multiple-dates-separator=" - "*/}
+                {/*                                               className="datepicker-here calendar_modal_button button-cal"/>*/}
+                {/*                                    </label>*/}
+                {/*                                </div>*/}
+                {/*                            </div>*/}
+
+                {/*                        </div>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <div className="modal-content-input  p-1  mb-2">*/}
+                {/*                            <span>Тип</span>*/}
+                {/*                            <select className="custom-select">*/}
+                {/*                                <option>60 дней</option>*/}
+                {/*                                <option>30 дней</option>*/}
+                {/*                                <option>25 дней</option>*/}
+                {/*                                <option>20 дней</option>*/}
+                {/*                                <option>15 дней</option>*/}
+                {/*                                <option selected="">12 дней</option>*/}
+                {/*                                <option>10 дней</option>*/}
+                {/*                                <option>8 дней</option>*/}
+                {/*                                <option>6 дней</option>*/}
+                {/*                            </select>*/}
+                {/*                        </div>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <div className="modal-content-input p-1  mb-2">*/}
+                {/*                            <span>Осталось дней</span>*/}
+                {/*                            <p>6 дней</p>*/}
+                {/*                        </div>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="col-xl-12">*/}
+                {/*                        <div className="modal-content-input p-1  mb-2">*/}
+                {/*                            <span>Срок действия</span>*/}
+                {/*                            <p>12 июля - 12 сентября</p>*/}
+                {/*                        </div>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <button className="button text-center" type="button">Продлить</button>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/*<div className="modal fade modal_user_setting">*/}
+                {/*    <div className="modal-dialog modal-dialog-lg modal-dialog-centered">*/}
+                {/*        <div className="modal-content">*/}
+                {/*            <div className="modal-header">*/}
+                {/*                <h4 className="modal-title">Настройки профиля</h4>*/}
+                {/*                <button type="button" className="close" data-dismiss="modal">&times;</button>*/}
+                {/*            </div>*/}
+                {/*            <div className="form-group mr-3 ml-3">*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Имя</p>*/}
+                {/*                        <input type="text" placeholder="Например: Иван"/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Номер телефона</p>*/}
+                {/*                        <input type="text" placeholder="Например: +44-65-44-324-88"/>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Фамилия</p>*/}
+                {/*                        <input type="text" placeholder="Например: Иванов"/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Электронный адрес</p>*/}
+                {/*                        <input type="text" placeholder="Например: ivanov@gmail.com"/>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="col-xl-12">*/}
+                {/*                        <p>Текущий пароль</p>*/}
+                {/*                        <p>*/}
+                {/*                            <input data-toggle="password" data-placement="after" type="password"*/}
+                {/*                                   placeholder="password" data-eye-class="material-icons"*/}
+                {/*                                   data-eye-open-class="visibility"*/}
+                {/*                                   data-eye-close-class="visibility_off"*/}
+                {/*                                   data-eye-class-position-inside="true"/>*/}
+                {/*                        </p>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <div className="row">*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Новый пароль</p>*/}
+                {/*                        <input type="password" placeholder=""/>*/}
+                {/*                    </div>*/}
+                {/*                    <div className="calendar col-xl-6">*/}
+                {/*                        <p>Повторить пароль</p>*/}
+                {/*                        <input type="password" placeholder=""/>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*                <button className="button text-center" type="button">Сохранить</button>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <MakePayment />
 
 

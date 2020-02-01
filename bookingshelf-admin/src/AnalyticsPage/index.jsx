@@ -531,399 +531,343 @@ class Index extends Component{
 
 
         return(
-            <div className="content-wrapper">
-                <div className="container-fluid">
-                    <HeaderMain
-                        onOpen={this.onOpen}
+            <div className="retreats analytics_container">
+
+                <div className="timeContainer" style={dropdownFirst?{borderRadius: "10px 10px 10px 0px"}:{borderRadius: "10px"}}>
+                    <div className="calendar-switch">
+                        <div className="choisen" onClick={()=>this.setState({dropdownFirst:!dropdownFirst})}>{chosenPeriod===1?"Сегодня":chosenPeriod===2?"Вчера":chosenPeriod===3?"Неделя":""}</div>
+                        {dropdownFirst && <ul className="dropdown">
+                            <li onClick={()=>this.setToday()}>Сегодня</li>
+                            <li onClick={()=>this.setYesterday()}>Вчера</li>
+                            <li onClick={()=>this.setWeek()}>Неделя</li>
+                        </ul>}
+                    </div>
+                    <DatePicker
+                        // closedDates={staffAll.closedDates}
+                        type={type}
+                        selectedDay={selectedDay}
+                        selectedDays={selectedDays}
+                        showPrevWeek={this.showPrevWeek}
+                        showNextWeek={this.showNextWeek}
+                        handleDayChange={this.handleDayChange}
+                        handleDayClick={this.handleDayClick}
+                        handleWeekClick={this.handleWeekClick}
                     />
 
-                    {/*<div className="no-scroll row retreats">*/}
-                    {/*    <div className="col-1 mob-menu">*/}
-                    {/*        <div>*/}
-                    {/*            <img src="img/burger_mob.png" alt=""/>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="col">*/}
-                    {/*        <p className="red-title-block mob-setting">Аналитика</p>*/}
-                    {/*    </div>*/}
-                    {/*
-                    {/*    <div className="col right_elements">*/}
-                    {/*        <span className="time_show" id="doc_time"></span>*/}
-                    {/*        <span className="notification"></span>*/}
-                    {/*        <a className="setting" data-toggle="modal" data-target=".modal_user_setting"></a>*/}
-                    {/*        <a className="firm-name" href="#">Cтоматология</a>*/}
-                    {/*        <div className="img-container">*/}
-                    {/*            <img src="img/image.png" alt=""/>*/}
-                    {/*        </div>*/}
-                    {/*        <span className="log_in">Выход</span>*/}
-                    {/*    </div>*/}
-                    {/*
-                    {/*</div>*/}
-                    {/*// <!--end no-scroll-->*/}
-                    <div className="retreats analytics_container">
-                        {/*<div className="select-date">*/}
-                        {/*    <div className="select-inner">*/}
-                        {/*        <span className="arrow-left"></span>*/}
-                        {/*        <div className="button-calendar">*/}
-                        {/*            <div className="present-calendar-date">*/}
-                        {/*                <p>Сегодня</p>*/}
-                        {/*                <ul className="present-dropdown">*/}
-                        {/*                    <li>Сегодня</li>*/}
-                        {/*                    <li>Вчера</li>*/}
-                        {/*                    <li>Нeделя</li>*/}
-                        {/*                </ul>*/}
-                        {/*            </div>*/}
-                        {/*            <input type="button" data-range="true" value="___" data-position='bottom center'*/}
-                        {/*                   data-multiple-dates-separator=" - " className="datepicker-here button-cal"/>*/}
-                        {/*        </div>*/}
-                        {/*        <span className="arrow-right"></span>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
-                        <div className="timeContainer" style={dropdownFirst?{borderRadius: "10px 10px 10px 0px"}:{borderRadius: "10px"}}>
-                            <div className="calendar-switch">
-                                <div className="choisen" onClick={()=>this.setState({dropdownFirst:!dropdownFirst})}>{chosenPeriod===1?"Сегодня":chosenPeriod===2?"Вчера":chosenPeriod===3?"Неделя":""}</div>
-                                {dropdownFirst && <ul className="dropdown">
-                                    <li onClick={()=>this.setToday()}>Сегодня</li>
-                                    <li onClick={()=>this.setYesterday()}>Вчера</li>
-                                    <li onClick={()=>this.setWeek()}>Неделя</li>
-                                </ul>}
-                            </div>
-                            <DatePicker
-                                // closedDates={staffAll.closedDates}
-                                type={type}
-                                selectedDay={selectedDay}
-                                selectedDays={selectedDays}
-                                showPrevWeek={this.showPrevWeek}
-                                showNextWeek={this.showNextWeek}
-                                handleDayChange={this.handleDayChange}
-                                handleDayClick={this.handleDayClick}
-                                handleWeekClick={this.handleWeekClick}
-                            />
-
-                        </div>
-
-
-
-
-                        {/*// <!--end select-date-->*/}
-                        <div className="group-container">
-                            <div className="analytics_list">
-                                <div className="list-group-statistics">
-                                    <strong>Всего <br/>Записей</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.allRecordsToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.allRecordsPercent > 0?"+":"")
-                                            + analitics.counter.allRecordsPercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                                <div className="visitor-statistics">
-                                    <div>
-                                        <span className="number-statistics">{analitics.counter && (analitics.counter.approvedAllRecordsToday)}</span>
-                                        <p>Выполнено</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">{analitics.counter &&
-                                        analitics.counter.allRecordsTodayCanceled}</span>
-                                        <p>Отменено</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                            <div className="analytics_list">
-                                <div className="list-group-statistics">
-                                    <strong>Онлайн <br/>Записей</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.recordsOnlineToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.recordsOnlinePercent > 0?"+":"")
-                                            + analitics.counter.recordsOnlinePercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                                <div className="visitor-statistics">
-                                    <div>
-                                        <span className="number-statistics">{analitics.counter && (analitics.counter.approvedRecordsOnlineToday)}</span>
-                                        <p>Выполнено</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">{analitics.counter &&
-                                        analitics.counter.recordsOnlineTodayCanceled}</span>
-                                        <p>Отменено</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                            <div className="analytics_list">
-                                <div className="list-group-statistics">
-                                    <strong>Записей <br/>в журнал</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.recordsToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.recordsPercent > 0?"+":"")
-                                            + analitics.counter.recordsPercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                                <div className="visitor-statistics">
-                                    <div>
-                                        <span className="number-statistics">
-                                            {analitics.counter &&
-                                            (analitics.counter.approvedRecordsToday)}</span>
-                                        <p>Выполнено</p>
-                                    </div>
-                                    <div>
-                                        <span className="number-statistics">{analitics.counter &&
-                                        analitics.counter.recordsTodayCanceled}</span>
-                                        <p>Отменено</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                        </div>
-                        {/*// <!--end group-container-->*/}
-                        <div className="group-container">
-                            <div className="analytics_list tablet-right">
-                                <div className="list-group-statistics">
-                                    <strong>Новые <br/>Клиенты</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.newClientsToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.newClientsPercent > 0?"+":"")
-                                            + analitics.counter.newClientsPercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                            <div className="analytics_list tablet-right">
-                                <div className="list-group-statistics">
-                                    <strong>Постоянные <br/>Клиенты</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.permanentClientsToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.permanentClientsPercent > 0?"+":"")
-                                            + analitics.counter.permanentClientsPercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                            <div className="analytics_list tablet-full">
-                                <div className="list-group-statistics">
-                                    <strong>Без <br/>клиентов</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.withoutClientToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.withoutClientPercent > 0?"+":"")
-                                            + analitics.counter.withoutClientPercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-
-                            {/*// <!--end analytics_list-->*/}
-                            <div style={{ margin: '15px 0 0 15px' }} className="analytics_list tablet-full">
-                                <div className="list-group-statistics">
-                                    <strong>Клиенты <br/>не пришли</strong>
-                                    <span>
-                                        {analitics.counter && analitics.counter.clientNotComeToday}
-                                        <span className="small">{analitics.counter && ((analitics.counter.clientNotComePercent > 0?"+":"")
-                                            + analitics.counter.clientNotComePercent.toFixed(2))}% со вчера</span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                        </div>
-                        <div className="group-container">
-
-                            <div style={{ width: '100%', marginRight: 0 }} className="analytics_list tablet-full">
-                                <div className="list-group-statistics">
-                                    <div className="dropdown">
-                                        <strong>Загруженность</strong>
-                                        <div className="bth dropdown-toggle rounded-button select-menu"
-                                             data-toggle="dropdown" role="menu" aria-haspopup="true"
-                                             aria-expanded="false">
-                                            <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
-                                        </div>
-                                        <ul className="dropdown-menu">
-                                            <li onClick={()=>this.setCurrentSelectedStaff(2)}>
-                                                <a ><p>Работающие сотрудники</p></a>
-                                            </li>
-                                            {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
-                                                const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
-                                                return(
-                                                    <li onClick={()=>this.setCurrentSelectedStaff(staffEl)}>
-                                                        <a>
-                                                        <span className="img-container">
-                                                            <img className="rounded-circle"
-                                                                 src={activeStaff && activeStaff.imageBase64
-                                                                     ? "data:image/png;base64," +
-                                                                     activeStaff.imageBase64
-                                                                     // "1555020690000"
-                                                                     : `${process.env.CONTEXT}public/img/image.png`}
-                                                                 alt=""/>
-                                                        </span>
-                                                            <p>{staffEl.firstName + " " + staffEl.lastName}</p>
-                                                        </a>
-                                                    </li>
-                                                )}
-                                            )}
-                                        </ul>
-                                    </div>
-                                    <span>
-                                        {analitics.staffsAnalytic ?(((analitics.staffsAnalytic.appointmentTime)/3600000).toFixed(2)) + " ч.": "0 ч."}
-                                        ({analitics.staffsAnalytic?analitics.staffsAnalytic.percentWorkload.toFixed(2):"0"}%)
-                                        <span className="small">
-                                            {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")
-                                                + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% со вчера
-
-                                            {/*{analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")*/}
-                                            {/*    + analitics.staffsAnalytic.ratioToYesterday.toFixed(2))}*/}
-                                        </span>
-                                    </span>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_list-->*/}
-                        </div>
-                        {/*// <!--end group-container-->*/}
-                        <div className="group-container">
-                            <div className="analytics_list analytics_chart">
-                                <div>
-                                    <span className="title-list">Записи</span>
-                                    <select className="custom-select" onChange={(e)=>this.setTypeDataOfChar(e)}>
-                                        <option>Всего записей в журнал</option>
-                                        <option>Всего онлайн записей</option>
-                                        <option selected>Всего записей</option>
-                                    </select>
-                                    <select className="custom-select" onChange={(e)=>this.setCharData(e)}>
-                                        <option selected="">Неделя</option>
-                                        <option>Месяц</option>
-                                        {/*<option>Год</option>*/}
-                                    </select>
-                                </div>
-                                <div className="chart-inner">
-                                    <div id="container-chart" className="chart" style={{position:"relative"}}>
-                                        {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                                        {!isLoadingFirst &&
-                                        <Line
-                                            data={data}
-                                            options={options}
-                                        />}
-                                    </div>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_chart-->*/}
-                            <div className="analytics_list analytics_chart">
-                                <div>
-                                    <span className="title-list">Загруженность, %</span>
-                                    <div className="dropdown">
-                                        <div className="bth dropdown-toggle rounded-button select-menu"
-                                             data-toggle="dropdown" role="menu" aria-haspopup="true"
-                                             aria-expanded="false">
-                                            <p>{currentSelectedStaffChart.firstName + " " + currentSelectedStaffChart.lastName}</p>
-                                        </div>
-                                        <ul className="dropdown-menu">
-                                            <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
-                                                <a ><p>Работающие сотрудники</p></a>
-                                            </li>
-                                            {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
-                                                const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
-                                                return(
-                                                    <li onClick={()=>this.setCurrentSelectedStaffChart(staffEl)}>
-                                                        <a>
-                                                        <span className="img-container">
-                                                            <img className="rounded-circle"
-                                                                 src={activeStaff && activeStaff.imageBase64
-                                                                     ? "data:image/png;base64," +
-                                                                     activeStaff.imageBase64
-                                                                     // "1555020690000"
-                                                                     : `${process.env.CONTEXT}public/img/image.png`}
-                                                                 alt=""/>
-                                                        </span>
-                                                            <p>{staffEl.firstName + " " + staffEl.lastName}</p>
-                                                        </a>
-                                                    </li>
-                                                )}
-                                            )}
-                                        </ul>
-                                    </div>
-                                    <select className="custom-select" onChange={(e)=>this.setCharDataStaff(e)}>
-                                        <option selected="" >Неделя</option>
-                                        <option>Месяц</option>
-                                        {/*<option>Год</option>*/}
-                                    </select>
-                                </div>
-                                <div className="chart-inner">
-                                    <div id="container-chart2" className="chart" style={{position:"relative"}}>
-                                        {!!isLoadingSecond && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                                        {!isLoadingSecond && <Line
-                                            data={dataStaff}
-                                            options={options}
-                                        />}
-                                    </div>
-                                </div>
-                            </div>
-                            {/*// <!--end analytics_chart-->*/}
-                        </div>
-                        {/*// <!--end group-container-->*/}
-
-                        <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
-                            <div style={{display: 'flex', justifyContent: 'flex-start'}}>
-                                <span style={{ width: 'auto'}} className="title-list">Финансовая аналитика</span>
-                                <div style={{paddingLeft: '6px'}} className="questions_black" onClick={() => this.toggleDropdown("isFinancialDropdown")}>
-                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                    {this.state.isFinancialDropdown && <span className="questions_dropdown">
-                                                                                Сумма стоимости визитов в журнале записи
-                                                                            </span>}
-                                </div>
-                            </div>
-                            <div className="chart-inner">
-                                <div id="container-chart" className="chart" style={{position:"relative"}}>
-                                    {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                                    {!isLoadingFirst &&
-                                    <Line
-                                        data={dataFinancial}
-                                        options={options}
-                                    />}
-                                </div>
-                            </div>
-                        </div>
-
-                        {!!0 &&
-                        <div className="group-container">
-                            <div className="analytics_list save-statistics">
-                                <div>
-                                    <p>Желаете ли вы хранить статистику?</p>
-                                    <button className={saveStatistics?"button":"button gray-button"} type="button" onClick={()=>this.setState({saveStatistics:true})}>Да</button>
-                                    <button className={!saveStatistics?"button":"button gray-button"} type="button" onClick={()=>this.setState({saveStatistics:false})}>Нет</button>
-                                </div>
-                                <div>
-                                    <span>Сколько хранить статистику</span>
-                                    <select className="custom-select">
-                                        <option selected="">Месяц</option>
-                                        <option>Год</option>
-                                        <option>12 недель</option>
-                                        <option>31 дней</option>
-                                        <option>Макс</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>}
-                        {!!0 &&
-                        <div className="dropdown">
-                            <a className="delete-icon menu-delete float-right" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                Удалить всю статистику
-                            </a>
-                            <div className="dropdown-menu delete-menu p-3">
-                                <button type="button" className="button">Да</button>
-                                <button type="button" className="gray-button">Нет</button>
-                            </div>
-                        </div>}
-
-
-                    </div>
-                    {/*// <!--end retreats-->*/}
                 </div>
-                {/*// <!--end content-->*/}
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />}
+
+
+
+
+                {/*// <!--end select-date-->*/}
+                <div className="group-container">
+                    <div className="analytics_list">
+                        <div className="list-group-statistics">
+                            <strong>Всего <br/>Записей</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.allRecordsToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.allRecordsPercent > 0?"+":"")
+                                    + analitics.counter.allRecordsPercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                        <div className="visitor-statistics">
+                            <div>
+                                <span className="number-statistics">{analitics.counter && (analitics.counter.approvedAllRecordsToday)}</span>
+                                <p>Выполнено</p>
+                            </div>
+                            <div>
+                                <span className="number-statistics">{analitics.counter &&
+                                analitics.counter.allRecordsTodayCanceled}</span>
+                                <p>Отменено</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                    <div className="analytics_list">
+                        <div className="list-group-statistics">
+                            <strong>Онлайн <br/>Записей</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.recordsOnlineToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.recordsOnlinePercent > 0?"+":"")
+                                    + analitics.counter.recordsOnlinePercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                        <div className="visitor-statistics">
+                            <div>
+                                <span className="number-statistics">{analitics.counter && (analitics.counter.approvedRecordsOnlineToday)}</span>
+                                <p>Выполнено</p>
+                            </div>
+                            <div>
+                                <span className="number-statistics">{analitics.counter &&
+                                analitics.counter.recordsOnlineTodayCanceled}</span>
+                                <p>Отменено</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                    <div className="analytics_list">
+                        <div className="list-group-statistics">
+                            <strong>Записей <br/>в журнал</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.recordsToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.recordsPercent > 0?"+":"")
+                                    + analitics.counter.recordsPercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                        <div className="visitor-statistics">
+                            <div>
+                                <span className="number-statistics">
+                                    {analitics.counter &&
+                                    (analitics.counter.approvedRecordsToday)}</span>
+                                <p>Выполнено</p>
+                            </div>
+                            <div>
+                                <span className="number-statistics">{analitics.counter &&
+                                analitics.counter.recordsTodayCanceled}</span>
+                                <p>Отменено</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                </div>
+                {/*// <!--end group-container-->*/}
+                <div className="group-container">
+                    <div className="analytics_list tablet-right">
+                        <div className="list-group-statistics">
+                            <strong>Новые <br/>Клиенты</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.newClientsToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.newClientsPercent > 0?"+":"")
+                                    + analitics.counter.newClientsPercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                    <div className="analytics_list tablet-right">
+                        <div className="list-group-statistics">
+                            <strong>Постоянные <br/>Клиенты</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.permanentClientsToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.permanentClientsPercent > 0?"+":"")
+                                    + analitics.counter.permanentClientsPercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                    <div className="analytics_list tablet-full">
+                        <div className="list-group-statistics">
+                            <strong>Без <br/>клиентов</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.withoutClientToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.withoutClientPercent > 0?"+":"")
+                                    + analitics.counter.withoutClientPercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+
+                    {/*// <!--end analytics_list-->*/}
+                    <div style={{ margin: '15px 0 0 15px' }} className="analytics_list tablet-full">
+                        <div className="list-group-statistics">
+                            <strong>Клиенты <br/>не пришли</strong>
+                            <span>
+                                {analitics.counter && analitics.counter.clientNotComeToday}
+                                <span className="small">{analitics.counter && ((analitics.counter.clientNotComePercent > 0?"+":"")
+                                    + analitics.counter.clientNotComePercent.toFixed(2))}% со вчера</span>
+                            </span>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                </div>
+                <div className="group-container">
+
+                    <div style={{ width: '100%', marginRight: 0 }} className="analytics_list tablet-full">
+                        <div className="list-group-statistics">
+                            <div className="dropdown">
+                                <strong>Загруженность</strong>
+                                <div className="bth dropdown-toggle rounded-button select-menu"
+                                     data-toggle="dropdown" role="menu" aria-haspopup="true"
+                                     aria-expanded="false">
+                                    <p>{currentSelectedStaff.firstName + " " + currentSelectedStaff.lastName}</p>
+                                </div>
+                                <ul className="dropdown-menu">
+                                    <li onClick={()=>this.setCurrentSelectedStaff(2)}>
+                                        <a ><p>Работающие сотрудники</p></a>
+                                    </li>
+                                    {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                        const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                                        return(
+                                            <li onClick={()=>this.setCurrentSelectedStaff(staffEl)}>
+                                                <a>
+                                                <span className="img-container">
+                                                    <img className="rounded-circle"
+                                                         src={activeStaff && activeStaff.imageBase64
+                                                             ? "data:image/png;base64," +
+                                                             activeStaff.imageBase64
+                                                             // "1555020690000"
+                                                             : `${process.env.CONTEXT}public/img/image.png`}
+                                                         alt=""/>
+                                                </span>
+                                                    <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                                </a>
+                                            </li>
+                                        )}
+                                    )}
+                                </ul>
+                            </div>
+                            <span>
+                                {analitics.staffsAnalytic ?(((analitics.staffsAnalytic.appointmentTime)/3600000).toFixed(2)) + " ч.": "0 ч."}
+                                ({analitics.staffsAnalytic?analitics.staffsAnalytic.percentWorkload.toFixed(2):"0"}%)
+                                <span className="small">
+                                    {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")
+                                        + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% со вчера
+
+                                    {/*{analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")*/}
+                                    {/*    + analitics.staffsAnalytic.ratioToYesterday.toFixed(2))}*/}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_list-->*/}
+                </div>
+                {/*// <!--end group-container-->*/}
+                <div className="group-container">
+                    <div className="analytics_list analytics_chart">
+                        <div>
+                            <span className="title-list">Записи</span>
+                            <select className="custom-select" onChange={(e)=>this.setTypeDataOfChar(e)}>
+                                <option>Всего записей в журнал</option>
+                                <option>Всего онлайн записей</option>
+                                <option selected>Всего записей</option>
+                            </select>
+                            <select className="custom-select" onChange={(e)=>this.setCharData(e)}>
+                                <option selected="">Неделя</option>
+                                <option>Месяц</option>
+                                {/*<option>Год</option>*/}
+                            </select>
+                        </div>
+                        <div className="chart-inner">
+                            <div id="container-chart" className="chart" style={{position:"relative"}}>
+                                {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                {!isLoadingFirst &&
+                                <Line
+                                    data={data}
+                                    options={options}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_chart-->*/}
+                    <div className="analytics_list analytics_chart">
+                        <div>
+                            <span className="title-list">Загруженность, %</span>
+                            <div className="dropdown">
+                                <div className="bth dropdown-toggle rounded-button select-menu"
+                                     data-toggle="dropdown" role="menu" aria-haspopup="true"
+                                     aria-expanded="false">
+                                    <p>{currentSelectedStaffChart.firstName + " " + currentSelectedStaffChart.lastName}</p>
+                                </div>
+                                <ul className="dropdown-menu">
+                                    <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
+                                        <a ><p>Работающие сотрудники</p></a>
+                                    </li>
+                                    {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                        const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                                        return(
+                                            <li onClick={()=>this.setCurrentSelectedStaffChart(staffEl)}>
+                                                <a>
+                                                <span className="img-container">
+                                                    <img className="rounded-circle"
+                                                         src={activeStaff && activeStaff.imageBase64
+                                                             ? "data:image/png;base64," +
+                                                             activeStaff.imageBase64
+                                                             // "1555020690000"
+                                                             : `${process.env.CONTEXT}public/img/image.png`}
+                                                         alt=""/>
+                                                </span>
+                                                    <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                                </a>
+                                            </li>
+                                        )}
+                                    )}
+                                </ul>
+                            </div>
+                            <select className="custom-select" onChange={(e)=>this.setCharDataStaff(e)}>
+                                <option selected="" >Неделя</option>
+                                <option>Месяц</option>
+                                {/*<option>Год</option>*/}
+                            </select>
+                        </div>
+                        <div className="chart-inner">
+                            <div id="container-chart2" className="chart" style={{position:"relative"}}>
+                                {!!isLoadingSecond && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                                {!isLoadingSecond && <Line
+                                    data={dataStaff}
+                                    options={options}
+                                />}
+                            </div>
+                        </div>
+                    </div>
+                    {/*// <!--end analytics_chart-->*/}
+                </div>
+                {/*// <!--end group-container-->*/}
+
+                <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
+                    <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+                        <span style={{ width: 'auto'}} className="title-list">Финансовая аналитика</span>
+                        <div style={{paddingLeft: '6px'}} className="questions_black" onClick={() => this.toggleDropdown("isFinancialDropdown")}>
+                            <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                            {this.state.isFinancialDropdown && <span className="questions_dropdown">
+                                                                        Сумма стоимости визитов в журнале записи
+                                                                    </span>}
+                        </div>
+                    </div>
+                    <div className="chart-inner">
+                        <div id="container-chart" className="chart" style={{position:"relative"}}>
+                            {!!isLoadingFirst && <div className="loader" style={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                            {!isLoadingFirst &&
+                            <Line
+                                data={dataFinancial}
+                                options={options}
+                            />}
+                        </div>
+                    </div>
+                </div>
+
+                {!!0 &&
+                <div className="group-container">
+                    <div className="analytics_list save-statistics">
+                        <div>
+                            <p>Желаете ли вы хранить статистику?</p>
+                            <button className={saveStatistics?"button":"button gray-button"} type="button" onClick={()=>this.setState({saveStatistics:true})}>Да</button>
+                            <button className={!saveStatistics?"button":"button gray-button"} type="button" onClick={()=>this.setState({saveStatistics:false})}>Нет</button>
+                        </div>
+                        <div>
+                            <span>Сколько хранить статистику</span>
+                            <select className="custom-select">
+                                <option selected="">Месяц</option>
+                                <option>Год</option>
+                                <option>12 недель</option>
+                                <option>31 дней</option>
+                                <option>Макс</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>}
+                {!!0 &&
+                <div className="dropdown">
+                    <a className="delete-icon menu-delete float-right" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Удалить всю статистику
+                    </a>
+                    <div className="dropdown-menu delete-menu p-3">
+                        <button type="button" className="button">Да</button>
+                        <button type="button" className="gray-button">Нет</button>
+                    </div>
+                </div>}
+
+
             </div>
-
-
 
         );
     }

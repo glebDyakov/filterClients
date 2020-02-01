@@ -188,74 +188,61 @@ class Index extends Component {
         })
 
         return (
-            <div>
+            <div className="services">
                 {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
                 {isLoading && <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                <div className="pages-content container-fluid">
 
-                <div className={"container_wrapper services "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}
-                         style={{overflowX: isLoading?"visible":"hidden"}}>
-                        <div className="container-fluid">
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-
-                            <div className="pages-content container-fluid">
-
-                                <div className="services_list" id="sortable_list">
-                                    {
-                                        (defaultServicesList.services && defaultServicesList!=="" &&
-                                        // (1 &&
-                                            <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
-                                                <div className="search col-7">
-                                                    <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
-                                                           aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
-                                                    <button className="search-icon" type="submit"/>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                    <DragDrop
-                                        dragDropItems={dragDropGroupsItems}
-                                        handleDrogEnd={this.handleDrogEnd}
-                                    />
+                    <div className="services_list" id="sortable_list">
+                        {
+                            (defaultServicesList.services && defaultServicesList!=="" &&
+                            // (1 &&
+                                <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                    <div className="search col-7">
+                                        <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
+                                               aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
+                                        <button className="search-icon" type="submit"/>
+                                    </div>
                                 </div>
-                                <a className="add"></a>
-                                <div className="hide buttons-container">
-                                    <div className="p-4">
-                                        <button type="button"
-                                                className="button" onClick={(e)=>this.handleClick(null, false, e)}>Новая группа услуг
-                                        </button>
-                                        <button type="button" onClick={()=>this.setState({...this.state, createdService: true})}
-                                                className="button">Новая услуга
-                                        </button>
-                                    </div>
-                                    <div className="arrow"></div>
-                                </div>
-                            </div>
-                            <div className="tab-content">
-                                {
-                                    (!isLoading && (!services.services || services.services.length===0)) && !search &&
-                                    <div className="no-holiday">
-                                                <span>
-                                                    Услуги не добавлены
-                                                    <button type="button"
-                                                            className="button mt-3 p-3" onClick={(e)=>this.handleClick(null, false, e)}>Добавить услугу</button>
-                                                </span>
-                                    </div>
-                                }
-                                {
-                                    (!isLoading && (!services.services || services.services.length===0)) && search &&
-                                    <div className="no-holiday">
-                                                <span>
-                                                    Услуг не найдено
-                                                </span>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+                            )
+                        }
+                        <DragDrop
+                            dragDropItems={dragDropGroupsItems}
+                            handleDrogEnd={this.handleDrogEnd}
+                        />
                     </div>
-
+                    <a className="add"></a>
+                    <div className="hide buttons-container">
+                        <div className="p-4">
+                            <button type="button"
+                                    className="button" onClick={(e)=>this.handleClick(null, false, e)}>Новая группа услуг
+                            </button>
+                            <button type="button" onClick={()=>this.setState({...this.state, createdService: true})}
+                                    className="button">Новая услуга
+                            </button>
+                        </div>
+                        <div className="arrow"></div>
+                    </div>
+                </div>
+                <div className="tab-content">
+                    {
+                        (!isLoading && (!services.services || services.services.length===0)) && !search &&
+                        <div className="no-holiday">
+                                    <span>
+                                        Услуги не добавлены
+                                        <button type="button"
+                                                className="button mt-3 p-3" onClick={(e)=>this.handleClick(null, false, e)}>Добавить услугу</button>
+                                    </span>
+                        </div>
+                    }
+                    {
+                        (!isLoading && (!services.services || services.services.length===0)) && search &&
+                        <div className="no-holiday">
+                                    <span>
+                                        Услуг не найдено
+                                    </span>
+                        </div>
+                    }
                 </div>
                 { addGroup &&
                     <AddGroup

@@ -269,286 +269,273 @@ class Index extends Component {
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
                 {this.props.staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-
-                <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-
-                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                        <div className="container-fluid">
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-
-                            <div className="row retreats content-inner page_staff">
-                                <div className="flex-content col-xl-12">
-                                    <ul className="nav nav-tabs">
-                                        <li className="nav-item">
-                                            <a className={"nav-link"+(activeTab==='workinghours'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.updateTimetable(); this.setTab('workinghours')}}>Рабочие часы</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>Сотрудники</a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a className={"nav-link"+(activeTab==='holidays'?' active show':'')} data-toggle="tab" href="#tab3" onClick={()=>this.setTab('holidays')}>Выходные дни</a>
-                                        </li>
-                                        {access(-1) &&
-                                        <li className="nav-item">
-                                            <a className={"nav-link"+(activeTab==='permissions'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('permissions')}>Доступ</a>
-                                        </li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="retreats">
-                                <div className="tab-content">
-                                    <div className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
-                                        <DatePicker
-                                            type={'week'}
-                                            //selectedDay={selectedDay}
-                                            selectedDays={selectedDays}
-                                            showPrevWeek={this.showPrevWeek}
-                                            showNextWeek={this.showNextWeek}
-                                            handleDayChange={this.handleDayChange}
-                                            handleDayClick={this.handleDayClick}
-                                            handleWeekClick={this.handleWeekClick}
-                                        />
-                                        <div style={{ overflowX: 'auto', position: 'relative' }}>
-                                            <div style={{ overflowX: 'hidden', display: 'inline-block' }} className="content-tab-date min-width-desktop">
-                                                <div style={{ position: 'absolute', zIndex: 1 }} className="tab-content-inner min-width-desktop">
-                                                    <div className="tab-content-list">
-                                                        <div>
-
-                                                        </div>
-                                                        {
-                                                            timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((item, weekKey)=>
-                                                                <div key={weekKey}>
-                                                                    <p><span className="mob-date">{moment(item, "x").locale("ru").format('dd')}</span><span className="dates-full-width text-capitalize">{moment(item, "x").locale("ru").format('dddd')}</span><span>{moment(item, "x").format("DD/MM")}</span></p>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div className="tab-content-inner">
-                                                    <div className="tab-content-list">
-                                                        <div>
-
-                                                        </div>
-                                                        {
-                                                            timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((item, weekKey)=>
-                                                                <div>
-                                                                {/*<div key={weekKey}>*/}
-                                                                {/*    <p><span className="mob-date">{moment(item, "x").locale("ru").format('dd')}</span><span className="dates-full-width text-capitalize">{moment(item, "x").locale("ru").format('dddd')}</span><span>{moment(item, "x").format("DD/MM")}</span></p>*/}
-                                                                {/*</div>*/}
-                                                                </div>
-                                                            )
-                                                        }
-                                                    </div>
-                                                    { staff.timetable && staff.timetable.map((time, keyTime)=>
-                                                         <div className="tab-content-list" key={keyTime}>
-                                                                <div>
-                                                                    <img className="rounded-circle"
-                                                                         src={time.imageBase64?"data:image/png;base64,"+time.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                    <p>{time.firstName} <br/>{time.lastName ? time.lastName : ''}</p>
-                                                                </div>
-                                                             {
-                                                                 time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey)=> {
-                                                                         let times = time.timetables.filter((timetableItem) =>
-                                                                             (moment(timetableItem.startTimeMillis, "x") >= moment(day, "x").startOf('day').format('x') &&
-                                                                             moment(timetableItem.endTimeMillis, "x") <= moment(day, "x").endOf('day').format('x'))
-                                                                             || (timetableItem.repeat==='WEEKLY' && moment(timetableItem.startTimeMillis, "x").format('dd')===moment(day, "x").format('dd'))
-                                                                         );
-
-                                                                     times.sort((a,b) => {
-                                                                         if (a.startTimeMillis > b.startTimeMillis) {
-                                                                             return 1;
-                                                                         }
-                                                                         if (a.startTimeMillis < b.startTimeMillis) {
-                                                                             return -1;
-                                                                         }
-                                                                         return 0;
-                                                                     });
-
-
-
-                                                                         return (times.length===0 ?
-                                                                             <div className="add-work-time-hover"
-                                                                              key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                                 date:moment(day, "x").format('DD/MM/YYYY'),
-                                                                                 editWorkingHours:false, editing_object:null, addWorkTime: true})
-                                                                             }/> :
-                                                                         <div className="dates-container" key={dayKey}  onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                             date:moment(day, "x").format('DD/MM/YYYY'),
-                                                                             editWorkingHours:true, editing_object:times, addWorkTime: true})} >
-                                                                             <a>
-                                                                                 {times.map(time=>
-                                                                                    <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>
-                                                                                 )}
-                                                                             </a>
-                                                                         </div>
-                                                                    )}
-                                                                 )
-                                                             }
-                                                            </div>
-
-
-
-                                                        )}
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={"tab-pane staff-list-tab"+(activeTab==='staff'?' active':'')} id="tab2">
-                                        <div className=" content tabs-container" >
-                                            <DragDrop
-                                                dragDropItems={dragDropItems}
-                                                handleDrogEnd={this.handleDrogEnd}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={"tab-pane"+(activeTab==='holidays'?' active':'')}  id="tab3">
-                                        <div className="holiday-tab">
-                                            <div className="add-holiday p-4 mb-3">
-                                                <p className="title_block">Новые выходные дни</p>
-                                                <div className="form-group row">
-                                                    <div className="col-sm-6">
-                                                        <p>Начало/Конец</p>
-                                                        <div className="button-calendar button-calendar-inline">
-                                                            <input type="button" data-range="true" value={(from && from!==0 ? moment(from).format('DD.MM.YYYY') : '') + (to ? " - "+moment(to).format('DD.MM.YYYY'):'')} data-multiple-dates-separator=" - " name="date" ref={(input) => this.startClosedDate = input}/>
-                                                        </div>
-                                                        <DayPicker
-                                                            className="Range"
-                                                            fromMonth={from}
-                                                            selectedDays={selectedDaysClosed}
-                                                            disabledDays={[disabledDays, {before: moment().utc().toDate()}]}
-                                                            modifiers={modifiersClosed}
-                                                            onDayClick={this.handleDayClick}
-                                                            onDayMouseEnter={this.handleDayMouseEnter}
-                                                            localeUtils={MomentLocaleUtils}
-                                                            locale={'ru'}
-                                                        />
-
-                                                    </div>
-                                                    <div className="description col-sm-6">
-                                                        <p>Описание</p>
-                                                        <textarea className="form-control" rows="3" name="description" value={closedDates.description} onChange={this.handleClosedDate}/>
-                                                        <div className="float-right mt-3">
-                                                            <div className="buttons">
-                                                                <button className="small-button gray-button close-holiday"
-                                                                        type="button" data-dismiss="modal">Отменить
-                                                                </button>
-                                                                <button className={((!from || !closedDates.description) ? 'disabledField': 'close-holiday')+' small-button'} type="button"
-                                                                        onClick={from && closedDates.description && this.addClosedDate} data-dismiss="modal"
-                                                                >Добавить
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            {
-                                                staff.closedDates && staff.closedDates.map((item, key)=>
-                                                    <div className="row holiday-list p-2 mb-2" key={key}>
-                                                        <div className="col">
-                                                    <span>
-                                                        Начало
-                                                        <strong>{moment(item.startDateMillis).format('L')}</strong>
-                                                    </span>
-                                                            <span>
-                                                        Количество дней
-                                                        <strong>{Math.round((item.endDateMillis-item.startDateMillis)/(1000*60*60*24))+1}</strong>
-                                                    </span>
-                                                            <span>
-                                                        Описание
-                                                        <strong>{item.description}</strong>
-                                                    </span>
-                                                        </div>
-                                                        <div className="col-1 dropdown delete-tab-holiday">
-                                                            <a className="delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                            </a>
-                                                            <div className="dropdown-menu delete-menu p-3">
-                                                                <button type="button" className="button delete-tab" onClick={()=>this.deleteClosedDate(item.companyClosedDateId)}>Удалить</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                        <a className="add"/>
-                                        <div className="hide buttons-container">
-                                            <div className="p-4">
-                                                <button type="button" className="button new-holiday">Новый выходной</button>
-                                            </div>
-                                            <div className="arrow"></div>
-                                        </div>
-                                    </div>
-                                    {access(-1) && !this.props.staff.error &&
-                                    <div className={"tab-pane access-tab"+(activeTab==='permissions'?' active':'')} id="tab4">
-                                        <div className="access">
-                                            <div className="tab-content-list">
-                                                <div></div>
-                                                <div>Низкий</div>
-                                                <div>Средний</div>
-                                                <div>Админ</div>
-                                                <div>Владелец</div>
-                                            </div>
-                                            {
-                                                staff.accessList && staff.accessList.map((itemList, index) =>
-                                                    <div className="tab-content-list" key={itemList.permissionCode}>
-                                                        <div>
-                                                            {itemList.name}
-                                                        </div>
-                                                        {staff.access && staff.access.map((item) => {
-                                                                const checkedPermission = item.permissions.find((element) => {
-                                                                        return element.permissionCode === itemList.permissionCode;
-                                                                    }
-                                                                );
-
-                                                                return (
-                                                                    <div key={item.roleCode}>
-                                                                        <div className="check-box">
-                                                                            <label>
-                                                                                <input
-                                                                                    className="form-check-input"
-                                                                                    checked={checkedPermission !== undefined}
-                                                                                    disabled={item.roleCode === 4 || index===0}
-                                                                                    type="checkbox"
-                                                                                    onChange={() => this.toggleChange(item.roleCode, itemList.permissionCode)}/>
-                                                                                <span className="check"></span>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            }
-                                                        )}
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                    </div>
-                                    }
-                                    {this.props.staff.isLoadingStaff && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                                    {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
-                                </div>
-                            </div>
-                            {activeTab==='staff' &&
-                            <a className="add"/>
+                <div className="row retreats content-inner page_staff">
+                    <div className="flex-content col-xl-12">
+                        <ul className="nav nav-tabs">
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='workinghours'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.updateTimetable(); this.setTab('workinghours')}}>Рабочие часы</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>Сотрудники</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='holidays'?' active show':'')} data-toggle="tab" href="#tab3" onClick={()=>this.setTab('holidays')}>Выходные дни</a>
+                            </li>
+                            {access(-1) &&
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='permissions'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('permissions')}>Доступ</a>
+                            </li>
                             }
-                            {activeTab === 'staff' &&
+                        </ul>
+                    </div>
+                </div>
+                <div className="retreats">
+                    <div className="tab-content">
+                        <div className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
+                            <DatePicker
+                                type={'week'}
+                                //selectedDay={selectedDay}
+                                selectedDays={selectedDays}
+                                showPrevWeek={this.showPrevWeek}
+                                showNextWeek={this.showNextWeek}
+                                handleDayChange={this.handleDayChange}
+                                handleDayClick={this.handleDayClick}
+                                handleWeekClick={this.handleWeekClick}
+                            />
+                            <div style={{ overflowX: 'auto', position: 'relative' }}>
+                                <div style={{ overflowX: 'hidden', display: 'inline-block' }} className="content-tab-date min-width-desktop">
+                                    <div style={{ position: 'absolute', zIndex: 1 }} className="tab-content-inner min-width-desktop">
+                                        <div className="tab-content-list">
+                                            <div>
+
+                                            </div>
+                                            {
+                                                timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((item, weekKey)=>
+                                                    <div key={weekKey}>
+                                                        <p><span className="mob-date">{moment(item, "x").locale("ru").format('dd')}</span><span className="dates-full-width text-capitalize">{moment(item, "x").locale("ru").format('dddd')}</span><span>{moment(item, "x").format("DD/MM")}</span></p>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="tab-content-inner">
+                                        <div className="tab-content-list">
+                                            <div>
+
+                                            </div>
+                                            {
+                                                timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((item, weekKey)=>
+                                                    <div>
+                                                    {/*<div key={weekKey}>*/}
+                                                    {/*    <p><span className="mob-date">{moment(item, "x").locale("ru").format('dd')}</span><span className="dates-full-width text-capitalize">{moment(item, "x").locale("ru").format('dddd')}</span><span>{moment(item, "x").format("DD/MM")}</span></p>*/}
+                                                    {/*</div>*/}
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                        { staff.timetable && staff.timetable.map((time, keyTime)=>
+                                             <div className="tab-content-list" key={keyTime}>
+                                                    <div>
+                                                        <img className="rounded-circle"
+                                                             src={time.imageBase64?"data:image/png;base64,"+time.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                        <p>{time.firstName} <br/>{time.lastName ? time.lastName : ''}</p>
+                                                    </div>
+                                                 {
+                                                     time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey)=> {
+                                                             let times = time.timetables.filter((timetableItem) =>
+                                                                 (moment(timetableItem.startTimeMillis, "x") >= moment(day, "x").startOf('day').format('x') &&
+                                                                 moment(timetableItem.endTimeMillis, "x") <= moment(day, "x").endOf('day').format('x'))
+                                                                 || (timetableItem.repeat==='WEEKLY' && moment(timetableItem.startTimeMillis, "x").format('dd')===moment(day, "x").format('dd'))
+                                                             );
+
+                                                         times.sort((a,b) => {
+                                                             if (a.startTimeMillis > b.startTimeMillis) {
+                                                                 return 1;
+                                                             }
+                                                             if (a.startTimeMillis < b.startTimeMillis) {
+                                                                 return -1;
+                                                             }
+                                                             return 0;
+                                                         });
+
+
+
+                                                             return (times.length===0 ?
+                                                                 <div className="add-work-time-hover"
+                                                                  key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
+                                                                     date:moment(day, "x").format('DD/MM/YYYY'),
+                                                                     editWorkingHours:false, editing_object:null, addWorkTime: true})
+                                                                 }/> :
+                                                             <div className="dates-container" key={dayKey}  onClick={()=>this.setState({...this.state, currentStaff:time,
+                                                                 date:moment(day, "x").format('DD/MM/YYYY'),
+                                                                 editWorkingHours:true, editing_object:times, addWorkTime: true})} >
+                                                                 <a>
+                                                                     {times.map(time=>
+                                                                        <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>
+                                                                     )}
+                                                                 </a>
+                                                             </div>
+                                                        )}
+                                                     )
+                                                 }
+                                                </div>
+
+
+
+                                            )}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={"tab-pane staff-list-tab"+(activeTab==='staff'?' active':'')} id="tab2">
+                            <div className=" content tabs-container" >
+                                <DragDrop
+                                    dragDropItems={dragDropItems}
+                                    handleDrogEnd={this.handleDrogEnd}
+                                />
+                            </div>
+                        </div>
+                        <div className={"tab-pane"+(activeTab==='holidays'?' active':'')}  id="tab3">
+                            <div className="holiday-tab">
+                                <div className="add-holiday p-4 mb-3">
+                                    <p className="title_block">Новые выходные дни</p>
+                                    <div className="form-group row">
+                                        <div className="col-sm-6">
+                                            <p>Начало/Конец</p>
+                                            <div className="button-calendar button-calendar-inline">
+                                                <input type="button" data-range="true" value={(from && from!==0 ? moment(from).format('DD.MM.YYYY') : '') + (to ? " - "+moment(to).format('DD.MM.YYYY'):'')} data-multiple-dates-separator=" - " name="date" ref={(input) => this.startClosedDate = input}/>
+                                            </div>
+                                            <DayPicker
+                                                className="Range"
+                                                fromMonth={from}
+                                                selectedDays={selectedDaysClosed}
+                                                disabledDays={[disabledDays, {before: moment().utc().toDate()}]}
+                                                modifiers={modifiersClosed}
+                                                onDayClick={this.handleDayClick}
+                                                onDayMouseEnter={this.handleDayMouseEnter}
+                                                localeUtils={MomentLocaleUtils}
+                                                locale={'ru'}
+                                            />
+
+                                        </div>
+                                        <div className="description col-sm-6">
+                                            <p>Описание</p>
+                                            <textarea className="form-control" rows="3" name="description" value={closedDates.description} onChange={this.handleClosedDate}/>
+                                            <div className="float-right mt-3">
+                                                <div className="buttons">
+                                                    <button className="small-button gray-button close-holiday"
+                                                            type="button" data-dismiss="modal">Отменить
+                                                    </button>
+                                                    <button className={((!from || !closedDates.description) ? 'disabledField': 'close-holiday')+' small-button'} type="button"
+                                                            onClick={from && closedDates.description && this.addClosedDate} data-dismiss="modal"
+                                                    >Добавить
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {
+                                    staff.closedDates && staff.closedDates.map((item, key)=>
+                                        <div className="row holiday-list p-2 mb-2" key={key}>
+                                            <div className="col">
+                                        <span>
+                                            Начало
+                                            <strong>{moment(item.startDateMillis).format('L')}</strong>
+                                        </span>
+                                                <span>
+                                            Количество дней
+                                            <strong>{Math.round((item.endDateMillis-item.startDateMillis)/(1000*60*60*24))+1}</strong>
+                                        </span>
+                                                <span>
+                                            Описание
+                                            <strong>{item.description}</strong>
+                                        </span>
+                                            </div>
+                                            <div className="col-1 dropdown delete-tab-holiday">
+                                                <a className="delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                                </a>
+                                                <div className="dropdown-menu delete-menu p-3">
+                                                    <button type="button" className="button delete-tab" onClick={()=>this.deleteClosedDate(item.companyClosedDateId)}>Удалить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <a className="add"/>
                             <div className="hide buttons-container">
                                 <div className="p-4">
-                                    <button className="button new-staff" type="button" onClick={(e)=>this.handleClick(null, true, e)}>Пригласить сотрудника по Email</button>
-                                    <button className="button new-staff" type="button"  onClick={(e)=>this.handleClick(null, false, e)}>Новый сотрудник</button>
-
+                                    <button type="button" className="button new-holiday">Новый выходной</button>
                                 </div>
-                                <div className="arrow"/>
+                                <div className="arrow"></div>
                             </div>
-                            }
                         </div>
-                    </div>
+                        {access(-1) && !this.props.staff.error &&
+                        <div className={"tab-pane access-tab"+(activeTab==='permissions'?' active':'')} id="tab4">
+                            <div className="access">
+                                <div className="tab-content-list">
+                                    <div></div>
+                                    <div>Низкий</div>
+                                    <div>Средний</div>
+                                    <div>Админ</div>
+                                    <div>Владелец</div>
+                                </div>
+                                {
+                                    staff.accessList && staff.accessList.map((itemList, index) =>
+                                        <div className="tab-content-list" key={itemList.permissionCode}>
+                                            <div>
+                                                {itemList.name}
+                                            </div>
+                                            {staff.access && staff.access.map((item) => {
+                                                    const checkedPermission = item.permissions.find((element) => {
+                                                            return element.permissionCode === itemList.permissionCode;
+                                                        }
+                                                    );
 
+                                                    return (
+                                                        <div key={item.roleCode}>
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input
+                                                                        className="form-check-input"
+                                                                        checked={checkedPermission !== undefined}
+                                                                        disabled={item.roleCode === 4 || index===0}
+                                                                        type="checkbox"
+                                                                        onChange={() => this.toggleChange(item.roleCode, itemList.permissionCode)}/>
+                                                                    <span className="check"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                            )}
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                        }
+                        {this.props.staff.isLoadingStaff && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                        {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
+                    </div>
                 </div>
+                {activeTab==='staff' &&
+                <a className="add"/>
+                }
+                {activeTab === 'staff' &&
+                <div className="hide buttons-container">
+                    <div className="p-4">
+                        <button className="button new-staff" type="button" onClick={(e)=>this.handleClick(null, true, e)}>Пригласить сотрудника по Email</button>
+                        <button className="button new-staff" type="button"  onClick={(e)=>this.handleClick(null, false, e)}>Новый сотрудник</button>
+
+                    </div>
+                    <div className="arrow"/>
+                </div>
+                }
                 {addWorkTime &&
                     <AddWorkTime
                         addWorkingHours={this.addWorkingHours}

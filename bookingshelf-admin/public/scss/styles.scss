@@ -4044,6 +4044,27 @@ textarea {
         margin: 0;
     }
 }
+.loader {
+    z-index: 5;
+    width: calc(100% - 220px);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background: transparent;
+    top: 0;
+    left: 220px;
+    @media screen and(max-width: $tablet-width) {
+        width: 100%;
+        left: 0;
+    }
+}
+
+.loader img{
+    width: 100px;
+    margin: 0 auto;
+}
+
 .loader-client{
     margin-top: 140px;
     margin-left: 40px;

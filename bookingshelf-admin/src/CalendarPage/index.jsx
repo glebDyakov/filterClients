@@ -497,10 +497,7 @@ class Index extends PureComponent {
                     this.setState({scrollableAppointmentAction: false})
                 }
             }}>
-                <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                    <div className={"content-wrapper  full-container "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                        <div className="container-fluid">
-                            <HeaderMain onOpen={this.onOpen} />
+
                             <div className="row content calendar-container">
                                 <StaffChoice
                                     typeSelected={typeSelected}
@@ -559,9 +556,6 @@ class Index extends PureComponent {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}

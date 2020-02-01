@@ -48,7 +48,10 @@ const CalendarPrePage = React.lazy(() => import("../CalendarPrePage"));
 const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
+
 import AppointmentFromSocket from '../_components/modals/AppointmentFromSocket'
+import {HeaderMain} from "../_components/HeaderMain";
+
 import '../../public/scss/styles.scss'
 
 var socket;
@@ -267,6 +270,7 @@ class Index extends React.Component {
                     <div>
                         {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <Suspense fallback={null}>
+                            <HeaderMain onOpen={this.onOpen} />
                             <SidebarMain/>
                         </Suspense>
                         }
@@ -274,36 +278,50 @@ class Index extends React.Component {
                             closeAppointmentFromSocket={this.closeAppointmentFromSocket}
                         />
                         {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
-                        <Suspense fallback={null}>
+
+                        <Suspense fallback={<div className="loader "><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}>
                             <Switch>
-                                    {!paymentsOnly && <PrivateRoute exact path="/" component={MainIndex} refresh={false} />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage}  refresh={false}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/clients" component={ClientsPage}  refresh={false}  />}
-                                    {!paymentsOnly && access(0) &&
-                                    <PrivateRoute exact path="/services" component={ServicesPage}/>
-                                    }
-                                    {!paymentsOnly && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
-                                    <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
+                                {authentication && authentication.loggedIn && (
+                                    <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
+                                        <div className={"content-wrapper  full-container "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
+                                            <div className="container-fluid">
+                                                {!paymentsOnly && <PrivateRoute exact path="/" component={MainIndex} refresh={false} />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage}  refresh={false}  />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/clients" component={ClientsPage}  refresh={false}  />}
+                                                {!paymentsOnly && access(0) &&
+                                                <PrivateRoute exact path="/services" component={ServicesPage}/>
+                                                }
+                                                {!paymentsOnly && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
+                                                {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
+                                                <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
 
-                                    <PublicRoute path="/register" component={RegisterPage} />
-                                    <PublicRoute path="/activation/company/:company" component={ActivationPage} />
-                                    {!paymentsOnly && <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />}
-                                    <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
-                                    <PublicRoute path="/login" component={LoginPage} />
-                                    {!paymentsOnly && <PrivateRoute path="/logout" component={LogoutPage} />}
-                                    <PrivateRoute path="/denied" component={NoPageDenied} />
-                                    <PrivateRoute path="/nopage" component={NoPagePrivate} />
-                                    {!paymentsOnly && <PrivateRoute path="/analytics" component={AnalyticsPage} />}
-                                    <PrivateRoute path="/payments" component={PaymentsPage} />
-                                    <PrivateRoute path="/invoices" component={PaymentsPage} />
-                                    {paymentsOnly && <Redirect to="/payments" />}
-                                    <PrivateRoute component={NoPagePrivate} />
 
-                                    <Route component={NoPage} />
+                                                {!paymentsOnly && <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />}
+
+                                                {!paymentsOnly && <PrivateRoute path="/logout" component={LogoutPage} />}
+
+                                                {!paymentsOnly && <PrivateRoute path="/analytics" component={AnalyticsPage} />}
+                                                <PrivateRoute path="/payments" component={PaymentsPage} />
+                                                <PrivateRoute path="/invoices" component={PaymentsPage} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <PublicRoute path="/register" component={RegisterPage} />
+                                <PublicRoute path="/activation/company/:company" component={ActivationPage} />
+                                <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
+                                <PublicRoute path="/login" component={LoginPage} />
+
+                                <PrivateRoute path="/denied" component={NoPageDenied} />
+                                <PrivateRoute path="/nopage" component={NoPagePrivate} />
+
+                                {paymentsOnly && <Redirect to="/payments" />}
+                                <PrivateRoute component={NoPagePrivate} />
+                                <Route component={NoPage} />
                             </Switch>
                         </Suspense>
 

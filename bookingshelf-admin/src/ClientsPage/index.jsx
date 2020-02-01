@@ -164,197 +164,182 @@ class Index extends Component {
 
         return (
             <div className="clients-page">
-                {/*{this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                <div className="flex-content col-xl-12">
+                    <ul className="nav nav-tabs">
+                        <li className="nav-item">
+                            <a className={"nav-link"+(activeTab==='clients'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.setTab('clients')}}>Клиенты</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className={"nav-link"+(activeTab==='blacklist'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('blacklist')}>Blacklist</a>
+                        </li>
+                    </ul>
+                </div>
 
 
-                <div className={"container_wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                    <div className={"content-wrapper "+(localStorage.getItem('collapse')=='true'&&' content-collapse')}>
-                        <div className="container-fluid">
-                            <HeaderMain
-                                onOpen={this.onOpen}
-                            />
-                            <div className="flex-content col-xl-12">
-                                <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <a className={"nav-link"+(activeTab==='clients'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.setTab('clients')}}>Клиенты</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className={"nav-link"+(activeTab==='blacklist'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('blacklist')}>Blacklist</a>
-                                    </li>
-                                </ul>
+                <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
+                        <StaffChoice
+                            selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                            typeSelected={typeSelected}
+                            staff={staff.staff}
+                            availableTimetable={staff.staff}
+                            setWorkingStaff={this.setWorkingStaff}
+                            hideWorkingStaff={true}
+                        />
+                        <div className="search col-7">
+                            <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                                   aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
+                            <button className="search-icon" type="submit"/>
+                        </div>
+                        <div className="col-2 d-flex justify-content-end">
+                            {/*{access(5) &&*/}
+                            {/*<div className="export">*/}
+                            {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                            {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                            {/*        <input type="submit" value="Загрузить" />*/}
+                            {/*    </form>*/}
+                            {/*</div>}*/}
+                            {access(5) &&
+                            <div className="export">
+
+                                <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                >Экспорт в CSV
+                                </button>
                             </div>
+                            }
+                        </div>
+                    </div>
 
+                    <div className="row align-items-center content clients mb-2">
+                        <StaffChoice
+                            selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
+                            typeSelected={typeSelected}
+                            staff={staff.staff}
+                            availableTimetable={staff.staff}
+                            setWorkingStaff={this.setWorkingStaff}
+                            hideWorkingStaff={true}
+                        />
+                        <div className="search col-7">
+                            <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                                   aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
+                            <button className="search-icon" type="submit"/>
+                        </div>
+                        <div className="col-2 d-flex justify-content-end">
+                            {/*{access(5) &&*/}
+                            {/*<div className="export">*/}
+                            {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                            {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+                            {/*        <input type="submit" value="Загрузить" />*/}
+                            {/*    </form>*/}
+                            {/*</div>}*/}
+                            {access(5) &&
+                            <div className="export">
 
-                            <div style={{ position: 'relative' }}>
-                                <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
-                                    <StaffChoice
-                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
-                                        typeSelected={typeSelected}
-                                        staff={staff.staff}
-                                        availableTimetable={staff.staff}
-                                        setWorkingStaff={this.setWorkingStaff}
-                                        hideWorkingStaff={true}
-                                    />
-                                    <div className="search col-7">
-                                        <input type="search" placeholder="Искать по имени, email, номеру телефона"
-                                               aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
-                                        <button className="search-icon" type="submit"/>
-                                    </div>
-                                    <div className="col-2 d-flex justify-content-end">
-                                        {/*{access(5) &&*/}
-                                        {/*<div className="export">*/}
-                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
-                                        {/*        <input type="submit" value="Загрузить" />*/}
-                                        {/*    </form>*/}
-                                        {/*</div>}*/}
-                                        {access(5) &&
-                                        <div className="export">
-
-                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                            >Экспорт в CSV
-                                            </button>
-                                        </div>
-                                        }
-                                    </div>
-                                </div>
-
-                                <div className="row align-items-center content clients mb-2">
-                                    <StaffChoice
-                                        selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
-                                        typeSelected={typeSelected}
-                                        staff={staff.staff}
-                                        availableTimetable={staff.staff}
-                                        setWorkingStaff={this.setWorkingStaff}
-                                        hideWorkingStaff={true}
-                                    />
-                                    <div className="search col-7">
-                                        <input type="search" placeholder="Искать по имени, email, номеру телефона"
-                                               aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
-                                        <button className="search-icon" type="submit"/>
-                                    </div>
-                                    <div className="col-2 d-flex justify-content-end">
-                                        {/*{access(5) &&*/}
-                                        {/*<div className="export">*/}
-                                        {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-                                        {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
-                                        {/*        <input type="submit" value="Загрузить" />*/}
-                                        {/*    </form>*/}
-                                        {/*</div>}*/}
-                                        {access(5) &&
-                                        <div className="export">
-
-                                            <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                            >Экспорт в CSV
-                                            </button>
-                                        </div>
-                                        }
-                                    </div>
-                                </div>
-
-
-                                <div style={{ maxHeight: 'calc(100vh - 225px)', overflowY: 'auto' }}>
-                                    {finalClients && finalClients.map((client_user, i) =>{
-                                        let condition = true;
-                                        if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
-
-                                            condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
-
-                                        }
-                                        return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                            <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
-                                                <div style={{position: "relative"}}>
-                                                    <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
-                                                        <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
-                                                        <p> {client_user.firstName} {client_user.lastName}</p>
-                                                    </a>
-                                                    <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
-                                                </div>
-                                                <div>
-                                                    {client_user.email}
-                                                </div>
-                                                <div>
-                                                    {client_user.phone}
-                                                </div>
-                                                <div>
-                                                    {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
-                                                </div>
-                                                <div className="delete dropdown">
-                                                    <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
-                                                    <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                    </a>
-                                                    <div className="dropdown-menu delete-menu p-3">
-                                                        {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                                        {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
-                                                            delete client_user.appointments;
-                                                            this.updateClient({...client_user, blacklisted: false}, true)
-                                                        }}>Удалить</button>}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    )}
-                                </div>
-
-                                <div className="tab-content">
-                                    {
-                                        (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length===0)) &&
-                                        <div className="no-holiday">
-                                            {(this.search && this.search.value.length > 0)
-                                                ? <span>Поиск результатов не дал</span>
-                                                : (
-                                                    <span>
-                                                        {client.error ? client.error : 'Клиенты не добавлены'}
-                                                        {activeTab==='clients' &&
-                                                            <button
-                                                                type="button"
-                                                                className="button mt-3 p-3"
-                                                                onClick={(e)=>this.handleClick(null, e)}
-                                                            >
-                                                                Добавить нового клиента
-                                                            </button>
-                                                        }
-                                                        {activeTab==='blacklist' &&
-                                                            <button
-                                                                type="button"
-                                                                className="button mt-3 p-3"
-                                                                data-target=".add-black-list-modal"
-                                                                data-toggle="modal"
-                                                                onClick={this.addToBlackList}
-                                                            >
-                                                                Добавить в blacklist
-                                                            </button>
-                                                        }
-                                                    </span>)
-                                            }
-
-                                        </div>
-                                    }
-                                </div>
-
-                                <Paginator
-                                    finalTotalPages={finalTotalPages}
-                                    onPageChange={this.handlePageClick}
-                                />
+                                <button   onClick={this.downloadFile} type="button" className="button client-download"
+                                >Экспорт в CSV
+                                </button>
                             </div>
-                            <a className="add"/>
-                            <div className="hide buttons-container">
-                                <div className="p-4">
-                                    {activeTab==='clients' && <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>}
-                                    {activeTab==='blacklist' && <button type="button" className="button"
-                                                                        data-target=".add-black-list-modal"
-                                                                        data-toggle="modal"
-                                                                        onClick={this.addToBlackList}>Добавить в blacklist</button>}
-                                </div>
-                                <div className="arrow"/>
-                            </div>
+                            }
                         </div>
                     </div>
 
 
+                    <div style={{ maxHeight: 'calc(100vh - 225px)', overflowY: 'auto' }}>
+                        {finalClients && finalClients.map((client_user, i) =>{
+                            let condition = true;
+                            if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 
+                                condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+
+                            }
+                            return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
+                                    <div style={{position: "relative"}}>
+                                        <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
+                                            <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
+                                            <p> {client_user.firstName} {client_user.lastName}</p>
+                                        </a>
+                                        <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
+                                    </div>
+                                    <div>
+                                        {client_user.email}
+                                    </div>
+                                    <div>
+                                        {client_user.phone}
+                                    </div>
+                                    <div>
+                                        {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
+                                    </div>
+                                    <div className="delete dropdown">
+                                        <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
+                                        <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                        </a>
+                                        <div className="dropdown-menu delete-menu p-3">
+                                            {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
+                                            {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
+                                                delete client_user.appointments;
+                                                this.updateClient({...client_user, blacklisted: false}, true)
+                                            }}>Удалить</button>}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        )}
+                    </div>
+
+                    <div className="tab-content">
+                        {
+                            (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length===0)) &&
+                            <div className="no-holiday">
+                                {(this.search && this.search.value.length > 0)
+                                    ? <span>Поиск результатов не дал</span>
+                                    : (
+                                        <span>
+                                            {client.error ? client.error : 'Клиенты не добавлены'}
+                                            {activeTab==='clients' &&
+                                                <button
+                                                    type="button"
+                                                    className="button mt-3 p-3"
+                                                    onClick={(e)=>this.handleClick(null, e)}
+                                                >
+                                                    Добавить нового клиента
+                                                </button>
+                                            }
+                                            {activeTab==='blacklist' &&
+                                                <button
+                                                    type="button"
+                                                    className="button mt-3 p-3"
+                                                    data-target=".add-black-list-modal"
+                                                    data-toggle="modal"
+                                                    onClick={this.addToBlackList}
+                                                >
+                                                    Добавить в blacklist
+                                                </button>
+                                            }
+                                        </span>)
+                                }
+
+                            </div>
+                        }
+                    </div>
+
+                    <Paginator
+                        finalTotalPages={finalTotalPages}
+                        onPageChange={this.handlePageClick}
+                    />
+                </div>
+                <a className="add"/>
+                <div className="hide buttons-container">
+                    <div className="p-4">
+                        {activeTab==='clients' && <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>}
+                        {activeTab==='blacklist' && <button type="button" className="button"
+                                                            data-target=".add-black-list-modal"
+                                                            data-toggle="modal"
+                                                            onClick={this.addToBlackList}>Добавить в blacklist</button>}
+                    </div>
+                    <div className="arrow"/>
                 </div>
                 {openedModal &&
                     <NewClient
