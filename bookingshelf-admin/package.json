@@ -4,10 +4,10 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpackDev.config.js",
-    "build": "cross-env CONTEXT=/ webpack --config webpack.config.js",
-    "analyze": "webpack --profile --json > stats.json",
-    "bundle-report": "webpack-bundle-analyzer --port 4200 stats.json",
-    "dev": "cross-env CONTEXT=/ webpack --config webpackDev.config.js"
+    "build": "cross-env CONTEXT=/ webpack --config webpack.config.js -p",
+    "create-report": "webpack --profile --json > stats.json",
+    "view-report": "webpack-bundle-analyzer --port 4200 stats.json",
+    "dev": "cross-env CONTEXT=/ webpack --config webpackDev.config.js -p"
   },
   "dependencies": {
     "@trendmicro/react-modal": "^3.0.0",
