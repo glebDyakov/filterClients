@@ -11,7 +11,8 @@ class App extends React.Component {
 
     }
     checkLogin() {
-        this.props.dispatch(userActions.checkLogin());
+        const localStorageUser = localStorage.getItem('user')
+        this.props.dispatch(userActions.checkLogin(localStorageUser));
         setTimeout(()=>this.checkLogin(), 540000)
     }
     render() {
