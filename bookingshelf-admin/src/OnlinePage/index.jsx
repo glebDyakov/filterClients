@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {HeaderMain} from "../_components/HeaderMain";
-
 import '../../public/scss/online_booking.scss'
-import {UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
 import {companyActions} from "../_actions";
 import {access} from "../_helpers/access";
 import {DatePicker} from "../_components/DatePicker";
@@ -24,10 +20,8 @@ class Index extends Component {
         this.state = {
             booking: props.company && props.company.booking,
             selectedDay: moment().utc().toDate(),
-            isLoading: true,
             urlButton: false,
             isOnlineZapisOnDropdown: false,
-            userSettings: false,
             status: ''
         };
 
@@ -39,15 +33,17 @@ class Index extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.setBookingCode = this.setBookingCode.bind(this);
         this.copyToClipboard = this.copyToClipboard.bind(this);
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose = this.onClose.bind(this);
+        this.queryInitData = this.queryInitData.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
+
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({
                 booking: newProps.company.booking,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
             })
         }
         if (newProps.company.settings) {
@@ -111,11 +107,16 @@ class Index extends Component {
     }
 
     componentDidMount(){
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
         document.title = "Онлайн-запись | Онлайн-запись";
 
-        this.props.dispatch(companyActions.getBookingInfo());
-        setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
+    }
+
+    queryInitData() {
+        this.props.dispatch(companyActions.getBookingInfo());
     }
 
     componentDidUpdate() {
@@ -171,7 +172,7 @@ class Index extends Component {
 
     render() {
         const { company } = this.props
-        const { booking, submitted, isLoading, urlButton, userSettings, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
+        const { booking, submitted, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
@@ -193,8 +194,6 @@ class Index extends Component {
 
         return (
             <div>
-                {/*{isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
-
                 {booking &&
                 <div className="pages-content container-fluid">
                     <div className="row justify-content-between">
@@ -414,18 +413,9 @@ class Index extends Component {
                     </div>
                 </div>
                 }
-                <UserPhoto/>
             </div>
 
         );
-    }
-    onClose(){
-        this.setState({...this.state, userSettings: false});
-    }
-
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
     }
 
     handleDayClick(day){

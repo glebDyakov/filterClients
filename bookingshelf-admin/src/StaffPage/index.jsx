@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {companyActions, staffActions} from '../_actions';
-import {HeaderMain} from "../_components/HeaderMain";
+import {staffActions} from '../_actions';
 import {AddWorkTime} from "../_components/modals/AddWorkTime";
 import {NewStaff} from "../_components/modals/NewStaff";
 
 import '../../public/scss/staff.scss'
 
 import moment from "moment";
-import {NewStaffByMail, UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
+import {NewStaffByMail} from "../_components/modals";
 
 import 'react-day-picker/lib/style.css';
 import DayPicker, { DateUtils } from 'react-day-picker';
@@ -78,7 +76,6 @@ class Index extends Component {
             addWorkTime: false,
             newStaffByMail: false,
             newStaff: false,
-            userSettings: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -110,32 +107,38 @@ class Index extends Component {
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
         this.handleResetClick = this.handleResetClick.bind(this);
         this.setTab = this.setTab.bind(this);
-        this.onOpen = this.onOpen.bind(this);
         this.handleDrogEnd = this.handleDrogEnd.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.queryInitData = this.queryInitData.bind(this);
     }
 
     componentDidMount() {
         const {selectedDays}=this.state;
-
-        this.props.dispatch(staffActions.get());
-        this.props.dispatch(staffActions.getAccess());
-        this.props.dispatch(staffActions.getAccessList());
-        this.props.dispatch(staffActions.getClosedDates());
-        this.props.dispatch(staffActions.getTimetable(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
         this.setState({...this.state,
             timetableFrom: moment(selectedDays[0]).startOf('day').format('x'),
             timetableTo:moment(selectedDays[6]).endOf('day').format('x')
         })
         initializeJs();
+    }
 
+    queryInitData() {
+        const {selectedDays}=this.state;
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(staffActions.getAccess());
+        this.props.dispatch(staffActions.getAccessList());
+        this.props.dispatch(staffActions.getClosedDates());
+        this.props.dispatch(staffActions.getTimetable(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({staff: newProps.staff,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
-
                 addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
                 newStaffByMail: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaffByMail,
                 newStaff: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaff,
@@ -174,7 +177,7 @@ class Index extends Component {
     }
 
     render() {
-        const { staff, emailNew, emailIsValid, userSettings, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -562,12 +565,6 @@ class Index extends Component {
                         onClose={this.onClose}
                     />
                 }
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />
-                }
-                <UserPhoto/>
             </div>
         );
     }
@@ -875,13 +872,7 @@ class Index extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, addWorkTime: false, newStaffByMail: false, newStaff: false, createdService: false, userSettings: false});
-    }
-
-
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
+        this.setState({...this.state, addWorkTime: false, newStaffByMail: false, newStaff: false, createdService: false});
     }
 }
 

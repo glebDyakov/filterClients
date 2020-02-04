@@ -2,12 +2,9 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import {companyActions, notificationActions} from '../_actions';
-import {HeaderMain} from "../_components/HeaderMain";
 import { isValidNumber } from 'libphonenumber-js'
 
 import ReactPhoneInput from "react-phone-input-2";
-import {UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
 import Avatar from "react-avatar-edit";
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import {access} from "../_helpers/access";
@@ -30,7 +27,6 @@ class Index extends Component {
             status: {},
             submitted: false,
             isAvatarOpened: true,
-            userSettings: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -42,19 +38,18 @@ class Index extends Component {
         this.handleWeekPicker = this.handleWeekPicker.bind(this);
         this.onCrop = this.onCrop.bind(this)
         this.onClose = this.onClose.bind(this)
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose2 = this.onClose2.bind(this);
         this.changeSound = this.changeSound.bind(this);
+        this.queryInitData = this.queryInitData.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
-        const { dispatch } = this.props;
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
 
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
 
             this.setState({authentication: newProps.authentication,
-
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
 
             })
         }
@@ -192,14 +187,20 @@ class Index extends Component {
     }
 
     componentDidMount(){
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
         document.title = "Настройки компании | Онлайн-запись";
+        initializeJs();
+    }
+
+    queryInitData() {
         if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
         }
 
         this.props.dispatch(notificationActions.getSMS_EMAIL())
         setTimeout(() => this.setState({ isLoading: false }), 800);
-        initializeJs();
     }
 
     changeSound(e){
@@ -208,7 +209,7 @@ class Index extends Component {
 
 
     render() {
-        const { adding, authentication, submitted, isLoading, activeDay, saved, notification, status, company, userSettings, isAvatarOpened, subcompanies } = this.state;
+        const { adding, authentication, submitted, isLoading, activeDay, saved, notification, status, company, isAvatarOpened, subcompanies } = this.state;
 
         return (
             <div>
@@ -471,16 +472,6 @@ class Index extends Component {
                 }
             </div>
         );
-    }
-
-
-    onClose2(){
-        this.setState({...this.state, userSettings: false});
-    }
-
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
     }
 }
 

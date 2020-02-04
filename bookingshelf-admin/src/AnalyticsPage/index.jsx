@@ -2,19 +2,15 @@ import React, {Component} from 'react';
 import '../../public/scss/analytics.scss'
 import {DatePicker} from "../_components/DatePicker";
 import {getWeekRange} from '../_helpers/time'
-import config from 'config';
 import { Line } from 'react-chartjs-2';
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css'
-import {HeaderMain} from "../_components/HeaderMain";
-
-import {UserSettings} from "../_components/modals";
 import moment from 'moment';
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
-import { analiticsActions, staffActions } from "../_actions";
+import { analiticsActions } from "../_actions";
 
 
 function getDayRange(date) {
@@ -45,8 +41,6 @@ class Index extends Component{
     constructor(props) {
         super(props);
 
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose = this.onClose.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayChange = this.handleDayChange.bind(this);
         this.showNextWeek = this.showNextWeek.bind(this);
@@ -55,9 +49,10 @@ class Index extends Component{
         this.getChartData = this.getChartData.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.queryInitData = this.queryInitData.bind(this);
 
 
-        let dateFrom,dateTo,dateFr, dateNow, dateNowEnd;
+        let dateFrom,dateTo,dateFr, dateNow;
 
         dateFrom = moment().utc().toDate();
         dateTo = [getDayRange(moment()).from];
@@ -65,16 +60,8 @@ class Index extends Component{
 
 
         dateNow = moment().utc().startOf('day');
-        dateNowEnd = moment().utc().endOf('day');
 
-        let dateNowMill = dateNow.valueOf();
-        let dateNowEndMill = dateNowEnd.valueOf();
 
-        dateNowMill = parseInt(dateNowMill) - (3600 * 3 * 1000);
-        dateNowEndMill = parseInt(dateNowEndMill) - (3600 * 3 * 1000);
-
-        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNowMill,dateNowEndMill));
-        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNowMill, dateNowEndMill));
 
         // let dataToChartStaff = moment().utc().format('x');
         // let dataFromChartStaff = moment().subtract(1, 'week').utc().format('x');
@@ -87,7 +74,6 @@ class Index extends Component{
 
 
         this.state = {
-            userSettings: false,
             type: 'day',
             selectedDay: dateFrom,
             selectedDays:dateTo,
@@ -125,11 +111,26 @@ class Index extends Component{
     }
 
     componentDidMount() {
-        this.getChartData()
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
         const { pathname } = this.props.location;
         if (pathname === '/analytics') {
             document.title = "Аналитика | Онлайн-запись";
         }
+    }
+    
+    queryInitData() {
+        const dateNow = moment().utc().startOf('day');
+        const dateNowEnd = moment().utc().endOf('day');
+        let dateNowMill = dateNow.valueOf();
+        let dateNowEndMill = dateNowEnd.valueOf();
+
+        dateNowMill = parseInt(dateNowMill) - (3600 * 3 * 1000);
+        dateNowEndMill = parseInt(dateNowEndMill) - (3600 * 3 * 1000);
+        this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNowMill,dateNowEndMill));
+        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNowMill, dateNowEndMill));
+        this.getChartData()
     }
 
     getChartData() {
@@ -209,16 +210,7 @@ class Index extends Component{
         }
     }
 
-
-
-    onOpen(){
-        this.setState({...this.state, userSettings: true});
-    }
-    onClose(){
-        this.setState({...this.state, userSettings: false});
-    }
     handleDayClick(day){
-
         let daySelected = moment(day);
 
         this.setState({
@@ -412,15 +404,18 @@ class Index extends Component{
         this.setState({dateArray:dateArray, recordsArray:recordsArray});
 
     }
-    componentWillReceiveProps(nextProps, nextContext) {
-        if (JSON.stringify(this.props.analitics && this.props.analitics.countRecAndCliChart) !== JSON.stringify(nextProps.analitics.countRecAndCliChart)) {
-            this.statsForYear(nextProps.analitics)
+    componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
         }
-        if(this.state.initChartData && JSON.stringify(nextProps.analitics.countRecAndCliChart)) {
+        if (JSON.stringify(this.props.analitics && this.props.analitics.countRecAndCliChart) !== JSON.stringify(newProps.analitics.countRecAndCliChart)) {
+            this.statsForYear(newProps.analitics)
+        }
+        if(this.state.initChartData && JSON.stringify(newProps.analitics.countRecAndCliChart)) {
 
             this.setState({ initChartData: true })
         }
-        if ((JSON.stringify( this.props.analitics.charStatsFor) !== JSON.stringify(nextProps.analitics.charStatsFor))){
+        if ((JSON.stringify( this.props.analitics.charStatsFor) !== JSON.stringify(newProps.analitics.charStatsFor))){
             const {chartFirstDateFrom, chartFirstDateTo} = this.state;
             this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(chartFirstDateFrom,chartFirstDateTo));
         }
@@ -450,7 +445,7 @@ class Index extends Component{
     render(){
 
         const {isLoadingFirst, isLoadingSecond} = this.props.analitics;
-        const {userSettings,selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
+        const {selectedDay,selectedDays,type,saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
         const dateArray = this.props.analitics.countRecAndCliChart.dateArrayChartFirst;
         const recordsArray = this.props.analitics.countRecAndCliChart.recordsArrayChartFirst;
 
@@ -945,9 +940,9 @@ class Index extends Component{
 }
 
 function mapStateToProps(state) {
-    const { analitics, staff} = state;
+    const { analitics, staff, authentication} = state;
     return {
-        analitics, staff
+        analitics, staff, authentication
     };
 }
 

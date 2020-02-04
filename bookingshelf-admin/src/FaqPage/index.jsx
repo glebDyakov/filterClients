@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {HeaderMain} from "../_components/HeaderMain";
-
 
 import '../../public/scss/email.scss'
-
-import {UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
 
 class Index extends Component {
 
@@ -28,11 +23,7 @@ class Index extends Component {
         this.state = {
             isLoading: true,
             activeTab: props.match.params.activeTab?props.match.params.activeTab:'email_sms',
-            userSettings: false
         };
-
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose = this.onClose.bind(this);
     }
 
     componentDidMount() {
@@ -41,16 +32,6 @@ class Index extends Component {
         setTimeout(() => this.setState({ isLoading: false }), 800);
         initializeJs();
 
-    }
-
-    componentWillReceiveProps(newProps) {
-
-        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
-            this.setState({
-                ...this.state,
-                userSettings: newProps.authentication && newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
-            });
-        }
     }
 
     setTab(tab){
@@ -68,7 +49,7 @@ class Index extends Component {
     }
 
     render() {
-        const {activeTab, userSettings} = this.state;
+        const {activeTab} = this.state;
 
         return (
             <div className="emailPage">
@@ -323,15 +304,6 @@ class Index extends Component {
                 </div>
             </div>
         );
-    }
-
-    onClose(){
-        this.setState({...this.state, userSettings: false});
-    }
-
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
     }
 }
 

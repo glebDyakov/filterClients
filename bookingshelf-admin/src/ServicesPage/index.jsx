@@ -2,13 +2,11 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import {servicesActions, staffActions} from '../_actions';
-import {HeaderMain} from "../_components/HeaderMain";
 
 import '../../public/scss/services.scss'
-import {AddGroup, AddService, UserSettings, CreatedService} from "../_components/modals";
+import {AddGroup, AddService, CreatedService} from "../_components/modals";
 
 import moment from 'moment';
-import {UserPhoto} from "../_components/modals/UserPhoto";
 import DragDrop from "../_components/DragDrop";
 
 class Index extends Component {
@@ -33,7 +31,6 @@ class Index extends Component {
             addService: false,
             addGroup: false,
             createdService: false,
-            userSettings: false
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -46,23 +43,30 @@ class Index extends Component {
         this.onCollapse = this.onCollapse.bind(this);
         this.newService = this.newService.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.onOpen = this.onOpen.bind(this);
         this.handleDrogEnd = this.handleDrogEnd.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
+
         document.title = "Услуги | Онлайн-запись";
         initializeJs();
+    }
+
+    queryInitData() {
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
-
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, services: newProps.services,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 addService: newProps.services.status && newProps.services.status===209 ? false : this.state.addService,
                 addGroup: newProps.services.status && newProps.services.status===209 ? false : this.state.addGroup,
                 createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
@@ -71,6 +75,7 @@ class Index extends Component {
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({ ...this.state, services: newProps.services, defaultServicesList:  newProps.services })
         }
+
     }
 
     onCollapse(key){
@@ -101,7 +106,7 @@ class Index extends Component {
     }
 
     render() {
-        const { services, edit, group_working, staff, userSettings, selectedProperties, group_workingGroup, editService, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
+        const { services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
         const isLoading = staff.isLoading || services.isLoading
 
         const dragDropGroupsItems = []
@@ -275,12 +280,6 @@ class Index extends Component {
                         onClose={this.onClose}
                     />
                 }
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />
-                }
-                <UserPhoto/>
             </div>
         );
     }
@@ -367,13 +366,9 @@ class Index extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, addService: false, addGroup: false, createdService: false, userSettings: false});
+        this.setState({...this.state, addService: false, addGroup: false, createdService: false});
     }
 
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
-    }
     handleSearch () {
         const {defaultServicesList}= this.state;
 

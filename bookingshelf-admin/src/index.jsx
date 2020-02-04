@@ -7,7 +7,7 @@ import App from './App';
 
 render(
     <Provider store={store}>
-        <App />
+        <App >1</App>
     </Provider>,
     document.getElementById('app')
 );

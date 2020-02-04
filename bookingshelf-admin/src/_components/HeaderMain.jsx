@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import LogoutPage from "../LogoutPage";
 import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
+import {UserSettings, UserPhoto} from "./modals";
 
 
 class HeaderMain extends React.PureComponent {
@@ -17,6 +18,7 @@ class HeaderMain extends React.PureComponent {
             isNotificationDropdown: false
         }
         this.openModal = this.openModal.bind(this);
+        this.onClose = this.onClose.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
 
@@ -58,7 +60,7 @@ class HeaderMain extends React.PureComponent {
 
     render() {
         const {location, notification }=this.props;
-        const {authentication, company}=this.state;
+        const {authentication, company, userSettings}=this.state;
 
         const { count } = company;
 
@@ -242,6 +244,12 @@ class HeaderMain extends React.PureComponent {
                                 </span>
                             </div>
                         </div>
+
+                        {userSettings &&
+                        <UserSettings
+                            onClose={this.onClose}/>
+                        }
+                        <UserPhoto />
                     </div>
                 </div>
             </div>
@@ -250,9 +258,13 @@ class HeaderMain extends React.PureComponent {
 
 
     openModal() {
-        const {onOpen} = this.props;
-
-        return onOpen();
+        // const {onOpen} = this.props;
+        //
+        // return onOpen();
+        this.setState({ userSettings: true })
+    }
+    onClose() {
+        this.setState({ userSettings: false})
     }
     openAppointments(){
         this.props.dispatch(staffActions.get());

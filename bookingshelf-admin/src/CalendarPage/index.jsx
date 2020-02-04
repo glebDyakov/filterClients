@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
 import {calendarActions, staffActions, clientActions, servicesActions, companyActions} from '../_actions';
-import {HeaderMain} from "../_components/HeaderMain";
 
 import '../../public/scss/calendar.scss'
 
@@ -112,7 +111,6 @@ class Index extends PureComponent {
             scroll: true,
             reservedTime: null,
             reservedStuffId: null,
-            userSettings: false,
             reserved: false,
             appointmentModal: false,
             newClientModal: false,
@@ -146,26 +144,31 @@ class Index extends PureComponent {
         this.updateCalendar = this.updateCalendar.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
-        this.onOpen = this.onOpen.bind(this);
         this.animateActiveAppointment = this.animateActiveAppointment.bind(this);
         this.navigateToRedLine = this.navigateToRedLine.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.updateReservedId = this.updateReservedId.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
-
+        this.queryInitData = this.queryInitData.bind(this);
     }
 
     componentDidMount() {
-        // this.props.dispatch(userActions.checkLogin());
         if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
             this.props.history.push('/nopage');
             return false;
         }
 
-        const {selectedDays, type, selectedDayMoment} = this.state;
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
 
         document.title = "Журнал записи | Онлайн-запись";
+        initializeJs();
+    }
+
+    queryInitData() {
+        const {selectedDays, type, selectedDayMoment} = this.state;
 
         this.props.dispatch(staffActions.get());
         //this.props.dispatch(clientActions.getClientWithInfo());
@@ -182,9 +185,6 @@ class Index extends PureComponent {
         }
         this.refreshTable(startTime, endTime);
 
-        // setTimeout(() => this.updateCalendar(), 300000)
-
-        initializeJs();
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
             this.props.dispatch(calendarActions.setScrollableAppointment(search.split('=')[1]))
@@ -199,8 +199,8 @@ class Index extends PureComponent {
                 this.navigateToRedLine();
             }
         }, 500);
-
     }
+
 
     // handleSocketDispatch(payload){
     //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
@@ -375,9 +375,12 @@ class Index extends PureComponent {
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
+
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings,
                 reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
                 newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal
             });
@@ -479,12 +482,12 @@ class Index extends PureComponent {
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, userSettings, availableTimetableMessage, appointmentSocketMessage, appointmentSocketMessageFlag,
+            reserveId, reserveStId, selectedDayMoment, availableTimetableMessage,
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
-            reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId, userSettings,
+            reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
@@ -578,15 +581,11 @@ class Index extends PureComponent {
     }
 
     onClose(){
-        this.setState({...this.state, userSettings: false, reserved: false, appointmentModal:false});
+        this.setState({...this.state, reserved: false, appointmentModal:false});
     }
 
     onCloseClient(){
         this.setState({...this.state, newClientModal: false});
-    }
-
-    onOpen(){
-        this.setState({...this.state, userSettings: true});
     }
 
     newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {

@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {HeaderMain} from "../_components/HeaderMain";
-
 
 import '../../public/scss/email.scss'
 
-import {UserSettings} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
 import {notificationActions, servicesActions, staffActions } from "../_actions";
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -75,7 +71,6 @@ class Index extends Component {
                 "description": ""
             },
             editorState: EditorState.createEmpty(),
-            userSettings: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -99,14 +94,20 @@ class Index extends Component {
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
         this.toggleDropdown = this.toggleDropdown.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose = this.onClose.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
 
 
     }
 
     componentDidMount() {
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
+        initializeJs();
+
+    }
+
+    queryInitData() {
         this.props.dispatch(notificationActions.getSMS_EMAIL());
         this.props.dispatch(notificationActions.getBalance());
         this.props.dispatch(servicesActions.getServices());
@@ -115,18 +116,18 @@ class Index extends Component {
         // this.props.dispatch(clientActions.getClientWithInfo());
 
         setTimeout(() => this.setState({ isLoading: false }), 800);
-        initializeJs();
-
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, notifications: newProps.notification.notification===''?this.state.notifications:newProps.notification.notification,
                 services:newProps.services,
                 client:newProps.client,
                 staff:newProps.staff,
                 notification:newProps.notification,
-                userSettings: newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
             })
         }
     }
@@ -351,7 +352,7 @@ class Index extends Component {
 
 
     render() {
-        const {notification, userSettings, activeTab, services, serviceCurrent, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
+        const {notification, activeTab, sms, notifications, count_sms, email, editorState, receivers, letters_all, count_sms_all, receivers_email}=this.state
 
         return (
             <div className="emailPage">
@@ -806,12 +807,6 @@ class Index extends Component {
                     </div>
                 </div>
 
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />
-                }
-                <UserPhoto/>
                 <div className="modal fade start-modal">
                     <div className="modal-dialog modal-lg modal-dialog-centered">
                         <div className="modal-content">
@@ -870,15 +865,6 @@ class Index extends Component {
 
     handleSubmit(e) {
 
-    }
-
-    onClose(){
-        this.setState({...this.state, userSettings: false});
-    }
-
-    onOpen(){
-
-        this.setState({...this.state, userSettings: true});
     }
 }
 

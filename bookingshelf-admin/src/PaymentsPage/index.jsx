@@ -5,9 +5,7 @@ import {withRouter} from "react-router";
 import '../../public/scss/payments.scss'
 
 import moment from 'moment';
-import {HeaderMain} from "../_components/HeaderMain";
-import {userActions, paymentsActions, staffActions, companyActions} from "../_actions";
-import {UserSettings} from "../_components/modals";
+import {paymentsActions, companyActions} from "../_actions";
 import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -22,8 +20,6 @@ class Index extends Component {
         this.repeatPayment = this.repeatPayment.bind(this);
         this.downloadInPdf = this.downloadInPdf.bind(this);
         this.calculateRate = this.calculateRate.bind(this);
-        this.onOpen = this.onOpen.bind(this);
-        this.onClose = this.onClose.bind(this);
         this.AddingInvoice = this.AddingInvoice.bind(this);
         this.closeModalActs = this.closeModalActs.bind(this);
         this.AddingInvoiceStaff = this.AddingInvoiceStaff.bind(this);
@@ -35,7 +31,6 @@ class Index extends Component {
             list: this.props.payments.list,
             defaultList: this.props.payments.list,
             search: false,
-            userSettings: false,
             SMSCountChose: 2,
             SMSCount: 5000,
             SMSPrice: 75,
@@ -191,14 +186,6 @@ class Index extends Component {
        this.props.history.push(url);
     }
 
-    onOpen() {
-        this.setState({...this.state, userSettings: true});
-    }
-
-    onClose() {
-        this.setState({...this.state, userSettings: false});
-    }
-
     closeModalActs() {
         this.setState({invoiceSelected: false});
     }
@@ -350,9 +337,8 @@ class Index extends Component {
     }
 
     render() {
-        const {authentication, staff} = this.props;
-        const {SMSCountChose, SMSCount, SMSPrice, chosenAct, staffCount} = this.state;
-        const {country, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list, defaultList, search, userSettings} = this.state;
+        const {authentication} = this.props;
+        const { chosenAct, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets, isLoading} = this.props.payments;
@@ -367,7 +353,7 @@ class Index extends Component {
         } else if (pathname === '/invoices' ) {
             document.title = "Счета | Онлайн-запись";
         }
-        const currentPacket = activePacket ? activePacket.packetName :(authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбраного пакета')
+        const currentPacket = activePacket ? activePacket.packetName : authentication.user && (authentication.user && authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбраного пакета')
         const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id ==='payments_menu_id')
         if (!paymentId && currentPacket === 'Нет выбраного пакета') {
             return (
@@ -399,11 +385,11 @@ class Index extends Component {
                 <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
             </div>
             <div className="customer-seller">
-                <div className="col-md-6 col-12 customer">
+                {authentication.user && <div className="col-md-6 col-12 customer">
                     <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
-                    <p>Представитель: {authentication.user.profile.lastName} {authentication.user.profile.firstName}</p>
+                    <p>Представитель: {authentication.user.profile ? authentication.user.profile.lastName : ''} {authentication.user.profile.firstName}</p>
                     <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
-                </div>
+                </div>}
 
                 <div className="col-md-6 col-12 seller">
                     <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>

@@ -41,19 +41,24 @@ function login(login, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, payload: {error} } }
 }
 
-function checkLogin() {
+function checkLogin(localStorageUser) {
     return dispatch => {
-        userService.checkLogin()
-            .then(
-                (user) => {
-                    dispatch(success(user));
-                },
-                error => {
+        if (localStorageUser) {
+            userService.checkLogin()
+                .then(
+                    (user) => {
+                        dispatch(success(user));
+                    },
+                    error => {
 
-                    dispatch(failure(error || 'error'));
-                    dispatch(alertActions.error(error || 'error'));
-                }
-            );
+                        dispatch(failure(error || 'error'));
+                        dispatch(alertActions.error(error || 'error'));
+                    }
+                );
+        } else {
+
+            dispatch(failure());
+        }
     };
 
     function success(user) { return { type: userConstants.CHECK_LOGIN_SUCCESS, payload: {user, loginChecked: true} } }

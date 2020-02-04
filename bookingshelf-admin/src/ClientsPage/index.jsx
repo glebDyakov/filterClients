@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import {clientActions} from '../_actions';
-import {HeaderMain} from "../_components/HeaderMain";
 
 import '../../public/scss/clients.scss'
 
-import {ClientDetails, NewClient, UserSettings, AddBlackList} from "../_components/modals";
-import {UserPhoto} from "../_components/modals/UserPhoto";
+import {ClientDetails, NewClient, AddBlackList} from "../_components/modals";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
 import {servicesActions} from "../_actions/services.actions";
@@ -34,7 +32,6 @@ class Index extends Component {
             activeTab: 'clients',
             openedModal: false,
             blackListModal: false,
-            userSettings: false,
             infoClient: 0
 
         };
@@ -50,34 +47,35 @@ class Index extends Component {
         this.onClose = this.onClose.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
-        this.onOpen = this.onOpen.bind(this);
         this.closeBlackListModal = this.closeBlackListModal.bind(this);
         this.openBlackListModal = this.openBlackListModal.bind(this);
         this.handleFileSubmit = this.handleFileSubmit.bind(this);
         this.onChangePage = this.onChangePage.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
         this.updateClients = this.updateClients.bind(this);
+        this.queryInitData = this.queryInitData.bind(this);
     }
 
     componentDidMount() {
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
+        initializeJs();
+    }
 
+    queryInitData() {
         // this.props.dispatch(clientActions.getClient());
         //this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(clientActions.getClientV2(1));
         this.props.dispatch(servicesActions.getServices());
-        initializeJs();
-
     }
 
     componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
             this.setState({ openedModal: newProps.client && newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
-        }
-
-        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
-            this.setState({
-                userSettings: newProps.authentication && newProps.authentication.status && newProps.authentication.status===209 ? false : this.state.userSettings
-            });
         }
     }
 
@@ -155,7 +153,7 @@ class Index extends Component {
 
     render() {
         const { staff } = this.props;
-        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, userSettings, infoClient } = this.state;
+        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, infoClient } = this.state;
         const isLoading = client ? client.isLoading : false;
 
         const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client
@@ -359,17 +357,11 @@ class Index extends Component {
                         onClose={this.closeBlackListModal}
                     />
                 }
-                {userSettings &&
-                <UserSettings
-                    onClose={this.onClose}
-                />
-                }
                 <ClientDetails
                     clientId={infoClient}
                     // editClient={this.handleEditClient}
                     editClient={this.handleClick}
                 />
-                <UserPhoto/>
             </div>
         );
     }
@@ -389,7 +381,7 @@ class Index extends Component {
     }
 
     onClose(){
-        this.setState({...this.state, openedModal: false, userSettings: false});
+        this.setState({...this.state, openedModal: false});
     }
 
     openBlackListModal() {
@@ -398,10 +390,6 @@ class Index extends Component {
 
     closeBlackListModal() {
         this.setState({ blackListModal: false })
-    }
-
-    onOpen(){
-        this.setState({...this.state, userSettings: true});
     }
 
     handleClick(id) {
