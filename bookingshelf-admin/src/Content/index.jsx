@@ -71,18 +71,12 @@ class Index extends React.Component {
         history.listen((location, action) => {
             dispatch(alertActions.clear());
         });
-        this.checkLogin()
 
         this.notifications = this.notifications.bind(this);
         this.handleSocketDispatch = this.handleSocketDispatch.bind(this);
         this.playSound = this.playSound.bind(this);
     }
 
-    checkLogin() {
-        const localStorageUser = localStorage.getItem('user')
-        this.props.dispatch(userActions.checkLogin(localStorageUser));
-        setTimeout(()=>this.checkLogin(), 540000)
-    }
     componentWillReceiveProps(newProps) {
         let localStorageUser
         try {
