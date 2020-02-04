@@ -67,6 +67,7 @@ module.exports = {
             children: true,
             async: true,
         }),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             output: {
