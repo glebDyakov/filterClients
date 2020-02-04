@@ -230,7 +230,6 @@ class Index extends React.Component {
         return (
             <Router history={history} >
                 <div>
-                    <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <SidebarMain/>
                     }
