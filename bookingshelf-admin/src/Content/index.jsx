@@ -33,7 +33,7 @@ const PaymentsPage = React.lazy(() => import("../PaymentsPage"));
 
 import {Router, Route, Switch, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
-import SidebarMain from '../_components/SidebarMain';
+const SidebarMain = React.lazy(() => import("../_components/SidebarMain"));
 
 import {access} from "../_helpers/access";
 const ActivationPage = React.lazy(() => import("../ActivationPage"));
@@ -47,8 +47,6 @@ const CalendarPrePage = React.lazy(() => import("../CalendarPrePage"));
 const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
-
-import AppointmentFromSocket from '../_components/modals/AppointmentFromSocket'
 
 import '../../public/scss/styles.scss'
 
@@ -231,17 +229,16 @@ class Index extends React.Component {
             <Router history={history} >
                 <div>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
-                        <SidebarMain/>
+                        <Suspense fallback={<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}>
+                            <SidebarMain/>
+                        </Suspense>
                     }
 
-                    <AppointmentFromSocket />
                     {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
 
                     <Suspense fallback={<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}>
 
                         <Switch>
-
-
                              {!paymentsOnly  && <PrivateRoute exact path="/" component={MainIndex} wrapped refresh={false} />}
                              {!paymentsOnly  && <PrivateRoute exact path="/settings" component={MainIndexPage} wrapped refresh={false} />}
                              {!paymentsOnly  && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage} wrapped refresh={false}  />}

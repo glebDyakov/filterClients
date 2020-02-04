@@ -1,4 +1,4 @@
-import React, {Component, Suspense} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
@@ -8,9 +8,10 @@ import Link from "react-router-dom/es/Link";
 import classNames from "classnames";
 import {UserSettings} from "./modals/UserSettings";
 import {HeaderMain} from "./HeaderMain";
+import AppointmentFromSocket from "./modals/AppointmentFromSocket";
 
 
-class SidebarMain extends Component {
+class SidebarMain extends React.Component {
     constructor(props) {
         super(props);
         this.state={
@@ -288,6 +289,7 @@ class SidebarMain extends Component {
         return (
             <React.Fragment>
                 <HeaderMain />
+                <AppointmentFromSocket />
 
                 <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
                     <li className="mob-menu-personal">
