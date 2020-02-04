@@ -195,7 +195,7 @@ class Index extends Component {
     }
 
     queryInitData() {
-        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+        if (this.props.authentication.user && this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
         }
 
