@@ -64,7 +64,7 @@ class Index extends Component {
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
         }
-        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+        if (this.props.authentication.user && this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
         }
 
@@ -469,10 +469,10 @@ class Index extends Component {
 
                         </ul>
                         </div>
-                        <div className="col-sm-6 mb-2">
+                        {authentication.user && <div className="col-sm-6 mb-2">
                             <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {currentPacket}</div>
                             <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
-                        </div>
+                        </div>}
                     </div>
 
                     <div className="tab-content">

@@ -86,7 +86,13 @@ class Index extends React.Component {
         setTimeout(()=>this.checkLogin(), 540000)
     }
     componentWillReceiveProps(newProps) {
-        const { user } = newProps.authentication
+        let localStorageUser
+        try {
+            localStorageUser = JSON.parse(localStorage.getItem('user'))
+        } catch (e) {
+
+        }
+        const user = newProps.authentication.user || localStorageUser
         if (user && (user.forceActive
           || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
