@@ -5,14 +5,25 @@ import {userActions} from "../_actions/user.actions";
 class Index extends React.Component {
     constructor(props) {
         super(props);
-
+        this.queryInitData = this.queryInitData.bind(this)
     }
 
     componentDidMount() {
+        if (this.props.authentication.loginChecked) {
+            this.queryInitData()
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+            this.queryInitData()
+        }
+    }
+
+    queryInitData() {
         const {staff} = this.props.match.params;
         this.props.dispatch(userActions.logout());
         this.props.dispatch(userActions.activateStaff(staff));
-
     }
 
     render() {
@@ -31,9 +42,9 @@ class Index extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.authentication;
+    const { authentication } = state;
     return {
-        registering
+        authentication
     };
 }
 

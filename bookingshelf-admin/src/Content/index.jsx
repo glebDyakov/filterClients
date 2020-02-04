@@ -7,9 +7,8 @@ import {
     alertActions,
     calendarActions,
     companyActions,
-    userActions,
     notificationActions,
-    socketActions
+    socketActions, userActions
 } from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 import 'moment-duration-format';
@@ -48,7 +47,9 @@ const CalendarPrePage = React.lazy(() => import("../CalendarPrePage"));
 const FaqPage = React.lazy(() => import("../FaqPage"));
 const ActivationPageStaff = React.lazy(() => import("../ActivationPageStaff"));
 const AnalyticsPage = React.lazy(() => import("../AnalyticsPage"));
+
 import AppointmentFromSocket from '../_components/modals/AppointmentFromSocket'
+
 import '../../public/scss/styles.scss'
 
 var socket;
@@ -72,15 +73,26 @@ class Index extends React.Component {
         history.listen((location, action) => {
             dispatch(alertActions.clear());
         });
+        this.checkLogin()
 
         this.notifications = this.notifications.bind(this);
-        this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.handleSocketDispatch = this.handleSocketDispatch.bind(this);
         this.playSound = this.playSound.bind(this);
     }
 
+    checkLogin() {
+        const localStorageUser = localStorage.getItem('user')
+        this.props.dispatch(userActions.checkLogin(localStorageUser));
+        setTimeout(()=>this.checkLogin(), 540000)
+    }
     componentWillReceiveProps(newProps) {
-        const { user } = newProps.authentication
+        let localStorageUser
+        try {
+            localStorageUser = JSON.parse(localStorage.getItem('user'))
+        } catch (e) {
+
+        }
+        const user = newProps.authentication.user || localStorageUser
         if (user && (user.forceActive
           || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
@@ -170,14 +182,6 @@ class Index extends React.Component {
         // setTimeout(()=>this.notifications(), 300000)
     }
 
-    closeAppointmentFromSocket(){
-        $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
-        setTimeout(() => {
-            this.props.dispatch(socketActions.alertSocketMessage(null));
-            $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
-        }, 2000);
-
-    }
     handleSocketDispatch(payload){
         const { staffId, roleId } = this.props.authentication.user.profile
         if (staffId === payload.payload[0].staffId || roleId === 3 || roleId === 4) {
@@ -204,44 +208,6 @@ class Index extends React.Component {
         }
     }
 
-    // openSocketAgain(id){
-    //     socket = createSocket(id);
-    //     console.log("Сокет. Создан");
-    //     socket.onopen = function() {
-    //         console.log("Сокет2. cоединение установлено");
-    //
-    //         socket.send('ping');
-    //
-    //     };
-    //
-    //
-    //     socket.onclose = function(event) {
-    //         if (event.wasClean) {
-    //             console.log('Сокет2.cоединение закрыто');
-    //         } else {
-    //             console.log('Сокет2.соединения как-то закрыто');
-    //         }
-    //         this.openSocketAgain(id);
-    //     };
-    //
-    //     socket.onmessage = function(event) {
-    //         if (event.data[0]==='{'){
-    //             const finalData = JSON.parse(event.data);
-    //             if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-    //                 this.handleSocketDispatch(finalData);
-    //             }
-    //         }
-    //         console.log(`Сокет.пришли данные: ${event.data}`);
-    //
-    //     };
-    //     socket.onmessage = socket.onmessage.bind(this);
-    //     socket.onclose = socket.onclose.bind(this);
-    //
-    //     socket.onerror = function(event) {
-    //         console.error("Сокет2.ошибка", event);
-    //     };
-    //
-    // }
     playSound(){
         let soundSettings = localStorage.getItem('sound');
         if(soundSettings==="false") {
@@ -263,53 +229,59 @@ class Index extends React.Component {
         }
         return (
             <Router history={history} >
-                {authentication.loginChecked &&
-                    <div>
-                        {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
+                <div>
+
+                    {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <Suspense fallback={null}>
                             <SidebarMain/>
                         </Suspense>
-                        }
-                        <AppointmentFromSocket
-                            closeAppointmentFromSocket={this.closeAppointmentFromSocket}
-                        />
-                        {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
-                        <Suspense fallback={null}>
-                            <Switch>
-                                    {!paymentsOnly && <PrivateRoute exact path="/" component={MainIndex} refresh={false} />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/settings" component={MainIndexPage} refresh={false} />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage}  refresh={false}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/clients" component={ClientsPage}  refresh={false}  />}
-                                    {!paymentsOnly && access(0) &&
-                                    <PrivateRoute exact path="/services" component={ServicesPage}/>
-                                    }
-                                    {!paymentsOnly && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/online_booking" component={OnlinePage}  />}
-                                    {!paymentsOnly && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage}  />}
-                                    <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage}  />
+                    }
 
-                                    <PublicRoute path="/register" component={RegisterPage} />
-                                    <PublicRoute path="/activation/company/:company" component={ActivationPage} />
-                                    {!paymentsOnly && <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} />}
-                                    <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
-                                    <PublicRoute path="/login" component={LoginPage} />
-                                    {!paymentsOnly && <PrivateRoute path="/logout" component={LogoutPage} />}
-                                    <PrivateRoute path="/denied" component={NoPageDenied} />
-                                    <PrivateRoute path="/nopage" component={NoPagePrivate} />
-                                    {!paymentsOnly && <PrivateRoute path="/analytics" component={AnalyticsPage} />}
-                                    <PrivateRoute path="/payments" component={PaymentsPage} />
-                                    <PrivateRoute path="/invoices" component={PaymentsPage} />
-                                    {paymentsOnly && <Redirect to="/payments" />}
-                                    <PrivateRoute component={NoPagePrivate} />
+                    <AppointmentFromSocket />
+                    {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}
 
-                                    <Route component={NoPage} />
-                            </Switch>
-                        </Suspense>
+                    <Suspense fallback={<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}>
 
-                    </div>}
+                        <Switch>
+
+
+                             {!paymentsOnly  && <PrivateRoute exact path="/" component={MainIndex} wrapped refresh={false} />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/settings" component={MainIndexPage} wrapped refresh={false} />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage} wrapped refresh={false}  />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/clients" component={ClientsPage} wrapped refresh={false}  />}
+                             {!paymentsOnly  && access(0) && <PrivateRoute exact path="/services" component={ServicesPage} wrapped />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage} wrapped />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/page/:id?/:date?" component={CalendarPrePage} wrapped />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/online_booking" component={OnlinePage} wrapped />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/email_sms/:activeTab?" component={EmailPage} wrapped />}
+
+                             {!paymentsOnly  && <PrivateRoute path="/activation/staff/:staff" component={ActivationPageStaff} wrapped />}
+
+                             {!paymentsOnly  && <PrivateRoute path="/logout" component={LogoutPage} wrapped />}
+
+                             {!paymentsOnly  && <PrivateRoute path="/analytics" component={AnalyticsPage} wrapped />}
+
+
+                            <PrivateRoute exact path="/faq/:activeTab?" component={FaqPage} wrapped />
+                            <PrivateRoute path="/payments" component={PaymentsPage} wrapped />
+                            <PrivateRoute path="/invoices" component={PaymentsPage} wrapped />
+
+                            <PublicRoute path="/register" component={RegisterPage} />
+                            <PublicRoute path="/activation/company/:company" component={ActivationPage} />
+                            <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff} />
+                            <PublicRoute path="/login" component={LoginPage} />
+
+                            <PrivateRoute path="/denied" component={NoPageDenied} />
+                            <PrivateRoute path="/nopage" component={NoPagePrivate} />
+
+                            {paymentsOnly && <Redirect to="/payments" />}
+                            <PrivateRoute component={NoPagePrivate} />
+                            <Route component={NoPage} />
+                        </Switch>
+                    </Suspense>
+
+                </div>
             </Router>
-
         );
     }
 }
