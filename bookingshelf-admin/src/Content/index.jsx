@@ -110,62 +110,66 @@ class Index extends React.Component {
             this.setState({...this.state, company: newProps.company})
         }
 
-        if (newProps.authentication && newProps.authentication.user && newProps.authentication.user.profile && newProps.authentication.user.profile.staffId
+        if (user
           && (newProps.authentication.loggedIn && (newProps.authentication.loggedIn !== this.props.authentication.loggedIn) || newProps.company.switchedStaffId)) {
-            // this.setState({flagStaffId: false});
-            this.props.dispatch(notificationActions.getBalance());
 
 
             const socketStaffId = newProps.company.switchedStaffId ? newProps.company.switchedStaffId : newProps.authentication.user.profile.staffId
-            const options = {
-                url: `${config.apiSocket}/${socketStaffId}/`,
-                pingTimeout: 15000,
-                pongTimeout: 10000,
-                reconnectTimeout: 2000,
-                pingMsg: "heartbeat"
-            }
-            if (socket) {
-                socket.close()
-            }
-            socket = new WebsocketHeartbeatJs(options);
-            // socket = createSocket(this.props.authentication.user.profile.staffId );
-
-            console.log("Сокет. Создан");
-            socket.onopen = function () {
-                console.log("Сокет. Соединение установлено");
-                socket.send('ping');
-
-            };
-
-
-            socket.onclose = function (event) {
-                if (event && event.wasClean) {
-                    console.log('Сокет. cоединение закрыто');
-                } else {
-                    console.log('Сокет. соединения как-то закрыто');
-                }
-                // this.openSocketAgain(this.props.authentication.user.profile.staffId);
-            };
-
-            socket.onmessage = function (event) {
-                if (event.data[0] === '{') {
-                    const finalData = JSON.parse(event.data);
-                    if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")
-                      || finalData.wsMessageType === "APPOINTMENT_MOVED") {
-                        this.handleSocketDispatch(finalData);
-                        console.log(`Сокет.пришли данные: ${event.data}`);
-                    }
-                }
-                // console.log(`Сокет.пришли данные: ${event.data}`);
-
-            };
-            socket.onmessage = socket.onmessage.bind(this);
-            socket.onclose = socket.onclose.bind(this);
-
-            socket.onerror = function (event) {
-                console.error("Сокет. ошибка", event);
-            };
+            this.initSocket(socketStaffId);
         }
+    }
+
+    initSocket(socketStaffId) {
+        this.props.dispatch(notificationActions.getBalance());
+
+        const options = {
+            url: `${config.apiSocket}/${socketStaffId}/`,
+            pingTimeout: 15000,
+            pongTimeout: 10000,
+            reconnectTimeout: 2000,
+            pingMsg: "heartbeat"
+        }
+        if (socket) {
+            socket.close()
+        }
+        socket = new WebsocketHeartbeatJs(options);
+        // socket = createSocket(this.props.authentication.user.profile.staffId );
+
+        console.log("Сокет. Создан");
+        socket.onopen = function () {
+            console.log("Сокет. Соединение установлено");
+            socket.send('ping');
+
+        };
+
+
+        socket.onclose = function (event) {
+            if (event && event.wasClean) {
+                console.log('Сокет. cоединение закрыто');
+            } else {
+                console.log('Сокет. соединения как-то закрыто');
+            }
+            // this.openSocketAgain(this.props.authentication.user.profile.staffId);
+        };
+
+        socket.onmessage = function (event) {
+            if (event.data[0] === '{') {
+                const finalData = JSON.parse(event.data);
+                if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")
+                    || finalData.wsMessageType === "APPOINTMENT_MOVED") {
+                    this.handleSocketDispatch(finalData);
+                    console.log(`Сокет.пришли данные: ${event.data}`);
+                }
+            }
+            // console.log(`Сокет.пришли данные: ${event.data}`);
+
+        };
+        socket.onmessage = socket.onmessage.bind(this);
+        socket.onclose = socket.onclose.bind(this);
+
+        socket.onerror = function (event) {
+            console.error("Сокет. ошибка", event);
+        };
     }
 
     notifications(){
