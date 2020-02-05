@@ -90,8 +90,10 @@ class Index extends React.Component {
 
             const socketStaffId = this.props.company.switchedStaffId ? this.props.company.switchedStaffId : this.props.authentication.user.profile.staffId
             this.initSocket(socketStaffId);
+            this.notifications();
+
+            this.props.dispatch(companyActions.get());
         }
-        console.log(this)
     }
 
     componentWillReceiveProps(newProps) {
