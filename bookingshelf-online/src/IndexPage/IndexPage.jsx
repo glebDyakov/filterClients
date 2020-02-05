@@ -176,7 +176,7 @@ class IndexPage extends PureComponent {
     }
 
     clearSelectedServices() {
-        this.setState({ selectedServices: [] });
+        this.setState({ selectedServices: [], selectedService: [] });
     }
 
     clearStaff() {
