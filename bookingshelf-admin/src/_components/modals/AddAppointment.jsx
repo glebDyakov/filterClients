@@ -748,7 +748,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
+        const { status, adding, staff: staffFromProps, clients: clientsFromProps, services: servicesFromProps } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs

@@ -29,6 +29,8 @@ export function client(state= { activeClientAppointments: [], client: [] }, acti
           return {
               ...state,
               activeClientAppointments: action.activeClientAppointments || []
+              // activeClientAppointments: action.activeClientAppointments.content || [],
+              // clientAppointmentsTotalPages: action.activeClientAppointments.totalPages,
           }
       case clientConstants.GET_CLIENT_SUCCESS:
           return {

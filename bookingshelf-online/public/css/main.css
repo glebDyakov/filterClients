@@ -1638,7 +1638,7 @@ input[type="search"]::-moz-placeholder {
     background-color: #39434f;
     color: white;
     border: solid 1px rgba(172, 172, 172, 0.2);
-    padding: 15px 30px;
+    padding: 9px 30px;
     font-weight: bold;
     font-family: 'helvetica_medium';
     margin: 40px 0;

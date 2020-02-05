@@ -84,7 +84,8 @@
     right: 0;
   }
   .closer-modal {
-    right: 2px;
+    right: unset;
+    left: 2px;
     top: 2px;
   }
 }
