@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactPaginate from 'react-paginate';
+import '../../public/scss/paginator.scss';
 
 const Paginator = (props) => {
     const { finalTotalPages, onPageChange } = props;

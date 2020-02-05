@@ -3534,6 +3534,7 @@ textarea {
     overflow-y:auto;
 
     @media screen and(max-width: 750px){
+        max-height: calc(100% - 150px);
         overflow: auto;
         max-width: 700px;
         display: block;

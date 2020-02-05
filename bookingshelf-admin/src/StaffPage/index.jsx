@@ -294,7 +294,7 @@ class Index extends Component {
                 </div>
                 <div className="retreats">
                     <div className="tab-content">
-                        <div className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
+                        <div style={{ height: '100%', maxHeight: '65vh' }} className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
                             <DatePicker
                                 type={'week'}
                                 //selectedDay={selectedDay}
@@ -307,7 +307,7 @@ class Index extends Component {
                             />
                             <div style={{ overflowX: 'auto', position: 'relative' }}>
                                 <div style={{ overflowX: 'hidden', display: 'inline-block' }} className="content-tab-date min-width-desktop">
-                                    <div style={{ position: 'absolute', zIndex: 1 }} className="tab-content-inner min-width-desktop">
+                                    <div style={{ position: 'absolute' }} className="tab-content-inner min-width-desktop">
                                         <div className="tab-content-list">
                                             <div>
 
@@ -322,7 +322,7 @@ class Index extends Component {
                                         </div>
                                     </div>
                                     <div className="tab-content-inner">
-                                        <div className="tab-content-list">
+                                        <div style={{ visibility: 'hidden' }} className="tab-content-list">
                                             <div>
 
                                             </div>

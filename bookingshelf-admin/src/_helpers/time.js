@@ -16,7 +16,7 @@ export function getWeekRange(date) {
         from: moment(date).utc()
             .startOf('week')
             .toDate(),
-        to: moment(date).utc()
+        to: moment(date)
             .endOf('week')
             .toDate(),
     };
