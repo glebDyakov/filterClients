@@ -33,7 +33,7 @@ const PaymentsPage = React.lazy(() => import("../PaymentsPage"));
 
 import {Router, Route, Switch, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
-const SidebarMain = React.lazy(() => import("../_components/SidebarMain"));
+import SidebarMain from '../_components/SidebarMain';
 
 import {access} from "../_helpers/access";
 const ActivationPage = React.lazy(() => import("../ActivationPage"));
@@ -223,9 +223,7 @@ class Index extends React.Component {
             <Router history={history} >
                 <div>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
-                        <Suspense fallback={<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}>
-                            <SidebarMain/>
-                        </Suspense>
+                        <SidebarMain/>
                     }
 
                     {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}

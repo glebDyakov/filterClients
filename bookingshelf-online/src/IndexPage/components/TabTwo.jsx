@@ -96,7 +96,7 @@ class TabTwo extends Component {
                                        aria-label="Search" ref={input => this.search = input} onChange={(e) => this.setState({ searchValue: e.target.value })}/>
                             </div>
                         </div>
-                        <div style={{ maxHeight: `calc(100% - ${flagAllStaffs ? 110 : 230}px)`, overflowY: 'auto' }}>
+                        <div style={{ maxHeight: `calc(100% - ${flagAllStaffs ? 80 : 190}px)`, overflowY: 'auto' }}>
                             {serviceGroups.map(serviceGroup => {
                                 let { services } = serviceGroup
                                 let condition =
