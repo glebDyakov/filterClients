@@ -77,6 +77,23 @@ class Index extends React.Component {
         this.playSound = this.playSound.bind(this);
     }
 
+    componentDidMount() {
+        let localStorageUser
+        try {
+            localStorageUser = JSON.parse(localStorage.getItem('user'))
+        } catch (e) {
+
+        }
+        const user = this.props.authentication.user || localStorageUser
+        if (user && (this.props.authentication.loggedIn || this.props.company.switchedStaffId)) {
+
+
+            const socketStaffId = this.props.company.switchedStaffId ? this.props.company.switchedStaffId : this.props.authentication.user.profile.staffId
+            this.initSocket(socketStaffId);
+        }
+        console.log(this)
+    }
+
     componentWillReceiveProps(newProps) {
         let localStorageUser
         try {
