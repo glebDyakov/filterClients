@@ -175,6 +175,7 @@ class Index extends PureComponent {
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
 
+
         let startTime, endTime;
         if (type === 'day') {
             startTime = selectedDayMoment.startOf('day').format('x');
@@ -184,6 +185,7 @@ class Index extends PureComponent {
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
         this.refreshTable(startTime, endTime);
+        this.getTimetable(null, selectedDayMoment, true);
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
@@ -201,6 +203,17 @@ class Index extends PureComponent {
         }, 500);
     }
 
+
+    getTimetable(prevDay, newDay, forceSet) {
+        const prevMonth = prevDay && moment(prevDay).format('MM YYYY')
+        const newMonth = moment(newDay).format('MM YYYY')
+        if ((prevMonth !== newMonth) || forceSet) {
+            this.props.dispatch(staffActions.getTimetable(
+                moment(newDay).startOf('month').format('x'),
+                moment(newDay).endOf('month').format('x')
+            ));
+        }
+    }
 
     // handleSocketDispatch(payload){
     //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
@@ -278,12 +291,10 @@ class Index extends PureComponent {
     }
 
     refreshTable(startTime, endTime, updateReservedTime = true, isLoading = true) {
-        const { type } = this.state
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, false, isLoading));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime, isLoading));
 
         if (updateReservedTime) {
-            this.props.dispatch(staffActions.getTimetable(startTime, type === 'day' ? moment(endTime, 'x').add(1, 'week').startOf('day').format('x') : moment(endTime, 'x').startOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
         }
     }
@@ -723,10 +734,11 @@ class Index extends PureComponent {
     }
 
     handleDayChange (date) {
-        const { selectedStaff } = this.state;
+        const { selectedStaff, selectedDays } = this.state;
         const weeks = getWeekDays(getWeekRange(date).from);
         const startTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x');
+
 
         this.setState({
             selectedDays: weeks,
@@ -734,6 +746,7 @@ class Index extends PureComponent {
             timetableTo:endTime
         });
         this.refreshTable(startTime, endTime)
+        this.getTimetable(selectedDays[0], date);
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
     };
 
@@ -761,6 +774,8 @@ class Index extends PureComponent {
         const endTime = moment(weeks[6]).endOf('day').format('x');
 
         this.refreshTable(statTime, endTime);
+        this.getTimetable(selectedDays[0], weeks[0]);
+
         this.setState({
             selectedDays: weeks,
             timetableFrom: statTime,
@@ -779,6 +794,8 @@ class Index extends PureComponent {
         const startTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x')
         this.refreshTable(startTime, endTime);
+        this.getTimetable(selectedDays[0], weeks[0]);
+
         this.setState({
             selectedDays: weeks,
             timetableFrom: startTime,
@@ -791,12 +808,14 @@ class Index extends PureComponent {
     }
 
     handleDayClick(day) {
-        const {typeSelected, selectedStaff} = this.state;
+        const {typeSelected, selectedStaff, selectedDayMoment} = this.state;
         let daySelected = moment(day);
         const startTime = daySelected.startOf('day').format('x');
         const endTime = daySelected.endOf('day').format('x');
 
         this.refreshTable(startTime, endTime);
+
+        this.getTimetable(selectedDayMoment, day);
 
         this.setState({
             selectedDay: daySelected.utc().startOf('day').toDate(),
@@ -816,7 +835,7 @@ class Index extends PureComponent {
     }
 
     selectType (type){
-        const {workingStaff, staffAll, typeSelected, selectedStaff} = this.state;
+        const {workingStaff, staffAll, typeSelected, selectedStaff, selectedDayMoment, selectedDays} = this.state;
         let url, startTime, endTime;
 
         let types=typeSelected
@@ -826,12 +845,14 @@ class Index extends PureComponent {
         }
 
         if (type==='day') {
+            const updatedSelectedDay = moment().utc().startOf('day').toDate()
             newState = {
                 ...newState,
                 type: 'day',
                 staffFromUrl:JSON.parse(selectedStaff).staffId,
                 typeSelected: typeSelected,
-                selectedDay: moment().utc().startOf('day').toDate(),
+                selectedDay: updatedSelectedDay,
+                selectedDayMoment: moment(),
                 selectedDays: [getDayRange(moment().format()).from]
             };
 
@@ -843,6 +864,8 @@ class Index extends PureComponent {
             }else{
                 url = `workingstaff/0/${moment().format('DD-MM-YYYY')}`
             }
+
+            this.getTimetable(selectedDays[0], updatedSelectedDay)
         } else {
             if(typeSelected===1 || typeSelected===2){
                 types=3
@@ -859,6 +882,8 @@ class Index extends PureComponent {
 
             startTime = moment(weeks[0]).startOf('day').format('x');
             endTime = moment(weeks[6]).endOf('day').format('x');
+
+            this.getTimetable(selectedDayMoment, weeks[0])
 
             url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
         }
