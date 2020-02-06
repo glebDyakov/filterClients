@@ -259,7 +259,7 @@ function getTimetableByStaff(id, from, to) {
     function success(timetableAvailableByStaff) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS, timetableAvailableByStaff } }
 }
 
-function getTimetableStaffs(from, to, isAvailableTimesChecked) {
+function getTimetableStaffs(from, to, isAvailableTimesChecked, isLoading = true) {
     // let a = moment(from).format('x');
     // let b = moment(String(from)).format('x');
     // let c = moment(parseInt(from)).format('dd MM hh:ss');
@@ -269,14 +269,14 @@ function getTimetableStaffs(from, to, isAvailableTimesChecked) {
         to = parseInt(to) - (3600 * 1000 * 3);
     }
     return dispatch => {
-        dispatch(request());
+        dispatch(request(isLoading));
         staffService.getTimetableStaffs(from, to)
             .then(
                 availableTimetable => dispatch(success(availableTimetable)),
                 () => dispatch(failure())
             );
     };
-    function request() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST } }
+    function request(isLoading) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST, isLoading } }
     function success(availableTimetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, payload : {availableTimetable, isAvailableTimesChecked } } }
     function failure() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE } }
 }

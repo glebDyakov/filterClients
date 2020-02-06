@@ -148,7 +148,7 @@ class CalendarModals extends Component {
                         onClose={this.onCloseClient}
                     />
                     }
-                    {(appointmentModal || appointmentModalFromProps) && staff.isAvailableTimesChecked &&
+                    {(appointmentModal || appointmentModalFromProps) &&
                     <AddAppointment
                         clients={clients}
                         checkedUser={checkedUser}

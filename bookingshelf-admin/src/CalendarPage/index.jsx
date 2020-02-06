@@ -277,17 +277,17 @@ class Index extends PureComponent {
         }, 100);
     }
 
-    refreshTable(startTime, endTime, updateReservedTime = true) {
+    refreshTable(startTime, endTime, updateReservedTime = true, isLoading = true) {
         const { type } = this.state
-        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
-        this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
+        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, false, isLoading));
+        this.props.dispatch(calendarActions.getAppointments(startTime, endTime, isLoading));
         if (updateReservedTime) {
             this.props.dispatch(staffActions.getTimetable(startTime, type === 'day' ? moment(endTime, 'x').add(1, 'week').startOf('day').format('x') : moment(endTime, 'x').startOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
         }
     }
 
-    updateCalendar(updateReservedTime){
+    updateCalendar(updateReservedTime, isLoading = true){
         const {selectedDayMoment, selectedDays, type}=this.state;
         let startTime, endTime;
 
@@ -298,7 +298,7 @@ class Index extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime, updateReservedTime);
+        this.refreshTable(startTime, endTime, updateReservedTime, isLoading);
         // setTimeout(()=>this.updateCalendar(), 300000)
 
     }
@@ -425,11 +425,11 @@ class Index extends PureComponent {
                 endTime = moment(this.state.selectedDays[6]).endOf('day').format('x');
             }
             this.props.dispatch(calendarActions.updateAppointmentFinish())
-            this.refreshTable(startTime, endTime, false);
+            this.refreshTable(startTime, endTime, false, false);
         }
 
         if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
-            this.updateCalendar(false)
+            this.updateCalendar(false, false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
 
@@ -682,7 +682,7 @@ class Index extends PureComponent {
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
-        this.checkAvaibleTime();
+        // this.checkAvaibleTime();
         this.setState({ appointmentModal: true, clickedTime: time, minutesReservedtime:[], minutes: this.getHours(staffId, time, appointment), staffClicked:staffId, edit_appointment: edit_appointment, appointmentEdited: appointment });
     }
     checkAvaibleTime(){
