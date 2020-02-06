@@ -218,7 +218,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST:
             return{
                 ...state,
-                isLoadingAvailableTime: true
+                isLoadingAvailableTime: action.isLoading
 
             }
         case staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS:

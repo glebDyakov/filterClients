@@ -12,13 +12,19 @@ const initialState = {
 export function calendar(state = initialState, action) {
     switch (action.type) {
         case calendarConstants.ADD_APPOINTMENT_REQUEST:
+            return {
+                ...state,
+                status: 208,
+                adding: true,
+                isLoading: action.isLoading
+            };
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_REQUEST:
         case calendarConstants.EDIT_APPOINTMENT_2_REQUEST:
             return {
                 ...state,
                 status: 208,
                 adding: true,
-                isLoading:true
+                isLoading: true
             };
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_SUCCESS:
         case calendarConstants.EDIT_APPOINTMENT_2_SUCCESS:
@@ -100,7 +106,7 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 isAppointmentUpdated: action.isAppointmentUpdated,
-                isLoading: true
+                isLoading: action.isLoading
             };
         case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
             return {
@@ -257,8 +263,8 @@ export function calendar(state = initialState, action) {
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,
-                isLoadingAppointments: true,
-                isLoadingModal: true
+                isLoadingAppointments: action.isLoading,
+                isLoadingModal: action.isLoading,
             };
         case calendarConstants.GET_APPOINTMENT_SUCCESS:
             return {
@@ -349,17 +355,22 @@ export function calendar(state = initialState, action) {
             appointmentsToMove.forEach(newItem => {
                 if (newAppointment && newAppointment.length) {
                     newAppointment.forEach(item => {
-                        if (item.staff.staffId === newItem.staffId) {
-                            let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+
+                        let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                        if (appointmentIndex > -1) {
                             item.appointments.splice(appointmentIndex, 1)
+                        }
+                        if (item.staff.staffId === newItem.staffId) {
                             item.appointments.push(newItem)
                         }
                     })
                 }
                 newAppointmentsCount.forEach(item => {
-                    if (item.staff.staffId === newItem.staffId) {
-                        let appointmentIndex = item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                    let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                    if (appointmentIndex > -1) {
                         item.appointments.splice(appointmentIndex, 1)
+                    }
+                    if (item.staff.staffId === newItem.staffId) {
                         item.appointments.push(newItem)
                     }
                 })
