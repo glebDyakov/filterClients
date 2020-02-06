@@ -280,8 +280,9 @@ class Index extends PureComponent {
     refreshTable(startTime, endTime, updateReservedTime = true, isLoading = true) {
         const { type } = this.state
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, false, isLoading));
+        this.props.dispatch(calendarActions.getAppointments(startTime, endTime, isLoading));
+
         if (updateReservedTime) {
-            this.props.dispatch(calendarActions.getAppointments(startTime, endTime, isLoading));
             this.props.dispatch(staffActions.getTimetable(startTime, type === 'day' ? moment(endTime, 'x').add(1, 'week').startOf('day').format('x') : moment(endTime, 'x').startOf('day').format('x')));
             this.props.dispatch(calendarActions.getReservedTime(startTime, endTime));
         }

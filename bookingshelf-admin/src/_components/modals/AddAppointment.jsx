@@ -331,7 +331,7 @@ class AddAppointment extends React.Component {
         const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services, servicesSearch } = this.state;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
-        const result = services[index].servicesList
+        const result = services[index].servicesList && services[index].servicesList
             .filter(service => service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId))
             .filter(service => service.name.toLowerCase().includes(servicesSearch.toLowerCase()))
             .filter(service => {
