@@ -420,6 +420,7 @@ class TabScroll extends Component{
 
                                                     {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
+                                                        {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
                                                                                     {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
                                                         {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                                 </span>

@@ -952,6 +952,7 @@
                         .percentage,
                         .old-client-icon,
                         .new-client-icon,
+                        .client-not-come,
                         .no-client-icon,
                         .super-visit,
                         .pen,
@@ -1016,7 +1017,12 @@
                                 cursor: pointer;
                             }
                         }
+                        .client-not-come {
+                            background: url(../img/icons/sad-face.svg) no-repeat center;
+                            background-size: 16px;
+                            height: 13px!important;
 
+                        }
                         .old-client-icon {
                             background: url(../img/icons/18.svg) no-repeat center;
                             background-size: 13px;
