@@ -1838,7 +1838,7 @@
 
 }
 .appointment-socket-modal-go-away {
-    transform: translate(-180px, -77vh) scale(0.2, 0.2);
+    transform: translate(30px, -77vh) scale(0.2, 0.2);
     animation-duration: 1s;
     animation-name: moveMessage;
     opacity: 0;
@@ -1862,13 +1862,16 @@
     border-radius: 5px;
     position: fixed;
     bottom: 20px;
-    left: 260px;
+    left: 20px;
+    box-shadow: 0 5px 10px 0 rgba(188, 191, 205, 0.44);
     z-index: 9999;
     width: 300px;
     transition: all 1s ease-in-out;
     -webkit-transition: all 1s ease-in-out;
     -moz-transition: all 1s ease-in-out;
     -o-transition: all 1s ease-in-out;
+    background-color: rgba(10, 19, 48, 0.95);
+
     @media screen and(max-width: 960px){
         left: 10px;
     }
@@ -1905,7 +1908,6 @@
         }
     }
 
-    background-color: #0a1330;
     .service_item{
         padding: 5px 5%;
         width: 100%;

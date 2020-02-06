@@ -174,6 +174,7 @@ class TabScroll extends Component{
         );
         const prevVisitStaffId = activeItemWithStaffId.staff.staffId
         this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId })
+        this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
     }
 
     moveVisit(movingVisitStaffId, time) {
@@ -532,8 +533,6 @@ class TabScroll extends Component{
                                                                 <div style={{
                                                                     marginTop: '2px',
                                                                 }}
-                                                                     data-toggle="modal"
-                                                                     data-target=".start-moving-modal"
                                                                      onClick={() => this.startMovingVisit(appointment, totalDuration)}
                                                                      className="msg-inner-button-wrapper"
                                                                 >
