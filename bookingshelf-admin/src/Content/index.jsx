@@ -156,7 +156,7 @@ class Index extends React.Component {
 
         console.log("Сокет. Создан");
         socket.onopen = function () {
-            console.log("Сокет. Соединение установлено");
+            console.log("Сокет. Соединение установлено socket.onopen");
             socket.send('ping');
 
         };
@@ -164,9 +164,9 @@ class Index extends React.Component {
 
         socket.onclose = function (event) {
             if (event && event.wasClean) {
-                console.log('Сокет. cоединение закрыто');
+                console.log('Сокет. cоединение закрыто socket.onclose - wasClean');
             } else {
-                console.log('Сокет. соединения как-то закрыто');
+                console.log('Сокет. соединения закрыто socket.onclose');
             }
             // this.openSocketAgain(this.props.authentication.user.profile.staffId);
         };
@@ -189,6 +189,10 @@ class Index extends React.Component {
         socket.onerror = function (event) {
             console.error("Сокет. ошибка", event);
         };
+
+        setTimeout(() => {
+            this.initSocket(socketStaffId)
+        }, 540000)
     }
 
     notifications(){
