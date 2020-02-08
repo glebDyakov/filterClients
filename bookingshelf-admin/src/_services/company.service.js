@@ -30,7 +30,7 @@ function add(params) {
     };
 
     return fetch(`${config.apiUrl}/company`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(company => {
             return company;
         });
@@ -49,7 +49,7 @@ function addSubcompany(params) {
     };
 
     return fetch(`${config.apiUrl}/subcompanies`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }
 
 function updateSubcompany(params) {
@@ -65,7 +65,7 @@ function updateSubcompany(params) {
     };
 
     return fetch(`${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }
 
 function switchSubcompany(params) {
@@ -80,7 +80,7 @@ function switchSubcompany(params) {
     };
 
     return fetch(`${config.apiUrl}/subcompanies/${params.companyId}/switch`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }
 
 function updateBookingInfo(params) {
@@ -96,7 +96,7 @@ function updateBookingInfo(params) {
     };
 
     return fetch(`${config.apiUrl}/onlinebooking`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(company => {
             return company;
         });
@@ -114,7 +114,7 @@ function get() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/company`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/company`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getSubcompanies() {
@@ -128,7 +128,7 @@ function getSubcompanies() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/subcompanies`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/subcompanies`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getBookingInfo() {
@@ -142,7 +142,7 @@ function getBookingInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/onlinebooking`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/onlinebooking`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getNewAppointments() {
@@ -156,5 +156,5 @@ function getNewAppointments() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(7, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(7, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

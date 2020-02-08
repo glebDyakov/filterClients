@@ -1,4 +1,13 @@
-export function handleResponse(response) {
+import {userService} from "../_services";
+
+const clearStorage = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('menu');
+    localStorage.clear();
+    location.reload(true);
+}
+
+export function handleResponse(response, requestOptions, repeat = true) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
 
@@ -6,10 +15,19 @@ export function handleResponse(response) {
             let error = (data && data.message) || response.statusText;
 
             if (response.status === 401 && localStorage.getItem('user')) {
-                localStorage.removeItem('user');
-                localStorage.removeItem('menu');
-                localStorage.clear();
-                location.reload(true);
+                if (!response.url.includes('/login/check')) {
+                    if (repeat) {
+                        return userService.checkLogin()
+                            .then(
+                                () => fetch(response.url, requestOptions)
+                                    .then((data) => handleResponse(data, null, false)),
+                                () => fetch(response.url, requestOptions)
+                                    .then((data) => handleResponse(data, null, false)),
+                            );
+                    } else {
+                        clearStorage()
+                    }
+                }
             }
 
             error=JSON.stringify(data.length>1 ? data : data[0]);

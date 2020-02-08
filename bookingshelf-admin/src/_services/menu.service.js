@@ -17,5 +17,5 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/menu`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/menu`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

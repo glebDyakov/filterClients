@@ -26,7 +26,7 @@ function login(login, password) {
     };
 
     return fetch(`${config.apiUrl}/login`,  requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -46,7 +46,7 @@ function checkLogin() {
     const companyId = localStorage.getItem('companyId') ? localStorage.getItem('companyId') : null
 
     return fetch(`${config.apiUrl}/login/check${companyId ? `?companyId=${companyId}` : ''}`,  requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -64,7 +64,7 @@ function activate(activationCode) {
     };
 
     return fetch(`${config.apiUrl}/activation/company/${activationCode}`,  requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -82,7 +82,7 @@ function activateStaff(activationCode) {
     };
 
     return fetch(`${config.apiUrl}/activation/staff/${activationCode}`,  requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -106,7 +106,7 @@ function logout() {
     };
 
     return fetch(`${config.apiUrl}/logout`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 
 }
 
@@ -116,7 +116,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getById(id) {
@@ -125,7 +125,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function register(user) {
@@ -138,7 +138,7 @@ function register(user) {
     };
 
 
-    return fetch(`${config.apiUrl}/signup`, requestOptions).then(handleResponse).then(user => {
+    return fetch(`${config.apiUrl}/signup`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(user => {
         // login successful if there's a jwt token in the response
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         // localStorage.setItem('user', JSON.stringify(user));
@@ -154,7 +154,7 @@ function forgotPass(email) {
         body: JSON.stringify(email)
     };
 
-    return fetch(`${config.apiUrl}/resetpassword`, requestOptions).then(handleResponse).then(email => {
+    return fetch(`${config.apiUrl}/resetpassword`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(email => {
         return email;
     });;
 }
@@ -166,7 +166,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);;
+    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then((data) => handleResponse(data, requestOptions));;
 }
 
 function updateProfile(user) {
@@ -181,7 +181,7 @@ function updateProfile(user) {
         body: user
     };
 
-    return fetch(`${config.apiUrl}/profile`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/profile`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -191,5 +191,5 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
