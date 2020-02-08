@@ -522,7 +522,7 @@ class Index extends Component {
                             </div>
                         </div>
                         }
-                        {this.props.staff.isLoadingStaff && <div className="loader loader-staff"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                        {this.props.staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                     </div>
                 </div>
