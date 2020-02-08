@@ -9,6 +9,7 @@ import '../../public/scss/log_in.scss'
 import { userActions } from '../_actions';
 import {isValidNumber} from "libphonenumber-js";
 import ReactPhoneInput from "react-phone-input-2";
+import {isValidEmailAddress} from "../_helpers/validators";
 
 class Index extends React.Component {
     constructor(props) {
@@ -26,6 +27,8 @@ class Index extends React.Component {
                 countryCode: '',
                 timezoneId: ''
             },
+            invalidFields: {},
+            touchedFields: {},
             authentication: props.authentication,
             submitted: false,
             agreed: false,
@@ -44,8 +47,8 @@ class Index extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
     }
 
     componentDidMount() {
@@ -68,21 +71,42 @@ class Index extends React.Component {
 
     handleChange(event) {
         const { name, value } = event.target;
-        const { user } = this.state;
+        const { user, invalidFields, touchedFields } = this.state;
 
-
-
-        if(name==='countryCode'){
-            this.setState({...this.state, user: {...user, [name]: value, timezoneId: '' }});
-        }else {
-            this.setState({
-                user: {
-                    ...user,
-                    [name]: value
-                }
-            });
-
+        if(name === 'countryCode') {
+            if (touchedFields.timezoneId) {
+                invalidFields.timezoneId = true;
+            }
+            user.timezoneId = '';
         }
+
+        if (touchedFields[name]) {
+            let isInvalid;
+            if (name === 'email') {
+                isInvalid = !value || !isValidEmailAddress(value);
+            } else if (name === 'companyName' || name === 'password') {
+                isInvalid = !value.replace(/[ ]/g, '')
+            } else {
+                isInvalid = !value;
+            }
+            invalidFields[name] = isInvalid
+        }
+
+        this.setState({ user: { ...user, [name]: value }, invalidFields });
+    }
+
+    handleBlur(event, extraName) {
+        let { name, value } = event.target;
+        name = extraName || name;
+
+        const { invalidFields, touchedFields } = this.state;
+        const newState = {}
+        newState.touchedFields = { ...touchedFields, [name]: true }
+        if (!value) {
+            newState.invalidFields = { ...invalidFields, [name]: true };
+        }
+
+        this.setState(newState)
     }
 
     handleSubmit(event) {
@@ -97,7 +121,7 @@ class Index extends React.Component {
     }
 
     render() {
-        const { user, emailIsValid, agreed, authentication } = this.state;
+        const { user, emailIsValid, agreed, authentication, invalidFields } = this.state;
 
         return (
             <div>
@@ -113,11 +137,11 @@ class Index extends React.Component {
                             <form name="form" onSubmit={this.handleSubmit}>
                                 <p>Зарегистрируйтесь и получите бесплатный пробный период 30 дней</p>
                                 <span>Название компании</span>
-                                <input type="text" className={'' + (user.countryCode && !user.companyName ? ' redBorder' : '')} name="companyName" value={user.companyName} onChange={this.handleChange} />
+                                <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')} onBlur={this.handleBlur}  name="companyName" value={user.companyName} onChange={this.handleChange} />
 
                                 <span>Cтрана</span>
                                 <div className="">
-                                    <select className={"custom-select"+((user.countryCode && user.countryCode===''  ? ' redBorder' : ''))} value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
+                                    <select className={"custom-select"+((invalidFields.countryCode  ? ' redBorder' : ''))} onBlur={this.handleBlur}  value ={user.countryCode}  name="countryCode"  onChange={this.handleChange}>
                                         <option value=''></option>
                                         <option value='BLR'>Беларусь</option>
                                         <option value='UKR'>Украина</option>
@@ -127,26 +151,26 @@ class Index extends React.Component {
                                 <span>Таймзона</span>
                                 <div className="">
                                     {user.countryCode === '' &&
-                                    <select className={"disabledField custom-select"+((user.countryCode && user.timezoneId===''  ? ' redBorder' : ''))} value={user.timezoneId}
+                                    <select className={"disabledField custom-select"+((invalidFields.timezoneId ? ' redBorder' : ''))} onBlur={this.handleBlur} value={user.timezoneId}
                                             name="timezoneId">
                                     </select>
                                     }
                                     {user.countryCode === 'BLR' &&
-                                    <select className="custom-select" value={user.timezoneId}
+                                    <select className={"custom-select"+((invalidFields.timezoneId ? ' redBorder' : ''))} onBlur={this.handleBlur} value={user.timezoneId}
                                             name="timezoneId" onChange={this.handleChange}>
                                         <option value=''>-</option>
                                         <option value='Europe/Minsk'>Europe/Minsk</option>
                                     </select>
                                     }
                                     {user.countryCode === 'UKR' &&
-                                    <select className="custom-select" value={user.timezoneId}
+                                    <select className={"custom-select"+((invalidFields.timezoneId ? ' redBorder' : ''))} onBlur={this.handleBlur} value={user.timezoneId}
                                             name="timezoneId" onChange={this.handleChange}>
                                         <option value=''>-</option>
                                         <option value='Europe/Kiev'>Europe/Kiev</option>
                                     </select>
                                     }
                                     {user.countryCode === 'RUS' &&
-                                    <select className="custom-select" value={user.timezoneId}
+                                    <select className={"custom-select"+((invalidFields.timezoneId ? ' redBorder' : ''))} onBlur={this.handleBlur} value={user.timezoneId}
                                             name="timezoneId" onChange={this.handleChange}>
                                         <option value=''>-</option>
                                         <option value='Europe/Moscow'>Europe/Moscow</option>
@@ -188,31 +212,33 @@ class Index extends React.Component {
                                     placeholder=""
                                     disableAreaCodes={true}
                                     countryCodeEditable={true}
-                                    inputClass={((!user.phone || isValidNumber(user.phone)) ? 'company_input ' : 'company_input redBorder')}
+                                    onBlur={(e) => this.handleBlur(e, 'phone')}
+                                    inputClass={(invalidFields.phone ? 'company_input redBorder' : 'company_input')}
                                     value={user.phone} onChange={phone => {
                                     this.setState({
                                         user: {
                                             ...user,
                                             phone: phone.replace(/[() ]/g, '')
-                                        }
+                                        },
+                                        invalidFields: { ...invalidFields, phone: (!phone || !isValidNumber(phone))}
                                     });
                                 }}/>
 
                                 <span>Введите email</span>
-                                <input type="text"   className={'' + (!this.isValidEmailAddress(user.email) && user.password && !user.email  ? ' redBorder' : '')} name="email" value={user.email} onChange={this.handleChange}
+                                <input type="text"   className={'' + (invalidFields.email ? ' redBorder' : '')} onBlur={this.handleBlur} name="email" value={user.email} onChange={this.handleChange}
                                        onKeyUp={() => this.setState({
-                                           emailIsValid: this.isValidEmailAddress(user.email)
+                                           emailIsValid: isValidEmailAddress(user.email)
                                        })}
                                 />
 
                                 <span>Пароль</span>
-                                <input type="password" className={'' + ((user.countryCode || user.companyName) && !user.password ? ' redBorder' : '')} name="password" value={user.password} onChange={this.handleChange} />
+                                <input type="password" className={'' + (invalidFields.password ? ' redBorder' : '')} onBlur={this.handleBlur} name="password" value={user.password} onChange={this.handleChange} />
 
                                 {/*<span>Подтвердите пароль</span>*/}
                                 {/*<input type="password"  className={'' + (user.password && !user.password_repeated || (user.password_repeated && user.password!==user.password_repeated) ? ' redBorder' : '')} name="password_repeated" value={user.password_repeated} onChange={this.handleChange} />*/}
                                 <label>
-                                    <input type="checkbox" onChange={()=>this.setState({...this.state, agreed: !agreed})} checked={agreed}/>
-                                    <span className={'' + ((user.countryCode || user.companyName) && !agreed ? ' redBorder' : '')}/>
+                                    <input type="checkbox" onChange={()=>this.setState({ agreed: !agreed, invalidFields: { ...invalidFields, agreed: agreed }})} name="agreed" onBlur={this.handleBlur} checked={agreed}/>
+                                    <span className={(invalidFields.agreed ? 'redBorder' : '')}/>
                                     Регистрируясь, вы принимаете условия <a
                                   href={`${config.baseUrl}/licence_agreement`}
                                   target="_blank"
@@ -231,8 +257,8 @@ class Index extends React.Component {
                                     authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)  &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
                                 }
-                                <button className={((!isValidNumber(user.phone) || !emailIsValid || !user.companyName || user.countryCode==='' || user.timezoneId==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
-                                        type={isValidNumber(user.phone) && emailIsValid && user.companyName && user.countryCode!=='' && user.timezoneId!=='' && agreed && 'submit'}
+                                <button className={((!isValidNumber(user.phone) || !emailIsValid || !user.companyName.replace(/[ ]/g, '') || user.countryCode==='' || user.timezoneId==='' || user.password.replace(/[ ]/g, '')==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
+                                        type={isValidNumber(user.phone) && emailIsValid && user.companyName.replace(/[ ]/g, '') && user.countryCode!=='' && user.timezoneId!=='' && user.password.replace(/[ ]/g, '')!=='' && agreed && 'submit'}
                                 >Регистрация
                                 </button>
 
@@ -246,10 +272,6 @@ class Index extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 }
 

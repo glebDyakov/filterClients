@@ -11,6 +11,7 @@ import moment from "moment";
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
+import {isValidEmailAddress} from "../../_helpers/validators";
 
 const staffErrors = {
     emailFound: 'validation.email.found'
@@ -53,7 +54,6 @@ class NewStaff extends React.Component {
         this.onCrop = this.onCrop.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.handleChangeMultiple = this.handleChangeMultiple.bind(this)
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
         this.handleDayClick = this.handleDayClick.bind(this)
         this.handleChangeCoStaff = this.handleChangeCoStaff.bind(this)
     }
@@ -134,7 +134,7 @@ class NewStaff extends React.Component {
                     name="email"
                     value={staff.email}
                     onChange={this.handleChange}
-                    className={((edit && !canUpdateEmail) ? "disabledField" : "") + (((!staff.email || this.isValidEmailAddress(staff.email)) && (staffs.errorMessageKey !== staffErrors.emailFound)) ? '': ' redBorder')}
+                    className={((edit && !canUpdateEmail) ? "disabledField" : "") + (((!staff.email || isValidEmailAddress(staff.email)) && (staffs.errorMessageKey !== staffErrors.emailFound)) ? '': ' redBorder')}
                     disabled={(edit && !canUpdateEmail)}
                 />
             </React.Fragment>
@@ -348,8 +348,8 @@ class NewStaff extends React.Component {
                                                                 <button className="small-button gray-button"
                                                                         type="button" onClick={this.closeModal} data-dismiss="modal">Отменить
                                                                 </button>
-                                                                <button className={((!staff.firstName || (staff.email && !this.isValidEmailAddress(staff.email)) || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
-                                                                        onClick={staff.firstName && (!staff.email || (staff.email && this.isValidEmailAddress(staff.email))) && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
+                                                                <button className={((!staff.firstName || (staff.email && !isValidEmailAddress(staff.email)) || staffs.adding) ? 'disabledField': '')+' small-button'} type="button"
+                                                                        onClick={staff.firstName && (!staff.email || (staff.email && isValidEmailAddress(staff.email))) && !staffs.adding && (edit ? this.updateStaff : this.addStaff)}
                                                                 >Сохранить
                                                                 </button>
                                                             </div>
@@ -372,7 +372,7 @@ class NewStaff extends React.Component {
         const { staff } = this.state;
 
         if (name === 'email') {
-            this.setState({ emailIsValid: this.isValidEmailAddress(value)})
+            this.setState({ emailIsValid: isValidEmailAddress(value)})
         }
 
         this.setState({ staff: {...staff, [name]: value }});
@@ -385,10 +385,6 @@ class NewStaff extends React.Component {
             this.setState({ staff: {...staff, 'costaffs': [{'staffId':value}] }});
 
 
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 
     apply(file) {

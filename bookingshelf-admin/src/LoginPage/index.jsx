@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../_actions';
 import '../../public/scss/log_in.scss'
 import {Link} from "react-router-dom";
+import {isValidEmailAddress} from "../_helpers/validators";
 declare var $ : any;
 
 
@@ -22,7 +23,6 @@ class Index extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this);
         this.sendRequest = this.sendRequest.bind(this);
         this.textInput = React.createRef();
         this.resetPassword = this.resetPassword.bind(this);
@@ -118,7 +118,7 @@ class Index extends React.Component {
                         <div className="block_bottom">
                             <span className="gray-text">У вас еще нет аккаунта?</span>
                             <Link to="/register">
-                                <button className="gray-button sign_up_open" type="button">Регистрация</button>
+                                <button onClick={() => this.props.dispatch(userActions.clearErrors())} className="gray-button sign_up_open" type="button">Регистрация</button>
                             </Link>
                         </div>
                     </div>
@@ -136,9 +136,9 @@ class Index extends React.Component {
                                     <input type="text" name="forgottenEmail" onChange={this.handleChange}
                                            value={forgottenEmail}
                                            onKeyUp={() => this.setState({
-                                               emailIsValid: this.isValidEmailAddress(forgottenEmail)
+                                               emailIsValid: isValidEmailAddress(forgottenEmail)
                                            })}
-                                           className={'' + (!this.isValidEmailAddress(forgottenEmail) && forgottenEmail !== '' ? ' redBorder' : '')}
+                                           className={'' + (!isValidEmailAddress(forgottenEmail) && forgottenEmail !== '' ? ' redBorder' : '')}
 
                                     />
                                     {authentication && authentication.error && authentication.error.code === 2 &&
@@ -167,10 +167,6 @@ class Index extends React.Component {
 
             </div>
         );
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 
     resetPassword () {
