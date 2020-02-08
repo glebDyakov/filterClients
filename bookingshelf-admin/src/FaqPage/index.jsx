@@ -79,13 +79,13 @@ class Index extends Component {
                                     <div className="col-4">
                                 <span>
                                     <strong>Вопрос</strong>
-Любая рассылка — то спам. Вы нарушаете закон?
+Любая рассылка — это спам. Вы нарушаете закон?
                                 </span>
                                     </div>
                                     <div className="col-8">
                                 <span>
                                     <strong className="sub-title">Ответ</strong>
-                                    <span className="massege-templates">Рассылка СМС не является нарушением "О рекламе", если получатели (Ваши клиенты) добровольно согласились на получение информации от Вас. Мы не занимаемся безадресными рассылками без подтверждения согласия получателей (спамом).</span>
+                                    <span className="massege-templates">Рассылка СМС не является нарушением закона "О рекламе", если получатели (Ваши клиенты) добровольно согласились на получение информации от Вас. Мы не занимаемся безадресными рассылками без подтверждения согласия получателей (спамом).</span>
                                 </span>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@ class Index extends Component {
                                     <div className="col-4">
                                 <span>
                                     <strong>Вопрос</strong>
-                                    Что будет? Если сообщение длиннее 160 или 70 символов?
+                                    Что будет, если сообщение длиннее 160 или 70 символов?
                                 </span>
                                     </div>
                                     <div className="col-8">
@@ -192,7 +192,7 @@ class Index extends Component {
                                 <div className="col-8">
                                         <span>
                                             <strong className="sub-title">Ответ</strong>
-                                            <span className="massege-templates">Чтобы перенести визит нажмите на шапку визита. В появившейся информации о визите, есть опция “перенести визит”.</span>
+                                            <span className="massege-templates">Чтобы перенести визит нажмите на шапку визита. В появившейся информации о визите есть опция “перенести визит”.</span>
                                         </span>
                                 </div>
                               </div>
@@ -220,7 +220,7 @@ class Index extends Component {
                                 <div className="col-8">
                                         <span>
                                             <strong className="sub-title">Ответ</strong>
-                                            <span className="massege-templates">Опция необходима если сотруднику надо отлучиться или просто вычеркнуть время из доступного для записи.</span>
+                                            <span className="massege-templates">Опция необходима, если сотруднику нужно отлучиться или просто вычеркнуть время из доступного для записи.</span>
                                         </span>
                                 </div>
                               </div>

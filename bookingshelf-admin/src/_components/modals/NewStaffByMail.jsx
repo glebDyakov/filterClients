@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import Modal from "@trendmicro/react-modal";
+import { isValidEmailAddress } from "../../_helpers/validators";
 
 class NewStaffByMail extends React.Component {
     constructor(props) {
@@ -12,11 +13,9 @@ class NewStaffByMail extends React.Component {
             staffs:  props.staff && props.staff
         };
 
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.addStaffEmail = this.addStaffEmail.bind(this);
         this.closeModal = this.closeModal.bind(this);
-
     }
 
     componentWillReceiveProps(newProps) {
@@ -48,9 +47,9 @@ class NewStaffByMail extends React.Component {
                                                name="email"
                                                value={emailNew}  onChange={this.handleChangeEmail}
                                                onKeyUp={() => this.setState({
-                                                   emailIsValid: this.isValidEmailAddress(emailNew)
+                                                   emailIsValid: isValidEmailAddress(emailNew)
                                                })}
-                                               className={'' + (emailNew && !this.isValidEmailAddress(emailNew) && emailNew!=='' ? ' redBorder' : '')}
+                                               className={'' + (emailNew && !isValidEmailAddress(emailNew) && emailNew!=='' ? ' redBorder' : '')}
                                         />
 
                                         {staffs && staffs.status === 200 &&
@@ -83,10 +82,6 @@ class NewStaffByMail extends React.Component {
         const { value } = e.target;
 
         this.setState({ ...this.state, emailNew: value });
-    }
-
-    isValidEmailAddress(address) {
-        return this.state.emailNew && (!! address.match(/.+@.+/));
     }
 
     addStaffEmail() {

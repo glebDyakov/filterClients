@@ -248,6 +248,12 @@ export function authentication(state = initialState, action) {
                 menu: null,
                 user: {}
             };
+        case userConstants.CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null,
+                status: null
+            }
         case userConstants.REGISTER_REQUEST:
             return {
                 ...state,

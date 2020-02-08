@@ -101,7 +101,6 @@ class Index extends Component {
         this.updateTimetable = this.updateTimetable.bind(this);
         this.deleteStaff = this.deleteStaff.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this);
         this.addStaffEmail = this.addStaffEmail.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
@@ -573,10 +572,6 @@ class Index extends Component {
         const { value } = e.target;
 
         this.setState({ ...this.state, emailNew: value });
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 
     setStaff(staff){

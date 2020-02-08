@@ -5,6 +5,7 @@ import ReactPhoneInput from "react-phone-input-2";
 import { isValidNumber } from 'libphonenumber-js'
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
+import {isValidEmailAddress} from "../../_helpers/validators";
 
 class NewClient extends React.Component {
     constructor(props) {
@@ -38,7 +39,6 @@ class NewClient extends React.Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
     }
 
     componentWillReceiveProps(newProps) {
@@ -105,9 +105,9 @@ class NewClient extends React.Component {
                                     <input type="email" placeholder="Например: ivanov@gmail.com" value={client.email}
                                            name="email" onChange={this.handleChange}
                                            onKeyUp={() => this.setState({
-                                               emailIsValid: this.isValidEmailAddress(client.email)
+                                               emailIsValid: isValidEmailAddress(client.email)
                                            })}
-                                           className={'' + (!this.isValidEmailAddress(client.email) && client.email!=='' ? ' redBorder' : '')}
+                                           className={'' + (!isValidEmailAddress(client.email) && client.email!=='' ? ' redBorder' : '')}
 
                                     />
                                 </div>
@@ -177,10 +177,6 @@ class NewClient extends React.Component {
         }
 
         this.setState({ client: {...client, [name]: newValue }});
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 
     toggleChange () {
