@@ -43,18 +43,18 @@
 }
 
 #online-booking {
-    top: 0;
-    transition: width ease-in-out 0.3s;
-    max-width: 621px;
-    border: 0px;
-    width: 0%;
-    position: fixed;
-    right: 0;
-    z-index: 1001;
-    height: 100%;
+  top: 0;
+  transition: width ease-in-out 0.3s;
+  max-width: 621px;
+  border: 0px;
+  width: 0%;
+  position: fixed;
+  right: 0;
+  z-index: 999902;
+  height: 100%;
 }
 #popup-shadow{
-  z-index: 1000;
+  z-index: 999901;
   display: none;
   position: fixed;
   top: 0;
@@ -65,8 +65,8 @@
 }
 .closer-modal{
   display: none;
-    width: 35px;
-    height: 35px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   border: 2px solid #3b4b5c;
   border-radius: 50%;
@@ -76,7 +76,7 @@
   top: 10px;
   cursor: pointer;
   background-color: #fff;
-  z-index: 1003;
+  z-index: 999903;
   right: 634px;
 }
 @media screen and (max-width: 620px){

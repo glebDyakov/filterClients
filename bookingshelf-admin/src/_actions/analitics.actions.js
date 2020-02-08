@@ -21,7 +21,14 @@ function getStaff() {
         analiticsService.getStaff()
             .then(
                 staffs => dispatch(success(staffs)),
-            );
+            ).catch((response => {
+            if (response.status === 401 && localStorage.getItem('user')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('menu');
+                localStorage.clear();
+                location.reload(true);
+            }
+        }));
     };
 
     function success(staffs) { return { type: analiticsConstants.GET_STAFFS_SUCCESS, staffs }}

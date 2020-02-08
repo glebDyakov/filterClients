@@ -8,7 +8,7 @@ if (document.getElementById('bb'))
     var iframe  = document.createElement('iframe');
     var span = document.createElement('span');
     var closer = document.createElement('span');
-    var hostUrl = location.host.includes('staging') ? 'https://staging.online-zapis.com' : 'https://online-zapis.com';
+    var hostUrl = location.host.includes('staging.online-zapis') ? 'https://staging.online-zapis.com' : 'https://online-zapis.com';
 
     link.rel  = 'stylesheet';
     link.type = 'text/css';
@@ -40,9 +40,12 @@ if (document.getElementById('bb'))
         closeFrame();
     });
 
-    my_elem.parentNode.insertBefore(iframe, my_elem);
-    my_elem.parentNode.insertBefore(span, my_elem);
-    my_elem.parentNode.insertBefore(closer, my_elem);
+    var body = document.getElementsByTagName("body")
+
+    body[0].appendChild(my_elem);
+    body[0].appendChild(iframe);
+    body[0].appendChild(span);
+    body[0].appendChild(closer);
 
     setTimeout(function () {
         document.getElementById('bb').style.visibility = 'visible';

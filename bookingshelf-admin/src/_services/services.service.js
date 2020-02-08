@@ -26,7 +26,7 @@ function get() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/servicegroups`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getServices() {
@@ -40,7 +40,7 @@ function getServices() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/services`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function add(params) {
@@ -56,7 +56,7 @@ function add(params) {
     };
 
     return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
         });
@@ -77,7 +77,7 @@ function update(params) {
     };
 
     return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
         });
@@ -96,7 +96,7 @@ function updateServiceGroups(params) {
     };
 
     return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function _delete(id) {
@@ -110,7 +110,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/servicegroups/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getService(idGroup, idService) {
@@ -124,7 +124,7 @@ function getService(idGroup, idService) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getServiceList(idGroup) {
@@ -138,7 +138,7 @@ function getServiceList(idGroup) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function addService(params, idGroup) {
@@ -154,7 +154,7 @@ function addService(params, idGroup) {
     };
 
     return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
         });
@@ -174,7 +174,7 @@ function updateService(params, idGroup) {
     };
 
     return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
         });
@@ -191,5 +191,5 @@ function deleteService(idGroup, idService) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

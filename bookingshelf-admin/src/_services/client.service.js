@@ -29,7 +29,7 @@ function addClient(params) {
     };
 
     return fetch(`${config.apiUrl}/clients`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(client => {
             return client;
         });
@@ -49,7 +49,7 @@ function updateClient(params) {
     };
 
     return fetch(`${config.apiUrl}/clients`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(client => {
             return client;
         });
@@ -67,7 +67,7 @@ function getClient() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function uploadFile(uploadFile) {
@@ -114,7 +114,7 @@ function getClientWithInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getClientV2(pageNum, searchValue, blacklisted) {
@@ -128,7 +128,7 @@ function getClientV2(pageNum, searchValue, blacklisted) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=10${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=10${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getActiveClientAppointments(clientId, pageNum) {
@@ -142,8 +142,8 @@ function getActiveClientAppointments(clientId, pageNum) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
-    // return fetch(`${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    // return fetch(`${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getActiveClient(clientId) {
@@ -157,7 +157,7 @@ function getActiveClient(clientId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${clientId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients/${clientId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteClient(id) {
@@ -171,5 +171,5 @@ function deleteClient(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/clients/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
