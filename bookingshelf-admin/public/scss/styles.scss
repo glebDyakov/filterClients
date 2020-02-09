@@ -308,6 +308,10 @@ input{
     margin-bottom: 5px;
     display: flex;
 
+    .react-tel-input input[type=tel], .react-tel-input input[type=text] {
+        height: 100%;
+    }
+
     .input-text2{
         padding: 0 15px;
         border: none;
@@ -3834,6 +3838,7 @@ textarea {
 }
 .react-tel-input input[type=tel], .react-tel-input input[type=text] {
     width: 100%!important;
+    margin-bottom: 10px!important;
 }
 .zIndex {
     div {

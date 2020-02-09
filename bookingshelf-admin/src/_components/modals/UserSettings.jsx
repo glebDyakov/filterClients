@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { isValidNumber } from 'libphonenumber-js'
-
 import {userActions} from "../../_actions";
-import ReactPhoneInput from "react-phone-input-2";
 import PropTypes from "prop-types";
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from "@trendmicro/react-modal";
+import PhoneInput from "../PhoneInput";
 
 class UserSettings extends React.Component {
     constructor(props) {
@@ -66,14 +64,14 @@ class UserSettings extends React.Component {
 
     handleSubmit(e) {
         const {alert}=this.props
-        const { authentication } = this.state;
+        const { authentication, isValidPhone } = this.state;
         const { dispatch } = this.props;
 
         e.preventDefault();
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && ((!authentication.user.profile.phone || authentication.user.profile.phone.length <=4) || isValidNumber(authentication.user.profile.phone)) && authentication.user.profile.email) {
+        if (authentication.user.profile.firstName && ((!authentication.user.profile.phone || authentication.user.profile.phone.length <=4) || isValidPhone) && authentication.user.profile.email) {
             const profile= {}
             Object.keys(authentication.user.profile).forEach(key => {
                 if (authentication.user.profile[key]) {
@@ -135,12 +133,18 @@ class UserSettings extends React.Component {
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Номер телефона</p>
-                                        <ReactPhoneInput
-                                            regions={['america', 'europe']}
-                                            disableAreaCodes={true}
-                                            value={ phone } defaultCountry={'by'} onChange={phone => {
-                                            this.setState({authentication:{...authentication, user: {...authentication.user, profile: {...authentication.user.profile, phone: phone.replace(/[() ]/g, '')} }}});
-                                        }}/>
+                                        <PhoneInput
+                                            value={phone}
+                                            onChange={phone => {
+                                                this.setState({
+                                                    authentication: {
+                                                        ...authentication,
+                                                        user: { ...authentication.user, profile: {...authentication.user.profile, phone } }
+                                                    }
+                                                });
+                                            }}
+                                            getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                        />
                                     </div>
                                 </div>
                                 <div className="row">

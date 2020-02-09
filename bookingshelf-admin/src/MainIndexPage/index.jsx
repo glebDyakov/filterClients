@@ -2,12 +2,10 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
 import {companyActions, notificationActions} from '../_actions';
-import { isValidNumber } from 'libphonenumber-js'
-
-import ReactPhoneInput from "react-phone-input-2";
 import Avatar from "react-avatar-edit";
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import {access} from "../_helpers/access";
+import PhoneInput from "../_components/PhoneInput";
 
 class Index extends Component {
     constructor(props) {
@@ -306,26 +304,20 @@ class Index extends Component {
                                             <span>Номер телефона владельца </span>
                                             {subcompany.defaultPhone===1 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
                                         </p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="check-box-group2 input-text2">
+                                        <div style={{ border: 'none' }} className="name_company_wrapper form-control">
+                                            <div style={{ border: 'none' }} className="check-box-group2 input-text2">
                                                 {/*<div className="input-text2">*/}
                                                 {/*    <input type="radio" aria-label="" name="defaultPhone1" disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}  checked={subcompany.defaultPhone===1} onChange={(e) => this.handleChangePhone(e, i)}/>*/}
                                                 {/*</div>*/}
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    // disableCountryCode={true}
-                                                    regions={['america', 'europe']}
-                                                    placeholder=""
-                                                    disableAreaCodes={true}
-                                                    countryCodeEditable={true}
-                                                    inputClass={(submitted && !subcompany.companyPhone1 || submitted && !isValidNumber(subcompany.companyPhone1) ? 'company_input redBorder' : 'company_input')}
-                                                    value={subcompany.companyPhone1} defaultCountry={'by'} onChange={companyPhone1 => {
+
+                                                <PhoneInput
+                                                    value={subcompany.companyPhone1}
+                                                    onChange={companyPhone1 => {
                                                         const newSubcompanies = subcompanies;
                                                         newSubcompanies[i].companyPhone1 = companyPhone1
-                                                        this.setState({
-                                                            subcompanies: newSubcompanies
-                                                        });
-                                                }}/>
+                                                        this.setState({ subcompanies: newSubcompanies });
+                                                    }}
+                                                />
                                             </div>
                                             <span className="company_counter">{subcompany.companyPhone1.length - 2}/20</span>
                                         </div>
@@ -335,28 +327,19 @@ class Index extends Component {
                                             <span>Номер телефона </span>
                                             {subcompany.defaultPhone===2 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
                                         </p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="check-box-group2 input-text2">
+                                        <div style={{ border: 'none' }} className="name_company_wrapper form-control">
+                                            <div style={{ border: 'none' }} className="check-box-group2 input-text2">
                                                 <div className="input-text2">
                                                     <input type="radio" aria-label="" name="defaultPhone2" disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}  checked={subcompany.defaultPhone===2} onChange={(e) => this.handleChangePhone(e, i)}/>
                                                 </div>
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    // disableCountryCode={true}
-                                                    regions={['america', 'europe']}
-                                                    placeholder=""
-                                                    className="company_input"
-                                                    disableAreaCodes={true}
-                                                    countryCodeEditable={false}
-                                                    inputClass={(submitted && !subcompany.companyPhone2 && subcompany.companyPhone2.length!==0 && !isValidNumber(subcompany.companyPhone2) ? 'company_input redBorder' : 'company_input')}
-
-                                                    value={subcompany.companyPhone2} defaultCountry={'by'} onChange={companyPhone2 => {
-                                                    const newSubcompanies = subcompanies;
-                                                    newSubcompanies[i].companyPhone2 = companyPhone2
-                                                    this.setState({
-                                                        subcompanies: newSubcompanies
-                                                    });
-                                                }}/>
+                                                <PhoneInput
+                                                    value={subcompany.companyPhone2}
+                                                    onChange={companyPhone2 => {
+                                                        const newSubcompanies = subcompanies;
+                                                        newSubcompanies[i].companyPhone2 = companyPhone2
+                                                        this.setState({ subcompanies: newSubcompanies });
+                                                    }}
+                                                />
                                             </div>
                                             <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
                                         </div>
@@ -364,28 +347,19 @@ class Index extends Component {
                                             <span>Номер телефона </span>
                                             {subcompany.defaultPhone===3 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
                                         </p>
-                                        <div className="name_company_wrapper form-control">
-                                            <div className="check-box-group2 input-text2">
+                                        <div style={{ border: 'none' }} className="name_company_wrapper form-control">
+                                            <div style={{ border: 'none' }} className="check-box-group2 input-text2">
                                                 <div className="input-text2">
                                                     <input type="radio" aria-label="" name="defaultPhone3" disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}  checked={subcompany.defaultPhone===3} onChange={(e) => this.handleChangePhone(e, i)}/>
                                                 </div>
-                                                <ReactPhoneInput
-                                                    enableLongNumbers={true}
-                                                    regions={['america', 'europe']}
-                                                    disableAreaCodes={true}
-                                                    placeholder=""
-                                                    className="company_input"
-                                                    // disableCountryCode={true}
-                                                    countryCodeEditable={false}
-                                                    inputClass={(submitted && !subcompany.companyPhone3  && subcompany.companyPhone3.length!==0 && !isValidNumber(subcompany.companyPhone3) ? 'company_input redBorder' : 'company_input')}
-
-                                                    value={subcompany.companyPhone3} defaultCountry={'by'} onChange={companyPhone3 => {
-                                                    const newSubcompanies = subcompanies;
-                                                    newSubcompanies[i].companyPhone3 = companyPhone3
-                                                    this.setState({
-                                                        subcompanies: newSubcompanies
-                                                    });
-                                                }}/>
+                                                <PhoneInput
+                                                    value={subcompany.companyPhone3}
+                                                    onChange={companyPhone3 => {
+                                                        const newSubcompanies = subcompanies;
+                                                        newSubcompanies[i].companyPhone3 = companyPhone3
+                                                        this.setState({ subcompanies: newSubcompanies });
+                                                    }}
+                                                />
                                             </div>
                                             <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                                         </div>

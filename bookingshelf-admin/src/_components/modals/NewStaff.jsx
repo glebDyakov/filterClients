@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ReactPhoneInput from "react-phone-input-2";
 import Avatar from 'react-avatar-edit'
 
-import { isValidNumber } from 'libphonenumber-js'
 import 'react-day-picker/lib/style.css';
 import '../../../public/css_admin/date.css'
 import moment from "moment";
@@ -12,6 +10,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
 import {isValidEmailAddress} from "../../_helpers/validators";
+import PhoneInput from "../PhoneInput";
 
 const staffErrors = {
     emailFound: 'validation.email.found'
@@ -189,13 +188,12 @@ class NewStaff extends React.Component {
                                                             </div>
 
                                                             <p>Номер телефона</p>
+                                                            <PhoneInput
+                                                                value={staff.phone}
+                                                                onChange={phone => this.setState({ staff: { ...staff, phone } })}
+                                                                getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                                            />
 
-                                                            <ReactPhoneInput
-                                                                regions={['america', 'europe']}
-                                                                disableAreaCodes={true}
-
-                                                                inputClass={(staff.phone && !isValidNumber(staff.phone) ? ' redBorder' : '')} value={ staff.phone }  defaultCountry={'by'} onChange={phone => this.setState({ staff: {...staff, phone: phone.replace(/[() ]/g, '')} })}
-                                                                />
                                                             <div className="mobile-visible">
                                                                 {emailInput}
                                                             </div>

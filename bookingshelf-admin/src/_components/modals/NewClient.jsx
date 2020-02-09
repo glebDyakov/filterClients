@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ReactPhoneInput from "react-phone-input-2";
-import { isValidNumber } from 'libphonenumber-js'
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import {isValidEmailAddress} from "../../_helpers/validators";
+import PhoneInput from "../PhoneInput";
 
 class NewClient extends React.Component {
     constructor(props) {
@@ -30,8 +29,7 @@ class NewClient extends React.Component {
         this.state={
             client: client,
             edit: props.edit,
-            clients: props.client,
-            isUserEditedPhone: false
+            clients: props.client
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -58,7 +56,7 @@ class NewClient extends React.Component {
     }
 
     render() {
-        const {client, edit, alert, clients}=this.state;
+        const { client, edit, alert, clients, isValidPhone }=this.state;
 
         return (
             <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -82,20 +80,11 @@ class NewClient extends React.Component {
                                     <input type="text" placeholder="Например: Иван" value={client.firstName}
                                            name="firstName" onChange={this.handleChange}/>
                                     <p className="title_block">Номер телефона</p>
-                                    <ReactPhoneInput
-                                        regions={['america', 'europe']}
-                                        disableAreaCodes={true}
-                                        inputClass={((!isValidNumber(client.phone) && this.state.isUserEditedPhone) ? ' redBorder' : '')}
-                                                     value={client.phone} required="true" defaultCountry={'by'}
-                                                     onChange={phone =>
-                                                         this.setState({
-                                                             client: {
-                                                                 ...client,
-                                                                 phone: phone.replace(/[() ]/g, '')
-                                                             },
-                                                             isUserEditedPhone: true
-                                                         })
-                                                     }/>
+                                    <PhoneInput
+                                        value={client.phone}
+                                        onChange={phone => this.setState({ client: { ...client, phone } })}
+                                        getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                    />
                                 </div>
                                 <div className="col-sm-6">
                                     <p className="title_block">Фамилия</p>
@@ -152,8 +141,8 @@ class NewClient extends React.Component {
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
 
-                            <button className={((clients.adding || !client.firstName || !isValidNumber(client.phone)) ? 'disabledField': '')+' button'} type="button"
-                                    onClick={!clients.adding && client.firstName && isValidNumber(client.phone) && (edit ? this.updateClient : this.addClient)}
+                            <button className={((clients.adding || !client.firstName || !isValidPhone) ? 'disabledField': '')+' button'} type="button"
+                                    onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addClient)}
                             >Сохранить
                             </button>
                         </div>
