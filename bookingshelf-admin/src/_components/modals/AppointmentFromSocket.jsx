@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from "moment";
-import {calendarActions} from "../../_actions";
+import {calendarActions, socketActions} from "../../_actions";
 import {withRouter} from "react-router";
 
 // import PropTypes from 'prop-types';
@@ -14,6 +14,7 @@ class AppointmentFromSocket extends React.Component {
 
         };
         this.goToPageCalendar = this.goToPageCalendar.bind(this)
+        this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this)
 
     }
     componentWillReceiveProps(nextProps, nextContext) {
@@ -47,11 +48,21 @@ class AppointmentFromSocket extends React.Component {
             this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify({ moved: false, approved: true })))
         }
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
-        this.props.closeAppointmentFromSocket()
+        this.closeAppointmentFromSocket()
+    }
+
+
+    closeAppointmentFromSocket(){
+        $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
+        setTimeout(() => {
+            this.props.dispatch(socketActions.alertSocketMessage(null));
+            $(".appointment-socket-modal ").removeClass('appointment-socket-modal-go-away');
+        }, 2000);
+
     }
 
     render() {
-        const {socket, appointmentSocketMessage, closeAppointmentFromSocket, staff, client} = this.props;
+        const {socket, appointmentSocketMessage, staff, client} = this.props;
         if (!socket.appointmentSocketMessage) {
             return null
         }
@@ -100,7 +111,7 @@ class AppointmentFromSocket extends React.Component {
                     <div style={{width: "65%"}}>
                         <div className="appointment-socket-modal-title" style={{position:"relative"}}>
                             <p>{socketTitle}</p>
-                            <button className="close" onClick={()=>closeAppointmentFromSocket()} />
+                            <button className="close" onClick={this.closeAppointmentFromSocket} />
                         </div>
                         <p className="service_name"><strong>
                             {payload && payload.serviceName}
@@ -141,5 +152,4 @@ function mapStateToProps(state) {
 }
 
 
-const connectedApp = connect(mapStateToProps)(withRouter(AppointmentFromSocket));
-export { connectedApp as AppointmentFromSocket };
+export default connect(mapStateToProps)(withRouter(AppointmentFromSocket));

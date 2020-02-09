@@ -106,7 +106,7 @@ ul{
     position: relative;
     height: 100%;
     overflow: hidden;
-    z-index: 1;
+   // z-index: 1;
 }
 .buttons {
     display: flex;
@@ -307,6 +307,10 @@ input{
     border-radius: 4px;
     margin-bottom: 5px;
     display: flex;
+
+    .react-tel-input input[type=tel], .react-tel-input input[type=text] {
+        height: 100%;
+    }
 
     .input-text2{
         padding: 0 15px;
@@ -3534,6 +3538,7 @@ textarea {
     overflow-y:auto;
 
     @media screen and(max-width: 750px){
+        max-height: calc(100% - 150px);
         overflow: auto;
         max-width: 700px;
         display: block;
@@ -3833,6 +3838,7 @@ textarea {
 }
 .react-tel-input input[type=tel], .react-tel-input input[type=text] {
     width: 100%!important;
+    margin-bottom: 10px!important;
 }
 .zIndex {
     div {
@@ -4020,6 +4026,23 @@ textarea {
     box-shadow: unset!important;
 }
 
+.clientEye{
+    background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+    background-size: contain;
+    height: 18px;
+    width: 18px !important;
+    right: 5px;
+    cursor: pointer;
+    @media screen and(max-width: 720px) {
+        display: none!important;
+
+    }
+    &-info {
+        display: block !important;
+    }
+
+}
+
 @media screen and (max-width: 700px){
     .mod {
         max-width: 100%!important;
@@ -4034,6 +4057,9 @@ textarea {
 .modal---modal-overlay---3D5Nr{
     z-index: 1!important;
 }
+.modal---modal-content---3pwnC{
+    max-height: 85vh;
+}
 .modal---modal-overlay---3D5Nr, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal{
     //margin-right: -125px;
     margin-left: 250px;
@@ -4044,6 +4070,27 @@ textarea {
         margin: 0;
     }
 }
+.loader {
+    z-index: 5;
+    width: calc(100% - 220px);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background: transparent;
+    top: 0;
+    left: 220px;
+    @media screen and(max-width: $tablet-width) {
+        width: 100%;
+        left: 0;
+    }
+}
+
+.loader img{
+    width: 100px;
+    margin: 0 auto;
+}
+
 .loader-client{
     margin-top: 140px;
     margin-left: 40px;
@@ -4115,3 +4162,98 @@ textarea {
     50% { opacity: 0 }
     100% { opacity: 1 }
 }
+
+.appointment-socket-modal-go-away {
+    transform: translate(30px, -77vh) scale(0.2, 0.2);
+    animation-duration: 1s;
+    animation-name: moveMessage;
+    opacity: 0;
+    @media screen and(max-width: 960px){
+        transform: translate(-110px, -86vh) scale(0.2, 0.2);
+    }
+
+}
+@keyframes moveMessage {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.appointment-socket-modal{
+    border-radius: 5px;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    box-shadow: 0 5px 10px 0 rgba(188, 191, 205, 0.44);
+    z-index: 9999;
+    width: 300px;
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    background-color: rgba(10, 19, 48, 0.95);
+
+    @media screen and(max-width: 960px){
+        left: 10px;
+    }
+    @media screen and(max-width: 480px){
+        left: 10px;
+        width: 280px;
+    }
+    .close {
+        margin: -10px 0px 0 0!important;
+        background: url(../img/icons/cancel.svg) no-repeat center;
+        background-size: contain;
+        padding: 0;
+        //margin: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-width: 0;
+        height: 20px;
+        min-height: 35px;
+        width: 10px!important;
+
+        span{
+            font-size: 2rem;
+        }
+    }
+    .appointment-socket-modal-title{
+        width: 100%;
+        p{
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            border-bottom: 3px solid #F33;
+            width: fit-content;
+        }
+    }
+
+    .service_item{
+        padding: 5px 5%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        *{
+            color: white;
+            font-size: 0.9em;
+        }
+        .img-container{
+            display: flex;
+        }
+        .img{
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: white;
+            margin: auto;
+        }
+
+    }
+}
+

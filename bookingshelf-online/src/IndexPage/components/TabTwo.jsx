@@ -11,7 +11,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const { searchValue } = this.state;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
@@ -64,6 +64,9 @@ class TabTwo extends Component {
                         setScreen(1);
                         refreshTimetable();
                         setDefaultFlag();
+                        if (!isStartMovingVisit) {
+                            clearSelectedServices()
+                        }
                     }}>Назад</span>
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
@@ -96,7 +99,7 @@ class TabTwo extends Component {
                                        aria-label="Search" ref={input => this.search = input} onChange={(e) => this.setState({ searchValue: e.target.value })}/>
                             </div>
                         </div>
-                        <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>
+                        <div style={{ maxHeight: `calc(100% - ${flagAllStaffs ? 90 : 200}px)`, overflowY: 'auto' }}>
                             {serviceGroups.map(serviceGroup => {
                                 let { services } = serviceGroup
                                 let condition =
@@ -197,7 +200,7 @@ class TabTwo extends Component {
                     }
                     refreshTimetable();
                 }}>
-                    <button className="button load">Продолжить</button>
+                    <button style={{ marginTop: '4px', marginBottom: '20px' }} className="button load">Продолжить</button>
                 </div>}
             </div>
         );

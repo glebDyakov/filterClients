@@ -1,13 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ReactPhoneInput from "react-phone-input-2";
-import { isValidNumber } from 'libphonenumber-js'
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import {access} from "../../_helpers/access";
 import ReactPaginate from "react-paginate";
-import moment from "./AddAppointment";
 import {clientActions} from "../../_actions";
 
 class AddBlackList extends React.Component {
@@ -36,7 +33,6 @@ class AddBlackList extends React.Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.isValidEmailAddress = this.isValidEmailAddress.bind(this)
     }
 
     componentWillReceiveProps(newProps) {
@@ -191,10 +187,6 @@ class AddBlackList extends React.Component {
                 </div>
             </Modal>
         )
-    }
-
-    isValidEmailAddress(address) {
-        return !! address.match(/.+@.+/);
     }
 
     toggleChange () {

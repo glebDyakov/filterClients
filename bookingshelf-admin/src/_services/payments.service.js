@@ -23,7 +23,7 @@ function getInvoiceList() {
     let dataFrom = moment().subtract(1,'year').format('x');
     let dataTo = moment().add(1,'year').format('x');
 
-    return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getInvoice(invoiceId) {
@@ -37,7 +37,7 @@ function getInvoice(invoiceId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/invoices/${invoiceId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/invoices/${invoiceId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getPackets() {
@@ -51,7 +51,7 @@ function getPackets() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/packets`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/packets`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 function makePayment(invoiceId) {
     const requestOptions = {
@@ -65,7 +65,7 @@ function makePayment(invoiceId) {
     };
 
     return fetch(`${config.apiUrl}/invoices/${invoiceId}/payments`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }
 function addInvoice(invoice) {
     const requestOptions = {
@@ -80,5 +80,5 @@ function addInvoice(invoice) {
     };
 
     return fetch(`${config.apiUrl}/invoices`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }

@@ -1,15 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from "react-router";
 import {calendarActions, companyActions, menuActions, userActions, staffActions, clientActions} from "../_actions";
-import {access} from "../_helpers/access";
 import moment from "moment";
 import Link from "react-router-dom/es/Link";
 import classNames from "classnames";
 import {UserSettings} from "./modals/UserSettings";
+import {HeaderMain} from "./HeaderMain";
+import AppointmentFromSocket from "./modals/AppointmentFromSocket";
 
-class SidebarMain extends Component {
+
+class SidebarMain extends React.Component {
     constructor(props) {
         super(props);
         this.state={
@@ -285,116 +287,118 @@ class SidebarMain extends Component {
         })
 
         return (
-            <div>
-            <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
+            <React.Fragment>
+                <HeaderMain />
+                <AppointmentFromSocket />
 
-                <li className="mob-menu-personal">
-                    <div className="logo_mob"/>
-                    <div className="mob-firm-name" onClick={(e)=> {
-                        if (e.target.className !== 'notification-mob') {
-                            this.onOpen()
-                        }
-                    }} style={{height: "45px"}}>
-                        <div className="img-container">
-                            <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                <ul className={"sidebar "+(collapse &&' sidebar_collapse')}>
+                    <li className="mob-menu-personal">
+                        <div className="logo_mob"/>
+                        <div className="mob-firm-name" onClick={(e)=> {
+                            if (e.target.className !== 'notification-mob') {
+                                this.onOpen()
+                            }
+                        }} style={{height: "45px"}}>
+                            <div className="img-container">
+                                <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
+                            </div>
+                            <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
+                                {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
+                            </p>
+
+                            <span  onClick={()=>this.logout()} className="log_in"/>
+                            <span className="notification-mob" onClick={() => {
+                                $('#__replain_widget').addClass('__replain_widget_show')
+                                $('#__replain_widget_iframe').contents().find(".btn-img").click()
+                                $("#__replain_widget_iframe").contents().find(".hide-chat").bind("click", function() {
+                                    $('#__replain_widget').removeClass('__replain_widget_show')
+                                });
+                            }}/>
+                            {/*<div className="setting_mob">*/}
+                            {/*    <a className="notification">Уведомления</a>*/}
+                            {/*    <a className="setting" data-toggle="modal" data-target=".modal_user_setting" onClick={()=>this.onOpen()}>Настройки</a>*/}
+                            {/*</div>*/}
                         </div>
-                        <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
-                            {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
-                        </p>
-
-                        <span  onClick={()=>this.logout()} className="log_in"/>
-                        <span className="notification-mob" onClick={() => {
-                            $('#__replain_widget').addClass('__replain_widget_show')
-                            $('#__replain_widget_iframe').contents().find(".btn-img").click()
-                            $("#__replain_widget_iframe").contents().find(".hide-chat").bind("click", function() {
-                                $('#__replain_widget').removeClass('__replain_widget_show')
-                            });
-                        }}/>
-                        {/*<div className="setting_mob">*/}
-                        {/*    <a className="notification">Уведомления</a>*/}
-                        {/*    <a className="setting" data-toggle="modal" data-target=".modal_user_setting" onClick={()=>this.onOpen()}>Настройки</a>*/}
-                        {/*</div>*/}
-                    </div>
-                </li>
-
-                <li className="arrow_collapse sidebar_list_collapse" onClick={() => this.toggleCollapse('true')} style={{'display':collapse?'none':'block'}}/>
-                <li className="arrow_collapse sidebar_list_collapse-out" onClick={() => this.toggleCollapse('false')} style={{'display':collapse?'block':'none'}}/>
-                {authentication && authentication.menu && authentication.user && authentication.user.menu &&
-                menu && menu.menuList && menu.menuList.map((item, keyStore)=>{
-                    return(
-                    authentication.user.menu.map(localItem=>{
-                        return(
-                        localItem.id===item.id &&
-                    <li className={path === item.url ? 'active' : ''}
-                        key={keyStore}>
-                        <a onClick={(e) => this.handleClick(item.url, e)}>
-                            <img
-                                src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
-                                alt=""/>
-                            <span>{item.name}</span>
-                            {keyStore===0 &&
-                            ((count && count.appointments && count.appointments.count>0) ||
-                            (count && count.canceled && count.canceled.count>0) ||
-                            (count && count.moved && count.moved.count>0))
-                            && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
-
-                            {item.id === 'email_menu_id' && (
-                              <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isNotificationDropdown')}>
-
-                                  { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
-                                    || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
-                                  && <React.Fragment>
-                                      <span className="sidebar-notification"/>
-                                      {isNotificationDropdown && <ul className="sidebar-notification-dropdown">
-                                          {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
-                                          <li>Баланс SMS ниже {(localStorage.getItem('notifyCount') || 200)}</li>
-                                          }
-                                          {notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200) &&
-                                          <li>Баланс Email ниже {(localStorage.getItem('notifyCount') || 200)}</li>
-                                          }
-                                      </ul>}
-                                  </React.Fragment> }
-
-                              </div>
-                            )}
-
-                            {item.id === 'payments_menu_id' && (
-                              <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isPaymentDropdown')}>
-
-                                  {packetShowCondition && <React.Fragment>
-                                      <span className="sidebar-notification"/>
-                                      {isPaymentDropdown && (
-                                        <ul className="sidebar-notification-dropdown">
-                                          <li>{packetEndText}</li>
-                                        </ul>
-                                      )}
-                                  </React.Fragment>
-                                  }
-
-                              </div>
-                            )}
-                        </a>
                     </li>
-                    );})
 
-                );})}
+                    <li className="arrow_collapse sidebar_list_collapse" onClick={() => this.toggleCollapse('true')} style={{'display':collapse?'none':'block'}}/>
+                    <li className="arrow_collapse sidebar_list_collapse-out" onClick={() => this.toggleCollapse('false')} style={{'display':collapse?'block':'none'}}/>
+                    {authentication && authentication.menu && authentication.user && authentication.user.menu &&
+                    menu && menu.menuList && menu.menuList.map((item, keyStore)=>{
+                        return(
+                        authentication.user.menu.map(localItem=>{
+                            return(
+                            localItem.id===item.id &&
+                        <li className={path === item.url ? 'active' : ''}
+                            key={keyStore}>
+                            <a onClick={(e) => this.handleClick(item.url, e)}>
+                                <img
+                                    src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
+                                    alt=""/>
+                                <span>{item.name}</span>
+                                {keyStore===0 &&
+                                ((count && count.appointments && count.appointments.count>0) ||
+                                (count && count.canceled && count.canceled.count>0) ||
+                                (count && count.moved && count.moved.count>0))
+                                && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
 
-                <li className="mob-menu-closer">
-                    <div>
-                        <img src={`${process.env.CONTEXT}public/img/closer_mob.svg`} alt=""/>
-                    </div>
-                </li>
+                                {item.id === 'email_menu_id' && (
+                                  <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isNotificationDropdown')}>
 
-                {authentication && authentication.user && authentication.user && authentication.user.bookingPage && <div className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && 'Id компании:'} <a target="_blank"
-                                                            href={"https://online-zapis.com/online/" + authentication.user.bookingPage}
-                                                            className="">{authentication.user.bookingPage}
-                </a>
-                </div>}
-                <div className="questions"><Link to="/faq">
-                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information.svg`} alt=""/>
-                </Link></div>
+                                      { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
+                                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
+                                      && <React.Fragment>
+                                          <span className="sidebar-notification"/>
+                                          {isNotificationDropdown && <ul className="sidebar-notification-dropdown">
+                                              {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
+                                              <li>Баланс SMS ниже {(localStorage.getItem('notifyCount') || 200)}</li>
+                                              }
+                                              {notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200) &&
+                                              <li>Баланс Email ниже {(localStorage.getItem('notifyCount') || 200)}</li>
+                                              }
+                                          </ul>}
+                                      </React.Fragment> }
 
-            </ul>
+                                  </div>
+                                )}
+
+                                {item.id === 'payments_menu_id' && (
+                                  <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isPaymentDropdown')}>
+
+                                      {packetShowCondition && <React.Fragment>
+                                          <span className="sidebar-notification"/>
+                                          {isPaymentDropdown && (
+                                            <ul className="sidebar-notification-dropdown">
+                                              <li>{packetEndText}</li>
+                                            </ul>
+                                          )}
+                                      </React.Fragment>
+                                      }
+
+                                  </div>
+                                )}
+                            </a>
+                        </li>
+                        );})
+
+                    );})}
+
+                    <li className="mob-menu-closer">
+                        <div>
+                            <img src={`${process.env.CONTEXT}public/img/closer_mob.svg`} alt=""/>
+                        </div>
+                    </li>
+
+                    {authentication && authentication.user && authentication.user && authentication.user.bookingPage && <div className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && 'Id компании:'} <a target="_blank"
+                                                                href={"https://online-zapis.com/online/" + authentication.user.bookingPage}
+                                                                className="">{authentication.user.bookingPage}
+                    </a>
+                    </div>}
+                    <div className="questions"><Link to="/faq">
+                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information.svg`} alt=""/>
+                    </Link></div>
+
+                </ul>
                 <div className="modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
                         <div className="modal-content modal-height">
@@ -514,7 +518,7 @@ class SidebarMain extends Component {
                 onClose={this.onClose}/>
                 }
 
-            </div>
+            </React.Fragment>
 
 
 
@@ -627,5 +631,4 @@ SidebarMain.proptypes = {
     location: PropTypes.object.isRequired,
 };
 
-const connectedApp = connect(mapStateToProps)(withRouter(SidebarMain));
-export { connectedApp as SidebarMain };
+export default connect(mapStateToProps)(withRouter(SidebarMain));

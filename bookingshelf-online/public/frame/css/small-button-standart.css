@@ -1,6 +1,6 @@
 .small-button-standart {
   border-radius: 0%;
-  z-index: 1000000;
+  z-index: 999900;
   min-width: 30px;
   font-size: 16px;
   min-height: 30px;

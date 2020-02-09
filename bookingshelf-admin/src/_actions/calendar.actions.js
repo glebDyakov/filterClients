@@ -39,7 +39,7 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
             .then(
                 appointment => {
                     dispatch(success(appointment, staffId));
-                    setTimeout(()=>dispatch(successTime(1)), 3000);
+                    setTimeout(()=>dispatch(successTime(1)), 500);
                     // dispatch(staffActions.getTimetableStaffs(time1, time2));
                     // dispatch(getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
                     // dispatch(companyActions.getAppointmentsCountMarkerIncrement())
@@ -51,7 +51,7 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
                 }
             );
     };
-    function request(appointment) { return { type: calendarConstants.ADD_APPOINTMENT_REQUEST, appointment } }
+    function request(appointment) { return { type: calendarConstants.ADD_APPOINTMENT_REQUEST, appointment, isLoading: false } }
     function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
@@ -155,14 +155,14 @@ function editAppointment2(params, id) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_2_FAILURE, error } }
 }
 
-function updateAppointment(id, params, withoutNotify, isAppointmentUpdated) {
+function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLoading = true) {
     return dispatch => {
-        dispatch(request());
+        dispatch(request(isLoading));
         calendarService.updateAppointment(id, params, withoutNotify)
             .then(
                 appointment => {
                         dispatch(success());
-                        dispatch(companyActions.getNewAppointments())
+                        //dispatch(companyActions.getNewAppointments())
                 },
                 error => {
                     dispatch(failure(error));
@@ -170,7 +170,7 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated) {
                 }
             );
     };
-    function request(reservedTime) { return { type: calendarConstants.UPDATE_APPOINTMENT, reservedTime } }
+    function request(isLoading) { return { type: calendarConstants.UPDATE_APPOINTMENT, isLoading } }
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
@@ -222,7 +222,7 @@ function editAppointmentTime(params, time1, time2) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function getAppointments(dateFrom, dateTo) {
+function getAppointments(dateFrom, dateTo, isLoading = true) {
 
     let normalViewTime = moment(parseInt(dateFrom)).format('hh:ss');
     if(normalViewTime==='03:00'){
@@ -230,14 +230,14 @@ function getAppointments(dateFrom, dateTo) {
     }
 
     return dispatch => {
-        dispatch(request());
+        dispatch(request(isLoading));
         calendarService.getAppointments(dateFrom, dateTo)
             .then(
                 appointments => dispatch(success(appointments)),
                 () => dispatch(failure())
             );
     };
-    function request() { return { type: calendarConstants.GET_APPOINTMENT_REQUEST} }
+    function request(isLoading) { return { type: calendarConstants.GET_APPOINTMENT_REQUEST, isLoading } }
     function success(appointments) { return { type: calendarConstants.GET_APPOINTMENT_SUCCESS, appointments } }
     function failure() { return { type: calendarConstants.GET_APPOINTMENT_FAILURE } }
 }
@@ -307,7 +307,7 @@ function getReservedTime(dateFrom, dateTo) {
 
 function deleteAppointment(id, withoutNotify) {
     return dispatch => {
-        dispatch(request())
+        // dispatch(request())
         calendarService.deleteAppointment(id, withoutNotify)
             .then(
                 client => {

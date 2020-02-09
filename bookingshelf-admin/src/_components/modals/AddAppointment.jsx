@@ -5,7 +5,6 @@ import TimePicker from 'rc-time-picker';
 
 import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
-import 'moment-duration-format';
 import PropTypes from "prop-types";
 import {access} from "../../_helpers/access";
 import {clientActions, staffActions} from "../../_actions";
@@ -332,7 +331,7 @@ class AddAppointment extends React.Component {
         const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services, servicesSearch } = this.state;
         const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
 
-        const result = services[index].servicesList
+        const result = services[index].servicesList && services[index].servicesList
             .filter(service => service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId))
             .filter(service => service.name.toLowerCase().includes(servicesSearch.toLowerCase()))
             .filter(service => {
@@ -749,7 +748,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, authentication, services: servicesFromProps } =this.props;
+        const { status, adding, staff: staffFromProps, clients: clientsFromProps, services: servicesFromProps } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs
@@ -1243,7 +1242,7 @@ class AddAppointment extends React.Component {
                 customId: '',
             }]
         });
-        this.closeModal();
+        setTimeout(() => this.closeModal(), 500);
         const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
         return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked ? clientChecked.clientId : -1, isAddCostaff ? finalCoStaffs : [])
     }
@@ -1263,7 +1262,7 @@ class AddAppointment extends React.Component {
             currency: serviceCurrent[i].service.currency
         } });
 
-
+        setTimeout(() => this.closeModal(), 500);
         this.props.dispatch(calendarActions.editAppointment2(JSON.stringify(appointmentNew), appointment[0].appointmentId))
         // let timeout = 0
         //

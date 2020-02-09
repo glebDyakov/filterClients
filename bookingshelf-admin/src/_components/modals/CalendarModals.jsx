@@ -4,15 +4,13 @@ import {NewClient} from "./NewClient";
 import {ClientDetails} from "./ClientDetails";
 import {AddAppointment} from "../../_components/modals/AddAppointment";
 import {ReservedTime} from "./ReservedTime";
-import {UserSettings} from "./UserSettings";
-import {UserPhoto} from "./UserPhoto";
 import {ApproveAppointment} from "./ApproveAppointment";
 import {DeleteAppointment} from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
 import {MoveVisit} from "./MoveVisit";
 import {StartMovingVisit} from "./StartMovingVisit";
 import moment from 'moment';
-import {clientActions, staffActions} from "../../_actions";
+import {staffActions} from "../../_actions";
 
 
 class CalendarModals extends Component {
@@ -28,7 +26,6 @@ class CalendarModals extends Component {
             appointmentEdited: null,
             reserved: false,
             minutesReservedtime:[],
-            userSettings: false,
             staffId: null
 
         }
@@ -44,7 +41,6 @@ class CalendarModals extends Component {
         this.newReservedTime = this.newReservedTime.bind(this);
         this.deleteReserve = this.deleteReserve.bind(this);
         this.deleteAppointment = this.deleteAppointment.bind(this);
-        this.onUserSettingsClose = this.onUserSettingsClose.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
     }
     updateClient(client){
@@ -88,11 +84,6 @@ class CalendarModals extends Component {
         this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
-    onUserSettingsClose() {
-        this.setState({ userSettings :false });
-        this.props.onClose();
-    }
-
     newReservedTime(staffId, reservedTime) {
         this.props.newReservedTime(staffId, reservedTime);
     }
@@ -125,10 +116,10 @@ class CalendarModals extends Component {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId, userSettings: userSettingsFromProps
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId,
         } = this.props;
 
-        const {newClientModal, appointmentModal, reserved, userSettings, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
+        const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
                     {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
@@ -157,7 +148,7 @@ class CalendarModals extends Component {
                         onClose={this.onCloseClient}
                     />
                     }
-                    {(appointmentModal || appointmentModalFromProps) && staff.isAvailableTimesChecked &&
+                    {(appointmentModal || appointmentModalFromProps) &&
                     <AddAppointment
                         clients={clients}
                         checkedUser={checkedUser}
@@ -201,12 +192,6 @@ class CalendarModals extends Component {
                         onClose={this.onCloseReserved}
                     />
                     }
-                    {(userSettingsFromProps || userSettings) &&
-                    <UserSettings
-                        onClose={this.onUserSettingsClose}
-                    />
-                    }
-                    <UserPhoto/>
                     <MoveVisit />
                     <StartMovingVisit />
                     <ApproveAppointment

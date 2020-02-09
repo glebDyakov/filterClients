@@ -65,7 +65,7 @@ class UserPhoto extends React.Component {
                                             <label className="drop_target">
                                                 <div className="image_preview">
                                                     <div className="existed-image">
-                                                        <img src={authentication && authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
+                                                        <img src={authentication && authentication.user && authentication.user.profile && authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
                                                     </div>
                                                     <Avatar

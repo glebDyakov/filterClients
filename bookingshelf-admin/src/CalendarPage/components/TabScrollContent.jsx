@@ -174,6 +174,7 @@ class TabScroll extends Component{
         );
         const prevVisitStaffId = activeItemWithStaffId.staff.staffId
         this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId })
+        this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
     }
 
     moveVisit(movingVisitStaffId, time) {
@@ -265,7 +266,11 @@ class TabScroll extends Component{
                     moved: true,
                     adminMoved: true,
                     movedOnline: false
-                }))
+                }),
+                false,
+                false,
+                false
+                )
             );
 
             // if (movingVisit.hasCoAppointments) {
@@ -415,6 +420,7 @@ class TabScroll extends Component{
 
                                                     {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                                                     <span className="service_time">
+                                                        {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
                                                                                     {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
                                                         {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                                 </span>
@@ -443,7 +449,7 @@ class TabScroll extends Component{
                                                             width: '100%',
                                                             zIndex: 9990
                                                         }} />
-                                                        <img className="drag-vert" src={`${process.env.CONTEXT}public/img/drag-vert.png`}/>
+                                                        <span className="drag-vert" />
                                                     </React.Fragment>
                                                     }
                                                 </p>
@@ -460,7 +466,6 @@ class TabScroll extends Component{
 
                                                         {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
                                                             <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                            {(((authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment &&
                                                             <span
                                                                 className="clientEye clientEye-info"
                                                                 data-target=".client-detail"
@@ -469,7 +474,6 @@ class TabScroll extends Component{
                                                                     $('.client-detail').modal('show')
                                                                     handleUpdateClient(appointment.clientId)
                                                                 }} />
-                                                            }
                                                         </p>}
                                                         {appointment.clientId && <p className="name">{appointment.clientName}</p>}
                                                         {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
@@ -528,8 +532,6 @@ class TabScroll extends Component{
                                                                 <div style={{
                                                                     marginTop: '2px',
                                                                 }}
-                                                                     data-toggle="modal"
-                                                                     data-target=".start-moving-modal"
                                                                      onClick={() => this.startMovingVisit(appointment, totalDuration)}
                                                                      className="msg-inner-button-wrapper"
                                                                 >

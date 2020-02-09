@@ -93,7 +93,10 @@ class TabFive extends PureComponent {
                 {clientActivationId ? (
                   <React.Fragment>
                     <p style={{ marginBottom: '0' }} className="modal_title">Подтверждение нового клиента</p>
-                    <p>Код подтверждения был отправлен на номер {group.phone}. Введите код ниже:</p>
+                    <p style={{ display: 'flex', alignItems: 'center' }}>
+                        <img style={{ height: '22px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                        /> <span>Код подтверждения был отправлен на номер {group.phone}. Введите код ниже:</span>
+                    </p>
                     <input type="text" placeholder="Код" name="enteredCode" onChange={this.handleActivationChange}
                            value={enteredCode}
                            className={(enteredCodeError ? ' redBorder' : '')}
@@ -107,6 +110,10 @@ class TabFive extends PureComponent {
                            className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
                     <p>Телефон</p>
+                    <p style={{ display: 'flex' }}>
+                        <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                       /> <span>На этот номер вы получите SMS с кодом подтверждения и информацию о записи</span>
+                    </p>
                     <div className="phones_country">
                       <ReactPhoneInput
                         regions={['america', 'europe']}

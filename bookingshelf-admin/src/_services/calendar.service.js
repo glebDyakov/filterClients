@@ -39,7 +39,7 @@ function addAppointment(params, serviceId, staffId, clientId, coStaffs) {
     })
 
     return fetch(`${config.apiUrl}/staffs/${staffId}${extraStaffIds}/${!!clientId ? `clients/${clientId}/` : ''}appointments`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(appointment => {
             return appointment;
         });
@@ -58,7 +58,7 @@ function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, w
     };
 
     return fetch(`${config.apiUrl}/staffs/${staffId}/${!!clientId ? `clients/${clientId}/` : ''}appointments/${mainAppointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function addReservedTime(params, staffId) {
@@ -74,7 +74,7 @@ function addReservedTime(params, staffId) {
     };
 
     return fetch(`${config.apiUrl}/staffs/${staffId}/reservedtimes`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(reservedTime => {
             return reservedTime;
         });
@@ -93,7 +93,7 @@ function editAppointment(params) {
     };
 
     return fetch(`${config.apiUrl}/appointments`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function editAppointment2(params, id) {
@@ -109,7 +109,7 @@ function editAppointment2(params, id) {
     };
 
     return fetch(`${config.apiUrlv2}/appointments/${id}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function approveAppointment(appointmentId, params) {
@@ -125,7 +125,7 @@ function approveAppointment(appointmentId, params) {
     };
 
     return fetch(`${config.apiUrl}/appointments/${appointmentId}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function updateAppointment(appointmentId, params, withoutNotify) {
@@ -141,7 +141,7 @@ function updateAppointment(appointmentId, params, withoutNotify) {
     };
 
     return fetch(`${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(appointment => {
             return appointment;
         });
@@ -161,7 +161,7 @@ function approveAllAppointment(approved, canceled, params) {
     const dateFrom = moment('2018-01-01', 'YYYY-MMMM-DD').format('x')
     const dateTo = moment().add(7, 'month').endOf('month').format('x')
     return fetch(`${config.apiUrl}/appointments?dateFrom=${dateFrom}&dateTo=${dateTo}&canceled=${canceled}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function approveMovedAppointment(params) {
@@ -179,7 +179,7 @@ function approveMovedAppointment(params) {
     const dateFrom = moment('2018-01-01', 'YYYY-MMMM-DD').format('x')
     const dateTo = moment().add(7, 'month').endOf('month').format('x')
     return fetch(`${config.apiUrl}/appointments/moved?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
 }
 
 function deleteAppointment(appointmentId, withoutNotify) {
@@ -193,7 +193,7 @@ function deleteAppointment(appointmentId, withoutNotify) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteReservedTime(staffId, reservedTimeId) {
@@ -207,7 +207,7 @@ function deleteReservedTime(staffId, reservedTimeId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${staffId}/reservedtimes/${reservedTimeId}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/staffs/${staffId}/reservedtimes/${reservedTimeId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getAppointments(dateFrom, dateTo) {
@@ -221,7 +221,7 @@ function getAppointments(dateFrom, dateTo) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getAppointmentsV1(dateFrom, dateTo) {
@@ -235,7 +235,7 @@ function getAppointmentsV1(dateFrom, dateTo) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/appointments/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getAppointmentsCanceled(dateFrom, dateTo, id) {
@@ -249,7 +249,7 @@ function getAppointmentsCanceled(dateFrom, dateTo, id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}/appointments/canceled?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/staffs/${id}/appointments/canceled?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getReservedTime(dateFrom, dateTo) {
@@ -263,6 +263,6 @@ function getReservedTime(dateFrom, dateTo) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/reservedtimes/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/reservedtimes/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 

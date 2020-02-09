@@ -61,6 +61,7 @@ class IndexPage extends PureComponent {
         this.setterPhone = this.setterPhone.bind(this);
         this.setterEmail = this.setterEmail.bind(this);
         this.setDefaultFlag = this.setDefaultFlag.bind(this);
+        this.clearSelectedServices = this.clearSelectedServices.bind(this);
     }
 
     componentDidMount () {
@@ -172,6 +173,10 @@ class IndexPage extends PureComponent {
             }
         })
         return durationForCurrentStaff;
+    }
+
+    clearSelectedServices() {
+        this.setState({ selectedServices: [], selectedService: [] });
     }
 
     clearStaff() {
@@ -357,6 +362,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 2 &&
                     <TabTwo
+                        isStartMovingVisit={isStartMovingVisit}
+                        clearSelectedServices={this.clearSelectedServices}
                         flagAllStaffs={flagAllStaffs}
                         serviceGroups={serviceGroups}
                         selectedServices={selectedServices}

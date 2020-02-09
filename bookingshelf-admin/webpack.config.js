@@ -63,6 +63,12 @@ module.exports = {
                 CONTEXT: JSON.stringify(process.env.CONTEXT)
             }
         }),
+        new webpack.optimize.CommonsChunkPlugin({
+            children: true,
+            async: true,
+        }),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             output: {
                 comments: false
@@ -93,7 +99,7 @@ module.exports = {
             filename: "[path].gz[query]",
             algorithm: "gzip",
             test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        }), new webpack.NoErrorsPlugin(),
+        }), new webpack.NoEmitOnErrorsPlugin(),
         new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
         new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
         new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/)

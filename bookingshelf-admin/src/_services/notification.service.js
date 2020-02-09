@@ -23,7 +23,7 @@ function updateSMS_EMAIL(params) {
     };
 
     return fetch(`${config.apiUrl}/notifications`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(notification => {
             return notification;
         });
@@ -42,7 +42,7 @@ function updateSubcompanySMS_EMAIL(params, id) {
     };
 
     return fetch(`${config.apiUrl}/subcompanies/${id}/notifications`, requestOptions)
-        .then(handleResponse);
+        .then((data) => handleResponse(data, requestOptions));
 }
 
 function setSMS(params) {
@@ -58,7 +58,7 @@ function setSMS(params) {
     };
 
     return fetch(`${config.apiUrl}/messages`, requestOptions)
-        .then(handleResponse)
+        .then((data) => handleResponse(data, requestOptions))
         .then(notification => {
             return notification;
         });
@@ -75,7 +75,7 @@ function getSMS_EMAIL() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/notifications`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/notifications`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getBalance() {
@@ -89,7 +89,7 @@ function getBalance() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/notifications/balances`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/notifications/balances`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getClientAmount() {
@@ -103,5 +103,5 @@ function getClientAmount() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/company/state`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/company/state`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
