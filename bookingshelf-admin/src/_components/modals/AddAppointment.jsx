@@ -1242,7 +1242,7 @@ class AddAppointment extends React.Component {
                 customId: '',
             }]
         });
-        this.closeModal();
+        setTimeout(() => this.closeModal(), 500);
         const finalCoStaffs =  coStaffs.filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId));
         return addAppointment(appointmentNew, '', staffCurrent.staffId, clientChecked ? clientChecked.clientId : -1, isAddCostaff ? finalCoStaffs : [])
     }
@@ -1262,7 +1262,7 @@ class AddAppointment extends React.Component {
             currency: serviceCurrent[i].service.currency
         } });
 
-
+        setTimeout(() => this.closeModal(), 500);
         this.props.dispatch(calendarActions.editAppointment2(JSON.stringify(appointmentNew), appointment[0].appointmentId))
         // let timeout = 0
         //

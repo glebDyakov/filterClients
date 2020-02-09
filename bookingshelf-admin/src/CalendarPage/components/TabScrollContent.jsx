@@ -449,7 +449,7 @@ class TabScroll extends Component{
                                                             width: '100%',
                                                             zIndex: 9990
                                                         }} />
-                                                        <img className="drag-vert" src={`${process.env.CONTEXT}public/img/drag-vert.png`}/>
+                                                        <span className="drag-vert" />
                                                     </React.Fragment>
                                                     }
                                                 </p>
