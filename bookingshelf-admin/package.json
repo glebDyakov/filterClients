@@ -32,6 +32,8 @@
     "react-bootstrap-timezone-picker": "^1.0.12",
     "react-chartjs-2": "^2.7.6",
     "react-day-picker": "^7.3.0",
+    "react-dnd": "^10.0.2",
+    "react-dnd-html5-backend": "^10.0.2",
     "react-draft-wysiwyg": "^1.13.2",
     "react-pace-progress": "^1.0.2",
     "react-paginate": "^6.3.2",

@@ -402,18 +402,18 @@
 
                 &:nth-child(n+2) {
 
-                    &::after {
-                        content: '';
-                        //background: url(../img/add.png) no-repeat;
-                        background-size: 0;
-                        width: 100%;
-                        height: 100%;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        background-position: center;
-                        transition: background-size ease-in-out 0.3s;
-                    }
+                    //&::after {
+                    //    content: '';
+                    //    //background: url(../img/add.png) no-repeat;
+                    //    background-size: 0;
+                    //    width: 100%;
+                    //    height: 100%;
+                    //    position: absolute;
+                    //    top: 0;
+                    //    left: 0;
+                    //    background-position: center;
+                    //    transition: background-size ease-in-out 0.3s;
+                    //}
 
                     &:hover {
                         background-color: rgba(191, 210, 237, 0.11);
@@ -453,12 +453,6 @@
                 &.expired {
                     background: rgba(210, 210, 210, 0.2);
                     cursor: not-allowed;
-                }
-                &.start-moving {
-                    border: 1px solid rgba(0, 0, 0, 0.2);
-                    &:hover {
-                        border-color: #ed1b24;
-                    }
                 }
 
                 .fade-time {
