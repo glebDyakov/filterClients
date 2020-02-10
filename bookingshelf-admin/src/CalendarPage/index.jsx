@@ -999,7 +999,7 @@ class Index extends PureComponent {
 
                     let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
-                    return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().format('x'))
+                    return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().subtract(1, 'week').format('x'))
                         && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
                 })
                 )
