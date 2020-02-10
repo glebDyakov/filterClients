@@ -677,7 +677,7 @@ class TabScroll extends Component{
                                             ));
 
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
-                                    const wrapperClassName = `normal-width col-tab ${currentTime <= moment().format("x")
+                                    const wrapperClassName = `col-tab ${currentTime <= moment().format("x")
                                     && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                                                                 ${currentTime < parseInt(moment().format("x")) ? '' : ""}
                                                                                 ${notExpired ? '' : "expired "}
