@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
+import { isMobile } from 'react-device-detect';
 import {access} from "../../_helpers/access";
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 import {calendarActions} from "../../_actions/calendar.actions";
 
-import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
 import Dustbin from "../../_components/dragAndDrop/Dustbin";
 import Box from "../../_components/dragAndDrop/Box";
 
@@ -325,7 +327,7 @@ class TabScroll extends Component{
             <div className="tabs-scroll"
                 // style={{'minWidth': (120*parseInt(workingStaff.availableTimetable && workingStaff.availableTimetable.length))+'px'}}
             >
-                <DndProvider backend={Backend}>
+                <DndProvider backend={ isMobile ? TouchBackend : Backend }>
                     {numbers && numbers.map((time, key) =>
                         <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                             <TabScrollLeftMenu time={time}/>
