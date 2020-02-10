@@ -454,6 +454,11 @@
                     background: rgba(210, 210, 210, 0.2);
                     cursor: not-allowed;
                 }
+                &.start-moving {
+                    &:hover {
+                        border: 1px solid #ed1b24;
+                    }
+                }
 
                 .fade-time {
                     font-size: 10px;
