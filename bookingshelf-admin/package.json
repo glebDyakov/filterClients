@@ -35,7 +35,6 @@
     "react-device-detect": "^1.11.14",
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
-    "react-dnd-touch-backend": "^10.0.2",
     "react-draft-wysiwyg": "^1.13.2",
     "react-pace-progress": "^1.0.2",
     "react-paginate": "^6.3.2",
