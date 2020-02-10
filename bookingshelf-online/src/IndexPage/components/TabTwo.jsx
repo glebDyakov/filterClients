@@ -119,7 +119,7 @@ class TabTwo extends Component {
                                 }
 
                                 if (searchValue && searchValue.length > 0) {
-                                    finalServices = finalServices.filter(service =>
+                                    finalServices = finalServices && finalServices.filter(service =>
                                         service.name.toLowerCase().includes(this.search.value.toLowerCase())
                                         || service.details.toLowerCase().includes(this.search.value.toLowerCase())
                                     )

@@ -654,7 +654,7 @@ class TabScroll extends Component{
                                                     return true
                                                 }
                                             }
-                                            return currentTime>=parseInt(moment().format("x"))
+                                            return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
                                                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
                                                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
                                         }
