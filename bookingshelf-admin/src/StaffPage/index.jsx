@@ -292,7 +292,7 @@ class Index extends Component {
                     </div>
                 </div>
                 <div className="retreats">
-                    <div className="tab-content">
+                    <div style={{ overflowX: 'visible'}} className="tab-content">
                         <div style={{ height: '100%', maxHeight: '65vh' }} className={"tab-pane"+(activeTab==='workinghours'?' active':'')} id="tab1">
                             <DatePicker
                                 type={'week'}

@@ -108,7 +108,7 @@ class AddBlackList extends React.Component {
                                             </div>
                                             <div className="search dropdown row">
                                                 <form className="col-sm-12 form-inline" data-toggle="dropdown">
-                                                    <input type="search" placeholder="Поиск по имени" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
+                                                    <input type="search" placeholder="Поиск по имени, номеру тел., имейлу" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
                                                     <button className="search-icon" type="button"></button>
 
                                                 </form>

@@ -186,7 +186,7 @@ class Index extends Component {
                             hideWorkingStaff={true}
                         />
                         <div className="search col-7">
-                            <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                            <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
                                    aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
                             <button className="search-icon" type="submit"/>
                         </div>
@@ -219,7 +219,7 @@ class Index extends Component {
                             hideWorkingStaff={true}
                         />
                         <div className="search col-7">
-                            <input type="search" placeholder="Искать по имени, email, номеру телефона"
+                            <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
                                    aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
                             <button className="search-icon" type="submit"/>
                         </div>
