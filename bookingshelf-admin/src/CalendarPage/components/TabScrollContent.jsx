@@ -174,18 +174,17 @@ class TabScroll extends Component{
         this.setState({ changingVisit: null, changingPos:null, offsetHeight: null })
     }
 
-    startMovingVisit(movingVisit, totalDuration) {
+    startMovingVisit(movingVisit, totalDuration, dragging) {
         const activeItemWithStaffId = this.props.appointments.find(item =>
             item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
         );
         const prevVisitStaffId = activeItemWithStaffId.staff.staffId
-        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId })
+        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, dragging })
         this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
     }
 
     moveVisit(movingVisitStaffId, time) {
-        this.setState({ movingVisitMillis : time, movingVisitStaffId })
-        this.props.dispatch(calendarActions.toggleMoveVisit(true))
+        this.setState({ movingVisitMillis : time, movingVisitStaffId, dragging: false })
     }
 
     makeMovingVisitQuery() {
@@ -319,7 +318,7 @@ class TabScroll extends Component{
 
     render(){
         const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers } = this.state;
+        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, dragging } = this.state;
 
 
         return(
@@ -340,7 +339,7 @@ class TabScroll extends Component{
                                     && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
                                 );
 
-                                if(appointment && !appointment.coAppointmentId) {
+                                if(appointment && !appointment.coAppointmentId && !((!dragging && isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment.appointmentId)) {
                                     let totalDuration = appointment.duration;
                                     let appointmentServices = [];
                                     let totalCount = 0;
@@ -586,9 +585,14 @@ class TabScroll extends Component{
                                     )
 
                                     return <Box
-                                        startMoving={() => this.startMovingVisit(appointment, totalDuration)}
+                                        startMoving={() => {
+                                            this.startMovingVisit(appointment, totalDuration, true)
+                                        }}
                                         makeMovingVisitQuery={this.makeMovingVisitQuery}
-                                        moveVisit={this.moveVisit}
+                                        moveVisit={(movingVisitStaffId, movingVisitMillis) => {
+                                            this.moveVisit(movingVisitStaffId, movingVisitMillis);
+                                            this.props.dispatch(calendarActions.toggleMoveVisit(true))
+                                        }}
                                         content={content}
                                         wrapperClassName={wrapperClassName}
                                     />
@@ -691,6 +695,7 @@ class TabScroll extends Component{
                                         const wrapperClick = () => (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null));
 
                                         return <Dustbin
+                                            isStartMovingVisit={this.props.isStartMovingVisit}
                                             content={content}
                                             wrapperId={wrapperId}
                                             wrapperClassName={wrapperClassName}
