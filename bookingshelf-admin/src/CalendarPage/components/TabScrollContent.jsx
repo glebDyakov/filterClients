@@ -5,6 +5,12 @@ import {access} from "../../_helpers/access";
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 import {calendarActions} from "../../_actions/calendar.actions";
 
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
+import Dustbin from "../../_components/dragAndDrop/Dustbin";
+import Box from "../../_components/dragAndDrop/Box";
+
+
 class TabScroll extends Component{
     constructor(props) {
         super(props);
@@ -179,6 +185,7 @@ class TabScroll extends Component{
 
     moveVisit(movingVisitStaffId, time) {
         this.setState({ movingVisitMillis : time, movingVisitStaffId })
+        this.props.dispatch(calendarActions.toggleMoveVisit(true))
     }
 
     makeMovingVisitQuery() {
@@ -319,375 +326,389 @@ class TabScroll extends Component{
             <div className="tabs-scroll"
                 // style={{'minWidth': (120*parseInt(workingStaff.availableTimetable && workingStaff.availableTimetable.length))+'px'}}
             >
-                {numbers && numbers.map((time, key) =>
-                    <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
-                        <TabScrollLeftMenu time={time}/>
-                        {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
-                            let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
-                            const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
-                                (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
-                            );
-                            let appointment = staffAppointments && staffAppointments.appointments.find((appointment)=>
-                                currentTime <= parseInt(appointment.appointmentTimeMillis)
-                                && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
-                            );
+                <DndProvider backend={Backend}>
+                    {numbers && numbers.map((time, key) =>
+                        <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
+                            <TabScrollLeftMenu time={time}/>
+                            {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
+                                let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+                                const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
+                                    (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
+                                );
+                                let appointment = staffAppointments && staffAppointments.appointments.find((appointment)=>
+                                    currentTime <= parseInt(appointment.appointmentTimeMillis)
+                                    && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
+                                );
 
-                            if(appointment && !appointment.coAppointmentId && !((isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment.appointmentId)) {
-                                let totalDuration = appointment.duration;
-                                let appointmentServices = [];
-                                let totalCount = 0;
-                                let totalPrice = appointment.price
-                                let totalAmount = appointment.totalAmount
-                                const currentAppointments = [appointment]
-                                const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
-                                appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
-                                if (appointment.hasCoAppointments) {
-                                    appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-                                        if (currentAppointment.coAppointmentId === appointment.appointmentId) {
-                                            totalDuration += currentAppointment.duration;
-                                            const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
-                                            appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})
-                                            totalCount++;
-                                            totalPrice += currentAppointment.price;
-                                            totalAmount += currentAppointment.totalAmount;
+                                if(appointment && !appointment.coAppointmentId) {
+                                    let totalDuration = appointment.duration;
+                                    let appointmentServices = [];
+                                    let totalCount = 0;
+                                    let totalPrice = appointment.price
+                                    let totalAmount = appointment.totalAmount
+                                    const currentAppointments = [appointment]
+                                    const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
+                                    appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
+                                    if (appointment.hasCoAppointments) {
+                                        appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                                            if (currentAppointment.coAppointmentId === appointment.appointmentId) {
+                                                totalDuration += currentAppointment.duration;
+                                                const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
+                                                appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})
+                                                totalCount++;
+                                                totalPrice += currentAppointment.price;
+                                                totalAmount += currentAppointment.totalAmount;
 
-                                            currentAppointments.push(currentAppointment)
-                                        }
-                                    }))
-                                }
-                                let extraServiceText;
-                                switch (totalCount) {
-                                    case 0:
-                                        extraServiceText = '';
-                                        break;
-                                    case 1:
-                                        extraServiceText = 'и ещё 1 услуга';
-                                        break;
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                        extraServiceText = `и ещё ${totalCount} услуги`;
-                                        break;
-                                    default:
-                                        extraServiceText = `и ещё 5+ услуг`;
-                                }
-                                const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-                                const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
-                                // const appointment = clients && clients.find((client) => client.clientId === appointment.clientId)
-                                return (
-                                    <div
-                                        className={(currentTime <= moment().format("x")
-                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')}
-                                    >
-                                        {!appointment.coAppointmentId && (
-                                            <div
-                                                className={"notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
-                                                key={appointment.appointmentId + "_" + key}
-                                                id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
-                                            >
-                                                <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment.appointmentId === selectedNote ? null : appointment.appointmentId})}>
-                                                    <span className="delete"
-                                                          data-toggle="modal"
-                                                          data-target=".delete-notes-modal"
-                                                          title="Отменить встречу"
-                                                          onClick={() => approveAppointmentSetter(appointment.appointmentId)}/>
-                                                    {!appointment.online &&
-                                                    <span className="pen"
-                                                          title="Запись через журнал"/>}
-                                                    {/*<span className="men"*/}
-                                                    {/*title="Постоянный клиент"/>*/}
-                                                    {appointment.online &&
-                                                    <span className="globus"
-                                                          title="Онлайн-запись"/>}
-
-
-
-                                                    {appointment.clientId && <span
-                                                        className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                                                        title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
-
-
-                                                    {!appointment.clientId &&
-                                                            <span
-                                                                className="no-client-icon"
-                                                                title="Визит от двери"/>
-                                                    }
-
-                                                    {!!appointment.discountPercent &&
-                                                    <span className="percentage"
-                                                          title={`${appointment.discountPercent}%`}
-                                                    />}
-
-                                                    {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
-                                                    <span className="service_time">
-                                                        {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
-                                                                                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                        {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
-                                                                                </span>
-                                                </p>
-                                                <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
-                                                   style={{
-                                                       minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
-                                                       height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
-                                                   }}>
-                                                    <span className="notes-container-message">
-                                                        {resultTextArea}
-                                                    </span>
-                                                    {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
-                                                    <React.Fragment>
-                                                        <p onMouseDown={(e) => {
-                                                            this.setState({
-                                                                changingVisit: appointment,
-                                                                changingPos: e.pageY,
-                                                                offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
-                                                            })
-                                                        }} style={{
-                                                            cursor: 'ns-resize',
-                                                            height: '8px',
-                                                            position: 'absolute',
-                                                            bottom: 0,
-                                                            width: '100%',
-                                                            zIndex: 9990
-                                                        }} />
-                                                        <span className="drag-vert" />
-                                                    </React.Fragment>
-                                                    }
-                                                </p>
-                                                {!this.props.isStartMovingVisit && <div className="msg-client-info">
-                                                    <div className="msg-inner">
-                                                        <p>
-                                                            <p className="new-text">Запись</p>
-                                                            <button type="button" onClick={()=> {
-                                                                this.setState({ selectedNote: null })
-                                                                this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
-                                                            }} className="close" />
-                                                        </p>
-
-
-                                                        {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
-                                                            <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                            <span
-                                                                className="clientEye clientEye-info"
-                                                                data-target=".client-detail"
-                                                                title="Просмотреть клиента"
-                                                                onClick={(e) => {
-                                                                    $('.client-detail').modal('show')
-                                                                    handleUpdateClient(appointment.clientId)
-                                                                }} />
-                                                        </p>}
-                                                        {appointment.clientId && <p className="name">{appointment.clientName}</p>}
-                                                        {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
-                                                        {appointment.clientId && <p style={{ height: '30px' }}>
-                                                            <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
-                                                                Клиент не пришел
-
-                                                                {isClientNotComeLoading ?
-                                                                    <div style={{ margin: '0 0 0 auto', left: '15px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                                                    :
-                                                                    <label>
-                                                                        <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
-                                                                               type="checkbox"/>
-                                                                        <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
-                                                                    </label>
-                                                                }
-                                                            </div>
-                                                        </p>}
-
-
-                                                        <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
-                                                        {appointmentServices.map(service => {
-                                                            const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-                                                            return <p>
-
-                                                                {service.serviceName} {details ? `(${details})` : ''}
-
-                                                                <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
-                                                                {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
-                                                                        ({service.totalAmount} {service.currency})
-                                                                    </span>}
-                                                                </span>
-                                                                {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment && appointment.clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
-
-
-                                                            </p>
-                                                        })
-                                                        }
-                                                        <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                            {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                        <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
-                                                        {appointment.description && <p>Заметка: {appointment.description}</p>}
-
-                                                        {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment && <a*/}
-                                                        {/*    className="a-client-info"*/}
-                                                        {/*    data-target=".client-detail"*/}
-                                                        {/*    title="Просмотреть клиента"*/}
-                                                        {/*    onClick={(e) => {*/}
-                                                        {/*        $('.client-detail').modal('show')*/}
-                                                        {/*        handleUpdateClient(appointment)*/}
-                                                        {/*    }}><p>Просмотреть клиента</p>*/}
-                                                        {/*</a>}*/}
-
-                                                        {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
-                                                            <React.Fragment>
-                                                                <div style={{
-                                                                    marginTop: '2px',
-                                                                }}
-                                                                     onClick={() => this.startMovingVisit(appointment, totalDuration)}
-                                                                     className="msg-inner-button-wrapper"
-                                                                >
-                                                                    <button className="button"
-                                                                            style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                        Перенести визит
-                                                                    </button>
-                                                                    {/*<span className="move-white"/>*/}
-                                                                </div>
-                                                                <div style={{
-                                                                    marginTop: '5px',
-                                                                }}
-                                                                     onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                                                     className="msg-inner-button-wrapper"
-                                                                >
-                                                                    <button className="button"
-                                                                            style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                        Изменить визит
-                                                                    </button>
-                                                                    {/*<span className="move-white"/>*/}
-                                                                </div>
-                                                                <div style={{
-                                                                    marginTop: '5px',
-                                                                }}
-                                                                     className="msg-inner-button-wrapper"
-                                                                     data-toggle="modal"
-                                                                     data-target=".delete-notes-modal"
-                                                                     onClick={() => approveAppointmentSetter(appointment.appointmentId)}
-                                                                >
-                                                                    <button className="button"
-                                                                            style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
-                                                                    >
-                                                                        Удалить визит
-                                                                    </button>
-                                                                    {/*<span className="cancel-white"/>*/}
-                                                                </div>
-
-                                                            </React.Fragment>)
-                                                        }
-                                                    </div>
-                                                </div> }
-                                            </div>
-                                        )}
-                                    </div>
-                                )
-                            }
-
-                            const staffReservedTimes = reservedTimeFromProps && reservedTimeFromProps.find((reserve) => reserve.reservedTimes && reserve.staff.staffId === workingStaffElement.staffId);
-
-                            let reservedTime = staffReservedTimes && staffReservedTimes.reservedTimes && staffReservedTimes.reservedTimes.find((localReservedTime)=>
-                                currentTime <= parseInt(localReservedTime.startTimeMillis)
-                                && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(localReservedTime.startTimeMillis)
-                            )
-
-                            if (reservedTime) {
-                                const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
-
-                                return (
-                                    <div className='reserve'>
-                                        <div className="notes color-grey"
-                                             style={{backgroundColor: "darkgrey"}}>
-
-                                            <p className="notes-title"
-                                               style={{cursor: 'default'}}>
-                                                {textAreaHeight === 0 && <span className="delete"
-                                                                             style={{right: '5px'}}
-                                                                             data-toggle="modal"
-                                                                             data-target=".delete-reserve-modal"
-                                                                             title="Удалить"
-                                                                             onClick={() => updateReservedId(
-                                                                                 reservedTime.reservedTimeId,
-                                                                                 workingStaffElement.staffId
-                                                                             )}
-                                                />}
-                                                <span className="" title="Онлайн-запись"/>
-                                                <span
-                                                    className="service_time"
-                                                >
-                                                    {moment(reservedTime.startTimeMillis, 'x').format('HH:mm')}
-                                                    -
-                                                    {moment(reservedTime.endTimeMillis, 'x').format('HH:mm')}
-                                                </span>
-
-                                            </p>
-                                            <p className="notes-container"
-                                               style={{height: textAreaHeight+ "px"}}>
-                                                                            <span
-                                                                                style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime.description}</span>
-                                                {textAreaHeight > 0 && <span className="delete-notes"
-                                                      style={{right: '5px'}}
-                                                      data-toggle="modal"
-                                                      data-target=".delete-reserve-modal"
-                                                      title="Удалить"
-                                                      onClick={() => updateReservedId(
-                                                          reservedTime.reservedTimeId,
-                                                          workingStaffElement.staffId
-                                                      )}
-                                                />}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )
-                            } else {
-                                let clDate = closedDates && closedDates.some((st) =>
-                                    parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-                                    parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
-
-
-                                let workingTimeEnd=null;
-                                let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                    workingStaffElement.availableDays.some((availableDay)=>
-                                        parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                        availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                            workingTimeEnd=workingTime.endTimeMillis;
-                                            if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                                const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-
-                                                if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                                    return true
-                                                }
+                                                currentAppointments.push(currentAppointment)
                                             }
-                                            return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                                && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                        }
+                                        }))
+                                    }
+                                    let extraServiceText;
+                                    switch (totalCount) {
+                                        case 0:
+                                            extraServiceText = '';
+                                            break;
+                                        case 1:
+                                            extraServiceText = 'и ещё 1 услуга';
+                                            break;
+                                        case 2:
+                                        case 3:
+                                        case 4:
+                                            extraServiceText = `и ещё ${totalCount} услуги`;
+                                            break;
+                                        default:
+                                            extraServiceText = `и ещё 5+ услуг`;
+                                    }
+                                    const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
+                                    const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+                                    // const appointment = clients && clients.find((client) => client.clientId === appointment.clientId)
 
-                                        ));
+                                    const wrapperClassName = (currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
+                                    const content = (
+                                        <React.Fragment>
+                                            {!appointment.coAppointmentId && (
+                                                <div
+                                                    className={"notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
+                                                    key={appointment.appointmentId + "_" + key}
+                                                    id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
+                                                >
+                                                    <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment.appointmentId === selectedNote ? null : appointment.appointmentId})}>
+                                                        <span className="delete"
+                                                              data-toggle="modal"
+                                                              data-target=".delete-notes-modal"
+                                                              title="Отменить встречу"
+                                                              onClick={() => approveAppointmentSetter(appointment.appointmentId)}/>
+                                                        {!appointment.online &&
+                                                        <span className="pen"
+                                                              title="Запись через журнал"/>}
+                                                        {/*<span className="men"*/}
+                                                        {/*title="Постоянный клиент"/>*/}
+                                                        {appointment.online &&
+                                                        <span className="globus"
+                                                              title="Онлайн-запись"/>}
 
-                                return (
-                                    <div
-                                        id={currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
-                                        className={`col-tab ${currentTime <= moment().format("x")
-                                        && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
-                                                                            ${currentTime < parseInt(moment().format("x")) ? '' : ""}
-                                                                            ${notExpired ? '' : "expired "}
-                                                                            ${notExpired && this.props.isStartMovingVisit ? 'start-moving ' : ''}
-                                                                            ${clDate ? 'closedDateTick' : ""}`}
-                                        time={currentTime}
-                                        data-toggle={notExpired && this.props.isStartMovingVisit && "modal"}
-                                        data-target={notExpired && this.props.isStartMovingVisit && ".move-visit-modal"}
-                                        timeEnd={workingTimeEnd}
-                                        staff={workingStaffElement.staffId}
-                                        onClick={() => notExpired && (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null))}
-                                    ><span
-                                        className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
-                                    </div>
+
+
+                                                        {appointment.clientId && <span
+                                                            className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
+                                                            title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
+
+
+                                                        {!appointment.clientId &&
+                                                        <span
+                                                            className="no-client-icon"
+                                                            title="Визит от двери"/>
+                                                        }
+
+                                                        {!!appointment.discountPercent &&
+                                                        <span className="percentage"
+                                                              title={`${appointment.discountPercent}%`}
+                                                        />}
+
+                                                        {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                                                        <span className="service_time">
+                                                            {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
+                                                            {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                            {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                                                                                    </span>
+                                                    </p>
+                                                    <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
+                                                       style={{
+                                                           minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
+                                                           height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
+                                                       }}>
+                                                        <span className="notes-container-message">
+                                                            {resultTextArea}
+                                                        </span>
+                                                        {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
+                                                        <React.Fragment>
+                                                            <p onMouseDown={(e) => {
+                                                                this.setState({
+                                                                    changingVisit: appointment,
+                                                                    changingPos: e.pageY,
+                                                                    offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+                                                                })
+                                                            }} style={{
+                                                                cursor: 'ns-resize',
+                                                                height: '8px',
+                                                                position: 'absolute',
+                                                                bottom: 0,
+                                                                width: '100%',
+                                                                zIndex: 9990
+                                                            }} />
+                                                            <span className="drag-vert" />
+                                                        </React.Fragment>
+                                                        }
+                                                    </p>
+                                                    {!this.props.isStartMovingVisit && <div className="msg-client-info">
+                                                        <div className="msg-inner">
+                                                            <p>
+                                                                <p className="new-text">Запись</p>
+                                                                <button type="button" onClick={()=> {
+                                                                    this.setState({ selectedNote: null })
+                                                                    this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                                                }} className="close" />
+                                                            </p>
+
+
+                                                            {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                                <span style={{ textAlign: 'left'}}>Клиент</span>
+                                                                <span
+                                                                    className="clientEye clientEye-info"
+                                                                    data-target=".client-detail"
+                                                                    title="Просмотреть клиента"
+                                                                    onClick={(e) => {
+                                                                        $('.client-detail').modal('show')
+                                                                        handleUpdateClient(appointment.clientId)
+                                                                    }} />
+                                                            </p>}
+                                                            {appointment.clientId && <p className="name">{appointment.clientName}</p>}
+                                                            {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
+                                                            {appointment.clientId && <p style={{ height: '30px' }}>
+                                                                <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
+                                                                    Клиент не пришел
+
+                                                                    {isClientNotComeLoading ?
+                                                                        <div style={{ margin: '0 0 0 auto', left: '15px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                                        :
+                                                                        <label>
+                                                                            <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
+                                                                                   type="checkbox"/>
+                                                                            <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
+                                                                        </label>
+                                                                    }
+                                                                </div>
+                                                            </p>}
+
+
+                                                            <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
+                                                            {appointmentServices.map(service => {
+                                                                const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
+                                                                return <p>
+
+                                                                    {service.serviceName} {details ? `(${details})` : ''}
+
+                                                                    <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
+                                                                    {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                                            ({service.totalAmount} {service.currency})
+                                                                        </span>}
+                                                                    </span>
+                                                                    {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment && appointment.clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+
+
+                                                                </p>
+                                                            })
+                                                            }
+                                                            <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                                {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                                                            <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                                                            {appointment.description && <p>Заметка: {appointment.description}</p>}
+
+                                                            {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment && <a*/}
+                                                            {/*    className="a-client-info"*/}
+                                                            {/*    data-target=".client-detail"*/}
+                                                            {/*    title="Просмотреть клиента"*/}
+                                                            {/*    onClick={(e) => {*/}
+                                                            {/*        $('.client-detail').modal('show')*/}
+                                                            {/*        handleUpdateClient(appointment)*/}
+                                                            {/*    }}><p>Просмотреть клиента</p>*/}
+                                                            {/*</a>}*/}
+
+                                                            {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
+                                                                <React.Fragment>
+                                                                    <div style={{
+                                                                        marginTop: '2px',
+                                                                    }}
+                                                                         onClick={() => this.startMovingVisit(appointment, totalDuration)}
+                                                                         className="msg-inner-button-wrapper"
+                                                                    >
+                                                                        <button className="button"
+                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                            Перенести визит
+                                                                        </button>
+                                                                        {/*<span className="move-white"/>*/}
+                                                                    </div>
+                                                                    <div style={{
+                                                                        marginTop: '5px',
+                                                                    }}
+                                                                         onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
+                                                                         className="msg-inner-button-wrapper"
+                                                                    >
+                                                                        <button className="button"
+                                                                                style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                            Изменить визит
+                                                                        </button>
+                                                                        {/*<span className="move-white"/>*/}
+                                                                    </div>
+                                                                    <div style={{
+                                                                        marginTop: '5px',
+                                                                    }}
+                                                                         className="msg-inner-button-wrapper"
+                                                                         data-toggle="modal"
+                                                                         data-target=".delete-notes-modal"
+                                                                         onClick={() => approveAppointmentSetter(appointment.appointmentId)}
+                                                                    >
+                                                                        <button className="button"
+                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
+                                                                        >
+                                                                            Удалить визит
+                                                                        </button>
+                                                                        {/*<span className="cancel-white"/>*/}
+                                                                    </div>
+
+                                                                </React.Fragment>)
+                                                            }
+                                                        </div>
+                                                    </div> }
+                                                </div>
+                                            )}
+                                        </React.Fragment>
+                                    )
+
+                                    return <Box
+                                        startMoving={() => this.startMovingVisit(appointment, totalDuration)}
+                                        makeMovingVisitQuery={this.makeMovingVisitQuery}
+                                        moveVisit={this.moveVisit}
+                                        content={content}
+                                        wrapperClassName={wrapperClassName}
+                                    />
+                                }
+
+                                const staffReservedTimes = reservedTimeFromProps && reservedTimeFromProps.find((reserve) => reserve.reservedTimes && reserve.staff.staffId === workingStaffElement.staffId);
+
+                                let reservedTime = staffReservedTimes && staffReservedTimes.reservedTimes && staffReservedTimes.reservedTimes.find((localReservedTime)=>
+                                    currentTime <= parseInt(localReservedTime.startTimeMillis)
+                                    && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(localReservedTime.startTimeMillis)
                                 )
+
+                                if (reservedTime) {
+                                    const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
+
+                                    return (
+                                        <div className='reserve'>
+                                            <div className="notes color-grey"
+                                                 style={{backgroundColor: "darkgrey"}}>
+
+                                                <p className="notes-title"
+                                                   style={{cursor: 'default'}}>
+                                                    {textAreaHeight === 0 && <span className="delete"
+                                                                                 style={{right: '5px'}}
+                                                                                 data-toggle="modal"
+                                                                                 data-target=".delete-reserve-modal"
+                                                                                 title="Удалить"
+                                                                                 onClick={() => updateReservedId(
+                                                                                     reservedTime.reservedTimeId,
+                                                                                     workingStaffElement.staffId
+                                                                                 )}
+                                                    />}
+                                                    <span className="" title="Онлайн-запись"/>
+                                                    <span
+                                                        className="service_time"
+                                                    >
+                                                        {moment(reservedTime.startTimeMillis, 'x').format('HH:mm')}
+                                                        -
+                                                        {moment(reservedTime.endTimeMillis, 'x').format('HH:mm')}
+                                                    </span>
+
+                                                </p>
+                                                <p className="notes-container"
+                                                   style={{height: textAreaHeight+ "px"}}>
+                                                                                <span
+                                                                                    style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime.description}</span>
+                                                    {textAreaHeight > 0 && <span className="delete-notes"
+                                                          style={{right: '5px'}}
+                                                          data-toggle="modal"
+                                                          data-target=".delete-reserve-modal"
+                                                          title="Удалить"
+                                                          onClick={() => updateReservedId(
+                                                              reservedTime.reservedTimeId,
+                                                              workingStaffElement.staffId
+                                                          )}
+                                                    />}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )
+                                } else {
+                                    let clDate = closedDates && closedDates.some((st) =>
+                                        parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+                                        parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+
+
+                                    let workingTimeEnd=null;
+                                    let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                        workingStaffElement.availableDays.some((availableDay)=>
+                                            parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                            availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                                workingTimeEnd=workingTime.endTimeMillis;
+                                                if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                                    const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                    const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+
+                                                    if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                                        return true
+                                                    }
+                                                }
+                                                return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                                    && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                    && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                            }
+
+                                            ));
+
+                                    const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
+                                    const wrapperClassName = `normal-width col-tab ${currentTime <= moment().format("x")
+                                    && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                                                                ${currentTime < parseInt(moment().format("x")) ? '' : ""}
+                                                                                ${notExpired ? '' : "expired "}
+                                                                                ${notExpired && this.props.isStartMovingVisit ? 'start-moving ' : ''}
+                                                                                ${clDate ? 'closedDateTick' : ""}`
+                                    const content = (
+                                        <span className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
+                                    )
+
+                                    if (notExpired) {
+                                        const wrapperClick = () => (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null));
+
+                                        return <Dustbin
+                                            content={content}
+                                            wrapperId={wrapperId}
+                                            wrapperClassName={wrapperClassName}
+                                            wrapperClick={wrapperClick}
+                                            movingVisitMillis={currentTime}
+                                            movingVisitStaffId={workingStaffElement.staffId}
+                                        />
+                                    } else {
+                                        return <div id={wrapperId} className={wrapperClassName}>{content}</div>
+                                    }
+                                }
+
+                            }))
                             }
 
-                        }))
-                        }
-
-                    </div>
-                )}
-
+                        </div>
+                    )}
+                </DndProvider>
             </div>
         );
     }
