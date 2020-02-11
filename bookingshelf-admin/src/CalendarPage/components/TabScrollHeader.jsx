@@ -34,7 +34,7 @@ class TabScrollHeader extends PureComponent {
                             )
 
                             }
-                            {availableTimetableMessage && <div><p>{availableTimetableMessage}</p></div>}
+                            {availableTimetableMessage && <div className="cell"><p>{availableTimetableMessage}</p></div>}
                         </div>
                     </div>
 
