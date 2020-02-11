@@ -247,6 +247,7 @@ class TabScroll extends Component{
         }
 
         if (shouldMove) {
+            this.props.dispatch(calendarActions.makeVisualMove({ ...movingVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis))
             let coStaffs;
             if (movingVisit.coStaffs && prevVisitStaffId !== movingVisitStaffId) {
                 const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
