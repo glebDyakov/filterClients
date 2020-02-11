@@ -19,9 +19,7 @@ const Box = ({ content, wrapperClassName, startMoving, moveVisit }) => {
     })
     const visibility = isDragging ? 'hidden' : 'visible'
     return (
-        <div ref={drag} className={wrapperClassName} style={{ visibility }}>
-            {content}
-        </div>
+        <div ref={drag} className={wrapperClassName} style={{ visibility }}>{content}</div>
     )
 }
 export default Box

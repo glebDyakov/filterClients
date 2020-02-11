@@ -226,7 +226,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 isLoadingAvailableTime:false,
-                availableTimetable: action.payload.availableTimetable.sort((a, b) => a.sortOrder - b.sortOrder),
+                availableTimetable: JSON.parse(JSON.stringify(action.payload.availableTimetable.sort((a, b) => a.sortOrder - b.sortOrder))),
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:

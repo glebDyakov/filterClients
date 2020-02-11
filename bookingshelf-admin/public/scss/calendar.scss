@@ -345,7 +345,7 @@
             }
 
 
-            div {
+            .cell {
                 margin-right: 2px;
                 border-radius: 4px;
                 min-height: 18px;
@@ -486,6 +486,10 @@
                     max-width: unset!important;
                     width: auto;
                 }
+                &.default-width {
+                    max-width: unset!important;
+                    width: auto;
+                }
             }
 
             &:nth-child(4n) {
@@ -594,7 +598,16 @@
                         }
                     }
                 }
-
+                .drag-vert {
+                    height: 14px;
+                    width: 20px;
+                    background-image: url('../img/drag-vert.png');
+                    background-size: 17px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    position: absolute;
+                    bottom: 0;
+                }
                 .notes{ 
                     width: 100%;
                     max-width: 100% !important;
@@ -608,17 +621,6 @@
 
                     .msg-client-info{
                         display: none;
-                    }
-
-                    .drag-vert {
-                        height: 14px;
-                        width: 20px;
-                        background-image: url('../img/drag-vert.png');
-                        background-size: 17px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        position: absolute;
-                        bottom: 0;
                     }
 
                     &.selected{
