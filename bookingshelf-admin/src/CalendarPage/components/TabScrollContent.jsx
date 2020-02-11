@@ -381,14 +381,15 @@ class TabScroll extends Component{
                                     }
                                     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
                                     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+                                    const resultTextAreaHeight = ((totalDuration / 60 / 15) - 1) * 20
                                     // const appointment = clients && clients.find((client) => client.clientId === appointment.clientId)
 
-                                    const wrapperClassName = (currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
+                                    const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
                                     const content = (
                                         <React.Fragment>
                                             {!appointment.coAppointmentId && (
                                                 <div
-                                                    className={"notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
+                                                    className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
                                                     key={appointment.appointmentId + "_" + key}
                                                     id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
                                                 >
@@ -435,33 +436,14 @@ class TabScroll extends Component{
                                                     <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
                                                        style={{
                                                            minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
-                                                           height: ((totalDuration / 60 / 15) - 1) * 20 + "px"
+                                                           height: resultTextAreaHeight + "px"
                                                        }}>
                                                         <span className="notes-container-message">
                                                             {resultTextArea}
                                                         </span>
-                                                        {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) &&
-                                                        <React.Fragment>
-                                                            <p onMouseDown={(e) => {
-                                                                this.setState({
-                                                                    changingVisit: appointment,
-                                                                    changingPos: e.pageY,
-                                                                    offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
-                                                                })
-                                                            }} style={{
-                                                                cursor: 'ns-resize',
-                                                                height: '8px',
-                                                                position: 'absolute',
-                                                                bottom: 0,
-                                                                width: '100%',
-                                                                zIndex: 9990
-                                                            }} />
-                                                            <span className="drag-vert" />
-                                                        </React.Fragment>
-                                                        }
                                                     </p>
-                                                    {!this.props.isStartMovingVisit && <div className="msg-client-info">
-                                                        <div className="msg-inner">
+                                                    {!this.props.isStartMovingVisit && <div className="cell msg-client-info">
+                                                        <div className="cell msg-inner">
                                                             <p>
                                                                 <p className="new-text">Запись</p>
                                                                 <button type="button" onClick={()=> {
@@ -485,11 +467,11 @@ class TabScroll extends Component{
                                                             {appointment.clientId && <p className="name">{appointment.clientName}</p>}
                                                             {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
                                                             {appointment.clientId && <p style={{ height: '30px' }}>
-                                                                <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="check-box calendar-client-checkbox red-text">
+                                                                <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="cell check-box calendar-client-checkbox red-text">
                                                                     Клиент не пришел
 
                                                                     {isClientNotComeLoading ?
-                                                                        <div style={{ margin: '0 0 0 auto', left: '15px' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                                        <div style={{ margin: '0 0 0 auto', left: '15px' }} className="cell loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                                                         :
                                                                         <label>
                                                                             <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
@@ -540,7 +522,7 @@ class TabScroll extends Component{
                                                                         marginTop: '2px',
                                                                     }}
                                                                          onClick={() => this.startMovingVisit(appointment, totalDuration)}
-                                                                         className="msg-inner-button-wrapper"
+                                                                         className="cell msg-inner-button-wrapper"
                                                                     >
                                                                         <button className="button"
                                                                                 style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
@@ -552,7 +534,7 @@ class TabScroll extends Component{
                                                                         marginTop: '5px',
                                                                     }}
                                                                          onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                                                         className="msg-inner-button-wrapper"
+                                                                         className="cell msg-inner-button-wrapper"
                                                                     >
                                                                         <button className="button"
                                                                                 style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
@@ -563,7 +545,7 @@ class TabScroll extends Component{
                                                                     <div style={{
                                                                         marginTop: '5px',
                                                                     }}
-                                                                         className="msg-inner-button-wrapper"
+                                                                         className="cell msg-inner-button-wrapper"
                                                                          data-toggle="modal"
                                                                          data-target=".delete-notes-modal"
                                                                          onClick={() => approveAppointmentSetter(appointment.appointmentId)}
@@ -585,22 +567,49 @@ class TabScroll extends Component{
                                         </React.Fragment>
                                     )
 
+                                    const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
+                                            <p onMouseDown={(e) => {
+                                                this.setState({
+                                                    changingVisit: appointment,
+                                                    changingPos: e.pageY,
+                                                    offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+                                                })
+                                            }} style={{
+                                                cursor: 'ns-resize',
+                                                height: '8px',
+                                                position: 'absolute',
+                                                bottom: -resultTextAreaHeight + 'px',
+                                                width: '100%',
+                                                zIndex: 9990
+                                            }}>
+                                                {!!resultTextAreaHeight && <span className="drag-vert" />}
+                                            </p>
+                                    );
+
+
                                     if (isMobile) {
-                                        return <div className={wrapperClassName}>{content}</div>
+                                        return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
+                                            <div className={wrapperClassName}>{content}</div>
+                                            {dragVert}
+                                        </div>
                                     }
 
-                                    return <Box
-                                        startMoving={() => {
-                                            this.startMovingVisit(appointment, totalDuration, true)
-                                        }}
-                                        makeMovingVisitQuery={this.makeMovingVisitQuery}
-                                        moveVisit={(movingVisitStaffId, movingVisitMillis) => {
-                                            this.moveVisit(movingVisitStaffId, movingVisitMillis);
-                                            this.props.dispatch(calendarActions.toggleMoveVisit(true))
-                                        }}
-                                        content={content}
-                                        wrapperClassName={wrapperClassName}
-                                    />
+                                    return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
+                                        <Box
+                                            dragVert={dragVert}
+                                            startMoving={() => {
+                                                this.startMovingVisit(appointment, totalDuration, true)
+                                            }}
+                                            makeMovingVisitQuery={this.makeMovingVisitQuery}
+                                            moveVisit={(movingVisitStaffId, movingVisitMillis) => {
+                                                this.moveVisit(movingVisitStaffId, movingVisitMillis);
+                                                this.props.dispatch(calendarActions.toggleMoveVisit(true))
+                                            }}
+                                            content={content}
+                                            wrapperClassName={wrapperClassName}
+                                        />
+                                        {dragVert}
+                                    </div>
                                 }
 
                                 const staffReservedTimes = reservedTimeFromProps && reservedTimeFromProps.find((reserve) => reserve.reservedTimes && reserve.staff.staffId === workingStaffElement.staffId);
@@ -614,8 +623,8 @@ class TabScroll extends Component{
                                     const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
 
                                     return (
-                                        <div className='reserve'>
-                                            <div className="notes color-grey"
+                                        <div className='cell reserve'>
+                                            <div className="cell notes color-grey"
                                                  style={{backgroundColor: "darkgrey"}}>
 
                                                 <p className="notes-title"
@@ -686,7 +695,7 @@ class TabScroll extends Component{
                                             ));
 
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
-                                    const wrapperClassName = `col-tab ${currentTime <= moment().format("x")
+                                    const wrapperClassName = `cell col-tab ${currentTime <= moment().format("x")
                                     && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
                                                                                 ${currentTime < parseInt(moment().format("x")) ? '' : ""}
                                                                                 ${notExpired ? '' : "expired "}
