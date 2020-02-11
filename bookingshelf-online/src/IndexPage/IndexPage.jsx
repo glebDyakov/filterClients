@@ -21,12 +21,14 @@ import Footer from "./components/Footer";
 class IndexPage extends PureComponent {
     constructor(props) {
         super(props);
+        const group = localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''}
+        group.description = ''
         this.state = {
             selectedStaff: [],
             selectedSubcompany: {},
             selectedService: [],
             interval: 15,
-            group:localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''},
+            group: group,
             screen: 0,
             info: props.staff.info,
             month: moment().utc().toDate(),
