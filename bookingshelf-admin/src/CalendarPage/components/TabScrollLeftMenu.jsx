@@ -7,11 +7,11 @@ class TabScrollLeftMenu extends PureComponent {
         const { time } = this.props;
 
         return(
-            <div className="expired ">
+            <div className="cell expired">
                 {moment(time, "x").format('mm') === '00' ?
-                    <div className={"hours" + " "}>
+                    <div className={"cell hours" + " "}>
                         <span>{moment(time, "x").format('HH:mm')}</span></div>
-                    : <div className="hours minutes">
+                    : <div className="cell hours minutes">
                         <span>{moment(time, "x").format('HH:mm')}</span></div>
                 }
             </div>

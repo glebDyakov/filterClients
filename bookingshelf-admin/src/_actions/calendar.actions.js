@@ -21,6 +21,7 @@ export const calendarActions = {
     getReservedTime,
     addReservedTime,
     deleteReservedTime,
+    makeVisualMove,
     getAppointmentsNewSocket,
     moveAppointmentsNewSocket,
     updateAppointment,
@@ -55,6 +56,14 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
     function success(appointment, staffId) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS, appointment, staffId } }
     function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
+}
+
+function makeVisualMove(movingVisit, movingVisitStaffId, movingVisitMillis) {
+    return dispatch => {
+        dispatch(success());
+
+        function success() { return { type: calendarConstants.MAKE_VISUAL_MOVE, movingVisit, movingVisitStaffId, movingVisitMillis } }
+    }
 }
 
 function editCalendarAppointment(params, mainAppointmentId, staffId, clientId, withoutNotify) {
@@ -161,11 +170,14 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLo
         calendarService.updateAppointment(id, params, withoutNotify)
             .then(
                 appointment => {
-                        dispatch(success());
-                        //dispatch(companyActions.getNewAppointments())
+                    dispatch(success());
+                    //dispatch(companyActions.getNewAppointments())
+
+                    dispatch(clearVisualVisit())
                 },
                 error => {
                     dispatch(failure(error));
+                    dispatch(returnVisualVisit())
                     // dispatch(alertActions.error(error.toString()));
                 }
             );
@@ -174,6 +186,8 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLo
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
+    function returnVisualVisit() { return { type: calendarConstants.RETURN_VISUAL_MOVE } }
+    function clearVisualVisit() { return { type: calendarConstants.CLEAR_VISUAL_MOVE } }
 }
 
 function updateAppointmentCheckbox(id, params, withoutNotify) {

@@ -8,6 +8,7 @@ export function payments(state = initialState, action) {
     if (action) {
         switch (action.type) {
             case paymentsConstants.GET_INVOICE_SUCCESS:
+            case paymentsConstants.GET_INVOICE_FAILURE:
                 return {
                     ...state,
                     pendingInvoice: action.pendingInvoice

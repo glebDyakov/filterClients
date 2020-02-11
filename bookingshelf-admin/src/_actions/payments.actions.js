@@ -37,10 +37,12 @@ function getInvoice(invoiceId) {
                 (invoice) => {
                     dispatch(success(invoice))
                 },
+                () => dispatch(failure()),
             );
     };
 
     function success(invoice) { return { type: paymentsConstants.GET_INVOICE_SUCCESS, pendingInvoice: invoice }}
+    function failure() { return { type: paymentsConstants.GET_INVOICE_FAILURE, pendingInvoice: null }}
 }
 
 function makePayment(invoiceId) {

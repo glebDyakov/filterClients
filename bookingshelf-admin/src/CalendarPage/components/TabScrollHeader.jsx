@@ -17,12 +17,12 @@ class TabScrollHeader extends PureComponent {
                         // }}
                     >
                         <div className="tab-content-list tab-content-list-first">
-                            {(availableTimetable || availableTimetableMessage) && <div className="hours"><span></span></div>}
+                            {(availableTimetable || availableTimetableMessage) && <div className="cell hours"><span></span></div>}
 
                             {availableTimetable && availableTimetable.map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
-                                return <div>
+                                return <div className="cell">
                                      <span className="img-container">
                                          <img className="rounded-circle"
                                               src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -34,7 +34,7 @@ class TabScrollHeader extends PureComponent {
                             )
 
                             }
-                            {availableTimetableMessage && <div><p>{availableTimetableMessage}</p></div>}
+                            {availableTimetableMessage && <div className="cell"><p>{availableTimetableMessage}</p></div>}
                         </div>
                     </div>
 
@@ -43,7 +43,7 @@ class TabScrollHeader extends PureComponent {
                      //style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}
                 >
                     <div className="tab-content-list">
-                        {selectedDays.length>1 && <div className="hours"><span></span></div>}
+                        {selectedDays.length>1 && <div className="cell hours"><span></span></div>}
 
                         {
                             selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
@@ -52,7 +52,7 @@ class TabScrollHeader extends PureComponent {
                                         parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
                                         parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")))
 
-                                    return <div key={weekKey}
+                                    return <div className="cell" key={weekKey}
                                     >
                                         <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD/MM")}</span>
                                         </p>

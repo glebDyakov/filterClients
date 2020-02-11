@@ -87,6 +87,9 @@ class Index extends Component {
         if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
             this.repeatPayment(newProps.payments.activeInvoice.invoiceId)
         }
+        if (newProps.payments.confirmationUrl && (this.props.payments.confirmationUrl !== newProps.payments.confirmationUrl)) {
+            this.setState({ invoiceSelected: false })
+        }
         if (JSON.stringify(this.props.staff.staff) !== JSON.stringify(newProps.staff.staff)) {
             this.setDefaultWorkersCount(newProps.staff.staff)
         }
@@ -328,9 +331,9 @@ class Index extends Component {
 
     repeatPayment(invoiceId) {
         const { pendingInvoice } = this.props.payments
-        if (!pendingInvoice || (pendingInvoice && pendingInvoice.invoiceStatus === 'ISSUED')) {
+        this.props.dispatch(paymentsActions.getInvoice(invoiceId))
+        if (pendingInvoice && pendingInvoice.invoiceStatus === 'ISSUED') {
             setTimeout(() => {
-                this.props.dispatch(paymentsActions.getInvoice(invoiceId))
                 this.repeatPayment(invoiceId)
             }, 30000)
         }
@@ -343,7 +346,7 @@ class Index extends Component {
         const {countryCode} = this.state.country;
         const {packets, isLoading} = this.props.payments;
         let activePacket
-        if (packets && authentication.user.invoicePacket) {
+        if (packets && authentication.user && authentication.user.invoicePacket) {
           activePacket =  packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
         }
 

@@ -347,6 +347,59 @@ export function calendar(state = initialState, action) {
                 appointmentsCount: finalAppointmentsCount,
                 appointmentsCanceled: finalAppointmentsCanceled
             };
+
+        case calendarConstants.CLEAR_VISUAL_MOVE:
+            return {
+                ...state,
+                prevVisualVisit: null
+            }
+        case calendarConstants.MAKE_VISUAL_MOVE:
+        case calendarConstants.RETURN_VISUAL_MOVE:
+            newAppointment = state.appointments;
+            newAppointmentsCount = state.appointmentsCount
+            let { prevVisualVisit } = state
+
+            if (prevVisualVisit) {
+                newItem = {
+                    ...prevVisualVisit
+                }
+            } else {
+                newItem = {
+                    ...action.movingVisit
+                };
+
+                newItem.appointmentTimeMillis = action.movingVisitMillis;
+                newItem.staffId = action.movingVisitStaffId;
+            }
+
+            if (newAppointment && newAppointment.length) {
+                newAppointment.forEach(item => {
+
+                    let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                    if (appointmentIndex > -1) {
+                        item.appointments.splice(appointmentIndex, 1)
+                    }
+                    if (item.staff.staffId === newItem.staffId) {
+                        item.appointments.push(newItem)
+                    }
+                })
+            }
+            newAppointmentsCount.forEach(item => {
+                let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
+                if (appointmentIndex > -1) {
+                    item.appointments.splice(appointmentIndex, 1)
+                }
+                if (item.staff.staffId === newItem.staffId) {
+                    item.appointments.push(newItem)
+                }
+            })
+
+            return {
+                ...state,
+                appointments: JSON.parse(JSON.stringify(newAppointment)),
+                appointmentsCount: JSON.parse(JSON.stringify(newAppointmentsCount)),
+                prevVisualVisit: state.prevVisualVisit ? null : action.movingVisit
+            }
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:
             newAppointment = state.appointments;
             newAppointmentsCount = state.appointmentsCount
