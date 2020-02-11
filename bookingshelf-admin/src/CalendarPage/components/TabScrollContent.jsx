@@ -175,17 +175,17 @@ class TabScroll extends Component{
         this.setState({ changingVisit: null, changingPos:null, offsetHeight: null })
     }
 
-    startMovingVisit(movingVisit, totalDuration, dragging) {
+    startMovingVisit(movingVisit, totalDuration, draggingAppointmentId) {
         const activeItemWithStaffId = this.props.appointments.find(item =>
             item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
         );
         const prevVisitStaffId = activeItemWithStaffId.staff.staffId
-        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, dragging })
+        this.setState({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId })
         this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
     }
 
     moveVisit(movingVisitStaffId, time) {
-        this.setState({ movingVisitMillis : time, movingVisitStaffId, dragging: false })
+        this.setState({ movingVisitMillis : time, movingVisitStaffId, draggingAppointmentId: false })
     }
 
     makeMovingVisitQuery() {
@@ -320,7 +320,7 @@ class TabScroll extends Component{
 
     render(){
         const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, dragging } = this.state;
+        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, draggingAppointmentId } = this.state;
 
 
         return(
@@ -341,7 +341,7 @@ class TabScroll extends Component{
                                     && parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(numbers[key + 1], 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) > parseInt(appointment.appointmentTimeMillis)
                                 );
 
-                                if(appointment && !appointment.coAppointmentId && !((!dragging && isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment.appointmentId)) {
+                                if(appointment && !appointment.coAppointmentId && !((!draggingAppointmentId && isStartMovingVisit && movingVisit && movingVisit.appointmentId) === appointment.appointmentId)) {
                                     let totalDuration = appointment.duration;
                                     let appointmentServices = [];
                                     let totalCount = 0;
@@ -599,7 +599,7 @@ class TabScroll extends Component{
                                         <Box
                                             dragVert={dragVert}
                                             startMoving={() => {
-                                                this.startMovingVisit(appointment, totalDuration, true)
+                                                this.startMovingVisit(appointment, totalDuration, appointment.appointmentId)
                                             }}
                                             makeMovingVisitQuery={this.makeMovingVisitQuery}
                                             moveVisit={(movingVisitStaffId, movingVisitMillis) => {
@@ -609,7 +609,7 @@ class TabScroll extends Component{
                                             content={content}
                                             wrapperClassName={wrapperClassName}
                                         />
-                                        {dragVert}
+                                        {appointment.appointmentId !== draggingAppointmentId && dragVert}
                                     </div>
                                 }
 
