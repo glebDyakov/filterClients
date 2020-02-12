@@ -196,57 +196,47 @@ class TabScroll extends Component{
         const { movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = this.state;
 
         let shouldMove = false
-        const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
-        const availableTimetableItems = this.props.availableTimetable
-            .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
+        const startDay = moment(movingVisitMillis, 'x').format('D')
+        const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
+        if (startDay !== endDay) {
+            shouldMove = false
+        }
 
-        availableTimetableItems.forEach(availableTimetableItem => {
-            availableTimetableItem.availableDays.forEach(item => {
-                item.availableTimes.forEach(time => {
-                    if (time.startTimeMillis <= movingVisitEndTime && time.startTimeMillis <= movingVisitMillis
-                        && time.endTimeMillis >= movingVisitEndTime && time.endTimeMillis >= movingVisitMillis) {
-                        shouldMove = true
-                    }
-                })
-            })
-        })
+        if (!shouldMove) {
+            const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
+
+            const timetableItems = this.props.timetable
+                .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
 
 
-        if (!shouldMove && (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === movingVisitStaffId)))) {
-            // if (movingVisit.appointmentTimeMillis <= movingVisitEndTime
-            //     && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) >= movingVisitEndTime) {
-            //     shouldMove = true
-            // }
-            //
-            // if (movingVisit.appointmentTimeMillis <= movingVisitMillis && movingVisitMillis <= (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000))) {
-            //     shouldMove = true
-            // }
             const intervals = []
 
-            for(let i = movingVisitMillis; i < movingVisitEndTime; i+= 15 * 60000) {
+            for (let i = movingVisitMillis; i < movingVisitEndTime; i += 15 * 60000) {
                 intervals.push(i)
             }
 
-            const activeAvailableTimetableItem = availableTimetableItems.find(item => item.staffId === movingVisitStaffId);
-            activeAvailableTimetableItem.availableDays.forEach(item => {
-                item.availableTimes.forEach(time => {
+            timetableItems.forEach(timetableItem => {
+                const newStaff = appointments.find(item => (item.staff && item.staff.staffId) === timetableItem.staffId)
+
+                timetableItem.timetables.forEach(time => {
+
                     const isFreeInterval = intervals.every(i => {
-                        return ((time.startTimeMillis <= i && time.endTimeMillis > i)
-                            || (movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i))
+                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
+                        const isOnAnotherVisit = newStaff && newStaff.appointments
+                            .some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
+
+                        const isOnMovingVisit = (
+                            (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === newStaff.staff.staffId))) &&
+                            movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
+                        );
+                        return ((isIncludedInTimetable && !isOnAnotherVisit) || isOnMovingVisit)
                     });
                     if (isFreeInterval) {
                         shouldMove = true
                     }
-
                 })
             })
-
-            const startDay = moment(movingVisitMillis, 'x').format('D')
-            const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
-            if (startDay !== endDay) {
-                shouldMove = false
-            }
         }
 
         if (shouldMove) {
@@ -283,32 +273,6 @@ class TabScroll extends Component{
                 false
                 )
             );
-
-            // if (movingVisit.hasCoAppointments) {
-            //     const staffAppointments = appointments.find(appointment => appointment.staff.staffId === prevVisitStaffId);
-            //     if (staffAppointments) {
-            //         staffAppointments.appointments.forEach(appointment => {
-            //             if (appointment.coAppointmentId === movingVisit.appointmentId) {
-            //                 appointmentsToMove.push(appointment)
-            //             }
-            //         })
-            //         appointmentsToMove.sort((a,b) => a.appointmentId - b.appointmentId).forEach((appointment, i) => {
-            //             setTimeout(() => {
-            //                 this.props.dispatch(calendarActions.updateAppointment(
-            //                     appointment.appointmentId,
-            //                     JSON.stringify({
-            //                         appointmentTimeMillis: appointment.appointmentTimeMillis + (movingVisitMillis - movingVisit.appointmentTimeMillis),
-            //                         staffId: movingVisitStaffId,
-            //                         adminApproved: true,
-            //                         approved: true,
-            //                         moved: true,
-            //                         adminMoved: true
-            //                     }))
-            //                 );
-            //             }, 1000 * (i + 1))
-            //         })
-            //     }
-            // }
         }
         this.props.dispatch(calendarActions.toggleMoveVisit(false))
         this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
@@ -322,18 +286,18 @@ class TabScroll extends Component{
     }
 
     render(){
-        const { timetable, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, draggingAppointmentId } = this.state;
+        const { timetable, services, selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { selectedNote, movingVisit, numbers, draggingAppointmentId } = this.state;
 
         return(
             <div className="tabs-scroll"
-                // style={{'minWidth': (120*parseInt(workingStaff.availableTimetable && workingStaff.availableTimetable.length))+'px'}}
+                // style={{'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'}}
             >
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) =>
                         <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                             <TabScrollLeftMenu time={time}/>
-                            {!isLoading && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
+                            {!isLoading && timetable && selectedDays.map((day) => timetable.map((workingStaffElement, staffKey) => {
                                 let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
                                 const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
                                     (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
@@ -672,33 +636,33 @@ class TabScroll extends Component{
                                         parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
 
 
-                                    // const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
-                                    let workingTimeEnd=null;
-                                    let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                        workingStaffElement.availableDays.some((availableDay)=>
-                                            parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                            availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                                workingTimeEnd=workingTime.endTimeMillis;
-                                                if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                                    const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                    const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-
-                                                    if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                                        return true
-                                                    }
-                                                }
-                                                return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                                    && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                    && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            }
-
-                                            ));
-                                    // let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
-                                    //     return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                    //         && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //         && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    // })
-                                    // let notExpired = notExpired2
+                                    // let workingTimeEnd=null;
+                                    // let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                    //     workingStaffElement.availableDays.some((availableDay)=>
+                                    //         parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                    //         availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                    //             workingTimeEnd=workingTime.endTimeMillis;
+                                    //             if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                    //                 const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //                 const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //
+                                    //                 if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                    //                     return true
+                                    //                 }
+                                    //             }
+                                    //             return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                    //                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //         }
+                                    //
+                                    //         ));
+                                    const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
+                                    let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
+                                        return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                            && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                            && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    })
+                                    let notExpired = notExpired2
 
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
                                     const wrapperClassName = `cell col-tab ${currentTime <= moment().format("x")

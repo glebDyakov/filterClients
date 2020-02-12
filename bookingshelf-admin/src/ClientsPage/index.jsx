@@ -181,7 +181,7 @@ class Index extends Component {
                             selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
                             typeSelected={typeSelected}
                             staff={staff.staff}
-                            availableTimetable={staff.staff}
+                            timetable={staff.staff}
                             setWorkingStaff={this.setWorkingStaff}
                             hideWorkingStaff={true}
                         />
@@ -214,7 +214,7 @@ class Index extends Component {
                             selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
                             typeSelected={typeSelected}
                             staff={staff.staff}
-                            availableTimetable={staff.staff}
+                            timetable={staff.staff}
                             setWorkingStaff={this.setWorkingStaff}
                             hideWorkingStaff={true}
                         />

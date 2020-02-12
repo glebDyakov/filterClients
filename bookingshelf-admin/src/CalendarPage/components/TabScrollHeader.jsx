@@ -5,7 +5,7 @@ import moment from 'moment';
 class TabScrollHeader extends PureComponent {
 
     render() {
-        const {selectedDays, availableTimetable,availableTimetableMessage, timetable, closedDates, staff  } =this.props;
+        const {selectedDays, timetable, timetableMessage, closedDates, staff  } =this.props;
 
         return(
             <React.Fragment>
@@ -17,9 +17,9 @@ class TabScrollHeader extends PureComponent {
                         // }}
                     >
                         <div className="tab-content-list tab-content-list-first">
-                            {(availableTimetable || availableTimetableMessage) && <div className="cell hours"><span></span></div>}
+                            {(timetable || timetableMessage) && <div className="cell hours"><span></span></div>}
 
-                            {availableTimetable && availableTimetable.map((workingStaffElement) => {
+                            {timetable && timetable.map((workingStaffElement) => {
                                 const activeStaff = staff && staff.find(staffItem => staffItem.staffId === workingStaffElement.staffId);
 
                                 return <div className="cell">
@@ -34,7 +34,7 @@ class TabScrollHeader extends PureComponent {
                             )
 
                             }
-                            {availableTimetableMessage && <div className="cell"><p>{availableTimetableMessage}</p></div>}
+                            {timetableMessage && <div className="cell"><p>{timetableMessage}</p></div>}
                         </div>
                     </div>
 

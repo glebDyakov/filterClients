@@ -4,7 +4,7 @@ import {access} from "../../_helpers/access";
 class StaffChoice extends PureComponent {
 
     render(){
-        const {typeSelected,selectedStaff,hideWorkingStaff, availableTimetable, setWorkingStaff, staff}= this.props;
+        const {typeSelected,selectedStaff,hideWorkingStaff, timetable, setWorkingStaff, staff}= this.props;
         const currentSelectedStaff = selectedStaff && !!selectedStaff.length && staff && staff.find(staffItem => staffItem.staffId === JSON.parse(selectedStaff).staffId);
 
         return(
@@ -52,19 +52,19 @@ class StaffChoice extends PureComponent {
                 {access(2) && (
                     <ul className="dropdown-menu">
                         <li>
-                            <a onClick={() => setWorkingStaff(availableTimetable, 2)}>
+                            <a onClick={() => setWorkingStaff(timetable, 2)}>
                                 <p>Все сотрудники</p>
                             </a>
                         </li>
                         {!hideWorkingStaff && <li>
-                            <a onClick={() => setWorkingStaff(availableTimetable, 1)}>
+                            <a onClick={() => setWorkingStaff(timetable, 1)}>
                                 <p>Работающие сотрудники</p>
                             </a>
                         </li>}
 
-                        {availableTimetable && availableTimetable.map(staffEl =>{
+                        {timetable && timetable.map(staffEl =>{
                             const activeStaff = staff && staff.find(staffItem => staffItem.staffId === staffEl.staffId);
-                            const activeStaffEl = availableTimetable.filter(item => item.staffId === staffEl.staffId)
+                            const activeStaffEl = timetable.filter(item => item.staffId === staffEl.staffId)
                             return(
                                 <li>
                                     <a onClick={() => setWorkingStaff(activeStaffEl, 3)}>
