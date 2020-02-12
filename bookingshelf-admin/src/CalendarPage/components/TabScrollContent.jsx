@@ -96,12 +96,14 @@ class TabScroll extends Component{
     }
 
     handleMouseMove(e) {
-        const { changingVisit, changingPos, offsetHeight } = this.state
+        const { changingVisit, currentTarget, changingPos, offsetHeight } = this.state
         const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
+        const node = document.getElementById(textAreaWrapper)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        document.getElementById(textAreaWrapper).style.height = res+"px";
+        node.style.height = res+"px";
+        currentTarget.style.bottom = -res+"px";
     }
     handleMouseUp() {
         const { appointments } = this.props;
@@ -173,7 +175,7 @@ class TabScroll extends Component{
             ))
         }
 
-        this.setState({ changingVisit: null, changingPos:null, offsetHeight: null })
+        this.setState({ changingVisit: null, currentTarget: null, changingPos:null, offsetHeight: null })
     }
 
     startMovingVisit(movingVisit, totalDuration, draggingAppointmentId) {
@@ -566,6 +568,7 @@ class TabScroll extends Component{
                                     const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                                             <p onMouseDown={(e) => {
                                                 this.setState({
+                                                    currentTarget: e.currentTarget,
                                                     changingVisit: appointment,
                                                     changingPos: e.pageY,
                                                     offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
@@ -669,33 +672,33 @@ class TabScroll extends Component{
                                         parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
 
 
-                                    const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
-                                    // let workingTimeEnd=null;
-                                    // let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                    //     workingStaffElement.availableDays.some((availableDay)=>
-                                    //         parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                    //         availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                    //             workingTimeEnd=workingTime.endTimeMillis;
-                                    //             if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                    //                 const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //                 const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //
-                                    //                 if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                    //                     return true
-                                    //                 }
-                                    //             }
-                                    //             return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                    //                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //         }
-                                    //
-                                    //         ));
-                                    let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
-                                        return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                            && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    })
-                                    let notExpired = notExpired2
+                                    // const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
+                                    let workingTimeEnd=null;
+                                    let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                        workingStaffElement.availableDays.some((availableDay)=>
+                                            parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                            availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                                workingTimeEnd=workingTime.endTimeMillis;
+                                                if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                                    const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                    const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+
+                                                    if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                                        return true
+                                                    }
+                                                }
+                                                return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                                    && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                                    && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                            }
+
+                                            ));
+                                    // let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
+                                    //     return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                    //         && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //         && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    // })
+                                    // let notExpired = notExpired2
 
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
                                     const wrapperClassName = `cell col-tab ${currentTime <= moment().format("x")
