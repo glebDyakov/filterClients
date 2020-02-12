@@ -217,7 +217,7 @@ class TabScroll extends Component{
             }
 
             timetableItems.forEach(timetableItem => {
-                const newStaff = appointments.find(item => (item.staff && item.staff.staffId) === timetableItem.staffId)
+                const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === timetableItem.staffId)
 
                 timetableItem.timetables.forEach(time => {
 
