@@ -689,7 +689,7 @@ class Index extends Component{
                                     <li onClick={()=>this.setCurrentSelectedStaff(2)}>
                                         <a ><p>Работающие сотрудники</p></a>
                                     </li>
-                                    {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                    {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
                                         return(
                                             <li onClick={()=>this.setCurrentSelectedStaff(staffEl)}>
@@ -766,7 +766,7 @@ class Index extends Component{
                                     <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
                                         <a ><p>Работающие сотрудники</p></a>
                                     </li>
-                                    {staff && staff.availableTimetable && staff.availableTimetable.map(staffEl =>{
+                                    {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
                                         return(
                                             <li onClick={()=>this.setCurrentSelectedStaffChart(staffEl)}>

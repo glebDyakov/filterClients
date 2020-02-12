@@ -19,7 +19,7 @@ class AddAppointment extends React.Component {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
         this.state = {
-            availableCoStaffs: props.staffs && props.staffs.availableTimetable,
+            availableCoStaffs: props.staffs && props.staffs.timetable,
             coStaffs: props.appointmentEdited ? (props.appointmentEdited[0].coStaffs || []) : [],
             isAddCostaff: props.appointmentEdited && props.appointmentEdited[0].coStaffs && props.appointmentEdited[0].coStaffs.length > 0 ,
             appointmentsToDelete: [],
@@ -208,9 +208,10 @@ class AddAppointment extends React.Component {
     }
 
     updateAvailableCoStaffs(appointment = this.state.appointment) {
+        const { appointmentsFromProps } = this.props;
         const { staffs, staffCurrent } = this.state;
 
-        const availableCoStaffs = staffs.availableTimetable
+        const availableCoStaffs = staffs.timetable
             .filter(item => item.staffId !== staffCurrent.staffId)
             .filter(coStaff => {
                 const intervals = []
@@ -222,18 +223,26 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                return intervals.every(interval => {
-                        return coStaff.availableDays.some(day => day.availableTimes.some(availableTime =>
-                            (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval)
-                        ))
-                    }
-                )
+                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
+
+                return intervals.every(i => {
+                    const isOnAnotherVisit = newStaff && newStaff.appointments.some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
+
+                    return coStaff.timetables.some(time => {
+
+                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
+
+                        return (isIncludedInTimetable && !isOnAnotherVisit)
+                    })
+
+                });
             })
 
         this.setState({ availableCoStaffs });
     }
 
     getOptionList(index) {
+        const { appointmentsFromProps } = this.props;
         const { appointment, staffs, staffCurrent, edit_appointment } = this.state;
         const optionList = [
             { duration: 900, label: '15 мин'},
@@ -298,7 +307,7 @@ class AddAppointment extends React.Component {
             { duration: 54000, label: '15 ч 00 мин'},
         ];
 
-        const activeStaffTimetable = staffs.availableTimetable.find(item => item.staffId === staffCurrent.staffId)
+        const activeStaffTimetable = staffs.timetable.find(item => item.staffId === staffCurrent.staffId)
 
         let finalOptionList = optionList
         if (activeStaffTimetable) {
@@ -313,14 +322,20 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
+                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
 
-                return intervals.every(interval => {
-                        return activeStaffTimetable.availableDays.some(day => day.availableTimes.some(availableTime =>
-                            (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval) ||
-                            (edit_appointment && (interval < lastAppointmentEndTime))
-                        ))
-                    }
-                )
+
+                return intervals.every(i => {
+                    const isOnAnotherVisit = newStaff && newStaff.appointments.some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
+
+                    return activeStaffTimetable.timetables.some(time => {
+
+                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
+
+                        return (isIncludedInTimetable && !isOnAnotherVisit) || (edit_appointment && (i < lastAppointmentEndTime))
+                    })
+
+                });
             })
         }
 
@@ -328,8 +343,9 @@ class AddAppointment extends React.Component {
     }
 
     getFilteredServicesList(index, extraDuration) {
+        const { appointmentsFromProps } = this.props
         const { appointment, staffs, staffId, staffCurrent, visitFreeMinutes, services, servicesSearch } = this.state;
-        const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
+        const user = staffs.timetable.find(timetable => timetable.staffId === staffId.staffId);
 
         const result = services[index].servicesList && services[index].servicesList
             .filter(service => service.staffs && service.staffs.some(st=>st.staffId===staffCurrent.staffId))
@@ -344,15 +360,20 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                return intervals.every(interval => {
-                        const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
-                        return (isFreeMinute || (
-                            user.availableDays.some(day => day.availableTimes.some(availableTime =>
-                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval)
-                            ))
-                        ))
-                    }
-                )
+                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
+
+                return intervals.every(i => {
+                    const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === i)
+                    const isOnAnotherVisit = newStaff && newStaff.appointments.some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
+
+                    return isFreeMinute || user.timetables.some(time => {
+
+                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
+
+                        return (isFreeMinute || (isIncludedInTimetable && !isOnAnotherVisit))
+                    })
+
+                });
             });
 
 
@@ -748,7 +769,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, clients: clientsFromProps, services: servicesFromProps } =this.props;
+        const { status, adding, staff: staffFromProps, clients: clientsFromProps, services: servicesFromProps, selectedDay } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs
@@ -861,8 +882,14 @@ class AddAppointment extends React.Component {
                                                             {(!edit_appointment && timeArrange !== 0) &&
                                                             <ul className="dropdown-menu" role="menu">
                                                                 {
-                                                                        staffs.availableTimetable && staffs.availableTimetable
-                                                                            .filter(staff => staff.availableDays.some(day => day.availableTimes.length))
+                                                                        staffs.timetable && staffs.timetable
+                                                                            .filter(timing => {
+                                                                                return timing.timetables.some(time => {
+                                                                                    const checkingTiming = moment(time.startTimeMillis).format('DD MM YYYY')
+                                                                                    const currentTiming = moment(selectedDay).format('DD MM YYYY')
+                                                                                    return checkingTiming === currentTiming;
+                                                                                })
+                                                                            })
                                                                             .map((staff, key) => {
                                                                                 const activeStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staff.staffId);
 
@@ -1314,6 +1341,7 @@ class AddAppointment extends React.Component {
         this.setState({ minutes: this.getHours(staffId), serviceCurrent: newServiceCurrent, staffCurrent: newStaffCurrent, coStaffs: [] });
     }
     getAppointments(appointment) {
+        const { appointmentsFromProps } = this.props;
         const { staffs, staffId, visitFreeMinutes } = this.state;
         const newAppointments = []
         let appointmentMessage = '';
@@ -1321,7 +1349,7 @@ class AddAppointment extends React.Component {
             let shouldAdd = false;
             if (i !== 0) {
                 const startTime = parseInt(appointment[i - 1].appointmentTimeMillis) + appointment[i - 1].duration * 1000
-                const user = staffs.availableTimetable.find(timetable => timetable.staffId === staffId.staffId);
+                const user = staffs.timetable.find(timetable => timetable.staffId === staffId.staffId);
 
                 const intervals = []
 
@@ -1330,15 +1358,20 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                shouldAdd = intervals.every(interval => {
-                        const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === interval)
-                        return (isFreeMinute || (
-                            user.availableDays.some(day => day.availableTimes.some(availableTime =>
-                                (availableTime.startTimeMillis <= interval && availableTime.endTimeMillis > interval)
-                            ))
-                        ))
-                    }
-                )
+                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
+
+                shouldAdd = intervals.every(i => {
+                    const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === i)
+                    const isOnAnotherVisit = newStaff && newStaff.appointments.some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
+
+                    return isFreeMinute || user.timetables.some(time => {
+
+                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
+
+                        return (isFreeMinute || (isIncludedInTimetable && !isOnAnotherVisit))
+                    })
+
+                });
 
                 if (shouldAdd) {
                     item.appointmentTimeMillis = startTime;
@@ -1400,9 +1433,9 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, authentication } = state;
+    const { alert, services, authentication, calendar } = state;
     return {
-        alert, services, authentication
+        alert, services, authentication, appointmentsFromProps: calendar.appointments
     };
 }
 

@@ -4,7 +4,8 @@ const initialState = {
     isLoading: false,
     error: false,
     isAvailableTimesChecked: false,
-    isLoadingStaffInit: false
+    isLoadingStaffInit: false,
+    timetable: []
 }
 
 export function staff(state = initialState, action) {
@@ -226,7 +227,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 isLoadingAvailableTime:false,
-                availableTimetable: JSON.parse(JSON.stringify(action.payload.availableTimetable.sort((a, b) => a.sortOrder - b.sortOrder))),
+                timetable: JSON.parse(JSON.stringify(action.payload.timetable.sort((a, b) => a.sortOrder - b.sortOrder))),
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
@@ -237,7 +238,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS:
             return {
                 ...state,
-                availableTimetableByStaff: action.availableTimetableByStaff
+                timetableByStaff: action.timetableByStaff
             };
         case staffConstants.GET_ACCESS_LIST_NAMES_SUCCESS:
             return {

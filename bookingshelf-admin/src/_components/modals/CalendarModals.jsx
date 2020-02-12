@@ -108,7 +108,7 @@ class CalendarModals extends Component {
     }
 
     render(){
-        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
+        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
             reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
         } = this.props;
@@ -116,16 +116,16 @@ class CalendarModals extends Component {
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
-                    {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
+                    {type==='day' && workingStaff.timetable && workingStaff.timetable[0] &&
                     <a className="add" href="#"/>}
                     <div className="hide buttons-container">
                         <div className="p-4">
                             <button type="button"
-                                    onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], numbers)}
+                                    onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers)}
                                     className="button">Новая запись
                             </button>
                             <button type="button"
-                                    onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], null)}
+                                    onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null)}
                                     className="button">Зарезервированное время
                             </button>
                         </div>
@@ -147,7 +147,7 @@ class CalendarModals extends Component {
                         clients={clients}
                         checkedUser={checkedUser}
                         staff={staff && staff.staff}
-                        staffs={staffAll}
+                        staffs={staff}
                         randNum={Math.random()}
                         addAppointment={this.newAppointment}
                         editAppointment={this.editAppointment}
@@ -173,8 +173,8 @@ class CalendarModals extends Component {
                     />
                     {(reservedFromProps || reserved) &&
                     <ReservedTime
-                        availableTimetable={workingStaff.availableTimetable}
-                        staffs={staffAll}
+                        timetable={workingStaff.timetable}
+                        staffs={staff}
                         minutesReservedtime={minutesReservedtime}
                         getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
                         staff={staff && staff.staff}
