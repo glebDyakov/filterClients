@@ -223,7 +223,7 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
+                const newStaff = appointmentsFromProps && appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
 
                 return intervals.every(i => {
                     const isOnAnotherVisit = newStaff && newStaff.appointments.some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
@@ -322,7 +322,7 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
+                const newStaff = appointmentsFromProps && appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffCurrent.staffId)
 
 
                 return intervals.every(i => {
@@ -360,7 +360,7 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
+                const newStaff = appointmentsFromProps && appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
 
                 return intervals.every(i => {
                     const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === i)
@@ -1358,7 +1358,7 @@ class AddAppointment extends React.Component {
                     intervals.push(i)
                 }
 
-                const newStaff = appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
+                const newStaff = appointmentsFromProps && appointmentsFromProps.find(item => (item.staff && item.staff.staffId) === staffId.staffId)
 
                 shouldAdd = intervals.every(i => {
                     const isFreeMinute = visitFreeMinutes.some(freeMinute => freeMinute === i)
