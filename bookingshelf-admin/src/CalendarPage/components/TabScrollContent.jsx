@@ -541,7 +541,7 @@ class TabScroll extends Component{
                                                 cursor: 'ns-resize',
                                                 height: '8px',
                                                 position: 'absolute',
-                                                bottom: -resultTextAreaHeight + 'px',
+                                                bottom: -(resultTextAreaHeight + 3) + 'px',
                                                 width: '100%',
                                                 zIndex: 9990
                                             }}>
