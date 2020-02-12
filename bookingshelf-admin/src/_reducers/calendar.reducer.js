@@ -316,6 +316,94 @@ export function calendar(state = initialState, action) {
                 appointments: appointmentsToPush,
                 appointmentsCount: appointmentsCountToPush
             };
+        case calendarConstants.MAKE_VISUAL_DELETING:
+            newAppointmentsCount = state.appointmentsCount
+            newAppointmentsCanceled = state.appointmentsCanceled
+            newAppointment = state.appointments;
+
+            newItem = action.appointment
+
+            let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
+            let activeAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId)
+            let indexAppointmentsCount = activeAppointmentsCount ? activeAppointmentsCount.appointments.findIndex(item=>item.appointmentId === newItem.appointmentId) : -1
+            if (indexElem !== -1) {
+                newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+            }
+            if (indexAppointmentsCount !== -1) {
+                newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexAppointmentsCount, 1);
+            }
+
+            newAppointmentsCanceled.push(newItem);
+            finalAppointments = JSON.parse(JSON.stringify(newAppointment))
+            finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
+            finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
+            return {
+                ...state,
+                appointments: finalAppointments,
+                appointmentsCount: finalAppointmentsCount,
+                appointmentsCanceled: finalAppointmentsCanceled,
+                deletingVisualVisit: action.appointment
+            };
+        case calendarConstants.CANCEL_VISUAL_DELETING:
+            newAppointment = state.appointments;
+            newAppointmentsCount = state.appointmentsCount
+            newAppointmentsCanceled = state.appointmentsCanceled
+            newItem = state.deletingVisualVisit;
+            isIncluded = false;
+
+            appointmentsToPush = []
+            appointmentsCountToPush = []
+            if (newAppointment && newAppointment.length) {
+                newAppointment.forEach(item => {
+                    if (item.staff.staffId === newItem.staffId) {
+                        item.appointments.push(newItem)
+                        isIncluded = true;
+                    }
+                    appointmentsToPush.push(item)
+                })
+                if (!isIncluded) {
+                    appointmentsToPush.push({
+                        staff: {
+                            staffId: newItem.staffId
+                        },
+                        appointments: [newItem]
+                    })
+                }
+            } else {
+                appointmentsToPush = [{
+                    staff: {
+                        staffId: newItem.staffId
+                    },
+                    appointments: [newItem]
+                }]
+            }
+            newAppointmentsCount.forEach(item => {
+                if (item.staff.staffId === newItem.staffId) {
+                    item.appointments.push(newItem)
+                }
+                appointmentsCountToPush.push(item)
+            })
+
+            let indexAppointmentCanceled = newAppointment.findIndex(item=>item.appointmentId === newItem.appointmentId)
+            if (indexElem !== -1) {
+                newAppointmentsCanceled.splice(indexAppointmentCanceled, 1);
+            }
+
+            finalAppointments = JSON.parse(JSON.stringify(newAppointment))
+            finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
+            finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
+            return {
+                ...state,
+                appointments: finalAppointments,
+                appointmentsCount: finalAppointmentsCount,
+                appointmentsCanceled: finalAppointmentsCanceled,
+                deletingVisualVisit: null
+            };
+        case calendarConstants.CLEAR_VISUAL_DELETING:
+            return {
+                ...state,
+                deletingVisualVisit: null
+            }
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
             newAppointmentsCount = state.appointmentsCount
             let newAppointmentsCanceled = state.appointmentsCanceled
@@ -330,7 +418,7 @@ export function calendar(state = initialState, action) {
                     newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
                 }
                 if (indexAppointmentsCount !== -1) {
-                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
+                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexAppointmentsCount, 1);
                 }
 
                 if (i === 0 ){
@@ -338,9 +426,9 @@ export function calendar(state = initialState, action) {
                     newAppointmentsCanceled.push(newItem);
                 }
             })
-            const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
-            const finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
-            const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
+            let finalAppointments = JSON.parse(JSON.stringify(newAppointment))
+            let finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
+            let finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
                 appointments: finalAppointments,
@@ -354,7 +442,7 @@ export function calendar(state = initialState, action) {
                 prevVisualVisit: null
             }
         case calendarConstants.MAKE_VISUAL_MOVE:
-        case calendarConstants.RETURN_VISUAL_MOVE:
+        case calendarConstants.CANCEL_VISUAL_MOVE:
             newAppointment = state.appointments;
             newAppointmentsCount = state.appointmentsCount
             let { prevVisualVisit } = state
