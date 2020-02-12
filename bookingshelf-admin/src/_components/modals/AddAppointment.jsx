@@ -1264,52 +1264,6 @@ class AddAppointment extends React.Component {
 
         setTimeout(() => this.closeModal(), 500);
         this.props.dispatch(calendarActions.editAppointment2(JSON.stringify(appointmentNew), appointment[0].appointmentId))
-        // let timeout = 0
-        //
-        // appointmentsToDelete.forEach((currentAppointment, i) => {
-        //     this.props.dispatch(calendarActions.deleteAppointment(currentAppointment.appointmentId, true))
-        //     if (i === 0) {
-        //         timeout++;
-        //     }
-        // })
-        // const appointmentsToAdd = []
-        // appointment.forEach((currentAppointment, i) => {
-        //     if (!currentAppointment.appointmentId) {
-        //         appointmentsToAdd.push({...currentAppointment, serviceId: serviceCurrent[i].id})
-        //     }
-        // })
-        // appointment.forEach((currentAppointment, i) => {
-        //     setTimeout(() => {
-        //         let appointmentNew = {
-        //             serviceId: serviceCurrent[i].id,
-        //             serviceName: serviceCurrent[i].service.name,
-        //             duration: serviceCurrent[i].service.duration,
-        //             color: serviceCurrent[i].service.color,
-        //             currency: serviceCurrent[i].service.currency
-        //         };
-        //
-        //         if (currentAppointment.appointmentId) {
-        //             this.props.dispatch(calendarActions.updateAppointment(currentAppointment.appointmentId, JSON.stringify({...currentAppointment, ...appointmentNew}), true))
-        //             timeout++;
-        //         }
-        //     }, 2000 * timeout)
-        // })
-        //
-        // if (appointmentsToAdd.length) {
-        //     setTimeout(() => {
-        //         this.props.dispatch(calendarActions.editCalendarAppointment(
-        //             appointmentsToAdd,
-        //             appointment[0].appointmentId,
-        //             staffCurrent.staffId,
-        //             clientChecked.clientId,
-        //             true
-        //         ));
-        //     }, 2000 * timeout)
-        // }
-        //
-        //
-
-        // return editAppointment({...appointment[0], appointmentId:editedElement&&editedElement[0][0].appointmentId, serviceId:serviceCurrent[0].id, staffId:staffId.staffId, clientId:clientChecked.clientId, approved: true})
     }
 
 

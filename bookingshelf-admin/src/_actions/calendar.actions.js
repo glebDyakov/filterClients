@@ -186,7 +186,7 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLo
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
-    function returnVisualVisit() { return { type: calendarConstants.RETURN_VISUAL_MOVE } }
+    function returnVisualVisit() { return { type: calendarConstants.CANCEL_VISUAL_MOVE } }
     function clearVisualVisit() { return { type: calendarConstants.CLEAR_VISUAL_MOVE } }
 }
 
@@ -319,25 +319,29 @@ function getReservedTime(dateFrom, dateTo) {
     function failure() { return { type: calendarConstants.GET_RESERVED_TIME_FAILURE} }
 }
 
-function deleteAppointment(id, withoutNotify) {
+function deleteAppointment(appointment, withoutNotify) {
     return dispatch => {
+        dispatch(makeVisualDeleting())
         // dispatch(request())
-        calendarService.deleteAppointment(id, withoutNotify)
+        calendarService.deleteAppointment(appointment.appointmentId, withoutNotify)
             .then(
-                client => {
-                     dispatch(success(id))
-                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                () => {
+                    dispatch(success())
+                    dispatch(clearVisualDeleting())
                 },
-
-                error => dispatch(failure(id, error.toString()))
+                error => {
+                    dispatch(failure(error))
+                    dispatch(cancelVisualDeleting())
+                }
             );
     };
 
     function request() { return { type: calendarConstants.DELETE_APPOINTMENT } }
-    function success(id) { return { type: calendarConstants.DELETE_APPOINTMENT_SUCCESS, id } }
+    function success() { return { type: calendarConstants.DELETE_APPOINTMENT_SUCCESS } }
     function failure(error) { return { type: calendarConstants.DELETE_APPOINTMENT_FAILURE, error } }
+    function makeVisualDeleting(error) { return { type: calendarConstants.MAKE_VISUAL_DELETING, appointment } }
+    function cancelVisualDeleting(error) { return { type: calendarConstants.CANCEL_VISUAL_DELETING, appointment } }
+    function clearVisualDeleting(error) { return { type: calendarConstants.CLEAR_VISUAL_DELETING, appointment } }
 }
 
 function deleteReservedTime(id, reservedTimeId, time1, time2) {

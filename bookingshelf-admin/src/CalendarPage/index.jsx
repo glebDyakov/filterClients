@@ -138,9 +138,8 @@ class Index extends PureComponent {
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.deleteAppointment = this.deleteAppointment.bind(this);
         this.deleteReserve = this.deleteReserve.bind(this);
-        this.approveAppointmentSetter = this.approveAppointmentSetter.bind(this);
+        this.updateAppointmentForDeleting = this.updateAppointmentForDeleting.bind(this);
         this.updateCalendar = this.updateCalendar.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
@@ -490,7 +489,7 @@ class Index extends PureComponent {
 
     render() {
         const { calendar, services, clients, staff, appointments, authentication } = this.props;
-        const { approvedId, staffAll, workingStaff, reserved, appointmentEdited,
+        const { appointmentForDeleting, staffAll, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
@@ -499,7 +498,7 @@ class Index extends PureComponent {
         const calendarModalsProps = {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
-            reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId,
+            reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
@@ -563,7 +562,7 @@ class Index extends PureComponent {
                                             appointments={appointments}
                                             reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
-                                            approveAppointmentSetter={this.approveAppointmentSetter}
+                                            updateAppointmentForDeleting={this.updateAppointmentForDeleting}
                                             updateReservedId={this.updateReservedId}
                                             changeTime={this.changeTime}
                                             isLoading={isLoading}
@@ -656,26 +655,8 @@ class Index extends PureComponent {
         dispatch(calendarActions.editAppointmentTime(JSON.stringify(appointment), startTime, endTime));
     }
 
-    approveAppointmentSetter(approvedId){
-        this.props.dispatch(companyActions.getNewAppointments());
-        this.setState({ approvedId })
-    }
-
-    deleteAppointment(id){
-        const { dispatch } = this.props;
-
-        const { selectedDays, type, selectedDayMoment } = this.state;
-
-        if(type==='day'){
-            //dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-            dispatch(calendarActions.deleteAppointment(id));
-        } else {
-            //dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-            dispatch(calendarActions.deleteAppointment(id));
-        }
-
-        //dispatch(companyActions.getNewAppointments());
-
+    updateAppointmentForDeleting(appointmentForDeleting){
+        this.setState({ appointmentForDeleting })
     }
 
     deleteReserve(stuffId, id){

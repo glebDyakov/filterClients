@@ -98,8 +98,9 @@ class TabScroll extends Component{
     handleMouseMove(e) {
         const { changingVisit, changingPos, offsetHeight } = this.state
         const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
+
+        // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-// 'rez' = ширина div'a + кол-во пикселов смещения
         document.getElementById(textAreaWrapper).style.height = res+"px";
     }
     handleMouseUp() {
@@ -319,7 +320,7 @@ class TabScroll extends Component{
     }
 
     render(){
-        const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, approveAppointmentSetter,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, draggingAppointmentId } = this.state;
 
 
@@ -399,7 +400,10 @@ class TabScroll extends Component{
                                                               data-toggle="modal"
                                                               data-target=".delete-notes-modal"
                                                               title="Отменить встречу"
-                                                              onClick={() => approveAppointmentSetter(appointment.appointmentId)}/>
+                                                              onClick={() => updateAppointmentForDeleting({
+                                                                  ...appointment,
+                                                                  staffId: workingStaffElement.staffId
+                                                              })}/>
                                                         {!appointment.online &&
                                                         <span className="pen"
                                                               title="Запись через журнал"/>}
@@ -549,7 +553,10 @@ class TabScroll extends Component{
                                                                          className="cell msg-inner-button-wrapper"
                                                                          data-toggle="modal"
                                                                          data-target=".delete-notes-modal"
-                                                                         onClick={() => approveAppointmentSetter(appointment.appointmentId)}
+                                                                         onClick={() => updateAppointmentForDeleting({
+                                                                             ...appointment,
+                                                                             staffId: workingStaffElement.staffId
+                                                                         })}
                                                                     >
                                                                         <button className="button"
                                                                                 style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}

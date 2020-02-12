@@ -4,8 +4,7 @@ import {NewClient} from "./NewClient";
 import {ClientDetails} from "./ClientDetails";
 import {AddAppointment} from "../../_components/modals/AddAppointment";
 import {ReservedTime} from "./ReservedTime";
-import {ApproveAppointment} from "./ApproveAppointment";
-import {DeleteAppointment} from "./DeleteAppointment";
+import DeleteAppointment from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
 import {MoveVisit} from "./MoveVisit";
 import {StartMovingVisit} from "./StartMovingVisit";
@@ -40,7 +39,6 @@ class CalendarModals extends Component {
         this.newAppointment = this.newAppointment.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
         this.deleteReserve = this.deleteReserve.bind(this);
-        this.deleteAppointment = this.deleteAppointment.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
     }
     updateClient(client){
@@ -51,10 +49,6 @@ class CalendarModals extends Component {
     };
     onCloseClient(){
         this.setState({newClientModal: false});
-    }
-
-    deleteAppointment(id){
-        this.props.deleteAppointment(id);
     }
 
     handleEditClient(client, isModalShouldPassClient) {
@@ -116,7 +110,7 @@ class CalendarModals extends Component {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId,
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
@@ -194,13 +188,8 @@ class CalendarModals extends Component {
                     }
                     <MoveVisit />
                     <StartMovingVisit />
-                    <ApproveAppointment
-                        id={approvedId}
-                        approve={this.approveAppointment}
-                    />
                     <DeleteAppointment
-                        id={approvedId}
-                        cancel={this.deleteAppointment}
+                        appointmentForDeleting={appointmentForDeleting}
                     />
                     <DeleteReserve
                         id={reserveId}
