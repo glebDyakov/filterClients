@@ -320,9 +320,8 @@ class TabScroll extends Component{
     }
 
     render(){
-        const { authentication, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { timetable, services, availableTimetable,selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, movingVisitDuration, prevVisitStaffId, numbers, draggingAppointmentId } = this.state;
-
 
         return(
             <div className="tabs-scroll"
@@ -332,7 +331,7 @@ class TabScroll extends Component{
                     {numbers && numbers.map((time, key) =>
                         <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                             <TabScrollLeftMenu time={time}/>
-                            {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
+                            {!isLoading && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
                                 let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
                                 const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
                                     (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
@@ -384,7 +383,6 @@ class TabScroll extends Component{
                                     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
                                     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
                                     const resultTextAreaHeight = ((totalDuration / 60 / 15) - 1) * 20
-                                    // const appointment = clients && clients.find((client) => client.clientId === appointment.clientId)
 
                                     const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
                                     const content = (
@@ -510,16 +508,6 @@ class TabScroll extends Component{
                                                                 {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                                                             <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                                                             {appointment.description && <p>Заметка: {appointment.description}</p>}
-
-                                                            {/*{(access(4) || (access(12) && (authentication && authentication.user && authentication.user.profile && authentication.user.profile.staffId) === workingStaffElement.staffId)) && appointment && <a*/}
-                                                            {/*    className="a-client-info"*/}
-                                                            {/*    data-target=".client-detail"*/}
-                                                            {/*    title="Просмотреть клиента"*/}
-                                                            {/*    onClick={(e) => {*/}
-                                                            {/*        $('.client-detail').modal('show')*/}
-                                                            {/*        handleUpdateClient(appointment)*/}
-                                                            {/*    }}><p>Просмотреть клиента</p>*/}
-                                                            {/*</a>}*/}
 
                                                             {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                                                                 <React.Fragment>
@@ -681,26 +669,33 @@ class TabScroll extends Component{
                                         parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
 
 
-                                    let workingTimeEnd=null;
-                                    let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                        workingStaffElement.availableDays.some((availableDay)=>
-                                            parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                            availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                                workingTimeEnd=workingTime.endTimeMillis;
-                                                if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                                    const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                    const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-
-                                                    if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                                        return true
-                                                    }
-                                                }
-                                                return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                                    && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                                    && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            }
-
-                                            ));
+                                    const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
+                                    // let workingTimeEnd=null;
+                                    // let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                    //     workingStaffElement.availableDays.some((availableDay)=>
+                                    //         parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                    //         availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                    //             workingTimeEnd=workingTime.endTimeMillis;
+                                    //             if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                    //                 const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //                 const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //
+                                    //                 if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                    //                     return true
+                                    //                 }
+                                    //             }
+                                    //             return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                    //                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    //         }
+                                    //
+                                    //         ));
+                                    let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
+                                        return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                            && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                            && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                    })
+                                    let notExpired = notExpired2
 
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
                                     const wrapperClassName = `cell col-tab ${currentTime <= moment().format("x")
@@ -743,11 +738,14 @@ class TabScroll extends Component{
 }
 
 function mapStateToProps(state) {
-    const { calendar: { isStartMovingVisit, isMoveVisit } } = state;
+    const { calendar: { isStartMovingVisit, isMoveVisit, appointments, isClientNotComeLoading, reservedTime } } = state;
 
     return {
         isStartMovingVisit,
-        isMoveVisit
+        isMoveVisit,
+        appointments,
+        isClientNotComeLoading,
+        reservedTime
     }
 }
 

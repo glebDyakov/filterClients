@@ -196,7 +196,7 @@ class Index extends PureComponent {
 
         setTimeout(() => {
             const {selectedDay} = this.state;
-            if (!this.props.calendar.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+            if (!this.props.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
                 this.navigateToRedLine();
             }
         }, 500);
@@ -315,7 +315,7 @@ class Index extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { calendar } = this.props;
+        const { scrollableAppointmentId } = this.props;
         const { scroll, appointmentMarkerActionCalled }=this.state;
 
         if(scroll){
@@ -345,8 +345,8 @@ class Index extends PureComponent {
             this.setState({ scrollableRedLine: true })
         }
 
-        if (!appointmentMarkerActionCalled && calendar && calendar.scrollableAppointmentId) {
-            const className = calendar.scrollableAppointmentId;
+        if (!appointmentMarkerActionCalled && scrollableAppointmentId) {
+            const className = scrollableAppointmentId;
             this.animateActiveAppointment(className);
         }
 
@@ -392,13 +392,10 @@ class Index extends PureComponent {
 
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
-                reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
+                reserved: newProps.status && newProps.status===209 ? false : this.state.reserved,
                 newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal
             });
         }
-        // if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
-        //     this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
-        // }
 
         const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
         if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {
@@ -426,7 +423,7 @@ class Index extends PureComponent {
         }
 
 
-        if (newProps.calendar.isAppointmentUpdated) {
+        if (newProps.isAppointmentUpdated) {
             let startTime, endTime;
             if (this.state.type === 'day') {
                 startTime = this.state.selectedDayMoment.startOf('day').format('x');
@@ -439,56 +436,15 @@ class Index extends PureComponent {
             this.refreshTable(startTime, endTime, false, false);
         }
 
-        if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
+        if (newProps.refreshAvailableTimes && (this.props.refreshAvailableTimes !== newProps.refreshAvailableTimes)) {
             this.updateCalendar(false, false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
-
-
-        // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
-        //     this.setState({flagStaffId: false});
-        //     var socket = createSocket(this.props.authentication.user.profile.staffId );
-        //     console.log("Сокет. Создан");
-        //     socket.onopen = function() {
-        //         console.log("Сокет. Соединение установлено");
-        //
-        //         socket.send('ping');
-        //
-        //     };
-        //
-        //
-        //     socket.onclose = function(event) {
-        //         if (event.wasClean) {
-        //             console.log('Сокет. cоединение закрыто');
-        //         } else {
-        //             console.log('Сокет. соединения как-то закрыто');
-        //         }
-        //         this.openSocketAgain(this.props.authentication.user.profile.staffId);
-        //     };
-        //
-        //     socket.onmessage = function(event) {
-        //         if (event.data[0]==='{'){
-        //             const finalData = JSON.parse(event.data);
-        //             if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-        //                 this.handleSocketDispatch(finalData);
-        //             }
-        //         }
-        //         console.log(`Сокет.пришли данные: ${event.data}`);
-        //
-        //     };
-        //     socket.onmessage = socket.onmessage.bind(this);
-        //     socket.onclose = socket.onclose.bind(this);
-        //
-        //     socket.onerror = function(event) {
-        //         console.error("Сокет. ошибка", event);
-        //     };
-        // }
-
     }
 
 
     render() {
-        const { calendar, services, clients, staff, appointments, authentication } = this.props;
+        const { services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime } = this.props;
         const { appointmentForDeleting, staffAll, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
@@ -496,14 +452,14 @@ class Index extends PureComponent {
             reserveId, reserveStId, selectedDayMoment, availableTimetableMessage,
         } = this.state;
         const calendarModalsProps = {
-            appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
+            appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding, status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
         };
-        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading || this.props.calendar.isLoadingAppointments || this.props.calendar.isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
+        const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
             <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
@@ -535,8 +491,8 @@ class Index extends PureComponent {
                                     />
                                 </div>
                                 <CalendarSwitch
-                                type={type}
-                                selectType={this.selectType}
+                                    type={type}
+                                    selectType={this.selectType}
                                 />
                             </div>
                             <div className="days-container">
@@ -552,15 +508,11 @@ class Index extends PureComponent {
                                         />
                                         <TabScrollContent
                                             timetable={staff.timetable}
-                                            isClientNotComeLoading={calendar.isClientNotComeLoading}
                                             services={services}
-                                            authentication={authentication}
                                             availableTimetable={workingStaff.availableTimetable}
                                             selectedDays={selectedDays}
                                             closedDates={staffAll.closedDates}
                                             clients={clients && clients.client}
-                                            appointments={appointments}
-                                            reservedTime={calendar && calendar.reservedTime}
                                             handleUpdateClient={this.handleUpdateClient}
                                             updateAppointmentForDeleting={this.updateAppointmentForDeleting}
                                             updateReservedId={this.updateReservedId}
@@ -573,12 +525,6 @@ class Index extends PureComponent {
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                {/*{appointmentSocketMessageFlag &&*/}
-                {/*<AppointmentFromSocket*/}
-                {/*    appointmentSocketMessageFlag={appointmentSocketMessageFlag}*/}
-                {/*    appointmentSocketMessage={appointmentSocketMessage}*/}
-                {/*    closeAppointmentFromSocket={this.closeAppointmentFromSocket}*/}
-                {/*/>}*/}
             </div>
         );
     }
@@ -992,10 +938,35 @@ class Index extends PureComponent {
 }
 
 function mapStateToProps(store) {
-    const {staff, client, calendar, services, authentication} = store;
-
+    const {
+        staff,
+        client,
+        services,
+        authentication,
+        calendar: {
+            refreshAvailableTimes,
+            scrollableAppointmentId,
+            status,
+            adding,
+            isAppointmentUpdated,
+            isLoading: isLoadingCalendar,
+            isLoadingAppointments,
+            isLoadingReservedTime
+        }
+    } = store;
     return {
-        staff, clients: client, calendar, services, authentication, appointments: calendar.appointments
+        staff,
+        clients: client,
+        services,
+        authentication,
+        refreshAvailableTimes,
+        scrollableAppointmentId,
+        status,
+        adding,
+        isAppointmentUpdated,
+        isLoadingCalendar,
+        isLoadingAppointments,
+        isLoadingReservedTime
     };
 }
 
