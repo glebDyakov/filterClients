@@ -82,7 +82,7 @@ class CalendarModals extends Component {
         this.props.newReservedTime(staffId, reservedTime);
     }
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
-        this.checkAvaibleTime();
+        // this.checkAvaibleTime();
         this.setState({ reserved: true })
         return this.props.changeReservedTime(minutesReservedtime, staffId, newTime);
     }

@@ -109,8 +109,7 @@ function addReservedTime(params, staffId, time1, time2) {
                 reservedTime => {
                     dispatch(success(reservedTime, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 100)
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
-
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -223,7 +222,7 @@ function editAppointmentTime(params, time1, time2) {
             .then(
                 appointment => {
                     dispatch(success(appointment));
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -349,7 +348,7 @@ function deleteReservedTime(id, reservedTimeId, time1, time2) {
         calendarService.deleteReservedTime(id, reservedTimeId)
             .then(
                 client => {dispatch(success(reservedTimeId))
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => dispatch(failure(id, error.toString()))
             );
