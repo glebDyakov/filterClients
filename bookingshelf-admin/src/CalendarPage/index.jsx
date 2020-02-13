@@ -190,6 +190,11 @@ class Index extends PureComponent {
             this.props.dispatch(calendarActions.setScrollableAppointment(search.split('=')[1]))
         }
 
+        if (this.props.staff.timetable) {
+            this.initAvailableTime(this.props.staff, this.props.authentication)
+        }
+
+
         this.scrollToMyRef();
 
 
@@ -338,26 +343,7 @@ class Index extends PureComponent {
 
         // const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
         if (JSON.stringify(this.props.staff.timetable) !== JSON.stringify(newProps.staff.timetable)) {
-            if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
-                this.setState({
-                    opacity: false,
-                    typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
-                    selectedStaff: this.state.staffFromUrl!==null && newProps.staff && newProps.staff.timetable
-                        ?JSON.stringify(newProps.staff.timetable.filter((staff)=>staff.staffId===(!access(2) ? newProps.authentication.user.profile.staffId : this.state.staffFromUrl))[0])
-                        :[],
-                    workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
-                        ? {timetable: newProps.staff.timetable && newProps.staff.timetable.filter((staff)=>staff.staffId===
-                                (!access(2) ? newProps.authentication.user.profile.staffId : (this.state.staffFromUrl===null
-                                ? JSON.parse(this.state.selectedStaff).staffId
-                                :this.state.staffFromUrl)))
-                            }
-                        : newProps.staff
-                });
-            }
-
-            if ((this.state.typeSelected===1 || this.state.typeSelected === 2) && this.state.type!=='week' && newProps.staff.timetable){
-                this.setWorkingStaff(newProps.staff.timetable, this.state.typeSelected, newProps.staff.timetable)
-            }
+            this.initAvailableTime(newProps.staff, newProps.authentication)
         }
 
 
@@ -377,6 +363,30 @@ class Index extends PureComponent {
         if (newProps.refreshAvailableTimes && (this.props.refreshAvailableTimes !== newProps.refreshAvailableTimes)) {
             this.updateCalendar(false, false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
+        }
+    }
+
+    initAvailableTime(staff, authentication) {
+        const { timetable } = staff;
+        if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
+            this.setState({
+                opacity: false,
+                typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
+                selectedStaff: this.state.staffFromUrl!==null && timetable
+                    ?JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2) ? (authentication.user && authentication.user.profile.staffId) : this.state.staffFromUrl))[0])
+                    :[],
+                workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
+                    ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
+                            (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
+                                ? JSON.parse(this.state.selectedStaff).staffId
+                                :this.state.staffFromUrl)))
+                    }
+                    : staff
+            });
+        }
+
+        if ((this.state.typeSelected===1 || this.state.typeSelected === 2) && this.state.type!=='week' && timetable){
+            this.setWorkingStaff(timetable, this.state.typeSelected, timetable)
         }
     }
 
@@ -440,14 +450,13 @@ class Index extends PureComponent {
                                             selectedDays={selectedDays}
                                             timetable={workingStaff.timetable }
                                             timetableMessage={timetableMessage}
-                                            timetable={workingStaff.timetable }
                                             closedDates={staff.closedDates}
                                             staff={staff && staff.staff}
                                         />
                                         <TabScrollContent
                                             timetable={staff.timetable}
                                             services={services}
-                                            timetable={workingStaff.timetable}
+                                            availableTimetable={workingStaff.timetable}
                                             selectedDays={selectedDays}
                                             closedDates={staff.closedDates}
                                             clients={clients && clients.client}

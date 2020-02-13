@@ -286,7 +286,7 @@ class TabScroll extends Component{
     }
 
     render(){
-        const { timetable, services, selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
+        const { availableTimetable, services, selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
         const { selectedNote, movingVisit, numbers, draggingAppointmentId } = this.state;
 
         return(
@@ -297,7 +297,7 @@ class TabScroll extends Component{
                     {numbers && numbers.map((time, key) =>
                         <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
                             <TabScrollLeftMenu time={time}/>
-                            {!isLoading && timetable && selectedDays.map((day) => timetable.map((workingStaffElement, staffKey) => {
+                            {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => {
                                 let currentTime= parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
                                 const staffAppointments = appointments && appointments.find(appointmentStaff => appointmentStaff.appointments &&
                                     (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
@@ -352,181 +352,177 @@ class TabScroll extends Component{
 
                                     const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
                                     const content = (
-                                        <React.Fragment>
-                                            {!appointment.coAppointmentId && (
-                                                <div
-                                                    className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
-                                                    key={appointment.appointmentId + "_" + key}
-                                                    id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
-                                                >
-                                                    <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment.appointmentId === selectedNote ? null : appointment.appointmentId})}>
-                                                        <span className="delete"
-                                                              data-toggle="modal"
-                                                              data-target=".delete-notes-modal"
-                                                              title="Отменить встречу"
-                                                              onClick={() => updateAppointmentForDeleting({
-                                                                  ...appointment,
-                                                                  staffId: workingStaffElement.staffId
-                                                              })}/>
-                                                        {!appointment.online &&
-                                                        <span className="pen"
-                                                              title="Запись через журнал"/>}
-                                                        {/*<span className="men"*/}
-                                                        {/*title="Постоянный клиент"/>*/}
-                                                        {appointment.online &&
-                                                        <span className="globus"
-                                                              title="Онлайн-запись"/>}
+                                        <div
+                                            className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
+                                            key={appointment.appointmentId + "_" + key}
+                                            id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
+                                        >
+                                            <p className="notes-title" onClick={()=> this.setState({ selectedNote: appointment.appointmentId === selectedNote ? null : appointment.appointmentId})}>
+                                                <span className="delete"
+                                                      data-toggle="modal"
+                                                      data-target=".delete-notes-modal"
+                                                      title="Отменить встречу"
+                                                      onClick={() => updateAppointmentForDeleting({
+                                                          ...appointment,
+                                                          staffId: workingStaffElement.staffId
+                                                      })}/>
+                                                {!appointment.online &&
+                                                <span className="pen"
+                                                      title="Запись через журнал"/>}
+                                                {/*<span className="men"*/}
+                                                {/*title="Постоянный клиент"/>*/}
+                                                {appointment.online &&
+                                                <span className="globus"
+                                                      title="Онлайн-запись"/>}
 
 
 
-                                                        {appointment.clientId && <span
-                                                            className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                                                            title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
+                                                {appointment.clientId && <span
+                                                    className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
+                                                    title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
 
 
-                                                        {!appointment.clientId &&
+                                                {!appointment.clientId &&
+                                                <span
+                                                    className="no-client-icon"
+                                                    title="Визит от двери"/>
+                                                }
+
+                                                {!!appointment.discountPercent &&
+                                                <span className="percentage"
+                                                      title={`${appointment.discountPercent}%`}
+                                                />}
+
+                                                {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                                                <span className="service_time">
+                                                    {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
+                                                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                    {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                                                                            </span>
+                                            </p>
+                                            <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
+                                               style={{
+                                                   minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
+                                                   height: resultTextAreaHeight + "px"
+                                               }}>
+                                                <span className="notes-container-message">
+                                                    {resultTextArea}
+                                                </span>
+                                            </p>
+                                            {!this.props.isStartMovingVisit && <div className="cell msg-client-info">
+                                                <div className="cell msg-inner">
+                                                    <p>
+                                                        <p className="new-text">Запись</p>
+                                                        <button type="button" onClick={()=> {
+                                                            this.setState({ selectedNote: null })
+                                                            this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                                        }} className="close" />
+                                                    </p>
+
+
+                                                    {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
+                                                        <span style={{ textAlign: 'left'}}>Клиент</span>
                                                         <span
-                                                            className="no-client-icon"
-                                                            title="Визит от двери"/>
-                                                        }
+                                                            className="clientEye clientEye-info"
+                                                            data-target=".client-detail"
+                                                            title="Просмотреть клиента"
+                                                            onClick={(e) => {
+                                                                $('.client-detail').modal('show')
+                                                                handleUpdateClient(appointment.clientId)
+                                                            }} />
+                                                    </p>}
+                                                    {appointment.clientId && <p className="name">{appointment.clientName}</p>}
+                                                    {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
+                                                    {appointment.clientId && <p style={{ height: '30px' }}>
+                                                        <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="cell check-box calendar-client-checkbox red-text">
+                                                            Клиент не пришел
 
-                                                        {!!appointment.discountPercent &&
-                                                        <span className="percentage"
-                                                              title={`${appointment.discountPercent}%`}
-                                                        />}
-
-                                                        {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
-                                                        <span className="service_time">
-                                                            {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
-                                                            {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                            {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
-                                                                                    </span>
-                                                    </p>
-                                                    <p id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
-                                                       style={{
-                                                           minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
-                                                           height: resultTextAreaHeight + "px"
-                                                       }}>
-                                                        <span className="notes-container-message">
-                                                            {resultTextArea}
-                                                        </span>
-                                                    </p>
-                                                    {!this.props.isStartMovingVisit && <div className="cell msg-client-info">
-                                                        <div className="cell msg-inner">
-                                                            <p>
-                                                                <p className="new-text">Запись</p>
-                                                                <button type="button" onClick={()=> {
-                                                                    this.setState({ selectedNote: null })
-                                                                    this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
-                                                                }} className="close" />
-                                                            </p>
-
-
-                                                            {appointment.clientId && <p style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} className="client-name-book">
-                                                                <span style={{ textAlign: 'left'}}>Клиент</span>
-                                                                <span
-                                                                    className="clientEye clientEye-info"
-                                                                    data-target=".client-detail"
-                                                                    title="Просмотреть клиента"
-                                                                    onClick={(e) => {
-                                                                        $('.client-detail').modal('show')
-                                                                        handleUpdateClient(appointment.clientId)
-                                                                    }} />
-                                                            </p>}
-                                                            {appointment.clientId && <p className="name">{appointment.clientName}</p>}
-                                                            {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
-                                                            {appointment.clientId && <p style={{ height: '30px' }}>
-                                                                <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="cell check-box calendar-client-checkbox red-text">
-                                                                    Клиент не пришел
-
-                                                                    {isClientNotComeLoading ?
-                                                                        <div style={{ margin: '0 0 0 auto', left: '15px' }} className="cell loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                                                        :
-                                                                        <label>
-                                                                            <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
-                                                                                   type="checkbox"/>
-                                                                            <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
-                                                                        </label>
-                                                                    }
-                                                                </div>
-                                                            </p>}
-
-
-                                                            <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
-                                                            {appointmentServices.map(service => {
-                                                                const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-                                                                return <p>
-
-                                                                    {service.serviceName} {details ? `(${details})` : ''}
-
-                                                                    <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
-                                                                    {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
-                                                                            ({service.totalAmount} {service.currency})
-                                                                        </span>}
-                                                                    </span>
-                                                                    {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment && appointment.clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
-
-
-                                                                </p>
-                                                            })
-                                                            }
-                                                            <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
-                                                                {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
-                                                            <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
-                                                            {appointment.description && <p>Заметка: {appointment.description}</p>}
-
-                                                            {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
-                                                                <React.Fragment>
-                                                                    <div style={{
-                                                                        marginTop: '2px',
-                                                                    }}
-                                                                         onClick={() => this.startMovingVisit(appointment, totalDuration)}
-                                                                         className="cell msg-inner-button-wrapper"
-                                                                    >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                            Перенести визит
-                                                                        </button>
-                                                                        {/*<span className="move-white"/>*/}
-                                                                    </div>
-                                                                    <div style={{
-                                                                        marginTop: '5px',
-                                                                    }}
-                                                                         onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                                                         className="cell msg-inner-button-wrapper"
-                                                                    >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                                                            Изменить визит
-                                                                        </button>
-                                                                        {/*<span className="move-white"/>*/}
-                                                                    </div>
-                                                                    <div style={{
-                                                                        marginTop: '5px',
-                                                                    }}
-                                                                         className="cell msg-inner-button-wrapper"
-                                                                         data-toggle="modal"
-                                                                         data-target=".delete-notes-modal"
-                                                                         onClick={() => updateAppointmentForDeleting({
-                                                                             ...appointment,
-                                                                             staffId: workingStaffElement.staffId
-                                                                         })}
-                                                                    >
-                                                                        <button className="button"
-                                                                                style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
-                                                                        >
-                                                                            Удалить визит
-                                                                        </button>
-                                                                        {/*<span className="cancel-white"/>*/}
-                                                                    </div>
-
-                                                                </React.Fragment>)
+                                                            {isClientNotComeLoading ?
+                                                                <div style={{ margin: '0 0 0 auto', left: '15px' }} className="cell loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                                                :
+                                                                <label>
+                                                                    <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>this.props.dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
+                                                                           type="checkbox"/>
+                                                                    <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
+                                                                </label>
                                                             }
                                                         </div>
-                                                    </div> }
+                                                    </p>}
+
+
+                                                    <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>
+                                                    {appointmentServices.map(service => {
+                                                        const details = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
+                                                        return <p>
+
+                                                            {service.serviceName} {details ? `(${details})` : ''}
+
+                                                            <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
+                                                            {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                                    ({service.totalAmount} {service.currency})
+                                                                </span>}
+                                                            </span>
+                                                            {!!service.discountPercent && <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)'}}>{`${(service.discountPercent === (appointment && appointment.clientDiscountPercent)) ? 'Скидка клиента': 'Единоразовая скидка' }: ${service.discountPercent}%`}</span>}
+
+
+                                                        </p>
+                                                    })
+                                                    }
+                                                    <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                                                        {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                                                    <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                                                    {appointment.description && <p>Заметка: {appointment.description}</p>}
+
+                                                    {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
+                                                        <React.Fragment>
+                                                            <div style={{
+                                                                marginTop: '2px',
+                                                            }}
+                                                                 onClick={() => this.startMovingVisit(appointment, totalDuration)}
+                                                                 className="cell msg-inner-button-wrapper"
+                                                            >
+                                                                <button className="button"
+                                                                        style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                    Перенести визит
+                                                                </button>
+                                                                {/*<span className="move-white"/>*/}
+                                                            </div>
+                                                            <div style={{
+                                                                marginTop: '5px',
+                                                            }}
+                                                                 onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
+                                                                 className="cell msg-inner-button-wrapper"
+                                                            >
+                                                                <button className="button"
+                                                                        style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
+                                                                    Изменить визит
+                                                                </button>
+                                                                {/*<span className="move-white"/>*/}
+                                                            </div>
+                                                            <div style={{
+                                                                marginTop: '5px',
+                                                            }}
+                                                                 className="cell msg-inner-button-wrapper"
+                                                                 data-toggle="modal"
+                                                                 data-target=".delete-notes-modal"
+                                                                 onClick={() => updateAppointmentForDeleting({
+                                                                     ...appointment,
+                                                                     staffId: workingStaffElement.staffId
+                                                                 })}
+                                                            >
+                                                                <button className="button"
+                                                                        style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
+                                                                >
+                                                                    Удалить визит
+                                                                </button>
+                                                                {/*<span className="cancel-white"/>*/}
+                                                            </div>
+
+                                                        </React.Fragment>)
+                                                    }
                                                 </div>
-                                            )}
-                                        </React.Fragment>
+                                            </div> }
+                                        </div>
                                     )
 
                                     const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
@@ -656,8 +652,8 @@ class TabScroll extends Component{
                                     //         }
                                     //
                                     //         ));
-                                    const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
-                                    let notExpired2 = activeStaffTimetable && activeStaffTimetable.timetables && activeStaffTimetable.timetables.some(currentTimetable => {
+                                    // const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
+                                    let notExpired2 = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
                                         return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
                                             && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
                                             && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
