@@ -130,6 +130,15 @@
         }
     }
 
+    .final-clients {
+        max-height: calc(100vh - 225px);
+        overflow-y: auto;
+        padding-top: 70px;
+        @media screen and(max-width: $tablet-width) {
+            padding-top: 50px;
+        }
+    }
+
     .tab-content-list {
         justify-content: space-between;
         display: flex;

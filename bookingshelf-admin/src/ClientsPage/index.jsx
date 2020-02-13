@@ -209,41 +209,8 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    <div className="row align-items-center content clients mb-2">
-                        <StaffChoice
-                            selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
-                            typeSelected={typeSelected}
-                            staff={staff.staff}
-                            timetable={staff.staff}
-                            setWorkingStaff={this.setWorkingStaff}
-                            hideWorkingStaff={true}
-                        />
-                        <div className="search col-7">
-                            <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
-                                   aria-label="Search" ref={input => this.search2 = input} onChange={this.handleSearch}/>
-                            <button className="search-icon" type="submit"/>
-                        </div>
-                        <div className="col-2 d-flex justify-content-end">
-                            {/*{access(5) &&*/}
-                            {/*<div className="export">*/}
-                            {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-                            {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
-                            {/*        <input type="submit" value="Загрузить" />*/}
-                            {/*    </form>*/}
-                            {/*</div>}*/}
-                            {access(5) &&
-                            <div className="export">
 
-                                <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                >Экспорт в CSV
-                                </button>
-                            </div>
-                            }
-                        </div>
-                    </div>
-
-
-                    <div style={{ maxHeight: 'calc(100vh - 225px)', overflowY: 'auto' }}>
+                    <div className="final-clients">
                         {finalClients && finalClients.map((client_user, i) =>{
                             let condition = true;
                             if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
