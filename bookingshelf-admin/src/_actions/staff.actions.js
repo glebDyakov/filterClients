@@ -22,8 +22,7 @@ export const staffActions = {
     deleteStaff,
     addUSerByEmail,
     getTimetableByStaff,
-    getTimetableStaffs,
-    refreshCheckerAvailableTime
+    getTimetableStaffs
 };
 
 function add(params) {
@@ -279,10 +278,6 @@ function getTimetableStaffs(from, to, isAvailableTimesChecked, isLoading = true)
     function request(isLoading) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_REQUEST, isLoading } }
     function success(timetable) { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_SUCCESS, payload : {timetable, isAvailableTimesChecked } } }
     function failure() { return { type: staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE } }
-}
-
-function refreshCheckerAvailableTime() {
-    return { type: staffConstants.REFRESH_CHECKER_AVAILABLE_TIME }
 }
 
 function addClosedDates(params) {

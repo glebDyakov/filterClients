@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions, calendarActions } from "../../_actions";
 
-class DragVertController extends PureComponent {
+class DragVertController extends React.Component {
     constructor(props) {
         super(props);
         this.handleMouseUp = this.handleMouseUp.bind(this)
@@ -19,16 +19,19 @@ class DragVertController extends PureComponent {
         }
     }
 
-    handleMouseMove(e, data) {
-        const { changingVisit, currentTarget, changingPos, offsetHeight } = this.props;
+    handleMouseMove(e) {
+        const { changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight } = this.props;
         const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
         const node = document.getElementById(textAreaWrapper)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        node.style.height = res + "px";
-        currentTarget.style.bottom = -res + "px";
+        if (res > minTextAreaHeight) {
+            node.style.height = res + "px";
+            currentTarget.style.bottom = -res + "px";
+        }
     }
+
     handleMouseUp() {
         const { appointments, changingVisit, offsetHeight } = this.props;
         const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
@@ -98,7 +101,13 @@ class DragVertController extends PureComponent {
             ))
         }
 
-        this.props.dispatch(appointmentActions.togglePayload({ changingVisit: null, currentTarget: null, changingPos:null, offsetHeight: null }));
+        this.props.dispatch(appointmentActions.togglePayload({
+            changingVisit: null,
+            currentTarget: null,
+            changingPos:null,
+            offsetHeight: null,
+            minTextAreaHeight: null
+        }));
     }
 
     render() {
@@ -109,12 +118,12 @@ class DragVertController extends PureComponent {
 function mapStateToProps(state) {
     const {
         appointment: {
-            changingVisit, currentTarget, changingPos, offsetHeight
+            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight
         }
     } = state;
 
     return {
-        changingVisit, currentTarget, changingPos, offsetHeight
+        changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight
     }
 }
 

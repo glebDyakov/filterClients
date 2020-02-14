@@ -321,11 +321,6 @@ export function staff(state = initialState, action) {
                 ...state,
                 staff: action.staff
             };
-            case staffConstants.REFRESH_CHECKER_AVAILABLE_TIME:
-            return {
-                ...state,
-                isAvailableTimesChecked: false
-            };
         default:
             return state
     }

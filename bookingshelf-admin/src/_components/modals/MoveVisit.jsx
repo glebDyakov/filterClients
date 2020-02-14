@@ -34,6 +34,7 @@ class MoveVisit extends React.Component {
     handleYes (){
         const {
             appointments,
+            reservedTime,
             timetable,
             movingVisit,
             movingVisitDuration,
@@ -44,6 +45,7 @@ class MoveVisit extends React.Component {
 
         this.props.dispatch(appointmentActions.makeMovingVisitQuery({
             appointments,
+            reservedTimes: reservedTime,
             timetable,
             movingVisit,
             movingVisitDuration,
@@ -60,7 +62,7 @@ class MoveVisit extends React.Component {
 
 function mapStateToProps(state) {
     const {
-        calendar: { appointments },
+        calendar: { appointments, reservedTime },
         staff: { timetable },
         appointment: {
             movingVisit,
@@ -73,6 +75,7 @@ function mapStateToProps(state) {
 
     return {
         appointments,
+        reservedTime,
         timetable,
         movingVisit,
         movingVisitDuration,

@@ -68,13 +68,11 @@ class CalendarModals extends Component {
     onCloseAppointment(){
         this.setState({ appointmentModal:false });
         this.props.onClose();
-        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     onCloseReserved(){
         this.setState({ reserved :false });
         this.props.onClose();
-        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     newReservedTime(staffId, reservedTime) {

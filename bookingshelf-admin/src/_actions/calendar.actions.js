@@ -45,8 +45,8 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
                     // dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(failure(error));
+                    // dispatch(alertActions.error(error));
                 }
             );
     };

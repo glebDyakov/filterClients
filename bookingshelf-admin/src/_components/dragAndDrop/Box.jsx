@@ -9,6 +9,7 @@ const Box = ({
     draggingAppointmentId,
     dispatch,
     appointments,
+    reservedTime,
     timetable,
     movingVisit,
     movingVisitDuration,
@@ -25,6 +26,7 @@ const Box = ({
             if (item && dropResult) {
                 dispatch(appointmentActions.makeMovingVisitQuery({
                     appointments,
+                    reservedTimes: reservedTime,
                     timetable,
                     movingVisit,
                     movingVisitDuration,
@@ -50,6 +52,7 @@ const Box = ({
 
 function mapStateToProps(state) {
     const {
+        calendar: { reservedTime },
         staff: { timetable },
         appointment: {
             movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
@@ -57,7 +60,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
-        timetable, movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
+        reservedTime, timetable, movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
     }
 }
 
