@@ -1,8 +1,12 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { useDrop } from 'react-dnd'
 import ItemTypes from './ItemTypes'
 
-const Dustbin = ({ content, wrapperId, wrapperClassName, isStartMovingVisit, wrapperClick, movingVisitMillis, movingVisitStaffId }) => {
+const Dustbin = ({ content, wrapperId, wrapperClassName, isStartMovingVisit, addVisit, moveVisit, movingVisitMillis, movingVisitStaffId }) => {
+    wrapperClassName += isStartMovingVisit ? ' start-moving ' : '';
+    const wrapperClick = isStartMovingVisit ? moveVisit : addVisit
+
     const [{ canDrop, isOver }, drop] = useDrop({
         accept: ItemTypes.APPOINTMENT,
         drop: () => ({ movingVisitMillis, movingVisitStaffId }),
@@ -32,4 +36,17 @@ const Dustbin = ({ content, wrapperId, wrapperClassName, isStartMovingVisit, wra
         </div>
     )
 }
-export default Dustbin
+
+function mapStateToProps(state) {
+    const {
+        appointment: {
+            isStartMovingVisit
+        }
+    } = state;
+
+    return {
+        isStartMovingVisit
+    }
+}
+
+export default connect(mapStateToProps)(Dustbin);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import {calendarActions} from "../../_actions";
+import { appointmentActions } from "../../_actions";
 
 class StartMovingVisit extends React.Component {
     constructor(props) {
@@ -29,7 +28,7 @@ class StartMovingVisit extends React.Component {
     }
 
     handleYes (){
-        this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
+        this.props.dispatch(appointmentActions.toggleStartMovingVisit(true))
     }
 }
 

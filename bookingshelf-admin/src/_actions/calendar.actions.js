@@ -26,8 +26,6 @@ export const calendarActions = {
     moveAppointmentsNewSocket,
     updateAppointment,
     updateAppointmentCheckbox,
-    toggleMoveVisit,
-    toggleStartMovingVisit,
     updateAppointmentFinish,
     deleteAppointmentsNewSocket
 };
@@ -403,18 +401,4 @@ function approveMovedAppointment(params) {
                 },
             )
     };
-}
-
-function toggleMoveVisit(isMoveVisit) {
-    return dispatch => {
-        dispatch(success(isMoveVisit))
-    }
-    function success(isMoveVisit) { return { type: calendarConstants.MOVE_VISIT_SUCCESS, isMoveVisit } }
-}
-
-function toggleStartMovingVisit(isStartMovingVisit) {
-    return dispatch => {
-        dispatch(success(isStartMovingVisit))
-    }
-    function success(isStartMovingVisit) { return { type: calendarConstants.START_MOVING_VISIT_SUCCESS, isStartMovingVisit } }
 }
