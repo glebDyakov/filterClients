@@ -577,6 +577,21 @@
                         z-index: 9000;
                         position: relative;
                     }
+                    .present-time-line {
+                        width: 101%;
+                        height: 2px;
+                        position: absolute;
+                        background: red;
+                        z-index: 9001;
+                        bottom: 0;
+                    }
+                    &.isOnAnotherVisit {
+                        cursor: default !important;
+
+                        &:hover {
+                            background: transparent !important;
+                        }
+                    }
                     .notes{
                         &.selected{
                             .msg-client-info{
