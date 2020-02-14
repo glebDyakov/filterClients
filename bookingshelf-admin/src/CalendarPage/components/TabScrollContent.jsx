@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import { isMobile } from 'react-device-detect';
-import {access} from "../../_helpers/access";
 import TabScrollLeftMenu from './TabScrollLeftMenu';
-import {calendarActions} from "../../_actions/calendar.actions";
 
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Dustbin from "../../_components/dragAndDrop/Dustbin";
-import Box from "../../_components/dragAndDrop/Box";
 import Appointment from "./Appointment";
-import {appointmentActions} from "../../_actions";
+import {appointmentActions, calendarActions} from "../../_actions";
 
 
 class TabScroll extends Component{
@@ -22,20 +18,14 @@ class TabScroll extends Component{
         }
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this);
         this.getHours24 = this.getHours24.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this)
+        this.handleMouseMove = this.handleMouseMove.bind(this)
+        this.onStartDragVert = this.onStartDragVert.bind(this)
     }
     componentDidMount() {
         if (this.props.timetable && this.props.timetable.length) {
             this.getHours24(this.props.timetable);
-        }
-    }
-
-    componentWillReceiveProps(newProps){
-        $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
-        if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
-            this.getHours24(newProps.timetable);
         }
     }
 
@@ -49,42 +39,21 @@ class TabScroll extends Component{
         }
     }
 
-    getHours24 (timetable){
-        const numbers =[];
-
-        let minTime = 0
-        let maxTime = 0
-
-        timetable.forEach(timetableItem => {
-            timetableItem.timetables.forEach(time => {
-                if (!minTime || (moment(time.startTimeMillis).format('HH:mm') < moment(minTime).format('HH:mm'))) {
-                    minTime = time.startTimeMillis
-                }
-
-                if (!maxTime || (moment(time.endTimeMillis).format('HH:mm') > moment(maxTime).format('HH:mm'))) {
-                    maxTime = time.endTimeMillis
-                }
-
-            })
-        })
-        if (minTime > 0 && maxTime > 0) {
-            let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
-            let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
-
-            let startNumber = startTime % 60
-                ? (startTime - parseInt(moment(minTime).format('mm')))
-                : (startTime - 60);
-
-            let endNumber = endTime % 60
-                ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
-                : (endTime + 60);
-
-            for (let i = startNumber; i < endNumber; i = i + 15) {
-                numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
-            }
+    componentWillReceiveProps(newProps){
+        $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
+        if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
+            this.getHours24(newProps.timetable);
         }
+    }
 
-        this.setState({ numbers });
+    onStartDragVert(e, appointment) {
+        e.preventDefault()
+        this.setState({
+            currentTarget: e.currentTarget,
+            changingVisit: appointment,
+            changingPos: e.pageY,
+            offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+        })
     }
 
     handleMouseMove(e) {
@@ -94,8 +63,8 @@ class TabScroll extends Component{
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        node.style.height = res+"px";
-        currentTarget.style.bottom = -res+"px";
+        node.style.height = res + "px";
+        currentTarget.style.bottom = -res + "px";
     }
     handleMouseUp() {
         const { appointments } = this.props;
@@ -170,6 +139,44 @@ class TabScroll extends Component{
         this.setState({ changingVisit: null, currentTarget: null, changingPos:null, offsetHeight: null })
     }
 
+    getHours24 (timetable){
+        const numbers =[];
+
+        let minTime = 0
+        let maxTime = 0
+
+        timetable.forEach(timetableItem => {
+            timetableItem.timetables.forEach(time => {
+                if (!minTime || (moment(time.startTimeMillis).format('HH:mm') < moment(minTime).format('HH:mm'))) {
+                    minTime = time.startTimeMillis
+                }
+
+                if (!maxTime || (moment(time.endTimeMillis).format('HH:mm') > moment(maxTime).format('HH:mm'))) {
+                    maxTime = time.endTimeMillis
+                }
+
+            })
+        })
+        if (minTime > 0 && maxTime > 0) {
+            let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
+            let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
+
+            let startNumber = startTime % 60
+                ? (startTime - parseInt(moment(minTime).format('mm')))
+                : (startTime - 60);
+
+            let endNumber = endTime % 60
+                ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
+                : (endTime + 60);
+
+            for (let i = startNumber; i < endNumber; i = i + 15) {
+                numbers.push(moment().startOf('day').add(i, 'minutes').format('x'));
+            }
+        }
+
+        this.setState({ numbers });
+    }
+
     startMovingVisit(movingVisit, totalDuration, draggingAppointmentId) {
         const activeItemWithStaffId = this.props.appointments.find(item =>
             item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
@@ -184,8 +191,8 @@ class TabScroll extends Component{
     }
 
     render(){
-        const { availableTimetable, services, timetable, selectedDays, closedDates, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading } = this.props;
-        const { selectedNote, numbers } = this.state;
+        const { availableTimetable, services, selectedDays, closedDates, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading } = this.props;
+        const { numbers } = this.state;
 
         return(
             <div className="tabs-scroll"
@@ -208,6 +215,7 @@ class TabScroll extends Component{
                                 if(appointment && !appointment.coAppointmentId) {
                                     return (
                                         <Appointment
+                                            onStartDragVert={this.onStartDragVert}
                                             key={key}
                                             appointment={appointment}
                                             appointments={appointments}

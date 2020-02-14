@@ -49,7 +49,8 @@ class Appointment extends Component {
             startMovingVisit,
             draggingAppointmentId,
             changeTime,
-            updateAppointmentForDeleting
+            updateAppointmentForDeleting,
+            onStartDragVert
         } = this.props;
 
         let totalDuration = appointment.duration;
@@ -280,15 +281,7 @@ class Appointment extends Component {
         const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
 
         const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
-            <p onMouseDown={(e) => {
-                e.preventDefault()
-                this.setState({
-                    currentTarget: e.currentTarget,
-                    changingVisit: appointment,
-                    changingPos: e.pageY,
-                    offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
-                })
-            }} style={{
+            <p onMouseDown={(e) => onStartDragVert(e, appointment)} style={{
                 cursor: 'ns-resize',
                 height: '8px',
                 position: 'absolute',
