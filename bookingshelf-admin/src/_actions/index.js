@@ -1,4 +1,5 @@
 export * from './alert.actions';
+export * from './appointment.actions';
 export * from './user.actions';
 export * from './company.actions';
 export * from './staff.actions';

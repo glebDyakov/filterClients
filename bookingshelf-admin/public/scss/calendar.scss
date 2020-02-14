@@ -355,9 +355,8 @@
                 padding: 0 0 !important;
                 min-width: 161px;
 
-                &:hover{
-                    z-index: 10;
-
+                &.hovered{
+                    z-index: 9999 !important;
                 }
 
                 .img-container {
@@ -1815,6 +1814,9 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     box-sizing: border-box;
+    &-client {
+        border: 1px solid red;
+    }
 }
 
 

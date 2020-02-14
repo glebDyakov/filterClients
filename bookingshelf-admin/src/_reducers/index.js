@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { authentication } from './authentication.reducer';
+import { appointment } from './appointment.reducer';
 import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { company } from './company.reducer';
@@ -17,6 +18,7 @@ import { payments } from '././payments.reducer';
 
 const rootReducer = combineReducers({
   authentication,
+  appointment,
   users,
   company,
   staff,

@@ -1,0 +1,4 @@
+export const appointmentConstants = {
+    TOGGLE_BLICKED_CLIENTID: 'TOGGLE_BLICKED_CLIENTID',
+    TOGGLE_SELECTED_NOTE: 'TOGGLE_SELECTED_NOTE',
+};
