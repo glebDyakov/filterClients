@@ -9,6 +9,7 @@ import Dustbin from "../../_components/dragAndDrop/Dustbin";
 import Appointment from "./Appointment";
 import { appointmentActions } from "../../_actions";
 import DragVertController from "./DragVertController";
+import {checkIsOnAnotherVisit} from "../../_helpers/available-time";
 
 
 class TabScroll extends Component{
@@ -169,76 +170,72 @@ class TabScroll extends Component{
                                             </div>
                                         </div>
                                     )
-                                } else {
-                                    let clDate = closedDates && closedDates.some((st) =>
-                                        parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-                                        parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
-
-
-                                    // let workingTimeEnd=null;
-                                    // let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
-                                    //     workingStaffElement.availableDays.some((availableDay)=>
-                                    //         parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
-                                    //         availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
-                                    //             workingTimeEnd=workingTime.endTimeMillis;
-                                    //             if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
-                                    //                 const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //                 const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //
-                                    //                 if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
-                                    //                     return true
-                                    //                 }
-                                    //             }
-                                    //             return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                    //                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    //         }
-                                    //
-                                    //         ));
-                                    // const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
-                                    let notExpired2 = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
-                                        return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                                            && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                            && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                                    })
-                                    let notExpired = notExpired2
-
-                                    const isOnAnotherVisit = staffAppointments && staffAppointments.appointments
-                                        .some(appointment => appointment.appointmentTimeMillis <= currentTime && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > currentTime)
-
-                                    const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
-                                    const wrapperClassName = `cell col-tab 
-                                                                                ${currentTime < parseInt(moment().format("x")) ? '' : ""}
-                                                                                ${isOnAnotherVisit ? 'isOnAnotherVisit' : ''}
-                                                                                ${notExpired ? '' : "expired "}
-                                                                                
-                                                                                ${clDate ? 'closedDateTick' : ""}`
-                                    const content = (
-                                        <React.Fragment>
-                                            <span className={(moment(time, 'x').format("mm") === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
-                                            {currentTime <= moment().format("x")
-                                            && currentTime >= moment().subtract(15, "minutes").format("x") && <span className="present-time-line" />}
-                                        </React.Fragment>
-                                    )
-
-                                    if (notExpired) {
-                                        return <Dustbin
-                                            content={content}
-                                            wrapperId={wrapperId}
-                                            wrapperClassName={wrapperClassName}
-                                            addVisit={() => (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null))}
-                                            moveVisit={() => this.moveVisit(workingStaffElement.staffId, currentTime)}
-                                            movingVisitMillis={currentTime}
-                                            movingVisitStaffId={workingStaffElement.staffId}
-                                        />
-                                    } else {
-                                        return <div id={wrapperId} className={wrapperClassName}>{content}</div>
-                                    }
                                 }
 
+                                let clDate = closedDates && closedDates.some((st) =>
+                                    parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+                                    parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+
+
+                                // let workingTimeEnd=null;
+                                // let notExpired = workingStaffElement && workingStaffElement.availableDays && workingStaffElement.availableDays.length!==0 &&
+                                //     workingStaffElement.availableDays.some((availableDay)=>
+                                //         parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===currentTime &&
+                                //         availableDay.availableTimes && availableDay.availableTimes.some((workingTime)=>{
+                                //             workingTimeEnd=workingTime.endTimeMillis;
+                                //             if (isStartMovingVisit && movingVisit && (workingStaffElement.staffId === prevVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(item => item.staffId === workingStaffElement.staffId)))) {
+                                //                 const movingVisitStart = parseInt(moment(moment(movingVisit.appointmentTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                //                 const movingVisitEnd = parseInt(moment(moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('DD/MM/YYYY')+' '+moment(movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000), 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                //
+                                //                 if (currentTime>=movingVisitStart && currentTime<movingVisitEnd) {
+                                //                     return true
+                                //                 }
+                                //             }
+                                //             return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                //                 && currentTime>=parseInt(moment(moment(workingTime.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                //                 && currentTime<parseInt(moment(moment(workingTime.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(workingTime.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                //         }
+                                //
+                                //         ));
+                                // const activeStaffTimetable = timetable.find(item => item.staffId === workingStaffElement.staffId);
+                                let notExpired2 = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
+                                    return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                                        && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                        && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                                })
+                                let notExpired = notExpired2
+
+                                const isOnAnotherVisit = checkIsOnAnotherVisit(staffAppointments, currentTime)
+
+                                const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
+                                const wrapperClassName = `cell col-tab 
+                                                                            ${currentTime < parseInt(moment().format("x")) ? '' : ""}
+                                                                            ${isOnAnotherVisit ? 'isOnAnotherVisit' : ''}
+                                                                            ${notExpired ? '' : "expired "}
+                                                                            ${clDate ? 'closedDateTick' : ""}`
+                                const content = (
+                                    <React.Fragment>
+                                        <span className={(moment(time, 'x').format("mm") === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
+                                        {currentTime <= moment().format("x")
+                                        && currentTime >= moment().subtract(15, "minutes").format("x") && <span className="present-time-line" />}
+                                    </React.Fragment>
+                                )
+
+                                if (notExpired) {
+                                    return <Dustbin
+                                        content={content}
+                                        wrapperId={wrapperId}
+                                        wrapperClassName={wrapperClassName}
+                                        addVisit={() => (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null))}
+                                        moveVisit={() => this.moveVisit(workingStaffElement.staffId, currentTime)}
+                                        movingVisitMillis={currentTime}
+                                        movingVisitStaffId={workingStaffElement.staffId}
+                                    />
+                                } else {
+                                    return <div id={wrapperId} className={wrapperClassName}>{content}</div>
+                                }
                             }))
                             }
-
                         </div>
                     )}
                 </DndProvider>

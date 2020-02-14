@@ -1,6 +1,7 @@
 import { appointmentConstants } from '../_constants';
 import moment from "moment";
 import {calendarActions} from "./calendar.actions";
+import {isAvailableTime} from "../_helpers/available-time";
 
 export const appointmentActions = {
     togglePayload,
@@ -40,9 +41,9 @@ function togglePayload(payload) {
 
 function makeMovingVisitQuery(data) {
     return dispatch => {
-        const { appointments, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
+        const { appointments, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
 
-        let shouldMove = false
+        let shouldMove = true
 
         const startDay = moment(movingVisitMillis, 'x').format('D')
         const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')
@@ -50,7 +51,9 @@ function makeMovingVisitQuery(data) {
             shouldMove = false
         }
 
-        if (!shouldMove) {
+        if (shouldMove) {
+            shouldMove = false;
+
             const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
             const timetableItems = timetable
@@ -63,26 +66,17 @@ function makeMovingVisitQuery(data) {
                 intervals.push(i)
             }
 
+            const checkOnMovingVisit = i => (
+                (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === newStaff.staff.staffId))) &&
+                movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
+            );
+
             timetableItems.forEach(timetableItem => {
-                const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === timetableItem.staffId)
+                const isFreeInterval = isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
 
-                timetableItem.timetables.forEach(time => {
-
-                    const isFreeInterval = intervals.every(i => {
-                        const isIncludedInTimetable = time.startTimeMillis <= i && time.endTimeMillis > i;
-                        const isOnAnotherVisit = newStaff && newStaff.appointments
-                            .some(appointment => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > i)
-
-                        const isOnMovingVisit = (
-                            (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === newStaff.staff.staffId))) &&
-                            movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
-                        );
-                        return ((isIncludedInTimetable && !isOnAnotherVisit) || isOnMovingVisit)
-                    });
-                    if (isFreeInterval) {
-                        shouldMove = true
-                    }
-                })
+                if (isFreeInterval) {
+                    shouldMove = true
+                }
             })
         }
 

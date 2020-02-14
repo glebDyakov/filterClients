@@ -71,6 +71,7 @@ const Appointment = (props) => {
             extraServiceText = `и ещё 5+ услуг`;
     }
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
+    const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2)
     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
     const content = (
@@ -136,7 +137,7 @@ const Appointment = (props) => {
             </p>
             <p onMouseDown={(e) => e.preventDefault()} id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
                style={{
-                   minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
+                   minHeight: minTextAreaHeight + "px",
                    height: resultTextAreaHeight + "px"
                }}>
                                             <span className="notes-container-message">
@@ -266,6 +267,7 @@ const Appointment = (props) => {
         <p onMouseDown={(e) => {
             e.preventDefault();
             dispatch(appointmentActions.togglePayload({
+                minTextAreaHeight,
                 currentTarget: e.currentTarget,
                 changingVisit: appointment,
                 changingPos: e.pageY,
