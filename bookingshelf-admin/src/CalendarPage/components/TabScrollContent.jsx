@@ -30,6 +30,7 @@ class TabScroll extends Component{
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.makeMovingVisitQuery = this.makeMovingVisitQuery.bind(this);
         this.getHours24 = this.getHours24.bind(this);
+        this.clearDraggingElem = this.clearDraggingElem.bind(this);
     }
     componentDidMount() {
         if (this.props.timetable && this.props.timetable.length) {
@@ -187,8 +188,13 @@ class TabScroll extends Component{
         this.props.dispatch(calendarActions.toggleStartMovingVisit(true))
     }
 
+    clearDraggingElem() {
+        this.props.dispatch(calendarActions.toggleMoveVisit(true))
+        this.setState({ draggingAppointmentId: false })
+    }
+
     moveVisit(movingVisitStaffId, time) {
-        this.setState({ movingVisitMillis : time, movingVisitStaffId, draggingAppointmentId: false })
+        this.setState({ movingVisitMillis : time, movingVisitStaffId })
     }
 
     makeMovingVisitQuery() {
@@ -527,6 +533,7 @@ class TabScroll extends Component{
 
                                     const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                                             <p onMouseDown={(e) => {
+                                                e.preventDefault()
                                                 this.setState({
                                                     currentTarget: e.currentTarget,
                                                     changingVisit: appointment,
@@ -555,6 +562,7 @@ class TabScroll extends Component{
 
                                     return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
                                         <Box
+                                            clearDraggingElem={this.clearDraggingElem}
                                             dragVert={dragVert}
                                             startMoving={() => {
                                                 this.startMovingVisit(appointment, totalDuration, appointment.appointmentId)
@@ -562,7 +570,6 @@ class TabScroll extends Component{
                                             makeMovingVisitQuery={this.makeMovingVisitQuery}
                                             moveVisit={(movingVisitStaffId, movingVisitMillis) => {
                                                 this.moveVisit(movingVisitStaffId, movingVisitMillis);
-                                                this.props.dispatch(calendarActions.toggleMoveVisit(true))
                                             }}
                                             content={content}
                                             wrapperClassName={wrapperClassName}
