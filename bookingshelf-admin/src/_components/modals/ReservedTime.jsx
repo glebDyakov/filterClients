@@ -222,7 +222,7 @@ class ReservedTime extends React.Component {
                                 <p>
                                     <span className="date_m">Зарезервированое время</span>
                                 </p>
-                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}/>*/}
 
                             </div>
