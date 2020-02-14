@@ -137,7 +137,6 @@ class Index extends PureComponent {
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.deleteReserve = this.deleteReserve.bind(this);
         this.updateAppointmentForDeleting = this.updateAppointmentForDeleting.bind(this);
         this.updateCalendar = this.updateCalendar.bind(this);
         this.onClose = this.onClose.bind(this);
@@ -168,12 +167,6 @@ class Index extends PureComponent {
     queryInitData() {
         const {selectedDays, type, selectedDayMoment} = this.state;
 
-        this.props.dispatch(staffActions.get());
-        //this.props.dispatch(clientActions.getClientWithInfo());
-        this.props.dispatch(servicesActions.getServices());
-        this.props.dispatch(staffActions.getClosedDates());
-
-
         let startTime, endTime;
         if (type === 'day') {
             startTime = selectedDayMoment.startOf('day').format('x');
@@ -182,8 +175,8 @@ class Index extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime);
         this.getTimetable(null, selectedDayMoment, true);
+        this.refreshTable(startTime, endTime);
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
@@ -193,6 +186,11 @@ class Index extends PureComponent {
         if (this.props.staff.timetable) {
             this.initAvailableTime(this.props.staff, this.props.authentication)
         }
+
+
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(servicesActions.getServices());
+        this.props.dispatch(staffActions.getClosedDates());
 
 
         this.scrollToMyRef();
@@ -212,8 +210,8 @@ class Index extends PureComponent {
         const newMonth = moment(newDay).format('MM YYYY')
         if ((prevMonth !== newMonth) || forceSet) {
             this.props.dispatch(staffActions.getTimetable(
-                moment(newDay).startOf('month').format('x'),
-                moment(newDay).endOf('month').format('x')
+                moment(newDay).subtract(1, 'week').startOf('month').format('x'),
+                moment(newDay).add(1, 'week').endOf('month').format('x')
             ));
         }
     }
@@ -405,7 +403,7 @@ class Index extends PureComponent {
             reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
-            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
+            deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };
         const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
@@ -415,60 +413,59 @@ class Index extends PureComponent {
                     this.setState({scrollableAppointmentAction: false})
                 }
             }}>
+                <div className="row content calendar-container">
+                    <StaffChoice
+                        typeSelected={typeSelected}
+                        selectedStaff={selectedStaff}
+                        timetable={staff.timetable}
+                        staff={staff && staff.staff}
+                        setWorkingStaff={this.setWorkingStaff}
+                    />
 
-                            <div className="row content calendar-container">
-                                <StaffChoice
-                                    typeSelected={typeSelected}
-                                    selectedStaff={selectedStaff}
-                                    timetable={staff.timetable}
-                                    staff={staff && staff.staff}
-                                    setWorkingStaff={this.setWorkingStaff}
-                                />
-
-                                <div className="calendar col-6">
-                                    <DatePicker
-                                        closedDates={staff.closedDates}
-                                        type={type}
-                                        selectedDay={selectedDay}
-                                        selectedDays={selectedDays}
-                                        showPrevWeek={this.showPrevWeek}
-                                        showNextWeek={this.showNextWeek}
-                                        handleDayChange={this.handleDayChange}
-                                        handleDayClick={this.handleDayClick}
-                                        handleWeekClick={this.handleWeekClick}
-                                    />
-                                </div>
-                                <CalendarSwitch
-                                    type={type}
-                                    selectType={this.selectType}
-                                />
-                            </div>
-                            <div className="days-container">
-                                <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                                     <div className="calendar-list">
-                                        <TabScrollHeader
-                                            selectedDays={selectedDays}
-                                            timetable={workingStaff.timetable }
-                                            timetableMessage={timetableMessage}
-                                            closedDates={staff.closedDates}
-                                            staff={staff && staff.staff}
-                                        />
-                                        <TabScrollContent
-                                            timetable={staff.timetable}
-                                            services={services}
-                                            availableTimetable={workingStaff.timetable}
-                                            selectedDays={selectedDays}
-                                            closedDates={staff.closedDates}
-                                            clients={clients && clients.client}
-                                            handleUpdateClient={this.handleUpdateClient}
-                                            updateAppointmentForDeleting={this.updateAppointmentForDeleting}
-                                            updateReservedId={this.updateReservedId}
-                                            changeTime={this.changeTime}
-                                            isLoading={isLoading}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                    <div className="calendar col-6">
+                        <DatePicker
+                            closedDates={staff.closedDates}
+                            type={type}
+                            selectedDay={selectedDay}
+                            selectedDays={selectedDays}
+                            showPrevWeek={this.showPrevWeek}
+                            showNextWeek={this.showNextWeek}
+                            handleDayChange={this.handleDayChange}
+                            handleDayClick={this.handleDayClick}
+                            handleWeekClick={this.handleWeekClick}
+                        />
+                    </div>
+                    <CalendarSwitch
+                        type={type}
+                        selectType={this.selectType}
+                    />
+                </div>
+                <div className="days-container">
+                    <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
+                         <div className="calendar-list">
+                            <TabScrollHeader
+                                selectedDays={selectedDays}
+                                timetable={workingStaff.timetable }
+                                timetableMessage={timetableMessage}
+                                closedDates={staff.closedDates}
+                                staff={staff && staff.staff}
+                            />
+                            <TabScrollContent
+                                timetable={staff.timetable}
+                                services={services}
+                                availableTimetable={workingStaff.timetable}
+                                selectedDays={selectedDays}
+                                closedDates={staff.closedDates}
+                                clients={clients && clients.client}
+                                handleUpdateClient={this.handleUpdateClient}
+                                updateAppointmentForDeleting={this.updateAppointmentForDeleting}
+                                updateReservedId={this.updateReservedId}
+                                changeTime={this.changeTime}
+                                isLoading={isLoading}
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
@@ -550,21 +547,6 @@ class Index extends PureComponent {
 
     updateAppointmentForDeleting(appointmentForDeleting){
         this.setState({ appointmentForDeleting })
-    }
-
-    deleteReserve(stuffId, id){
-        const {dispatch} = this.props;
-        const {selectedDays, type, selectedDayMoment} = this.state;
-        let startTime, endTime;
-
-        if(type==='day') {
-            startTime = selectedDayMoment.startOf('day').format('x');
-            endTime = selectedDayMoment.endOf('day').format('x')
-        } else {
-            startTime =moment(selectedDays[0]).startOf('day').format('x')
-            endTime = moment(selectedDays[6]).endOf('day').format('x');
-        }
-        dispatch(calendarActions.deleteReservedTime(stuffId, id, startTime, endTime));
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){

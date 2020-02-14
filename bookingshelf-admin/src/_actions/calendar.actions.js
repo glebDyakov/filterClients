@@ -343,14 +343,15 @@ function deleteAppointment(appointment, withoutNotify) {
     function clearVisualDeleting(error) { return { type: calendarConstants.CLEAR_VISUAL_DELETING, appointment } }
 }
 
-function deleteReservedTime(id, reservedTimeId, time1, time2) {
+function deleteReservedTime(id, reservedTimeId) {
     return dispatch => {
         calendarService.deleteReservedTime(id, reservedTimeId)
             .then(
-                client => {dispatch(success(reservedTimeId))
+                () => {
+                    dispatch(success(reservedTimeId))
                     // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
-                error => dispatch(failure(id, error.toString()))
+                error => dispatch(failure(id, error))
             );
     };
 

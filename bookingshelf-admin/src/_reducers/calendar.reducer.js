@@ -245,7 +245,7 @@ export function calendar(state = initialState, action) {
 
             return {
                 ...state,
-                reservedTime: reservedDeleted
+                reservedTime: JSON.parse(JSON.stringify(reservedDeleted))
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
