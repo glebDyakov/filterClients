@@ -38,7 +38,6 @@ class CalendarModals extends Component {
         this.handleEditClient = this.handleEditClient.bind(this);
         this.newAppointment = this.newAppointment.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.deleteReserve = this.deleteReserve.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
     }
     updateClient(client){
@@ -85,9 +84,6 @@ class CalendarModals extends Component {
         // this.checkAvaibleTime();
         this.setState({ reserved: true })
         return this.props.changeReservedTime(minutesReservedtime, staffId, newTime);
-    }
-    deleteReserve(stuffId, id){
-        this.props.deleteReserve(stuffId, id);
     }
 
     checkUser(checkedUser) {
@@ -194,7 +190,6 @@ class CalendarModals extends Component {
                     <DeleteReserve
                         id={reserveId}
                         staffId={reserveStId}
-                        cancel={this.deleteReserve}
                     />
 
         </React.Fragment>

@@ -16,6 +16,7 @@ class TabScroll extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            blickClientId: null,
             movingVisit: null,
             movingVisitDuration: 0,
             movingVisitMillis: 0,
@@ -293,7 +294,7 @@ class TabScroll extends Component{
 
     render(){
         const { availableTimetable, services, selectedDays, closedDates, isClientNotComeLoading, appointments,reservedTime: reservedTimeFromProps ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading, isStartMovingVisit } = this.props;
-        const { selectedNote, movingVisit, numbers, draggingAppointmentId } = this.state;
+        const { selectedNote, movingVisit, numbers, draggingAppointmentId, blickClientId } = this.state;
 
         return(
             <div className="tabs-scroll"
@@ -359,7 +360,16 @@ class TabScroll extends Component{
                                     const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
                                     const content = (
                                         <div
-                                            className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes')) + (appointment.appointmentId === selectedNote ? ' selected' : '')}
+                                            onMouseEnter={() => {
+                                                if (appointment.clientId) {
+                                                    setTimeout(() => this.setState({ blickClientId: appointment.clientId }))
+                                                }
+                                            }}
+                                            onMouseLeave={() => this.setState({ blickClientId: null })}
+                                            className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes'))
+                                            + (appointment.appointmentId === selectedNote ? ' selected' : '')
+                                            + (blickClientId === appointment.clientId ? ' custom-blick-div' : '')
+                                            }
                                             key={appointment.appointmentId + "_" + key}
                                             id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
                                         >
@@ -595,16 +605,16 @@ class TabScroll extends Component{
 
                                                 <p className="notes-title"
                                                    style={{cursor: 'default'}}>
-                                                    {textAreaHeight === 0 && <span className="delete"
-                                                                                 style={{right: '5px'}}
-                                                                                 data-toggle="modal"
-                                                                                 data-target=".delete-reserve-modal"
-                                                                                 title="Удалить"
-                                                                                 onClick={() => updateReservedId(
-                                                                                     reservedTime.reservedTimeId,
-                                                                                     workingStaffElement.staffId
-                                                                                 )}
-                                                    />}
+                                                    <span className="delete"
+                                                         style={{right: '5px'}}
+                                                         data-toggle="modal"
+                                                         data-target=".delete-reserve-modal"
+                                                         title="Удалить"
+                                                         onClick={() => updateReservedId(
+                                                             reservedTime.reservedTimeId,
+                                                             workingStaffElement.staffId
+                                                         )}
+                                                    />
                                                     <span className="" title="Онлайн-запись"/>
                                                     <span
                                                         className="service_time"
@@ -619,16 +629,6 @@ class TabScroll extends Component{
                                                    style={{height: textAreaHeight+ "px"}}>
                                                                                 <span
                                                                                     style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime.description}</span>
-                                                    {textAreaHeight > 0 && <span className="delete-notes"
-                                                          style={{right: '5px'}}
-                                                          data-toggle="modal"
-                                                          data-target=".delete-reserve-modal"
-                                                          title="Удалить"
-                                                          onClick={() => updateReservedId(
-                                                              reservedTime.reservedTimeId,
-                                                              workingStaffElement.staffId
-                                                          )}
-                                                    />}
                                                 </p>
                                             </div>
                                         </div>
