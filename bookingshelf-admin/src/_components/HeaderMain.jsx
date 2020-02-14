@@ -59,7 +59,7 @@ class HeaderMain extends React.PureComponent {
     }
 
     render() {
-        const {location, notification }=this.props;
+        const {location, staff }=this.props;
         const {authentication, company, userSettings}=this.state;
 
         const { count } = company;
@@ -72,6 +72,9 @@ class HeaderMain extends React.PureComponent {
         } else {
             redTitle = authentication.user && authentication.menu && authentication.menu[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name
         }
+
+        const activeStaff = staff && staff.find(item =>
+            ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
 
 
         return (
@@ -236,7 +239,7 @@ class HeaderMain extends React.PureComponent {
                                 <a className="setting" onClick={this.openModal}/>
                                 <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}</a>
                                 <div className="img-container" data-toggle="modal" data-target=".modal_photo">
-                                    <img src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
+                                    <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+activeStaff.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
                                 </div>
                                 <span className="log_in">
@@ -279,9 +282,9 @@ class HeaderMain extends React.PureComponent {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, company, notification, calendar: {appointmentsCount} } = state;
+    const { alert, authentication, company, notification, calendar: {appointmentsCount}, staff } = state;
     return {
-        alert, authentication, company, notification, appointmentsCount
+        alert, authentication, company, notification, appointmentsCount, staff: staff.staff
     };
 }
 
