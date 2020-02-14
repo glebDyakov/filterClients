@@ -826,6 +826,7 @@ class Index extends PureComponent {
     };
 
     getHours(idStaff, timeClicked){
+        const { appointments } = this.props;
         const { workingStaff }=this.state
 
         let hoursArray=[];
@@ -843,6 +844,7 @@ class Index extends PureComponent {
 
 
 
+        const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
         numbers.map((item)=> {
             let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
@@ -851,7 +853,10 @@ class Index extends PureComponent {
 
                     if (parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) === parseInt(moment(moment(day, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))) {
 
-                        return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
+                        const isOnAnotherVisit = newStaff && newStaff.appointments
+                            .some(appointment => appointment.appointmentTimeMillis <= currentTime && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > currentTime)
+
+                        return (!isOnAnotherVisit && currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
                             && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
                     }
                 })
@@ -869,6 +874,7 @@ function mapStateToProps(store) {
         services,
         authentication,
         calendar: {
+            appointments,
             refreshAvailableTimes,
             scrollableAppointmentId,
             status,
@@ -880,6 +886,7 @@ function mapStateToProps(store) {
         }
     } = store;
     return {
+        appointments,
         staff,
         clients: client,
         services,
