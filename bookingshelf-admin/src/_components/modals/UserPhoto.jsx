@@ -46,7 +46,11 @@ class UserPhoto extends React.Component {
     }
 
     render() {
+        const { staff } = this.props
         const {authentication}=this.state;
+
+        const activeStaff = staff && staff.find(item =>
+            ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
 
         return (
 
@@ -65,7 +69,7 @@ class UserPhoto extends React.Component {
                                             <label className="drop_target">
                                                 <div className="image_preview">
                                                     <div className="existed-image">
-                                                        <img src={authentication && authentication.user && authentication.user.profile && authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
+                                                        <img src={activeStaff && activeStaff.imageBase64 && activeStaff.imageBase64!==''?("data:image/png;base64,"+activeStaff.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
                                                     </div>
                                                     <Avatar
@@ -93,9 +97,9 @@ class UserPhoto extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication } = state;
+    const { alert, authentication, staff } = state;
     return {
-        alert, authentication
+        alert, authentication, staff: staff.staff
     };
 }
 
