@@ -400,7 +400,7 @@ class TabScroll extends Component{
                                                     {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                             </span>
                                             </p>
-                                            <p onMouseDown={(e) => e.preventDefault()} id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
+                                            <p  onMouseDown={(e) => e.preventDefault()}  id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
                                                style={{
                                                    minHeight: ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2) + "px",
                                                    height: resultTextAreaHeight + "px"
@@ -409,7 +409,7 @@ class TabScroll extends Component{
                                                     {resultTextArea}
                                                 </span>
                                             </p>
-                                            {!this.props.isStartMovingVisit && <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
+                                            {!this.props.isStartMovingVisit && <div className="cell msg-client-info">
                                                 <div className="cell msg-inner">
                                                     <p>
                                                         <p className="new-text">Запись</p>
