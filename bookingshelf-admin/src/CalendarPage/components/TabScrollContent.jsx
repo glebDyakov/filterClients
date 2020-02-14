@@ -7,7 +7,8 @@ import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import Dustbin from "../../_components/dragAndDrop/Dustbin";
 import Appointment from "./Appointment";
-import {appointmentActions, calendarActions} from "../../_actions";
+import { appointmentActions } from "../../_actions";
+import DragVertController from "./DragVertController";
 
 
 class TabScroll extends Component{
@@ -19,23 +20,10 @@ class TabScroll extends Component{
         this.startMovingVisit = this.startMovingVisit.bind(this);
         this.moveVisit = this.moveVisit.bind(this);
         this.getHours24 = this.getHours24.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this)
-        this.handleMouseMove = this.handleMouseMove.bind(this)
-        this.onStartDragVert = this.onStartDragVert.bind(this)
     }
     componentDidMount() {
         if (this.props.timetable && this.props.timetable.length) {
             this.getHours24(this.props.timetable);
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.changingVisit) {
-            document.addEventListener('mousemove', this.handleMouseMove, false);
-            document.addEventListener('mouseup', this.handleMouseUp, false);
-        } else {
-            document.removeEventListener('mousemove', this.handleMouseMove, false);
-            document.removeEventListener('mouseup', this.handleMouseUp, false);
         }
     }
 
@@ -44,99 +32,6 @@ class TabScroll extends Component{
         if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
             this.getHours24(newProps.timetable);
         }
-    }
-
-    onStartDragVert(e, appointment) {
-        e.preventDefault()
-        this.setState({
-            currentTarget: e.currentTarget,
-            changingVisit: appointment,
-            changingPos: e.pageY,
-            offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
-        })
-    }
-
-    handleMouseMove(e) {
-        const { changingVisit, currentTarget, changingPos, offsetHeight } = this.state
-        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
-        const node = document.getElementById(textAreaWrapper)
-
-        // 'res' = начальная высота div'a + кол-во пикселов смещения
-        const res = offsetHeight + e.pageY - changingPos;
-        node.style.height = res + "px";
-        currentTarget.style.bottom = -res + "px";
-    }
-    handleMouseUp() {
-        const { appointments } = this.props;
-        const { changingVisit, changingPos, offsetHeight } = this.state
-        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
-        const newOffsetHeight = document.getElementById(textAreaWrapper).offsetHeight
-        const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
-
-        let newDuration = (15 * 60 * offsetDifference)
-        if (changingVisit.hasCoAppointments) {
-
-
-            const coAppointments = []
-            appointments.map((staffAppointment) => {
-
-                staffAppointment.appointments.sort((b, a) => a.appointmentId - b.appointmentId).forEach(appointment => {
-                    if (appointment.coAppointmentId === changingVisit.appointmentId) {
-                        coAppointments.push(appointment)
-                    }
-                })
-            })
-            coAppointments.push(changingVisit)
-
-            let shouldUpdateDuration = true
-            if (newDuration > 0) {
-                this.props.dispatch(calendarActions.updateAppointment(
-                    changingVisit.appointmentId,
-                    JSON.stringify({ duration: changingVisit.duration + newDuration }),
-                    false,
-                    true
-                ))
-            } else {
-                let timeout = 0;
-                coAppointments.forEach(coAppointment => {
-                    if (shouldUpdateDuration) {
-                        newDuration = coAppointment.duration + newDuration
-                        if (newDuration > 900) {
-                            shouldUpdateDuration = false
-                            setTimeout(() => {
-                                this.props.dispatch(calendarActions.updateAppointment(
-                                    coAppointment.appointmentId,
-                                    JSON.stringify({duration: newDuration}),
-                                    false,
-                                    true
-                                ))
-                            }, 1000 * timeout)
-                        } else {
-                            newDuration-=900
-
-                            setTimeout(() => {
-                                this.props.dispatch(calendarActions.updateAppointment(
-                                    coAppointment.appointmentId,
-                                    JSON.stringify({duration: 900}),
-                                    false,
-                                    true
-                                ))
-                            }, 1000 * timeout)
-                            timeout++;
-                        }
-                    }
-                })
-            }
-        } else {
-            this.props.dispatch(calendarActions.updateAppointment(
-                changingVisit.appointmentId,
-                JSON.stringify({ duration: changingVisit.duration + newDuration }),
-                false,
-                true
-            ))
-        }
-
-        this.setState({ changingVisit: null, currentTarget: null, changingPos:null, offsetHeight: null })
     }
 
     getHours24 (timetable){
@@ -215,8 +110,6 @@ class TabScroll extends Component{
                                 if(appointment && !appointment.coAppointmentId) {
                                     return (
                                         <Appointment
-                                            onStartDragVert={this.onStartDragVert}
-                                            key={key}
                                             appointment={appointment}
                                             appointments={appointments}
                                             currentTime={currentTime}
@@ -349,6 +242,7 @@ class TabScroll extends Component{
                         </div>
                     )}
                 </DndProvider>
+                <DragVertController appointments={appointments} />
             </div>
         );
     }
