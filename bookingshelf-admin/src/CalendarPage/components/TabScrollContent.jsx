@@ -667,19 +667,26 @@ class TabScroll extends Component{
                                     })
                                     let notExpired = notExpired2
 
+                                    const isOnAnotherVisit = staffAppointments && staffAppointments.appointments
+                                        .some(appointment => appointment.appointmentTimeMillis <= currentTime && (appointment.appointmentTimeMillis + (appointment.duration * 1000)) > currentTime)
+
                                     const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
-                                    const wrapperClassName = `cell col-tab ${currentTime <= moment().format("x")
-                                    && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''}
+                                    const wrapperClassName = `cell col-tab 
                                                                                 ${currentTime < parseInt(moment().format("x")) ? '' : ""}
+                                                                                ${isOnAnotherVisit ? 'isOnAnotherVisit' : ''}
                                                                                 ${notExpired ? '' : "expired "}
                                                                                 ${notExpired && this.props.isStartMovingVisit ? 'start-moving ' : ''}
                                                                                 ${clDate ? 'closedDateTick' : ""}`
                                     const content = (
-                                        <span className={moment(time, 'x').format("mm") === "00" && notExpired ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
+                                        <React.Fragment>
+                                            <span className={(moment(time, 'x').format("mm") === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
+                                            {currentTime <= moment().format("x")
+                                            && currentTime >= moment().subtract(15, "minutes").format("x") && <span className="present-time-line" />}
+                                        </React.Fragment>
                                     )
 
                                     if (notExpired) {
-                                        const wrapperClick = () => (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : changeTime(currentTime, workingStaffElement, numbers, false, null));
+                                        const wrapperClick = () => (this.props.isStartMovingVisit ? this.moveVisit(workingStaffElement.staffId, currentTime) : (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null)));
 
                                         return <Dustbin
                                             isStartMovingVisit={this.props.isStartMovingVisit}
