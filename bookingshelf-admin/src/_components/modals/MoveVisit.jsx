@@ -2,23 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {calendarActions} from "../../_actions";
+import {appointmentActions} from "../../_actions/appointment.actions";
 
 class MoveVisit extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            id: props.id
-        };
-
         this.handleYes = this.handleYes.bind(this);
         this.handleNo = this.handleNo.bind(this);
-    }
-
-    componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, id:newProps.id})
-        }
     }
 
     render() {
@@ -41,13 +32,55 @@ class MoveVisit extends React.Component {
     }
 
     handleYes (){
-        this.props.dispatch(calendarActions.toggleMoveVisit(true))
+        const {
+            appointments,
+            timetable,
+            movingVisit,
+            movingVisitDuration,
+            movingVisitStaffId,
+            movingVisitMillis,
+            prevVisitStaffId
+        } = this.props;
+
+        this.props.dispatch(appointmentActions.makeMovingVisitQuery({
+            appointments,
+            timetable,
+            movingVisit,
+            movingVisitDuration,
+            movingVisitStaffId,
+            movingVisitMillis,
+            prevVisitStaffId
+        }))
     }
 
     handleNo (){
-        this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+        this.props.dispatch(appointmentActions.toggleStartMovingVisit(false))
     }
 }
 
-const connectedApp = connect()(MoveVisit);
+function mapStateToProps(state) {
+    const {
+        calendar: { appointments },
+        staff: { timetable },
+        appointment: {
+            movingVisit,
+            movingVisitDuration,
+            movingVisitStaffId,
+            movingVisitMillis,
+            prevVisitStaffId
+        }
+    } = state;
+
+    return {
+        appointments,
+        timetable,
+        movingVisit,
+        movingVisitDuration,
+        movingVisitStaffId,
+        movingVisitMillis,
+        prevVisitStaffId
+    }
+}
+
+const connectedApp = connect(mapStateToProps)(MoveVisit);
 export { connectedApp as MoveVisit };

@@ -5,6 +5,8 @@ import { appointmentActions, calendarActions } from "../../_actions";
 import {access} from "../../_helpers/access";
 
 import moment from 'moment';
+import {isMobile} from "react-device-detect";
+import Box from "../../_components/dragAndDrop/Box";
 
 class Appointment extends Component {
     constructor(props) {
@@ -34,6 +36,7 @@ class Appointment extends Component {
         const {
             key,
             appointment,
+            appointments,
             blickClientId,
             isStartMovingVisit,
             currentTime,
@@ -41,19 +44,39 @@ class Appointment extends Component {
             selectedNote,
             isClientNotComeLoading,
             workingStaffElement,
-            totalDuration,
-            totalCount,
-            totalPrice,
-            totalAmount,
-            resultTextAreaHeight,
-            currentAppointments,
-            appointmentServices,
             handleUpdateClient,
             services,
             startMovingVisit,
+            draggingAppointmentId,
             changeTime,
             updateAppointmentForDeleting
         } = this.props;
+
+        let totalDuration = appointment.duration;
+        let appointmentServices = [];
+        let totalCount = 0;
+        let totalPrice = appointment.price
+        let totalAmount = appointment.totalAmount
+        const currentAppointments = [appointment]
+
+        const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
+        appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
+
+        if (appointment.hasCoAppointments) {
+            appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
+                if (currentAppointment.coAppointmentId === appointment.appointmentId) {
+                    totalDuration += currentAppointment.duration;
+                    const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
+                    appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})
+                    totalCount++;
+                    totalPrice += currentAppointment.price;
+                    totalAmount += currentAppointment.totalAmount;
+
+                    currentAppointments.push(currentAppointment)
+                }
+            }))
+        }
+        const resultTextAreaHeight = ((totalDuration / 60 / 15) - 1) * 20;
 
         let extraServiceText;
         switch (totalCount) {
@@ -74,7 +97,7 @@ class Appointment extends Component {
         const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
         const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
-        return (
+        const content = (
             <div
                 onMouseEnter={() => this.handleMouseEnter(appointment.clientId)}
                 onMouseLeave={() => this.handleMouseLeave(appointment.clientId)}
@@ -143,7 +166,7 @@ class Appointment extends Component {
                             <p className="new-text">Запись</p>
                             <button type="button" onClick={()=> {
                                 this.toggleSelectedNote(null)
-                                this.props.dispatch(calendarActions.toggleStartMovingVisit(false))
+                                this.props.dispatch(appointmentActions.toggleStartMovingVisit(false))
                             }} className="close" />
                         </p>
 
@@ -252,6 +275,50 @@ class Appointment extends Component {
                 </div> }
             </div>
         )
+
+
+        const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
+
+        const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
+            <p onMouseDown={(e) => {
+                e.preventDefault()
+                this.setState({
+                    currentTarget: e.currentTarget,
+                    changingVisit: appointment,
+                    changingPos: e.pageY,
+                    offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+                })
+            }} style={{
+                cursor: 'ns-resize',
+                height: '8px',
+                position: 'absolute',
+                bottom: -(resultTextAreaHeight + 3) + 'px',
+                width: '100%',
+                zIndex: 9990
+            }}>
+                {!!resultTextAreaHeight && <span className="drag-vert" />}
+            </p>
+        );
+
+
+        if (isMobile) {
+            return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
+                <div className={wrapperClassName}>{content}</div>
+                {dragVert}
+            </div>
+        }
+
+        return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
+            <Box
+                appointments={appointments}
+                appointmentId={appointment.appointmentId}
+                dragVert={dragVert}
+                startMoving={() => startMovingVisit(appointment, totalDuration, appointment.appointmentId)}
+                content={content}
+                wrapperClassName={wrapperClassName}
+            />
+            {appointment.appointmentId !== draggingAppointmentId && dragVert}
+        </div>
     }
 }
 
@@ -261,6 +328,8 @@ function mapStateToProps(state) {
         appointment: {
             blickClientId,
             selectedNote,
+            isStartMovingVisit,
+            draggingAppointmentId
         }
     } = state;
 
@@ -268,6 +337,8 @@ function mapStateToProps(state) {
         isClientNotComeLoading,
         blickClientId,
         selectedNote,
+        isStartMovingVisit,
+        draggingAppointmentId
     }
 }
 

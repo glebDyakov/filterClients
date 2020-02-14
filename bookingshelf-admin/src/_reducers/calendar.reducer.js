@@ -63,18 +63,6 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 209
             };
-        case calendarConstants.START_MOVING_VISIT_SUCCESS:
-
-            return {
-                ...state,
-                isStartMovingVisit: action.isStartMovingVisit
-            };
-        case calendarConstants.MOVE_VISIT_SUCCESS:
-
-            return {
-                ...state,
-                isMoveVisit: action.isMoveVisit
-            };
 
         case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX:
             return {
