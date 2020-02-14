@@ -167,12 +167,6 @@ class Index extends PureComponent {
     queryInitData() {
         const {selectedDays, type, selectedDayMoment} = this.state;
 
-        this.props.dispatch(staffActions.get());
-        //this.props.dispatch(clientActions.getClientWithInfo());
-        this.props.dispatch(servicesActions.getServices());
-        this.props.dispatch(staffActions.getClosedDates());
-
-
         let startTime, endTime;
         if (type === 'day') {
             startTime = selectedDayMoment.startOf('day').format('x');
@@ -181,8 +175,8 @@ class Index extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime);
         this.getTimetable(null, selectedDayMoment, true);
+        this.refreshTable(startTime, endTime);
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
@@ -192,6 +186,11 @@ class Index extends PureComponent {
         if (this.props.staff.timetable) {
             this.initAvailableTime(this.props.staff, this.props.authentication)
         }
+
+
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(servicesActions.getServices());
+        this.props.dispatch(staffActions.getClosedDates());
 
 
         this.scrollToMyRef();
@@ -211,8 +210,8 @@ class Index extends PureComponent {
         const newMonth = moment(newDay).format('MM YYYY')
         if ((prevMonth !== newMonth) || forceSet) {
             this.props.dispatch(staffActions.getTimetable(
-                moment(newDay).startOf('month').format('x'),
-                moment(newDay).endOf('month').format('x')
+                moment(newDay).subtract(1, 'week').startOf('month').format('x'),
+                moment(newDay).add(1, 'week').endOf('month').format('x')
             ));
         }
     }
