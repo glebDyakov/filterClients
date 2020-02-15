@@ -446,6 +446,7 @@ export function calendar(state = initialState, action) {
 
                 newItem.appointmentTimeMillis = action.movingVisitMillis;
                 newItem.staffId = action.movingVisitStaffId;
+                newItem.coStaffs = action.coStaffs;
             }
 
             if (newAppointment && newAppointment.length) {
@@ -458,6 +459,12 @@ export function calendar(state = initialState, action) {
                     if (item.staff.staffId === newItem.staffId) {
                         item.appointments.push(newItem)
                     }
+                    if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === item.staff.staffId)) {
+                        item.appointments.push( {
+                            ...newItem,
+                            coappointment: true
+                        })
+                    }
                 })
             }
             newAppointmentsCount.forEach(item => {
@@ -467,6 +474,12 @@ export function calendar(state = initialState, action) {
                 }
                 if (item.staff.staffId === newItem.staffId) {
                     item.appointments.push(newItem)
+                }
+                if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === item.staff.staffId)) {
+                    item.appointments.push( {
+                        ...newItem,
+                        coappointment: true
+                    })
                 }
             })
 

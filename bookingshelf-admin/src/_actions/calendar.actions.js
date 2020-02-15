@@ -56,11 +56,11 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
 }
 
-function makeVisualMove(movingVisit, movingVisitStaffId, movingVisitMillis) {
+function makeVisualMove(movingVisit, movingVisitStaffId, movingVisitMillis, coStaffs) {
     return dispatch => {
         dispatch(success());
 
-        function success() { return { type: calendarConstants.MAKE_VISUAL_MOVE, movingVisit, movingVisitStaffId, movingVisitMillis } }
+        function success() { return { type: calendarConstants.MAKE_VISUAL_MOVE, movingVisit, movingVisitStaffId, movingVisitMillis, coStaffs } }
     }
 }
 
