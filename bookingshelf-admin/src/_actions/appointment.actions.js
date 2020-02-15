@@ -66,12 +66,14 @@ function makeMovingVisitQuery(data) {
                 intervals.push(i)
             }
 
-            const checkOnMovingVisit = i => (
-                (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === newStaff.staff.staffId))) &&
-                movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
-            );
+
 
             timetableItems.forEach(timetableItem => {
+                const checkOnMovingVisit = i => (
+                    (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === timetableItem.staffId))) &&
+                    movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
+                );
+
                 const isFreeInterval = isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
 
                 if (isFreeInterval) {
@@ -82,17 +84,13 @@ function makeMovingVisitQuery(data) {
 
         if (shouldMove) {
             dispatch(calendarActions.makeVisualMove({ ...movingVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis))
-            let coStaffs;
-            if (movingVisit.coStaffs && prevVisitStaffId !== movingVisitStaffId) {
+            let coStaffs = movingVisit.coStaffs;
+            if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
                 const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
-                const oldStaffIndex = movingVisit.coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
+                const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
 
-                let coStaffsWithRemoved = JSON.parse(JSON.stringify(movingVisit.coStaffs))
-                coStaffs = [
-                    ...coStaffsWithRemoved,
-                ]
                 if (oldStaffIndex !== -1) {
-                    coStaffsWithRemoved.splice(oldStaffIndex, 1)
+                    coStaffs.splice(oldStaffIndex, 1)
                     coStaffs.push(updatedCoStaff.staff)
                 }
 
