@@ -205,7 +205,6 @@ class BaseCell extends React.Component {
                     numberKey={numberKey}
                     staffKey={staffKey}
                     appointment={cell}
-                    appointments={appointments}
                     currentTime={currentTime}
                     changeTime={changeTime}
                     handleUpdateClient={handleUpdateClient}
