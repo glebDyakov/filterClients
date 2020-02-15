@@ -116,13 +116,14 @@ class DragVertController extends React.Component {
 
 function mapStateToProps(state) {
     const {
+        calendar: { appointments },
         appointment: {
             changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
         }
     } = state;
 
     return {
-        changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
+        appointments, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
     }
 }
 

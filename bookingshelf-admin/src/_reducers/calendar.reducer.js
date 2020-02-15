@@ -113,16 +113,15 @@ export function calendar(state = initialState, action) {
 
             let reservedTimes = state.reservedTime;
             if (reservedTimes) {
-                let boolReservedTimes = reservedTimes.filter((app, key) =>
-                    app.staff.staffId === action.staffId && app['reservedTimes'].push(action.reservedTime)
+                let boolReservedTimes = reservedTimes.filter((app) =>
+                    app.staff.staffId === action.staffId && app.reservedTimes.push(action.reservedTime)
                 );
 
-                if (boolReservedTimes.length !== 0) {
-                } else {
-                    reservedTimes.push({'staff': {'staffId': action.staffId}, 'reservedTimes': [action.reservedTime]})
+                if (boolReservedTimes.length === 0) {
+                    reservedTimes.push({ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] })
                 }
             } else {
-                reservedTimes = [{'staff': {'staffId': action.staffId}, 'reservedTimes': [action.reservedTime]}];
+                reservedTimes = [{ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] }];
             }
 
             return {
@@ -223,17 +222,19 @@ export function calendar(state = initialState, action) {
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
             const reservedDeleted = state.reservedTime;
 
-            reservedDeleted.map((app, key1) =>
-                app['reservedTimes'].map((reservedTime, key2) => {
-                    if (reservedTime.reservedTimeId === action.reservedTimeId) {
-                        reservedDeleted[key1]['reservedTimes'].splice(key2, 1)
-                    }
+            const reservedTime = []
+            reservedDeleted.map((app, key1) => {
+
+                const item = app.reservedTimes.map((reservedTime) => {
+                    return (reservedTime.reservedTimeId !== action.reservedTimeId)
                 })
-            );
+
+                reservedTime.push(item)
+            });
 
             return {
                 ...state,
-                reservedTime: JSON.parse(JSON.stringify(reservedDeleted))
+                reservedTime
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
