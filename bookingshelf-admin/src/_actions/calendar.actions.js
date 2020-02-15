@@ -327,8 +327,8 @@ function deleteAppointment(appointment, withoutNotify) {
                     dispatch(clearVisualDeleting())
                 },
                 error => {
-                    dispatch(failure(error))
                     dispatch(cancelVisualDeleting())
+                    dispatch(failure(error))
                 }
             );
     };
