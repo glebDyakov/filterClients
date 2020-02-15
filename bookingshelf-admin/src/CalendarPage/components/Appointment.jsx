@@ -11,6 +11,8 @@ import Box from "../../_components/dragAndDrop/Box";
 const Appointment = (props) => {
     const {
         dispatch,
+        numberKey,
+        staffKey,
         appointment,
         appointments,
         blickClientId,
@@ -72,6 +74,7 @@ const Appointment = (props) => {
     }
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
     const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2)
+    const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
     const content = (
@@ -97,46 +100,54 @@ const Appointment = (props) => {
                 }
             }}
             className={"cell notes " + appointment.appointmentId + " " + appointment.color.toLowerCase() + "-color " + (parseInt(moment(currentTime + appointment.duration * 1000 ).format("H")) >= 20 && 'notes-bottom' + ' ' + (parseInt(moment(currentTime).format("H")) === 23 && ' last-hour-notes'))
-            + (appointment.appointmentId === selectedNote ? ' selected hovered' : '')
+            + ((appointment.appointmentId === selectedNote && !appointment.coappointment) ? ' selected hovered' : '')
             + (blickClientId === appointment.clientId ? ' custom-blick-div' : '')
             }
-            id={appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x')}
+            id={
+                appointment.coappointment
+                    ? ''
+                    : (appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'))
+            }
         >
             <p className="notes-title" onClick={()=> dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
-                                            <span className="delete"
-                                                  data-toggle="modal"
-                                                  data-target=".delete-notes-modal"
-                                                  title="Отменить встречу"
-                                                  onClick={() => updateAppointmentForDeleting({
-                                                      ...appointment,
-                                                      staffId: workingStaffElement.staffId
-                                                  })}/>
-                {!appointment.online &&
-                <span className="pen"
-                      title="Запись через журнал"/>}
-                {/*<span className="men"*/}
-                {/*title="Постоянный клиент"/>*/}
-                {appointment.online &&
-                <span className="globus"
-                      title="Онлайн-запись"/>}
+                {!appointment.coappointment && (
+                    <React.Fragment>
+                        <span className="delete"
+                              data-toggle="modal"
+                              data-target=".delete-notes-modal"
+                              title="Отменить встречу"
+                              onClick={() => updateAppointmentForDeleting({
+                                  ...appointment,
+                                  staffId: workingStaffElement.staffId
+                              })}/>
+                        {!appointment.online &&
+                        <span className="pen"
+                              title="Запись через журнал"/>}
+                        {/*<span className="men"*/}
+                        {/*title="Постоянный клиент"/>*/}
+                        {appointment.online &&
+                        <span className="globus"
+                              title="Онлайн-запись"/>}
 
 
 
-                {appointment.clientId && <span
-                    className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                    title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
+                        {appointment.clientId && <span
+                            className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
+                            title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
 
 
-                {!appointment.clientId &&
-                <span
-                    className="no-client-icon"
-                    title="Визит от двери"/>
-                }
+                        {!appointment.clientId &&
+                        <span
+                            className="no-client-icon"
+                            title="Визит от двери"/>
+                        }
 
-                {!!appointment.discountPercent &&
-                <span className="percentage"
-                      title={`${appointment.discountPercent}%`}
-                />}
+                        {!!appointment.discountPercent &&
+                        <span className="percentage"
+                              title={`${appointment.discountPercent}%`}
+                        />}
+                    </React.Fragment>
+                )}
 
                 {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
                 <span className="service_time">
@@ -145,7 +156,7 @@ const Appointment = (props) => {
                     {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                         </span>
             </p>
-            <p onMouseDown={(e) => e.preventDefault()} id={`${appointment.appointmentId}-textarea-wrapper`} className="notes-container"
+            <p onMouseDown={(e) => e.preventDefault()} id={textAreaId} className="notes-container"
                style={{
                    minHeight: minTextAreaHeight + "px",
                    height: resultTextAreaHeight + "px"
@@ -223,7 +234,7 @@ const Appointment = (props) => {
                             <div style={{
                                 marginTop: '2px',
                             }}
-                                 onClick={() => startMovingVisit(appointment, totalDuration)}
+                                 onClick={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId)}
                                  className="cell msg-inner-button-wrapper"
                             >
                                 <button className="button"
@@ -278,10 +289,11 @@ const Appointment = (props) => {
             e.preventDefault();
             dispatch(appointmentActions.togglePayload({
                 minTextAreaHeight,
+                textAreaId,
                 currentTarget: e.currentTarget,
                 changingVisit: appointment,
                 changingPos: e.pageY,
-                offsetHeight: document.getElementById(`${appointment.appointmentId}-textarea-wrapper`).offsetHeight
+                offsetHeight: document.getElementById(textAreaId).offsetHeight
             }));
         }} style={{
             cursor: 'ns-resize',
@@ -296,7 +308,7 @@ const Appointment = (props) => {
     );
 
 
-    if (isMobile) {
+    if (isMobile || appointment.coappointment) {
         return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
             <div className={wrapperClassName}>{content}</div>
             {dragVert}
@@ -308,7 +320,7 @@ const Appointment = (props) => {
             appointments={appointments}
             appointmentId={appointment.appointmentId}
             dragVert={dragVert}
-            startMoving={() => startMovingVisit(appointment, totalDuration, appointment.appointmentId)}
+            startMoving={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId, appointment.appointmentId)}
             content={content}
             wrapperClassName={wrapperClassName}
         />

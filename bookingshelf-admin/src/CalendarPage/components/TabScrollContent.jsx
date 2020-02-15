@@ -73,11 +73,7 @@ class TabScroll extends Component{
         this.setState({ numbers });
     }
 
-    startMovingVisit(movingVisit, totalDuration, draggingAppointmentId) {
-        const activeItemWithStaffId = this.props.appointments.find(item =>
-            item.appointments.some(appointment => appointment.appointmentId === movingVisit.appointmentId)
-        );
-        const prevVisitStaffId = activeItemWithStaffId.staff.staffId
+    startMovingVisit(movingVisit, totalDuration, prevVisitStaffId, draggingAppointmentId) {
         this.props.dispatch(appointmentActions.togglePayload({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId }));
         this.props.dispatch(appointmentActions.toggleStartMovingVisit(true))
     }
@@ -111,6 +107,8 @@ class TabScroll extends Component{
                                 if(appointment && !appointment.coAppointmentId) {
                                     return (
                                         <Appointment
+                                            numberKey={key}
+                                            staffKey={staffKey}
                                             appointment={appointment}
                                             appointments={appointments}
                                             currentTime={currentTime}
@@ -227,7 +225,9 @@ class TabScroll extends Component{
                                         wrapperId={wrapperId}
                                         wrapperClassName={wrapperClassName}
                                         addVisit={() => (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null))}
-                                        moveVisit={() => this.moveVisit(workingStaffElement.staffId, currentTime)}
+                                        moveVisit={() => {
+                                            this.moveVisit(workingStaffElement.staffId, currentTime)
+                                        }}
                                         movingVisitMillis={currentTime}
                                         movingVisitStaffId={workingStaffElement.staffId}
                                     />

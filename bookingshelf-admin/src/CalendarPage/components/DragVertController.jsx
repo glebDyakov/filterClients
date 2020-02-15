@@ -20,9 +20,8 @@ class DragVertController extends React.Component {
     }
 
     handleMouseMove(e) {
-        const { changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight } = this.props;
-        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
-        const node = document.getElementById(textAreaWrapper)
+        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId } = this.props;
+        const node = document.getElementById(textAreaId)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
@@ -33,9 +32,8 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
-        const { appointments, changingVisit, offsetHeight } = this.props;
-        const textAreaWrapper = `${changingVisit.appointmentId}-textarea-wrapper`
-        const newOffsetHeight = document.getElementById(textAreaWrapper).offsetHeight
+        const { appointments, changingVisit, offsetHeight, textAreaId } = this.props;
+        const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
         const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
 
         let newDuration = (15 * 60 * offsetDifference)
@@ -106,7 +104,8 @@ class DragVertController extends React.Component {
             currentTarget: null,
             changingPos:null,
             offsetHeight: null,
-            minTextAreaHeight: null
+            minTextAreaHeight: null,
+            textAreaId: null
         }));
     }
 
@@ -118,12 +117,12 @@ class DragVertController extends React.Component {
 function mapStateToProps(state) {
     const {
         appointment: {
-            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight
+            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
         }
     } = state;
 
     return {
-        changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight
+        changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
     }
 }
 
