@@ -332,7 +332,10 @@ const Appointment = (props) => {
 
 function mapStateToProps(state) {
     const {
-        calendar: { isClientNotComeLoading },
+        calendar: {
+            appointments,
+            isClientNotComeLoading
+        },
         appointment: {
             blickClientId,
             movingVisit,
@@ -343,6 +346,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        appointments,
         isClientNotComeLoading,
         blickClientId,
         movingVisit,
