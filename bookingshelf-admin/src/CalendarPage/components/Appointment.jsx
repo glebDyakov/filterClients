@@ -224,8 +224,7 @@ const Appointment = (props) => {
                         </p>
                     })
                     }
-                    <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
-                        {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                    <p>{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
                     <p style={{ fontWeight: 'bold', color: '#000'}}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                     {appointment.description && <p>Заметка: {appointment.description}</p>}
 
