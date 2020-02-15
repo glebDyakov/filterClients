@@ -51,8 +51,20 @@ function makeMovingVisitQuery(data) {
             shouldMove = false
         }
 
+        let prevVisualVisit = JSON.parse(JSON.stringify(movingVisit));
+        let coStaffs = movingVisit.coStaffs;
+
         if (shouldMove) {
-            shouldMove = false;
+            if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
+                const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
+                const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
+
+                if (oldStaffIndex !== -1) {
+                    coStaffs.splice(oldStaffIndex, 1)
+                    coStaffs.push(updatedCoStaff.staff)
+                }
+
+            }
 
             const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
@@ -68,33 +80,18 @@ function makeMovingVisitQuery(data) {
 
 
 
-            timetableItems.forEach(timetableItem => {
+            shouldMove = timetableItems.every(timetableItem => {
                 const checkOnMovingVisit = i => (
                     (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === timetableItem.staffId))) &&
                     movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
                 );
 
-                const isFreeInterval = isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
-
-                if (isFreeInterval) {
-                    shouldMove = true
-                }
+                return isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
             })
         }
 
         if (shouldMove) {
-            dispatch(calendarActions.makeVisualMove({ ...movingVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis))
-            let coStaffs = movingVisit.coStaffs;
-            if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
-                const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
-                const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
-
-                if (oldStaffIndex !== -1) {
-                    coStaffs.splice(oldStaffIndex, 1)
-                    coStaffs.push(updatedCoStaff.staff)
-                }
-
-            }
+            dispatch(calendarActions.makeVisualMove({ ...prevVisualVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis, coStaffs))
             dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,
                 JSON.stringify({
