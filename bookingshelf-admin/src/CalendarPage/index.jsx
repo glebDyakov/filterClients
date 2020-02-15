@@ -20,7 +20,7 @@ import TabScrollContent from './components/TabScrollContent';
 import StaffChoice from './components/StaffChoice';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
-import {checkIsOnAnotherVisit} from "../_helpers/available-time";
+import {checkIsOnAnotherReservedTime, checkIsOnAnotherVisit} from "../_helpers/available-time";
 
 
 function getWeekDays(weekStart) {
@@ -827,7 +827,7 @@ class Index extends PureComponent {
     };
 
     getHours(idStaff, timeClicked){
-        const { appointments } = this.props;
+        const { appointments, reservedTimeFromProps } = this.props;
         const { workingStaff }=this.state
 
         let hoursArray=[];
@@ -846,6 +846,7 @@ class Index extends PureComponent {
 
 
         const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
+        const staffWithReservedTime = reservedTimeFromProps && reservedTimeFromProps.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
         numbers.map((item)=> {
             let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
@@ -855,8 +856,9 @@ class Index extends PureComponent {
                     if (parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) === parseInt(moment(moment(day, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))) {
 
                         const isOnAnotherVisit = checkIsOnAnotherVisit(newStaff, currentTime)
+                        const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime)
 
-                        return (!isOnAnotherVisit && currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
+                        return (!isOnAnotherVisit && !isOnAnotherReservedTime && currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
                             && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
                     }
                 })
@@ -875,6 +877,7 @@ function mapStateToProps(store) {
         authentication,
         calendar: {
             appointments,
+            reservedTime,
             refreshAvailableTimes,
             scrollableAppointmentId,
             status,
@@ -887,6 +890,7 @@ function mapStateToProps(store) {
     } = store;
     return {
         appointments,
+        reservedTimeFromProps: reservedTime,
         staff,
         clients: client,
         services,

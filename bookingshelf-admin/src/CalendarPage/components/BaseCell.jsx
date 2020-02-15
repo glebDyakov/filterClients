@@ -11,7 +11,7 @@ const cellTypes = {
     CELL_EMPTY: 'CELL_EMPTY',
 }
 
-class BaseCell extends React.Component {
+class BaseCell extends React.PureComponent {
     constructor(props) {
         super(props);
         const currentTime = this.getTime(props.day, props.time);
@@ -35,15 +35,18 @@ class BaseCell extends React.Component {
     }
 
     shouldComponentUpdate(newProps, newState) {
-        const cellTypeChanged = this.state.cellType !== newState.cellType;
-        let cellDataChanged;
-        if ((this.state.cellType === cellTypes.CELL_APPOINTMENT && newState.cellType === cellTypes.CELL_APPOINTMENT)
-            || (this.state.cellType === cellTypes.CELL_RESERVED_TIME && newState.cellType === cellTypes.CELL_RESERVED_TIME)
-        ) {
-            cellDataChanged = JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
+        let shouldUpdate = this.state.currentTime === newProps.currentTime
+        if (!shouldUpdate) {
+            shouldUpdate = this.state.cellType !== newState.cellType;
+        }
+        if (!shouldUpdate) {
+            const cellTypesForCheking = [cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME];
+            if (cellTypesForCheking.some(cellType => (this.state.cellType === cellType && newState.cellType === cellType))) {
+                shouldUpdate = JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
+            }
         }
 
-        return cellTypeChanged || cellDataChanged
+        return shouldUpdate;
     }
 
     componentWillReceiveProps(newProps, nextContext) {
@@ -99,7 +102,7 @@ class BaseCell extends React.Component {
         );
         const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey].find(checkingItem => {
             const checkingTime = checkingItem[checkingTimeKey]
-            return currentTime <= parseInt(checkingTime) && this.getTime(day, numbers[numberKey + 1])> parseInt(checkingTime)
+            return currentTime <= parseInt(checkingTime) && this.getTime(day, numbers[numberKey + 1]) > parseInt(checkingTime)
         });
 
         if (exists(cell)) {
@@ -240,13 +243,15 @@ function mapStateToProps(state) {
     const {
         calendar: {
             appointments,
-            reservedTime
+            reservedTime,
+            currentTime
         },
     } = state;
 
     return {
         appointments,
-        reservedTime
+        reservedTime,
+        currentTime
     }
 }
 
