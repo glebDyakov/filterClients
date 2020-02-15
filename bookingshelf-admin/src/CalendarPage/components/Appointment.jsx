@@ -78,7 +78,17 @@ const Appointment = (props) => {
         <div
             onMouseEnter={() => {
                 if (appointment.clientId) {
-                    dispatch(appointmentActions.toggleBlickedClientId(appointment.clientId))
+                    let clientAppointmentsCount = 0
+                    appointments.forEach(item => {
+                        item.appointments && item.appointments.forEach(currentAppointment => {
+                            if (currentAppointment.clientId === appointment.clientId) {
+                                clientAppointmentsCount++;
+                            }
+                        })
+                    })
+                    if (clientAppointmentsCount > 1) {
+                        dispatch(appointmentActions.toggleBlickedClientId(appointment.clientId))
+                    }
                 }
             }}
             onMouseLeave={() => {
