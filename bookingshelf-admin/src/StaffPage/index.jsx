@@ -176,6 +176,7 @@ class Index extends Component {
     }
 
     render() {
+        const { staff: staffFromProps } = this.props;
         const { staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
@@ -335,52 +336,69 @@ class Index extends Component {
                                                 )
                                             }
                                         </div>
-                                        { staff.timetable && staff.timetable.map((time, keyTime)=>
-                                             <div className="tab-content-list" key={keyTime}>
-                                                    <div>
-                                                        <img className="rounded-circle"
-                                                             src={time.imageBase64?"data:image/png;base64,"+time.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                        <p>{time.firstName} <br/>{time.lastName ? time.lastName : ''}</p>
+                                        { staff.timetable && staff.timetable.map((time, keyTime)=> {
+                                                const activeStaff = staffFromProps && staffFromProps.staff && staffFromProps.staff.find(item =>
+                                                    ((item.staffId) === (time.staffId)));
+                                                return (
+                                                    <div className="tab-content-list" key={keyTime}>
+                                                        <div>
+                                                            <img className="rounded-circle"
+                                                                 src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                 alt=""/>
+                                                            <p>{time.firstName} <br/>{time.lastName ? time.lastName : ''}</p>
+                                                        </div>
+                                                        {
+                                                            time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey) => {
+                                                                    let times = time.timetables.filter((timetableItem) =>
+                                                                        (moment(timetableItem.startTimeMillis, "x") >= moment(day, "x").startOf('day').format('x') &&
+                                                                            moment(timetableItem.endTimeMillis, "x") <= moment(day, "x").endOf('day').format('x'))
+                                                                        || (timetableItem.repeat === 'WEEKLY' && moment(timetableItem.startTimeMillis, "x").format('dd') === moment(day, "x").format('dd'))
+                                                                    );
+
+                                                                    times.sort((a, b) => {
+                                                                        if (a.startTimeMillis > b.startTimeMillis) {
+                                                                            return 1;
+                                                                        }
+                                                                        if (a.startTimeMillis < b.startTimeMillis) {
+                                                                            return -1;
+                                                                        }
+                                                                        return 0;
+                                                                    });
+
+
+                                                                    return (times.length === 0 ?
+                                                                            <div className="add-work-time-hover"
+                                                                                 key={dayKey} onClick={() => this.setState({
+                                                                                ...this.state,
+                                                                                currentStaff: time,
+                                                                                date: moment(day, "x").format('DD/MM/YYYY'),
+                                                                                editWorkingHours: false,
+                                                                                editing_object: null,
+                                                                                addWorkTime: true
+                                                                            })
+                                                                            }/> :
+                                                                            <div className="dates-container" key={dayKey}
+                                                                                 onClick={() => this.setState({
+                                                                                     ...this.state,
+                                                                                     currentStaff: time,
+                                                                                     date: moment(day, "x").format('DD/MM/YYYY'),
+                                                                                     editWorkingHours: true,
+                                                                                     editing_object: times,
+                                                                                     addWorkTime: true
+                                                                                 })}>
+                                                                                <a>
+                                                                                    {times.map(time =>
+                                                                                        <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>
+                                                                                    )}
+                                                                                </a>
+                                                                            </div>
+                                                                    )
+                                                                }
+                                                            )
+                                                        }
                                                     </div>
-                                                 {
-                                                     time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey)=> {
-                                                             let times = time.timetables.filter((timetableItem) =>
-                                                                 (moment(timetableItem.startTimeMillis, "x") >= moment(day, "x").startOf('day').format('x') &&
-                                                                 moment(timetableItem.endTimeMillis, "x") <= moment(day, "x").endOf('day').format('x'))
-                                                                 || (timetableItem.repeat==='WEEKLY' && moment(timetableItem.startTimeMillis, "x").format('dd')===moment(day, "x").format('dd'))
-                                                             );
-
-                                                         times.sort((a,b) => {
-                                                             if (a.startTimeMillis > b.startTimeMillis) {
-                                                                 return 1;
-                                                             }
-                                                             if (a.startTimeMillis < b.startTimeMillis) {
-                                                                 return -1;
-                                                             }
-                                                             return 0;
-                                                         });
-
-
-
-                                                             return (times.length===0 ?
-                                                                 <div className="add-work-time-hover"
-                                                                  key={dayKey} onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                     date:moment(day, "x").format('DD/MM/YYYY'),
-                                                                     editWorkingHours:false, editing_object:null, addWorkTime: true})
-                                                                 }/> :
-                                                             <div className="dates-container" key={dayKey}  onClick={()=>this.setState({...this.state, currentStaff:time,
-                                                                 date:moment(day, "x").format('DD/MM/YYYY'),
-                                                                 editWorkingHours:true, editing_object:times, addWorkTime: true})} >
-                                                                 <a>
-                                                                     {times.map(time=>
-                                                                        <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>
-                                                                     )}
-                                                                 </a>
-                                                             </div>
-                                                        )}
-                                                     )
-                                                 }
-                                                </div>
+                                                )
+                                            }
 
 
 

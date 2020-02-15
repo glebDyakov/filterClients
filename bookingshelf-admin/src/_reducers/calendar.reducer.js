@@ -70,17 +70,25 @@ export function calendar(state = initialState, action) {
                 isClientNotComeLoading: true
             }
         case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_SUCCESS:
-            let staffIndex = state.appointments.findIndex(item => item.staff.staffId === action.appointment[0].staffId)
-            if (staffIndex !== -1) {
-                let appointmentIndex = state.appointments[staffIndex].appointments.findIndex(item => item.appointmentId === action.appointment[0].appointmentId)
-                state.appointments[staffIndex].appointments[appointmentIndex] = {
-                    ...state.appointments[staffIndex].appointments[appointmentIndex],
-                    clientNotCome: action.appointment[0].clientNotCome
-                }
-            }
+            newAppointment = state.appointments
+            newItem = action.appointment[0]
+
+            updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointment.appointmentId === newItem.appointmentId) {
+                        appointment.clientNotCome = newItem.clientNotCome
+                    }
+                    item.push(appointment)
+                });
+
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
+
             return {
                 ...state,
-                appointments: JSON.parse(JSON.stringify(state.appointments)),
+                appointments: updatedAppointments,
                 isClientNotComeLoading: false
             }
         case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX_FAILURE:
