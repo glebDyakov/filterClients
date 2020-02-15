@@ -1,22 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
-import { appointmentActions } from "../../_actions";
 import DragVertController from "./DragVertController";
 import BaseCell from "./BaseCell";
 
-class TabScroll extends Component{
+class TabScroll extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
             numbers: []
         }
-        this.startMovingVisit = this.startMovingVisit.bind(this);
-        this.moveVisit = this.moveVisit.bind(this);
         this.getHours24 = this.getHours24.bind(this);
     }
     componentDidMount() {
@@ -70,15 +67,6 @@ class TabScroll extends Component{
         this.setState({ numbers });
     }
 
-    startMovingVisit(movingVisit, totalDuration, prevVisitStaffId, draggingAppointmentId) {
-        this.props.dispatch(appointmentActions.togglePayload({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId }));
-        this.props.dispatch(appointmentActions.toggleStartMovingVisit(true))
-    }
-
-    moveVisit(movingVisitStaffId, time) {
-        this.props.dispatch(appointmentActions.togglePayload({ movingVisitMillis : time, movingVisitStaffId }));
-    }
-
     render(){
         const { availableTimetable, services, selectedDays, closedDates ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading } = this.props;
         const { numbers } = this.state;
@@ -93,14 +81,12 @@ class TabScroll extends Component{
                             <TabScrollLeftMenu time={time}/>
                             {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => (
                                     <BaseCell
-                                        moveVisit={this.moveVisit}
                                         numberKey={key}
                                         staffKey={staffKey}
                                         changeTime={changeTime}
                                         handleUpdateClient={handleUpdateClient}
                                         numbers={numbers}
                                         services={services}
-                                        startMovingVisit={this.startMovingVisit}
                                         workingStaffElement={workingStaffElement}
                                         closedDates={closedDates}
                                         updateAppointmentForDeleting={updateAppointmentForDeleting}

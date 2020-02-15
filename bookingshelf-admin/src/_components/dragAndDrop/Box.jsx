@@ -23,6 +23,7 @@ const Box = ({
         begin: startMoving,
         end: (item, monitor) => {
             const dropResult = monitor.getDropResult()
+            let payload = {}
             if (item && dropResult) {
                 dispatch(appointmentActions.makeMovingVisitQuery({
                     appointments,
@@ -34,8 +35,10 @@ const Box = ({
                     movingVisitMillis: dropResult.movingVisitMillis,
                     prevVisitStaffId
                 }))
+            } else {
+                payload = { isStartMovingVisit: false, movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null }
             }
-            dispatch(appointmentActions.togglePayload({ draggingAppointmentId: false }))
+            dispatch(appointmentActions.togglePayload({ draggingAppointmentId: false, ...payload }))
 
 
         },
