@@ -14,70 +14,67 @@ const cellTypes = {
 class BaseCell extends React.Component {
     constructor(props) {
         super(props);
-        const commonCheckers = this.getCommonCheckers(props);
+        const currentTime = this.getTime(props.day, props.time);
         let filledCell = {}
 
-        const cellAppointment = this.isCellFilled({ ...commonCheckers, staffArray: props.appointments, cellType: cellTypes.CELL_APPOINTMENT });
+        const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
             filledCell = cellAppointment;
         }
 
-        const cellReservedTime = this.isCellFilled({ ...commonCheckers, staffArray: props.reservedTime, cellType: cellTypes.CELL_RESERVED_TIME });
+        const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
         if (cellReservedTime) {
             filledCell =  cellReservedTime;
         }
 
         this.state = {
             cellType: cellTypes.CELL_EMPTY,
-            currentTime: commonCheckers.currentTime,
+            currentTime: currentTime,
             ...filledCell
         };
     }
 
     shouldComponentUpdate(newProps, newState) {
-        return this.state.cellType !== newState.cellType
+        const cellTypeChanged = this.state.cellType !== newState.cellType;
+        let cellDataChanged;
+        if ((this.state.cellType === cellTypes.CELL_APPOINTMENT && newState.cellType === cellTypes.CELL_APPOINTMENT)
+            || (this.state.cellType === cellTypes.CELL_RESERVED_TIME && newState.cellType === cellTypes.CELL_RESERVED_TIME)
+        ) {
+            cellDataChanged = JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
+        }
+
+        return cellTypeChanged || cellDataChanged
     }
 
     componentWillReceiveProps(newProps, nextContext) {
         if (newProps.appointments && JSON.stringify(this.props.appointments) !== JSON.stringify(newProps.appointments)) {
-            const commonCheckers = this.getCommonCheckers(newProps);
-            const cellAppointment = this.isCellFilled({ ...commonCheckers, staffArray: newProps.appointments, cellType: cellTypes.CELL_APPOINTMENT });
-            if (cellAppointment) {
-                this.setState( { ...cellAppointment });
-            } else if (this.state.cellType === cellTypes.CELL_APPOINTMENT) {
-                this.setState( { cellType: cellTypes.CELL_EMPTY, cell: null, staffArray: null })
-            }
+            this.updateCell({ ...newProps, cellType: cellTypes.CELL_APPOINTMENT })
         }
 
         if (newProps.reservedTime && JSON.stringify(this.props.reservedTime) !== JSON.stringify(newProps.reservedTime)) {
-            const commonCheckers = this.getCommonCheckers(newProps);
-            const cellReservedTime = this.isCellFilled({ ...commonCheckers, staffArray: newProps.reservedTime, cellType: cellTypes.CELL_RESERVED_TIME });
-            if (cellReservedTime) {
-                this.setState( { ...cellReservedTime });
-            } else if (this.state.cellType === cellTypes.CELL_RESERVED_TIME) {
-                this.setState( { cellType: cellTypes.CELL_EMPTY, cell: null, staffArray: null })
-            }
+            this.updateCell({ ...newProps, cellType: cellTypes.CELL_RESERVED_TIME })
         }
     }
 
-    getCommonCheckers({ numbers, numberKey, workingStaffElement, day, time }) {
-        let currentTime = this.getTime(day, time)
-
-        return {
-            currentTime,
-            workingStaffElement: workingStaffElement,
-            numbers: numbers,
-            numberKey: numberKey,
-            day: day,
+    updateCell(props) {
+        const cell = this.getCellFilled(props);
+        if (cell) {
+            this.setState( { ...cell });
+        } else if (this.state.cellType === props.cellType) {
+            this.setState( { cellType: cellTypes.CELL_EMPTY, cell: null, staffArray: null })
         }
     }
 
-    isCellFilled({ staffArray, cellType, currentTime, workingStaffElement, numbers, numberKey, day }) {
+    getCellFilled(props) {
+        const { cellType, workingStaffElement, numbers, numberKey, day, time } = props
+        const currentTime = this.getTime(day, time)
+
         let uniqConditions = {}
 
         switch (cellType) {
             case cellTypes.CELL_APPOINTMENT:
                 uniqConditions = {
+                    staffArrayKey: 'appointments',
                     checkingArrayKey: 'appointments',
                     checkingTimeKey: 'appointmentTimeMillis',
                     exists: (appointment) => appointment && !appointment.coAppointmentId,
@@ -85,6 +82,7 @@ class BaseCell extends React.Component {
                 break;
             case cellTypes.CELL_RESERVED_TIME:
                 uniqConditions = {
+                    staffArrayKey: 'reservedTime',
                     checkingArrayKey: 'reservedTimes',
                     checkingTimeKey: 'startTimeMillis',
                     exists: (reservedTime) => reservedTime,
@@ -93,7 +91,8 @@ class BaseCell extends React.Component {
             default:
                 return null
         }
-        const { checkingArrayKey, checkingTimeKey, exists } = uniqConditions;
+        const { staffArrayKey, checkingArrayKey, checkingTimeKey, exists } = uniqConditions;
+        const staffArray = props[staffArrayKey];
 
         const checkingArray = staffArray && staffArray.find(appointmentStaff =>
             appointmentStaff[checkingArrayKey] && (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
