@@ -63,18 +63,6 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 209
             };
-        case calendarConstants.START_MOVING_VISIT_SUCCESS:
-
-            return {
-                ...state,
-                isStartMovingVisit: action.isStartMovingVisit
-            };
-        case calendarConstants.MOVE_VISIT_SUCCESS:
-
-            return {
-                ...state,
-                isMoveVisit: action.isMoveVisit
-            };
 
         case calendarConstants.UPDATE_APPOINTMENT_CHECKBOX:
             return {
@@ -125,16 +113,15 @@ export function calendar(state = initialState, action) {
 
             let reservedTimes = state.reservedTime;
             if (reservedTimes) {
-                let boolReservedTimes = reservedTimes.filter((app, key) =>
-                    app.staff.staffId === action.staffId && app['reservedTimes'].push(action.reservedTime)
+                let boolReservedTimes = reservedTimes.filter((app) =>
+                    app.staff.staffId === action.staffId && app.reservedTimes.push(action.reservedTime)
                 );
 
-                if (boolReservedTimes.length !== 0) {
-                } else {
-                    reservedTimes.push({'staff': {'staffId': action.staffId}, 'reservedTimes': [action.reservedTime]})
+                if (boolReservedTimes.length === 0) {
+                    reservedTimes.push({ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] })
                 }
             } else {
-                reservedTimes = [{'staff': {'staffId': action.staffId}, 'reservedTimes': [action.reservedTime]}];
+                reservedTimes = [{ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] }];
             }
 
             return {
@@ -235,17 +222,21 @@ export function calendar(state = initialState, action) {
         case calendarConstants.DELETE_RESERVED_TIME_SUCCESS:
             const reservedDeleted = state.reservedTime;
 
-            reservedDeleted.map((app, key1) =>
-                app['reservedTimes'].map((reservedTime, key2) => {
-                    if (reservedTime.reservedTimeId === action.reservedTimeId) {
-                        reservedDeleted[key1]['reservedTimes'].splice(key2, 1)
+            const reservedTime = []
+            reservedDeleted.map(app => {
+
+                const item = []
+                app.reservedTimes.forEach((localReservedTime) => {
+                    if (localReservedTime.reservedTimeId !== action.reservedTimeId) {
+                        item.push(localReservedTime)
                     }
                 })
-            );
+                reservedTime.push({ staff: app.staff, reservedTimes: item } )
+            });
 
             return {
                 ...state,
-                reservedTime: reservedDeleted
+                reservedTime
             };
         case calendarConstants.ADD_APPOINTMENT_FAILURE:
         case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
@@ -259,7 +250,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.APPROVE_APPOINTMENT_FAILURE:
             return {...state};
         case calendarConstants.DELETE_APPOINTMENT_FAILURE:
-            return {...state, isLoading: false};
+            return {...state, isLoading: false, currentTime: null};
         case calendarConstants.GET_APPOINTMENT_REQUEST:
             return {
                 ...state,
@@ -316,35 +307,141 @@ export function calendar(state = initialState, action) {
                 appointments: appointmentsToPush,
                 appointmentsCount: appointmentsCountToPush
             };
+        case calendarConstants.MAKE_VISUAL_DELETING:
+            newAppointmentsCount = state.appointmentsCount
+            newAppointmentsCanceled = state.appointmentsCanceled
+            newAppointment = state.appointments;
+            newItem = action.appointment
+
+            let updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointment.appointmentId !== newItem.appointmentId) {
+                        item.push(appointment)
+                    }
+                });
+
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            let updatedAppointmentsCount = []
+            newAppointmentsCount.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointment.appointmentId !== newItem.appointmentId) {
+                        item.push(appointment)
+                    }
+                });
+
+                updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            newAppointmentsCanceled.push(newItem);
+
+            return {
+                ...state,
+                appointments: updatedAppointments,
+                appointmentsCount: updatedAppointmentsCount,
+                appointmentsCanceled: newAppointmentsCanceled,
+                deletingVisualVisit: action.appointment
+            };
+        case calendarConstants.CANCEL_VISUAL_DELETING:
+            newAppointment = state.appointments;
+            newAppointmentsCount = state.appointmentsCount
+            newAppointmentsCanceled = state.appointmentsCanceled
+            newItem = state.deletingVisualVisit;
+            isIncluded = false;
+
+            appointmentsToPush = []
+            appointmentsCountToPush = []
+
+            updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    item.push(appointment)
+                });
+
+                if (localAppointment.staff.staffId === newItem.staffId) {
+                    item.push(newItem)
+                }
+
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            updatedAppointmentsCount = []
+            newAppointmentsCount.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    item.push(appointment)
+                });
+
+                if (localAppointment.staff.staffId === newItem.staffId) {
+                    item.push(newItem)
+                }
+
+                updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+
+            let updatedAppointmentsCanceled = []
+            newAppointment.forEach(localAppointment => {
+                if (localAppointment.appointmentId !== newItem.appointmentId) {
+                    updatedAppointmentsCount.push(localAppointment)
+                }
+            })
+
+            return {
+                ...state,
+                currentTime: newItem.appointmentTimeMillis,
+                appointments: updatedAppointments,
+                appointmentsCount: updatedAppointmentsCount,
+                appointmentsCanceled: updatedAppointmentsCanceled,
+                deletingVisualVisit: null
+            };
+        case calendarConstants.CLEAR_VISUAL_DELETING:
+            return {
+                ...state,
+                deletingVisualVisit: null
+            }
         case calendarConstants.DELETE_APPOINTMENT_NEW_SOCKET:
             newAppointmentsCount = state.appointmentsCount
             let newAppointmentsCanceled = state.appointmentsCanceled
             newAppointment = state.appointments;
             let appointmentsToDelete = action.payload.payload;
 
-            appointmentsToDelete.forEach((newItem, i) => {
-                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                let activeAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId)
-                let indexAppointmentsCount = activeAppointmentsCount ? activeAppointmentsCount.appointments.findIndex(item=>item.appointmentId === newItem.appointmentId) : -1
-                if (indexElem !== -1) {
-                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                }
-                if (indexAppointmentsCount !== -1) {
-                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                }
+            updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointmentsToDelete.every(newItem => appointment.appointmentId !== newItem.appointmentId)) {
+                        item.push(appointment)
+                    }
+                });
 
-                if (i === 0 ){
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
 
-                    newAppointmentsCanceled.push(newItem);
-                }
-            })
-            const finalAppointments = JSON.parse(JSON.stringify(newAppointment))
-            const finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
-            const finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
+            updatedAppointmentsCount = []
+            newAppointmentsCount.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointmentsToDelete.every(newItem => appointment.appointmentId !== newItem.appointmentId)) {
+                        item.push(appointment)
+                    }
+                });
+
+                updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            newAppointmentsCanceled.push(appointmentsToDelete[0]);
+
+            let finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
-                appointments: finalAppointments,
-                appointmentsCount: finalAppointmentsCount,
+                appointments: updatedAppointments,
+                appointmentsCount: updatedAppointmentsCount,
                 appointmentsCanceled: finalAppointmentsCanceled
             };
 
@@ -354,7 +451,7 @@ export function calendar(state = initialState, action) {
                 prevVisualVisit: null
             }
         case calendarConstants.MAKE_VISUAL_MOVE:
-        case calendarConstants.RETURN_VISUAL_MOVE:
+        case calendarConstants.CANCEL_VISUAL_MOVE:
             newAppointment = state.appointments;
             newAppointmentsCount = state.appointmentsCount
             let { prevVisualVisit } = state
@@ -370,34 +467,60 @@ export function calendar(state = initialState, action) {
 
                 newItem.appointmentTimeMillis = action.movingVisitMillis;
                 newItem.staffId = action.movingVisitStaffId;
+                newItem.coStaffs = action.coStaffs;
             }
 
-            if (newAppointment && newAppointment.length) {
-                newAppointment.forEach(item => {
+            updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointment.appointmentId !== newItem.appointmentId) {
+                        item.push(appointment)
+                    }
+                });
 
-                    let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
-                    if (appointmentIndex > -1) {
-                        item.appointments.splice(appointmentIndex, 1)
-                    }
-                    if (item.staff.staffId === newItem.staffId) {
-                        item.appointments.push(newItem)
-                    }
-                })
-            }
-            newAppointmentsCount.forEach(item => {
-                let appointmentIndex = item.appointments && item.appointments.findIndex(item => newItem.appointmentId === item.appointmentId)
-                if (appointmentIndex > -1) {
-                    item.appointments.splice(appointmentIndex, 1)
+                if (localAppointment.staff.staffId === newItem.staffId) {
+                    item.push(newItem)
                 }
-                if (item.staff.staffId === newItem.staffId) {
-                    item.appointments.push(newItem)
+
+                if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === localAppointment.staff.staffId)) {
+                    item.push( {
+                        ...newItem,
+                        coappointment: true
+                    })
                 }
-            })
+
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            updatedAppointmentsCount = []
+            updatedAppointmentsCount.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointment.appointmentId !== newItem.appointmentId) {
+                        item.push(appointment)
+                    }
+                });
+
+                if (localAppointment.staff.staffId === newItem.staffId) {
+                    item.push(newItem)
+                }
+
+                if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === localAppointment.staff.staffId)) {
+                    item.push( {
+                        ...newItem,
+                        coappointment: true
+                    })
+                }
+
+                updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item })
+            });
 
             return {
                 ...state,
-                appointments: JSON.parse(JSON.stringify(newAppointment)),
-                appointmentsCount: JSON.parse(JSON.stringify(newAppointmentsCount)),
+                currentTime: newItem.appointmentTimeMillis,
+                appointments: updatedAppointments,
+                appointmentsCount: updatedAppointmentsCount,
                 prevVisualVisit: state.prevVisualVisit ? null : action.movingVisit
             }
         case calendarConstants.MOVE_APPOINTMENT_NEW_SOCKET:

@@ -1,22 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { calendarActions } from "../../_actions";
 
 class DeleteAppointment extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            id: props.id
-        };
-
         this.cancel = this.cancel.bind(this);
-    }
-
-    componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, id:newProps.id})
-        }
     }
 
     render() {
@@ -26,7 +17,7 @@ class DeleteAppointment extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Отменить запись</h4>
-                            <button type="button" className="close" data-dismiss="modal" ></button>
+                            <button type="button" className="close" data-dismiss="modal" />
                             {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
                         </div>
                         <div className="form-group mr-3 ml-3">
@@ -40,24 +31,14 @@ class DeleteAppointment extends React.Component {
     }
 
     cancel (){
-        const {cancel}=this.props;
-        const {id}=this.state;
-
-        return cancel(id);
+        const { appointmentForDeleting, dispatch } = this.props;
+        dispatch(calendarActions.deleteAppointment(appointmentForDeleting));
     }
 }
 
-function mapStateToProps(state) {
-    const { alert } = state;
-    return {
-        alert
-    };
-}
 
 DeleteAppointment.propTypes ={
-    cancel: PropTypes.func,
-    id: PropTypes.number
+    appointmentForDeleting: PropTypes.object
 };
 
-const connectedApp = connect(mapStateToProps)(DeleteAppointment);
-export { connectedApp as DeleteAppointment };
+export default connect()(DeleteAppointment);

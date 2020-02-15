@@ -355,9 +355,8 @@
                 padding: 0 0 !important;
                 min-width: 161px;
 
-                &:hover{
-                    z-index: 10;
-
+                &.hovered{
+                    z-index: 9999 !important;
                 }
 
                 .img-container {
@@ -419,7 +418,7 @@
                         background-color: rgba(191, 210, 237, 0.11);
 
                         &.expired {
-                            background: rgba(210,210,210,0.1);
+                            background: rgba(210,210,210,0.4);
                             cursor: not-allowed;
 
                             &::after {
@@ -451,7 +450,7 @@
                 }
 
                 &.expired {
-                    background: rgba(210, 210, 210, 0.2);
+                    background: rgba(210, 210, 210, 0.4);
                     cursor: not-allowed;
                 }
                 &.start-moving {
@@ -576,6 +575,21 @@
                         margin-right: 0px;
                         z-index: 9000;
                         position: relative;
+                    }
+                    .present-time-line {
+                        width: 101%;
+                        height: 2px;
+                        position: absolute;
+                        background: red;
+                        z-index: 9001;
+                        bottom: 0;
+                    }
+                    &.isOnAnotherVisit {
+                        cursor: default !important;
+
+                        &:hover {
+                            background: transparent !important;
+                        }
                     }
                     .notes{
                         &.selected{
@@ -1800,6 +1814,9 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     box-sizing: border-box;
+    &-client {
+        border: 1px solid red;
+    }
 }
 
 

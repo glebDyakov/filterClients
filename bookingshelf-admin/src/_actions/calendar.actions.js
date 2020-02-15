@@ -26,8 +26,6 @@ export const calendarActions = {
     moveAppointmentsNewSocket,
     updateAppointment,
     updateAppointmentCheckbox,
-    toggleMoveVisit,
-    toggleStartMovingVisit,
     updateAppointmentFinish,
     deleteAppointmentsNewSocket
 };
@@ -47,8 +45,8 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
                     // dispatch(getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')))
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(failure(error));
+                    // dispatch(alertActions.error(error));
                 }
             );
     };
@@ -58,11 +56,11 @@ function addAppointment(params, serviceId, staffId, clientId, time1, time2, coSt
     function failure(error) { return { type: calendarConstants.ADD_APPOINTMENT_FAILURE, error } }
 }
 
-function makeVisualMove(movingVisit, movingVisitStaffId, movingVisitMillis) {
+function makeVisualMove(movingVisit, movingVisitStaffId, movingVisitMillis, coStaffs) {
     return dispatch => {
         dispatch(success());
 
-        function success() { return { type: calendarConstants.MAKE_VISUAL_MOVE, movingVisit, movingVisitStaffId, movingVisitMillis } }
+        function success() { return { type: calendarConstants.MAKE_VISUAL_MOVE, movingVisit, movingVisitStaffId, movingVisitMillis, coStaffs } }
     }
 }
 
@@ -109,8 +107,7 @@ function addReservedTime(params, staffId, time1, time2) {
                 reservedTime => {
                     dispatch(success(reservedTime, staffId));
                     setTimeout(()=>dispatch(successTime(1)), 100)
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
-
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -186,7 +183,7 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLo
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }
-    function returnVisualVisit() { return { type: calendarConstants.RETURN_VISUAL_MOVE } }
+    function returnVisualVisit() { return { type: calendarConstants.CANCEL_VISUAL_MOVE } }
     function clearVisualVisit() { return { type: calendarConstants.CLEAR_VISUAL_MOVE } }
 }
 
@@ -223,7 +220,7 @@ function editAppointmentTime(params, time1, time2) {
             .then(
                 appointment => {
                     dispatch(success(appointment));
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -319,35 +316,40 @@ function getReservedTime(dateFrom, dateTo) {
     function failure() { return { type: calendarConstants.GET_RESERVED_TIME_FAILURE} }
 }
 
-function deleteAppointment(id, withoutNotify) {
+function deleteAppointment(appointment, withoutNotify) {
     return dispatch => {
+        dispatch(makeVisualDeleting())
         // dispatch(request())
-        calendarService.deleteAppointment(id, withoutNotify)
+        calendarService.deleteAppointment(appointment.appointmentId, withoutNotify)
             .then(
-                client => {
-                     dispatch(success(id))
-                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
-                    // dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
-                    // dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
+                () => {
+                    dispatch(success())
+                    dispatch(clearVisualDeleting())
                 },
-
-                error => dispatch(failure(id, error.toString()))
+                error => {
+                    dispatch(cancelVisualDeleting())
+                    dispatch(failure(error))
+                }
             );
     };
 
     function request() { return { type: calendarConstants.DELETE_APPOINTMENT } }
-    function success(id) { return { type: calendarConstants.DELETE_APPOINTMENT_SUCCESS, id } }
+    function success() { return { type: calendarConstants.DELETE_APPOINTMENT_SUCCESS } }
     function failure(error) { return { type: calendarConstants.DELETE_APPOINTMENT_FAILURE, error } }
+    function makeVisualDeleting(error) { return { type: calendarConstants.MAKE_VISUAL_DELETING, appointment } }
+    function cancelVisualDeleting(error) { return { type: calendarConstants.CANCEL_VISUAL_DELETING, appointment } }
+    function clearVisualDeleting(error) { return { type: calendarConstants.CLEAR_VISUAL_DELETING, appointment } }
 }
 
-function deleteReservedTime(id, reservedTimeId, time1, time2) {
+function deleteReservedTime(id, reservedTimeId) {
     return dispatch => {
         calendarService.deleteReservedTime(id, reservedTimeId)
             .then(
-                client => {dispatch(success(reservedTimeId))
-                    dispatch(staffActions.getTimetableStaffs(time1, time2));
+                () => {
+                    dispatch(success(reservedTimeId))
+                    // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
-                error => dispatch(failure(id, error.toString()))
+                error => dispatch(failure(id, error))
             );
     };
 
@@ -399,18 +401,4 @@ function approveMovedAppointment(params) {
                 },
             )
     };
-}
-
-function toggleMoveVisit(isMoveVisit) {
-    return dispatch => {
-        dispatch(success(isMoveVisit))
-    }
-    function success(isMoveVisit) { return { type: calendarConstants.MOVE_VISIT_SUCCESS, isMoveVisit } }
-}
-
-function toggleStartMovingVisit(isStartMovingVisit) {
-    return dispatch => {
-        dispatch(success(isStartMovingVisit))
-    }
-    function success(isStartMovingVisit) { return { type: calendarConstants.START_MOVING_VISIT_SUCCESS, isStartMovingVisit } }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { calendarActions } from "../../_actions";
 
 class DeleteReserve extends React.Component {
     constructor(props) {
@@ -45,18 +46,9 @@ class DeleteReserve extends React.Component {
     }
 
     cancel (){
-        const {cancel}=this.props;
-        const {staffId, id}=this.state;
-
-        return cancel(staffId, id);
+        const { dispatch, staffId, id }=this.props;
+        dispatch(calendarActions.deleteReservedTime(staffId, id));
     }
-}
-
-function mapStateToProps(state) {
-    const { alert } = state;
-    return {
-        alert
-    };
 }
 
 DeleteReserve.propTypes ={
@@ -65,5 +57,5 @@ DeleteReserve.propTypes ={
     staffId: PropTypes.number
 };
 
-const connectedApp = connect(mapStateToProps)(DeleteReserve);
+const connectedApp = connect()(DeleteReserve);
 export { connectedApp as DeleteReserve };

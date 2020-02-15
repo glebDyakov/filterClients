@@ -51,7 +51,7 @@ export function staff(state = initialState, action) {
                 ...state,
                 status: 200,
                 adding: false,
-                timetable: timetableCurrent.sort((a, b) => a.sortOrder - b.sortOrder)
+                timetable: (timetableCurrent || []).sort((a, b) => a.sortOrder - b.sortOrder)
             };
         case staffConstants.UPDATE_WORKING_HOURS_SUCCESS:
             let timetableCurrent2=state.timetable;
@@ -79,7 +79,7 @@ export function staff(state = initialState, action) {
                 ...state,
                 status: 200,
                 adding: false,
-                timetable: timetableCurrent2.sort((a, b) => a.sortOrder - b.sortOrder)
+                timetable: (timetableCurrent2 || []).sort((a, b) => a.sortOrder - b.sortOrder)
             };
         case staffConstants.UPDATE_SUCCESS:
             // const staff=state.staff;
@@ -204,7 +204,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {
                 ...state,
-                timetable: action.timetable.sort((a, b) => a.sortOrder - b.sortOrder),
+                timetable: (action.timetable || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoadingTimetable: false,
                 isLoadingStaffInit: false
             };
@@ -226,7 +226,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 isLoadingAvailableTime:false,
-                availableTimetable: JSON.parse(JSON.stringify(action.payload.availableTimetable.sort((a, b) => a.sortOrder - b.sortOrder))),
+                timetable: JSON.parse(JSON.stringify((action.payload.timetable || []).sort((a, b) => a.sortOrder - b.sortOrder))),
                 isAvailableTimesChecked:  action.payload.isAvailableTimesChecked
             };
             case staffConstants.GET_AVAILABLE_TIMETABLE_FAILURE:
@@ -237,7 +237,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_AVAILABLE_TIMETABLE_BY_STAFF_SUCCESS:
             return {
                 ...state,
-                availableTimetableByStaff: action.availableTimetableByStaff
+                timetableByStaff: action.timetableByStaff
             };
         case staffConstants.GET_ACCESS_LIST_NAMES_SUCCESS:
             return {
@@ -320,11 +320,6 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 staff: action.staff
-            };
-            case staffConstants.REFRESH_CHECKER_AVAILABLE_TIME:
-            return {
-                ...state,
-                isAvailableTimesChecked: false
             };
         default:
             return state

@@ -20,6 +20,7 @@ import TabScrollContent from './components/TabScrollContent';
 import StaffChoice from './components/StaffChoice';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
+import {checkIsOnAnotherReservedTime, checkIsOnAnotherVisit} from "../_helpers/available-time";
 
 
 function getWeekDays(weekStart) {
@@ -91,7 +92,6 @@ class Index extends PureComponent {
         this.state = {
             timetableFrom: 0,
             timetableTo: 0,
-            staffAll: props.staff,
             workingStaff: [],
             clickedTime: 0,
             minutes:[],
@@ -138,9 +138,7 @@ class Index extends PureComponent {
         this.editAppointment = this.editAppointment.bind(this);
         this.changeReservedTime = this.changeReservedTime.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.deleteAppointment = this.deleteAppointment.bind(this);
-        this.deleteReserve = this.deleteReserve.bind(this);
-        this.approveAppointmentSetter = this.approveAppointmentSetter.bind(this);
+        this.updateAppointmentForDeleting = this.updateAppointmentForDeleting.bind(this);
         this.updateCalendar = this.updateCalendar.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onCloseClient = this.onCloseClient.bind(this);
@@ -170,12 +168,6 @@ class Index extends PureComponent {
     queryInitData() {
         const {selectedDays, type, selectedDayMoment} = this.state;
 
-        this.props.dispatch(staffActions.get());
-        //this.props.dispatch(clientActions.getClientWithInfo());
-        this.props.dispatch(servicesActions.getServices());
-        this.props.dispatch(staffActions.getClosedDates());
-
-
         let startTime, endTime;
         if (type === 'day') {
             startTime = selectedDayMoment.startOf('day').format('x');
@@ -184,20 +176,30 @@ class Index extends PureComponent {
             startTime = moment(selectedDays[0]).startOf('day').format('x');
             endTime = moment(selectedDays[6]).endOf('day').format('x');
         }
-        this.refreshTable(startTime, endTime);
         this.getTimetable(null, selectedDayMoment, true);
+        this.refreshTable(startTime, endTime);
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
             this.props.dispatch(calendarActions.setScrollableAppointment(search.split('=')[1]))
         }
 
+        if (this.props.staff.timetable) {
+            this.initAvailableTime(this.props.staff, this.props.authentication)
+        }
+
+
+        this.props.dispatch(staffActions.get());
+        this.props.dispatch(servicesActions.getServices());
+        this.props.dispatch(staffActions.getClosedDates());
+
+
         this.scrollToMyRef();
 
 
         setTimeout(() => {
             const {selectedDay} = this.state;
-            if (!this.props.calendar.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+            if (!this.props.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
                 this.navigateToRedLine();
             }
         }, 500);
@@ -209,75 +211,11 @@ class Index extends PureComponent {
         const newMonth = moment(newDay).format('MM YYYY')
         if ((prevMonth !== newMonth) || forceSet) {
             this.props.dispatch(staffActions.getTimetable(
-                moment(newDay).startOf('month').format('x'),
-                moment(newDay).endOf('month').format('x')
+                moment(newDay).subtract(1, 'week').startOf('month').format('x'),
+                moment(newDay).add(1, 'week').endOf('month').format('x')
             ));
         }
     }
-
-    // handleSocketDispatch(payload){
-    //     // this.setState({appointmentSocketMessage: payload, appointmentSocketMessageFlag: true});
-    //     // this.props.dispatch(companyActions.getAppointmentsCountMarkerIncrement());
-    //     if (payload.wsMessageType === 'APPOINTMENT_CREATED'){
-    //         this.props.dispatch(calendarActions.getAppointmentsNewSocket(payload));
-    //     }
-    //
-    //     // this.updateCalendar();
-    //     // $('.appointment-socket-modal').modal('show')
-    //
-    //     const {selectedDayMoment, selectedDays, type}=this.state;
-    //     let startTime, endTime;
-    //
-    //     if(type==='day'){
-    //         startTime = selectedDayMoment.startOf('day').format('x');
-    //         endTime = selectedDayMoment.endOf('day').format('x')
-    //     } else {
-    //         startTime = moment(selectedDays[0]).startOf('day').format('x');
-    //         endTime = moment(selectedDays[6]).endOf('day').format('x');
-    //     }
-    //     this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime));
-    //     // this.props.dispatch(calendarActions.getAppointments(startTime, endTime));
-    //
-    // }
-    //
-    // openSocketAgain(id){
-    //     socket = createSocket(id);
-    //     console.log("Сокет. Создан");
-    //     socket.onopen = function() {
-    //         console.log("Сокет2. cоединение установлено");
-    //
-    //         socket.send('ping');
-    //
-    //     };
-    //
-    //
-    //     socket.onclose = function(event) {
-    //         if (event.wasClean) {
-    //             console.log('Сокет2.cоединение закрыто');
-    //         } else {
-    //             console.log('Сокет2.соединения как-то закрыто');
-    //         }
-    //         this.openSocketAgain(id);
-    //     };
-    //
-    //     socket.onmessage = function(event) {
-    //         if (event.data[0]==='{'){
-    //             const finalData = JSON.parse(event.data);
-    //             if ((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-    //                 this.handleSocketDispatch(finalData.payload);
-    //             }
-    //         }
-    //         console.log(`Сокет.пришли данные: ${event.data}`);
-    //
-    //     };
-    //     socket.onmessage = socket.onmessage.bind(this);
-    //     socket.onclose = socket.onclose.bind(this);
-    //
-    //     socket.onerror = function(event) {
-    //         console.error("Сокет2.ошибка", event);
-    //     };
-    //
-    // }
 
     navigateToRedLine() {
         setTimeout(() => {
@@ -291,7 +229,7 @@ class Index extends PureComponent {
     }
 
     refreshTable(startTime, endTime, updateReservedTime = true, isLoading = true) {
-        this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, false, isLoading));
+        // this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, false, isLoading));
         this.props.dispatch(calendarActions.getAppointments(startTime, endTime, isLoading));
 
         if (updateReservedTime) {
@@ -316,7 +254,7 @@ class Index extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { calendar } = this.props;
+        const { scrollableAppointmentId } = this.props;
         const { scroll, appointmentMarkerActionCalled }=this.state;
 
         if(scroll){
@@ -343,11 +281,15 @@ class Index extends PureComponent {
 
 
         if (prevState.selectedDay !== this.state.selectedDay) {
+
             this.setState({ scrollableRedLine: true })
         }
 
-        if (!appointmentMarkerActionCalled && calendar && calendar.scrollableAppointmentId) {
-            const className = calendar.scrollableAppointmentId;
+        if (prevState.selectedDay !== this.state.selectedDay || prevState.type !== this.state.type || prevState.typeSelected !== this.state.typeSelected) {
+            this.setWorkingStaff()
+        }
+        if (!appointmentMarkerActionCalled && scrollableAppointmentId) {
+            const className = scrollableAppointmentId;
             this.animateActiveAppointment(className);
         }
 
@@ -393,41 +335,18 @@ class Index extends PureComponent {
 
         if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
-                reserved: newProps.calendar.status && newProps.calendar.status===209 ? false : this.state.reserved,
+                reserved: newProps.status && newProps.status===209 ? false : this.state.reserved,
                 newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal
             });
         }
-        // if (JSON.stringify(this.props.calendar.status) !== JSON.stringify(newProps.calendar.status)) {
-        //     this.setState({ appointmentModal: newProps.calendar.status && newProps.calendar.status === 209 ? false : this.state.appointmentModal });
-        // }
 
-        const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
-        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) && !isLoading) {
-            if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
-                this.setState({
-                    staffAll: newProps.staff,
-                    opacity: false,
-                    typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
-                    selectedStaff: this.state.staffFromUrl!==null && newProps.staff && newProps.staff.availableTimetable
-                        ?JSON.stringify(newProps.staff.availableTimetable.filter((staff)=>staff.staffId===(!access(2) ? newProps.authentication.user.profile.staffId : this.state.staffFromUrl))[0])
-                        :[],
-                    workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
-                        ? {availableTimetable: newProps.staff.availableTimetable && newProps.staff.availableTimetable.filter((staff)=>staff.staffId===
-                                (!access(2) ? newProps.authentication.user.profile.staffId : (this.state.staffFromUrl===null
-                                ? JSON.parse(this.state.selectedStaff).staffId
-                                :this.state.staffFromUrl)))
-                            }
-                        : newProps.staff
-                });
-            }
-
-            if (this.state.typeSelected===1 && this.state.type!=='week' && newProps.staff.availableTimetable){
-                this.setWorkingStaff(newProps.staff.availableTimetable, 1, newProps.staff)
-            }
+        // const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
+        if (JSON.stringify(this.props.staff.timetable) !== JSON.stringify(newProps.staff.timetable)) {
+            this.initAvailableTime(newProps.staff, newProps.authentication)
         }
 
 
-        if (newProps.calendar.isAppointmentUpdated) {
+        if (newProps.isAppointmentUpdated) {
             let startTime, endTime;
             if (this.state.type === 'day') {
                 startTime = this.state.selectedDayMoment.startOf('day').format('x');
@@ -440,71 +359,54 @@ class Index extends PureComponent {
             this.refreshTable(startTime, endTime, false, false);
         }
 
-        if (newProps.calendar.refreshAvailableTimes && (this.props.calendar.refreshAvailableTimes !== newProps.calendar.refreshAvailableTimes)) {
+        if (newProps.refreshAvailableTimes && (this.props.refreshAvailableTimes !== newProps.refreshAvailableTimes)) {
             this.updateCalendar(false, false)
             this.props.dispatch(calendarActions.toggleRefreshAvailableTimes(false))
         }
+    }
 
+    initAvailableTime(staff, authentication) {
+        const { timetable } = staff;
+        if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
+            this.setState({
+                opacity: false,
+                typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
+                selectedStaff: this.state.staffFromUrl!==null && timetable
+                    ?JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2) ? (authentication.user && authentication.user.profile.staffId) : this.state.staffFromUrl))[0])
+                    :[],
+                workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
+                    ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
+                            (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
+                                ? JSON.parse(this.state.selectedStaff).staffId
+                                :this.state.staffFromUrl)))
+                    }
+                    : staff
+            });
+        }
 
-        // if (newProps.authentication.user.profile.staffId && this.state.flagStaffId){
-        //     this.setState({flagStaffId: false});
-        //     var socket = createSocket(this.props.authentication.user.profile.staffId );
-        //     console.log("Сокет. Создан");
-        //     socket.onopen = function() {
-        //         console.log("Сокет. Соединение установлено");
-        //
-        //         socket.send('ping');
-        //
-        //     };
-        //
-        //
-        //     socket.onclose = function(event) {
-        //         if (event.wasClean) {
-        //             console.log('Сокет. cоединение закрыто');
-        //         } else {
-        //             console.log('Сокет. соединения как-то закрыто');
-        //         }
-        //         this.openSocketAgain(this.props.authentication.user.profile.staffId);
-        //     };
-        //
-        //     socket.onmessage = function(event) {
-        //         if (event.data[0]==='{'){
-        //             const finalData = JSON.parse(event.data);
-        //             if((finalData.wsMessageType === "APPOINTMENT_CREATED") || (finalData.wsMessageType === "APPOINTMENT_DELETED")){
-        //                 this.handleSocketDispatch(finalData);
-        //             }
-        //         }
-        //         console.log(`Сокет.пришли данные: ${event.data}`);
-        //
-        //     };
-        //     socket.onmessage = socket.onmessage.bind(this);
-        //     socket.onclose = socket.onclose.bind(this);
-        //
-        //     socket.onerror = function(event) {
-        //         console.error("Сокет. ошибка", event);
-        //     };
-        // }
-
+        if ((this.state.typeSelected===1 || this.state.typeSelected === 2) && this.state.type!=='week' && timetable){
+            this.setWorkingStaff(timetable, this.state.typeSelected, timetable)
+        }
     }
 
 
     render() {
-        const { calendar, services, clients, staff, appointments, authentication } = this.props;
-        const { approvedId, staffAll, workingStaff, reserved, appointmentEdited,
+        const { services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime } = this.props;
+        const { appointmentForDeleting, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, availableTimetableMessage,
+            reserveId, reserveStId, selectedDayMoment, timetableMessage,
         } = this.state;
         const calendarModalsProps = {
-            appointmentModal, appointmentEdited, clients, staff, edit_appointment, staffAll, services, staffClicked, adding: calendar && calendar.adding, status: calendar && calendar.status,
+            appointmentModal, appointmentEdited, clients, staff, edit_appointment, services, staffClicked, adding, status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
-            reservedTime, reservedTimeEdited, reservedStuffId, approvedId, reserveId, reserveStId,
+            reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
-            deleteReserve: this.deleteReserve, deleteAppointment: this.deleteAppointment, availableTimetable: workingStaff.availableTimetable,
+            deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };
-        const isLoading = this.props.calendar.isLoading || this.props.staff.isLoading || this.props.calendar.isLoadingAppointments || this.props.calendar.isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
+        const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
             <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
@@ -512,74 +414,62 @@ class Index extends PureComponent {
                     this.setState({scrollableAppointmentAction: false})
                 }
             }}>
+                <div className="row content calendar-container">
+                    <StaffChoice
+                        typeSelected={typeSelected}
+                        selectedStaff={selectedStaff}
+                        timetable={staff.timetable}
+                        staff={staff && staff.staff}
+                        setWorkingStaff={this.setWorkingStaff}
+                    />
 
-                            <div className="row content calendar-container">
-                                <StaffChoice
-                                    typeSelected={typeSelected}
-                                    selectedStaff={selectedStaff}
-                                    availableTimetable={staffAll.availableTimetable}
-                                    staff={staff && staff.staff}
-                                    setWorkingStaff={this.setWorkingStaff}
-                                />
-
-                                <div className="calendar col-6">
-                                    <DatePicker
-                                        closedDates={staffAll.closedDates}
-                                        type={type}
-                                        selectedDay={selectedDay}
-                                        selectedDays={selectedDays}
-                                        showPrevWeek={this.showPrevWeek}
-                                        showNextWeek={this.showNextWeek}
-                                        handleDayChange={this.handleDayChange}
-                                        handleDayClick={this.handleDayClick}
-                                        handleWeekClick={this.handleWeekClick}
-                                    />
-                                </div>
-                                <CalendarSwitch
-                                type={type}
-                                selectType={this.selectType}
-                                />
-                            </div>
-                            <div className="days-container">
-                                <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                                     <div className="calendar-list">
-                                        <TabScrollHeader
-                                            selectedDays={selectedDays}
-                                            availableTimetable={workingStaff.availableTimetable }
-                                            availableTimetableMessage={availableTimetableMessage}
-                                            timetable={workingStaff.timetable }
-                                            closedDates={staffAll.closedDates}
-                                            staff={staff && staff.staff}
-                                        />
-                                        <TabScrollContent
-                                            timetable={staff.timetable}
-                                            isClientNotComeLoading={calendar.isClientNotComeLoading}
-                                            services={services}
-                                            authentication={authentication}
-                                            availableTimetable={workingStaff.availableTimetable}
-                                            selectedDays={selectedDays}
-                                            closedDates={staffAll.closedDates}
-                                            clients={clients && clients.client}
-                                            appointments={appointments}
-                                            reservedTime={calendar && calendar.reservedTime}
-                                            handleUpdateClient={this.handleUpdateClient}
-                                            approveAppointmentSetter={this.approveAppointmentSetter}
-                                            updateReservedId={this.updateReservedId}
-                                            changeTime={this.changeTime}
-                                            isLoading={isLoading}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                    <div className="calendar col-6">
+                        <DatePicker
+                            closedDates={staff.closedDates}
+                            type={type}
+                            selectedDay={selectedDay}
+                            selectedDays={selectedDays}
+                            showPrevWeek={this.showPrevWeek}
+                            showNextWeek={this.showNextWeek}
+                            handleDayChange={this.handleDayChange}
+                            handleDayClick={this.handleDayClick}
+                            handleWeekClick={this.handleWeekClick}
+                        />
+                    </div>
+                    <CalendarSwitch
+                        type={type}
+                        selectType={this.selectType}
+                    />
+                </div>
+                <div className="days-container">
+                    <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
+                         <div className="calendar-list">
+                            <TabScrollHeader
+                                selectedDays={selectedDays}
+                                timetable={workingStaff.timetable }
+                                timetableMessage={timetableMessage}
+                                closedDates={staff.closedDates}
+                                staff={staff && staff.staff}
+                            />
+                            <TabScrollContent
+                                timetable={staff.timetable}
+                                services={services}
+                                availableTimetable={workingStaff.timetable}
+                                selectedDays={selectedDays}
+                                closedDates={staff.closedDates}
+                                clients={clients && clients.client}
+                                handleUpdateClient={this.handleUpdateClient}
+                                updateAppointmentForDeleting={this.updateAppointmentForDeleting}
+                                updateReservedId={this.updateReservedId}
+                                changeTime={this.changeTime}
+                                isLoading={isLoading}
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 <CalendarModals {...calendarModalsProps} />
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                {/*{appointmentSocketMessageFlag &&*/}
-                {/*<AppointmentFromSocket*/}
-                {/*    appointmentSocketMessageFlag={appointmentSocketMessageFlag}*/}
-                {/*    appointmentSocketMessage={appointmentSocketMessage}*/}
-                {/*    closeAppointmentFromSocket={this.closeAppointmentFromSocket}*/}
-                {/*/>}*/}
             </div>
         );
     }
@@ -656,41 +546,8 @@ class Index extends PureComponent {
         dispatch(calendarActions.editAppointmentTime(JSON.stringify(appointment), startTime, endTime));
     }
 
-    approveAppointmentSetter(approvedId){
-        this.props.dispatch(companyActions.getNewAppointments());
-        this.setState({ approvedId })
-    }
-
-    deleteAppointment(id){
-        const { dispatch } = this.props;
-
-        const { selectedDays, type, selectedDayMoment } = this.state;
-
-        if(type==='day'){
-            //dispatch(calendarActions.deleteAppointment(id, selectedDayMoment.startOf('day').format('x'), selectedDayMoment.endOf('day').format('x')));
-            dispatch(calendarActions.deleteAppointment(id));
-        } else {
-            //dispatch(calendarActions.deleteAppointment(id, moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
-            dispatch(calendarActions.deleteAppointment(id));
-        }
-
-        //dispatch(companyActions.getNewAppointments());
-
-    }
-
-    deleteReserve(stuffId, id){
-        const {dispatch} = this.props;
-        const {selectedDays, type, selectedDayMoment} = this.state;
-        let startTime, endTime;
-
-        if(type==='day') {
-            startTime = selectedDayMoment.startOf('day').format('x');
-            endTime = selectedDayMoment.endOf('day').format('x')
-        } else {
-            startTime =moment(selectedDays[0]).startOf('day').format('x')
-            endTime = moment(selectedDays[6]).endOf('day').format('x');
-        }
-        dispatch(calendarActions.deleteReservedTime(stuffId, id, startTime, endTime));
+    updateAppointmentForDeleting(appointmentForDeleting){
+        this.setState({ appointmentForDeleting })
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment){
@@ -780,7 +637,7 @@ class Index extends PureComponent {
             selectedDays: weeks,
             timetableFrom: statTime,
             timetableTo: endTime,
-            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]},
+            workingStaff: {...workingStaff, timetable:[workingStaff.timetable[0]]},
             type: 'week',
             scroll: true
         });
@@ -800,7 +657,7 @@ class Index extends PureComponent {
             selectedDays: weeks,
             timetableFrom: startTime,
             timetableTo: endTime,
-            workingStaff: {...workingStaff, availableTimetable:[workingStaff.availableTimetable[0]]},
+            workingStaff: {...workingStaff, timetable:[workingStaff.timetable[0]]},
             type: 'week',
             scroll: true
         });
@@ -835,12 +692,13 @@ class Index extends PureComponent {
     }
 
     selectType (type){
-        const {workingStaff, staffAll, typeSelected, selectedStaff, selectedDayMoment, selectedDays} = this.state;
+        const { staff } = this.props;
+        const { typeSelected, selectedStaff, selectedDayMoment, selectedDays } = this.state;
         let url, startTime, endTime;
 
         let types=typeSelected
         let newState = {
-            workingStaff: {...workingStaff, availableTimetable:[]},
+            // workingStaff: {...workingStaff, timetable:[]},
             scroll: true,
         }
 
@@ -874,8 +732,8 @@ class Index extends PureComponent {
             newState = {
                 ...newState,
                 typeSelected: types,
-                staffFromUrl: JSON.parse((selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId,
-                selectedStaff: (selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0]),
+                staffFromUrl: JSON.parse((selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staff.timetable[0])).staffId,
+                selectedStaff: (selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(staff.timetable[0]),
                 type: 'week',
                 selectedDays: weeks
             };
@@ -885,21 +743,17 @@ class Index extends PureComponent {
 
             this.getTimetable(selectedDayMoment, weeks[0])
 
-            url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(staffAll.availableTimetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
+            url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(staff.timetable[0])).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}/${moment(weeks[6]).format('DD-MM-YYYY')}`;
         }
         this.setState(newState);
         this.refreshTable(startTime, endTime);
         history.pushState(null, '', `/calendar/${url}`);
     }
 
-    setWorkingStaff(staffEl = null, typeSelected = null, staffAll = null) {
+    setWorkingStaff(staffEl = null, typeSelected = this.state.typeSelected, timetable = this.props.staff.timetable) {
         const {workingStaff, selectedDay, type, selectedStaff, selectedDays} = this.state;
         let newState = {};
         let url;
-
-        if(staffAll===null){
-            staffAll=this.state.staffAll
-        }
 
         if(type==='week' && typeSelected !== 3){
             const startOfDay = moment().startOf('day').format('x');
@@ -907,8 +761,8 @@ class Index extends PureComponent {
             this.refreshTable(startOfDay, endOfDay);
 
             newState = {
-                workingStaff: {...workingStaff, availableTimetable:[]},
-                availableTimetableMessage: '',
+                // workingStaff: {...workingStaff, timetable:[]},
+                timetableMessage: '',
                 type: 'day',
                 typeSelected: typeSelected,
                 selectedDay: moment().utc().startOf('day').toDate(),
@@ -919,38 +773,38 @@ class Index extends PureComponent {
             url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
         } else {
             if (typeSelected === 1) {
-                let staffWorking = staffEl.filter((item) => item.availableDays.length && item.availableDays.some((time) => {
-                        const checkingDay = parseInt(moment(time.dayMillis, 'x').format('DD'));
-                        const currentDay = parseInt(moment(selectedDay).format('DD'));
+                let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
+                        const checkingDay = parseInt(moment(time.startTimeMillis, 'x').format('DD MM YYYY'));
+                        const currentDay = parseInt(moment(selectedDay).format('DD MM YYYY'));
                         return checkingDay === currentDay;
                     })
                 );
 
                 newState = {
-                    staffAll: staffAll,
                     workingStaff: {
                         ...workingStaff,
-                        availableTimetable: staffWorking.length ? staffWorking : null
+                        timetable: staffWorking.length ? staffWorking : null
                     },
-                    availableTimetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
+                    timetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
                 };
                 url = `/calendar/workingstaff/0/${moment(selectedDay).format('DD-MM-YYYY')}`;
             } else if (typeSelected === 2) {
                 newState = {
-                    workingStaff: {...workingStaff, availableTimetable: staffEl},
-                    availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
+                    workingStaff: {...workingStaff, timetable: timetable },
+                    timetableMessage: timetable.length ? '' : 'Нет работающих сотрудников',
                     typeSelected: typeSelected,
                     type: 'day'
                 }
                 url = `/calendar/allstaff/0/${moment(selectedDay).format('DD-MM-YYYY')}`;
             } else {
-                let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
+                staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
+                let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
 
                 newState = {
-                    workingStaff: {...workingStaff, availableTimetable: staffEl},
-                    availableTimetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
+                    workingStaff: {...workingStaff, timetable: staffEl},
+                    timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
                     selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
                     typeSelected: typeSelected,
                     staffFromUrl: JSON.parse(staff).staffId
@@ -973,8 +827,8 @@ class Index extends PureComponent {
     };
 
     getHours(idStaff, timeClicked){
-        const {workingStaff}=this.state
-
+        const { appointments, reservedTimeFromProps } = this.props;
+        const { workingStaff }=this.state
 
         let hoursArray=[];
         let day=timeClicked;
@@ -990,31 +844,65 @@ class Index extends PureComponent {
         );
 
 
-        numbers.map((item)=>
-            workingStaff.availableTimetable.map((timing)=>
-                timing.staffId===idStaff.staffId && timing.availableDays.map((availableDay)=>
-                parseInt(moment(moment(availableDay.dayMillis, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))===parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) &&
 
-                availableDay.availableTimes && availableDay.availableTimes.map((time)=> {
+        const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
+        const staffWithReservedTime = reservedTimeFromProps && reservedTimeFromProps.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
+        numbers.map((item)=> {
+            let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
-                    let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+            return workingStaff.timetable.map((timing) =>
+                timing.staffId === idStaff.staffId && timing.timetables.map((time) => {
 
-                    return (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime>=moment().subtract(1, 'week').format('x'))
-                        && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
+                    if (parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) === parseInt(moment(moment(day, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))) {
+
+                        const isOnAnotherVisit = checkIsOnAnotherVisit(newStaff, currentTime)
+                        const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime)
+
+                        return (!isOnAnotherVisit && !isOnAnotherReservedTime && currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
+                            && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
+                    }
                 })
-                )
             )
-        );
+        });
 
         return hoursArray;
     }
 }
 
 function mapStateToProps(store) {
-    const {staff, client, calendar, services, authentication} = store;
-
+    const {
+        staff,
+        client,
+        services,
+        authentication,
+        calendar: {
+            appointments,
+            reservedTime,
+            refreshAvailableTimes,
+            scrollableAppointmentId,
+            status,
+            adding,
+            isAppointmentUpdated,
+            isLoading: isLoadingCalendar,
+            isLoadingAppointments,
+            isLoadingReservedTime
+        }
+    } = store;
     return {
-        staff, clients: client, calendar, services, authentication, appointments: calendar.appointments
+        appointments,
+        reservedTimeFromProps: reservedTime,
+        staff,
+        clients: client,
+        services,
+        authentication,
+        refreshAvailableTimes,
+        scrollableAppointmentId,
+        status,
+        adding,
+        isAppointmentUpdated,
+        isLoadingCalendar,
+        isLoadingAppointments,
+        isLoadingReservedTime
     };
 }
 

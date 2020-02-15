@@ -4,8 +4,7 @@ import {NewClient} from "./NewClient";
 import {ClientDetails} from "./ClientDetails";
 import {AddAppointment} from "../../_components/modals/AddAppointment";
 import {ReservedTime} from "./ReservedTime";
-import {ApproveAppointment} from "./ApproveAppointment";
-import {DeleteAppointment} from "./DeleteAppointment";
+import DeleteAppointment from "./DeleteAppointment";
 import {DeleteReserve} from "./DeleteReserve";
 import {MoveVisit} from "./MoveVisit";
 import {StartMovingVisit} from "./StartMovingVisit";
@@ -39,8 +38,6 @@ class CalendarModals extends Component {
         this.handleEditClient = this.handleEditClient.bind(this);
         this.newAppointment = this.newAppointment.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
-        this.deleteReserve = this.deleteReserve.bind(this);
-        this.deleteAppointment = this.deleteAppointment.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
     }
     updateClient(client){
@@ -51,10 +48,6 @@ class CalendarModals extends Component {
     };
     onCloseClient(){
         this.setState({newClientModal: false});
-    }
-
-    deleteAppointment(id){
-        this.props.deleteAppointment(id);
     }
 
     handleEditClient(client, isModalShouldPassClient) {
@@ -75,25 +68,20 @@ class CalendarModals extends Component {
     onCloseAppointment(){
         this.setState({ appointmentModal:false });
         this.props.onClose();
-        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     onCloseReserved(){
         this.setState({ reserved :false });
         this.props.onClose();
-        this.props.dispatch(staffActions.refreshCheckerAvailableTime());
     }
 
     newReservedTime(staffId, reservedTime) {
         this.props.newReservedTime(staffId, reservedTime);
     }
     changeReservedTime(minutesReservedtime, staffId, newTime=null){
-        this.checkAvaibleTime();
+        // this.checkAvaibleTime();
         this.setState({ reserved: true })
         return this.props.changeReservedTime(minutesReservedtime, staffId, newTime);
-    }
-    deleteReserve(stuffId, id){
-        this.props.deleteReserve(stuffId, id);
     }
 
     checkUser(checkedUser) {
@@ -114,24 +102,24 @@ class CalendarModals extends Component {
     }
 
     render(){
-        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, staffAll, adding, status,
+        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, approvedId, reserveId, reserveStId,
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
-                    {type==='day' && workingStaff.availableTimetable && workingStaff.availableTimetable[0] &&
+                    {type==='day' && workingStaff.timetable && workingStaff.timetable[0] &&
                     <a className="add" href="#"/>}
                     <div className="hide buttons-container">
                         <div className="p-4">
                             <button type="button"
-                                    onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], numbers)}
+                                    onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers)}
                                     className="button">Новая запись
                             </button>
                             <button type="button"
-                                    onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.availableTimetable[0], null)}
+                                    onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null)}
                                     className="button">Зарезервированное время
                             </button>
                         </div>
@@ -153,7 +141,7 @@ class CalendarModals extends Component {
                         clients={clients}
                         checkedUser={checkedUser}
                         staff={staff && staff.staff}
-                        staffs={staffAll}
+                        staffs={staff}
                         randNum={Math.random()}
                         addAppointment={this.newAppointment}
                         editAppointment={this.editAppointment}
@@ -179,8 +167,8 @@ class CalendarModals extends Component {
                     />
                     {(reservedFromProps || reserved) &&
                     <ReservedTime
-                        availableTimetable={workingStaff.availableTimetable}
-                        staffs={staffAll}
+                        timetable={workingStaff.timetable}
+                        staffs={staff}
                         minutesReservedtime={minutesReservedtime}
                         getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
                         staff={staff && staff.staff}
@@ -194,18 +182,12 @@ class CalendarModals extends Component {
                     }
                     <MoveVisit />
                     <StartMovingVisit />
-                    <ApproveAppointment
-                        id={approvedId}
-                        approve={this.approveAppointment}
-                    />
                     <DeleteAppointment
-                        id={approvedId}
-                        cancel={this.deleteAppointment}
+                        appointmentForDeleting={appointmentForDeleting}
                     />
                     <DeleteReserve
                         id={reserveId}
                         staffId={reserveStId}
-                        cancel={this.deleteReserve}
                     />
 
         </React.Fragment>

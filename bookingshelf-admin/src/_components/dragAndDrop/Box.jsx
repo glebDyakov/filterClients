@@ -1,25 +1,70 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import { useDrag } from 'react-dnd'
 import ItemTypes from './ItemTypes'
+import {appointmentActions} from "../../_actions";
 
-const Box = ({ content, wrapperClassName, startMoving, moveVisit }) => {
+const Box = ({
+    appointmentId,
+    draggingAppointmentId,
+    dispatch,
+    appointments,
+    reservedTime,
+    timetable,
+    movingVisit,
+    movingVisitDuration,
+    prevVisitStaffId,
+    content,
+    wrapperClassName,
+    startMoving
+}) => {
     const [{ isDragging }, drag] = useDrag({
         item: { name, type: ItemTypes.APPOINTMENT },
         begin: startMoving,
         end: (item, monitor) => {
             const dropResult = monitor.getDropResult()
+            let payload = {}
             if (item && dropResult) {
-                moveVisit(dropResult.movingVisitStaffId, dropResult.movingVisitMillis)
+                dispatch(appointmentActions.makeMovingVisitQuery({
+                    appointments,
+                    reservedTimes: reservedTime,
+                    timetable,
+                    movingVisit,
+                    movingVisitDuration,
+                    movingVisitStaffId: dropResult.movingVisitStaffId,
+                    movingVisitMillis: dropResult.movingVisitMillis,
+                    prevVisitStaffId
+                }))
+            } else {
+                payload = { isStartMovingVisit: false, movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null }
             }
+            dispatch(appointmentActions.togglePayload({ draggingAppointmentId: false, ...payload }))
+
+
         },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }
         ),
     })
-    const visibility = isDragging ? 'hidden' : 'visible'
+    const visibility = (isDragging || (!draggingAppointmentId && (movingVisit && movingVisit.appointmentId) === appointmentId)) ? 'hidden' : 'visible'
     return (
         <div ref={drag} className={wrapperClassName} style={{ visibility }}>{content}</div>
     )
 }
-export default Box
+
+function mapStateToProps(state) {
+    const {
+        calendar: { reservedTime },
+        staff: { timetable },
+        appointment: {
+            movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
+        }
+    } = state;
+
+    return {
+        reservedTime, timetable, movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
+    }
+}
+
+export default connect(mapStateToProps)(Box);

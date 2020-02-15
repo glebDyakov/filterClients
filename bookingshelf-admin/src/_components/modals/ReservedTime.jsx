@@ -18,8 +18,8 @@ class ReservedTime extends React.Component {
         this.state = {
             staffs: props.staffs,
             time: {},
-            staffCurrent: props.reservedStuffId!=null && props.staffs && props.staffs.availableTimetable ?
-                props.staffs.availableTimetable.filter(staff=>staff.staffId===props.reservedStuffId)[0]:
+            staffCurrent: props.reservedStuffId!=null && props.staffs && props.staffs.timetable ?
+                props.staffs.timetable.filter(staff=>staff.staffId===props.reservedStuffId)[0]:
                 {id: -1},
             minutesReservedtime: props.minutesReservedtime,
             edit_reservedTime: false,
@@ -62,8 +62,8 @@ class ReservedTime extends React.Component {
                 calendar: newProps.calendar,
                 timeNow:newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
                 reservedStuffId: newProps.reservedStuffId,
-                staffCurrent: newProps.reservedStuffId!=null && newProps.staffs && newProps.staffs.availableTimetable ?
-                    newProps.staffs.availableTimetable.filter(staff=>staff.staffId===newProps.reservedStuffId)[0]:
+                staffCurrent: newProps.reservedStuffId!=null && newProps.staffs && newProps.staffs.timetable ?
+                    newProps.staffs.timetable.filter(staff=>staff.staffId===newProps.reservedStuffId)[0]:
                     {id: -1}
             });
         }
@@ -206,7 +206,7 @@ class ReservedTime extends React.Component {
     }
 
     render() {
-        const { availableTimetable, staff: staffFromProps } = this.props;
+        const { timetable, staff: staffFromProps } = this.props;
         const { edit_reservedTime, staffCurrent, reservedTime , timeNow, calendar}=this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId) || {};
@@ -222,7 +222,7 @@ class ReservedTime extends React.Component {
                                 <p>
                                     <span className="date_m">Зарезервированое время</span>
                                 </p>
-                                <button type="button" className="close" onClick={this.closeModal}></button>
+                                <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}/>*/}
 
                             </div>
@@ -244,7 +244,7 @@ class ReservedTime extends React.Component {
                                     </a>
                                     <ul className="dropdown-menu" role="menu">
                                         {
-                                            availableTimetable && availableTimetable.map((staff, key)=>{
+                                            timetable && timetable.map((staff, key)=>{
                                                 const activeStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staff.staffId);
                                                 return(<li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={key}>
                                                     <a>
