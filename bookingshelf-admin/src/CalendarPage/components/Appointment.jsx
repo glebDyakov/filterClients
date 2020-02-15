@@ -87,7 +87,7 @@ const Appointment = (props) => {
                     let clientAppointmentsCount = 0
                     appointments.forEach(item => {
                         item.appointments && item.appointments.forEach(currentAppointment => {
-                            if (currentAppointment.clientId === appointment.clientId && !currentAppointment.coappointment) {
+                            if (currentAppointment.clientId === appointment.clientId && !currentAppointment.coappointment && !currentAppointment.coAppointmentId) {
                                 clientAppointmentsCount++;
                             }
                         })
