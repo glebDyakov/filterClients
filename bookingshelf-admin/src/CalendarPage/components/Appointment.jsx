@@ -11,6 +11,7 @@ import Box from "../../_components/dragAndDrop/Box";
 const Appointment = (props) => {
     const {
         dispatch,
+        movingVisit,
         numberKey,
         staffKey,
         appointment,
@@ -24,8 +25,6 @@ const Appointment = (props) => {
         workingStaffElement,
         handleUpdateClient,
         services,
-        startMovingVisit,
-        draggingAppointmentId,
         changeTime,
         updateAppointmentForDeleting
     } = props;
@@ -76,6 +75,10 @@ const Appointment = (props) => {
     const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2)
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+
+    const startMovingVisit = (movingVisit, totalDuration, prevVisitStaffId, draggingAppointmentId) => {
+        dispatch(appointmentActions.togglePayload({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId, isStartMovingVisit: true }));
+    }
 
     const content = (
         <div
@@ -283,7 +286,7 @@ const Appointment = (props) => {
 
     const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
 
-    const dragVert = currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
+    const dragVert = ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
         <p onMouseDown={(e) => {
             e.preventDefault();
             dispatch(appointmentActions.togglePayload({
@@ -323,7 +326,7 @@ const Appointment = (props) => {
             content={content}
             wrapperClassName={wrapperClassName}
         />
-        {appointment.appointmentId !== draggingAppointmentId && dragVert}
+        {appointment.appointmentId && dragVert}
     </div>
 }
 
@@ -332,6 +335,7 @@ function mapStateToProps(state) {
         calendar: { isClientNotComeLoading },
         appointment: {
             blickClientId,
+            movingVisit,
             selectedNote,
             isStartMovingVisit,
             draggingAppointmentId
@@ -341,6 +345,7 @@ function mapStateToProps(state) {
     return {
         isClientNotComeLoading,
         blickClientId,
+        movingVisit,
         selectedNote,
         isStartMovingVisit,
         draggingAppointmentId

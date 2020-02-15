@@ -3,13 +3,13 @@ const _checkTimeForCalendarElement = (startTime, endTime, interval) => {
 }
 
 export const checkIsOnAnotherReservedTime = (staffWithReservedTimes, interval) => {
-    return staffWithReservedTimes && staffWithReservedTimes.reservedTimes.some(element =>
+    return staffWithReservedTimes && staffWithReservedTimes.reservedTimes && staffWithReservedTimes.reservedTimes.some(element =>
         _checkTimeForCalendarElement(element.startTimeMillis, element.endTimeMillis, interval)
     )
 };
 
 export const checkIsOnAnotherVisit = (staffWithAppointments, interval) => {
-    return staffWithAppointments && staffWithAppointments.appointments.some(element =>
+    return staffWithAppointments && staffWithAppointments.appointments && staffWithAppointments.appointments.some(element =>
         _checkTimeForCalendarElement(element.appointmentTimeMillis, (element.appointmentTimeMillis + (element.duration * 1000)), interval)
 
     )
@@ -28,7 +28,7 @@ export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointm
         const isOnAnotherVisit = checkIsOnAnotherVisit(staffWithAppointments, interval);
         const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTimes, interval);
 
-        return staffWithTimetable.timetables.some(time => {
+        return staffWithTimetable && staffWithTimetable.timetables && staffWithTimetable.timetables.some(time => {
             const isIncludedInTimetable = _checkTimeForCalendarElement(time.startTimeMillis, time.endTimeMillis, interval);
 
             return (isIncludedInTimetable && !isOnAnotherVisit && !isOnAnotherReservedTime) || (extraCheck && extraCheck(interval))

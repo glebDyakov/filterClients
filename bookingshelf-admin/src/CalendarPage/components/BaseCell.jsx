@@ -3,19 +3,22 @@ import { connect } from 'react-redux';
 import moment from "moment";
 import Appointment from "./Appointment";
 import {checkIsOnAnotherVisit} from "../../_helpers/available-time";
-import Dustbin from "../../_components/dragAndDrop/Dustbin";
+import {appointmentActions} from "../../_actions";
+import WhiteCell from "./WhiteCell";
+import ExpiredCell from "./ExpiredCell";
 
 const cellTypes = {
     CELL_APPOINTMENT: 'CELL_APPOINTMENT',
     CELL_RESERVED_TIME: 'CELL_RESERVED_TIME',
-    CELL_EMPTY: 'CELL_EMPTY',
+    CELL_WHITE: 'CELL_WHITE',
+    CELL_EXPIRED: 'CELL_EXPIRED',
 }
 
-class BaseCell extends React.PureComponent {
+class BaseCell extends React.Component {
     constructor(props) {
         super(props);
         const currentTime = this.getTime(props.day, props.time);
-        let filledCell = {}
+        let filledCell = null
 
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
@@ -24,11 +27,14 @@ class BaseCell extends React.PureComponent {
 
         const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
         if (cellReservedTime) {
-            filledCell =  cellReservedTime;
+            filledCell = cellReservedTime;
+        }
+
+        if (!filledCell) {
+            filledCell = this.getCellEmpty(props.workingStaffElement, currentTime);
         }
 
         this.state = {
-            cellType: cellTypes.CELL_EMPTY,
             currentTime: currentTime,
             ...filledCell
         };
@@ -46,6 +52,11 @@ class BaseCell extends React.PureComponent {
             }
         }
 
+        // console.log('tried to update')
+        // if(shouldUpdate) {
+        //     console.log('updated')
+        // }
+
         return shouldUpdate;
     }
 
@@ -57,6 +68,30 @@ class BaseCell extends React.PureComponent {
         if (newProps.reservedTime && JSON.stringify(this.props.reservedTime) !== JSON.stringify(newProps.reservedTime)) {
             this.updateCell({ ...newProps, cellType: cellTypes.CELL_RESERVED_TIME })
         }
+
+        if (newProps.workingStaffElement && (this.props.workingStaffElement.staffId !== newProps.workingStaffElement.staffId)) {
+            this.onUpdateWorkingStaff(newProps)
+        }
+    }
+
+    onUpdateWorkingStaff(props) {
+        const { currentTime } = this.state;
+        let filledCell = null
+        const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
+        if (cellAppointment) {
+            filledCell = cellAppointment;
+        }
+
+        const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
+        if (cellReservedTime) {
+            filledCell = cellReservedTime;
+        }
+
+        if (!filledCell) {
+            filledCell = this.getCellEmpty(props.workingStaffElement, currentTime);
+        }
+
+        this.setState({ ...filledCell })
     }
 
     updateCell(props) {
@@ -64,7 +99,33 @@ class BaseCell extends React.PureComponent {
         if (cell) {
             this.setState( { ...cell });
         } else if (this.state.cellType === props.cellType) {
-            this.setState( { cellType: cellTypes.CELL_EMPTY, cell: null, staffArray: null })
+            this.updateCellEmpty(props.workingStaffElement)
+        }
+    }
+
+    getCellEmpty(workingStaffElement, currentTime = this.state.currentTime) {
+        let notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
+            return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
+                && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+                && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
+        })
+
+
+        if (notExpired) {
+            return { cellType: cellTypes.CELL_WHITE, cell: null, staffArray: null };
+        } else {
+            return { cellType: cellTypes.CELL_EXPIRED, cell: null, staffArray: null };
+        }
+    }
+
+    updateCellEmpty(workingStaffElement) {
+        const filledCell = this.getCellEmpty(workingStaffElement);
+
+        const cellType = this.state.cellType
+        if ((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) {
+            this.setState( { ...filledCell });
+        } else if (cellType !== cellTypes.CELL_EXPIRED) {
+            this.setState( { ...filledCell });
         }
     }
 
@@ -134,7 +195,6 @@ class BaseCell extends React.PureComponent {
             handleUpdateClient,
             updateAppointmentForDeleting,
             updateReservedId,
-            startMovingVisit,
             closedDates,
         } = this.props;
 
@@ -152,7 +212,6 @@ class BaseCell extends React.PureComponent {
                     handleUpdateClient={handleUpdateClient}
                     numbers={numbers}
                     services={services}
-                    startMovingVisit={startMovingVisit}
                     workingStaffElement={workingStaffElement}
                     updateAppointmentForDeleting={updateAppointmentForDeleting}
                 />
@@ -195,15 +254,10 @@ class BaseCell extends React.PureComponent {
             )
         }
 
+        let notExpired = cellType === cellTypes.CELL_WHITE;
         let clDate = closedDates && closedDates.some((st) =>
             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
             parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
-
-        let notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
-            return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-        })
 
         const isOnAnotherVisit = checkIsOnAnotherVisit(staffArray, currentTime)
 
@@ -221,21 +275,20 @@ class BaseCell extends React.PureComponent {
             </React.Fragment>
         )
 
-        if (notExpired) {
-            return <Dustbin
+        if (cellType === cellTypes.CELL_WHITE) {
+            return <WhiteCell
                 content={content}
                 wrapperId={wrapperId}
                 wrapperClassName={wrapperClassName}
                 addVisit={() => (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null))}
-                moveVisit={() => {
-                    moveVisit(workingStaffElement.staffId, currentTime)
-                }}
+                moveVisit={() => this.props.dispatch(appointmentActions.togglePayload({ movingVisitMillis : currentTime, movingVisitStaffId: workingStaffElement.staffId }))}
                 movingVisitMillis={currentTime}
                 movingVisitStaffId={workingStaffElement.staffId}
             />
-        } else {
-            return <div id={wrapperId} className={wrapperClassName}>{content}</div>
         }
+
+
+        return <ExpiredCell wrapperId={wrapperId} wrapperClassName={wrapperClassName} content={content} />
     }
 }
 
