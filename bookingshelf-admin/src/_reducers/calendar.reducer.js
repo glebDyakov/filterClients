@@ -411,29 +411,37 @@ export function calendar(state = initialState, action) {
             newAppointment = state.appointments;
             let appointmentsToDelete = action.payload.payload;
 
-            appointmentsToDelete.forEach((newItem, i) => {
-                let indexElem = newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.findIndex(item=>item.appointmentId === newItem.appointmentId)
-                let activeAppointmentsCount = newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId)
-                let indexAppointmentsCount = activeAppointmentsCount ? activeAppointmentsCount.appointments.findIndex(item=>item.appointmentId === newItem.appointmentId) : -1
-                if (indexElem !== -1) {
-                    newAppointment.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexElem, 1);
-                }
-                if (indexAppointmentsCount !== -1) {
-                    newAppointmentsCount.find(item => item.staff.staffId === newItem.staffId).appointments.splice(indexAppointmentsCount, 1);
-                }
+            updatedAppointments = []
+            newAppointment.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointmentsToDelete.every(newItem => appointment.appointmentId !== newItem.appointmentId)) {
+                        item.push(appointment)
+                    }
+                });
 
-                if (i === 0 ){
+                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
+            });
 
-                    newAppointmentsCanceled.push(newItem);
-                }
-            })
-            let finalAppointments = JSON.parse(JSON.stringify(newAppointment))
-            let finalAppointmentsCount = JSON.parse(JSON.stringify(newAppointmentsCount))
+            updatedAppointmentsCount = []
+            newAppointmentsCount.forEach(localAppointment => {
+                const item = []
+                localAppointment.appointments.forEach(appointment => {
+                    if (appointmentsToDelete.every(newItem => appointment.appointmentId !== newItem.appointmentId)) {
+                        item.push(appointment)
+                    }
+                });
+
+                updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item })
+            });
+
+            newAppointmentsCanceled.push(appointmentsToDelete[0]);
+
             let finalAppointmentsCanceled =  JSON.parse(JSON.stringify(newAppointmentsCanceled))
             return {
                 ...state,
-                appointments: finalAppointments,
-                appointmentsCount: finalAppointmentsCount,
+                appointments: updatedAppointments,
+                appointmentsCount: updatedAppointmentsCount,
                 appointmentsCanceled: finalAppointmentsCanceled
             };
 

@@ -75,7 +75,6 @@ class BaseCell extends React.Component {
     }
 
     onUpdateWorkingStaff(props) {
-        const { currentTime } = this.state;
         let filledCell = null
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
@@ -87,11 +86,11 @@ class BaseCell extends React.Component {
             filledCell = cellReservedTime;
         }
 
-        if (!filledCell) {
-            filledCell = this.getCellEmpty(props.workingStaffElement, currentTime);
+        if (filledCell) {
+            this.setState({ ...filledCell })
+        } else {
+            this.updateCellEmpty(props.workingStaffElement)
         }
-
-        this.setState({ ...filledCell })
     }
 
     updateCell(props) {
