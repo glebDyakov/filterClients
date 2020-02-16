@@ -178,7 +178,7 @@ function updateProfile(user) {
             withCredentials: true
         },
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: user
+        body: JSON.stringify(user)
     };
 
     return fetch(`${config.apiUrl}/profile`, requestOptions).then((data) => handleResponse(data, requestOptions));

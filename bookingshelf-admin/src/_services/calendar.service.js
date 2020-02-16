@@ -75,9 +75,6 @@ function addReservedTime(params, staffId) {
 
     return fetch(`${config.apiUrl}/staffs/${staffId}/reservedtimes`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
-        .then(reservedTime => {
-            return reservedTime;
-        });
 }
 
 function editAppointment(params) {

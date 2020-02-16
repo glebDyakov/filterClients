@@ -9,6 +9,7 @@ import { staff } from './staff.reducer';
 import { socket } from './socket.reducer';
 import { client } from './client.reducer';
 import { services } from './services.reducer';
+import { modals } from './modals.reducer';
 import { menu } from './menu.reducer';
 import { calendar } from './calendar.reducer';
 import { notification } from './notification.reducer';
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   alert,
   client,
   services,
+  modals,
   menu,
   calendar,
   notification,

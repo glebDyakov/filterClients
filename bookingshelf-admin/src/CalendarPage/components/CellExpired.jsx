@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ExpiredCell = (props) => {
+const CellExpired = (props) => {
     const {
         content,
         wrapperId,
@@ -9,4 +9,4 @@ const ExpiredCell = (props) => {
 
     return (<div id={wrapperId} className={wrapperClassName}>{content}</div>);
 }
-export default ExpiredCell;
+export default CellExpired;

@@ -2,7 +2,7 @@ import {clientConstants, menuConstants, userConstants} from '../_constants';
 import {clientService, userService} from '../_services';
 import {alertActions, socketActions, staffActions} from './';
 import { history } from '../_helpers';
-import moment from "moment";
+import {staffConstants} from "../_constants/staff.constants";
 
 export const userActions = {
     login,
@@ -118,16 +118,18 @@ function updateProfile(userProfile) {
         userService.updateProfile(userProfile)
             .then(
                 user => {
-                    dispatch(success(JSON.parse(userProfile), user));
-                    dispatch(staffActions.get());
-                    dispatch(staffActions.getTimetable(moment().startOf('day').format('x'), moment().add('7').endOf('day').format('x')));
-                    setTimeout(()=>dispatch(successTime(0)), 3000);
-
+                    dispatch(success(userProfile, user));
+                    dispatch(successUser({
+                        staffId: user.staffId,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        phone: user.phone,
+                        imageBase64: user.imageBase64
+                    }));
+                    dispatch(successTime(0))
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
-                    setTimeout(()=>dispatch(successTime(0)), 3000);
+                    dispatch(failure(error));
 
                 }
             );
@@ -137,6 +139,7 @@ function updateProfile(userProfile) {
     function successTime(id) { return { type: userConstants.UPDATE_PROFILE_SUCCESS_TIME, id } }
 
     function success(user, error) { return { type: userConstants.UPDATE_PROFILE_SUCCESS, user, error } }
+    function successUser(staff) { return { type: staffConstants.UPDATE_USER_SUCCESS, staff } }
     function failure(error) { return { type: userConstants.UPDATE_PROFILE_FAILURE, error } }
 }
 

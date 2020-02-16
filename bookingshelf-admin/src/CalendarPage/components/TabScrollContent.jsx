@@ -68,16 +68,14 @@ class TabScroll extends React.Component{
     }
 
     render(){
-        const { availableTimetable, services, selectedDays, closedDates ,handleUpdateClient, updateAppointmentForDeleting,updateReservedId,changeTime,isLoading } = this.props;
+        const { availableTimetable, services, selectedDays, handleUpdateClient, updateAppointmentForDeleting, changeTime, isLoading } = this.props;
         const { numbers } = this.state;
 
         return(
-            <div className="tabs-scroll"
-                // style={{'minWidth': (120*parseInt(workingStaff.timetable && workingStaff.timetable.length))+'px'}}
-            >
+            <div className="tabs-scroll">
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) =>
-                        <div className={'tab-content-list ' + (isLoading && 'loading')} key={key}>
+                        <div key={`number-${key}`} className="tab-content-list" >
                             <TabScrollLeftMenu time={time}/>
                             {!isLoading && availableTimetable && selectedDays.map((day) => availableTimetable.map((workingStaffElement, staffKey) => (
                                     <BaseCell
@@ -88,9 +86,7 @@ class TabScroll extends React.Component{
                                         numbers={numbers}
                                         services={services}
                                         workingStaffElement={workingStaffElement}
-                                        closedDates={closedDates}
                                         updateAppointmentForDeleting={updateAppointmentForDeleting}
-                                        updateReservedId={updateReservedId}
                                         day={day}
                                         time={time}
                                     />

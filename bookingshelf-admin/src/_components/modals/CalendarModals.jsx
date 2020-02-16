@@ -5,7 +5,7 @@ import {ClientDetails} from "./ClientDetails";
 import {AddAppointment} from "../../_components/modals/AddAppointment";
 import {ReservedTime} from "./ReservedTime";
 import DeleteAppointment from "./DeleteAppointment";
-import {DeleteReserve} from "./DeleteReserve";
+import DeleteReserve from "./DeleteReserve";
 import {MoveVisit} from "./MoveVisit";
 import {StartMovingVisit} from "./StartMovingVisit";
 import moment from 'moment';
@@ -104,7 +104,7 @@ class CalendarModals extends Component {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
@@ -185,10 +185,7 @@ class CalendarModals extends Component {
                     <DeleteAppointment
                         appointmentForDeleting={appointmentForDeleting}
                     />
-                    <DeleteReserve
-                        id={reserveId}
-                        staffId={reserveStId}
-                    />
+                    <DeleteReserve />
 
         </React.Fragment>
         );

@@ -145,7 +145,6 @@ class Index extends PureComponent {
         this.animateActiveAppointment = this.animateActiveAppointment.bind(this);
         this.navigateToRedLine = this.navigateToRedLine.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
-        this.updateReservedId = this.updateReservedId.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
@@ -396,12 +395,12 @@ class Index extends PureComponent {
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
             typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
-            reserveId, reserveStId, selectedDayMoment, timetableMessage,
+            selectedDayMoment, timetableMessage,
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, services, staffClicked, adding, status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
-            reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, reserveId, reserveStId,
+            reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
@@ -460,7 +459,6 @@ class Index extends PureComponent {
                                 clients={clients && clients.client}
                                 handleUpdateClient={this.handleUpdateClient}
                                 updateAppointmentForDeleting={this.updateAppointmentForDeleting}
-                                updateReservedId={this.updateReservedId}
                                 changeTime={this.changeTime}
                                 isLoading={isLoading}
                             />
@@ -581,12 +579,6 @@ class Index extends PureComponent {
     handleUpdateClient(client) {
         this.setState({
             infoClient: client
-        })
-    }
-    updateReservedId(reserveId, reserveStId){
-        this.setState({
-            reserveId,
-            reserveStId
         })
     }
 
