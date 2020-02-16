@@ -7,6 +7,7 @@ import {access} from "../../_helpers/access";
 import moment from 'moment';
 import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
+import {getNearestAvailableTime} from "../../_helpers/available-time";
 
 const CellAppointment = (props) => {
     const {
@@ -16,6 +17,8 @@ const CellAppointment = (props) => {
         staffKey,
         appointment,
         appointments,
+        reservedTime,
+        timetable,
         blickClientId,
         isStartMovingVisit,
         currentTime,
@@ -72,7 +75,14 @@ const CellAppointment = (props) => {
             extraServiceText = `и ещё 5+ услуг`;
     }
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-    const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2)
+    const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2);
+
+    const staffWithTimetable = timetable && timetable.find(item => item.staffId === workingStaffElement.staffId);
+    const isOwnInterval = i => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (totalDuration * 1000)) > i
+    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, staffWithTimetable, appointments, reservedTime, isOwnInterval);
+    const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (15 * 60000))) / 1000 / 60 / 15;
+    const maxTextAreaHeight = maxTextAreaCellCount * 20;
+
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
@@ -162,6 +172,7 @@ const CellAppointment = (props) => {
             <p onMouseDown={(e) => e.preventDefault()} id={textAreaId} className="notes-container"
                style={{
                    minHeight: minTextAreaHeight + "px",
+                   maxHeight: maxTextAreaHeight + "px",
                    height: resultTextAreaHeight + "px"
                }}>
                                             <span className="notes-container-message">
@@ -291,9 +302,10 @@ const CellAppointment = (props) => {
             e.preventDefault();
             dispatch(appointmentActions.togglePayload({
                 minTextAreaHeight,
+                maxTextAreaHeight,
                 textAreaId,
                 currentTarget: e.currentTarget,
-                changingVisit: appointment,
+                changingVisit: { ...appointment, staffId: workingStaffElement.staffId },
                 changingPos: e.pageY,
                 offsetHeight: document.getElementById(textAreaId).offsetHeight
             }));
@@ -334,8 +346,10 @@ function mapStateToProps(state) {
     const {
         calendar: {
             appointments,
+            reservedTime,
             isClientNotComeLoading
         },
+        staff: { timetable },
         appointment: {
             blickClientId,
             movingVisit,
@@ -347,6 +361,8 @@ function mapStateToProps(state) {
 
     return {
         appointments,
+        reservedTime,
+        timetable,
         isClientNotComeLoading,
         blickClientId,
         movingVisit,

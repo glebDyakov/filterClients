@@ -109,7 +109,6 @@ class Index extends PureComponent {
             staffFromUrl: staffFromUrl,
             pressedDragAndDrop: true,
             scroll: true,
-            reservedTime: null,
             reservedStuffId: null,
             reserved: false,
             appointmentModal: false,
@@ -394,13 +393,13 @@ class Index extends PureComponent {
         const { appointmentForDeleting, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             selectedDay, type, appointmentModal, selectedDays, edit_appointment, infoClient,
-            typeSelected, selectedStaff, reservedTimeEdited, reservedTime, reservedStuffId,
+            typeSelected, selectedStaff, reservedTimeEdited, reservedStuffId,
             selectedDayMoment, timetableMessage,
         } = this.state;
         const calendarModalsProps = {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, services, staffClicked, adding, status,
             clickedTime, selectedDayMoment, selectedDay, workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
-            reservedTime, reservedTimeEdited, reservedStuffId, appointmentForDeleting,
+            reservedTimeEdited, reservedStuffId, appointmentForDeleting,
             newReservedTime: this.newReservedTime, changeTime: this.changeTime, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,

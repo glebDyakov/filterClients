@@ -104,7 +104,7 @@ class CalendarModals extends Component {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedTime, reservedStuffId, appointmentForDeleting
+            reserved: reservedFromProps, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
@@ -174,7 +174,6 @@ class CalendarModals extends Component {
                         staff={staff && staff.staff}
                         newReservedTime={this.newReservedTime}
                         reservedTimeEdited={reservedTimeEdited}
-                        reservedTime={reservedTime}
                         clickedTime={clickedTime}
                         reservedStuffId={reservedStuffId}
                         onClose={this.onCloseReserved}

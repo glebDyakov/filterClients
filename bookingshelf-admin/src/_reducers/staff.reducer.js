@@ -104,7 +104,6 @@ export function staff(state = initialState, action) {
                 }
                 return item
             })
-            debugger
             return {
                 ...state,
                 timetable: timetable,
