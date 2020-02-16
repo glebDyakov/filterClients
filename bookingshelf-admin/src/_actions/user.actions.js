@@ -118,12 +118,13 @@ function updateProfile(userProfile) {
         userService.updateProfile(userProfile)
             .then(
                 user => {
-                    dispatch(success(JSON.parse(userProfile), user));
+                    dispatch(success(userProfile, user));
                     dispatch(successUser({
                         staffId: user.staffId,
                         firstName: user.firstName,
                         lastName: user.lastName,
-                        phone: user.phone
+                        phone: user.phone,
+                        imageBase64: user.imageBase64
                     }));
                     dispatch(successTime(0))
                 },

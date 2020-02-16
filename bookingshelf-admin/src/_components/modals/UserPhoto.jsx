@@ -41,7 +41,7 @@ class UserPhoto extends React.Component {
         e.preventDefault();
 
         dispatch(
-            userActions.updateProfile(JSON.stringify(authentication.user.profile))
+            userActions.updateProfile(authentication.user.profile)
         );
     }
 

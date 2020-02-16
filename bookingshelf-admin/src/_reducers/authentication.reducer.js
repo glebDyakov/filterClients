@@ -140,9 +140,9 @@ export function authentication(state = initialState, action) {
         case userConstants.UPDATE_PROFILE_SUCCESS:
             let profile = state.user
 
-            let user = {...action.user,  password:'',
-                newPasswordRepeat: '',
-                newPassword: ''}
+            let user = {...action.user,  password:null,
+                newPasswordRepeat: null,
+                newPassword: null}
 
             let unify = {...profile, profile: user}
 
