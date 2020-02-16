@@ -305,7 +305,7 @@ class Index extends Component {
                                 handleDayClick={this.handleDayClick}
                                 handleWeekClick={this.handleWeekClick}
                             />
-                            <div style={{ overflowX: 'auto', position: 'relative' }}>
+                            <div style={{ overflowX: 'auto', position: 'relative', zIndex: 0 }}>
                                 <div style={{ overflowX: 'hidden', display: 'inline-block' }} className="content-tab-date min-width-desktop">
                                     <div style={{ position: 'absolute', zIndex: 1 }} className="tab-content-inner min-width-desktop">
                                         <div className="tab-content-list">
