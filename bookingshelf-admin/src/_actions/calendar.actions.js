@@ -98,7 +98,7 @@ function setScrollableAppointment(id) {
     function success(id) { return { type: calendarConstants.SET_SCROLLABLE_APPOINTMENT, id } }
 }
 
-function addReservedTime(params, staffId, time1, time2) {
+function addReservedTime(params, staffId) {
     return dispatch => {
         dispatch(request(true));
 
@@ -106,19 +106,17 @@ function addReservedTime(params, staffId, time1, time2) {
             .then(
                 reservedTime => {
                     dispatch(success(reservedTime, staffId));
-                    setTimeout(()=>dispatch(successTime(1)), 100)
                     // dispatch(staffActions.getTimetableStaffs(time1, time2));
                 },
                 error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
                 }
             );
     };
 
     function request(reservedTime) { return { type: calendarConstants.ADD_RESERVED_TIME_REQUEST, reservedTime } }
     function success(reservedTime, staffId) { return { type: calendarConstants.ADD_RESERVED_TIME_SUCCESS, reservedTime, staffId } }
-    function successTime(id) { return { type: calendarConstants.ADD_RESERVED_TIME_SUCCESS_TIME, id } }
     function failure(error) { return { type: calendarConstants.ADD_RESERVED_TIME_FAILURE, error } }
 }
 
