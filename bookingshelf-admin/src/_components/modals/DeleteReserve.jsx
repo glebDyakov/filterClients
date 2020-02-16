@@ -7,21 +7,7 @@ class DeleteReserve extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            id: props.id,
-            staffId: props.staffId,
-        };
-
         this.cancel = this.cancel.bind(this);
-    }
-
-    componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state,
-                id:newProps.id,
-                staffId:newProps.staffId
-            })
-        }
     }
 
     render() {
@@ -31,7 +17,7 @@ class DeleteReserve extends React.Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Удалить</h4>
-                            <button type="button" className="close" data-dismiss="modal"></button>
+                            <button type="button" className="close" data-dismiss="modal" />
                             {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
 
                         </div>
@@ -45,17 +31,20 @@ class DeleteReserve extends React.Component {
         )
     }
 
-    cancel (){
-        const { dispatch, staffId, id }=this.props;
-        dispatch(calendarActions.deleteReservedTime(staffId, id));
+    cancel() {
+        const { dispatch, reservedTimeId, reservedTimeStaffId } = this.props;
+        dispatch(calendarActions.deleteReservedTime(reservedTimeStaffId, reservedTimeId));
     }
 }
 
 DeleteReserve.propTypes ={
-    cancel: PropTypes.func,
     id: PropTypes.number,
     staffId: PropTypes.number
 };
 
-const connectedApp = connect()(DeleteReserve);
-export { connectedApp as DeleteReserve };
+function mapStateToProps(state) {
+    const { modals: { reservedTimeId, reservedTimeStaffId } } = state;
+    return { reservedTimeId, reservedTimeStaffId };
+}
+
+export default connect(mapStateToProps)(DeleteReserve);

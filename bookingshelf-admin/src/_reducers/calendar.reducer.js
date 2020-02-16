@@ -101,8 +101,7 @@ export function calendar(state = initialState, action) {
 
             return {
                 ...state,
-                isAppointmentUpdated: action.isAppointmentUpdated,
-                isLoading: action.isLoading
+                // isAppointmentUpdated: action.isAppointmentUpdated,
             };
         case calendarConstants.UPDATE_APPOINTMENT_SUCCESS:
             return {
