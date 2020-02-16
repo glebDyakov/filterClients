@@ -78,7 +78,7 @@ class HeaderMain extends React.PureComponent {
 
 
         return (
-            <div style={{ height: 'auto' }} className="container_wrapper">
+            <div style={{ height: 'auto', zIndex: 3 }} className="container_wrapper">
                 <div style={{ height: 'auto', padding: 0 }} className="content-wrapper full-container">
                     <div className="container-fluid">
                         <div className="no-scroll row retreats">
