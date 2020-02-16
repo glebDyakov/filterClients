@@ -74,6 +74,35 @@ class SidebarMain extends React.Component {
     }
 
     componentDidMount() {
+        $('.arrow_collapse').click(function (e) {
+            // e.preventDefault();
+            // e.stopPropagation();
+            $('.arrow_collapse.sidebar_list_collapse').fadeOut(0);
+            $('.arrow_collapse.sidebar_list_collapse-out').fadeIn(0);
+
+            $(this).parent('ul').addClass('sidebar_collapse').animate({
+
+            }, 200);
+
+            $('.content-wrapper, .no-scroll, .no-scroll2').addClass('content-collapse').animate({
+
+            }, 200);
+        });
+
+        $('.arrow_collapse.sidebar_list_collapse-out').click(function (e) {
+            // e.preventDefault();
+            // e.stopPropagation();
+            $('.arrow_collapse.sidebar_list_collapse-out').fadeOut(0);
+            $('.arrow_collapse.sidebar_list_collapse').fadeIn(0);
+
+            $(this).parent('ul').removeClass('sidebar_collapse').animate({
+
+            }, 200);
+
+            $('.content-wrapper, .no-scroll, .no-scroll2').removeClass('content-collapse').animate({
+
+            }, 200);
+        });
         const { user } = this.props.authentication
 
         if (user && (user.forceActive
