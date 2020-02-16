@@ -94,7 +94,7 @@ export function staff(state = initialState, action) {
                 return item
             })
 
-            let staff = state.timetable
+            let staff = state.staff
             staff = staff.map(item => {
                 if (item.staffId === action.staff.staffId) {
                     item = {
@@ -104,6 +104,7 @@ export function staff(state = initialState, action) {
                 }
                 return item
             })
+            debugger
             return {
                 ...state,
                 timetable: timetable,
