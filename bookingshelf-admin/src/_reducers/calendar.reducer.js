@@ -114,33 +114,45 @@ export function calendar(state = initialState, action) {
                 ...state,
                 status: 208,
                 adding: true,
-                isLoading: true
             };
         case calendarConstants.ADD_RESERVED_TIME_SUCCESS:
 
             let reservedTimes = state.reservedTime;
-            if (reservedTimes) {
-                let boolReservedTimes = reservedTimes.filter((app) =>
-                    app.staff.staffId === action.staffId && app.reservedTimes.push(action.reservedTime)
-                );
+            let updatedReservedTime = []
+            isIncluded = false;
 
-                if (boolReservedTimes.length === 0) {
-                    reservedTimes.push({ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] })
+            if (reservedTimes) {
+                reservedTimes.forEach(localReservedTime => {
+                    const item = []
+                    localReservedTime.reservedTimes.forEach(reservedTime => {
+                        item.push(reservedTime)
+                    });
+
+                    if (localReservedTime.staff.staffId === action.staffId) {
+                        isIncluded = true
+                        item.push(action.reservedTime)
+                    }
+
+                    updatedReservedTime.push({ staff: localReservedTime.staff, reservedTimes: item })
+                });
+
+                if (!isIncluded) {
+                    updatedReservedTime.push({ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime]})
                 }
             } else {
-                reservedTimes = [{ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] }];
+                updatedReservedTime = [{ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] }];
             }
+            $('.modal_calendar').modal('hide')
 
             return {
                 ...state,
-                status: 200,
-                reservedTime: reservedTimes,
+                status: 209,
+                reservedTime: updatedReservedTime,
                 adding: false,
-                isLoading: false
 
             };
         case calendarConstants.ADD_RESERVED_TIME_SUCCESS_TIME:
-            setTimeout(()=>$('.modal_calendar').modal('hide'), 100)
+            $('.modal_calendar').modal('hide')
 
             return {
                 ...state,
@@ -251,7 +263,7 @@ export function calendar(state = initialState, action) {
         case calendarConstants.EDIT_APPOINTMENT_2_FAILURE:
             return {...state, isLoading:false, adding: false, status: null};
         case calendarConstants.ADD_RESERVED_TIME_FAILURE:
-            return {...state, isLoading:false};
+            return {...state };
         case calendarConstants.EDIT_APPOINTMENT_FAILURE:
             return {...state};
         case calendarConstants.APPROVE_APPOINTMENT_FAILURE:
