@@ -293,7 +293,7 @@ const CellAppointment = (props) => {
                 minTextAreaHeight,
                 textAreaId,
                 currentTarget: e.currentTarget,
-                changingVisit: appointment,
+                changingVisit: { ...appointment, staffId: workingStaffElement.staffId },
                 changingPos: e.pageY,
                 offsetHeight: document.getElementById(textAreaId).offsetHeight
             }));

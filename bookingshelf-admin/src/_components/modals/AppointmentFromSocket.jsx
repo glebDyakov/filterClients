@@ -87,8 +87,8 @@ class AppointmentFromSocket extends React.Component {
                 socketFooterText = "Просмотреть запись"
                 break;
             case "APPOINTMENT_DELETED":
-                staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff ? activeStaff.lastName : ''}`
-                clientName = activeClient ? `${activeClient.firstName} ${activeClient.lastName}` : ''
+                staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff.lastName ? activeStaff.lastName : ''}`
+                clientName = activeClient ? `${activeClient.firstName} ${(activeClient.lastName ? activeClient.lastName : '')}` : ''
                 socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;

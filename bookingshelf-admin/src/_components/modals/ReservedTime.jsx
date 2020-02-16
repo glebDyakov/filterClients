@@ -23,9 +23,7 @@ class ReservedTime extends React.Component {
                 {id: -1},
             minutesReservedtime: props.minutesReservedtime,
             edit_reservedTime: false,
-            reservedTime: props.reservedTime!=null ? {startTimeMillis:props.reservedTime.startTimeMillis,
-                endTimeMillis:moment(props.reservedTime.endTimeMillis, 'x').add(15, 'minutes').format('x'),
-                description:""} :{
+            reservedTime: {
                 startTimeMillis:'',
                 endTimeMillis:'',
                 description:""
@@ -52,19 +50,16 @@ class ReservedTime extends React.Component {
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
             this.setState({...this.state, staffs:newProps.staffs,
                 minutesReservedtime: newProps.minutesReservedtime,
-                reservedTime: newProps.reservedTime!=null ? {startTimeMillis:newProps.reservedTime.startTimeMillis,
-                    endTimeMillis:moment(newProps.reservedTime.endTimeMillis, 'x').add(15, 'minutes').format('x'),
-                    description:""} :{
+                reservedTime: newProps.calendar.status === 200 ? {
                     startTimeMillis:'',
                     endTimeMillis:'',
                     description:""
-                },
+                } : this.state.reservedTime,
                 calendar: newProps.calendar,
                 timeNow:newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
                 reservedStuffId: newProps.reservedStuffId,
-                staffCurrent: newProps.reservedStuffId!=null && newProps.staffs && newProps.staffs.timetable ?
-                    newProps.staffs.timetable.filter(staff=>staff.staffId===newProps.reservedStuffId)[0]:
-                    {id: -1}
+                staffCurrent: newProps.calendar.status === 200 ?
+                    {id: -1} : this.state.staffCurrent
             });
         }
     }
