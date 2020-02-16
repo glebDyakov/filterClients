@@ -35,3 +35,14 @@ export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointm
         })
     });
 };
+
+export const getNearestAvailableTime = (startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck) => {
+    let availableCellTime = endTime;
+    endTime = endTime + (15 * 60000);
+    const isNextCellAvailable = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck)
+    if (isNextCellAvailable) {
+        availableCellTime = getNearestAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck)
+    }
+
+    return availableCellTime
+}

@@ -21,14 +21,14 @@ class DragVertController extends React.Component {
     }
 
     handleMouseMove(e) {
-        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId } = this.props;
+        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
         const node = document.getElementById(textAreaId)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        if (res > minTextAreaHeight) {
+        if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
             node.style.height = res + "px";
-            currentTarget.style.bottom = -res + "px";
+            currentTarget.style.bottom = -(res + 3) + "px";
         }
     }
 
@@ -126,6 +126,7 @@ class DragVertController extends React.Component {
             changingPos:null,
             offsetHeight: null,
             minTextAreaHeight: null,
+            maxTextAreaHeight: null,
             textAreaId: null
         }));
     }
@@ -140,12 +141,12 @@ function mapStateToProps(state) {
         calendar: { appointments, reservedTime },
         staff: { timetable },
         appointment: {
-            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
+            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
         }
     } = state;
 
     return {
-        appointments, reservedTime, timetable, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
+        appointments, reservedTime, timetable, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
     }
 }
 
