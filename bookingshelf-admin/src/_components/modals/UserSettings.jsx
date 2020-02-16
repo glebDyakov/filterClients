@@ -63,9 +63,11 @@ class UserSettings extends React.Component {
     }
 
     handleSubmit(e) {
-        const {alert}=this.props
         const { authentication, isValidPhone } = this.state;
-        const { dispatch } = this.props;
+        const { dispatch, staff } = this.props;
+
+        const activeStaff = staff.staff && staff.staff.find(item => item.staffId === authentication.user.profile.staffId);
+        const imageBase64 = (activeStaff && activeStaff.imageBase64) ? activeStaff.imageBase64 : '';
 
         e.preventDefault();
 
@@ -92,24 +94,22 @@ class UserSettings extends React.Component {
                 }
             }
 
-
-
             localStorage.setItem('sound', this.state.sound);
 
             dispatch(
-                userActions.updateProfile(JSON.stringify(profile))
+                userActions.updateProfile({
+                    ...profile,
+                    imageBase64
+                })
             );
             this.setState({ submitted: false, form: false });
         }
-
-
-
     }
 
     render() {
-        const { firstName, lastName, email, phone, newPassword, newPasswordRepeat, password, users } = this.state.authentication && this.state.authentication.user && this.state.authentication.user.profile;
+        const { firstName, lastName, email, phone, newPassword, newPasswordRepeat } = this.state.authentication && this.state.authentication.user && this.state.authentication.user.profile;
 
-        const {authentication, submitted, error} = this.state;
+        const { authentication, error } = this.state;
 
         return (
             <div className="modal fade modal_user_setting">
@@ -185,7 +185,7 @@ class UserSettings extends React.Component {
                                     <label>
                                         <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}
                                                type="checkbox"/>
-                                        <span className="check"></span>
+                                        <span className="check" />
                                         Звуковые уведомления для визитов
                                     </label>
                                 </div>
@@ -220,9 +220,9 @@ class UserSettings extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication  } = state;
+    const { alert, authentication, staff } = state;
     return {
-        alert, authentication
+        alert, authentication, staff
     };
 }
 
