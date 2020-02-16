@@ -1,7 +1,7 @@
 import React from 'react';
 import Dustbin from "../../_components/dragAndDrop/Dustbin";
 
-const WhiteCell = (props) => {
+const CellWhite = (props) => {
     const {
         content,
         wrapperId,
@@ -24,4 +24,4 @@ const WhiteCell = (props) => {
         />
     );
 }
-export default WhiteCell;
+export default CellWhite;

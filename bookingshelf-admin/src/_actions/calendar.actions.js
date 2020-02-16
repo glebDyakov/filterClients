@@ -161,9 +161,9 @@ function editAppointment2(params, id) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_2_FAILURE, error } }
 }
 
-function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLoading = true) {
+function updateAppointment(id, params, withoutNotify, isAppointmentUpdated) {
     return dispatch => {
-        dispatch(request(isLoading));
+        dispatch(request());
         calendarService.updateAppointment(id, params, withoutNotify)
             .then(
                 appointment => {
@@ -179,7 +179,7 @@ function updateAppointment(id, params, withoutNotify, isAppointmentUpdated, isLo
                 }
             );
     };
-    function request(isLoading) { return { type: calendarConstants.UPDATE_APPOINTMENT, isLoading } }
+    function request() { return { type: calendarConstants.UPDATE_APPOINTMENT } }
 
     function success() { return { type: calendarConstants.UPDATE_APPOINTMENT_SUCCESS, isAppointmentUpdated } }
     function failure(error) { return { type: calendarConstants.UPDATE_APPOINTMENT_FAILURE, error } }

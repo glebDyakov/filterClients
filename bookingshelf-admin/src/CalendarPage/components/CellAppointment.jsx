@@ -8,7 +8,7 @@ import moment from 'moment';
 import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
 
-const Appointment = (props) => {
+const CellAppointment = (props) => {
     const {
         dispatch,
         movingVisit,
@@ -356,4 +356,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Appointment);
+export default connect(mapStateToProps)(CellAppointment);

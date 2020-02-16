@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from "moment";
-import Appointment from "./Appointment";
+import CellAppointment from "./CellAppointment";
 import {checkIsOnAnotherVisit} from "../../_helpers/available-time";
 import {appointmentActions} from "../../_actions";
-import WhiteCell from "./WhiteCell";
-import ExpiredCell from "./ExpiredCell";
+import CellWhite from "./CellWhite";
+import CellExpired from "./CellExpired";
+import CellReservedTime from "./CellReservedTime";
 
 const cellTypes = {
     CELL_APPOINTMENT: 'CELL_APPOINTMENT',
@@ -25,9 +26,11 @@ class BaseCell extends React.Component {
             filledCell = cellAppointment;
         }
 
-        const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
-        if (cellReservedTime) {
-            filledCell = cellReservedTime;
+        if (!filledCell) {
+            const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
+            if (cellReservedTime) {
+                filledCell = cellReservedTime;
+            }
         }
 
         if (!filledCell) {
@@ -81,9 +84,11 @@ class BaseCell extends React.Component {
             filledCell = cellAppointment;
         }
 
-        const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
-        if (cellReservedTime) {
-            filledCell = cellReservedTime;
+        if (!filledCell) {
+            const cellReservedTime = this.getCellFilled({...props, cellType: cellTypes.CELL_RESERVED_TIME});
+            if (cellReservedTime) {
+                filledCell = cellReservedTime;
+            }
         }
 
         if (filledCell) {
@@ -169,7 +174,7 @@ class BaseCell extends React.Component {
             return {
                 cell,
                 cellType,
-                staffArray
+                staffArray: checkingArray
             }
         }
 
@@ -184,7 +189,6 @@ class BaseCell extends React.Component {
         const {
             numberKey,
             staffKey,
-            appointments,
             changeTime,
             numbers,
             services,
@@ -193,15 +197,14 @@ class BaseCell extends React.Component {
             workingStaffElement,
             handleUpdateClient,
             updateAppointmentForDeleting,
-            updateReservedId,
             closedDates,
         } = this.props;
 
         const { cellType, currentTime, cell, staffArray } = this.state;
 
-        if(cellType === cellTypes.CELL_APPOINTMENT) {
+        if (cellType === cellTypes.CELL_APPOINTMENT) {
             return (
-                <Appointment
+                <CellAppointment
                     numberKey={numberKey}
                     staffKey={staffKey}
                     appointment={cell}
@@ -217,64 +220,31 @@ class BaseCell extends React.Component {
         }
 
         if (cellType === cellTypes.CELL_RESERVED_TIME) {
-            const reservedTime = cell;
-            const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / 15) - 1) * 20))
-
-            return (
-                <div className='cell reserve'>
-                    <div className="cell notes color-grey"
-                         style={{backgroundColor: "darkgrey"}}>
-
-                        <p className="notes-title" style={{cursor: 'default'}}>
-                            <span className="delete"
-                                  style={{right: '5px'}}
-                                  data-toggle="modal"
-                                  data-target=".delete-reserve-modal"
-                                  title="Удалить"
-                                  onClick={() => updateReservedId(
-                                      reservedTime.reservedTimeId,
-                                      workingStaffElement.staffId
-                                  )}
-                            />
-                                <span className="" title="Онлайн-запись"/>
-                                <span
-                                    className="service_time"
-                                >
-                                    {moment(reservedTime.startTimeMillis, 'x').format('HH:mm')} - {moment(reservedTime.endTimeMillis, 'x').format('HH:mm')}
-                                </span>
-
-                        </p>
-                        <p className="notes-container" style={{height: textAreaHeight+ "px"}}>
-                            <span style={{color: '#5d5d5d', fontSize: '10px'}}>{reservedTime.description}</span>
-                        </p>
-                    </div>
-                </div>
-            )
+            return <CellReservedTime cell={cell} workingStaffElement={workingStaffElement}/>
         }
 
         let notExpired = cellType === cellTypes.CELL_WHITE;
         let clDate = closedDates && closedDates.some((st) =>
             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));
 
         const isOnAnotherVisit = checkIsOnAnotherVisit(staffArray, currentTime)
+        const isPresentTime = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x");
 
-        const wrapperId = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : ''
-        const wrapperClassName = `cell col-tab 
-                                                                            ${currentTime < parseInt(moment().format("x")) ? '' : ""}
-                                                                            ${isOnAnotherVisit ? 'isOnAnotherVisit' : ''}
-                                                                            ${notExpired ? '' : "expired "}
-                                                                            ${clDate ? 'closedDateTick' : ""}`
+        const wrapperId = isPresentTime ? 'present-time ' : ''
+        const wrapperClassName = 'cell col-tab'
+            + (isOnAnotherVisit ? ' isOnAnotherVisit' : '')
+            + (notExpired ? '' : ' expired')
+            + (clDate ? ' closedDateTick' : '');
         const content = (
             <React.Fragment>
                 <span className={(moment(time, 'x').format("mm") === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
-                {currentTime <= moment().format("x")
-                && currentTime >= moment().subtract(15, "minutes").format("x") && <span className="present-time-line" />}
+                {isPresentTime && <span className="present-time-line" />}
             </React.Fragment>
-        )
+        );
 
-        if (cellType === cellTypes.CELL_WHITE) {
-            return <WhiteCell
+        if (notExpired) {
+            return <CellWhite
                 content={content}
                 wrapperId={wrapperId}
                 wrapperClassName={wrapperClassName}
@@ -285,8 +255,7 @@ class BaseCell extends React.Component {
             />
         }
 
-
-        return <ExpiredCell wrapperId={wrapperId} wrapperClassName={wrapperClassName} content={content} />
+        return <CellExpired wrapperId={wrapperId} wrapperClassName={wrapperClassName} content={content} />
     }
 }
 
