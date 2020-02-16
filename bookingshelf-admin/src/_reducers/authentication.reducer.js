@@ -125,7 +125,7 @@ export function authentication(state = initialState, action) {
                 status: 'saved.settings'
             };
         case userConstants.UPDATE_PROFILE_SUCCESS_TIME:
-            setTimeout(()=>$('.modal_user_setting').modal('hide'), 100)
+            $('.modal_user_setting').modal('hide')
 
             return {
                 ...state,

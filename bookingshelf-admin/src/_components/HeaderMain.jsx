@@ -248,10 +248,8 @@ class HeaderMain extends React.PureComponent {
                             </div>
                         </div>
 
-                        {userSettings &&
-                        <UserSettings
-                            onClose={this.onClose}/>
-                        }
+                        <UserSettings onClose={this.onClose}/>
+
                         <UserPhoto />
                     </div>
                 </div>
@@ -264,9 +262,12 @@ class HeaderMain extends React.PureComponent {
         // const {onOpen} = this.props;
         //
         // return onOpen();
+
+        $('.modal_user_setting').modal('show');
         this.setState({ userSettings: true })
     }
     onClose() {
+        $('.modal_user_setting').modal('hide');
         this.setState({ userSettings: false})
     }
     openAppointments(){

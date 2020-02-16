@@ -81,6 +81,34 @@ export function staff(state = initialState, action) {
                 adding: false,
                 timetable: (timetableCurrent2 || []).sort((a, b) => a.sortOrder - b.sortOrder)
             };
+
+        case staffConstants.UPDATE_USER_SUCCESS:
+            let timetable = state.timetable
+            timetable = timetable.map(item => {
+                if (item.staffId === action.staff.staffId) {
+                    item = {
+                        ...item,
+                        ...action.staff
+                    }
+                }
+                return item
+            })
+
+            let staff = state.timetable
+            staff = staff.map(item => {
+                if (item.staffId === action.staff.staffId) {
+                    item = {
+                        ...item,
+                        ...action.staff
+                    }
+                }
+                return item
+            })
+            return {
+                ...state,
+                timetable: timetable,
+                staff: staff
+            }
         case staffConstants.UPDATE_SUCCESS:
             // const staff=state.staff;
             //

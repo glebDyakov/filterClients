@@ -91,9 +91,6 @@ class Index extends React.Component {
 
             const socketStaffId = this.props.company.switchedStaffId ? this.props.company.switchedStaffId : this.props.authentication.user.profile.staffId
             this.initSocket(socketStaffId);
-            this.notifications();
-
-            this.props.dispatch(companyActions.get());
         }
     }
 
@@ -121,7 +118,6 @@ class Index extends React.Component {
             if (newProps.authentication.loggedIn) {
                 this.notifications();
 
-                this.props.dispatch(companyActions.get());
             }
             this.setState({...this.state, authentication: newProps.authentication})
         }
@@ -147,6 +143,8 @@ class Index extends React.Component {
 
     initSocket(socketStaffId) {
         this.props.dispatch(notificationActions.getBalance());
+        this.props.dispatch(companyActions.get());
+        this.props.dispatch(companyActions.getNewAppointments());
 
         const options = {
             url: `${config.apiSocket}/${socketStaffId}/`,
@@ -204,7 +202,6 @@ class Index extends React.Component {
 
     notifications(){
 
-        this.props.dispatch(companyActions.getNewAppointments());
         // setTimeout(()=>this.notifications(), 300000)
     }
 
