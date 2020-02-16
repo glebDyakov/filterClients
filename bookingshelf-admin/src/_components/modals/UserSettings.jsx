@@ -112,10 +112,8 @@ class UserSettings extends React.Component {
         const {authentication, submitted, error} = this.state;
 
         return (
-            <Modal size="sm"  style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
-
-            <div className="modal_user_setting">
-                <div className="">
+            <div className="modal fade modal_user_setting">
+                <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="form-group">
                             <div className="modal-header">
@@ -210,7 +208,6 @@ class UserSettings extends React.Component {
                     </div>
                 </div>
             </div>
-            </Modal>
         )
     }
 
