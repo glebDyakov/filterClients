@@ -165,7 +165,6 @@ class Index extends PureComponent {
         const { startTime, endTime } = this.getSelectedTimeRange()
 
         this.getTimetable(null, moment(selectedDays[0]), true);
-        this.refreshTable(startTime, endTime);
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
@@ -179,6 +178,7 @@ class Index extends PureComponent {
         this.props.dispatch(staffActions.get());
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
+        this.refreshTable(startTime, endTime);
 
         setTimeout(() => {
             const {selectedDay} = this.state;
