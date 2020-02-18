@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { useDrop } from 'react-dnd'
 import ItemTypes from './ItemTypes'
 
-const Dustbin = ({ content, wrapperId, wrapperClassName, isStartMovingVisit, addVisit, moveVisit, movingVisitMillis, movingVisitStaffId }) => {
+const Dustbin = ({ content, time, staffKey, selectedDaysKey, wrapperClassName, isStartMovingVisit, addVisit, moveVisit }) => {
     wrapperClassName += isStartMovingVisit ? ' start-moving ' : '';
     const wrapperClick = isStartMovingVisit ? moveVisit : addVisit
 
     const [{ canDrop, isOver }, drop] = useDrop({
         accept: ItemTypes.APPOINTMENT,
-        drop: () => ({ movingVisitMillis, movingVisitStaffId }),
+        drop: () => ({ time, staffKey, selectedDaysKey }),
         collect: monitor => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
@@ -24,7 +24,6 @@ const Dustbin = ({ content, wrapperId, wrapperClassName, isStartMovingVisit, add
     }
     return (
         <div
-            id={wrapperId}
             className={wrapperClassName}
             onClick={wrapperClick}
             data-toggle={isStartMovingVisit && "modal"}

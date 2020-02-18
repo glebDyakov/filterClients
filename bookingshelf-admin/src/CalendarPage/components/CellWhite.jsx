@@ -3,24 +3,24 @@ import Dustbin from "../../_components/dragAndDrop/Dustbin";
 
 const CellWhite = (props) => {
     const {
+        time,
         content,
-        wrapperId,
+        staffKey,
+        selectedDaysKey,
         wrapperClassName,
         addVisit,
         moveVisit,
-        movingVisitMillis,
-        movingVisitStaffId,
     } = props;
 
     return (
         <Dustbin
+            time={time}
+            staffKey={staffKey}
+            selectedDaysKey={selectedDaysKey}
             content={content}
-            wrapperId={wrapperId}
             wrapperClassName={wrapperClassName}
             addVisit={addVisit}
             moveVisit={moveVisit}
-            movingVisitMillis={movingVisitMillis}
-            movingVisitStaffId={movingVisitStaffId}
         />
     );
 }

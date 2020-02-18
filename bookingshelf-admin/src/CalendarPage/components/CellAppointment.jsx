@@ -8,10 +8,12 @@ import moment from 'moment';
 import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
 import {getNearestAvailableTime} from "../../_helpers/available-time";
+import {getCurrentCellTime} from "../../_helpers";
 
 const CellAppointment = (props) => {
     const {
         dispatch,
+        moveVisit,
         movingVisit,
         numberKey,
         staffKey,
@@ -21,7 +23,6 @@ const CellAppointment = (props) => {
         timetable,
         blickClientId,
         isStartMovingVisit,
-        currentTime,
         numbers,
         selectedNote,
         isClientNotComeLoading,
@@ -29,6 +30,9 @@ const CellAppointment = (props) => {
         handleUpdateClient,
         services,
         changeTime,
+        selectedDays,
+        selectedDaysKey,
+        time,
         updateAppointmentForDeleting
     } = props;
 
@@ -38,6 +42,7 @@ const CellAppointment = (props) => {
     let totalPrice = appointment.price
     let totalAmount = appointment.totalAmount
     const currentAppointments = [appointment]
+    const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time)
 
     const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
     appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
@@ -77,9 +82,13 @@ const CellAppointment = (props) => {
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
     const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2);
 
-    const staffWithTimetable = timetable && timetable.find(item => item.staffId === workingStaffElement.staffId);
+    const staffList = appointments && appointments.filter(item => item.appointments && item.appointments.some(localAppointment => localAppointment.appointmentId === appointment.appointmentId));
+
+    const timetableItems = timetable && timetable
+        .filter(item => item.staffId === workingStaffElement.staffId || (appointment.coStaffs && staffList.some(coStaff => coStaff.staff.staffId === item.staffId)))
+
     const isOwnInterval = i => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (totalDuration * 1000)) > i
-    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, staffWithTimetable, appointments, reservedTime, isOwnInterval);
+    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems, appointments, reservedTime, isOwnInterval);
     const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (15 * 60000))) / 1000 / 60 / 15;
     const maxTextAreaHeight = maxTextAreaCellCount * 20;
 
@@ -133,32 +142,11 @@ const CellAppointment = (props) => {
                                   ...appointment,
                                   staffId: workingStaffElement.staffId
                               })}/>
-                        {!appointment.online &&
-                        <span className="pen"
-                              title="Запись через журнал"/>}
-                        {/*<span className="men"*/}
-                        {/*title="Постоянный клиент"/>*/}
-                        {appointment.online &&
-                        <span className="globus"
-                              title="Онлайн-запись"/>}
-
-
-
-                        {appointment.clientId && <span
-                            className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                            title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
-
-
-                        {!appointment.clientId &&
-                        <span
-                            className="no-client-icon"
-                            title="Визит от двери"/>
-                        }
-
-                        {!!appointment.discountPercent &&
-                        <span className="percentage"
-                              title={`${appointment.discountPercent}%`}
-                        />}
+                        {!appointment.online && <span className="pen" title="Запись через журнал"/>}
+                        {appointment.online && <span className="globus" title="Онлайн-запись"/>}
+                        {appointment.clientId && <span className={`${appointment.regularClient? 'old' : 'new'}-client-icon`} title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
+                        {!appointment.clientId && <span className="no-client-icon" title="Визит от двери"/>}
+                        {!!appointment.discountPercent && <span className="percentage" title={`${appointment.discountPercent}%`}/>}
                     </React.Fragment>
                 )}
 
@@ -331,7 +319,7 @@ const CellAppointment = (props) => {
 
     return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
         <Box
-            appointments={appointments}
+            moveVisit={moveVisit}
             appointmentId={appointment.appointmentId}
             dragVert={dragVert}
             startMoving={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId, appointment.appointmentId)}
@@ -356,7 +344,8 @@ function mapStateToProps(state) {
             selectedNote,
             isStartMovingVisit,
             draggingAppointmentId
-        }
+        },
+        cell: { selectedDays }
     } = state;
 
     return {
@@ -368,7 +357,8 @@ function mapStateToProps(state) {
         movingVisit,
         selectedNote,
         isStartMovingVisit,
-        draggingAppointmentId
+        draggingAppointmentId,
+        selectedDays
     }
 }
 

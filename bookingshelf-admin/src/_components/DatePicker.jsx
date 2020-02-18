@@ -59,20 +59,20 @@ class DatePicker extends PureComponent {
     }
 
     handleLeftArrowClick() {
-        const { type, selectedDay } = this.props;
+        const { type, selectedDays } = this.props;
         this.showCalendar(false);
         if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
+            this.props.handleDayClick(moment(selectedDays[0]).subtract(1, 'day'), {});
         } else {
             this.props.showPrevWeek();
         }
     }
 
     handleRightArrowClick() {
-        const { type, selectedDay } = this.props;
+        const { type, selectedDays } = this.props;
         this.showCalendar(false);
         if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
+            this.props.handleDayClick(moment(selectedDays[0]).add(1, 'day'), {});
         } else {
             this.props.showNextWeek();
         }
@@ -92,7 +92,7 @@ class DatePicker extends PureComponent {
     };
 
     render() {
-        const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
+        const { type, selectedDays, closedDates, dayPickerProps = {} } = this.props;
         const { opacity, hoverRange } = this.state;
         let weekProps = {};
         let selectedDaysText;
@@ -104,7 +104,7 @@ class DatePicker extends PureComponent {
 
             selectedDaysText = (
                 <React.Fragment>
-                    {moment(selectedDay).format('dd, DD MMMM YYYY')}
+                    {moment(selectedDays[0]).format('dd, DD MMMM YYYY')}
                     {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
                 </React.Fragment>
             );
