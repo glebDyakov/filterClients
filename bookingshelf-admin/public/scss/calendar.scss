@@ -548,6 +548,15 @@
 
         }
 
+        .present-time-line {
+            width: 101%;
+            height: 2px;
+            position: absolute;
+            background: red;
+            z-index: 9001;
+            bottom: 0;
+        }
+
         .tabs-scroll {
             display: inline-block;
             height: 76vh;
@@ -575,14 +584,6 @@
                         margin-right: 0px;
                         z-index: 9000;
                         position: relative;
-                    }
-                    .present-time-line {
-                        width: 101%;
-                        height: 2px;
-                        position: absolute;
-                        background: red;
-                        z-index: 9001;
-                        bottom: 0;
                     }
                     &.isOnAnotherVisit {
                         cursor: default !important;
