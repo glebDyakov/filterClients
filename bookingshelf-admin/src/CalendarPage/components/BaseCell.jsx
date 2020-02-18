@@ -18,67 +18,41 @@ const cellTypes = {
 class BaseCell extends React.Component {
     constructor(props) {
         super(props);
-        const currentTime = this.getTime(props.day, props.time);
-        let filledCell = null
+        let filledCell;
 
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
             filledCell = cellAppointment;
-        }
-
-        if (!filledCell) {
+        } else {
             const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
             if (cellReservedTime) {
                 filledCell = cellReservedTime;
+            } else {
+                filledCell = this.getCellEmpty(props.workingStaffElement, { selectedDaysKey: props.selectedDaysKey, time: props.time }, props.getCellTime);
             }
         }
 
-        if (!filledCell) {
-            filledCell = this.getCellEmpty(props.workingStaffElement, currentTime);
-        }
-
         this.state = {
-            currentTime: currentTime,
             ...filledCell
         };
     }
 
     shouldComponentUpdate(newProps, newState) {
-        let shouldUpdate = this.state.currentTime === newProps.currentTime
-        if (!shouldUpdate) {
-            shouldUpdate = this.state.cellType !== newState.cellType;
-        }
-        if (!shouldUpdate) {
-            const cellTypesForCheking = [cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME];
-            if (cellTypesForCheking.some(cellType => (this.state.cellType === cellType && newState.cellType === cellType))) {
-                shouldUpdate = JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
-            }
-        }
-
-        // console.log('tried to update')
-        // if(shouldUpdate) {
-        //     console.log('updated')
-        // }
-
-        return shouldUpdate;
+        return (this.state.cellType !== newState.cellType)
+            || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]
+                    .some(cellType => (this.state.cellType === cellType && newState.cellType === cellType))
+                && JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
+            );
     }
 
     componentWillReceiveProps(newProps, nextContext) {
-        if (newProps.appointments && JSON.stringify(this.props.appointments) !== JSON.stringify(newProps.appointments)) {
-            this.updateCell({ ...newProps, cellType: cellTypes.CELL_APPOINTMENT })
-        }
-
-        if (newProps.reservedTime && JSON.stringify(this.props.reservedTime) !== JSON.stringify(newProps.reservedTime)) {
-            this.updateCell({ ...newProps, cellType: cellTypes.CELL_RESERVED_TIME })
-        }
-
-        if (newProps.workingStaffElement && (this.props.workingStaffElement.staffId !== newProps.workingStaffElement.staffId)) {
-            this.onUpdateWorkingStaff(newProps)
-        }
+        this.onUpdateWorkingStaff(newProps)
     }
 
     onUpdateWorkingStaff(props) {
-        let filledCell = null
+        const { cellType } = this.state
+        let filledCell;
+
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
             filledCell = cellAppointment;
@@ -94,26 +68,23 @@ class BaseCell extends React.Component {
         if (filledCell) {
             this.setState({ ...filledCell })
         } else {
-            this.updateCellEmpty(props.workingStaffElement)
+            filledCell = this.getCellEmpty(props.workingStaffElement, { selectedDaysKey: props.selectedDaysKey, time: props.time}, props.getCellTime);
+
+            if ((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) {
+                this.setState( { ...filledCell });
+            } else if (cellType !== cellTypes.CELL_EXPIRED) {
+                this.setState( { ...filledCell });
+            }
         }
     }
 
-    updateCell(props) {
-        const cell = this.getCellFilled(props);
-        if (cell) {
-            this.setState( { ...cell });
-        } else if (this.state.cellType === props.cellType) {
-            this.updateCellEmpty(props.workingStaffElement)
-        }
-    }
-
-    getCellEmpty(workingStaffElement, currentTime = this.state.currentTime) {
+    getCellEmpty(workingStaffElement, timeProps, getCellTime) {
+        const { selectedDaysKey, time } = timeProps;
+        const currentTime = getCellTime({ selectedDaysKey, time });
         let notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
-            return (currentTime>=parseInt(moment().subtract(1, 'week').format("x")) )
-                && currentTime>=parseInt(moment(moment(currentTimetable.startTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.startTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-                && currentTime<parseInt(moment(moment(currentTimetable.endTimeMillis, 'x').format('DD/MM/YYYY')+' '+moment(currentTimetable.endTimeMillis, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
-        })
-
+            return (currentTime >= currentTimetable.startTimeMillis && currentTime < currentTimetable.endTimeMillis
+                && currentTime>=parseInt(moment().subtract(1, 'week').format('x')))
+        });
 
         if (notExpired) {
             return { cellType: cellTypes.CELL_WHITE, cell: null, staffArray: null };
@@ -122,20 +93,8 @@ class BaseCell extends React.Component {
         }
     }
 
-    updateCellEmpty(workingStaffElement) {
-        const filledCell = this.getCellEmpty(workingStaffElement);
-
-        const cellType = this.state.cellType
-        if ((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) {
-            this.setState( { ...filledCell });
-        } else if (cellType !== cellTypes.CELL_EXPIRED) {
-            this.setState( { ...filledCell });
-        }
-    }
-
     getCellFilled(props) {
-        const { cellType, workingStaffElement, numbers, numberKey, day, time } = props
-        const currentTime = this.getTime(day, time)
+        const { cellType, workingStaffElement, numbers, numberKey, selectedDaysKey, time, getCellTime } = props
 
         let uniqConditions = {}
 
@@ -167,7 +126,7 @@ class BaseCell extends React.Component {
         );
         const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey].find(checkingItem => {
             const checkingTime = checkingItem[checkingTimeKey]
-            return currentTime <= parseInt(checkingTime) && this.getTime(day, numbers[numberKey + 1]) > parseInt(checkingTime)
+            return getCellTime({ selectedDaysKey, time }) <= parseInt(checkingTime) && getCellTime({ selectedDaysKey, time: numbers[numberKey + 1] }) > parseInt(checkingTime)
         });
 
         if (exists(cell)) {
@@ -181,34 +140,36 @@ class BaseCell extends React.Component {
         return null
     }
 
-    getTime(day, time) {
-        return parseInt(moment(moment(day).format('DD/MM/YYYY')+' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
-    }
-
     render() {
         const {
             numberKey,
             staffKey,
             changeTime,
+            changeTimeFromCell,
             numbers,
+            moveVisit,
             services,
-            day,
+            selectedDaysKey,
+            selectedDays,
             time,
             workingStaffElement,
             handleUpdateClient,
             updateAppointmentForDeleting,
             closedDates,
+            getCellTime
         } = this.props;
 
-        const { cellType, currentTime, cell, staffArray } = this.state;
+
+        const { cellType, cell } = this.state;
 
         if (cellType === cellTypes.CELL_APPOINTMENT) {
             return (
                 <CellAppointment
+                    selectedDaysKey={selectedDaysKey}
+                    moveVisit={moveVisit}
                     numberKey={numberKey}
                     staffKey={staffKey}
                     appointment={cell}
-                    currentTime={currentTime}
                     changeTime={changeTime}
                     handleUpdateClient={handleUpdateClient}
                     numbers={numbers}
@@ -224,38 +185,36 @@ class BaseCell extends React.Component {
         }
 
         let notExpired = cellType === cellTypes.CELL_WHITE;
+        const day = getCellTime({ selectedDaysKey, time: '00:00' });
         let clDate = closedDates && closedDates.some((st) =>
             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
             parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));
 
-        const isOnAnotherVisit = checkIsOnAnotherVisit(staffArray, currentTime)
-        const isPresentTime = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x");
+        //const isPresentTime = currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x");
 
-        const wrapperId = isPresentTime ? 'present-time ' : ''
         const wrapperClassName = 'cell col-tab'
-            + (isOnAnotherVisit ? ' isOnAnotherVisit' : '')
             + (notExpired ? '' : ' expired')
             + (clDate ? ' closedDateTick' : '');
         const content = (
             <React.Fragment>
-                <span className={(moment(time, 'x').format("mm") === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{moment(time, 'x').format("HH:mm")}</span>
-                {isPresentTime && <span className="present-time-line" />}
+                <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
+                {/*{isPresentTime && <span className="present-time-line" />}*/}
             </React.Fragment>
         );
 
         if (notExpired) {
             return <CellWhite
+                time={time}
+                staffKey={staffKey}
+                selectedDaysKey={selectedDaysKey}
                 content={content}
-                wrapperId={wrapperId}
                 wrapperClassName={wrapperClassName}
-                addVisit={() => (!isOnAnotherVisit && changeTime(currentTime, workingStaffElement, numbers, false, null))}
-                moveVisit={() => this.props.dispatch(appointmentActions.togglePayload({ movingVisitMillis : currentTime, movingVisitStaffId: workingStaffElement.staffId }))}
-                movingVisitMillis={currentTime}
-                movingVisitStaffId={workingStaffElement.staffId}
+                addVisit={() => (changeTimeFromCell({ staffKey, selectedDaysKey, time }, numbers, false, null))}
+                moveVisit={() => {this.props.dispatch(appointmentActions.togglePayload({ staffKey, selectedDaysKey, time }))}}
             />
         }
 
-        return <CellExpired wrapperId={wrapperId} wrapperClassName={wrapperClassName} content={content} />
+        return <CellExpired wrapperClassName={wrapperClassName} content={content} />
     }
 }
 
@@ -264,14 +223,12 @@ function mapStateToProps(state) {
         calendar: {
             appointments,
             reservedTime,
-            currentTime
-        },
+        }
     } = state;
 
     return {
         appointments,
-        reservedTime,
-        currentTime
+        reservedTime
     }
 }
 

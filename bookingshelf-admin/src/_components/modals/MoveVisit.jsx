@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import {calendarActions} from "../../_actions";
 import {appointmentActions} from "../../_actions/appointment.actions";
 
 class MoveVisit extends React.Component {
@@ -33,26 +31,23 @@ class MoveVisit extends React.Component {
 
     handleYes (){
         const {
-            appointments,
-            reservedTime,
-            timetable,
+            moveVisit,
             movingVisit,
             movingVisitDuration,
-            movingVisitStaffId,
-            movingVisitMillis,
-            prevVisitStaffId
+            prevVisitStaffId,
+            staffKey,
+            selectedDaysKey,
+            time,
         } = this.props;
 
-        this.props.dispatch(appointmentActions.makeMovingVisitQuery({
-            appointments,
-            reservedTimes: reservedTime,
-            timetable,
+        moveVisit({
             movingVisit,
             movingVisitDuration,
-            movingVisitStaffId,
-            movingVisitMillis,
-            prevVisitStaffId
-        }))
+            prevVisitStaffId,
+            staffKey,
+            selectedDaysKey,
+            time,
+        })
     }
 
     handleNo (){
@@ -62,26 +57,23 @@ class MoveVisit extends React.Component {
 
 function mapStateToProps(state) {
     const {
-        calendar: { appointments, reservedTime },
-        staff: { timetable },
         appointment: {
             movingVisit,
             movingVisitDuration,
-            movingVisitStaffId,
-            movingVisitMillis,
-            prevVisitStaffId
+            prevVisitStaffId,
+            staffKey,
+            selectedDaysKey,
+            time,
         }
     } = state;
 
     return {
-        appointments,
-        reservedTime,
-        timetable,
         movingVisit,
         movingVisitDuration,
-        movingVisitStaffId,
-        movingVisitMillis,
-        prevVisitStaffId
+        prevVisitStaffId,
+        staffKey,
+        selectedDaysKey,
+        time,
     }
 }
 

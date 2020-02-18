@@ -55,30 +55,12 @@ function makeMovingVisitQuery(data) {
         let coStaffs = movingVisit.coStaffs;
 
         if (shouldMove) {
-            if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
-                const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
-                const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
 
-                if (oldStaffIndex !== -1) {
-                    coStaffs.splice(oldStaffIndex, 1)
-                    coStaffs.push(updatedCoStaff.staff)
-                }
-
-            }
 
             const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
 
             const timetableItems = timetable
                 .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
-
-
-            const intervals = []
-
-            for (let i = movingVisitMillis; i < movingVisitEndTime; i += 15 * 60000) {
-                intervals.push(i)
-            }
-
-
 
             shouldMove = timetableItems.every(timetableItem => {
                 const checkOnMovingVisit = i => (
@@ -91,6 +73,17 @@ function makeMovingVisitQuery(data) {
         }
 
         if (shouldMove) {
+            if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
+                const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
+                const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
+
+                if (oldStaffIndex !== -1) {
+                    coStaffs.splice(oldStaffIndex, 1)
+                    coStaffs.push(updatedCoStaff.staff)
+                }
+
+            }
+
             dispatch(calendarActions.makeVisualMove({ ...prevVisualVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis, coStaffs))
             dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,

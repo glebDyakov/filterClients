@@ -36,12 +36,12 @@ export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointm
     });
 };
 
-export const getNearestAvailableTime = (startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck) => {
+export const getNearestAvailableTime = (startTime, endTime, timetableItems, appointments, reservedTimes, extraCheck) => {
     let availableCellTime = endTime;
     endTime = endTime + (15 * 60000);
-    const isNextCellAvailable = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck)
+    const isNextCellAvailable = timetableItems.every(staffWithTimetable => isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck))
     if (isNextCellAvailable) {
-        availableCellTime = getNearestAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck)
+        availableCellTime = getNearestAvailableTime(startTime, endTime, timetableItems, appointments, reservedTimes, extraCheck)
     }
 
     return availableCellTime

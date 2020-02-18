@@ -21,3 +21,8 @@ export function getWeekRange(date) {
             .toDate(),
     };
 }
+
+export const getCurrentCellTime = (selectedDays, selectedDaysKey, time ) => {
+    const startOfSelectedDay = moment(selectedDays[selectedDaysKey]).startOf('day').format('DD/MM/YYYY');
+    return parseInt(moment(startOfSelectedDay + ' ' + time, 'DD/MM/YYYY HH:mm').format('x'))
+};
