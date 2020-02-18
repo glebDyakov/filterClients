@@ -41,7 +41,7 @@ function togglePayload(payload) {
 
 function makeMovingVisitQuery(data) {
     return dispatch => {
-        const { appointments, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
+        const { appointments, staff, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
 
         let shouldMove = true
 
@@ -68,7 +68,7 @@ function makeMovingVisitQuery(data) {
                     movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
                 );
 
-                return isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
+                return isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, staff, checkOnMovingVisit)
             })
         }
 

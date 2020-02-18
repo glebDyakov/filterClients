@@ -68,7 +68,7 @@ class TabScroll extends React.Component{
     }
 
     render(){
-        const { availableTimetable, getCellTime, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell } = this.props;
+        const { availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell } = this.props;
         const { numbers } = this.state;
 
         return(
@@ -79,6 +79,7 @@ class TabScroll extends React.Component{
                             <TabScrollLeftMenu time={time}/>
                             {availableTimetable && (type === 'day' ? [0] : [0,1,2,3,4,5,6]).map((selectedDaysKey) => availableTimetable.map((workingStaffElement, staffKey) =>
                                 <BaseCell
+                                    checkForCostaffs={checkForCostaffs}
                                     getCellTime={getCellTime}
                                     key={`working-staff-${staffKey}`}
                                     numberKey={key}

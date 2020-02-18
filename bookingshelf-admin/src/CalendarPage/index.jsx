@@ -26,7 +26,11 @@ import TabScrollContent from './components/TabScrollContent';
 import StaffChoice from './components/StaffChoice';
 import TabScrollHeader from './components/TabScrollHeader';
 import CalendarSwitch from "./components/CalendarSwitch";
-import {checkIsOnAnotherReservedTime, checkIsOnAnotherVisit} from "../_helpers/available-time";
+import {
+    checkIsOnAnotherReservedTime,
+    checkIsOnAnotherVisit,
+    getStaffListWithAppointments
+} from "../_helpers/available-time";
 import {cellActions} from "../_actions/cell.actions";
 import {getCurrentCellTime} from "../_helpers";
 
@@ -110,6 +114,7 @@ class Index extends PureComponent {
         };
 
         this.newAppointment = this.newAppointment.bind(this);
+        this.checkForCostaffs = this.checkForCostaffs.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -333,6 +338,7 @@ class Index extends PureComponent {
         const movingVisitStaffId = workingStaff.timetable[staffKey].staffId;
         const movingVisitMillis = getCurrentCellTime(selectedDays, selectedDaysKey, time);
         this.props.dispatch(appointmentActions.makeMovingVisitQuery({
+            staff: staff.staff,
             appointments,
             reservedTimes: reservedTimeFromProps,
             timetable: staff.timetable,
@@ -347,6 +353,16 @@ class Index extends PureComponent {
     getCellTime({ selectedDaysKey, time }) {
         const selectedDays = this.props.selectedDays.length ? this.props.selectedDays : this.state.selectedDays;
         return getCurrentCellTime(selectedDays, selectedDaysKey, time);
+    }
+
+    checkForCostaffs({ appointments, staffKey, currentTime }) {
+        const { staff } = this.props.staff
+        const { workingStaff } = this.state;
+        const staffWithTimetable = workingStaff.timetable[staffKey];
+
+        const staffListWithAppointments = getStaffListWithAppointments({ appointments, staffWithTimetable, staff, excludeCurrentStaff: true });
+        const isOnAnotherVisit = staffListWithAppointments && staffListWithAppointments.some(staffWithAppointments => checkIsOnAnotherVisit(staffWithAppointments, currentTime));
+        return !isOnAnotherVisit;
     }
 
 
@@ -410,6 +426,7 @@ class Index extends PureComponent {
                                 staff={staff && staff.staff}
                             />
                             <TabScrollContent
+                                checkForCostaffs={this.checkForCostaffs}
                                 getCellTime={this.getCellTime}
                                 type={type}
                                 timetable={staff.timetable}

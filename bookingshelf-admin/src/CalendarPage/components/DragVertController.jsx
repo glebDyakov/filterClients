@@ -33,7 +33,7 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
-        const { appointments, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
+        const { appointments, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
         const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
 
@@ -57,7 +57,7 @@ class DragVertController extends React.Component {
 
         const isOwnInterval = i => changingVisit.appointmentTimeMillis <= i && (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i
 
-        let shouldDrag = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTime, isOwnInterval)
+        let shouldDrag = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval)
         if (shouldDrag) {
             if (changingVisit.hasCoAppointments) {
                 const coAppointments = []
@@ -139,14 +139,14 @@ class DragVertController extends React.Component {
 function mapStateToProps(state) {
     const {
         calendar: { appointments, reservedTime },
-        staff: { timetable },
+        staff: { timetable, staff },
         appointment: {
             changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
         }
     } = state;
 
     return {
-        appointments, reservedTime, timetable, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
+        appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
     }
 }
 
