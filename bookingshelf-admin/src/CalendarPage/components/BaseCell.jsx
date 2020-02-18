@@ -29,7 +29,7 @@ class BaseCell extends React.Component {
             if (cellReservedTime) {
                 filledCell = cellReservedTime;
             } else {
-                filledCell = this.getCellEmpty(props.workingStaffElement, { selectedDaysKey: props.selectedDaysKey, time: props.time }, props.getCellTime);
+                filledCell = this.getCellEmpty(props);
             }
         }
         const currentCellTime = getCurrentCellTime(props.selectedDays, props.selectedDaysKey, props.time);
@@ -84,7 +84,7 @@ class BaseCell extends React.Component {
         if (filledCell) {
             this.setState({ ...filledCell })
         } else {
-            filledCell = this.getCellEmpty(props.workingStaffElement, { selectedDaysKey: props.selectedDaysKey, time: props.time}, props.getCellTime);
+            filledCell = this.getCellEmpty(props);
 
             if ((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) {
                 this.setState( { ...filledCell });
@@ -94,12 +94,14 @@ class BaseCell extends React.Component {
         }
     }
 
-    getCellEmpty(workingStaffElement, timeProps, getCellTime) {
-        const { selectedDaysKey, time } = timeProps;
+    getCellEmpty(props) {
+        const { workingStaffElement, selectedDaysKey, time , getCellTime, appointments, staffKey, checkForCostaffs } = props
         const currentTime = getCellTime({ selectedDaysKey, time });
+
         let notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
             return (currentTime >= currentTimetable.startTimeMillis && currentTime < currentTimetable.endTimeMillis
                 && currentTime>=parseInt(moment().subtract(1, 'week').format('x')))
+            && checkForCostaffs({ appointments, staffKey, currentTime })
         });
 
         if (notExpired) {

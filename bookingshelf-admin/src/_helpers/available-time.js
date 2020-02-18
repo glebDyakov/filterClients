@@ -15,17 +15,32 @@ export const checkIsOnAnotherVisit = (staffWithAppointments, interval) => {
     )
 };
 
-export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck = null) => {
+export const getStaffListWithAppointments = ({ appointments, staffWithTimetable, staff, excludeCurrentStaff }) => {
+    const staffAll = excludeCurrentStaff ? [] : [staffWithTimetable];
+
+    const activeStaff = staff && staff.find(item => item.staffId === staffWithTimetable.staffId);
+    const costaffs = activeStaff && activeStaff.costaffs;
+    if (costaffs) {
+        costaffs.forEach(item => {
+            staffAll.push(item)
+        })
+    }
+
+    return appointments && appointments.filter(item => staffAll.some(currentStaff => (item.staff && item.staff.staffId) === currentStaff.staffId))
+}
+
+export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointments, reservedTimes, staff, extraCheck = null) => {
     const intervals = []
 
     for(let i = startTime; i < endTime; i+= 15 * 60000) {
         intervals.push(i)
     }
-    const staffWithAppointments = appointments && appointments.find(item => (item.staff && item.staff.staffId) === staffWithTimetable.staffId)
     const staffWithReservedTimes = reservedTimes && reservedTimes.find(item => (item.staff && item.staff.staffId) === staffWithTimetable.staffId)
 
+    const staffListWithAppointments = getStaffListWithAppointments({ appointments, staffWithTimetable, staff });
+
     return intervals.every(interval => {
-        const isOnAnotherVisit = checkIsOnAnotherVisit(staffWithAppointments, interval);
+        const isOnAnotherVisit = staffListWithAppointments.some(staffWithAppointments => checkIsOnAnotherVisit(staffWithAppointments, interval));
         const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTimes, interval);
 
         return staffWithTimetable && staffWithTimetable.timetables && staffWithTimetable.timetables.some(time => {
@@ -36,12 +51,12 @@ export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointm
     });
 };
 
-export const getNearestAvailableTime = (startTime, endTime, timetableItems, appointments, reservedTimes, extraCheck) => {
+export const getNearestAvailableTime = (startTime, endTime, timetableItems, appointments, reservedTimes, staff, extraCheck) => {
     let availableCellTime = endTime;
     endTime = endTime + (15 * 60000);
-    const isNextCellAvailable = timetableItems.every(staffWithTimetable => isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, extraCheck))
+    const isNextCellAvailable = timetableItems.every(staffWithTimetable => isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTimes, staff, extraCheck))
     if (isNextCellAvailable) {
-        availableCellTime = getNearestAvailableTime(startTime, endTime, timetableItems, appointments, reservedTimes, extraCheck)
+        availableCellTime = getNearestAvailableTime(startTime, endTime, timetableItems, appointments, reservedTimes, staff, extraCheck)
     }
 
     return availableCellTime

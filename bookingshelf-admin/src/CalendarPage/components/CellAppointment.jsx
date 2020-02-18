@@ -33,6 +33,7 @@ const CellAppointment = (props) => {
         selectedDays,
         selectedDaysKey,
         time,
+        staff,
         updateAppointmentForDeleting
     } = props;
 
@@ -88,7 +89,7 @@ const CellAppointment = (props) => {
         .filter(item => item.staffId === workingStaffElement.staffId || (appointment.coStaffs && staffList.some(coStaff => coStaff.staff.staffId === item.staffId)))
 
     const isOwnInterval = i => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (totalDuration * 1000)) > i
-    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems, appointments, reservedTime, isOwnInterval);
+    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems, appointments, reservedTime, staff, isOwnInterval);
     const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (15 * 60000))) / 1000 / 60 / 15;
     const maxTextAreaHeight = maxTextAreaCellCount * 20;
 
@@ -337,7 +338,7 @@ function mapStateToProps(state) {
             reservedTime,
             isClientNotComeLoading
         },
-        staff: { timetable },
+        staff: { timetable, staff },
         appointment: {
             blickClientId,
             movingVisit,
@@ -349,6 +350,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        staff,
         appointments,
         reservedTime,
         timetable,
