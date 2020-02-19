@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import TimePicker from 'rc-time-picker';
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 
 import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
@@ -13,12 +14,27 @@ import {calendarActions} from "../../_actions/calendar.actions";
 import ReactPaginate from 'react-paginate';
 import Paginator from "../Paginator";
 import {isAvailableTime} from "../../_helpers/available-time";
+import {clientService} from "../../_services";
 
 
 class AddAppointment extends React.Component {
     constructor(props) {
         super(props);
         const sortedAppointment = props.appointmentEdited ? props.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId) : null
+        const { authentication } = props;
+        let defaultPhoneValue;
+        switch (authentication && authentication.user && authentication.user.countryCode) {
+            case 'RUS':
+                defaultPhoneValue = '+7';
+                break;
+            case 'UKR':
+                defaultPhoneValue = '+380';
+                break;
+            case 'BLR':
+            default:
+                defaultPhoneValue = '+375';
+
+        }
         this.state = {
             availableCoStaffs: props.staffs && props.staffs.timetable,
             coStaffs: props.appointmentEdited ? (props.appointmentEdited[0].coStaffs || []) : [],
@@ -28,6 +44,25 @@ class AddAppointment extends React.Component {
                 id: -1,
                 service: []
             }],
+            selectedTypeahead: [],
+            typeAheadOptions: {
+                clientName: {
+                    label: 'Имя',
+                    selectedKey: 'firstName',
+                    options: []
+                },
+                clientPhone: {
+                    label: 'Телефон',
+                    selectedKey: 'phone',
+                    options: [],
+                    defaultValue: defaultPhoneValue
+                },
+                clientEmail: {
+                    label: 'Email',
+                    selectedKey: 'email',
+                    options: []
+                }
+            },
             allPrice: 0,
             servicesSearch: '',
             staffs: props.staffs,
@@ -55,6 +90,7 @@ class AddAppointment extends React.Component {
         };
 
         this.addAppointment=this.addAppointment.bind(this);
+        this.handleTypeaheadSelect=this.handleTypeaheadSelect.bind(this);
         this.handleDurationChange=this.handleDurationChange.bind(this);
         this.getAppointments=this.getAppointments.bind(this);
         this.setStaff=this.setStaff.bind(this);
@@ -80,6 +116,7 @@ class AddAppointment extends React.Component {
         this.handlePageClickAppointments = this.handlePageClickAppointments.bind(this);
         this.getInfo = this.getInfo.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
@@ -328,7 +365,30 @@ class AddAppointment extends React.Component {
             });
     }
 
+    handleTypeaheadSearch(name, value) {
+        if (name === 'clientPhone') {
+            value = value.replace(/[+]/g, '');
+            value = `+${value}`;
+        }
 
+        debugger
+        this.setState({ [name]: value, isLoadingTypeahead: true })
+        clientService.getClientV2(1, value.replace(/[+]/g, ''), false, 5)
+            .then(data => {
+                const { typeAheadOptions } = this.state;
+                const newOptions = data.content && data.content
+                this.setState({ typeAheadOptions: { ...typeAheadOptions, [name]: { ...typeAheadOptions[name], options: newOptions } }, isLoadingTypeahead: false })
+            })
+    }
+
+    handleTypeaheadSelect(value) {
+        let clientProps = {};
+        if (value.length) {
+            clientProps = { clientName: value[0].firstName, clientPhone: value[0].phone, clientEmail: value[0].email }
+            this.checkUser(value[0])
+        }
+        this.setState({ selectedTypeahead: value, ...clientProps});
+    }
 
     addNewService(){
         const { appointment, serviceCurrent, services } = this.state;
@@ -717,10 +777,11 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, clients: clientsFromProps, services: servicesFromProps, selectedDay } =this.props;
+        const { status, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
-            allClients, servicesSearch, coStaffs, isAddCostaff, availableCoStaffs
+            servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
+            isLoadingTypeahead
         } = this.state;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
@@ -959,48 +1020,75 @@ class AddAppointment extends React.Component {
 
                                         <div className="calendar">
 
-                                            {!clientChecked && !edit_appointment &&
-                                                <div className="list-block-right mb-3">
+                                            {!edit_appointment &&
+                                                <div className="mb-3">
 
+                                                    {/*<div className="row">*/}
+                                                    {/*    <div className="col-sm-12">*/}
+                                                    {/*        <p className="title mb-3">Добавить клиента</p></div>*/}
+                                                    {/*    <div className="client-title">*/}
+                                                    {/*        <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>*/}
+                                                    {/*    </div>*/}
+                                                    {/*</div>*/}
+                                                    {/*<div className="search dropdown row">*/}
+                                                    {/*    <form className="col-sm-12 form-inline" data-toggle="dropdown">*/}
+                                                    {/*        <input type="search" placeholder="Поиск по имени, номеру тел., имейлу" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>*/}
+                                                    {/*        <button className="search-icon" type="button"></button>*/}
+
+                                                    {/*    </form>*/}
+                                                    {/*</div>*/}
                                                     <div className="row">
-                                                        <div className="col-sm-12">
-                                                            <p className="title mb-3">Добавить клиента</p></div>
-                                                        <div className="client-title">
-                                                            <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="search dropdown row">
-                                                        <form className="col-sm-12 form-inline" data-toggle="dropdown">
-                                                            <input type="search" placeholder="Поиск по имени, номеру тел., имейлу" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
-                                                            <button className="search-icon" type="button"></button>
+                                                        {Object.entries(typeAheadOptions).map(item => {
+                                                            const key = item[0]
+                                                            const value = item[1]
 
-                                                        </form>
+                                                            return (
+
+                                                                <div key={key} className="col-12 typeahead-wrapper">
+                                                                    <p>{value.label}</p>
+                                                                    <AsyncTypeahead
+                                                                        isLoading={isLoadingTypeahead}
+                                                                        onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
+                                                                        value={this.state[key]}
+                                                                        defaultInputValue={value.defaultValue}
+                                                                        id={key}
+                                                                        onChange={this.handleTypeaheadSelect}
+                                                                        options={value.options}
+                                                                        labelKey={value.selectedKey}
+                                                                        minLength={3}
+                                                                        placeholder=""
+                                                                        onSearch={(value) => this.handleTypeaheadSearch(key, value)}
+                                                                        selected={selectedTypeahead}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        })}
                                                     </div>
-                                                    <ul>
-                                                        { clients.client && clients.client.map((client_user, i) =>
-                                                                <li key={i}>
-                                                                    <div className="row mb-3">
-                                                                        <div className="col-7 clients-list">
-                                                                            <span className="abbreviation">{client_user.firstName ? client_user.firstName.substr(0, 1) : ''}</span>
-                                                                            <span className="name_container">{client_user.firstName} {client_user.lastName}
-                                                                                {access(12) && (
-                                                                                    <React.Fragment>
-                                                                                        <span className="email-user">{client_user.email}</span>
-                                                                                        <span className="email-user">{client_user.phone}</span>
-                                                                                    </React.Fragment>
-                                                                                )}
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="col-5">
-                                                                            <label className="add-person">
-                                                                                <input className="form-check-input" type="checkbox" checked={clientChecked && clientChecked.clientId && (client_user.clientId===clientChecked.clientId)} onChange={()=>this.checkUser(client_user)}/>
-                                                                                <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                        )}
-                                                    </ul>
+                                                    {/*<ul>*/}
+                                                    {/*    { clients.client && clients.client.map((client_user, i) =>*/}
+                                                    {/*            <li key={i}>*/}
+                                                    {/*                <div className="row mb-3">*/}
+                                                    {/*                    <div className="col-7 clients-list">*/}
+                                                    {/*                        <span className="abbreviation">{client_user.firstName ? client_user.firstName.substr(0, 1) : ''}</span>*/}
+                                                    {/*                        <span className="name_container">{client_user.firstName} {client_user.lastName}*/}
+                                                    {/*                            {access(12) && (*/}
+                                                    {/*                                <React.Fragment>*/}
+                                                    {/*                                    <span className="email-user">{client_user.email}</span>*/}
+                                                    {/*                                    <span className="email-user">{client_user.phone}</span>*/}
+                                                    {/*                                </React.Fragment>*/}
+                                                    {/*                            )}*/}
+                                                    {/*                        </span>*/}
+                                                    {/*                    </div>*/}
+                                                    {/*                    <div className="col-5">*/}
+                                                    {/*                        <label className="add-person">*/}
+                                                    {/*                            <input className="form-check-input" type="checkbox" checked={clientChecked && clientChecked.clientId && (client_user.clientId===clientChecked.clientId)} onChange={()=>this.checkUser(client_user)}/>*/}
+                                                    {/*                            <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>*/}
+                                                    {/*                        </label>*/}
+                                                    {/*                    </div>*/}
+                                                    {/*                </div>*/}
+                                                    {/*            </li>*/}
+                                                    {/*    )}*/}
+                                                    {/*</ul>*/}
                                                     <div style={{ display: 'flex', justifyContent: 'center'}}>
                                                         {(this.search && this.search.value.length > 0) && !clients.client &&
                                                             <span>Поиск результатов не дал</span>}
@@ -1031,24 +1119,24 @@ class AddAppointment extends React.Component {
                                             }
                                             {cl &&
                                                 <div className="client-info content-pages-bg">
-                                                    <div className="client-title">
-                                                        <p>Клиент</p>
-                                                        <div className="img-create-client" onClick={(e) => this.newClient(null, e)} />
-                                                    </div>
+                                                    {/*<div className="client-title">*/}
+                                                    {/*    <p>Клиент</p>*/}
+                                                    {/*    <div className="img-create-client" onClick={(e) => this.newClient(null, e)} />*/}
+                                                    {/*</div>*/}
                                                     <div className="clients-list pt-4 pl-4 pr-4">
-                                                        <div className="client">
-                                                            <span
-                                                                className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>
-                                                            <span
-                                                                className="name_container">{cl.firstName} {cl.lastName}
-                                                                {access(12) && (
-                                                                    <React.Fragment>
-                                                                        <span className="email-user">{cl.email}</span>
-                                                                        <span className="email-user">{cl.phone}</span>
-                                                                    </React.Fragment>
-                                                                )}
-                                                            </span>
-                                                        </div>
+                                                        {/*<div className="client">*/}
+                                                        {/*    <span*/}
+                                                        {/*        className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>*/}
+                                                        {/*    <span*/}
+                                                        {/*        className="name_container">{cl.firstName} {cl.lastName}*/}
+                                                        {/*        {access(12) && (*/}
+                                                        {/*            <React.Fragment>*/}
+                                                        {/*                <span className="email-user">{cl.email}</span>*/}
+                                                        {/*                <span className="email-user">{cl.phone}</span>*/}
+                                                        {/*            </React.Fragment>*/}
+                                                        {/*        )}*/}
+                                                        {/*    </span>*/}
+                                                        {/*</div>*/}
                                                         <div className="row">
                                                             <div className="col-6">
                                                                 <strong>{cl.appointments && cl.appointments.length}</strong>
@@ -1149,9 +1237,9 @@ class AddAppointment extends React.Component {
                                                     <span className="closer" />
                                                 </div>
                                             }
-                                            <button className="button text-center button-absolute float-right create-client" type="button"  onClick={(e)=>this.newClient(null, e)}>
-                                                Создать клиента
-                                            </button>
+                                            {/*<button className="button text-center button-absolute float-right create-client" type="button"  onClick={(e)=>this.newClient(null, e)}>*/}
+                                            {/*    Создать клиента*/}
+                                            {/*</button>*/}
                                         </div>
 
                                     </div>
@@ -1181,7 +1269,7 @@ class AddAppointment extends React.Component {
     }
 
     removeCheckedUser(){
-        this.setState({ clientChecked: null });
+        this.setState({ clientChecked: null, clientName: null, clientPhone: null, clientEmail: null, selectedTypeahead: [] });
     }
 
     editClient(client){
@@ -1196,11 +1284,19 @@ class AddAppointment extends React.Component {
     }
 
     addAppointment (){
-        const {appointment, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
+        const {appointment, clientName, clientPhone, clientEmail, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
-
+        let clientProps = {}
+        if (clientName || clientPhone || clientEmail) {
+            clientProps = {
+                clientName,
+                clientPhone,
+                clientEmail
+            }
+        }
         let appointmentNew = appointment.map((item, i) => { return {...item,
+            ...clientProps,
             serviceId: serviceCurrent[i].id} });
 
         this.setState({

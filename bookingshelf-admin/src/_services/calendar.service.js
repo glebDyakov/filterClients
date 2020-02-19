@@ -38,7 +38,7 @@ function addAppointment(params, serviceId, staffId, clientId, coStaffs) {
         extraStaffIds +=`,${item.staffId}`
     })
 
-    return fetch(`${config.apiUrl}/staffs/${staffId}${extraStaffIds}/${!!clientId ? `clients/${clientId}/` : ''}appointments`, requestOptions)
+    return fetch(`${config.apiUrl}/staffs/${staffId}${extraStaffIds}/appointments`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(appointment => {
             return appointment;

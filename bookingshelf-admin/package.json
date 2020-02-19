@@ -30,6 +30,7 @@
     "react-beautiful-dnd": "^12.2.0",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-timezone-picker": "^1.0.12",
+    "react-bootstrap-typeahead": "^3.4.7",
     "react-chartjs-2": "^2.7.6",
     "react-day-picker": "^7.3.0",
     "react-device-detect": "^1.11.14",

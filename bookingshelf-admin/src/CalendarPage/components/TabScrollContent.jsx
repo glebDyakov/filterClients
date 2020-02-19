@@ -51,13 +51,9 @@ class TabScroll extends React.Component{
             let startTime = (parseInt(moment(minTime).format('HH')) * 60) + parseInt(moment(minTime).format('mm'));
             let endTime = (parseInt(moment(maxTime).format('HH')) * 60) + parseInt(moment(maxTime).format('mm'));
 
-            let startNumber = startTime % 60
-                ? (startTime - parseInt(moment(minTime).format('mm')))
-                : (startTime - 60);
+            let startNumber = startTime - parseInt(moment(minTime).format('mm'))
 
-            let endNumber = endTime % 60
-                ? (endTime - parseInt(moment(maxTime).format('mm')) + 60)
-                : (endTime + 60);
+            let endNumber = endTime - parseInt(moment(maxTime).format('mm')) + 60
 
             for (let i = startNumber; i < endNumber; i = i + 15) {
                 numbers.push(moment().startOf('day').add(i, 'minutes').format('HH:mm'));
