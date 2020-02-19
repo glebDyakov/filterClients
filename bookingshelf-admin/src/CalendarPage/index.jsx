@@ -669,7 +669,6 @@ class Index extends PureComponent {
 
             url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(currentWorkingStaff)).staffId}/${moment(selectedDays[0]).format('DD-MM-YYYY')}/${moment(selectedDays[6]).format('DD-MM-YYYY')}`;
         }
-        debugger
         const { startTime, endTime } = this.getSelectedTimeRange(selectedDays, type);
 
         this.setState(newState, () => this.props.dispatch(cellActions.togglePayload({ selectedDays })));

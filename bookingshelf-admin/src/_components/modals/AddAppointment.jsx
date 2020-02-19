@@ -367,11 +367,10 @@ class AddAppointment extends React.Component {
 
     handleTypeaheadSearch(name, value) {
         if (name === 'clientPhone') {
-            value = value.replace(/[+]/g, '');
+            value = value.replace(/[+() ]/g, '');
             value = `+${value}`;
         }
 
-        debugger
         this.setState({ [name]: value, isLoadingTypeahead: true })
         clientService.getClientV2(1, value.replace(/[+]/g, ''), false, 5)
             .then(data => {
