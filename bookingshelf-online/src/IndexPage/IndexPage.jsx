@@ -438,6 +438,7 @@ class IndexPage extends PureComponent {
 
                     {screen === 6 && ((newAppointments && !!newAppointments.length) || movedVisitSuccess) && !error &&
                     <TabSix
+                        info={info}
                         match={match}
                         movedVisitSuccess={movedVisitSuccess}
                         movingVisit={movingVisit}

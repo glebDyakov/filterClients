@@ -29,7 +29,7 @@ class TabSix extends  PureComponent {
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments, getDurationForCurrentStaff,
-            setScreen,refreshTimetable,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
+            setScreen,refreshTimetable, info,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
         const {approveF, allVisits} = this.state;
 
         let serviceInfo = null
@@ -109,6 +109,13 @@ class TabSix extends  PureComponent {
                     fontSize: '12px',
                     marginBottom: '8px'
                 }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
+
+                {info && info.appointmentMessage && <p style={{
+                    textDecoration: 'underline',
+                    textAlign: 'center',
+                    fontSize: '12px',
+                    marginBottom: '8px'
+                }}>{info.appointmentMessage}</p>}
 
                 {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
                     <p style={{

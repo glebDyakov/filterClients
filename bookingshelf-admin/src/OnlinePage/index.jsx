@@ -22,10 +22,12 @@ class Index extends Component {
             selectedDay: moment().utc().toDate(),
             urlButton: false,
             isOnlineZapisOnDropdown: false,
+            appointmentMessage: '',
             status: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleMessageChange = this.handleMessageChange.bind(this);
         this.toggleDropdown = this.toggleDropdown.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -51,6 +53,7 @@ class Index extends Component {
                 selectedDay: newProps.company.settings.onlineZapisOn
                     ? this.state.selectedDay
                     : moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate(),
+                appointmentMessage: newProps.company.settings.appointmentMessage,
                 onlineZapisEndTimeMillis: newProps.company.settings.onlineZapisOn
                     ? parseInt(moment(this.state.selectedDay).format('x'))
                     : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
@@ -96,10 +99,15 @@ class Index extends Component {
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
     }
 
+    handleMessageChange({ target : { name, value }}) {
+        this.setState({ [name]: value })
+    }
+
     handleSubmit() {
-        const { onlineZapisEndTimeMillis, onlineZapisOn } = this.state;
+        const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
         this.props.dispatch(companyActions.add({
             ...this.props.company.settings,
+            appointmentMessage,
             onlineZapisEndTimeMillis,
             onlineZapisOn
         }));
@@ -172,7 +180,7 @@ class Index extends Component {
 
     render() {
         const { company } = this.props
-        const { booking, submitted, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
+        const { booking, submitted, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
@@ -349,7 +357,20 @@ class Index extends Component {
 
                             </div>
                             <div className=" content-pages-bg p-4 mb-3 h-auto">
-                                <p className="title mb-3">Ограничить время онлайн-записи</p>
+                                <p className="title mb-2">
+                                    Дополнительное сообщение в онлайн-записи
+                                    <div className="questions_black ml-1" onClick={() => this.toggleDropdown("isOnlineZapisMessageDropdown")}>
+                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
+                                        {this.state.isOnlineZapisMessageDropdown && <span className="questions_dropdown">
+                                                                        Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства.
+                                                                    </span>}
+                                    </div>
+                                </p>
+                                <textarea className="mb-3" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
+
+
+
+                                <p className="title mb-2">Ограничить время онлайн-записи</p>
                                 <div className="check-box">
                                     <label>
                                         <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
