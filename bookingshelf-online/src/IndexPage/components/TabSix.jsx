@@ -112,8 +112,9 @@ class TabSix extends  PureComponent {
 
                 {info && info.appointmentMessage && <p style={{
                     textDecoration: 'underline',
+                    fontWeight: 'bold',
                     textAlign: 'center',
-                    fontSize: '12px',
+                    fontSize: '13px',
                     marginBottom: '8px'
                 }}>{info.appointmentMessage}</p>}
 
