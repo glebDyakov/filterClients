@@ -11,6 +11,7 @@ import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
 import {isValidEmailAddress} from "../../_helpers/validators";
 import PhoneInput from "../PhoneInput";
+import Hint from "../Hint";
 
 const staffErrors = {
     emailFound: 'validation.email.found'
@@ -36,16 +37,12 @@ class NewStaff extends React.Component {
             emailIsValid: props.edit && props.edit,
             edit: props.edit && props.edit,
             preview: null,
-            isQuestionsDropdown: false,
-            isCoworkerDropdown: false,
-            isOnlineZapisDropdown: false,
             selectedItems: []
 
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateStaff = this.updateStaff.bind(this);
         this.addStaff = this.addStaff.bind(this);
@@ -60,14 +57,6 @@ class NewStaff extends React.Component {
     onCrop(preview) {
         const {staff}=this.state;
         this.setState({...this.state, staff: {...staff, imageBase64: preview.split(',')[1]} })
-    }
-
-    componentDidUpdate() {
-        if(this.state.isQuestionsDropdown || this.state.isCoworkerDropdown || this.state.isOnlineZapisDropdown) {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
     }
 
     handleOutsideClick() {
@@ -86,10 +75,6 @@ class NewStaff extends React.Component {
         value.map(m=>m.value && st.push({'staffId': m.value}));
 
         this.setState({ staff: {...staff, 'costaffs': st }});
-    }
-
-    toggleDropdown(dropdownKey) {
-        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
     }
 
     render() {
@@ -204,13 +189,7 @@ class NewStaff extends React.Component {
                                                                 <option value="2">Средний</option>
                                                                 <option value="3">Админ</option>
                                                             </select>
-                                                            <p>Напарник <div className="questions_black" onClick={() => this.toggleDropdown("isCoworkerDropdown")}>
-                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                                                    {this.state.isCoworkerDropdown && <span className="questions_dropdown">
-                                                                                Например: Если у вас 2 сотрудника на 1 кабинет
-                                                                            </span>}
-                                                                </div>
-                                                            </p>
+                                                            <p>Напарник <Hint hintMessage="Например: Если у вас 2 сотрудника на 1 кабинет" /></p>
                                                             {/*<select className="custom-select" value={staff.costaffs && staff.costaffs[0] && staff.costaffs[0].staffId} name="costaffs" onChange={this.handleChangeCoStaff}>*/}
                                                                 {/*<option value="">-</option>*/}
                                                                 {/*{ staffs && staffs.staff && staffs.staff.map((st)=>(!staff.staffId || (staff.staffId && staff.staffId !== st.staffId)) && <option value={st.staffId}>{st.lastName} {st.firstName}</option>)}*/}
@@ -263,13 +242,7 @@ class NewStaff extends React.Component {
                                                                 {emailInput}
                                                             </div>
                                                             <div className="input_limited_wrapper_3_digital">
-                                                                <p>Описание (специализация) <div className="questions_black" onClick={() => this.toggleDropdown("isQuestionsDropdown")}>
-                                                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                                                        {this.state.isQuestionsDropdown && <span className="questions_dropdown">
-                                                                            Например: Массажист высшей категории
-                                                                        </span>}
-                                                                    </div>
-                                                                </p>
+                                                                <p>Описание (специализация) <Hint hintMessage="Например: Массажист высшей категории" /></p>
 
                                                                 <input
                                                                     type="text"
@@ -289,12 +262,7 @@ class NewStaff extends React.Component {
                                                                     <span className="check"/>
                                                                     Включить онлайн запись
                                                                 </label>&nbsp;
-                                                                <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisDropdown")}>
-                                                                    <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                                                    {this.state.isOnlineZapisDropdown && <span className="questions_dropdown">
-                                                                                    Включает возможность записи к сотруднику через онлайн-запись
-                                                                                </span>}
-                                                                </div>
+                                                                <Hint hintMessage="Включает возможность записи к сотруднику через онлайн-запись" />
                                                             </div>
 
 
