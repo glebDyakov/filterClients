@@ -1,19 +1,11 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 
-class TabScrollLeftMenu extends PureComponent {
-    render(){
-        const { time } = this.props;
+const TabScrollLeftMenu = (props) => (
+    <div className="cell expired">
+        <div className={'cell hours' + (props.time.split(':')[1] === '00' ? '' : ' minutes')}>
+            <span>{props.time}</span>
+        </div>
+    </div>
+);
 
-        return(
-            <div className="cell expired">
-                {time.split(':')[1] === '00' ?
-                    <div className={"cell hours" + " "}>
-                        <span>{time}</span></div>
-                    : <div className="cell hours minutes">
-                        <span>{time}</span></div>
-                }
-            </div>
-        );
-    }
-}
-export default TabScrollLeftMenu;
+export default React.memo(TabScrollLeftMenu);

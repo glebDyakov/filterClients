@@ -9,6 +9,7 @@ import {paymentsActions, companyActions} from "../_actions";
 import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import {staffActions} from "../_actions/staff.actions";
 
 
 class Index extends Component {
@@ -63,6 +64,8 @@ class Index extends Component {
         this.props.dispatch(paymentsActions.getPackets());
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
+        } else {
+            this.props.dispatch(staffActions.get());
         }
         if (this.props.authentication.user && this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
@@ -87,6 +90,9 @@ class Index extends Component {
         if (JSON.stringify(this.props.payments.activeInvoice) !== JSON.stringify(newProps.payments.activeInvoice)) {
             this.repeatPayment(newProps.payments.activeInvoice.invoiceId)
         }
+        if (JSON.stringify(this.props.payments.packets) !== JSON.stringify(newProps.payments.packets)) {
+            this.calculateRate(newProps.payments.packets)
+        }
         if (newProps.payments.confirmationUrl && (this.props.payments.confirmationUrl !== newProps.payments.confirmationUrl)) {
             this.setState({ invoiceSelected: false })
         }
@@ -98,7 +104,6 @@ class Index extends Component {
     setDefaultWorkersCount(staff) {
         const count = staff ? staff.length : -1;
         if (count <= 10) {
-            this.setState({ rate: { ...this.state.rate, workersCount: count }})
         } else if (count > 10 && count <= 20) {
             this.rateChangeSpecialWorkersCount('to 20')
         } else if (count > 20 && count <= 30) {
@@ -106,7 +111,7 @@ class Index extends Component {
         } else {
             this.rateChangeSpecialWorkersCount('from 30')
         }
-        this.setState({ staffCount: count })
+        this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
     }
 
     AddingInvoice() {
@@ -218,28 +223,33 @@ class Index extends Component {
         this.setState({rate: {...this.state.rate, period: value}});
     }
 
-    calculateRate() {
+    calculateRate(packets = this.props.payments.packets) {
         const {workersCount, specialWorkersCount, period} = this.state.rate;
         const {countryCode} = this.state.country;
+
+        const priceTo20packet =  (packets && packets.find(item => item.packetId ===11) || {})
+        const priceTo30packet =  (packets && packets.find(item => item.packetId ===12) || {})
+        const priceFrom30packet =  (packets && packets.find(item => item.packetId ===13) || {})
+
         let finalPrice = 0, finalPriceMonth = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
         let priceForOneWorker = 5;
 
-        if (countryCode && countryCode === 'BLR') {
-            priceTo20 = 60;
-            priceTo30 = 70;
-            priceFrom30 = 80;
-            priceForOneWorker = 5;
-        } else if (countryCode && countryCode === 'UKR') {
-            priceTo20 = 760;
-            priceTo30 = 895;
-            priceFrom30 = 1020;
+        if (countryCode && countryCode === 'UKR') {
+            priceTo20 = priceTo20packet.price || 760;
+            priceTo30 = priceTo30packet.price || 895;
+            priceFrom30 = priceFrom30packet.price || 1020;
             priceForOneWorker = 60;
         } else if (countryCode && countryCode === 'RUS') {
-            priceTo20 = 1800;
-            priceTo30 = 2100;
-            priceFrom30 = 2400;
+            priceTo20 = priceTo20packet.price || 1800;
+            priceTo30 = priceTo30packet.price || 2100;
+            priceFrom30 = priceFrom30packet.price || 2400;
             priceForOneWorker = 160;
+        } else {
+            priceTo20 = priceTo20packet.price || 60;
+            priceTo30 = priceTo30packet.price || 70;
+            priceFrom30 = priceFrom30packet.price || 80;
+            priceForOneWorker = 5;
         }
 
         switch (period) {
