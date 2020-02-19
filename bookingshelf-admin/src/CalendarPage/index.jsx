@@ -162,7 +162,7 @@ class Index extends PureComponent {
 
     queryInitData() {
         const { selectedDays } = this.state;
-        const { startTime, endTime } = this.getSelectedTimeRange()
+        const { startTime, endTime } = this.getSelectedTimeRange(selectedDays)
 
         this.getTimetable(null, moment(selectedDays[0]), true);
 
@@ -181,8 +181,7 @@ class Index extends PureComponent {
         this.refreshTable(startTime, endTime);
 
         setTimeout(() => {
-            const {selectedDay} = this.state;
-            if (!this.props.scrollableAppointmentId && (moment(selectedDay).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+            if (!this.props.scrollableAppointmentId && (moment(selectedDays[0]).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
                 this.navigateToRedLine();
             }
         }, 500);
@@ -402,6 +401,7 @@ class Index extends PureComponent {
                         <DatePicker
                             closedDates={staff.closedDates}
                             type={type}
+                            selectedDay={selectedDays[0]}
                             selectedDays={selectedDays}
                             showPrevWeek={this.showPrevWeek}
                             showNextWeek={this.showNextWeek}

@@ -95,8 +95,8 @@ class BaseCell extends React.Component {
     }
 
     getCellEmpty(props) {
-        const { workingStaffElement, selectedDaysKey, time , getCellTime, appointments, staffKey, checkForCostaffs } = props
-        const currentTime = getCellTime({ selectedDaysKey, time });
+        const { workingStaffElement, selectedDaysKey, time , selectedDays, appointments, staffKey, checkForCostaffs } = props
+        const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
 
         let notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some(currentTimetable => {
             return (currentTime >= currentTimetable.startTimeMillis && currentTime < currentTimetable.endTimeMillis
@@ -112,7 +112,7 @@ class BaseCell extends React.Component {
     }
 
     getCellFilled(props) {
-        const { cellType, workingStaffElement, numbers, numberKey, selectedDaysKey, time, getCellTime } = props
+        const { cellType, workingStaffElement, numbers, numberKey, selectedDaysKey, time, selectedDays } = props
 
         let uniqConditions = {}
 
@@ -144,7 +144,7 @@ class BaseCell extends React.Component {
         );
         const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey].find(checkingItem => {
             const checkingTime = checkingItem[checkingTimeKey]
-            return getCellTime({ selectedDaysKey, time }) <= parseInt(checkingTime) && getCellTime({ selectedDaysKey, time: numbers[numberKey + 1] }) > parseInt(checkingTime)
+            return getCurrentCellTime(selectedDays, selectedDaysKey, time) <= parseInt(checkingTime) && getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1]) > parseInt(checkingTime)
         });
 
         if (exists(cell)) {
@@ -173,7 +173,7 @@ class BaseCell extends React.Component {
             handleUpdateClient,
             updateAppointmentForDeleting,
             closedDates,
-            getCellTime
+            selectedDays
         } = this.props;
 
 
@@ -202,7 +202,7 @@ class BaseCell extends React.Component {
         }
 
         let notExpired = cellType === cellTypes.CELL_WHITE;
-        const day = getCellTime({ selectedDaysKey, time: '00:00' });
+        const day = getCurrentCellTime(selectedDays, selectedDaysKey, '00:00');
         let clDate = closedDates && closedDates.some((st) =>
             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
             parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));

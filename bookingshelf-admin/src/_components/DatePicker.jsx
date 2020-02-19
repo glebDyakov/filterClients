@@ -59,20 +59,20 @@ class DatePicker extends PureComponent {
     }
 
     handleLeftArrowClick() {
-        const { type, selectedDays } = this.props;
+        const { type, selectedDay } = this.props;
         this.showCalendar(false);
         if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDays[0]).subtract(1, 'day'), {});
+            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
         } else {
             this.props.showPrevWeek();
         }
     }
 
     handleRightArrowClick() {
-        const { type, selectedDays } = this.props;
+        const { type, selectedDay } = this.props;
         this.showCalendar(false);
         if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDays[0]).add(1, 'day'), {});
+            this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
         } else {
             this.props.showNextWeek();
         }
@@ -92,7 +92,7 @@ class DatePicker extends PureComponent {
     };
 
     render() {
-        const { type, selectedDays, closedDates, dayPickerProps = {} } = this.props;
+        const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
         const { opacity, hoverRange } = this.state;
         let weekProps = {};
         let selectedDaysText;
@@ -104,7 +104,7 @@ class DatePicker extends PureComponent {
 
             selectedDaysText = (
                 <React.Fragment>
-                    {moment(selectedDays[0]).format('dd, DD MMMM YYYY')}
+                    {moment(selectedDay).format('dd, DD MMMM YYYY')}
                     {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
                 </React.Fragment>
             );
@@ -143,23 +143,23 @@ class DatePicker extends PureComponent {
             <div className="select-date">
                 <div className="select-inner">
                     <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
-                        <div className="button-calendar" onClick={()=>this.showCalendar(true)}>
-                            <span className="dates-full-width text-capitalize date-num" >
-                                {selectedDaysText}
-                            </span>
-                            <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
-                                <i className="datepicker--pointer"></i>
-                                <DayPicker
-                                    selectedDays={selectedDays}
-                                    onDayClick={(date) => this.handleLocalDayClick(date)}
-                                    localeUtils={MomentLocaleUtils}
-                                    showOutsideDays
-                                    locale={'ru'}
-                                    {...weekProps}
-                                    {...dayPickerProps}
-                                />
-                            </div>
+                    <div className="button-calendar" onClick={()=>this.showCalendar(true)}>
+                        <span className="dates-full-width text-capitalize date-num" >
+                            {selectedDaysText}
+                        </span>
+                        <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
+                            <i className="datepicker--pointer"></i>
+                            <DayPicker
+                                selectedDays={selectedDays}
+                                onDayClick={(date) => this.handleLocalDayClick(date)}
+                                localeUtils={MomentLocaleUtils}
+                                showOutsideDays
+                                locale={'ru'}
+                                {...weekProps}
+                                {...dayPickerProps}
+                            />
                         </div>
+                    </div>
                     <span className="arrow-right" onClick={() => this.handleRightArrowClick()}/>
                 </div>
             </div>

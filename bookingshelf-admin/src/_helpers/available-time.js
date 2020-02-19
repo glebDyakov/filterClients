@@ -26,7 +26,7 @@ export const getStaffListWithAppointments = ({ appointments, staffWithTimetable,
         })
     }
 
-    return appointments && appointments.filter(item => staffAll.some(currentStaff => (item.staff && item.staff.staffId) === currentStaff.staffId))
+    return appointments ? appointments.filter(item => staffAll.some(currentStaff => (item.staff && item.staff.staffId) === currentStaff.staffId)) : []
 }
 
 export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointments, reservedTimes, staff, extraCheck = null) => {
@@ -40,7 +40,7 @@ export const isAvailableTime = (startTime, endTime, staffWithTimetable, appointm
     const staffListWithAppointments = getStaffListWithAppointments({ appointments, staffWithTimetable, staff });
 
     return intervals.every(interval => {
-        const isOnAnotherVisit = staffListWithAppointments.some(staffWithAppointments => checkIsOnAnotherVisit(staffWithAppointments, interval));
+        const isOnAnotherVisit = staffListWithAppointments && staffListWithAppointments.some(staffWithAppointments => checkIsOnAnotherVisit(staffWithAppointments, interval));
         const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTimes, interval);
 
         return staffWithTimetable && staffWithTimetable.timetables && staffWithTimetable.timetables.some(time => {
