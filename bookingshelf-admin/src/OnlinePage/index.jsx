@@ -6,6 +6,7 @@ import {companyActions} from "../_actions";
 import {access} from "../_helpers/access";
 import {DatePicker} from "../_components/DatePicker";
 import moment from 'moment';
+import Hint from "../_components/Hint";
 
 class Index extends Component {
     constructor(props) {
@@ -21,14 +22,12 @@ class Index extends Component {
             booking: props.company && props.company.booking,
             selectedDay: moment().utc().toDate(),
             urlButton: false,
-            isOnlineZapisOnDropdown: false,
             appointmentMessage: '',
             status: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleMessageChange = this.handleMessageChange.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
@@ -127,14 +126,6 @@ class Index extends Component {
         this.props.dispatch(companyActions.getBookingInfo());
     }
 
-    componentDidUpdate() {
-        if(this.state.isOnlineZapisOnDropdown) {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-    }
-
     handleOutsideClick() {
         this.setState({
             isOnlineZapisOnDropdown: false,
@@ -173,10 +164,6 @@ class Index extends Component {
         e.target.focus();
         this.setState({ copySuccess: 'Copied!' });
     };
-
-    toggleDropdown(key) {
-        this.setState({[key]: !this.state[key]})
-    }
 
     render() {
         const { company } = this.props
@@ -359,12 +346,7 @@ class Index extends Component {
                             <div className=" content-pages-bg p-4 mb-3 h-auto">
                                 <p className="title mb-2">
                                     Дополнительное сообщение в онлайн-записи
-                                    <div className="questions_black ml-1" onClick={() => this.toggleDropdown("isOnlineZapisMessageDropdown")}>
-                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                        {this.state.isOnlineZapisMessageDropdown && <span className="questions_dropdown">
-                                                                        Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства.
-                                                                    </span>}
-                                    </div>
+                                    <Hint hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
                                 </p>
                                 <textarea className="mb-3" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
 
@@ -377,12 +359,7 @@ class Index extends Component {
                                         <span className="check"/>
                                         Включить ограничение
                                     </label>&nbsp;
-                                    <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisOnDropdown")}>
-                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                        {this.state.isOnlineZapisOnDropdown && <span className="questions_dropdown">
-                                                                        По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес.
-                                                                    </span>}
-                                    </div>
+                                    <Hint hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
                                 </div>
                                 {isOnlineZapisChecked && <div className="online-zapis-date-picker mb-3">
                                     <DatePicker

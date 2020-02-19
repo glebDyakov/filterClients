@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
 import { analiticsActions } from "../_actions";
+import Hint from "../_components/Hint";
 
 
 function getDayRange(date) {
@@ -810,12 +811,7 @@ class Index extends Component{
                 <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
                     <div style={{display: 'flex', justifyContent: 'flex-start'}}>
                         <span style={{ width: 'auto'}} className="title-list">Финансовая аналитика</span>
-                        <div style={{paddingLeft: '6px'}} className="questions_black" onClick={() => this.toggleDropdown("isFinancialDropdown")}>
-                            <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                            {this.state.isFinancialDropdown && <span className="questions_dropdown">
-                                                                        Сумма стоимости визитов в журнале записи
-                                                                    </span>}
-                        </div>
+                        <Hint hintMessage="Сумма стоимости визитов в журнале записи" />
                     </div>
                     <div className="chart-inner">
                         <div id="container-chart" className="chart" style={{position:"relative"}}>

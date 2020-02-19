@@ -15,6 +15,9 @@ import ReactPaginate from 'react-paginate';
 import Paginator from "../Paginator";
 import {isAvailableTime} from "../../_helpers/available-time";
 import {clientService} from "../../_services";
+import Hint from "../Hint";
+import {isValidEmailAddress} from "../../_helpers/validators";
+import {isValidNumber} from "libphonenumber-js";
 
 
 class AddAppointment extends React.Component {
@@ -49,18 +52,23 @@ class AddAppointment extends React.Component {
                 clientName: {
                     label: 'Имя',
                     selectedKey: 'firstName',
-                    options: []
+                    options: [],
+                    isValid: (clientNameValue) => this.state.clientPhone ? ((clientNameValue && clientNameValue.length) > 0) : true
                 },
                 clientPhone: {
                     label: 'Телефон',
                     selectedKey: 'phone',
                     options: [],
-                    defaultValue: defaultPhoneValue
+                    defaultValue: defaultPhoneValue,
+                    isValid: (clientPhoneValue) => clientPhoneValue
+                                ? isValidNumber(clientPhoneValue)
+                                : (this.state.clientName ? ((clientPhoneValue && clientPhoneValue.length) > 0) : true)
                 },
                 clientEmail: {
                     label: 'Email',
                     selectedKey: 'email',
-                    options: []
+                    options: [],
+                    isValid: (clientEmailValue) => clientEmailValue ? isValidEmailAddress(clientEmailValue) : true
                 }
             },
             allPrice: 0,
@@ -92,6 +100,7 @@ class AddAppointment extends React.Component {
         this.addAppointment=this.addAppointment.bind(this);
         this.handleTypeaheadSelect=this.handleTypeaheadSelect.bind(this);
         this.handleDurationChange=this.handleDurationChange.bind(this);
+        this.handleTypeaheadInputChange=this.handleTypeaheadInputChange.bind(this);
         this.getAppointments=this.getAppointments.bind(this);
         this.setStaff=this.setStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -115,7 +124,6 @@ class AddAppointment extends React.Component {
         this.updateAppointments = this.updateAppointments.bind(this);
         this.handlePageClickAppointments = this.handlePageClickAppointments.bind(this);
         this.getInfo = this.getInfo.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
         this.handleTypeaheadSearch = this.handleTypeaheadSearch.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
@@ -365,18 +373,22 @@ class AddAppointment extends React.Component {
             });
     }
 
-    handleTypeaheadSearch(name, value) {
-        if (name === 'clientPhone') {
-            value = value.replace(/[+() ]/g, '');
-            value = `+${value}`;
-        }
+    handleTypeaheadInputChange(name, value) {
+        this.setState({ [name]: value })
+    }
 
-        this.setState({ [name]: value, isLoadingTypeahead: true })
-        clientService.getClientV2(1, value.replace(/[+]/g, ''), false, 5)
+    handleTypeaheadSearch(name, value) {
+        this.setState({ isLoadingTypeahead: true });
+        clientService.getClientV2(1, value.replace(/[+()\- ]/g, ''), false, 5)
             .then(data => {
-                const { typeAheadOptions } = this.state;
+                const {typeAheadOptions} = this.state;
                 const newOptions = data.content && data.content
-                this.setState({ typeAheadOptions: { ...typeAheadOptions, [name]: { ...typeAheadOptions[name], options: newOptions } }, isLoadingTypeahead: false })
+                this.setState({
+                    typeAheadOptions: {
+                        ...typeAheadOptions,
+                        [name]: {...typeAheadOptions[name], options: newOptions}
+                    }, isLoadingTypeahead: false
+                })
             })
     }
 
@@ -385,6 +397,8 @@ class AddAppointment extends React.Component {
         if (value.length) {
             clientProps = { clientName: value[0].firstName, clientPhone: value[0].phone, clientEmail: value[0].email }
             this.checkUser(value[0])
+        } else {
+            this.removeCheckedUser();
         }
         this.setState({ selectedTypeahead: value, ...clientProps});
     }
@@ -761,10 +775,6 @@ class AddAppointment extends React.Component {
         this.setState({ coStaffs });
     }
 
-    toggleDropdown(dropdownKey) {
-        this.setState({ [dropdownKey]: !this.state[dropdownKey] });
-    }
-
     goToPageCalendar(appointment, appointmentStaffId){
         $('.client-detail').modal('hide')
         const { appointmentId, appointmentTimeMillis } = appointment
@@ -947,12 +957,7 @@ class AddAppointment extends React.Component {
                                             <div className="row">
                                                 <div style={{ display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
                                                     <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
-                                                    <div className="questions_black" onClick={() => this.toggleDropdown("isCoStaffsDropdown")}>
-                                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                                        {this.state.isCoStaffsDropdown && <span className="questions_dropdown">
-                                                                                При оказании услуги несколькими сотрудниками одновременно
-                                                                            </span>}
-                                                    </div>
+                                                    <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
 
                                                     <span style={{ width: 'auto', margin: '0 4px 0 auto'}} className="justify-content-end check-box">
                                                         <label>
@@ -1004,10 +1009,10 @@ class AddAppointment extends React.Component {
                                                 </button>
                                                 <button
 
-                                                    className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
+                                                    className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                     type="button"
                                                     onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                                    disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
+                                                    disabled={status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key])))|| serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
                                                 </button>
                                             </div>
                                         {adding &&
@@ -1022,13 +1027,12 @@ class AddAppointment extends React.Component {
                                             {!edit_appointment &&
                                                 <div className="mb-3">
 
-                                                    {/*<div className="row">*/}
-                                                    {/*    <div className="col-sm-12">*/}
-                                                    {/*        <p className="title mb-3">Добавить клиента</p></div>*/}
-                                                    {/*    <div className="client-title">*/}
-                                                    {/*        <p>Клиент</p> <div className="img-create-client" onClick={(e)=>this.newClient(null, e)}></div>*/}
-                                                    {/*    </div>*/}
-                                                    {/*</div>*/}
+                                                    <div className="row">
+                                                        <div className="col-sm-12">
+                                                            <p className="title mb-3">Добавить клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните поля"/></p>
+                                                        </div>
+
+                                                    </div>
                                                     {/*<div className="search dropdown row">*/}
                                                     {/*    <form className="col-sm-12 form-inline" data-toggle="dropdown">*/}
                                                     {/*        <input type="search" placeholder="Поиск по имени, номеру тел., имейлу" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>*/}
@@ -1037,31 +1041,26 @@ class AddAppointment extends React.Component {
                                                     {/*    </form>*/}
                                                     {/*</div>*/}
                                                     <div className="row">
-                                                        {Object.entries(typeAheadOptions).map(item => {
-                                                            const key = item[0]
-                                                            const value = item[1]
-
-                                                            return (
-
-                                                                <div key={key} className="col-12 typeahead-wrapper">
-                                                                    <p>{value.label}</p>
-                                                                    <AsyncTypeahead
-                                                                        isLoading={isLoadingTypeahead}
-                                                                        onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
-                                                                        value={this.state[key]}
-                                                                        defaultInputValue={value.defaultValue}
-                                                                        id={key}
-                                                                        onChange={this.handleTypeaheadSelect}
-                                                                        options={value.options}
-                                                                        labelKey={value.selectedKey}
-                                                                        minLength={3}
-                                                                        placeholder=""
-                                                                        onSearch={(value) => this.handleTypeaheadSearch(key, value)}
-                                                                        selected={selectedTypeahead}
-                                                                    />
-                                                                </div>
-                                                            )
-                                                        })}
+                                                        {Object.entries(typeAheadOptions).map(([key, value]) => (
+                                                            <div key={key} className={"col-12 typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
+                                                                <p>{value.label}</p>
+                                                                <AsyncTypeahead
+                                                                    isLoading={isLoadingTypeahead}
+                                                                    onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
+                                                                    value={this.state[key]}
+                                                                    defaultInputValue={value.defaultValue}
+                                                                    id={key}
+                                                                    onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
+                                                                    onChange={this.handleTypeaheadSelect}
+                                                                    options={value.options}
+                                                                    labelKey={value.selectedKey}
+                                                                    minLength={3}
+                                                                    placeholder=""
+                                                                    onSearch={(value) => this.handleTypeaheadSearch(key, value)}
+                                                                    selected={selectedTypeahead}
+                                                                />
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                     {/*<ul>*/}
                                                     {/*    { clients.client && clients.client.map((client_user, i) =>*/}
@@ -1245,10 +1244,10 @@ class AddAppointment extends React.Component {
                                     <div className="mobileButton">
                                         <button
 
-                                            className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                            className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                             type="button"
                                             onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                            disabled={status === 208 || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
+                                            disabled={status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
                                             {edit_appointment ? 'Обновить запись' : 'Создать Запись'}
                                         </button>
                                     </div>
@@ -1290,7 +1289,7 @@ class AddAppointment extends React.Component {
         if (clientName || clientPhone || clientEmail) {
             clientProps = {
                 clientName,
-                clientPhone,
+                clientPhone: (clientPhone && `+${clientPhone.replace(/[+()\- ]/g, '')}`),
                 clientEmail
             }
         }
