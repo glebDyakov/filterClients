@@ -624,8 +624,9 @@ class Index extends PureComponent {
 
     selectType (type){
         const { staff } = this.props;
-        const { typeSelected, selectedStaff, selectedDays: [prevDay] } = this.state;
+        const { typeSelected, selectedStaff, selectedDays: prevSelectedDays } = this.state;
         let url;
+        const prevDay = prevSelectedDays[0]
 
         let types=typeSelected
         let newState = {
@@ -635,7 +636,7 @@ class Index extends PureComponent {
         let selectedDays;
 
         if (type==='day') {
-            selectedDays = [getDayRange(moment().format()).from]
+            selectedDays = [getDayRange(moment(prevDay).format()).from]
             newState = {
                 ...newState,
                 type: 'day',
@@ -655,7 +656,7 @@ class Index extends PureComponent {
                 types=3
             }
             const currentWorkingStaff = staff.timetable[0]
-            selectedDays = getWeekDays(getWeekRange(moment().format()).from);
+            selectedDays = getWeekDays(getWeekRange(moment(prevDay).format()).from);
             newState = {
                 ...newState,
                 typeSelected: types,
@@ -668,6 +669,7 @@ class Index extends PureComponent {
 
             url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(currentWorkingStaff)).staffId}/${moment(selectedDays[0]).format('DD-MM-YYYY')}/${moment(selectedDays[6]).format('DD-MM-YYYY')}`;
         }
+        debugger
         const { startTime, endTime } = this.getSelectedTimeRange(selectedDays, type);
 
         this.setState(newState, () => this.props.dispatch(cellActions.togglePayload({ selectedDays })));
@@ -680,21 +682,23 @@ class Index extends PureComponent {
         let newState = {};
         let url;
 
-        if(type==='week' && typeSelected !== 3){
-            const startOfDay = moment().startOf('day').format('x');
-            const endOfDay = moment().endOf('day').format('x');
-            this.refreshTable(startOfDay, endOfDay);
-
-            newState = {
-                // workingStaff: {...workingStaff, timetable:[]},
-                timetableMessage: '',
-                type: 'day',
-                typeSelected: typeSelected,
-            };
-
-            const staffUrl = typeSelected===1 ? 'workingstaff' : 'allstaff';
-            url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
-        } else {
+        // if(type==='week' && typeSelected !== 3){
+        //     const startOfDay = moment().startOf('day').format('x');
+        //     const endOfDay = moment().endOf('day').format('x');
+        //     // this.refreshTable(startOfDay, endOfDay);
+        //
+        //     newState = {
+        //         workingStaff: {...workingStaff, timetable:[]},
+        //         timetableMessage: '',
+        //         type: 'day',
+        //         typeSelected: typeSelected,
+        //     };
+        //
+        //
+        //
+        //     const staffUrl = typeSelected===1 ? 'workingstaff' : 'allstaff';
+        //     url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
+        // } else {
             if (typeSelected === 1) {
                 let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
                         const checkingDay = parseInt(moment(time.startTimeMillis, 'x').format('DD MM YYYY'));
@@ -735,9 +739,8 @@ class Index extends PureComponent {
                 const urlPath = selectedDays.length===1 ? moment(selectedDays[0]).format('DD-MM-YYYY') : moment(selectedDays[0]).format('DD-MM-YYYY')+"/"+moment(selectedDays[6]).format('DD-MM-YYYY');
                 url = `/calendar/staff/${JSON.parse(staff).staffId}/${urlPath}`;
             }
-        }
-
-        this.setState(newState);
+       // }
+        this.setState(newState, () => type==='week' && typeSelected !== 3 && this.props.dispatch(cellActions.togglePayload({ selectedDays: [getDayRange(moment(selectedDays[0]).format()).from] })));
         history.pushState(null, '', url);
     }
 
