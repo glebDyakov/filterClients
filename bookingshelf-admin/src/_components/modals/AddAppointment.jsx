@@ -392,15 +392,16 @@ class AddAppointment extends React.Component {
             })
     }
 
-    handleTypeaheadSelect(value) {
-        let clientProps = {};
+    handleTypeaheadSelect(key, value) {
+        let updatedState = {};
         if (value.length) {
-            clientProps = { clientName: value[0].firstName, clientPhone: value[0].phone, clientEmail: value[0].email }
+            updatedState = { clientName: value[0].firstName, clientPhone: value[0].phone, clientEmail: value[0].email }
             this.checkUser(value[0])
         } else {
             this.removeCheckedUser();
+            updatedState = { clientName: null, clientPhone: null, clientEmail: null, [key]: this.state[key] }
         }
-        this.setState({ selectedTypeahead: value, ...clientProps});
+        this.setState({ selectedTypeahead: value, ...updatedState});
     }
 
     addNewService(){
@@ -1051,7 +1052,7 @@ class AddAppointment extends React.Component {
                                                                     defaultInputValue={value.defaultValue}
                                                                     id={key}
                                                                     onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
-                                                                    onChange={this.handleTypeaheadSelect}
+                                                                    onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
                                                                     options={value.options}
                                                                     labelKey={value.selectedKey}
                                                                     minLength={3}
