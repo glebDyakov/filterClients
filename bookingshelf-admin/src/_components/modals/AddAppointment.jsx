@@ -1044,7 +1044,7 @@ class AddAppointment extends React.Component {
 
                                                             return (
 
-                                                                <div key={key} className="col-12">
+                                                                <div key={key} className="col-12 typeahead-wrapper">
                                                                     <p>{value.label}</p>
                                                                     <AsyncTypeahead
                                                                         isLoading={isLoadingTypeahead}

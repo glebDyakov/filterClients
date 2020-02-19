@@ -1844,6 +1844,14 @@
     }
 }
 
+.typeahead-wrapper {
+    input {
+        height: calc(2.25rem + 4px) !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
 .reserved-time-modal{
     .modal-header {
         p span{
