@@ -129,6 +129,7 @@ class AddAppointment extends React.Component {
         this.goToPageCalendar = this.goToPageCalendar.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
         this.updateClients = this.updateClients.bind(this);
+        this.renderMenuItemChildren = this.renderMenuItemChildren.bind(this);
     }
 
     componentDidMount() {
@@ -786,6 +787,20 @@ class AddAppointment extends React.Component {
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
     }
 
+    renderMenuItemChildren(option, props) {
+        const { labelKey } = props;
+        const keys = ['firstName', 'phone', 'email']
+        const visibleKeys = keys.filter(item => item !== labelKey);
+        return (
+            <div key={option.clientId}>
+                <div>{option[labelKey]}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                    {visibleKeys.map(key => <span style={{ color: 'grey' }}>{option[key]}</span>)}
+                </div>
+            </div>
+        );
+    }
+
     render() {
         const { status, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
@@ -1059,6 +1074,7 @@ class AddAppointment extends React.Component {
                                                                     placeholder=""
                                                                     onSearch={(value) => this.handleTypeaheadSearch(key, value)}
                                                                     selected={selectedTypeahead}
+                                                                    renderMenuItemChildren={this.renderMenuItemChildren}
                                                                 />
                                                             </div>
                                                         ))}
