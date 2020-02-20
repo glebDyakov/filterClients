@@ -7,18 +7,22 @@ import {access} from "../../_helpers/access";
 import moment from 'moment';
 import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
+import {getNearestAvailableTime} from "../../_helpers/available-time";
+import {getCurrentCellTime} from "../../_helpers";
 
 const CellAppointment = (props) => {
     const {
         dispatch,
+        moveVisit,
         movingVisit,
         numberKey,
         staffKey,
         appointment,
         appointments,
+        reservedTime,
+        timetable,
         blickClientId,
         isStartMovingVisit,
-        currentTime,
         numbers,
         selectedNote,
         isClientNotComeLoading,
@@ -26,6 +30,10 @@ const CellAppointment = (props) => {
         handleUpdateClient,
         services,
         changeTime,
+        selectedDays,
+        selectedDaysKey,
+        time,
+        staff,
         updateAppointmentForDeleting
     } = props;
 
@@ -35,6 +43,7 @@ const CellAppointment = (props) => {
     let totalPrice = appointment.price
     let totalAmount = appointment.totalAmount
     const currentAppointments = [appointment]
+    const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time)
 
     const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
     appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
@@ -72,7 +81,18 @@ const CellAppointment = (props) => {
             extraServiceText = `и ещё 5+ услуг`;
     }
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-    const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2)
+    const minTextAreaHeight = ((currentAppointments.length - 1) ? 20 * (currentAppointments.length - 1) : 2);
+
+    const staffList = appointments && appointments.filter(item => item.appointments && item.appointments.some(localAppointment => localAppointment.appointmentId === appointment.appointmentId));
+
+    const timetableItems = timetable && timetable
+        .filter(item => item.staffId === workingStaffElement.staffId || (appointment.coStaffs && staffList.some(coStaff => coStaff.staff.staffId === item.staffId)))
+
+    const isOwnInterval = i => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (totalDuration * 1000)) > i
+    const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems, appointments, reservedTime, staff, isOwnInterval);
+    const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (15 * 60000))) / 1000 / 60 / 15;
+    const maxTextAreaHeight = maxTextAreaCellCount * 20;
+
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
     const resultTextArea = `${appointment.clientName ? ('Клиент: ' + appointment.clientName) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
@@ -123,32 +143,11 @@ const CellAppointment = (props) => {
                                   ...appointment,
                                   staffId: workingStaffElement.staffId
                               })}/>
-                        {!appointment.online &&
-                        <span className="pen"
-                              title="Запись через журнал"/>}
-                        {/*<span className="men"*/}
-                        {/*title="Постоянный клиент"/>*/}
-                        {appointment.online &&
-                        <span className="globus"
-                              title="Онлайн-запись"/>}
-
-
-
-                        {appointment.clientId && <span
-                            className={`${appointment.regularClient? 'old' : 'new'}-client-icon`}
-                            title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
-
-
-                        {!appointment.clientId &&
-                        <span
-                            className="no-client-icon"
-                            title="Визит от двери"/>
-                        }
-
-                        {!!appointment.discountPercent &&
-                        <span className="percentage"
-                              title={`${appointment.discountPercent}%`}
-                        />}
+                        {!appointment.online && <span className="pen" title="Запись через журнал"/>}
+                        {appointment.online && <span className="globus" title="Онлайн-запись"/>}
+                        {appointment.clientId && <span className={`${appointment.regularClient? 'old' : 'new'}-client-icon`} title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
+                        {!appointment.clientId && <span className="no-client-icon" title="Визит от двери"/>}
+                        {!!appointment.discountPercent && <span className="percentage" title={`${appointment.discountPercent}%`}/>}
                     </React.Fragment>
                 )}
 
@@ -162,6 +161,7 @@ const CellAppointment = (props) => {
             <p onMouseDown={(e) => e.preventDefault()} id={textAreaId} className="notes-container"
                style={{
                    minHeight: minTextAreaHeight + "px",
+                   maxHeight: maxTextAreaHeight + "px",
                    height: resultTextAreaHeight + "px"
                }}>
                                             <span className="notes-container-message">
@@ -291,9 +291,10 @@ const CellAppointment = (props) => {
             e.preventDefault();
             dispatch(appointmentActions.togglePayload({
                 minTextAreaHeight,
+                maxTextAreaHeight,
                 textAreaId,
                 currentTarget: e.currentTarget,
-                changingVisit: appointment,
+                changingVisit: { ...appointment, staffId: workingStaffElement.staffId },
                 changingPos: e.pageY,
                 offsetHeight: document.getElementById(textAreaId).offsetHeight
             }));
@@ -319,7 +320,7 @@ const CellAppointment = (props) => {
 
     return <div style={{ display: 'block', width: '100%', overflow: 'visible', position: 'relative' }}>
         <Box
-            appointments={appointments}
+            moveVisit={moveVisit}
             appointmentId={appointment.appointmentId}
             dragVert={dragVert}
             startMoving={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId, appointment.appointmentId)}
@@ -334,25 +335,32 @@ function mapStateToProps(state) {
     const {
         calendar: {
             appointments,
+            reservedTime,
             isClientNotComeLoading
         },
+        staff: { timetable, staff },
         appointment: {
             blickClientId,
             movingVisit,
             selectedNote,
             isStartMovingVisit,
             draggingAppointmentId
-        }
+        },
+        cell: { selectedDays }
     } = state;
 
     return {
+        staff,
         appointments,
+        reservedTime,
+        timetable,
         isClientNotComeLoading,
         blickClientId,
         movingVisit,
         selectedNote,
         isStartMovingVisit,
-        draggingAppointmentId
+        draggingAppointmentId,
+        selectedDays
     }
 }
 

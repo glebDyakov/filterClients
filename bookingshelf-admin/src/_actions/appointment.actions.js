@@ -41,7 +41,7 @@ function togglePayload(payload) {
 
 function makeMovingVisitQuery(data) {
     return dispatch => {
-        const { appointments, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
+        const { appointments, staff, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
 
         let shouldMove = true
 
@@ -55,6 +55,24 @@ function makeMovingVisitQuery(data) {
         let coStaffs = movingVisit.coStaffs;
 
         if (shouldMove) {
+
+
+            const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
+
+            const timetableItems = timetable
+                .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
+
+            shouldMove = timetableItems.every(timetableItem => {
+                const checkOnMovingVisit = i => (
+                    (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === timetableItem.staffId))) &&
+                    movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
+                );
+
+                return isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, staff, checkOnMovingVisit)
+            })
+        }
+
+        if (shouldMove) {
             if (coStaffs && prevVisitStaffId !== movingVisitStaffId) {
                 const updatedCoStaff = appointments.find(item => (item.staff && item.staff.staffId) === prevVisitStaffId)
                 const oldStaffIndex = coStaffs.findIndex(item => item.staffId === movingVisitStaffId)
@@ -66,31 +84,6 @@ function makeMovingVisitQuery(data) {
 
             }
 
-            const movingVisitEndTime = movingVisitMillis + (movingVisitDuration * 1000);
-
-            const timetableItems = timetable
-                .filter(item => item.staffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === item.staffId)))
-
-
-            const intervals = []
-
-            for (let i = movingVisitMillis; i < movingVisitEndTime; i += 15 * 60000) {
-                intervals.push(i)
-            }
-
-
-
-            shouldMove = timetableItems.every(timetableItem => {
-                const checkOnMovingVisit = i => (
-                    (prevVisitStaffId === movingVisitStaffId || (movingVisit.coStaffs && movingVisit.coStaffs.some(coStaff => coStaff.staffId === timetableItem.staffId))) &&
-                    movingVisit.appointmentTimeMillis <= i && (movingVisit.appointmentTimeMillis + (movingVisitDuration * 1000)) > i
-                );
-
-                return isAvailableTime(movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, checkOnMovingVisit)
-            })
-        }
-
-        if (shouldMove) {
             dispatch(calendarActions.makeVisualMove({ ...prevVisualVisit, staffId: prevVisitStaffId }, movingVisitStaffId, movingVisitMillis, coStaffs))
             dispatch(calendarActions.updateAppointment(
                 movingVisit.appointmentId,

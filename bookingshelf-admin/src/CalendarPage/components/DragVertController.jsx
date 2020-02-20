@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions, calendarActions } from "../../_actions";
+import {isAvailableTime} from "../../_helpers/available-time";
 
 class DragVertController extends React.Component {
     constructor(props) {
@@ -20,83 +21,103 @@ class DragVertController extends React.Component {
     }
 
     handleMouseMove(e) {
-        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId } = this.props;
+        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
         const node = document.getElementById(textAreaId)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        if (res > minTextAreaHeight) {
+        if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
             node.style.height = res + "px";
-            currentTarget.style.bottom = -res + "px";
+            currentTarget.style.bottom = -(res + 3) + "px";
         }
     }
 
     handleMouseUp() {
-        const { appointments, changingVisit, offsetHeight, textAreaId } = this.props;
+        const { appointments, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
         const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
 
         let newDuration = (15 * 60 * offsetDifference)
+
+        let currentTotalDuration = changingVisit.duration
         if (changingVisit.hasCoAppointments) {
-
-
-            const coAppointments = []
             appointments.map((staffAppointment) => {
-
-                staffAppointment.appointments.sort((b, a) => a.appointmentId - b.appointmentId).forEach(appointment => {
+                staffAppointment.appointments.forEach(appointment => {
                     if (appointment.coAppointmentId === changingVisit.appointmentId) {
-                        coAppointments.push(appointment)
+                        currentTotalDuration += appointment.duration
                     }
                 })
             })
-            coAppointments.push(changingVisit)
+        }
 
-            let shouldUpdateDuration = true
-            if (newDuration > 0) {
+        const startTime = changingVisit.appointmentTimeMillis;
+        const endTime = changingVisit.appointmentTimeMillis + ((currentTotalDuration + newDuration) * 1000);
+
+        const staffWithTimetable = timetable && timetable.find(item => item.staffId === changingVisit.staffId)
+
+        const isOwnInterval = i => changingVisit.appointmentTimeMillis <= i && (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i
+
+        let shouldDrag = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval)
+        if (shouldDrag) {
+            if (changingVisit.hasCoAppointments) {
+                const coAppointments = []
+                appointments.map((staffAppointment) => {
+
+                    staffAppointment.appointments.sort((b, a) => a.appointmentId - b.appointmentId).forEach(appointment => {
+                        if (appointment.coAppointmentId === changingVisit.appointmentId) {
+                            coAppointments.push(appointment)
+                        }
+                    })
+                })
+                coAppointments.push(changingVisit)
+
+                let shouldUpdateDuration = true
+                if (newDuration > 0) {
+                    this.props.dispatch(calendarActions.updateAppointment(
+                        changingVisit.appointmentId,
+                        JSON.stringify({ duration: changingVisit.duration + newDuration }),
+                        false,
+                        true
+                    ))
+                } else {
+                    let timeout = 0;
+                    coAppointments.forEach(coAppointment => {
+                        if (shouldUpdateDuration) {
+                            newDuration = coAppointment.duration + newDuration
+                            if (newDuration > 900) {
+                                shouldUpdateDuration = false
+                                setTimeout(() => {
+                                    this.props.dispatch(calendarActions.updateAppointment(
+                                        coAppointment.appointmentId,
+                                        JSON.stringify({duration: newDuration}),
+                                        false,
+                                        true
+                                    ))
+                                }, 1000 * timeout)
+                            } else {
+                                newDuration-=900
+
+                                setTimeout(() => {
+                                    this.props.dispatch(calendarActions.updateAppointment(
+                                        coAppointment.appointmentId,
+                                        JSON.stringify({duration: 900}),
+                                        false,
+                                        true
+                                    ))
+                                }, 1000 * timeout)
+                                timeout++;
+                            }
+                        }
+                    })
+                }
+            } else {
                 this.props.dispatch(calendarActions.updateAppointment(
                     changingVisit.appointmentId,
                     JSON.stringify({ duration: changingVisit.duration + newDuration }),
                     false,
                     true
                 ))
-            } else {
-                let timeout = 0;
-                coAppointments.forEach(coAppointment => {
-                    if (shouldUpdateDuration) {
-                        newDuration = coAppointment.duration + newDuration
-                        if (newDuration > 900) {
-                            shouldUpdateDuration = false
-                            setTimeout(() => {
-                                this.props.dispatch(calendarActions.updateAppointment(
-                                    coAppointment.appointmentId,
-                                    JSON.stringify({duration: newDuration}),
-                                    false,
-                                    true
-                                ))
-                            }, 1000 * timeout)
-                        } else {
-                            newDuration-=900
-
-                            setTimeout(() => {
-                                this.props.dispatch(calendarActions.updateAppointment(
-                                    coAppointment.appointmentId,
-                                    JSON.stringify({duration: 900}),
-                                    false,
-                                    true
-                                ))
-                            }, 1000 * timeout)
-                            timeout++;
-                        }
-                    }
-                })
             }
-        } else {
-            this.props.dispatch(calendarActions.updateAppointment(
-                changingVisit.appointmentId,
-                JSON.stringify({ duration: changingVisit.duration + newDuration }),
-                false,
-                true
-            ))
         }
 
         this.props.dispatch(appointmentActions.togglePayload({
@@ -105,6 +126,7 @@ class DragVertController extends React.Component {
             changingPos:null,
             offsetHeight: null,
             minTextAreaHeight: null,
+            maxTextAreaHeight: null,
             textAreaId: null
         }));
     }
@@ -116,14 +138,15 @@ class DragVertController extends React.Component {
 
 function mapStateToProps(state) {
     const {
-        calendar: { appointments },
+        calendar: { appointments, reservedTime },
+        staff: { timetable, staff },
         appointment: {
-            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
+            changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
         }
     } = state;
 
     return {
-        appointments, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, textAreaId
+        appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
     }
 }
 

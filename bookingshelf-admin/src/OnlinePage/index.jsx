@@ -6,6 +6,7 @@ import {companyActions} from "../_actions";
 import {access} from "../_helpers/access";
 import {DatePicker} from "../_components/DatePicker";
 import moment from 'moment';
+import Hint from "../_components/Hint";
 
 class Index extends Component {
     constructor(props) {
@@ -21,12 +22,12 @@ class Index extends Component {
             booking: props.company && props.company.booking,
             selectedDay: moment().utc().toDate(),
             urlButton: false,
-            isOnlineZapisOnDropdown: false,
+            appointmentMessage: '',
             status: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.toggleDropdown = this.toggleDropdown.bind(this);
+        this.handleMessageChange = this.handleMessageChange.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
@@ -51,6 +52,7 @@ class Index extends Component {
                 selectedDay: newProps.company.settings.onlineZapisOn
                     ? this.state.selectedDay
                     : moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate(),
+                appointmentMessage: newProps.company.settings.appointmentMessage,
                 onlineZapisEndTimeMillis: newProps.company.settings.onlineZapisOn
                     ? parseInt(moment(this.state.selectedDay).format('x'))
                     : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
@@ -96,10 +98,15 @@ class Index extends Component {
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
     }
 
+    handleMessageChange({ target : { name, value }}) {
+        this.setState({ [name]: value })
+    }
+
     handleSubmit() {
-        const { onlineZapisEndTimeMillis, onlineZapisOn } = this.state;
+        const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
         this.props.dispatch(companyActions.add({
             ...this.props.company.settings,
+            appointmentMessage,
             onlineZapisEndTimeMillis,
             onlineZapisOn
         }));
@@ -117,14 +124,6 @@ class Index extends Component {
 
     queryInitData() {
         this.props.dispatch(companyActions.getBookingInfo());
-    }
-
-    componentDidUpdate() {
-        if(this.state.isOnlineZapisOnDropdown) {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
     }
 
     handleOutsideClick() {
@@ -166,13 +165,9 @@ class Index extends Component {
         this.setState({ copySuccess: 'Copied!' });
     };
 
-    toggleDropdown(key) {
-        this.setState({[key]: !this.state[key]})
-    }
-
     render() {
         const { company } = this.props
-        const { booking, submitted, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
+        const { booking, submitted, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
@@ -349,19 +344,22 @@ class Index extends Component {
 
                             </div>
                             <div className=" content-pages-bg p-4 mb-3 h-auto">
-                                <p className="title mb-3">Ограничить время онлайн-записи</p>
+                                <p className="title mb-2">
+                                    Дополнительное сообщение в онлайн-записи
+                                    <Hint hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
+                                </p>
+                                <textarea className="mb-3" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
+
+
+
+                                <p className="title mb-2">Ограничить время онлайн-записи</p>
                                 <div className="check-box">
                                     <label>
                                         <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
                                         <span className="check"/>
                                         Включить ограничение
                                     </label>&nbsp;
-                                    <div className="questions_black" onClick={() => this.toggleDropdown("isOnlineZapisOnDropdown")}>
-                                        <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt=""/>
-                                        {this.state.isOnlineZapisOnDropdown && <span className="questions_dropdown">
-                                                                        По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес.
-                                                                    </span>}
-                                    </div>
+                                    <Hint hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
                                 </div>
                                 {isOnlineZapisChecked && <div className="online-zapis-date-picker mb-3">
                                     <DatePicker

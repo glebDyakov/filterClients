@@ -143,23 +143,23 @@ class DatePicker extends PureComponent {
             <div className="select-date">
                 <div className="select-inner">
                     <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
-                        <div className="button-calendar" onClick={()=>this.showCalendar(true)}>
-                            <span className="dates-full-width text-capitalize date-num" >
-                                {selectedDaysText}
-                            </span>
-                            <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
-                                <i className="datepicker--pointer"></i>
-                                <DayPicker
-                                    selectedDays={selectedDays}
-                                    onDayClick={(date) => this.handleLocalDayClick(date)}
-                                    localeUtils={MomentLocaleUtils}
-                                    showOutsideDays
-                                    locale={'ru'}
-                                    {...weekProps}
-                                    {...dayPickerProps}
-                                />
-                            </div>
+                    <div className="button-calendar" onClick={()=>this.showCalendar(true)}>
+                        <span className="dates-full-width text-capitalize date-num" >
+                            {selectedDaysText}
+                        </span>
+                        <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
+                            <i className="datepicker--pointer"></i>
+                            <DayPicker
+                                selectedDays={selectedDays}
+                                onDayClick={(date) => this.handleLocalDayClick(date)}
+                                localeUtils={MomentLocaleUtils}
+                                showOutsideDays
+                                locale={'ru'}
+                                {...weekProps}
+                                {...dayPickerProps}
+                            />
                         </div>
+                    </div>
                     <span className="arrow-right" onClick={() => this.handleRightArrowClick()}/>
                 </div>
             </div>

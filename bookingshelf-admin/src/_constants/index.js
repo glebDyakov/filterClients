@@ -1,5 +1,6 @@
 export * from './alert.constants';
 export * from './appointment.constants';
+export * from './cell.constants';
 export * from './user.constants';
 export * from './company.constants';
 export * from './staff.constants';

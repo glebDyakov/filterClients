@@ -117,7 +117,7 @@ function getClientWithInfo() {
     return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
-function getClientV2(pageNum, searchValue, blacklisted) {
+function getClientV2(pageNum, searchValue, blacklisted, pageSize = 10) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -128,7 +128,7 @@ function getClientV2(pageNum, searchValue, blacklisted) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=10${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=${pageSize}${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getActiveClientAppointments(clientId, pageNum) {

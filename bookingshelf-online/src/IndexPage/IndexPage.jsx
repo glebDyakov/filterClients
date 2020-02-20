@@ -286,7 +286,7 @@ class IndexPage extends PureComponent {
 
     setterPhone(phone){
         const {group} = this.state
-        this.setState({ group: {...group, phone: phone.replace(/[() ]/g, '')} })
+        this.setState({ group: {...group, phone: phone.replace(/[()\- ]/g, '')} })
     }
     setterEmail(){
         const {group} = this.state
@@ -438,6 +438,7 @@ class IndexPage extends PureComponent {
 
                     {screen === 6 && ((newAppointments && !!newAppointments.length) || movedVisitSuccess) && !error &&
                     <TabSix
+                        info={info}
                         match={match}
                         movedVisitSuccess={movedVisitSuccess}
                         movingVisit={movingVisit}

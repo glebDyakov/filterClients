@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import { authentication } from './authentication.reducer';
 import { appointment } from './appointment.reducer';
+import { cell } from './cell.reducer';
 import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { company } from './company.reducer';
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   appointment,
   users,
   company,
+  cell,
   staff,
   socket,
   alert,

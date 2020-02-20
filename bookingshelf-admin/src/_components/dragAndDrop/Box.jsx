@@ -5,12 +5,10 @@ import ItemTypes from './ItemTypes'
 import {appointmentActions} from "../../_actions";
 
 const Box = ({
+    moveVisit,
     appointmentId,
     draggingAppointmentId,
     dispatch,
-    appointments,
-    reservedTime,
-    timetable,
     movingVisit,
     movingVisitDuration,
     prevVisitStaffId,
@@ -25,16 +23,14 @@ const Box = ({
             const dropResult = monitor.getDropResult()
             let payload = {}
             if (item && dropResult) {
-                dispatch(appointmentActions.makeMovingVisitQuery({
-                    appointments,
-                    reservedTimes: reservedTime,
-                    timetable,
+                moveVisit({
                     movingVisit,
                     movingVisitDuration,
-                    movingVisitStaffId: dropResult.movingVisitStaffId,
-                    movingVisitMillis: dropResult.movingVisitMillis,
+                    staffKey: dropResult.staffKey,
+                    selectedDaysKey: dropResult.selectedDaysKey,
+                    time: dropResult.time,
                     prevVisitStaffId
-                }))
+                })
             } else {
                 payload = { isStartMovingVisit: false, movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null }
             }
@@ -55,15 +51,13 @@ const Box = ({
 
 function mapStateToProps(state) {
     const {
-        calendar: { reservedTime },
-        staff: { timetable },
         appointment: {
             movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
         }
     } = state;
 
     return {
-        reservedTime, timetable, movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
+        movingVisit, movingVisitDuration, prevVisitStaffId, draggingAppointmentId
     }
 }
 
