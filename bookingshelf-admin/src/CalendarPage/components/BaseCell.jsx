@@ -56,9 +56,8 @@ class BaseCell extends React.Component {
             } else if (this.state.isPresent) {
                 this.setState({ isPresent: false })
             }
-        } else {
-            this.onUpdateWorkingStaff(newProps)
         }
+        this.onUpdateWorkingStaff(newProps)
     }
 
     getIsPresent(currentCellTime) {
@@ -69,8 +68,10 @@ class BaseCell extends React.Component {
         const { cellType } = this.state
         let filledCell;
 
+        console.log('tried to found appointment')
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
+            console.log('success found appointment')
             filledCell = cellAppointment;
         }
 
@@ -143,8 +144,11 @@ class BaseCell extends React.Component {
             appointmentStaff[checkingArrayKey] && (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId)
         );
         const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey].find(checkingItem => {
-            const checkingTime = checkingItem[checkingTimeKey]
-            return getCurrentCellTime(selectedDays, selectedDaysKey, time) <= parseInt(checkingTime) && getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1]) > parseInt(checkingTime)
+            const checkingTime = parseInt(checkingItem[checkingTimeKey])
+            const currentCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, time)
+            const nextCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1])
+
+            return (currentCellTime <= checkingTime) && (nextCellTime > checkingTime)
         });
 
         if (exists(cell)) {
