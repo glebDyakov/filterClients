@@ -171,6 +171,7 @@ class VisitPage extends React.Component {
                             marginBottom: '8px'
                         }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
                         {info && info.appointmentMessage && <p style={{
+                            color: 'red',
                             textDecoration: 'underline',
                             fontWeight: 'bold',
                             textAlign: 'center',
