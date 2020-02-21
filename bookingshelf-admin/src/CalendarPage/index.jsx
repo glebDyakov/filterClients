@@ -602,14 +602,15 @@ class Index extends PureComponent {
     }
 
     handleDayClick(day) {
+        const { selectedDays } = this.props;
         const {typeSelected, selectedStaff } = this.state;
-        const selectedDays = [getDayRange(moment(moment(day)).format()).from]
-        const { startTime, endTime } = this.getSelectedTimeRange(selectedDays)
+        const weeks = [getDayRange(moment(day).format()).from]
+        const { startTime, endTime } = this.getSelectedTimeRange(weeks)
 
-        this.refreshTable(startTime, endTime);
         this.getTimetable(selectedDays[0], day);
+        this.refreshTable(startTime, endTime);
 
-        this.props.dispatch(cellActions.togglePayload({ selectedDays }))
+        this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
 
         let url;
         if (typeSelected===1) {
@@ -619,7 +620,7 @@ class Index extends PureComponent {
         } else if (typeSelected===3) {
             url = `staff/${JSON.parse(selectedStaff).staffId}/`;
         }
-        history.pushState(null, '', `/calendar/${url}${moment(selectedDays[0]).startOf('day').format('DD-MM-YYYY')}`);
+        history.pushState(null, '', `/calendar/${url}${moment(weeks[0]).startOf('day').format('DD-MM-YYYY')}`);
     }
 
     selectType (type){
@@ -681,64 +682,48 @@ class Index extends PureComponent {
         let newState = {};
         let url;
 
-        // if(type==='week' && typeSelected !== 3){
-        //     const startOfDay = moment().startOf('day').format('x');
-        //     const endOfDay = moment().endOf('day').format('x');
-        //     // this.refreshTable(startOfDay, endOfDay);
-        //
-        //     newState = {
-        //         workingStaff: {...workingStaff, timetable:[]},
-        //         timetableMessage: '',
-        //         type: 'day',
-        //         typeSelected: typeSelected,
-        //     };
-        //
-        //
-        //
-        //     const staffUrl = typeSelected===1 ? 'workingstaff' : 'allstaff';
-        //     url = `/calendar/${staffUrl}/0/${moment().format('DD-MM-YYYY')}`;
-        // } else {
-            if (typeSelected === 1) {
-                let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
-                        const checkingDay = parseInt(moment(time.startTimeMillis, 'x').format('DD MM YYYY'));
-                        const currentDay = parseInt(moment(selectedDays[0]).format('DD MM YYYY'));
-                        return checkingDay === currentDay;
-                    })
-                );
+        if (typeSelected === 1) {
+            let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
+                    const checkingDay = moment(time.startTimeMillis, 'x').format('DD MM YYYY');
+                    const currentDay = moment(selectedDays[0]).format('DD MM YYYY');
 
-                newState = {
-                    workingStaff: {
-                        ...workingStaff,
-                        timetable: staffWorking.length ? staffWorking : null
-                    },
-                    timetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
-                    typeSelected: typeSelected,
-                    type: 'day'
-                };
-                url = `/calendar/workingstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
-            } else if (typeSelected === 2) {
-                newState = {
-                    workingStaff: {...workingStaff, timetable: timetable },
-                    timetableMessage: timetable.length ? '' : 'Нет работающих сотрудников',
-                    typeSelected: typeSelected,
-                    type: 'day'
-                }
-                url = `/calendar/allstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
-            } else {
-                staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
-                let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
+                    return checkingDay === currentDay;
+                })
+            );
 
-                newState = {
-                    workingStaff: {...workingStaff, timetable: staffEl},
-                    timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
-                    selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
-                    typeSelected: typeSelected,
-                    staffFromUrl: JSON.parse(staff).staffId
-                }
-                const urlPath = selectedDays.length===1 ? moment(selectedDays[0]).format('DD-MM-YYYY') : moment(selectedDays[0]).format('DD-MM-YYYY')+"/"+moment(selectedDays[6]).format('DD-MM-YYYY');
-                url = `/calendar/staff/${JSON.parse(staff).staffId}/${urlPath}`;
+            newState = {
+                workingStaff: {
+                    ...workingStaff,
+                    timetable: staffWorking.length ? staffWorking : null
+                },
+                timetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
+                typeSelected: typeSelected,
+                type: 'day'
+            };
+            url = `/calendar/workingstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
+        } else if (typeSelected === 2) {
+            newState = {
+                workingStaff: {...workingStaff, timetable: timetable },
+                timetableMessage: timetable.length ? '' : 'Нет работающих сотрудников',
+                typeSelected: typeSelected,
+                type: 'day'
             }
-       // }
+            url = `/calendar/allstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
+        } else {
+            staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
+            let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
+
+            newState = {
+                workingStaff: {...workingStaff, timetable: staffEl},
+                timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
+                selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
+                typeSelected: typeSelected,
+                staffFromUrl: JSON.parse(staff).staffId
+            }
+            const urlPath = selectedDays.length===1 ? moment(selectedDays[0]).format('DD-MM-YYYY') : moment(selectedDays[0]).format('DD-MM-YYYY')+"/"+moment(selectedDays[6]).format('DD-MM-YYYY');
+            url = `/calendar/staff/${JSON.parse(staff).staffId}/${urlPath}`;
+        }
+
         this.setState(newState, () => type==='week' && typeSelected !== 3 && this.props.dispatch(cellActions.togglePayload({ selectedDays: [getDayRange(moment(selectedDays[0]).format()).from] })));
         history.pushState(null, '', url);
     }
