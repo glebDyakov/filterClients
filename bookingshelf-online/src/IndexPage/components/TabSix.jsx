@@ -111,6 +111,7 @@ class TabSix extends  PureComponent {
                 }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
 
                 {info && info.appointmentMessage && <p style={{
+                    color: 'red',
                     textDecoration: 'underline',
                     fontWeight: 'bold',
                     textAlign: 'center',
