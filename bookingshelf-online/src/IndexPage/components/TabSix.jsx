@@ -154,8 +154,8 @@ class TabSix extends  PureComponent {
                     </button>
                 </div>
                 }
-                <input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
-                {allVisits && <ClientDetails />}
+                {/*<input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>*/}
+                {/*{allVisits && <ClientDetails />}*/}
                 {/*<p className="skip_employee"  onClick={() => {*/}
                 {/*    setScreen(2);*/}
                 {/*    refreshTimetable();*/}

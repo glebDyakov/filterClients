@@ -211,7 +211,7 @@ class VisitPage extends React.Component {
                         </div>
                         }
 
-                        <input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
+                        <input style={{ background: 'transparent '}} type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
                         {allVisits && <ClientDetails />}
                         {/*<p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>*/}
                         <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>Создать запись</a>
