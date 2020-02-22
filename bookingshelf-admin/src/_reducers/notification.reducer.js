@@ -1,6 +1,6 @@
 import {clientConstants, notificationConstants} from '../_constants';
 
-export function notification(state= {}, action) {
+export function notification(state= { history: [] }, action) {
   switch (action.type) {
     case notificationConstants.GET_SMS_RECORD_SUCCESS:
         return {
@@ -12,6 +12,12 @@ export function notification(state= {}, action) {
         return {
             ...state,
             clientAmount: action.info.clientAmount
+        }
+      case notificationConstants.GET_HISTORY_SMS_SUCCESS:
+        return {
+            ...state,
+            history: (action.history.content || []),
+            historyTotalPages: action.history.totalPages
         }
     case notificationConstants.GET_SMS_EMAIL_BALANCE:
         return {

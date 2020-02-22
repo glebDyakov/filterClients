@@ -7,6 +7,7 @@ export const notificationActions = {
     updateSubcompanySMS_EMAIL,
     setSMS,
     getClientAmount,
+    getHistorySms,
     getBalance
 };
 
@@ -33,6 +34,19 @@ function getBalance() {
     };
 
     function success(balance) { return { type: notificationConstants.GET_SMS_EMAIL_BALANCE, balance } }
+}
+
+function getHistorySms(currentPage, searchValue) {
+    return dispatch => {
+        notificationService.getHistorySms(currentPage, searchValue)
+            .then(
+                history => {
+                    dispatch(success(history));
+                }
+            );
+    };
+
+    function success(history) { return { type: notificationConstants.GET_HISTORY_SMS_SUCCESS, history } }
 }
 
 function getClientAmount() {

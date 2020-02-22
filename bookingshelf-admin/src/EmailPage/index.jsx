@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import '../../public/scss/email.scss'
 
-import {notificationActions, servicesActions, staffActions } from "../_actions";
+import {clientActions, notificationActions, servicesActions, staffActions} from "../_actions";
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 
 import { convertToRaw, EditorState } from 'draft-js';
 import Hint from "../_components/Hint";
-
-
+import Paginator from "../_components/Paginator";
 
 class Index extends Component {
     constructor(props) {
@@ -21,7 +21,8 @@ class Index extends Component {
             props.match.params.activeTab!=='auto_notification' &&
             props.match.params.activeTab!=='newsletter' &&
             props.match.params.activeTab!=='balance' &&
-            props.match.params.activeTab!=='smsletter'
+            props.match.params.activeTab!=='smsletter' &&
+            props.match.params.activeTab!=='history'
         ){
             props.history.push('/nopage')
         }
@@ -30,6 +31,7 @@ class Index extends Component {
         if(props.match.params.activeTab==='smsletter'){document.title = "SMS Рассылка | Онлайн-запись"}
         if(props.match.params.activeTab==='newsletter'){document.title = "Email Рассылка | Онлайн-запись"}
         if(props.match.params.activeTab==='balance'){document.title = "Баланс Email/SMS | Онлайн-запись"}
+        if(props.match.params.activeTab==='history'){document.title = "История сообщений | Онлайн-запись"}
 
         this.state = {
             isLoading: true,
@@ -75,6 +77,7 @@ class Index extends Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
         this.setTag = this.setTag.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.setTab = this.setTab.bind(this);
@@ -87,6 +90,7 @@ class Index extends Component {
         // this.handleChangeEmail_text = this.handleChangeEmail_text.bind(this)
         this.setSMS = this.setSMS.bind(this)
         this.setEmail = this.setEmail.bind(this)
+        this.handleSearch = this.handleSearch.bind(this)
         this.handleChangeSMStoggle = this.handleChangeSMStoggle.bind(this)
         this.handleChangeEmailtoggle = this.handleChangeEmailtoggle.bind(this)
         this.setServiceSMS = this.setServiceSMS.bind(this)
@@ -113,6 +117,7 @@ class Index extends Component {
         this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.get());
         this.props.dispatch(notificationActions.getClientAmount());
+        this.props.dispatch(notificationActions.getHistorySms());
         // this.props.dispatch(clientActions.getClientWithInfo());
 
         setTimeout(() => this.setState({ isLoading: false }), 800);
@@ -148,9 +153,9 @@ class Index extends Component {
         if(tab==='smsletter'){document.title = "SMS Рассылка | Онлайн-запись"}
         if(tab==='newsletter'){document.title = "Email Рассылка | Онлайн-запись"}
         if(tab==='balance'){document.title = "Баланс Email/SMS | Онлайн-запись"}
+        if(tab==='history'){document.title = "История сообщений | Онлайн-запись"}
 
         history.pushState(null, '', '/email_sms/'+tab);
-
     }
 
     toggleChange (type) {
@@ -286,6 +291,29 @@ class Index extends Component {
         });
     };
 
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.updateClients(currentPage);
+    };
+
+    updateClients(currentPage = 1) {
+        let searchValue = ''
+        if (this.search.value.length >= 3) {
+            searchValue = this.search.value.toLowerCase()
+        }
+
+        this.props.dispatch(notificationActions.getHistorySms(currentPage, searchValue));
+    }
+
+    handleSearch () {
+        if (this.search.value.length >= 3) {
+            this.updateClients();
+        } else if (this.search.value.length === 0) {
+            this.updateClients();
+        }
+    }
+
 
     handleChangeSMS_text(e) {
         const { name, value } = e.target;
@@ -310,6 +338,20 @@ class Index extends Component {
             count_sms_all: count_sms*receivers,
             letters_all: value.length*receivers
         });
+    }
+
+    getMessageStatus(messageStatus) {
+        switch (messageStatus) {
+            case 'DELIVERED':
+                return 'Доставлено'
+            case 'ERROR':
+            case 'NOT_DELIVERED':
+                return 'Не доставлено'
+            case 'PENDING':
+                return 'Отправляется'
+            default:
+                return 'Не определен'
+        }
     }
 
     handleChangeEmail(e) {
@@ -361,6 +403,10 @@ class Index extends Component {
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='balance' ?' show active':'')} data-toggle="tab" href="#balance" onClick={()=>{this.setTab('balance')}}>{notification.balance && notification.balance.smsAmount} sms / {notification.balance && notification.balance.emailAmount} email</a>
                             </li>
+                            <li className="nav-item">
+                                <a className={"nav-link  show"+(activeTab==='history'?' active':'')} data-toggle="tab"
+                                   href="#history" onClick={()=>{this.setTab('history')}}>История сообщений</a>
+                            </li>
                         </ul>
                     </div>
                     <div className="flex-content col-md-5">
@@ -383,7 +429,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.smsOn} onChange={()=>this.toggleChange('smsOn')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                     </label>
                                                 </div>
@@ -409,7 +455,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.emailOn}  onChange={()=>this.toggleChange('emailOn')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)
                                                     </label>
                                                 </div>
@@ -426,7 +472,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.appointmentCreate} onChange={()=>this.toggleChange('appointmentCreate')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Уведомления при записи
                                                     </label>
                                                 </div>
@@ -436,7 +482,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.appointmentMove} onChange={()=>this.toggleChange('appointmentMove')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Уведомления при переносе визита
                                                     </label>
                                                 </div>
@@ -446,7 +492,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.appointmentDelete} onChange={()=>this.toggleChange('appointmentDelete')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Уведомления при удалении визита
                                                     </label>
                                                 </div>
@@ -456,7 +502,7 @@ class Index extends Component {
                                                     <label>
                                                         <input className="form-check-input" checked={notifications && notifications.appointmentRemind} onChange={()=>this.toggleChange('appointmentRemind')}
                                                                type="checkbox"/>
-                                                        <span className="check"></span>
+                                                        <span className="check" />
                                                         Напоминания о визитах
                                                     </label>
                                                 </div>
@@ -466,6 +512,14 @@ class Index extends Component {
                                         <hr/>
                                         <div className="row">
                                             <div className="col-md-6">
+                                                <div className="check-box">
+                                                    <label>
+                                                        <input className="form-check-input" checked={notifications && notifications.smsSendUrl} onChange={()=>this.toggleChange('smsSendUrl')}
+                                                               type="checkbox"/>
+                                                        <span className="check" />
+                                                        Ссылка на визит в СМС
+                                                    </label>
+                                                </div>
 
                                                 <p className="title_block mb-3">Интервал напоминаний о предстоящем визите</p>
 
@@ -788,6 +842,93 @@ class Index extends Component {
                                 </div>
                             </div>
                         </div>
+
+                        <div className={"tab-pane"+(activeTab==='history'?' active':'')} id="history">
+                            <div className="history_page">
+                                <div className="search dropdown row">
+                                    <form className="col-sm-12 form-inline" data-toggle="dropdown">
+                                        <input type="search" placeholder="Поиск по тексту, номеру тел." aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>
+                                        <button className="search-icon" type="button"></button>
+
+                                    </form>
+                                </div>
+                                <div style={{ overflowX: 'auto', position: 'relative', zIndex: 0 }}>
+                                    <div style={{ overflowX: 'hidden', display: 'inline-block', maxHeight: '65vh', height: '100%' }} className="content-tab-date min-width-desktop">
+                                        <div style={{ position: 'absolute', zIndex: 1, minWidth: '700px', width: '100%' }} className="tab-content-inner min-width-desktop">
+                                            <div className="tab-content-list mb-2"  style={{position: "relative"}}>
+                                                <div style={{ justifyContent: "center", width: '8%'}}>
+                                                    ID
+                                                </div>
+                                                <div>
+                                                    На номер
+                                                </div>
+                                                <div style={{ width: '45% '}}>
+                                                    Текст
+                                                </div>
+                                                <div>
+                                                    Дата
+                                                </div>
+                                                <div>
+                                                    Статус
+                                                </div>
+                                                <div className="delete dropdown">
+                                                    Кол-во СМС
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style={{ minWidth: '700px' }} className="tab-content-inner min-width-desktop">
+
+                                            <div className="tab-content-list mb-2"  style={{position: "relative", height: '42px'}}>
+                                                {/*<div style={{ justifyContent: "center", width: '8%'}}>*/}
+                                                {/*    ID*/}
+                                                {/*</div>*/}
+                                                {/*<div>*/}
+                                                {/*    На номер*/}
+                                                {/*</div>*/}
+                                                {/*<div style={{ width: '45% '}}>*/}
+                                                {/*    Текст*/}
+                                                {/*</div>*/}
+                                                {/*<div>*/}
+                                                {/*    Дата*/}
+                                                {/*</div>*/}
+                                                {/*<div>*/}
+                                                {/*    Статус*/}
+                                                {/*</div>*/}
+                                                {/*<div className="delete dropdown">*/}
+                                                {/*    Кол-во СМС*/}
+                                                {/*</div>*/}
+                                            </div>
+                                            {notification.history.map((historyItem, i) =>
+                                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
+                                                    <div style={{ justifyContent: "center", width: '8%'}}>
+                                                        {historyItem.messageHistoryId}
+                                                    </div>
+                                                    <div>
+                                                        {historyItem.messageTo}
+                                                    </div>
+                                                    <div style={{ width: '45%'}}>
+                                                        {historyItem.subject}
+                                                    </div>
+                                                    <div>
+                                                        {moment(historyItem.sentAt).format('DD/MM/YYYY HH:mm:ss')}
+                                                    </div>
+                                                    <div>
+                                                        {this.getMessageStatus(historyItem.messageStatus)}
+                                                    </div>
+                                                    <div className="delete dropdown">
+                                                        {historyItem.partsActual}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <Paginator
+                                    finalTotalPages={notification.historyTotalPages}
+                                    onPageChange={this.handlePageClick}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -796,7 +937,7 @@ class Index extends Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h4 className="modal-title">Начать рассылку</h4>
-                                <button type="button" className="close" data-dismiss="modal"></button>
+                                <button type="button" className="close" data-dismiss="modal" />
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <div>
