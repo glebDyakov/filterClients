@@ -49,11 +49,11 @@ class AddAppointment extends React.Component {
             }],
             selectedTypeahead: [],
             typeAheadOptions: {
-                clientName: {
+                clientFirstName: {
                     label: 'Имя',
                     selectedKey: 'firstName',
                     options: [],
-                    isValid: (clientNameValue) => this.state.clientPhone ? ((clientNameValue && clientNameValue.length) > 0) : true
+                    isValid: (clientFirstNameValue) => this.state.clientPhone ? ((clientFirstNameValue && clientFirstNameValue.length) > 0) : true
                 },
                 clientPhone: {
                     label: 'Телефон',
@@ -62,14 +62,20 @@ class AddAppointment extends React.Component {
                     defaultValue: defaultPhoneValue,
                     isValid: (clientPhoneValue) => clientPhoneValue
                                 ? isValidNumber(clientPhoneValue)
-                                : (this.state.clientName ? ((clientPhoneValue && clientPhoneValue.length) > 0) : true)
+                                : (this.state.clientFirstName ? ((clientPhoneValue && clientPhoneValue.length) > 0) : true)
+                },
+                clientLastName: {
+                    label: 'Фамилия',
+                    selectedKey: 'lastName',
+                    options: [],
+                    isValid: () => true
                 },
                 clientEmail: {
                     label: 'Email',
                     selectedKey: 'email',
                     options: [],
                     isValid: (clientEmailValue) => clientEmailValue ? isValidEmailAddress(clientEmailValue) : true
-                }
+                },
             },
             allPrice: 0,
             servicesSearch: '',
@@ -396,11 +402,11 @@ class AddAppointment extends React.Component {
     handleTypeaheadSelect(key, value) {
         let updatedState = {};
         if (value.length) {
-            updatedState = { clientName: value[0].firstName, clientPhone: value[0].phone, clientEmail: value[0].email }
+            updatedState = { clientFirstName: value[0].firstName, clientPhone: value[0].phone, clientLastName: value[0].lastName, clientEmail: value[0].email }
             this.checkUser(value[0])
         } else {
             this.removeCheckedUser();
-            updatedState = { clientName: null, clientPhone: null, clientEmail: null, [key]: this.state[key] }
+            updatedState = { clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, [key]: this.state[key] }
         }
         this.setState({ selectedTypeahead: value, ...updatedState});
     }
@@ -789,13 +795,17 @@ class AddAppointment extends React.Component {
 
     renderMenuItemChildren(option, props) {
         const { labelKey } = props;
-        const keys = ['firstName', 'phone', 'email']
-        const visibleKeys = keys.filter(item => item !== labelKey);
+        let visibleKeys = ['firstName', 'lastName', 'phone', 'email'];
+
         return (
             <div key={option.clientId}>
-                <div>{option[labelKey]}</div>
                 <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                    {visibleKeys.map(key => <span style={{ color: 'grey' }}>{option[key]}</span>)}
+                    <span style={labelKey === visibleKeys[0] ? {} : { color: 'grey' } }>{option[visibleKeys[0]]}</span>
+                    <span style={labelKey === visibleKeys[1] ? {} : { color: 'grey' } }>{option[visibleKeys[1]]}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                    <span style={labelKey === visibleKeys[2] ? {} : { color: 'grey' } }>{option[visibleKeys[2]]}</span>
+                    <span style={labelKey === visibleKeys[3] ? {} : { color: 'grey' } }>{option[visibleKeys[3]]}</span>
                 </div>
             </div>
         );
@@ -1057,27 +1067,53 @@ class AddAppointment extends React.Component {
                                                     {/*    </form>*/}
                                                     {/*</div>*/}
                                                     <div className="row">
-                                                        {Object.entries(typeAheadOptions).map(([key, value]) => (
-                                                            <div key={key} className={"col-12 typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                <p>{value.label}</p>
-                                                                <AsyncTypeahead
-                                                                    isLoading={isLoadingTypeahead}
-                                                                    onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
-                                                                    value={this.state[key]}
-                                                                    defaultInputValue={value.defaultValue}
-                                                                    id={key}
-                                                                    onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
-                                                                    onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
-                                                                    options={value.options}
-                                                                    labelKey={value.selectedKey}
-                                                                    minLength={3}
-                                                                    placeholder=""
-                                                                    onSearch={(value) => this.handleTypeaheadSearch(key, value)}
-                                                                    selected={selectedTypeahead}
-                                                                    renderMenuItemChildren={this.renderMenuItemChildren}
-                                                                />
-                                                            </div>
-                                                        ))}
+                                                        <div className="col-12">
+                                                            <p style={{ fontSize: '14px' }}>Быстрое добавление клиента:</p>
+                                                            {Object.entries({ clientFirstName: typeAheadOptions.clientFirstName, clientPhone: typeAheadOptions.clientPhone }).map(([key, value]) => (
+                                                                <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
+                                                                    <p>{value.label}</p>
+                                                                    <AsyncTypeahead
+                                                                        isLoading={isLoadingTypeahead}
+                                                                        onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
+                                                                        value={this.state[key]}
+                                                                        defaultInputValue={value.defaultValue}
+                                                                        id={key}
+                                                                        onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
+                                                                        onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
+                                                                        options={value.options}
+                                                                        labelKey={value.selectedKey}
+                                                                        minLength={3}
+                                                                        placeholder=""
+                                                                        onSearch={(value) => this.handleTypeaheadSearch(key, value)}
+                                                                        selected={selectedTypeahead}
+                                                                        renderMenuItemChildren={this.renderMenuItemChildren}
+                                                                    />
+                                                                </div>
+                                                            ))}
+
+                                                            <p style={{ fontSize: '14px' }}>Опционально:</p>
+                                                            {Object.entries({ clientLastName: typeAheadOptions.clientLastName, clientEmail: typeAheadOptions.clientEmail }).map(([key, value]) => (
+                                                                <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
+                                                                    <p>{value.label}</p>
+                                                                    <AsyncTypeahead
+                                                                        isLoading={isLoadingTypeahead}
+                                                                        onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
+                                                                        value={this.state[key]}
+                                                                        defaultInputValue={value.defaultValue}
+                                                                        id={key}
+                                                                        onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
+                                                                        onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
+                                                                        options={value.options}
+                                                                        labelKey={value.selectedKey}
+                                                                        minLength={3}
+                                                                        placeholder=""
+                                                                        onSearch={(value) => this.handleTypeaheadSearch(key, value)}
+                                                                        selected={selectedTypeahead}
+                                                                        renderMenuItemChildren={this.renderMenuItemChildren}
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                     {/*<ul>*/}
                                                     {/*    { clients.client && clients.client.map((client_user, i) =>*/}
@@ -1284,7 +1320,7 @@ class AddAppointment extends React.Component {
     }
 
     removeCheckedUser(){
-        this.setState({ clientChecked: null, clientName: null, clientPhone: null, clientEmail: null, selectedTypeahead: [] });
+        this.setState({ clientChecked: null, clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, selectedTypeahead: [] });
     }
 
     editClient(client){
@@ -1299,14 +1335,15 @@ class AddAppointment extends React.Component {
     }
 
     addAppointment (){
-        const {appointment, clientName, clientPhone, clientEmail, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
+        const {appointment, clientFirstName, clientPhone, clientLastName, clientEmail, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
         let clientProps = {}
-        if (clientName || clientPhone || clientEmail) {
+        if (clientFirstName || clientPhone || clientLastName || clientEmail) {
             clientProps = {
-                clientName,
+                clientFirstName,
                 clientPhone: (clientPhone && `+${clientPhone.replace(/[+()\- ]/g, '')}`),
+                clientLastName,
                 clientEmail
             }
         }
