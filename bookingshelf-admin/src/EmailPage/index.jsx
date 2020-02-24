@@ -853,7 +853,7 @@ class Index extends Component {
                                     </form>
                                 </div>
                                 <div style={{ overflowX: 'auto', position: 'relative', zIndex: 0 }}>
-                                    <div style={{ overflowX: 'hidden', display: 'inline-block', maxHeight: '65vh', height: '100%' }} className="content-tab-date min-width-desktop">
+                                    <div style={{ overflowX: 'hidden', display: 'inline-block', maxHeight: '65vh', marginBottom: '14px' }} className="content-tab-date min-width-desktop">
                                         <div style={{ position: 'absolute', zIndex: 1, minWidth: '700px', width: '100%' }} className="tab-content-inner min-width-desktop">
                                             <div className="tab-content-list mb-2"  style={{position: "relative"}}>
                                                 <div style={{ justifyContent: "center", width: '8%'}}>
@@ -878,7 +878,7 @@ class Index extends Component {
                                         </div>
                                         <div style={{ minWidth: '700px' }} className="tab-content-inner min-width-desktop">
 
-                                            <div className="tab-content-list mb-2"  style={{position: "relative", height: '42px'}}>
+                                            <div className="tab-content-list mb-2"  style={{position: "relative", height: '33px'}}>
                                                 {/*<div style={{ justifyContent: "center", width: '8%'}}>*/}
                                                 {/*    ID*/}
                                                 {/*</div>*/}

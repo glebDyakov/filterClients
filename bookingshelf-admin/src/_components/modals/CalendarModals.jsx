@@ -103,7 +103,7 @@ class CalendarModals extends Component {
     render(){
         const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-            reserved: reservedFromProps, moveVisit, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting
+            reserved: reservedFromProps, getByStaffKey, moveVisit, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
@@ -178,7 +178,7 @@ class CalendarModals extends Component {
                         onClose={this.onCloseReserved}
                     />
                     }
-                    <MoveVisit moveVisit={moveVisit} />
+                    <MoveVisit getByStaffKey={getByStaffKey} moveVisit={moveVisit} />
                     <DeleteAppointment
                         appointmentForDeleting={appointmentForDeleting}
                     />

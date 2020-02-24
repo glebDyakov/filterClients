@@ -23,27 +23,26 @@ const Box = ({
             const dropResult = monitor.getDropResult()
             let payload = {}
             if (item && dropResult) {
-                moveVisit({
-                    movingVisit,
+                payload = {
+                    moveVisit,
                     movingVisitDuration,
+                    prevVisitStaffId,
                     staffKey: dropResult.staffKey,
                     selectedDaysKey: dropResult.selectedDaysKey,
-                    time: dropResult.time,
-                    prevVisitStaffId
-                })
+                    time: dropResult.time
+                }
+                $('.move-visit-modal').modal('show');
             } else {
                 payload = { isStartMovingVisit: false, movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null }
             }
             dispatch(appointmentActions.togglePayload({ draggingAppointmentId: false, ...payload }))
-
-
         },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
         }
         ),
     })
-    const visibility = (isDragging || (!draggingAppointmentId && (movingVisit && movingVisit.appointmentId) === appointmentId)) ? 'hidden' : 'visible'
+    const visibility = (isDragging || (!draggingAppointmentId && (movingVisit && movingVisit.appointmentId) === appointmentId)) ? 'hidden' : 'visible';
     return (
         <div ref={drag} className={wrapperClassName} style={{ visibility }}>{content}</div>
     )
