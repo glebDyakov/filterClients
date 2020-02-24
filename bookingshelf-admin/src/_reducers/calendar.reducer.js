@@ -490,27 +490,32 @@ export function calendar(state = initialState, action) {
             }
 
             updatedAppointments = []
-            newAppointment.forEach(localAppointment => {
-                const item = []
-                localAppointment.appointments.forEach(appointment => {
-                    if (appointment.appointmentId !== newItem.appointmentId) {
-                        item.push(appointment)
+            if (newAppointment && newAppointment.length) {
+                newAppointment.forEach(localAppointment => {
+                    const item = []
+                    localAppointment.appointments.forEach(appointment => {
+                        if (appointment.appointmentId !== newItem.appointmentId) {
+                            item.push(appointment)
+                        }
+                    });
+
+                    if (localAppointment.staff.staffId === newItem.staffId) {
+                        item.push(newItem)
                     }
+
+                    if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === localAppointment.staff.staffId)) {
+                        item.push( {
+                            ...newItem,
+                            coappointment: true
+                        })
+                    }
+
+                    updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
                 });
+            } else {
+                updatedAppointments.push({ staff: { staffId : newItem.staffId }, appointments: [newItem] })
+            }
 
-                if (localAppointment.staff.staffId === newItem.staffId) {
-                    item.push(newItem)
-                }
-
-                if (newItem.coStaffs && newItem.coStaffs.some(costaff => costaff.staffId === localAppointment.staff.staffId)) {
-                    item.push( {
-                        ...newItem,
-                        coappointment: true
-                    })
-                }
-
-                updatedAppointments.push({ staff: localAppointment.staff, appointments: item })
-            });
 
             updatedAppointmentsCount = []
             updatedAppointmentsCount.forEach(localAppointment => {
