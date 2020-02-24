@@ -51,9 +51,7 @@ class MoveVisit extends React.Component {
     }
 
     handleNo (){
-        this.props.dispatch(appointmentActions.togglePayload({
-            movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null, draggingAppointmentId: null, isStartMovingVisit: false
-        }));
+        this.props.dispatch(appointmentActions.togglePayload({ movingVisit: null, movingVisitDuration: null, prevVisitStaffId: null, draggingAppointmentId: null, isStartMovingVisit: false }));
     }
 }
 
