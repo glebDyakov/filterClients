@@ -34,14 +34,14 @@ class TabOne extends  PureComponent{
                             }
 
 
-                        }}>{flagAllStaffs ? 'Назад' : 'К выбору филиала'}</span>
+                        }}><span className="title_block_text">Назад</span></span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
                             refreshTimetable();
-                    }}>Далее</span>}
+                    }}><span className="title_block_text">Далее</span></span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                     {staffs && staffs.length > 0 && staffs
@@ -104,7 +104,7 @@ class TabOne extends  PureComponent{
                     )}
                 </ul>
               <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                {staffs && staffs.length && staffs
+                {staffs && !!staffs.length && staffs
                     .filter(staff => {
                         const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
                         return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true

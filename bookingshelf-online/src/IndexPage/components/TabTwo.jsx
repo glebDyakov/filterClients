@@ -67,14 +67,14 @@ class TabTwo extends Component {
                         if (!isStartMovingVisit) {
                             clearSelectedServices()
                         }
-                    }}>Назад</span>
+                    }}><span className="title_block_text">Назад</span></span>
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
                         if (selectedServices.length) {
                             setScreen(flagAllStaffs ? 1 : 3);
                         }
                         refreshTimetable();
-                    }}>Далее</span>}
+                    }}><span className="title_block_text">Далее</span></span>}
                 </div>
                 {selectedStaff.staffId && <div className="specialist">
                     <div>

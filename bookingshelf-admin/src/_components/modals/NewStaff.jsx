@@ -34,6 +34,7 @@ class NewStaff extends React.Component {
                 "imageBase64":'',
                 'costaffs':[]
             },
+            extraSuccessText: false,
             emailIsValid: props.edit && props.edit,
             edit: props.edit && props.edit,
             preview: null,
@@ -79,7 +80,7 @@ class NewStaff extends React.Component {
 
     render() {
         const { authentication, staffs } = this.props;
-        const { staff, edit, emailIsValid }=this.state;
+        const { staff, edit, extraSuccessText, emailIsValid }=this.state;
 
         const isOwner = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 4
         const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email);
@@ -300,7 +301,7 @@ class NewStaff extends React.Component {
                                                                 </div>
                                                             </div>
                                                             {staffs && staffs.status === 200 &&
-                                                                <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                                                <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено. {extraSuccessText && 'Доступы для сотрудника высланы на указанный Email'}</p>
                                                             }
                                                             {staffs && staffs.status === 210 &&
                                                             <p className="alert-danger p-1 rounded pl-3 mb-2" >Такой email
@@ -372,8 +373,14 @@ class NewStaff extends React.Component {
     }
 
     updateStaff(){
-        const {updateStaff} = this.props;
+        const {updateStaff, edit, staff_working} = this.props;
         const {staff} = this.state;
+        if (edit && (staff.email !== staff_working.email)) {
+            this.setState({ extraSuccessText: true });
+        } else {
+            this.setState({ extraSuccessText: false });
+        }
+
 
         if(staff.costaffs && staff.costaffs.length===0) {
             staff.costaffs = [];
@@ -384,6 +391,11 @@ class NewStaff extends React.Component {
     addStaff(){
         const {addStaff} = this.props;
         const {staff} = this.state;
+        if (staff.email) {
+            this.setState({ extraSuccessText: true });
+        } else {
+            this.setState({ extraSuccessText: false });
+        }
 
         return addStaff(staff);
     };

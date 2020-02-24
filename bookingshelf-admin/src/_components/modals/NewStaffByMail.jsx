@@ -35,7 +35,7 @@ class NewStaffByMail extends React.Component {
                             <div className="form-group">
                                 <div className="modal-header">
                                     <h4 className="modal-title">Пригласить сотрудника по Email</h4>
-                                    <button type="button" className="close" onClick={this.closeModal}></button>
+                                    <button type="button" className="close" onClick={this.closeModal} />
                                     {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                     {/*     style={{margin:"13px 5px 0 0"}}/>*/}
 
@@ -53,7 +53,7 @@ class NewStaffByMail extends React.Component {
                                         />
 
                                         {staffs && staffs.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено. Логин и пароль высланы на указанный Email</p>
                                         }
                                         {staffs && staffs.status === 210 &&
                                         <p className="alert-danger p-1 rounded pl-3 mb-2" >Такой email
