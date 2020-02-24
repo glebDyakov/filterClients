@@ -5,12 +5,40 @@ import {appointmentActions} from "../../_actions/appointment.actions";
 class MoveVisit extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {}
 
         this.handleYes = this.handleYes.bind(this);
         this.handleNo = this.handleNo.bind(this);
+        this.checkForWarning = this.checkForWarning.bind(this);
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (newProps.movingVisit && (newProps.staffKey !== null && newProps.staffKey > -1)) {
+            this.checkForWarning(newProps);
+        }
+    }
+
+    checkForWarning(props) {
+        const { appointments, servicesList, movingVisit, getByStaffKey, staffKey, prevVisitStaffId } = props;
+        const staffWithAppointments = appointments.find(item => item.staff.staffId === prevVisitStaffId)
+        const allVisits = [movingVisit]
+        staffWithAppointments.appointments.forEach(item => {
+            if (item.coAppointmentId === movingVisit.appointmentId) {
+                allVisits.push(item);
+            }
+        });
+
+        const newStaffId = getByStaffKey(staffKey);
+        const isExtraText = allVisits.some(appointment => {
+            const activeService = servicesList.find(serviceListItem => serviceListItem.serviceId === appointment.serviceId);
+            return activeService.staffs.every(staff => staff.staffId !== newStaffId)
+        })
+
+        this.setState({ isExtraText })
     }
 
     render() {
+        const { isExtraText } = this.state;
         return (
             <div className="modal fade move-visit-modal">
                 <div className="modal-dialog modal-lg modal-dialog-centered">
@@ -18,6 +46,9 @@ class MoveVisit extends React.Component {
                         <div className="modal-header">
                             <h4 className="modal-title">Перенести выбранный визит?</h4>
                             <button type="button" className="close" onClick={this.handleNo} data-dismiss="modal" />
+                        </div>
+                        <div style={{ color: 'red', fontSize: '11px' }} className="mr-3 ml-3 mb-2">
+                            {isExtraText ? 'Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?' : ''}
                         </div>
                         <div className="form-group mr-3 ml-3">
                             <button type="button" className="button" onClick={this.handleYes} data-dismiss="modal">Да</button>
@@ -57,6 +88,8 @@ class MoveVisit extends React.Component {
 
 function mapStateToProps(state) {
     const {
+        calendar: { appointments },
+        services: { servicesList },
         appointment: {
             movingVisit,
             movingVisitDuration,
@@ -68,6 +101,8 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        appointments,
+        servicesList,
         movingVisit,
         movingVisitDuration,
         prevVisitStaffId,

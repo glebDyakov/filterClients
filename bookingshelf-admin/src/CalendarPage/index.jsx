@@ -115,6 +115,7 @@ class Index extends PureComponent {
 
         this.newAppointment = this.newAppointment.bind(this);
         this.checkForCostaffs = this.checkForCostaffs.bind(this);
+        this.getByStaffKey = this.getByStaffKey.bind(this);
         this.refreshTable = this.refreshTable.bind(this);
         this.setWorkingStaff = this.setWorkingStaff.bind(this);
         this.changeTime = this.changeTime.bind(this);
@@ -331,6 +332,10 @@ class Index extends PureComponent {
         }
     }
 
+    getByStaffKey(staffKey) {
+        return this.state.workingStaff.timetable[staffKey].staffId;
+    }
+
     moveVisit({ movingVisit, movingVisitDuration, selectedDaysKey, staffKey, prevVisitStaffId, time }) {
         const { appointments, reservedTimeFromProps, staff, selectedDays } = this.props
         const { workingStaff } = this.state;
@@ -376,7 +381,7 @@ class Index extends PureComponent {
             appointmentModal, appointmentEdited, clients, staff, edit_appointment, services, staffClicked, adding, status,
             clickedTime, selectedDayMoment: moment(selectedDays[0]), selectedDay: selectedDays[0], workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
             reservedTimeEdited, reservedStuffId, appointmentForDeleting,
-            newReservedTime: this.newReservedTime, changeTime: this.changeTime, moveVisit: this.moveVisit, changeReservedTime: this.changeReservedTime,
+            newReservedTime: this.newReservedTime, changeTime: this.changeTime, moveVisit: this.moveVisit, getByStaffKey: this.getByStaffKey, changeReservedTime: this.changeReservedTime,
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };

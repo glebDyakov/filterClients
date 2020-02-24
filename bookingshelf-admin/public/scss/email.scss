@@ -173,6 +173,24 @@
 
     }
 
+    .history_page {
+        .content-tab-date {
+            width: 100%;
+            @media screen and(max-width: $tablet-width){
+                width: auto;
+            }
+        }
+        .tab-content-list {
+            div {
+                font-size: 12px;
+
+                @media screen and(max-width: $tablet-width){
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+
     #template_email,
     #template_sms,
     #newsletter-templates,
