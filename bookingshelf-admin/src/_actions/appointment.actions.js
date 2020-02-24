@@ -42,8 +42,7 @@ function togglePayload(payload) {
 function makeMovingVisitQuery(data) {
     return dispatch => {
         const { appointments, staff, reservedTimes, timetable, movingVisit, movingVisitDuration, movingVisitStaffId, movingVisitMillis, prevVisitStaffId } = data
-
-        let shouldMove = true
+        let shouldMove = true;
 
         const startDay = moment(movingVisitMillis, 'x').format('D')
         const endDay = moment((movingVisitMillis + (movingVisitDuration * 1000)), 'x').format('D')

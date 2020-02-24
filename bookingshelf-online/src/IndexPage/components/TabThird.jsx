@@ -56,15 +56,16 @@ class TabThird extends  PureComponent {
                                     refreshTimetable()
                                 //}
                             }
-                            }>
-                                Назад</span>
+                            }><span className="title_block_text">Назад</span>
+                            </span>
                     <p className="modal_title">Выбор даты</p>
                     {selectedDay && <span className="next_block" onClick={()=>{
                         setScreen(4);
                         //if (!isStartMovingVisit) {
                             refreshTimetable()
                         //}
-                    }}>Далее</span>}
+                    }}><span className="title_block_text">Далее</span>
+                    </span>}
                 </div>
                 <div className="specialist">
 

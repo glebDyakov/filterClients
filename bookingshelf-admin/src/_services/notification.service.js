@@ -1,4 +1,5 @@
 import config from 'config';
+import moment from 'moment';
 import { authHeader, handleResponse } from '../_helpers';
 
 export const notificationService = {
@@ -6,6 +7,7 @@ export const notificationService = {
     updateSMS_EMAIL,
     updateSubcompanySMS_EMAIL,
     getClientAmount,
+    getHistorySms,
     setSMS,
     getBalance
 };
@@ -104,4 +106,20 @@ function getClientAmount() {
     };
 
     return fetch(`${config.apiUrl}/company/state`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+
+function getHistorySms(currentPage = 1, searchValue) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+    const dateFrom = moment().subtract(1, 'year').format('x')
+    const dateTo = moment().format('x')
+
+    return fetch(`${config.apiUrl}/messages?dateFrom=${dateFrom}&dateTo=${dateTo}&pageNum=${currentPage}&pageSize=10&channel=SMS${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

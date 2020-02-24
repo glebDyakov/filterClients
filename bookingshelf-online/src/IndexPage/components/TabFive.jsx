@@ -66,7 +66,8 @@ class TabFive extends PureComponent {
                             <span className="prev_block" onClick={()=>{
                                 setScreen(4);
                                 refreshTimetable()}}>
-                                Назад</span>
+                                <span className="title_block_text">Назад</span>
+                            </span>
                     <p className="modal_title">Запись</p>
                 </div>
                 <div className="specialist">

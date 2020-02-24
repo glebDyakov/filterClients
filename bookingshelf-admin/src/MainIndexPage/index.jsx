@@ -42,7 +42,7 @@ class Index extends Component {
 
     componentWillReceiveProps(newProps) {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
-            this.queryInitData()
+            this.queryInitData(newProps.authentication)
         }
 
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
@@ -192,8 +192,8 @@ class Index extends Component {
         initializeJs();
     }
 
-    queryInitData() {
-        if (this.props.authentication.user && this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
+    queryInitData(authentication = this.props.authentication) {
+        if (authentication.user && authentication.user.profile && (authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
         }
 
