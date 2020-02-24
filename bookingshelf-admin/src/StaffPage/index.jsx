@@ -60,7 +60,6 @@ class Index extends Component {
 
 
         this.state = {
-            staff: props.staff,
             edit: false,
             staff_working: {},
             closedDates: {},
@@ -136,12 +135,17 @@ class Index extends Component {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
             this.queryInitData()
         }
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({staff: newProps.staff,
+        if (this.props.staff.status !== newProps.staff.status) {
+            this.setState({
                 addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
-                newStaffByMail: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaffByMail,
-                newStaff: newProps.staff.status && newProps.staff.status===209 ? false : this.state.newStaff,
             })
+        }
+
+        if (this.state.staff_working.staffId && JSON.stringify(newProps.staff.staff) !== (JSON.stringify(this.props.staff.staff))) {
+            const staff_working = newProps.staff.staff.find(item => item.staffId === this.state.staff_working.staffId);
+            if (staff_working) {
+                this.setState({ staff_working })
+            }
         }
     }
 
@@ -176,8 +180,8 @@ class Index extends Component {
     }
 
     render() {
-        const { staff: staffFromProps } = this.props;
-        const { staff, emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { staff } = this.props;
+        const { emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -222,7 +226,7 @@ class Index extends Component {
                     <div className="tab-content-list" key={i}>
                         {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
                         <div style={{ display: 'block' }}>
-                            <a style={{ paddingBottom: isGroup ? '4px' : '10px' }} key={i} onClick={(e) => this.handleClick(staff_user.staffId, false, e, this)}>
+                            <a style={{ paddingBottom: isGroup ? '4px' : '10px' }} key={i} onClick={() => this.handleClick(staff_user.staffId, false)}>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
                                                          src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -271,7 +275,7 @@ class Index extends Component {
 
         return (
             <div className="staff"  ref={node => { this.node = node; }}>
-                {this.props.staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                 <div className="row retreats content-inner page_staff">
                     <div className="flex-content col-xl-12">
                         <ul className="nav nav-tabs">
@@ -337,7 +341,7 @@ class Index extends Component {
                                             }
                                         </div>
                                         { staff.timetable && staff.timetable.map((time, keyTime)=> {
-                                                const activeStaff = staffFromProps && staffFromProps.staff && staffFromProps.staff.find(item =>
+                                                const activeStaff = staff && staff.staff && staff.staff.find(item =>
                                                     ((item.staffId) === (time.staffId)));
                                                 return (
                                                     <div className="tab-content-list" key={keyTime}>
@@ -493,7 +497,7 @@ class Index extends Component {
                                 <div className="arrow"></div>
                             </div>
                         </div>
-                        {access(-1) && !this.props.staff.error &&
+                        {access(-1) && !staff.error &&
                         <div className={"tab-pane access-tab"+(activeTab==='permissions'?' active':'')} id="tab4">
                             <div className="access">
                                 <div className="tab-content-list">
@@ -538,8 +542,8 @@ class Index extends Component {
                             </div>
                         </div>
                         }
-                        {this.props.staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                        {this.props.staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
+                        {staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                        {staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                     </div>
                 </div>
                 {activeTab==='staff' &&
@@ -548,8 +552,8 @@ class Index extends Component {
                 {activeTab === 'staff' &&
                 <div className="hide buttons-container">
                     <div className="p-4">
-                        <button className="button new-staff" type="button" onClick={(e)=>this.handleClick(null, true, e)}>Пригласить сотрудника по Email</button>
-                        <button className="button new-staff" type="button"  onClick={(e)=>this.handleClick(null, false, e)}>Новый сотрудник</button>
+                        <button className="button new-staff" type="button" onClick={()=>this.handleClick(null, true)}>Пригласить сотрудника по Email</button>
+                        <button className="button new-staff" type="button"  onClick={()=>this.handleClick(null, false)}>Новый сотрудник</button>
 
                     </div>
                     <div className="arrow"/>
@@ -568,6 +572,7 @@ class Index extends Component {
                 }
                 {newStaff &&
                     <NewStaff
+                        staff={staff}
                         staff_working={staff_working}
                         edit={edit}
                         updateStaff={this.updateStaff}
@@ -611,7 +616,7 @@ class Index extends Component {
     };
 
     handleSubmit(e) {
-        const { firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking } = this.state.staff;
+        const { firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking } = this.props.staff;
         const { dispatch } = this.props;
 
         e.preventDefault();
@@ -632,9 +637,7 @@ class Index extends Component {
 
     }
 
-    handleClick(id, email) {
-        const { staff } = this.state;
-
+    handleClick(id, email, staff = this.props.staff) {
         if(id!=null) {
             const staff_working = staff.staff.find((item) => {return id === item.staffId});
 
@@ -715,7 +718,7 @@ class Index extends Component {
     };
 
     toggleChange (roleCode, permissionCode) {
-        const { staff } = this.state;
+        const { staff } = this.props;
         const { dispatch } = this.props;
 
         const access = staff.access;

@@ -33,14 +33,14 @@ function add(params) {
             .then(
                 staff => {
                     dispatch(success(staff));
-                    setTimeout(()=>dispatch(successTime(0)), 500);
+                    setTimeout(()=>dispatch(successTime(0)), 10000);
                     dispatch(staffActions.get());
 
                 },
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
-                    setTimeout(()=>dispatch(failureTime(0)), 500);
+                    setTimeout(()=>dispatch(failureTime(0)), 10000);
                 }
             );
     };
@@ -60,14 +60,14 @@ function addUSerByEmail(params) {
             .then(
                 staff => {
                     dispatch(success(staff));
-                    setTimeout(()=>dispatch(successTime(0)), 500);
+                    setTimeout(()=>dispatch(successTime(0)), 10000);
                     dispatch(staffActions.get());
 
                 },
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
-                    setTimeout(()=>dispatch(failureTime(0)), 500);
+                    setTimeout(()=>dispatch(failureTime(0)), 10000);
 
                 }
             );
@@ -151,7 +151,7 @@ function update(params, staffId) {
                         dispatch(successUser(user.profile));
                     }
 
-                    setTimeout(()=>dispatch(successTime(0)), 500);
+                    setTimeout(()=>dispatch(successTime(0)), 10000);
                     dispatch(staffActions.get());
 
                 },
