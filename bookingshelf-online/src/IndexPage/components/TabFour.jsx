@@ -176,12 +176,14 @@ class TabFour extends  PureComponent {
                                 //if (!isStartMovingVisit) {
                                     refreshTimetable()
                                 //}
-                            }}>Назад</span>
+                            }}><span className="title_block_text">Назад</span>
+                            </span>
                     <p className="modal_title">Выбор времени</p>
                     {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         setScreen(5);
                         refreshTimetable();
-                    }}>Далее</span>}
+                    }}><span className="title_block_text">Далее</span>
+                    </span>}
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&

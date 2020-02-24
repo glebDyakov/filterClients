@@ -314,6 +314,10 @@ q:before, q:after { content:''; }
     background-position: left center;
     padding-left: 30px;
 }
+
+.title_block .title_block_text {
+    border-bottom: 1px solid #000;
+}
 .prev_block:hover, .next_block:hover{
     opacity: 0.7;
 
@@ -324,6 +328,11 @@ q:before, q:after { content:''; }
     }
     .prev_block:hover, .next_block:hover {
         opacity: 1;
+    }
+    .title_block .prev_block, .title_block .next_block{
+        padding: 0;
+        margin: 24px 8px;
+        background: none;
     }
     .prev_block, .next_block{
         padding: 16px;
@@ -1334,7 +1343,6 @@ input[type="search"]::-moz-placeholder {
     .title_block .prev_block, .title_block .next_block,
     .title_block2 .prev_block, .title_block2 .next_block{
         overflow: hidden;
-        text-indent: -200px;
     }
     .title_block .prev_block,
     .title_block2 .prev_block{
