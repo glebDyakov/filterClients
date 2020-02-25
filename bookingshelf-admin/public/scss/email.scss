@@ -182,11 +182,17 @@
         }
         .tab-content-list {
             div {
+                height: auto !important;
+                padding: 4px 12px;
                 font-size: 12px;
 
                 @media screen and(max-width: $tablet-width){
                     font-size: 11px;
                 }
+            }
+
+            .tab-content-header {
+                padding: 0 12px;
             }
         }
     }

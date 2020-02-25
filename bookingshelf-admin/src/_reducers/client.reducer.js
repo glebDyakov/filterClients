@@ -78,7 +78,7 @@ export function client(state= { activeClientAppointments: [], client: [] }, acti
               error: JSON.parse(action.error),
               step: Math.random(),
               adding: false,
-              status: 209
+              // status: 209
           };
       case clientConstants.UPDATE_CLIENT_SUCCESS:
           const clients=state.client;
