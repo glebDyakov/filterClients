@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from "moment";
 import CellAppointment from "./CellAppointment";
-import {checkIsOnAnotherVisit} from "../../_helpers/available-time";
 import {appointmentActions} from "../../_actions";
 import CellWhite from "./CellWhite";
 import CellExpired from "./CellExpired";
@@ -45,7 +44,8 @@ class BaseCell extends React.Component {
                     .some(cellType => (this.state.cellType === cellType && newState.cellType === cellType))
                 && JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
             )
-            || (this.state.isPresent !== newState.isPresent);
+            || (this.state.isPresent !== newState.isPresent)
+            || (JSON.stringify(this.props.numbers) !== JSON.stringify(newProps.numbers));
     }
 
     componentWillReceiveProps(newProps, nextContext) {
@@ -68,10 +68,8 @@ class BaseCell extends React.Component {
         const { cellType } = this.state
         let filledCell;
 
-        console.log('tried to found appointment')
         const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
         if (cellAppointment) {
-            console.log('success found appointment')
             filledCell = cellAppointment;
         }
 

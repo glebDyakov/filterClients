@@ -856,22 +856,22 @@ class Index extends Component {
                                     <div style={{ overflowX: 'hidden', display: 'inline-block', maxHeight: '65vh', marginBottom: '14px' }} className="content-tab-date min-width-desktop">
                                         <div style={{ position: 'absolute', zIndex: 1, minWidth: '700px', width: '100%' }} className="tab-content-inner min-width-desktop">
                                             <div className="tab-content-list mb-2"  style={{position: "relative"}}>
-                                                <div style={{ justifyContent: "center", width: '8%'}}>
+                                                <div className="tab-content-header" style={{ justifyContent: "center", width: '8%'}}>
                                                     ID
                                                 </div>
-                                                <div>
+                                                <div className="tab-content-header">
                                                     На номер
                                                 </div>
-                                                <div style={{ width: '45% '}}>
+                                                <div className="tab-content-header" style={{ width: '45% '}}>
                                                     Текст
                                                 </div>
-                                                <div>
+                                                <div className="tab-content-header">
                                                     Дата
                                                 </div>
-                                                <div>
+                                                <div className="tab-content-header">
                                                     Статус
                                                 </div>
-                                                <div className="delete dropdown">
+                                                <div className="tab-content-header delete dropdown">
                                                     Кол-во СМС
                                                 </div>
                                             </div>
