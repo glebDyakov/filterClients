@@ -94,7 +94,7 @@ const CellAppointment = (props) => {
     const maxTextAreaHeight = maxTextAreaCellCount * 20;
 
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
-    const resultTextArea = `${appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? appointment.clientLastName : '')) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+    const resultTextArea = `${appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
     const startMovingVisit = (movingVisit, totalDuration, prevVisitStaffId, draggingAppointmentId) => {
         dispatch(appointmentActions.togglePayload({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId, isStartMovingVisit: true }));
@@ -190,7 +190,7 @@ const CellAppointment = (props) => {
                                 handleUpdateClient(appointment.clientId)
                             }} />
                     </p>}
-                    {appointment.clientId && <p className="name">{appointment.clientFirstName + (appointment.clientLastName ? appointment.clientLastName : '')}</p>}
+                    {appointment.clientId && <p className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
                     {appointment.clientId && <p style={{ height: '30px' }}>
                         <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="cell check-box calendar-client-checkbox red-text">

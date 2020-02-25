@@ -239,7 +239,7 @@ class SidebarMain extends React.Component {
                                     </p>
                                 </div>
                                 <div style={{width: "40%"}}>
-                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? appointment.clientLastName : '')}</p><br/></React.Fragment> : 'Без клиента'}
+                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
@@ -296,7 +296,7 @@ class SidebarMain extends React.Component {
                                         className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
                                 <div style={{width: "40%"}}>
-                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? appointment.clientLastName : '')}</p><br/></React.Fragment> : 'Без клиента'}
+                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
@@ -498,7 +498,7 @@ class SidebarMain extends React.Component {
                                                             </p>
                                                         </div>
                                                         <div style={{width: "40%"}}>
-                                                            {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? appointment.clientLastName : '')}</p><br/> </React.Fragment> : 'Без клиента'}
+                                                            {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
