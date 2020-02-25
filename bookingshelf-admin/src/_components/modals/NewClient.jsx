@@ -68,7 +68,7 @@ class NewClient extends React.Component {
                             {!edit ? <h4 className="modal-title">Новый клиент</h4>
                                 : <h4 className="modal-title">Редактирование клиента</h4>
                             }
-                            <button type="button" className="close" onClick={this.closeModal}></button>
+                            <button type="button" className="close" onClick={this.closeModal} />
                             {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                             {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                         </div>
@@ -97,7 +97,6 @@ class NewClient extends React.Component {
                                                emailIsValid: isValidEmailAddress(client.email)
                                            })}
                                            className={'' + (!isValidEmailAddress(client.email) && client.email!=='' ? ' redBorder' : '')}
-
                                     />
                                 </div>
 
@@ -131,7 +130,7 @@ class NewClient extends React.Component {
                                             <input className="form-check-input" type="checkbox"
                                                    checked={client.acceptNewsletter}
                                                    onChange={this.toggleChange}/>
-                                            <span className="check"></span>
+                                            <span className="check" />
                                             Получать рассылку
                                         </label>
                                     </div>
