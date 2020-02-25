@@ -82,19 +82,19 @@ class AppointmentFromSocket extends React.Component {
         switch (wsMessageType) {
             case "APPOINTMENT_CREATED":
                 staffName = payload && payload.staffName
-                clientName = payload && payload.clientName
+                clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
                 socketTitle = "НОВАЯ ЗАПИСЬ";
                 socketFooterText = "Просмотреть запись"
                 break;
             case "APPOINTMENT_DELETED":
                 staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff.lastName ? activeStaff.lastName : ''}`
-                clientName = activeClient ? `${activeClient.firstName} ${(activeClient.lastName ? activeClient.lastName : '')}` : ''
+                clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
                 socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;
             case "APPOINTMENT_MOVED":
                 staffName = payload && payload.staffName
-                clientName = payload && payload.clientName
+                clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
                 socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
                 socketFooterText = "Просмотреть запись"
                 break;
