@@ -20,17 +20,19 @@ class MoveVisit extends React.Component {
 
     checkForWarning(props) {
         const { appointments, servicesList, movingVisit, getByStaffKey, staffKey, prevVisitStaffId } = props;
-        const staffWithAppointments = appointments.find(item => item.staff.staffId === prevVisitStaffId)
+        const staffWithAppointments = appointments && appointments.find(item => item.staff.staffId === prevVisitStaffId)
         const allVisits = [movingVisit]
-        staffWithAppointments.appointments.forEach(item => {
-            if (item.coAppointmentId === movingVisit.appointmentId) {
-                allVisits.push(item);
-            }
-        });
+        if (staffWithAppointments) {
+            staffWithAppointments.appointments && staffWithAppointments.appointments.forEach(item => {
+                if (item.coAppointmentId === movingVisit.appointmentId) {
+                    allVisits.push(item);
+                }
+            });
+        }
 
         const newStaffId = getByStaffKey(staffKey);
         const isExtraText = allVisits.some(appointment => {
-            const activeService = servicesList.find(serviceListItem => serviceListItem.serviceId === appointment.serviceId);
+            const activeService = servicesList && servicesList.find(serviceListItem => serviceListItem.serviceId === appointment.serviceId);
             return activeService.staffs.every(staff => staff.staffId !== newStaffId)
         })
 
