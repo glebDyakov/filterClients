@@ -161,7 +161,7 @@ class TabOne extends  PureComponent{
                   </li>
                 )}
               </ul>
-                {info.template === 1 && !isStartMovingVisit && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
+                {!flagAllStaffs && info.template === 1 && !isStartMovingVisit && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
             </div>
         );
     }
