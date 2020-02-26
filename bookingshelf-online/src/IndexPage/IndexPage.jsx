@@ -233,7 +233,6 @@ class IndexPage extends PureComponent {
 
     handleSave (codeInfo) {
         const { dispatch } = this.props;
-        const { clientActivationId, clientVerificationCode } = this.props.staff;
 
         const { selectedStaff,selectedServices,group,selectedDay,selectedTime } = this.state;
         const {company} = this.props.match.params
@@ -249,10 +248,9 @@ class IndexPage extends PureComponent {
         });
 
         if (codeInfo) {
-            data[0].clientActivationId = clientActivationId
-            data[0].clientVerificationCode = clientVerificationCode
+            data[0].clientActivationId = codeInfo.clientActivationId
+            data[0].clientVerificationCode = codeInfo.clientVerificationCode
             dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
-            this.setState({ ...this.state, screen: 6 })
         } else {
             dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
         }
@@ -299,7 +297,7 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, numbers, workingStaff, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, clientVerificationCode, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, clients } = this.props.staff;
+        const { error, isLoading, clientActivationId, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
 
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
@@ -416,9 +414,9 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        enteredCodeError={enteredCodeError}
                         serviceId={selectedService.serviceId}
                         clientActivationId={clientActivationId}
-                        clientVerificationCode={clientVerificationCode}
                         selectedStaff={selectedStaff}
                         selectedDay={selectedDay}
                         selectedServices={selectedServices}
@@ -433,7 +431,6 @@ class IndexPage extends PureComponent {
                         handleSave={this.handleSave}
                         getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />
-
                     }
 
                     {screen === 6 && ((newAppointments && !!newAppointments.length) || movedVisitSuccess) && !error &&
