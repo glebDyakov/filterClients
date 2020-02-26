@@ -10,7 +10,6 @@ class TabFive extends PureComponent {
         super(props);
         this.state = {
           enteredCode: '',
-          enteredCodeError: false
         };
         this.handleActivationChange = this.handleActivationChange.bind(this);
     }
@@ -22,8 +21,8 @@ class TabFive extends PureComponent {
     render() {
 
         const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
-            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, clientVerificationCode} = this.props;
-        const { enteredCode, enteredCodeError } = this.state;
+            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
+        const { enteredCode } = this.state;
 
         if (!clientActivationId) {
           $('.phones_country').css({ display: 'flex' })
@@ -139,17 +138,10 @@ class TabFive extends PureComponent {
                 <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
                     ()=> {
                       if (clientActivationId) {
-
-                        if (enteredCode === clientVerificationCode) {
-                          this.setState({ enteredCodeError: false });
                           handleSave({
                             clientActivationId,
                             clientVerificationCode: enteredCode
                           })
-                        } else {
-                          this.setState({ enteredCodeError: true })
-                        }
-
                       } else {
                         $('.phones_country').css({ display: 'none' })
                         if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
