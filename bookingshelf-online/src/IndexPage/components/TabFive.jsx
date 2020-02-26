@@ -135,7 +135,10 @@ class TabFive extends PureComponent {
                     <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${config.baseUrl}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
                   </React.Fragment>
                 )}
-                <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
+                <input
+                    className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"}
+                    disabled={(!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName)}
+                    type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
                     ()=> {
                       if (clientActivationId) {
                           handleSave({
