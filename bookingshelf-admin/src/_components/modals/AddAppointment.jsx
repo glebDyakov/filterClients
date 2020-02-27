@@ -405,8 +405,13 @@ class AddAppointment extends React.Component {
             updatedState = { clientFirstName: value[0].firstName, clientPhone: value[0].phone, clientLastName: value[0].lastName, clientEmail: value[0].email }
             this.checkUser(value[0])
         } else {
-            this.removeCheckedUser();
-            updatedState = { clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, [key]: this.state[key] }
+            this.removeCheckedUser(key);
+            const checkingProps = { clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null }
+            Object.entries(checkingProps).forEach(([objKey , objValue]) => {
+                if (objKey !== key) {
+                    updatedState[objKey] = objValue
+                }
+            })
         }
         this.setState({ selectedTypeahead: value, ...updatedState});
     }
@@ -1319,8 +1324,15 @@ class AddAppointment extends React.Component {
         this.setState({ clientChecked: { ...client, appointments: this.props.clients.activeClientAppointments} });
     }
 
-    removeCheckedUser(){
-        this.setState({ clientChecked: null, clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, selectedTypeahead: [] });
+    removeCheckedUser(skippedKey){
+        const checkingProps = { clientChecked: null, clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, selectedTypeahead: [] }
+        const updatedState = {}
+        Object.entries(checkingProps).forEach(([objKey , objValue]) => {
+            if (objKey !== skippedKey) {
+                updatedState[objKey] = objValue
+            }
+        });
+        this.setState(updatedState);
     }
 
     editClient(client){

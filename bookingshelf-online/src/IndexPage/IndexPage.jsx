@@ -5,6 +5,7 @@ import moment from 'moment';
 import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
+import { isValidEmailAddress } from "../_helpers/validators";
 
 import TabCompanySelection from "./components/TabCompanySelection";
 import TabOne from "./components/TabOne";
@@ -488,7 +489,7 @@ class IndexPage extends PureComponent {
     }
 
     isValidEmailAddress(address) {
-        return !! (address && address.match(/.+@.+/));
+        return isValidEmailAddress(address);
     }
 
     _delete(id) {
