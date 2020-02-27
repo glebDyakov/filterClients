@@ -53,6 +53,7 @@ class IndexPage extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.isValidEmailAddress = this.isValidEmailAddress.bind(this);
+        this.forceUpdateStaff = this.forceUpdateStaff.bind(this);
         this.showNextWeek = this.showNextWeek.bind(this);
         this.showPrevWeek = this.showPrevWeek.bind(this);
         this._delete = this._delete.bind(this);
@@ -195,19 +196,10 @@ class IndexPage extends PureComponent {
         const { flagAllStaffs }=this.state;
         let screen = 2;
 
-        // let staffId=staff;
         if((staff && staff.length) === 0){
             this.setState({flagAllStaffs: true});
         }
 
-        // if(staff.length===0){
-        //     staffs && staffs.length && staffs.sort((a, b) => a.firstName.localeCompare(b.firstName)).map((staff, idStaff) =>
-        //         nearestTime && nearestTime.map((time, id)=>{
-        //             if(time.staffId===staff.staffId && time.availableDays.length!==0){
-        //                 staffId=staff
-        //             }
-        //         }))
-        // }
         if (flagAllStaffs) {
             screen = 3;
             this.setDefaultFlag();
@@ -220,10 +212,13 @@ class IndexPage extends PureComponent {
         this.setScreen(screen)
     }
 
+    forceUpdateStaff(selectedStaff) {
+        this.setState({ selectedStaff })
+    }
+
     selectSubcompany(subcompany) {
         this.setState({ selectedSubcompany: subcompany, screen: 1 })
     }
-
 
     handleChange(e) {
         const { name, value } = e.target;
@@ -415,6 +410,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        flagAllStaffs={flagAllStaffs}
+                        forceUpdateStaff={this.forceUpdateStaff}
                         enteredCodeError={enteredCodeError}
                         serviceId={selectedService.serviceId}
                         clientActivationId={clientActivationId}
@@ -572,6 +569,11 @@ class IndexPage extends PureComponent {
         return serviceIdList;
     }
 
+    randomInteger(min, max) {
+        let rand = min + Math.random() * (max + 1 - min);
+        return Math.floor(rand);
+    }
+
     setTime (time){
         const { dispatch } = this.props
         const { isStartMovingVisit, timetableAvailable, movingVisit, staff } = this.props.staff
@@ -596,10 +598,12 @@ class IndexPage extends PureComponent {
         } else {
             const updatedState = {}
             if (flagAllStaffs) {
-                const selectedStaffFromTimetable = timetableAvailable.find(timetableItem =>
+                const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
                     timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                         return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
                     })))
+                const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
+                const selectedStaffFromTimetable = selectedStaffFromTimetableList[randomStaffIndex]
 
                 updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId)
             }
