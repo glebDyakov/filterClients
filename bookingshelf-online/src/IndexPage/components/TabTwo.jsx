@@ -71,7 +71,7 @@ class TabTwo extends Component {
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
                         if (selectedServices.length) {
-                            setScreen(flagAllStaffs ? 1 : 3);
+                            setScreen(3);
                         }
                         refreshTimetable();
                     }}><span className="title_block_text">Далее</span></span>}
@@ -196,7 +196,7 @@ class TabTwo extends Component {
                 {!!selectedServices.length &&
                 <div className="button_block" onClick={() => {
                     if (selectedServices.length) {
-                        setScreen(flagAllStaffs ? 1 : 3);
+                        setScreen(3);
                     }
                     refreshTimetable();
                 }}>
