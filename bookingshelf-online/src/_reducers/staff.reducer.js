@@ -88,7 +88,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_AVAILABLE_SUCCESS:
             return {
                 ...state,
-                timetableAvailable: action.timetableAvailable,
+                timetableAvailable: (action.timetableAvailable && action.timetableAvailable.length ? action.timetableAvailable : [action.timetableAvailable]),
                 isLoading: false
             };
         case staffConstants.GET_FAILURE:
@@ -153,7 +153,7 @@ export function staff(state = initialState, action) {
         case staffConstants.ADD_APPOINTMENT_FAILURE:
             return {
                 ...state,
-                error: action.error,
+                ...action.payload,
                 isLoading: false
             };
         case staffConstants.DELETE_APPOINTMENT_SUCCESS:

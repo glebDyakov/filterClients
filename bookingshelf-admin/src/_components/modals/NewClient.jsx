@@ -140,7 +140,9 @@ class NewClient extends React.Component {
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
 
-                            <button className={((clients.adding || !client.firstName || !isValidPhone) ? 'disabledField': '')+' button'} type="button"
+                            <button className={((clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
+                                    disabled={clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
+                                    type="button"
                                     onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addClient)}
                             >Сохранить
                             </button>

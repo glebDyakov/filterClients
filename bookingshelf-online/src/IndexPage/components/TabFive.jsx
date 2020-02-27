@@ -10,7 +10,6 @@ class TabFive extends PureComponent {
         super(props);
         this.state = {
           enteredCode: '',
-          enteredCodeError: false
         };
         this.handleActivationChange = this.handleActivationChange.bind(this);
     }
@@ -22,8 +21,8 @@ class TabFive extends PureComponent {
     render() {
 
         const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
-            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, clientVerificationCode} = this.props;
-        const { enteredCode, enteredCodeError } = this.state;
+            group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
+        const { enteredCode } = this.state;
 
         if (!clientActivationId) {
           $('.phones_country').css({ display: 'flex' })
@@ -64,8 +63,12 @@ class TabFive extends PureComponent {
             <div className="service_selection screen5">
                 <div className="title_block">
                             <span className="prev_block" onClick={()=>{
+                                if (flagAllStaffs) {
+                                    forceUpdateStaff([]);
+                                }
                                 setScreen(4);
-                                refreshTimetable()}}>
+                                refreshTimetable()}}
+                            >
                                 <span className="title_block_text">Назад</span>
                             </span>
                     <p className="modal_title">Запись</p>
@@ -136,20 +139,16 @@ class TabFive extends PureComponent {
                     <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${config.baseUrl}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
                   </React.Fragment>
                 )}
-                <input className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName) ? 'disabledField': '')+" book_button"} type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
+                <input
+                    className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false)) ? 'disabledField': '')+" book_button"}
+                    disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false)}
+                    type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
                     ()=> {
                       if (clientActivationId) {
-
-                        if (enteredCode === clientVerificationCode) {
-                          this.setState({ enteredCodeError: false });
                           handleSave({
                             clientActivationId,
                             clientVerificationCode: enteredCode
                           })
-                        } else {
-                          this.setState({ enteredCodeError: true })
-                        }
-
                       } else {
                         $('.phones_country').css({ display: 'none' })
                         if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
