@@ -21,7 +21,7 @@ class TabFive extends PureComponent {
     render() {
 
         const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
-            group,handleChange,isValidEmailAddress,setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
+            group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
         const { enteredCode } = this.state;
 
         if (!clientActivationId) {
@@ -63,8 +63,12 @@ class TabFive extends PureComponent {
             <div className="service_selection screen5">
                 <div className="title_block">
                             <span className="prev_block" onClick={()=>{
+                                if (flagAllStaffs) {
+                                    forceUpdateStaff([]);
+                                }
                                 setScreen(4);
-                                refreshTimetable()}}>
+                                refreshTimetable()}}
+                            >
                                 <span className="title_block_text">Назад</span>
                             </span>
                     <p className="modal_title">Запись</p>
