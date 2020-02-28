@@ -99,6 +99,11 @@ function getTimetableAvailable(id, staffId, date1, date2, service, appointmentsI
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     };
+    const minDateFrom = moment().format('x');
+
+    if (date1 < minDateFrom) {
+        date1 = minDateFrom
+    }
 
     return fetch(`${config.apiUrl}/${id}/${staffId ? `staffs/${staffId}${!!staffsIdList ? staffsIdList : ''}/` : ''}services/${service}/${!!appointmentsIdList ? ('appointments/' + appointmentsIdList + '/') : ''}availabletimes?dateFrom=${date1}&dateTo=${date2}`, requestOptions).then(handleResponse);
 }
