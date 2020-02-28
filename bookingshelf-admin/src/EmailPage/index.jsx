@@ -885,8 +885,18 @@ class Index extends Component {
                                                 <div className="tab-content-header">
                                                     Дата
                                                 </div>
-                                                <div className="tab-content-header">
-                                                    Статус
+                                                <div style={{ overflow: 'visible' }} className="tab-content-header">
+                                                    Статус <Hint hintMessage={
+                                                        <span>
+                                                            <p>Статусы сообщений:</p>
+                                                            <span style={{ marginTop: '4px', textAlign: 'left', display: 'block' }}>
+                                                                {`"Доставлено" - сообщение доставлено абоненту.
+                                                                "Не доставлено" - сообщение не доставлено абоненту, так как абонент находится вне зоны действия сети или аппарат абонента выключен.
+                                                                "Заблокировано" - сообщение заблокировано по финансовой причине или по желанию клиента.
+                                                                "Доставляется" - сообщение не получило окончательный статус (время жизни смс 24 час, в течении этого периода статус обновится).`
+                                                                }
+                                                            </span>
+                                                    </span>}/>
                                                 </div>
                                                 <div className="tab-content-header delete dropdown">
                                                     Кол-во СМС

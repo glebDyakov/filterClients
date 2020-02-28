@@ -2896,8 +2896,14 @@ select{
     cursor: pointer;
     position: relative;
     display: inline-block;
-    margin-left: 2px;
+    margin-left: 3px;
+    padding: 0 !important;
+    width: auto !important;
+    overflow: visible !important;
 
+    &:hover {
+        opacity: 1 !important;
+    }
     img {
         width: auto;
         height: 20px;
@@ -2920,6 +2926,7 @@ select{
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
+    white-space: pre-wrap;
 }
 .small-button-round{
     font-family: 'helvetica_regular';
@@ -3537,9 +3544,9 @@ textarea {
 
 .templates-group{
     overflow-y:auto;
+    max-height: calc(100% - 150px);
 
     @media screen and(max-width: 750px){
-        max-height: calc(100% - 150px);
         overflow: auto;
         max-width: 700px;
         display: block;
