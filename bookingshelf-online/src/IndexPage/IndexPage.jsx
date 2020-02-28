@@ -638,8 +638,8 @@ class IndexPage extends PureComponent {
 
             })
 
-            staffsIdList = selectedStaff.staffId === movingVisit[0].staffId ? '' : `,${movingVisit[0].staffId}`
             if (movingVisit[0].coStaffs) {
+                staffsIdList = selectedStaff.staffId === movingVisit[0].staffId ? '' : `,${movingVisit[0].staffId}`
                 movingVisit[0].coStaffs.forEach(item => {
                     staffsIdList += item.staffId === selectedStaff.staffId ? '' : `,${item.staffId}`
                 })
