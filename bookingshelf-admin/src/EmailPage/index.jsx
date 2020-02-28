@@ -343,14 +343,31 @@ class Index extends Component {
     getMessageStatus(messageStatus) {
         switch (messageStatus) {
             case 'DELIVERED':
-                return 'Доставлено'
+                return  {
+                    text: 'Доставлено',
+                    color: 'green'
+                };
             case 'ERROR':
+            case 'blocked':
+                return {
+                    text: 'Заблокировано',
+                    color: 'red'
+                };
             case 'NOT_DELIVERED':
-                return 'Не доставлено'
+                return {
+                    text: 'Не доставлено',
+                    color: 'red'
+                };
             case 'PENDING':
-                return 'Отправляется'
+                return {
+                    text: 'Доставляется',
+                    color: 'orange'
+                };
             default:
-                return 'Не определен'
+                return {
+                    text: messageStatus,
+                    color: 'black'
+                }
         }
     }
 
@@ -898,27 +915,31 @@ class Index extends Component {
                                                 {/*    Кол-во СМС*/}
                                                 {/*</div>*/}
                                             </div>
-                                            {notification.history.map((historyItem, i) =>
-                                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
-                                                    <div style={{ justifyContent: "center", width: '8%'}}>
-                                                        {historyItem.messageHistoryId}
+                                            {notification.history.map((historyItem, i) => {
+                                                const { text, color } = this.getMessageStatus(historyItem.messageStatus)
+                                                return (
+                                                    <div className="tab-content-list mb-2" key={i}
+                                                         style={{position: "relative"}}>
+                                                        <div style={{justifyContent: "center", width: '8%'}}>
+                                                            {historyItem.messageHistoryId}
+                                                        </div>
+                                                        <div>
+                                                            {historyItem.messageTo}
+                                                        </div>
+                                                        <div style={{width: '45%'}}>
+                                                            {historyItem.subject}
+                                                        </div>
+                                                        <div>
+                                                            {moment(historyItem.sentAt).format('DD/MM/YYYY HH:mm:ss')}
+                                                        </div>
+                                                        <div style={{ color }}>
+                                                            {text}
+                                                        </div>
+                                                        <div className="delete dropdown">
+                                                            {historyItem.partsActual}
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        {historyItem.messageTo}
-                                                    </div>
-                                                    <div style={{ width: '45%'}}>
-                                                        {historyItem.subject}
-                                                    </div>
-                                                    <div>
-                                                        {moment(historyItem.sentAt).format('DD/MM/YYYY HH:mm:ss')}
-                                                    </div>
-                                                    <div>
-                                                        {this.getMessageStatus(historyItem.messageStatus)}
-                                                    </div>
-                                                    <div className="delete dropdown">
-                                                        {historyItem.partsActual}
-                                                    </div>
-                                                </div>
+                                                )}
                                             )}
                                         </div>
                                     </div>
