@@ -55,8 +55,6 @@ class Index extends Component {
                     '60' : (this.props.company.settings.countryCode) === 'RUS' ?
                         '160' : '5'))) : '5') : ''
         }
-
-
     }
 
     componentDidMount() {
@@ -64,9 +62,8 @@ class Index extends Component {
         this.props.dispatch(paymentsActions.getPackets());
         if (this.props.staff.staff && this.props.staff.staff.length) {
             this.setDefaultWorkersCount(this.props.staff.staff)
-        } else {
-            this.props.dispatch(staffActions.get());
         }
+        this.props.dispatch(staffActions.get());
         if (this.props.authentication.user && this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
             this.props.dispatch(companyActions.getSubcompanies());
         }
@@ -77,7 +74,7 @@ class Index extends Component {
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
         )) {
         } else {
-            this.setDefaultWorkersCount()
+            this.setDefaultWorkersCount(this.props.staff.staff)
             this.props.dispatch(companyActions.get());
             this.props.dispatch(companyActions.getBookingInfo());
         }
