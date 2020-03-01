@@ -50,7 +50,7 @@ const CellAppointment = (props) => {
 
     if (appointment.hasCoAppointments) {
         appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
-            if (currentAppointment.coAppointmentId === appointment.appointmentId) {
+            if (!currentAppointment.coappointment && (currentAppointment.coAppointmentId === appointment.appointmentId)) {
                 totalDuration += currentAppointment.duration;
                 const activeCoService = services && services.servicesList && services.servicesList.find(service => service.serviceId === currentAppointment.serviceId)
                 appointmentServices.push({...activeCoService, discountPercent: currentAppointment.discountPercent, totalAmount: currentAppointment.totalAmount, serviceName: currentAppointment.serviceName, price: currentAppointment.price, serviceId: currentAppointment.serviceId})

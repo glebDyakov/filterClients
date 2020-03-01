@@ -343,14 +343,31 @@ class Index extends Component {
     getMessageStatus(messageStatus) {
         switch (messageStatus) {
             case 'DELIVERED':
-                return 'Доставлено'
+                return  {
+                    text: 'Доставлено',
+                    color: 'green'
+                };
             case 'ERROR':
+            case 'blocked':
+                return {
+                    text: 'Заблокировано',
+                    color: 'red'
+                };
             case 'NOT_DELIVERED':
-                return 'Не доставлено'
+                return {
+                    text: 'Не доставлено',
+                    color: 'red'
+                };
             case 'PENDING':
-                return 'Отправляется'
+                return {
+                    text: 'Доставляется',
+                    color: 'orange'
+                };
             default:
-                return 'Не определен'
+                return {
+                    text: messageStatus,
+                    color: 'black'
+                }
         }
     }
 
@@ -868,8 +885,18 @@ class Index extends Component {
                                                 <div className="tab-content-header">
                                                     Дата
                                                 </div>
-                                                <div className="tab-content-header">
-                                                    Статус
+                                                <div style={{ overflow: 'visible' }} className="tab-content-header">
+                                                    Статус <Hint hintMessage={
+                                                        <span>
+                                                            <p>Статусы сообщений:</p>
+                                                            <span style={{ marginTop: '4px', textAlign: 'left', display: 'block' }}>
+                                                                {`"Доставлено" - сообщение доставлено абоненту.
+                                                                "Не доставлено" - сообщение не доставлено абоненту, так как абонент находится вне зоны действия сети или аппарат абонента выключен.
+                                                                "Заблокировано" - сообщение заблокировано по финансовой причине или по желанию клиента.
+                                                                "Доставляется" - сообщение не получило окончательный статус (время жизни смс 24 часа, в течение этого периода статус обновится).`
+                                                                }
+                                                            </span>
+                                                    </span>}/>
                                                 </div>
                                                 <div className="tab-content-header delete dropdown">
                                                     Кол-во СМС
@@ -898,27 +925,31 @@ class Index extends Component {
                                                 {/*    Кол-во СМС*/}
                                                 {/*</div>*/}
                                             </div>
-                                            {notification.history.map((historyItem, i) =>
-                                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
-                                                    <div style={{ justifyContent: "center", width: '8%'}}>
-                                                        {historyItem.messageHistoryId}
+                                            {notification.history.map((historyItem, i) => {
+                                                const { text, color } = this.getMessageStatus(historyItem.messageStatus)
+                                                return (
+                                                    <div className="tab-content-list mb-2" key={i}
+                                                         style={{position: "relative"}}>
+                                                        <div style={{justifyContent: "center", width: '8%'}}>
+                                                            {historyItem.messageHistoryId}
+                                                        </div>
+                                                        <div>
+                                                            {historyItem.messageTo}
+                                                        </div>
+                                                        <div style={{width: '45%'}}>
+                                                            {historyItem.subject}
+                                                        </div>
+                                                        <div>
+                                                            {moment(historyItem.sentAt).format('DD/MM/YYYY HH:mm:ss')}
+                                                        </div>
+                                                        <div style={{ color }}>
+                                                            {text}
+                                                        </div>
+                                                        <div className="delete dropdown">
+                                                            {historyItem.partsActual}
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        {historyItem.messageTo}
-                                                    </div>
-                                                    <div style={{ width: '45%'}}>
-                                                        {historyItem.subject}
-                                                    </div>
-                                                    <div>
-                                                        {moment(historyItem.sentAt).format('DD/MM/YYYY HH:mm:ss')}
-                                                    </div>
-                                                    <div>
-                                                        {this.getMessageStatus(historyItem.messageStatus)}
-                                                    </div>
-                                                    <div className="delete dropdown">
-                                                        {historyItem.partsActual}
-                                                    </div>
-                                                </div>
+                                                )}
                                             )}
                                         </div>
                                     </div>
