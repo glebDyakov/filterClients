@@ -271,8 +271,21 @@ class AddAppointment extends React.Component {
 
                 const lastAppointmentIndex = appointment.length - 1;
                 const endTime = parseInt(appointment[lastAppointmentIndex].appointmentTimeMillis) + (appointment[lastAppointmentIndex].duration * 1000)
+                let isOwnInterval;
 
-                return isAvailableTime(startTime, endTime, coStaff, appointmentsFromProps, reservedTimeFromProps, staff)
+                if (appointment[0].coStaffs) {
+                    const isAlreadyCostaff = appointment[0].coStaffs.some(item => item.staffId === coStaff.staffId)
+                    if (isAlreadyCostaff) {
+                        const staffWithAppointments = appointmentsFromProps && appointmentsFromProps.find(item => item.staff.staffId === coStaff.staffId)
+                        const ownRelatedAppointments = staffWithAppointments && staffWithAppointments.appointments && staffWithAppointments.appointments
+                            .filter(item => item.coappointment && (appointment.some(currentAppointment => item.appointmentId === currentAppointment.appointmentId || item.appointmentId === currentAppointment.coAppointmentId)))
+                            .sort((a, b) => a.appointmentTimeMillis - b.appointmentTimeMillis)
+
+                        isOwnInterval = (i) => ownRelatedAppointments[0].appointmentTimeMillis <= i && (ownRelatedAppointments[ownRelatedAppointments.length - 1].appointmentTimeMillis + (ownRelatedAppointments[ownRelatedAppointments.length - 1].duration * 1000)) > i
+                    }
+                }
+
+                return isAvailableTime(startTime, endTime, coStaff, appointmentsFromProps, reservedTimeFromProps, staff, isOwnInterval)
             })
 
         this.setState({ availableCoStaffs });
@@ -1432,10 +1445,10 @@ class AddAppointment extends React.Component {
         if (name === 'discountPercent') {
             const result = String(value)
             const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
-            appointment[index] = {...appointment[index], [name]: newValue, price: appointment[index].originalPrice * ((100 - newValue) / 100) };
+            appointment[index] = {...appointment[index], [name]: newValue };
 
         } else if (name === 'price') {
-            appointment[index] = {...appointment[index], [name]: value, discountPercent: 0 };
+            appointment[index] = {...appointment[index], [name]: value };
         } else {
             appointment[index] = {...appointment[index], [name]: value };
         }
