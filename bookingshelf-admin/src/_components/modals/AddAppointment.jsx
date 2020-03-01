@@ -566,8 +566,8 @@ class AddAppointment extends React.Component {
 
     setTime(appointmentTimeMillis, minutes, index){
         const {appointment, serviceCurrent, timeNow}=this.state
-        let startTime=moment(moment(timeNow, 'x').format('DD/MM/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x');
-        let timing=this.getTimeArrange( moment(appointmentTimeMillis).format('x'), minutes, appointment)
+        let startTime=parseInt(moment(moment(timeNow, 'x').format('DD/MM/YYYY')+" "+moment(appointmentTimeMillis).format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+        let timing=this.getTimeArrange(parseInt(moment(appointmentTimeMillis).format('x')), minutes, appointment)
         appointment[index].appointmentTimeMillis = startTime;
         serviceCurrent[index] = {
             id:-1,
@@ -854,7 +854,7 @@ class AddAppointment extends React.Component {
                                                 <p className="title">Запись <span>{index+1}</span></p>
                                                 {index !== 0 && <button className="close"  onClick={()=>this.removeService(index)}>x</button>}
                                                 <div className="row">
-                                                    {minutes.length!==0&&<div className="col-md-4">
+                                                    {minutes.length!==0 && (index === 0) && <div className="col-md-4">
                                                         <p>Начало</p>
                                                         <TimePicker
                                                             value={appointmentItem.appointmentTimeMillis&&moment(appointmentItem.appointmentTimeMillis, 'x') }
@@ -905,8 +905,7 @@ class AddAppointment extends React.Component {
                                                             <div className="arrow-dropdown"><i></i></div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="row">
+
                                                     <div className="col-md-4">
                                                         <p className={!servicesDisabling&&'disabledField'} >Длительность</p>
                                                         <select disabled={serviceCurrent[index].id === -1} className="custom-select" onChange={(e) =>this.handleDurationChange(e, appointment, index)} name="duration"
@@ -914,23 +913,24 @@ class AddAppointment extends React.Component {
                                                             {this.getOptionList(index)}
                                                         </select>
                                                     </div>
-                                                    <div className="col-md-8">
-                                                        <p>Сотрудник</p>
-                                                        <div className="dropdown add-staff mb-3">
-                                                            <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
-                                                               aria-haspopup="true" aria-expanded="false">
-                                                                {
-                                                                    activeStaffCurrent.staffId &&
-                                                                    <div className="img-container">
-                                                                        <img className="rounded-circle"
-                                                                             src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                        <span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>
-                                                                    </div>
-                                                                }
-                                                            </a>
-                                                            {(!edit_appointment && timeArrange !== 0) &&
-                                                            <ul className="dropdown-menu" role="menu">
-                                                                {
+                                                    {index === 0 && (
+                                                        <div className="col-md-8">
+                                                            <p>Сотрудник</p>
+                                                            <div className="dropdown add-staff mb-3">
+                                                                <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
+                                                                   aria-haspopup="true" aria-expanded="false">
+                                                                    {
+                                                                        activeStaffCurrent.staffId &&
+                                                                        <div className="img-container">
+                                                                            <img className="rounded-circle"
+                                                                                 src={activeStaffCurrent.imageBase64?"data:image/png;base64,"+activeStaffCurrent.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                            <span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>
+                                                                        </div>
+                                                                    }
+                                                                </a>
+                                                                {(!edit_appointment && timeArrange !== 0) &&
+                                                                <ul className="dropdown-menu" role="menu">
+                                                                    {
                                                                         staffs.timetable && staffs.timetable
                                                                             .filter(timing => {
                                                                                 return timing.timetables.some(time => {
@@ -943,7 +943,7 @@ class AddAppointment extends React.Component {
                                                                                 const activeStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staff.staffId);
 
                                                                                 return(<li onClick={() => this.setStaff(staff, staff.firstName, staff.lastName, activeStaff.imageBase64)}
-                                                                                    key={key}>
+                                                                                           key={key}>
                                                                                     <a>
                                                                                         <div className="img-container">
                                                                                             <img className="rounded-circle"
@@ -954,20 +954,25 @@ class AddAppointment extends React.Component {
                                                                                     </a>
                                                                                 </li>);}
                                                                             )
-                                                                }
+                                                                    }
 
-                                                            </ul>
-                                                            }
+                                                                </ul>
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    )}
                                                 </div>
-                                                <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
-                                                <div className="company_fields">
-                                                    <div className="name_company_wrapper form-control">
-                                                        <textarea className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
-                                                        <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
-                                                    </div>
-                                                </div>
+                                                {index === 0 && (
+                                                    <React.Fragment>
+                                                        <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
+                                                        <div className="company_fields">
+                                                            <div className="name_company_wrapper form-control">
+                                                                <textarea className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                                <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
+                                                            </div>
+                                                        </div>
+                                                    </React.Fragment>
+                                                )}
 
                                                 <p>Единоразовая скидка, %</p>
                                                 <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
@@ -1427,11 +1432,12 @@ class AddAppointment extends React.Component {
         if (name === 'discountPercent') {
             const result = String(value)
             const newValue = (value >= 0 && value <= 100) ? result.replace(/[,. ]/g, '') : appointment[index].discountPercent
-            appointment[index] = {...appointment[index], [name]: newValue };
+            appointment[index] = {...appointment[index], [name]: newValue, price: appointment[index].originalPrice * ((100 - newValue) / 100) };
 
+        } else if (name === 'price') {
+            appointment[index] = {...appointment[index], [name]: value, discountPercent: 0 };
         } else {
             appointment[index] = {...appointment[index], [name]: value };
-
         }
 
         this.setState({ appointment });
@@ -1480,6 +1486,7 @@ class AddAppointment extends React.Component {
     setService(serviceId, service, index, appointment = this.state.appointment) {
         const { serviceCurrent } = this.state;
         appointment[index].duration = this.getDurationForCurrentStaff(service);
+        appointment[index].originalPrice = service.priceFrom;
         appointment[index].price = service.priceFrom;
         serviceCurrent[index] = { id: serviceId, service};
         const updatedAppointments = this.getAppointments(appointment);
