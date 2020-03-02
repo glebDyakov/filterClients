@@ -845,6 +845,8 @@ class AddAppointment extends React.Component {
             return parseInt(durationForCurrentStaff)/60<=parseInt(timeArrange)
         });
 
+        const hasAddedServices = (staffCurrent && services[0].servicesList.some(serviceListItem => serviceListItem.staffs.some(item => item.staffId === staffCurrent.staffId)))
+
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
 
@@ -897,10 +899,10 @@ class AddAppointment extends React.Component {
                                                                         </span></span></span>
                                                                     </a>
 
-                                                                    : <a onClick={() => this.setState({ servicesSearch: '' })} className={!servicesDisabling?'disabledField select-button dropdown-toggle yellow':"select-button dropdown-toggle yellow"}
-                                                                         data-toggle={(servicesDisabling)&&"dropdown"}><span
+                                                                    : <a onClick={() => this.setState({ servicesSearch: '' })} className={(!servicesDisabling || !hasAddedServices)?'disabledField select-button dropdown-toggle yellow':"select-button dropdown-toggle yellow"}
+                                                                         data-toggle={(servicesDisabling && hasAddedServices)&&"dropdown"}><span
                                                                         className="color-circle yellow"/><span
-                                                                        className="yellow"><span className="items-color"><span>Выберите услугу</span>    <span></span>  <span></span></span></span>
+                                                                        className="yellow"><span className="items-color"><span>{hasAddedServices ? 'Выберите услугу' : 'Услуги не добавлены'}</span>    <span></span>  <span></span></span></span>
                                                                     </a>
                                                             }
                                                             <ul className="dropdown-menu">
