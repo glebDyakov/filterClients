@@ -135,7 +135,7 @@ class TabSix extends  PureComponent {
                     <span className="move-white" />
                 </div>}
                 <div style={{ position: 'relative', width: '210px',  margin: '0 auto' }}>
-                    <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                    <input style={{ backgroundColor: '#d41316', marginTop: '16px', marginBottom: '20px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
                     <span className="cancel-white" />
                 </div>
                 {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF">
