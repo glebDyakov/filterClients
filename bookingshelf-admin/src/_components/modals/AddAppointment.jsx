@@ -1140,65 +1140,10 @@ class AddAppointment extends React.Component {
                                                             ))}
                                                         </div>
                                                     </div>
-                                                    {/*<ul>*/}
-                                                    {/*    { clients.client && clients.client.map((client_user, i) =>*/}
-                                                    {/*            <li key={i}>*/}
-                                                    {/*                <div className="row mb-3">*/}
-                                                    {/*                    <div className="col-7 clients-list">*/}
-                                                    {/*                        <span className="abbreviation">{client_user.firstName ? client_user.firstName.substr(0, 1) : ''}</span>*/}
-                                                    {/*                        <span className="name_container">{client_user.firstName} {client_user.lastName}*/}
-                                                    {/*                            {access(12) && (*/}
-                                                    {/*                                <React.Fragment>*/}
-                                                    {/*                                    <span className="email-user">{client_user.email}</span>*/}
-                                                    {/*                                    <span className="email-user">{client_user.phone}</span>*/}
-                                                    {/*                                </React.Fragment>*/}
-                                                    {/*                            )}*/}
-                                                    {/*                        </span>*/}
-                                                    {/*                    </div>*/}
-                                                    {/*                    <div className="col-5">*/}
-                                                    {/*                        <label className="add-person">*/}
-                                                    {/*                            <input className="form-check-input" type="checkbox" checked={clientChecked && clientChecked.clientId && (client_user.clientId===clientChecked.clientId)} onChange={()=>this.checkUser(client_user)}/>*/}
-                                                    {/*                            <div style={{ backgroundColor: '#0a1330', display: 'flex', alignItems: 'center', height: '24px', borderRadius: '10px'}}><span /></div>*/}
-                                                    {/*                        </label>*/}
-                                                    {/*                    </div>*/}
-                                                    {/*                </div>*/}
-                                                    {/*            </li>*/}
-                                                    {/*    )}*/}
-                                                    {/*</ul>*/}
-                                                    <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                                        {(this.search && this.search.value.length > 0) && !clients.client &&
-                                                            <span>Поиск результатов не дал</span>}
-                                                        {clients.totalPages > 1 &&
-                                                                <ReactPaginate
-                                                                    previousLabel={'⟨'}
-                                                                    nextLabel={'⟩'}
-                                                                    breakLabel={'...'}
-                                                                    pageCount={clients.totalPages}
-                                                                    marginPagesDisplayed={2}
-                                                                    pageRangeDisplayed={5}
-                                                                    onPageChange={this.handlePageClick}
-                                                                    subContainerClassName={'pages pagination'}
-                                                                    breakClassName={'page-item'}
-                                                                    breakLinkClassName={'page-link'}
-                                                                    containerClassName={'pagination'}
-                                                                    pageClassName={'page-item'}
-                                                                    pageLinkClassName={'page-link'}
-                                                                    previousClassName={'page-item'}
-                                                                    previousLinkClassName={'page-link'}
-                                                                    nextClassName={'page-item'}
-                                                                    nextLinkClassName={'page-link'}
-                                                                    activeClassName={'active'}
-                                                                />
-                                                        }
-                                                    </div>
                                                 </div>
                                             }
                                             {cl &&
                                                 <div className="client-info content-pages-bg">
-                                                    {/*<div className="client-title">*/}
-                                                    {/*    <p>Клиент</p>*/}
-                                                    {/*    <div className="img-create-client" onClick={(e) => this.newClient(null, e)} />*/}
-                                                    {/*</div>*/}
                                                     <div className="clients-list pt-4 pl-4 pr-4">
                                                         {/*<div className="client">*/}
                                                         {/*    <span*/}
@@ -1501,7 +1446,6 @@ class AddAppointment extends React.Component {
     setService(serviceId, service, index, appointment = this.state.appointment) {
         const { serviceCurrent } = this.state;
         appointment[index].duration = this.getDurationForCurrentStaff(service);
-        appointment[index].originalPrice = service.priceFrom;
         appointment[index].price = service.priceFrom;
         serviceCurrent[index] = { id: serviceId, service};
         const updatedAppointments = this.getAppointments(appointment);
