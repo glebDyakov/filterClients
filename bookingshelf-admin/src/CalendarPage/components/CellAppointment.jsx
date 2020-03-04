@@ -200,7 +200,16 @@ const CellAppointment = (props) => {
                                 <div style={{ margin: '0 0 0 auto', left: '15px' }} className="cell loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                 :
                                 <label>
-                                    <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
+                                    <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>{
+                                        const newClientNotCome = !currentAppointments[0].clientNotCome
+                                        const params = currentAppointments.map(item => {
+                                            return {
+                                                ...item,
+                                                clientNotCome: newClientNotCome
+                                            }
+                                        })
+                                        dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                    }}
                                            type="checkbox"/>
                                     <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
                                 </label>

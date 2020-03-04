@@ -31,7 +31,7 @@ class NewClient extends React.Component {
         this.state={
             client: {
                 ...client,
-                birthDate: client.birthDate ? moment(client.birthDate).format('DD.MM.YYYY') : ''
+                birthDate: client.birthDate ? moment(client.birthDate).format('DD.MM.YYYY') : null
             },
             edit: props.edit,
             clients: props.client
@@ -213,7 +213,7 @@ class NewClient extends React.Component {
 
         delete client.appointments;
 
-        return updateClient({ ...client, birthDate: moment(client.birthDate, 'DD.MM.YYYY').format('x')});
+        return updateClient({ ...client, birthDate: client.birthDate ? moment(client.birthDate, 'DD.MM.YYYY').format('x') : null});
     };
 
     addClient(){
@@ -223,7 +223,7 @@ class NewClient extends React.Component {
             this.props.checkUser(client);
         }
 
-        return addClient({ ...client, birthDate: moment(client.birthDate, 'DD.MM.YYYY').format('x')});
+        return addClient({ ...client, birthDate: client.birthDate ? moment(client.birthDate, 'DD.MM.YYYY').format('x') : null});
     };
 
     closeModal () {

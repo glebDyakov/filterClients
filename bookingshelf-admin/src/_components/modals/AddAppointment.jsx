@@ -845,7 +845,7 @@ class AddAppointment extends React.Component {
             return parseInt(durationForCurrentStaff)/60<=parseInt(timeArrange)
         });
 
-        const hasAddedServices = (staffCurrent && services[0].servicesList.some(serviceListItem => serviceListItem.staffs.some(item => item.staffId === staffCurrent.staffId)))
+        const hasAddedServices = (staffCurrent && services[0] && services[0].servicesList && services[0].servicesList.some(serviceListItem => serviceListItem.staffs && serviceListItem.staffs.some(item => item.staffId === staffCurrent.staffId)))
 
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
