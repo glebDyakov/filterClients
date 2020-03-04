@@ -111,7 +111,7 @@ class NewClient extends React.Component {
                                 </div>
 
                             </div>
-                            <p className="title mb-2">Адрес (необязательно)</p>
+                            <p className="title mb-2">Адрес</p>
                             <div className="row">
                                 <div className="col-sm-6">
                                     <InputCounter title="Страна" placeholder="Например: Россия" value={client.country}
@@ -127,7 +127,7 @@ class NewClient extends React.Component {
                                            name="address" handleChange={this.handleChange} maxLength={128} />
                                 </div>
                             </div>
-                            <p className="title mb-2">Программы лояльности (необязательно)</p>
+                            <p className="title mb-2">Программы лояльности</p>
                             <div className="row">
                                 <div className="col-sm-6">
                                     <p className="title_block">Персональная скидка, %</p>
@@ -135,7 +135,7 @@ class NewClient extends React.Component {
                                            onChange={this.handleChange}/>
                                 </div>
                             </div>
-                            <p className="title mb-2">Соц. сети (необязательно)</p>
+                            <p className="title mb-2">Соц. сети</p>
                             <div className="row">
                                 <div className="col-sm-6">
                                     <InputCounter title="Vk" placeholder="" value={client.vk} name="vk"
