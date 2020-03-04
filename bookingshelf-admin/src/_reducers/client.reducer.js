@@ -97,7 +97,8 @@ export function client(state= { activeClientAppointments: [], client: [] }, acti
                           city: action.client.city,
                           country: action.client.country,
                           province: action.client.province,
-                          blacklisted: action.client.blacklisted
+                          blacklisted: action.client.blacklisted,
+                          ...action.client
                       };
                   }
               });
