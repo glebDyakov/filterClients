@@ -60,7 +60,7 @@ class HeaderMain extends React.PureComponent {
 
     render() {
         const {location, staff }=this.props;
-        const {authentication, company, userSettings}=this.state;
+        const {authentication, company }=this.state;
 
         const { count } = company;
 
@@ -264,11 +264,9 @@ class HeaderMain extends React.PureComponent {
         // return onOpen();
 
         $('.modal_user_setting').modal('show');
-        this.setState({ userSettings: true })
     }
     onClose() {
         $('.modal_user_setting').modal('hide');
-        this.setState({ userSettings: false})
     }
     openAppointments(){
         this.props.dispatch(staffActions.get());

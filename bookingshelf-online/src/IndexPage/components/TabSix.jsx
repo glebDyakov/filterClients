@@ -29,8 +29,8 @@ class TabSix extends  PureComponent {
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments, getDurationForCurrentStaff,
-            setScreen,refreshTimetable, info,_delete, _move, setDefaultFlag, movedVisitSuccess, movingVisit} = this.props;
-        const {approveF, allVisits} = this.state;
+            info,_delete, _move, movedVisitSuccess, movingVisit} = this.props;
+        const {approveF} = this.state;
 
         let serviceInfo = null
         if (selectedService.serviceId) {

@@ -331,7 +331,9 @@ class SidebarMain extends React.Component {
                             <div className="img-container">
                                 <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                             </div>
-                            <p className="firm-name" style={{float: "left", opacity: "0.5"}}>
+                            <p onClick={() => {
+                                $('.modal_user_setting').modal('show')
+                            }} className="firm-name" style={{float: "left", opacity: "0.5"}}>
                                 {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
                             </p>
 
