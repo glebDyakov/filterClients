@@ -4249,6 +4249,7 @@ textarea {
         display: flex;
         justify-content: space-between;
         *{
+            word-break: break-all;
             color: white;
             font-size: 0.9em;
         }
