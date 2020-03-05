@@ -83,51 +83,51 @@ class NewClient extends React.Component {
         const options = [
             {
                 value: '01',
-                label: "января"
+                label: "январь"
             },
             {
                 value: '02',
-                label: "февраля"
+                label: "февраль"
             },
             {
                 value: '03',
-                label: "марта"
+                label: "март"
             },
             {
                 value: '04',
-                label: "апреля"
+                label: "апрель"
             },
             {
                 value: '05',
-                label: "мая"
+                label: "май"
             },
             {
                 value: '06',
-                label: "июня"
+                label: "июнь"
             },
             {
                 value: '07',
-                label: "июля"
+                label: "июль"
             },
             {
                 value: '08',
-                label: "августа"
+                label: "август"
             },
             {
                 value: '09',
-                label: "сентября"
+                label: "сентябрь"
             },
             {
                 value: '10',
-                label: "октября"
+                label: "октябрь"
             },
             {
                 value: '11',
-                label: "ноября"
+                label: "ноябрь"
             },
             {
                 value: '12',
-                label: "декабря"
+                label: "декабрь"
             }
             ];
 
