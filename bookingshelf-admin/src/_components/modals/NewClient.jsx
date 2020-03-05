@@ -28,16 +28,23 @@ class NewClient extends React.Component {
                 "acceptNewsletter": true
             }
         }
+        const [year, month, day] = client.birthDate
+            ? client.birthDate.slice(0, 10).split('-')
+            : ['' , '' , '']
         this.state={
             client: {
                 ...client,
                 birthDate: client.birthDate ? moment(client.birthDate).format('DD.MM.YYYY') : null
             },
+            year,
+            month,
+            day,
             edit: props.edit,
             clients: props.client
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBirthdayChange = this.handleBirthdayChange.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
@@ -60,8 +67,84 @@ class NewClient extends React.Component {
         }
     }
 
+    getDayOptionList() {
+        const options = []
+        for(let i = 1; i <= 31; i++) {
+            options.push(i)
+        }
+
+        return options.map(item => {
+            const optionValue = String(item).length === 1 ? `0${item}` : item;
+            return <option value={optionValue}>{optionValue}</option>
+        });
+    }
+
+    getMonthOptionList() {
+        const options = [
+            {
+                value: '01',
+                label: "января"
+            },
+            {
+                value: '02',
+                label: "февраля"
+            },
+            {
+                value: '03',
+                label: "марта"
+            },
+            {
+                value: '04',
+                label: "апреля"
+            },
+            {
+                value: '05',
+                label: "мая"
+            },
+            {
+                value: '06',
+                label: "июня"
+            },
+            {
+                value: '07',
+                label: "июля"
+            },
+            {
+                value: '08',
+                label: "августа"
+            },
+            {
+                value: '09',
+                label: "сентября"
+            },
+            {
+                value: '10',
+                label: "октября"
+            },
+            {
+                value: '11',
+                label: "ноября"
+            },
+            {
+                value: '12',
+                label: "декабря"
+            }
+            ];
+
+        return options.map(({ value, label }) => <option value={value}>{label}</option>);
+    }
+
+    getYearOptionList() {
+        const options = []
+        for(let i = parseInt(moment().format('YYYY')); i >= 1900; i--) {
+            options.push(i)
+        }
+
+        return options.map(item => <option value={item}>{item}</option>);
+    }
+
     render() {
-        const { client, edit, alert, clients, isValidPhone }=this.state;
+        const { day, month, year, client, edit, alert, clients, isValidPhone }=this.state;
 
         return (
             <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -98,8 +181,23 @@ class NewClient extends React.Component {
                                     <InputCounter title="Фамилия" placeholder="Например: Иванов" value={client.lastName}
                                                   name="lastName"  handleChange={this.handleChange} maxLength={128} />
 
-                                    <InputCounter title="День рождения" placeholder="Например: 10.03.1989" value={client.birthDate}
-                                                  name="birthDate" handleChange={this.handleChange} maxLength={10} />
+                                    <p>День рождения</p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <select style={{ marginRight: '4px '}}  className="custom-select" onChange={this.handleBirthdayChange} name="day" value={day}>
+                                            <option value={''}>День</option>
+                                            {this.getDayOptionList()}
+                                        </select>
+
+                                        <select style={{ marginRight: '4px '}} className="custom-select" onChange={this.handleBirthdayChange} name="month" value={month}>
+                                            <option value={''}>Месяц</option>
+                                            {this.getMonthOptionList()}
+                                        </select>
+
+                                        <select className="custom-select" onChange={this.handleBirthdayChange} name="year" value={year}>
+                                            <option value={''}>Год</option>
+                                            {this.getYearOptionList()}
+                                        </select>
+                                    </div>
 
                                     <InputCounter type="email" placeholder="Например: ivanov@gmail.com" value={client.email}
                                                   name="email" title="Email"
@@ -172,8 +270,8 @@ class NewClient extends React.Component {
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
 
-                            <button className={((clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
-                                    disabled={clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
+                            <button className={((clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
+                                    disabled={clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
                                     type="button"
                                     onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addClient)}
                             >Сохранить
@@ -185,6 +283,10 @@ class NewClient extends React.Component {
             </div>
             </Modal>
         )
+    }
+
+    handleBirthdayChange({ target: { name, value } }) {
+        this.setState({ [name]: value })
     }
 
     handleChange(e) {
@@ -209,21 +311,28 @@ class NewClient extends React.Component {
 
     updateClient(){
         const {updateClient} = this.props;
-        const {client} = this.state;
-
+        const {client, day, month, year } = this.state;
+        let birthDate;
+        if (day || month || year) {
+            birthDate =`${year}-${month}-${day}`;
+        }
         delete client.appointments;
 
-        return updateClient({ ...client, birthDate: client.birthDate ? moment(client.birthDate, 'DD.MM.YYYY').format('x') : null});
+        return updateClient({ ...client, birthDate });
     };
 
     addClient(){
         const {addClient, isModalShouldPassClient} = this.props;
-        const {client} = this.state;
+        const {client, day, month, year } = this.state;
+        let birthDate;
+        if (day || month || year) {
+            birthDate =`${year}-${month}-${day}`;
+        }
         if (isModalShouldPassClient) {
             this.props.checkUser(client);
         }
 
-        return addClient({ ...client, birthDate: client.birthDate ? moment(client.birthDate, 'DD.MM.YYYY').format('x') : null});
+        return addClient({ ...client, birthDate });
     };
 
     closeModal () {
