@@ -544,10 +544,6 @@ class SidebarMain extends React.Component {
                         </div>
                     </div>
                 </div>
-                {userSettings &&
-                <UserSettings
-                onClose={this.onClose}/>
-                }
 
             </React.Fragment>
 
