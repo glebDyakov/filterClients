@@ -756,7 +756,7 @@
                                         /*border: none;*/
                                         /*font-weight: bold;*/
                                         font-size: 14px;
-                                        height: 30px;
+                                        min-height: 30px;
                                         line-height: 30px;
                                         /*color: #000;*/
                                     }
@@ -1108,6 +1108,7 @@
 
                         .notes-container-message {
                             padding: 2px 34px 0 0;
+                            word-break: break-all;
                             border: none;
                             background: none;
                             min-height: 0;
