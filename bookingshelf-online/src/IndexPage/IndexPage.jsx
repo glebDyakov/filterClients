@@ -18,6 +18,7 @@ import Header from "./components/Header";
 import TabError from "./components/TabError";
 import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
+import TabStaffComments from "./components/TabStaffComments";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -49,6 +50,7 @@ class IndexPage extends PureComponent {
         this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
         this.selectSubcompany=this.selectSubcompany.bind(this);
+        this.setStaffComments=this.setStaffComments.bind(this);
         this.handleDayClick=this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -271,6 +273,11 @@ class IndexPage extends PureComponent {
         //}
     }
 
+    setStaffComments(staffId) {
+        const { company } = this.props.match.params;
+        this.props.dispatch(staffActions.getStaffComments(company, staffId))
+    }
+
     setScreen (num) {
         this.setState({
             screen: num,
@@ -336,6 +343,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        setStaffComments={this.setStaffComments}
                         setDefaultFlag={this.setDefaultFlag}
                         match={match}
                         history={history}
@@ -356,6 +364,30 @@ class IndexPage extends PureComponent {
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
                     />}
+                    {screen === 'staff-comments' &&
+                    <TabStaffComments
+                        setStaffComments={this.setStaffComments}
+                        setDefaultFlag={this.setDefaultFlag}
+                        match={match}
+                        history={history}
+                        clearStaff={this.clearStaff}
+                        subcompanies={subcompanies}
+                        flagAllStaffs={flagAllStaffs}
+                        selectedServices={selectedServices}
+                        info={info}
+                        movingVisit={movingVisit}
+                        services={services}
+                        staffId={selectedStaff.staffId }
+                        staffs={staffs}
+                        isStartMovingVisit={isStartMovingVisit}
+                        nearestTime={nearestTime}
+                        selectStaff={this.selectStaff}
+                        setScreen={this.setScreen}
+                        selectService={this.selectService}
+                        refreshTimetable={this.refreshTimetable}
+                        roundDown={this.roundDown}
+                    />
+                    }
                     {screen === 2 &&
                     <TabTwo
                         isStartMovingVisit={isStartMovingVisit}

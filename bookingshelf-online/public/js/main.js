@@ -21,9 +21,11 @@ function initializeJs() {
             $('.supperVisDet_info').fadeOut(300);
             e.stopPropagation();
         });
-        $(".nb").click(function () {
-            $('.service_selection').fadeOut(0);
-            $(this).parent().parent('.service_selection').next('.service_selection').fadeIn(100);
+        $(".nb").click(function (e) {
+            if (e.target.className !== 'staff-comments') {
+                $('.service_selection').fadeOut(0);
+                $(this).parent().parent('.service_selection').next('.service_selection').fadeIn(100);
+            }
         });
         $(".skip_employee").click(function () {
             $('.service_selection').fadeOut(0);

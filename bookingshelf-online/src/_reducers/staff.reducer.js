@@ -39,6 +39,22 @@ export function staff(state = initialState, action) {
                 staff: (action.staff || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
+        case staffConstants.CREATE_COMMENT_SUCCESS:
+            let updatedComments = [action.comment];
+            updatedComments = updatedComments.concat(state.staffComments)
+            return {
+                ...state,
+                staffComments: updatedComments
+            }
+        case staffConstants.GET_STAFF_COMMENTS_SUCCESS:
+            const staffCommentsTotalPages = action.staffCommentsInfo.totalPages
+            const staffComments = (action.staffCommentsInfo.content || [])
+            return {
+                ...state,
+                staffCommentsTotalPages,
+                staffCommentsStaffId: action.staffCommentsStaffId,
+                staffComments
+            }
         case staffConstants.GET_SERVICES_SUCCESS:
             return {
                 ...state,
