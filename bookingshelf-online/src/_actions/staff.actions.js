@@ -10,6 +10,8 @@ export const staffActions = {
     getInfo,
     getServiceGroups,
     getSubcompanies,
+    getStaffComments,
+    createComment,
     clearStaff,
     getServices,
     getTimetable,
@@ -90,6 +92,22 @@ function getInfo(id, loaded) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info, loaded } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+
+
+function getStaffComments(companyId, staffId, currentPage) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getStaffComments(companyId, staffId, currentPage)
+            .then(
+                staffCommentsInfo => dispatch(success(staffCommentsInfo)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_STAFF_COMMENTS } }
+    function success(staffCommentsInfo) { return { type: staffConstants.GET_STAFF_COMMENTS_SUCCESS, staffCommentsInfo, staffCommentsStaffId: staffId } }
+    function failure() { return { type: staffConstants.GET_STAFF_COMMENTS_FAILURE } }
 }
 
 function getServiceGroups(id) {
@@ -188,6 +206,37 @@ function add(id, staff, service, params) {
     function request() { return { type: staffConstants.ADD_APPOINTMENT } }
     function success(payload) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, payload } }
     function failure(payload) { return { type: staffConstants.ADD_APPOINTMENT_FAILURE, payload } }
+}
+
+function createComment(companyId, staffId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.createComment(companyId, staffId, params)
+            .then(
+                result => {
+                    if(result === 'FEEDBACK_CREATED') {
+                        dispatch(success(params))
+                    } else {
+                        dispatch(failure({ error: 'Извините, это время недоступно для записи' }));
+                    }
+                },
+                (err) => {
+                    let errorPayload;
+                    if (err === 'client in blacklist') {
+                        errorPayload = { error: 'Извините, ваша запись не может быть создана. Пожалуйста, свяжитесь с администратором заведения.' };
+                    } else if (err === 'incorrect activation code') {
+                        errorPayload = { enteredCodeError: true }
+                    } else {
+                        errorPayload = { error: 'Извините, это время недоступно для записи' };
+                    }
+                    dispatch(failure(errorPayload));
+                }
+            );
+    };
+
+    function request() { return { type: staffConstants.CREATE_COMMENT } }
+    function success(comment) { return { type: staffConstants.CREATE_COMMENT_SUCCESS, comment } }
+    function failure(payload) { return { type: staffConstants.CREATE_COMMENT_FAILURE, payload } }
 }
 
 function _delete(id) {

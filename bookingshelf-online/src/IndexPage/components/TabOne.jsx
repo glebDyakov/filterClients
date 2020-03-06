@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import StarRatings from "react-star-ratings";
 
 
 class TabOne extends  PureComponent{
@@ -14,8 +15,7 @@ class TabOne extends  PureComponent{
     }
 
     render() {
-
-        const {staffId, staffs, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, staffs, setStaffComments, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
@@ -32,8 +32,6 @@ class TabOne extends  PureComponent{
                                 let url = company.includes('_') ? company.split('_')[0] : company
                                 history.push(`/${url}`)
                             }
-
-
                         }}><span className="title_block_text">Назад</span></span>
                     )}
                     <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
@@ -56,48 +54,86 @@ class TabOne extends  PureComponent{
 
 
                         <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
-                            onClick={() => {
-                                selectStaff(staff)
+                            onClick={(e) => {
+                                if (e.target.className !== 'staff-comments') {
+                                    selectStaff(staff)
+                                }
                             }}
                             key={idStaff}
                         >
                             <span className="staff_popup_item">
                                 <div className="img_container">
-                                    <img
-                                        src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        alt=""/>
-                                    <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length <= 3 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
-                                        <span style={{ fontSize: "13px"}}>{staff.description}</span>
+                                    <div className="img_container_block">
+                                        <div>
+                                            <img
+                                                src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                alt=""/>
+                                        </div>
+                                        <div style={{ textAlign: 'center' }}>
+                                        {staff.rating ? (
+                                            <StarRatings
+                                                rating={staff.rating}
+                                                starHoverColor={'#ff9500'}
+                                                starRatedColor={'#ff9500'}
+                                                starDimension="14px"
+                                                starSpacing="0"
+                                            />
+                                        ) : <p style={{ fontSize: '13px'}}>Нет оценок</p>}
+                                        </div>
+
+
+                                    </div>
+
+
+                                 <span className="staff_popup_name">{staff.firstName} {staff.lastName ? staff.lastName : ''}<br/>
+                                        {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px' }}>{staff.description} <br/></p>}
+
+                                        {nearestTime && nearestTime.map((time, id)=>
+                                            time.staffId===staff.staffId && time.availableDays.length!==0 &&
+                                            <React.Fragment>
+                                                <div className="mobile-visible" key={'time'+id}>
+                                                    <span>Ближ. запись</span>
+                                                    <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                                </div>
+                                                <div className="desktop-visible" key={'time'+id}>
+
+
+                                                    <span style={{ fontSize: '11px'}} className="nearest_appointment">Ближайшая запись - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
+                                                </div>
+                                            </React.Fragment>
+
+                                        )}
+
+
+                                        {nearestTime && !nearestTime.some((time, id)=>
+                                            time.staffId===staff.staffId && time.availableDays.length!==0
+
+                                        ) && <div className="">
+                                            <span style={{fontWeight: 'bold', fontSize: '11px'}}>Нет записи</span>
+                                        </div>
+                                        }
+
                                     </span>
+
                                 </div>
 
-
-                                {nearestTime && nearestTime.map((time, id)=>
-                                    time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                    <React.Fragment>
-                                        <div className="mobile_block mobile-visible" key={'time'+id}>
-                                            <span>Ближ. запись</span>
-                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                        </div>
-                                        <div className="mobile_block desktop-visible" key={'time'+id}>
-                                            <span className="nearest_appointment">Ближайшая запись</span>
-                                            <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                        </div>
-                                    </React.Fragment>
-
-                                )}
-
-                                {nearestTime && !nearestTime.some((time, id)=>
-                                    time.staffId===staff.staffId && time.availableDays.length!==0
-
-                                ) && <div className="mobile_block">
-                                    <span style={{fontWeight: 'bold'}}>Нет записи</span>
+                                <div className="mobile_block mobile-visible">
+                                    <img className="staff-comments" onClick={(e) => {
+                                        e.preventDefault()
+                                        setScreen('staff-comments')
+                                        setStaffComments(staff.staffId)
+                                    }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                    />
                                 </div>
+                                <div className="mobile_block desktop-visible">
 
-
-                                }
-
-
+                                    <img className="staff-comments" onClick={(e) => {
+                                        e.preventDefault()
+                                        setScreen('staff-comments')
+                                        setStaffComments(staff.staffId)
+                                    }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                    />
+                                </div>
 
                             </span>
                         </li>
@@ -154,6 +190,24 @@ class TabOne extends  PureComponent{
 
 
                               }
+
+                              <div style={{ textAlign: 'center' }}>
+                                        <img className="staff-comments" onClick={(e) => {
+                                            e.preventDefault()
+                                            setScreen('staff-comments')
+                                            setStaffComments(staff.staffId)
+                                        }} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                        />
+                                        {staff.rating ? (
+                                            <StarRatings
+                                                rating={staff.rating}
+                                                starHoverColor={'#ff9500'}
+                                                starRatedColor={'#ff9500'}
+                                                starDimension="14px"
+                                                starSpacing="0"
+                                            />
+                                        ) : <span style={{ fontSize: '13px' }}>Нет оценок</span>}
+                              </div>
 
 
 
