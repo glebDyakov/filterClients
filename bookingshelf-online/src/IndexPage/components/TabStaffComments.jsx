@@ -78,7 +78,7 @@ class TabStaffComments extends  PureComponent{
 
                                         </div>
                                         <div style={{ marginTop: '6px' }}>
-                                            <p>{staff.comment}</p>
+                                            <p style={{ wordBreak: 'break-all' }}>{staff.comment}</p>
                                         </div>
                                     </div>
                                 </span>

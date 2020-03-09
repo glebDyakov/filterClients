@@ -54,7 +54,7 @@ class TabCreateComment extends  PureComponent{
         const { sendPasswordPhone } = this.state;
         const { company } = this.props.match.params
 
-        dispatch(staffActions.createComment(company, staffCommentsStaff.staffId,  { clientPhone: sendPasswordPhone }))
+        dispatch(staffActions.sendPassword(company, staffCommentsStaff.staffId,  { clientPhone: sendPasswordPhone }))
     }
 
     handleSave() {
@@ -93,7 +93,7 @@ class TabCreateComment extends  PureComponent{
     }
 
     render() {
-        const { setScreen, staffCommentsStaff, isLoading, commentPassword, clientCookie } = this.props;
+        const { setScreen, staffCommentsStaff, isLoading, commentPassword, clientCookie, clientLoginMessage } = this.props;
         const { group, tab, isValidSendPasswordPhone, sendPasswordPhone, loginPhone, loginPassword, isValidLoginPhone } = this.state;
 
         return(
@@ -183,7 +183,12 @@ class TabCreateComment extends  PureComponent{
                                             /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации</span>
                                         </p>
                                         <input type="text" placeholder="Введите код" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
-
+                                        {clientLoginMessage && (
+                                            <p style={{ display: 'flex' }}>
+                                                <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                                /> <span>{clientLoginMessage}</span>
+                                            </p>
+                                        )}
                                         <input
                                             style={{ margin: '20px auto' }}
                                             className={((!isValidLoginPhone || !loginPassword) ? 'disabledField': '')+" book_button"}
@@ -212,7 +217,7 @@ class TabCreateComment extends  PureComponent{
                                         {commentPassword && (
                                             <p style={{ display: 'flex', marginTop: '10px' }}>
                                                 <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                /> <span>Персональный пароль отправлен на номер {sendPasswordPhone}</span>
+                                                /> <span>{commentPassword}</span>
                                             </p>
                                         )}
 
@@ -235,10 +240,10 @@ class TabCreateComment extends  PureComponent{
 }
 
 function mapStateToProps(store) {
-    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie } }=store;
+    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage } }=store;
 
     return {
-        staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie
+        staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage
     };
 }
 
