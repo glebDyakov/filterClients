@@ -95,10 +95,12 @@ class TabStaffComments extends  PureComponent{
                                 )}
                         </ul>
 
-                        <Paginator
-                            finalTotalPages={staffCommentsTotalPages}
-                            onPageChange={this.handlePageChange}
-                        />
+                        <div style={{ marginBottom: '50px' }}>
+                            <Paginator
+                                finalTotalPages={staffCommentsTotalPages}
+                                onPageChange={this.handlePageChange}
+                            />
+                        </div>
                     </React.Fragment>
                 )}
 
