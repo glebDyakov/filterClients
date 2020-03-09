@@ -53,7 +53,7 @@ class TabStaffComments extends  PureComponent{
     }
 
     handleSave(codeInfo) {
-        const { dispatch, staffCommentsStaffId } = this.props;
+        const { dispatch, staffCommentsStaff } = this.props;
         const { group } = this.state;
 
         const {company} = this.props.match.params
@@ -66,7 +66,7 @@ class TabStaffComments extends  PureComponent{
             data[0].clientActivationId = codeInfo.clientActivationId
             data[0].clientVerificationCode = codeInfo.clientVerificationCode
         }
-        dispatch(staffActions.createComment(company, staffCommentsStaffId, data))
+        dispatch(staffActions.createComment(company, staffCommentsStaff.staffId, data))
     }
 
     changeRating(newRating) {
@@ -80,14 +80,14 @@ class TabStaffComments extends  PureComponent{
 
     handlePageChange(data) {
         const { company } = this.props.match.params;
-        const { staffCommentsStaffId } = this.props;
+        const { staffCommentsStaff } = this.props;
         const { selected } = data;
         const currentPage = selected + 1;
-        this.props.dispatch(staffActions.getStaffComments(company, staffCommentsStaffId, currentPage));
+        this.props.dispatch(staffActions.getStaffComments(company, staffCommentsStaff, currentPage));
     }
 
     render() {
-        const { staffComments, staffCommentsTotalPages, clientActivationId, staffId, staffs, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const { staffComments, staffCommentsStaff, staffCommentsTotalPages, clientActivationId, staffId, staffs, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
         const { group, enteredCode, addingCommentOpened } = this.state;
 
         return(
@@ -95,30 +95,29 @@ class TabStaffComments extends  PureComponent{
                 <div className="title_block n">
                     {!isStartMovingVisit && subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
-                            if (flagAllStaffs) {
-                                setScreen(2);
-                            } else {
-                                clearStaff();
-                                setDefaultFlag();
-                                setScreen(0);
-                                let {company} = match.params;
-                                let url = company.includes('_') ? company.split('_')[0] : company
-                                history.push(`/${url}`)
-                            }
+                            setScreen(1);
+
                         }}><span className="title_block_text">Назад</span></span>
                     )}
                     <p className="modal_title">Отзывы</p>
-                    {staffId &&
-                    <span className="next_block" onClick={() => {
-                        setScreen(isStartMovingVisit ? 3 : 2);
-                        refreshTimetable();
-                    }}><span className="title_block_text">Далее</span></span>}
                 </div>
-                <ul className={`staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                    {staffComments && staffComments.length > 0 ? staffComments
-                        .map((staff) =>
-                            <li className={('staff_comment selected')}
-                            >
+                <div className="staff_popup staff_popup_large">
+                    <div className="staff_popup_item">
+                                <div className="img_container">
+                                    <img
+                                        src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt=""/>
+                                    <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br/>
+                                                    <span style={{ fontSize: "13px"}}>{staffCommentsStaff.description}</span>
+                                                </span>
+                                </div>
+
+                    </div>
+                </div>
+                <ul style={{ marginTop: '20px' }} className={`staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                    {staffComments && staffComments.length > 0
+                        ? staffComments.map((staff) =>
+                            <li className={('staff_comment selected')}>
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between'}}>
@@ -139,40 +138,14 @@ class TabStaffComments extends  PureComponent{
                                         <div style={{ marginTop: '6px' }}>
                                             <p>{staff.comment}</p>
                                         </div>
-
                                     </div>
-
-
-                                    {nearestTime && nearestTime.map((time, id)=>
-                                        time.staffId===staff.staffId && time.availableDays.length!==0 &&
-                                        <React.Fragment>
-                                            <div className="mobile_block mobile-visible" key={'time'+id}>
-                                                <span>Ближ. запись</span>
-                                                <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                            </div>
-                                            <div className="mobile_block desktop-visible" key={'time'+id}>
-                                                <span className="staff-comments" onClick={(e) => {
-                                                    e.preventDefault()
-                                                    setScreen('staff-comments')
-                                                    console.log(123)
-                                                }}>Информация</span>
-                                                <br />
-                                                <span className="nearest_appointment">Ближайшая запись</span>
-                                                <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                            </div>
-                                        </React.Fragment>
-
-                                    )}
-
                                 </span>
-                            </li>
-                        )
-
-                    : (
+                            </li>)
+                        : (
                             <div className="final-book">
                                 <p style={{ fontSize: '18px' }}>
                                     Пока нет ни одного отзыва. <span
-                                        style={{ textDecoration: 'underlined', fontSize: '18px'}}
+                                        style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px'}}
                                         onClick={() => this.setState({ addingCommentOpened: !addingCommentOpened})}>Станьте первым!
                                     </span>
                                 </p>
@@ -188,63 +161,70 @@ class TabStaffComments extends  PureComponent{
 
 
                 <div className="">
-                    <p style={{ textAlign: 'center', fontSize: '18px', marginTop: '16px' }}>Добавить отзыв</p>
-
-                    <p>Рейтинг</p>
-                    <StarRatings
-                        rating={group.rating}
-                        changeRating={this.changeRating}
-                        starHoverColor={'#ff9500'}
-                        starRatedColor={'#ff9500'}
-                        name='rating'
-                        starDimension="20px"
-                        starSpacing="5px"
+                    <input type="button" style={{ marginTop: '16px' }}
+                       onClick={() => this.setState({ addingCommentOpened: !addingCommentOpened})}
+                           className="book_button" value="Добавить отзыв"
                     />
 
-                    <p style={{ marginTop: '15px' }}>Комментарии</p>
-                    <textarea placeholder=""  name="comment" onChange={this.handleCommentChange} value={group.comment}/>
+                    {addingCommentOpened && (
+                        <React.Fragment>
+                            <p>Рейтинг</p>
+                            <StarRatings
+                                rating={group.rating}
+                                changeRating={this.changeRating}
+                                starHoverColor={'#ff9500'}
+                                starRatedColor={'#ff9500'}
+                                name='rating'
+                                starDimension="20px"
+                                starSpacing="5px"
+                            />
 
-                    <p>Телефон</p>
-                    <p style={{ display: 'flex' }}>
-                        <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
-                        /> <span>На этот номер вы получите SMS с персональным паролем</span>
-                    </p>
-                    <div className="phones_country">
-                        <ReactPhoneInput
-                            regions={['america', 'europe']}
-                            disableAreaCodes={true}
+                            <p style={{ marginTop: '15px' }}>Комментарии</p>
+                            <textarea placeholder=""  name="comment" onChange={this.handleCommentChange} value={group.comment}/>
 
-                            inputClass={((!group.clientPhone && group.email && group.email!=='' && !isValidNumber(group.clientPhone)) ? ' redBorder' : '')} value={ group.clientPhone }  defaultCountry={'by'} onChange={clientPhone => this.setterPhone(clientPhone)}
-                        />
+                            <p>Телефон</p>
+                            <p style={{ display: 'flex' }}>
+                                <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                /> <span>На этот номер вы получите SMS с персональным паролем</span>
+                            </p>
+                            <div className="phones_country">
+                                <ReactPhoneInput
+                                    regions={['america', 'europe']}
+                                    disableAreaCodes={true}
 
-                    </div>
-                    <br/>
+                                    inputClass={((!group.clientPhone && group.email && group.email!=='' && !isValidNumber(group.clientPhone)) ? ' redBorder' : '')} value={ group.clientPhone }  defaultCountry={'by'} onChange={clientPhone => this.setterPhone(clientPhone)}
+                                />
 
-                    <p>Персональный пароль</p>
-                    <p style={{ display: 'flex' }}>
-                        <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
-                        /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, оставьте поле пустым для получения нового пароля в SMS сообщение</span>
-                    </p>
-                    <input type="text" placeholder="" name="clientPassword" onChange={this.handleCommentChange}
-                           value={group.clientPassword}
-                    />
+                            </div>
+                            <br/>
 
-                    <input
-                        style={{ marginBottom: '20px' }}
-                        className={((!group.clientPhone || !isValidNumber(group.clientPhone) || !group.comment || !group.rating || (group.email ? !isValidEmailAddress(group.email) : false)) ? 'disabledField': '')+" book_button"}
-                        disabled={!group.clientPhone || !isValidNumber(group.clientPhone) || !group.comment || !group.rating || (group.email ? !isValidEmailAddress(group.email) : false)}
-                        type="submit" value={group.clientPassword ? 'Оставить отзыв' : 'Оставить отзыв'} onClick={
-                        ()=> {
-                            if (clientActivationId) {
-                                this.handleSave({
-                                    clientActivationId,
-                                    clientVerificationCode: enteredCode
-                                })
-                            } else {
-                                this.handleSave()
-                            }
-                        }}/>
+                            <p>Персональный пароль</p>
+                            <p style={{ display: 'flex' }}>
+                                <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, оставьте поле пустым для получения нового пароля в SMS сообщение</span>
+                            </p>
+                            <input type="text" placeholder="" name="clientPassword" onChange={this.handleCommentChange}
+                                   value={group.clientPassword}
+                            />
 
+                            <input
+                                style={{ marginBottom: '20px' }}
+                                className={((!group.clientPhone || !isValidNumber(group.clientPhone) || !group.comment || !group.rating || (group.email ? !isValidEmailAddress(group.email) : false)) ? 'disabledField': '')+" book_button"}
+                                disabled={!group.clientPhone || !isValidNumber(group.clientPhone) || !group.comment || !group.rating || (group.email ? !isValidEmailAddress(group.email) : false)}
+                                type="submit" value={group.clientPassword ? 'Оставить отзыв' : 'Оставить отзыв'} onClick={
+                                ()=> {
+                                    if (clientActivationId) {
+                                        this.handleSave({
+                                            clientActivationId,
+                                            clientVerificationCode: enteredCode
+                                        })
+                                    } else {
+                                        this.handleSave()
+                                    }
+                                }}
+                            />
+                        </React.Fragment>
+                    )}
 
                 </div>
             </div>
@@ -253,10 +233,10 @@ class TabStaffComments extends  PureComponent{
 }
 
 function mapStateToProps(store) {
-    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaffId } }=store;
+    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff } }=store;
 
     return {
-        staffComments, staffCommentsTotalPages, staffCommentsStaffId
+        staffComments, staffCommentsTotalPages, staffCommentsStaff
     };
 }
 

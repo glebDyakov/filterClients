@@ -66,6 +66,7 @@ class TabOne extends  PureComponent{
                                     <div className="img_container_block">
                                         <div>
                                             <img
+                                                style={{ marginRight: 0 }}
                                                 src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                 alt=""/>
                                         </div>
@@ -78,7 +79,7 @@ class TabOne extends  PureComponent{
                                                 starDimension="14px"
                                                 starSpacing="0"
                                             />
-                                        ) : <p style={{ fontSize: '13px'}}>Нет оценок</p>}
+                                        ) : <p style={{ fontSize: '12px'}}>Нет отзывов</p>}
                                         </div>
 
 
@@ -121,7 +122,7 @@ class TabOne extends  PureComponent{
                                     <img className="staff-comments" onClick={(e) => {
                                         e.preventDefault()
                                         setScreen('staff-comments')
-                                        setStaffComments(staff.staffId)
+                                        setStaffComments(staff)
                                     }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
                                     />
                                 </div>
@@ -130,7 +131,7 @@ class TabOne extends  PureComponent{
                                     <img className="staff-comments" onClick={(e) => {
                                         e.preventDefault()
                                         setScreen('staff-comments')
-                                        setStaffComments(staff.staffId)
+                                        setStaffComments(staff)
                                     }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
                                     />
                                 </div>
@@ -152,7 +153,11 @@ class TabOne extends  PureComponent{
 
 
                   <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
-                      onClick={() => selectStaff(staff)}
+                      onClick={(e) => {
+                          if (e.target.className !== 'staff-comments') {
+                              selectStaff(staff)
+                          }
+                      }}
                       key={idStaff}
                   >
                             <span className="staff_popup_item">
@@ -195,7 +200,7 @@ class TabOne extends  PureComponent{
                                         <img className="staff-comments" onClick={(e) => {
                                             e.preventDefault()
                                             setScreen('staff-comments')
-                                            setStaffComments(staff.staffId)
+                                            setStaffComments(staff)
                                         }} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
                                         />
                                         {staff.rating ? (
@@ -206,7 +211,7 @@ class TabOne extends  PureComponent{
                                                 starDimension="14px"
                                                 starSpacing="0"
                                             />
-                                        ) : <span style={{ fontSize: '13px' }}>Нет оценок</span>}
+                                        ) : <span style={{ fontSize: '12px' }}>Нет отзывов</span>}
                               </div>
 
 

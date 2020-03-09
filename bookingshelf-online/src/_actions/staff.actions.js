@@ -95,10 +95,10 @@ function getInfo(id, loaded) {
 }
 
 
-function getStaffComments(companyId, staffId, currentPage) {
+function getStaffComments(companyId, staff, currentPage) {
     return dispatch => {
         dispatch(request());
-        staffService.getStaffComments(companyId, staffId, currentPage)
+        staffService.getStaffComments(companyId, staff.staffId, currentPage)
             .then(
                 staffCommentsInfo => dispatch(success(staffCommentsInfo)),
                 () => failure()
@@ -106,7 +106,7 @@ function getStaffComments(companyId, staffId, currentPage) {
     };
 
     function request() { return { type: staffConstants.GET_STAFF_COMMENTS } }
-    function success(staffCommentsInfo) { return { type: staffConstants.GET_STAFF_COMMENTS_SUCCESS, staffCommentsInfo, staffCommentsStaffId: staffId } }
+    function success(staffCommentsInfo) { return { type: staffConstants.GET_STAFF_COMMENTS_SUCCESS, staffCommentsInfo, staffCommentsStaff: staff } }
     function failure() { return { type: staffConstants.GET_STAFF_COMMENTS_FAILURE } }
 }
 
@@ -214,10 +214,8 @@ function createComment(companyId, staffId, params) {
         staffService.createComment(companyId, staffId, params)
             .then(
                 result => {
-                    if(result === 'FEEDBACK_CREATED') {
-                        dispatch(success(params))
-                    } else {
-                        dispatch(failure({ error: 'Извините, это время недоступно для записи' }));
+                    if(result) {
+                        dispatch(success(result))
                     }
                 },
                 (err) => {

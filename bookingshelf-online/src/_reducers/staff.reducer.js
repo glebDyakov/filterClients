@@ -2,6 +2,7 @@ import {staffConstants} from '../_constants';
 
 const initialState = {
     error: '',
+    staffCommentsStaff: {},
     isLoading: false,
     subcompanies: [],
     serviceGroups: [],
@@ -47,12 +48,12 @@ export function staff(state = initialState, action) {
                 staffComments: updatedComments
             }
         case staffConstants.GET_STAFF_COMMENTS_SUCCESS:
-            const staffCommentsTotalPages = action.staffCommentsInfo.totalPages
+            const staffCommentsTotalPages = action.staffCommentsInfo.totalPages || 0;
             const staffComments = (action.staffCommentsInfo.content || [])
             return {
                 ...state,
                 staffCommentsTotalPages,
-                staffCommentsStaffId: action.staffCommentsStaffId,
+                staffCommentsStaff: action.staffCommentsStaff,
                 staffComments
             }
         case staffConstants.GET_SERVICES_SUCCESS:
