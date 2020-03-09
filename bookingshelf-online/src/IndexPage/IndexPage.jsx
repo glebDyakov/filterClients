@@ -19,6 +19,7 @@ import TabError from "./components/TabError";
 import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
 import TabStaffComments from "./components/TabStaffComments";
+import TabCreateComment from "./components/TabCreateComment";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -366,6 +367,32 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 'staff-comments' &&
                     <TabStaffComments
+                        isLoading={isLoading}
+                        setStaffComments={this.setStaffComments}
+                        setDefaultFlag={this.setDefaultFlag}
+                        match={match}
+                        history={history}
+                        clearStaff={this.clearStaff}
+                        subcompanies={subcompanies}
+                        flagAllStaffs={flagAllStaffs}
+                        selectedServices={selectedServices}
+                        info={info}
+                        movingVisit={movingVisit}
+                        services={services}
+                        staffId={selectedStaff.staffId }
+                        staffs={staffs}
+                        isStartMovingVisit={isStartMovingVisit}
+                        nearestTime={nearestTime}
+                        selectStaff={this.selectStaff}
+                        setScreen={this.setScreen}
+                        selectService={this.selectService}
+                        refreshTimetable={this.refreshTimetable}
+                        roundDown={this.roundDown}
+                    />
+                    }
+                    {screen === 'staff-create-comment' &&
+                    <TabCreateComment
+                        isLoading={isLoading}
                         setStaffComments={this.setStaffComments}
                         setDefaultFlag={this.setDefaultFlag}
                         match={match}

@@ -8,6 +8,8 @@ export const staffActions = {
     _delete,
     _move,
     getInfo,
+    clientLogin,
+    clearClientLogin,
     getServiceGroups,
     getSubcompanies,
     getStaffComments,
@@ -77,6 +79,10 @@ function toggleMovedVisitSuccess(movedVisitSuccess) {
     };
 
     function success(movedVisitSuccess) { return { type: staffConstants.TOGGLE_MOVED_VISIT, movedVisitSuccess } }
+}
+
+function clearClientLogin() {
+    return { type: staffConstants.CLIENT_LOGIN_CLEAR }
 }
 
 function getInfo(id, loaded) {
@@ -216,6 +222,8 @@ function createComment(companyId, staffId, params) {
                 result => {
                     if(result) {
                         dispatch(success(result))
+                    } else {
+                        dispatch(successPassword())
                     }
                 },
                 (err) => {
@@ -234,7 +242,29 @@ function createComment(companyId, staffId, params) {
 
     function request() { return { type: staffConstants.CREATE_COMMENT } }
     function success(comment) { return { type: staffConstants.CREATE_COMMENT_SUCCESS, comment } }
+    function successPassword() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS } }
     function failure(payload) { return { type: staffConstants.CREATE_COMMENT_FAILURE, payload } }
+}
+
+function clientLogin(companyId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.clientLogin(companyId, params)
+            .then(
+                result => {
+                    if(result) {
+                        dispatch(success(result))
+                    } else {
+                        dispatch(successPassword())
+                    }
+                },
+                () => dispatch(failure())
+            );
+    };
+
+    function request() { return { type: staffConstants.CLIENT_LOGIN } }
+    function success(client) { return { type: staffConstants.CLIENT_LOGIN_SUCCESS, client, params } }
+    function failure(payload) { return { type: staffConstants.CLIENT_LOGIN_FAILURE, payload } }
 }
 
 function _delete(id) {
