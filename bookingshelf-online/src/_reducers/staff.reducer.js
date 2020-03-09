@@ -7,6 +7,7 @@ const clientCookie = (client) && JSON.parse(client);
 const initialState = {
     error: '',
     staffCommentsStaff: {},
+    staffCommentsTotalPages: 0,
     clientCookie,
     isLoading: false,
     subcompanies: [],

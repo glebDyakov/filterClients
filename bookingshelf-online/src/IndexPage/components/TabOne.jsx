@@ -129,12 +129,12 @@ class TabOne extends  PureComponent{
                                 </div>
 
                                 <div className="mobile_block mobile-visible">
-                                    <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                    <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '25px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                     />
                                 </div>
                                 <div className="mobile_block desktop-visible">
 
-                                    <img className="staff-comments" onClick={() =>this.handleStaffCommentsClick(staff)} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                    <img className="staff-comments" onClick={() =>this.handleStaffCommentsClick(staff)} style={{ height: '25px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                     />
                                 </div>
 

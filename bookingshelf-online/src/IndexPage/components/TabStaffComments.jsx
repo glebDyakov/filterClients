@@ -95,15 +95,15 @@ class TabStaffComments extends  PureComponent{
                                 )}
                         </ul>
 
-                        <div style={{ marginBottom: '50px' }}>
-                            <Paginator
-                                finalTotalPages={staffCommentsTotalPages}
-                                onPageChange={this.handlePageChange}
-                            />
-                        </div>
                     </React.Fragment>
                 )}
 
+                <div style={{ display: isLoading ? 'none' : 'block', marginBottom: '50px' }}>
+                    <Paginator
+                        finalTotalPages={staffCommentsTotalPages}
+                        onPageChange={this.handlePageChange}
+                    />
+                </div>
 
                 <p className="skip_employee" onClick={() =>  setScreen('staff-create-comment')}>Оставить отзыв</p>
             </div>
