@@ -153,12 +153,12 @@ class TabCreateComment extends  PureComponent{
                         <div style={{ display: 'flex', marginBottom: '20px' }}>
                             <input
                                 style={{ backgroundColor: tab === 'login_tab' ? '#39434f' : 'grey'}}
-                                className="book_button"
+                                className="book_button book_button_tab"
                                 type="button" value="Вход" onClick={() => this.updateTab('login_tab')}
                             />
                             <input
                                 style={{ backgroundColor: tab === 'sms_tab' ? '#39434f' : 'grey'}}
-                                className="book_button"
+                                className="book_button book_button_tab"
                                 type="button" value="SMS авторизация" onClick={() => this.updateTab('sms_tab')}
                             />
                         </div>

@@ -839,6 +839,12 @@ q:before, q:after { content:''; }
     letter-spacing: 0;
     cursor: pointer;
 }
+.book_button_tab {
+    font-size: 16px;
+}
+.book_button.book_button_tab:focus {
+    opacity: 1;
+}
 .book_button:hover{
     opacity: 0.7;
 }
@@ -1602,6 +1608,9 @@ input[type="search"]::-moz-placeholder {
         height: 44px;
         font-size: 14px;
         letter-spacing: 1px;
+    }
+    .book_button.book_button_tab {
+        font-size: 11px;
     }
     .date_item_popup.mobile_block{
         display: inline-block;
