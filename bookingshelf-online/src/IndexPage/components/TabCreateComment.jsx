@@ -182,7 +182,7 @@ class TabCreateComment extends  PureComponent{
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации</span>
                                         </p>
-                                        <input type="text" placeholder="" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
+                                        <input type="text" placeholder="Введите код" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
 
                                         <input
                                             style={{ margin: '20px auto' }}
