@@ -94,7 +94,6 @@ class TabStaffComments extends  PureComponent{
                                     </div>
                                 )}
                         </ul>
-
                     </React.Fragment>
                 )}
 
