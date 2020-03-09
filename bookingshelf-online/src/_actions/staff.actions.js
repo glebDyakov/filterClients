@@ -12,6 +12,7 @@ export const staffActions = {
     clearClientLogin,
     getServiceGroups,
     getSubcompanies,
+    sendPassword,
     getStaffComments,
     createComment,
     clearStaff,
@@ -222,28 +223,36 @@ function createComment(companyId, staffId, params) {
                 result => {
                     if(result) {
                         dispatch(success(result))
-                    } else {
-                        dispatch(successPassword())
                     }
                 },
                 (err) => {
-                    let errorPayload;
-                    if (err === 'client in blacklist') {
-                        errorPayload = { error: 'Извините, ваша запись не может быть создана. Пожалуйста, свяжитесь с администратором заведения.' };
-                    } else if (err === 'incorrect activation code') {
-                        errorPayload = { enteredCodeError: true }
-                    } else {
-                        errorPayload = { error: 'Извините, это время недоступно для записи' };
-                    }
-                    dispatch(failure(errorPayload));
+                    dispatch(failure());
                 }
             );
     };
 
     function request() { return { type: staffConstants.CREATE_COMMENT } }
     function success(comment) { return { type: staffConstants.CREATE_COMMENT_SUCCESS, comment } }
-    function successPassword() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS } }
-    function failure(payload) { return { type: staffConstants.CREATE_COMMENT_FAILURE, payload } }
+    function failure() { return { type: staffConstants.CREATE_COMMENT_FAILURE } }
+}
+
+function sendPassword(companyId, staffId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.createComment(companyId, staffId, params)
+            .then(
+                () => {
+                    dispatch(success())
+                },
+                (err) => {
+                    dispatch(failure());
+                }
+            );
+    };
+
+    function request() { return { type: staffConstants.CREATE_COMMENT } }
+    function success() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS } }
+    function failure() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_FAILURE } }
 }
 
 function clientLogin(companyId, params) {

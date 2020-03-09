@@ -52,6 +52,13 @@ export function staff(state = initialState, action) {
                 ...state,
                 clientCookie: null
             }
+
+        case staffConstants.CLIENT_LOGIN:
+            return {
+                ...state,
+                isLoading: true,
+                clientLoginMessage: ''
+            }
         case staffConstants.CLIENT_LOGIN_SUCCESS:
             let client = {
                 clientPassword: action.params.clientPassword,
@@ -64,19 +71,34 @@ export function staff(state = initialState, action) {
                 isLoading: false,
                 clientCookie: client
             }
+        case staffConstants.CLIENT_LOGIN_FAILURE:
+            return {
+                ...state,
+                clientLoginMessage: 'Ваш телефон не входит в базу компании либо Вы ввели неверный персональный пароль.',
+                isLoading: false
+            }
+
         case staffConstants.CREATE_COMMENT:
             return {
                 ...state,
                 commentCreated: false,
-                commentPassword: false,
+                commentPassword: '',
                 isLoading: true
             }
         case staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS:
             return {
                 ...state,
-                commentPassword: true,
+                commentPassword: 'Персональный пароль отправлен на указанный номер.',
                 isLoading: false
             }
+
+        case staffConstants.CREATE_COMMENT_PASSWORD_FAILURE:
+            return {
+                ...state,
+                commentPassword: 'Пароль был отправлен. Повторите попытку через 5 минут.',
+                isLoading: false
+            }
+
         case staffConstants.CREATE_COMMENT_SUCCESS:
             let updatedComments = [action.comment];
             updatedComments = updatedComments.concat(state.staffComments)
@@ -126,7 +148,6 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE:
         case staffConstants.GET_TIMETABLE_AVAILABLE:
         case staffConstants.GET_STAFF_COMMENTS:
-        case staffConstants.CLIENT_LOGIN:
         case staffConstants.MOVE_VISIT:
         case staffConstants.DELETE_APPOINTMENT:
             return {
@@ -175,7 +196,6 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_INFO_FAILURE:
         case staffConstants.GET_STAFF_COMMENTS_FAILURE:
         case staffConstants.CREATE_COMMENT_FAILURE:
-        case staffConstants.CLIENT_LOGIN_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
         case staffConstants.GET_TIMETABLE_FAILURE:
