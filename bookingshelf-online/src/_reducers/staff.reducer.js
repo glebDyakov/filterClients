@@ -1,8 +1,13 @@
 import {staffConstants} from '../_constants';
+import { getCookie, deleteCookie } from "../_helpers/cookie";
+
+const client = getCookie('client');
+const clientCookie = (client) && JSON.parse(client);
 
 const initialState = {
     error: '',
     staffCommentsStaff: {},
+    clientCookie,
     isLoading: false,
     subcompanies: [],
     serviceGroups: [],
@@ -40,12 +45,45 @@ export function staff(state = initialState, action) {
                 staff: (action.staff || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
+        case staffConstants.CLIENT_LOGIN_CLEAR:
+            deleteCookie('client');
+            return {
+                ...state,
+                clientCookie: null
+            }
+        case staffConstants.CLIENT_LOGIN_SUCCESS:
+            let client = {
+                clientPassword: action.params.clientPassword,
+                ...action.client
+            }
+
+            document.cookie = `client=${JSON.stringify(client)}`;
+            return {
+                ...state,
+                isLoading: false,
+                clientCookie: client
+            }
+        case staffConstants.CREATE_COMMENT:
+            return {
+                ...state,
+                commentCreated: false,
+                commentPassword: false,
+                isLoading: true
+            }
+        case staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                commentPassword: true,
+                isLoading: false
+            }
         case staffConstants.CREATE_COMMENT_SUCCESS:
             let updatedComments = [action.comment];
             updatedComments = updatedComments.concat(state.staffComments)
             return {
                 ...state,
-                staffComments: updatedComments
+                staffComments: updatedComments,
+                commentCreated: true,
+                isLoading: false
             }
         case staffConstants.GET_STAFF_COMMENTS_SUCCESS:
             const staffCommentsTotalPages = action.staffCommentsInfo.totalPages || 0;
@@ -54,7 +92,8 @@ export function staff(state = initialState, action) {
                 ...state,
                 staffCommentsTotalPages,
                 staffCommentsStaff: action.staffCommentsStaff,
-                staffComments
+                staffComments,
+                isLoading: false
             }
         case staffConstants.GET_SERVICES_SUCCESS:
             return {
@@ -85,6 +124,8 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_APPOINTMENT_CUSTOM:
         case staffConstants.GET_TIMETABLE:
         case staffConstants.GET_TIMETABLE_AVAILABLE:
+        case staffConstants.GET_STAFF_COMMENTS:
+        case staffConstants.CLIENT_LOGIN:
         case staffConstants.MOVE_VISIT:
         case staffConstants.DELETE_APPOINTMENT:
             return {
@@ -131,6 +172,9 @@ export function staff(state = initialState, action) {
                 ...toggleStartState
             }
         case staffConstants.GET_INFO_FAILURE:
+        case staffConstants.GET_STAFF_COMMENTS_FAILURE:
+        case staffConstants.CREATE_COMMENT_FAILURE:
+        case staffConstants.CLIENT_LOGIN_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
         case staffConstants.GET_TIMETABLE_FAILURE:

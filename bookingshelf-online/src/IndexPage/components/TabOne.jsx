@@ -3,6 +3,11 @@ import StarRatings from "react-star-ratings";
 
 
 class TabOne extends  PureComponent{
+    constructor(props) {
+        super(props)
+        this.handleStaffCommentsClick = this.handleStaffCommentsClick.bind(this);
+    }
+
     componentWillReceiveProps(newProps) {
         const { movingVisit } = newProps
         if (newProps.services && newProps.isStartMovingVisit && movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
@@ -12,6 +17,11 @@ class TabOne extends  PureComponent{
             })
             //this.props.refreshTimetable()
         }
+    }
+
+    handleStaffCommentsClick(staff) {
+        this.props.setStaffComments(staff);
+        this.props.setScreen('staff-comments');
     }
 
     render() {
@@ -119,20 +129,12 @@ class TabOne extends  PureComponent{
                                 </div>
 
                                 <div className="mobile_block mobile-visible">
-                                    <img className="staff-comments" onClick={(e) => {
-                                        e.preventDefault()
-                                        setScreen('staff-comments')
-                                        setStaffComments(staff)
-                                    }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                    <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                     />
                                 </div>
                                 <div className="mobile_block desktop-visible">
 
-                                    <img className="staff-comments" onClick={(e) => {
-                                        e.preventDefault()
-                                        setScreen('staff-comments')
-                                        setStaffComments(staff)
-                                    }} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                    <img className="staff-comments" onClick={() =>this.handleStaffCommentsClick(staff)} style={{ height: '32px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                     />
                                 </div>
 
@@ -197,11 +199,7 @@ class TabOne extends  PureComponent{
                               }
 
                               <div style={{ textAlign: 'center' }}>
-                                        <img className="staff-comments" onClick={(e) => {
-                                            e.preventDefault()
-                                            setScreen('staff-comments')
-                                            setStaffComments(staff)
-                                        }} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.png`}
+                                        <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                         />
                                         {staff.rating ? (
                                             <StarRatings

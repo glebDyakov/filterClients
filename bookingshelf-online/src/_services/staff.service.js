@@ -10,6 +10,7 @@ export const staffService = {
     getSubcompanies,
     getInfo,
     getStaffComments,
+    clientLogin,
     createComment,
     getTimetable,
     getClientAppointments,
@@ -139,6 +140,16 @@ function createComment(companyId, staffId, params) {
     return fetch(`${config.apiUrl}/${companyId}/staffs/${staffId}/feedback`, requestOptions).then(handleResponse);
 }
 
+function clientLogin(companyId, params) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${config.apiUrl}/${companyId}/clients/feedback`, requestOptions).then(handleResponse);
+}
+
 function _move(appointment, time, staffId, companyId, coStaffs) {
     const requestOptions = {
         method: 'PATCH',
@@ -183,10 +194,6 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            if (response.status === 401) {
-                location.reload(true);
-            }
-
             const error = (data && data.message) || (data && data.exceptionMessage) || response.statusText;
             return Promise.reject(error);
         }

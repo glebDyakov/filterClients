@@ -626,6 +626,10 @@ q:before, q:after { content:''; }
 .desktop-visible {
     display: block;
 }
+.desktop-visible-flex {
+    display: flex;
+}
+
 .stars span{
     background: url(../img/icons/star_full.svg) no-repeat;
     width: 10px;
@@ -1313,7 +1317,7 @@ input[type="search"]::-moz-placeholder {
     .mobile-visible {
         display: block;
     }
-    .desktop-visible {
+    .desktop-visible, .desktop-visible-flex {
         display: none;
     }
     .adress-icon {
