@@ -344,6 +344,9 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        forceUpdateStaff={this.forceUpdateStaff}
+                        selectedTime={selectedTime}
+                        timetableAvailable={timetableAvailable}
                         setStaffComments={this.setStaffComments}
                         setDefaultFlag={this.setDefaultFlag}
                         match={match}
@@ -628,11 +631,6 @@ class IndexPage extends PureComponent {
         return serviceIdList;
     }
 
-    randomInteger(min, max) {
-        let rand = min + Math.random() * (max + 1 - min);
-        return Math.floor(rand);
-    }
-
     setTime (time){
         const { dispatch } = this.props
         const { isStartMovingVisit, timetableAvailable, movingVisit, staff } = this.props.staff
@@ -656,21 +654,16 @@ class IndexPage extends PureComponent {
             this.setState({ screen: 6, selectedTime: time })
         } else {
             const updatedState = {}
-            if (flagAllStaffs) {
-                const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
-                    timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
-                        return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
-                    })))
-                const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
-                const selectedStaffFromTimetable = selectedStaffFromTimetableList[randomStaffIndex]
+            let screen = 5;
 
-                updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId)
+            if (flagAllStaffs) {
+                screen = 1;
             }
 
             this.setState({
                 newAppointments: [],
                 selectedTime:time,
-                screen: 5,
+                screen,
                 ...updatedState
             });
         }

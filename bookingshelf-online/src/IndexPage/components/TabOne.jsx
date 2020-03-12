@@ -24,8 +24,29 @@ class TabOne extends  PureComponent{
         this.props.setScreen('staff-comments');
     }
 
+    randomInteger(min, max) {
+        let rand = min + Math.random() * (max + 1 - min);
+        return Math.floor(rand);
+    }
+
+    handleNoStaffClick() {
+        const { setScreen, forceUpdateStaff, selectedTime: time, timetableAvailable, staffs } = this.props;
+        setScreen(5);
+        const updatedState = {};
+
+        const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
+            timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
+            })));
+        const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
+        const selectedStaffFromTimetable = selectedStaffFromTimetableList[randomStaffIndex];
+
+        updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId);
+        forceUpdateStaff(updatedState.selectedStaff)
+    }
+
     render() {
-        const {staffId, staffs, setStaffComments, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, staffs, selectedTime: time, timetableAvailable, setFlagAllStaffs, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
@@ -52,6 +73,25 @@ class TabOne extends  PureComponent{
                     }}><span className="title_block_text">Далее</span></span>}
                 </div>
                 <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                    {flagAllStaffs && (
+                        <li className={'nb'}
+                            onClick={() => {
+                                this.handleNoStaffClick()
+                            }}
+                        >
+                            <span className="staff_popup_item">
+                                <div style={{ width: '100%' }} className="img_container">
+
+                                    <span className="staff_popup_name no-staff">Сотрудник не важен<br/>
+
+
+                                    </span>
+
+                                </div>
+
+                            </span>
+                        </li>
+                    )}
                     {staffs && staffs.length > 0 && staffs
                         .filter(staff => {
                             const activeServices = movingVisit ?services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
@@ -60,6 +100,16 @@ class TabOne extends  PureComponent{
                         .filter(staff => {
                             return flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true
                         })
+                        .filter(staff => {
+                            if (flagAllStaffs) {
+                                return timetableAvailable.filter(timetableItem =>
+                                    timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                        return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
+                                    })))
+                                    .some(item => item.staffId === staff.staffId);
+                            }
+                            return true
+                        })
                         .map((staff, idStaff) =>
 
 
@@ -67,6 +117,9 @@ class TabOne extends  PureComponent{
                             onClick={(e) => {
                                 if (e.target.className !== 'staff-comments') {
                                     selectStaff(staff)
+                                    if (flagAllStaffs) {
+                                        setScreen(5)
+                                    }
                                 }
                             }}
                             key={idStaff}
@@ -143,7 +196,21 @@ class TabOne extends  PureComponent{
                     )}
                 </ul>
               <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                {staffs && !!staffs.length && staffs
+                  {flagAllStaffs && (
+                      <li className={'nb'}
+                          onClick={() => {
+                              this.handleNoStaffClick()
+                          }}
+                      >
+                            <span className="staff_popup_item">
+                                <div style={{ width: '100%' }} className="img_container">
+                                    <span className="staff_popup_name no-staff">Сотрудник не важен<br/>
+                                    </span>
+                                </div>
+                            </span>
+                      </li>
+                  )}
+                  {staffs && !!staffs.length && staffs
                     .filter(staff => {
                         const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit=> item.serviceId ===visit.serviceId)) : [];
                         return movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true
@@ -151,6 +218,17 @@ class TabOne extends  PureComponent{
                     .filter(staff => {
                         return flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true
                     })
+
+                      .filter(staff => {
+                          if (flagAllStaffs) {
+                              return timetableAvailable.filter(timetableItem =>
+                                  timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                      return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
+                                  })))
+                                  .some(item => item.staffId === staff.staffId);
+                          }
+                          return true
+                      })
                     .map((staff, idStaff) =>
 
 
@@ -158,6 +236,9 @@ class TabOne extends  PureComponent{
                       onClick={(e) => {
                           if (e.target.className !== 'staff-comments') {
                               selectStaff(staff)
+                              if (flagAllStaffs) {
+                                  setScreen(5)
+                              }
                           }
                       }}
                       key={idStaff}
