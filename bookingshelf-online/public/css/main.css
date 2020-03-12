@@ -754,6 +754,12 @@ q:before, q:after { content:''; }
     display: block;
     text-align: center;
 }
+.no-staff {
+    text-decoration: underline;
+    width: 100%;
+    color: red;
+    text-align: center;
+}
 .staff_popup strong{
     font-size: 22px;
 }
