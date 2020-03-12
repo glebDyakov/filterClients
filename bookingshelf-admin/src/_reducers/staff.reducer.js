@@ -16,7 +16,6 @@ export function staff(state = initialState, action) {
                 status: 209
             };
         case staffConstants.GET_FEEDBACK_SUCCESS:
-            debugger
             return {
                 ...state,
                 feedback: action.feedback.content,

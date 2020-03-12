@@ -177,10 +177,6 @@ class AddWorkTime extends React.Component {
                                                     onClick={() => this.onRemoveTime(key)} >X</span>
                                             </p>
                                             <TimePicker
-                                                ref={node => {
-                                                    debugger
-                                                    this.timepicker1 = node
-                                                }}
                                                 id={"startTimeMillis" + key}
                                                 key={"startTimeMillis" + key}
                                                 value={item!=1 ? moment(parseInt(item.startTimeMillis), 'x'):times[key]&&times[key].startTimeMillis?moment(times[key].startTimeMillis, 'x'):''}
@@ -270,7 +266,6 @@ class AddWorkTime extends React.Component {
         ){
             timeVar=timeVar.add(15 - (timeVar.minute() % 15), 'minutes')
         }
-        debugger
 
         this.setState({times:Object.assign(times,{[key]: {...times[key], [field]: timeVar.format('x')}})});
     }
