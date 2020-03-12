@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import StarRatings from 'react-star-ratings';
 
-import {staffActions} from '../_actions';
+import {notificationActions, staffActions} from '../_actions';
 import {AddWorkTime} from "../_components/modals/AddWorkTime";
 import {NewStaff} from "../_components/modals/NewStaff";
 
@@ -18,6 +19,7 @@ import {DatePicker} from '../_components/DatePicker'
 import {getWeekRange} from '../_helpers/time'
 import {access} from "../_helpers/access";
 import DragDrop from "../_components/DragDrop";
+import Paginator from "../_components/Paginator";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -47,6 +49,7 @@ class Index extends Component {
             props.match.params.activeTab!=='permissions' &&
             props.match.params.activeTab!=='workinghours' &&
             props.match.params.activeTab!=='holidays' &&
+            props.match.params.activeTab!=='feedback' &&
             props.match.params.activeTab!=='staff'
         ){
             props.history.push('/nopage')
@@ -55,6 +58,7 @@ class Index extends Component {
         if(props.match.params.activeTab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(props.match.params.activeTab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
         if(props.match.params.activeTab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
+        if(props.match.params.activeTab==='feedback'){document.title = "Отзывы | Онлайн-запись"}
         if(!props.match.params.activeTab || props.match.params.activeTab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
 
@@ -125,6 +129,7 @@ class Index extends Component {
     queryInitData() {
         const {selectedDays}=this.state;
         this.props.dispatch(staffActions.get());
+        this.props.dispatch(staffActions.getFeedback(1));
         this.props.dispatch(staffActions.getAccess());
         this.props.dispatch(staffActions.getAccessList());
         this.props.dispatch(staffActions.getClosedDates());
@@ -167,6 +172,12 @@ class Index extends Component {
         history.pushState(null, '', '/staff/'+tab);
 
     }
+
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.props.dispatch(staffActions.getFeedback(currentPage));
+    };
 
     handleDrogEnd(dragDropItems) {
         const updatedSortOrderStaffs = []
@@ -293,6 +304,9 @@ class Index extends Component {
                                 <a className={"nav-link"+(activeTab==='permissions'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('permissions')}>Доступ</a>
                             </li>
                             }
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='feedback'?' active show':'')} data-toggle="tab" href="#tab5" onClick={()=>this.setTab('feedback')}>Отзывы</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -542,6 +556,51 @@ class Index extends Component {
                             </div>
                         </div>
                         }
+
+                        <div className={"tab-pane"+(activeTab==='feedback'?' active':'')}  id="tab5">
+                            <div className="holiday-tab">
+                                <div className="add-holiday p-4 mb-3">
+                                    <p className="title_block">Отзывы</p>
+
+                                </div>
+                                {
+                                    staff.feedback && staff.feedback.map((item, key)=>
+                                        <div className="row holiday-list p-2 mb-2" key={key}>
+                                            <div className="col">
+                                                <p>
+                                                    <strong>{item.clientName}</strong>
+                                                    <p>
+                                                        <StarRatings
+                                                            rating={item.rating}
+                                                            starHoverColor={'#ff9500'}
+                                                            starRatedColor={'#ff9500'}
+                                                            starDimension="14px"
+                                                            starSpacing="0"
+                                                        />
+                                                        <span style={{ marginLeft: '4px'}}>{moment(item.feedbackDate).format('DD MMMM YYYY, HH:mm')}</span>
+                                                    </p>
+                                                    <p>
+                                                        {item.comment}
+                                                    </p>
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                <Paginator
+                                    finalTotalPages={staff.feedbackTotalPages}
+                                    onPageChange={this.handlePageClick}
+                                />
+                            </div>
+                            <a className="add"/>
+                            <div className="hide buttons-container">
+                                <div className="p-4">
+                                    <button type="button" className="button new-holiday">Новый выходной</button>
+                                </div>
+                                <div className="arrow"></div>
+                            </div>
+                        </div>
                         {staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         {staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                     </div>

@@ -12,6 +12,7 @@ class AddWorkTime extends React.Component {
         super(props);
 
         this.state = {
+            deletedCountTimes: [],
             countTimes: props.editing_object && props.editing_object.length>0?props.editing_object:[1],
             staff: props.currentStaff && props.currentStaff,
             times: props.editing_object?props.editing_object:[{}],
@@ -26,6 +27,7 @@ class AddWorkTime extends React.Component {
         this.onChangeTime=this.onChangeTime.bind(this);
         this.onSaveTime=this.onSaveTime.bind(this);
         this.onAddTime=this.onAddTime.bind(this);
+        this.onRemoveTime=this.onRemoveTime.bind(this);
         this.onDelete=this.onDelete.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.disabledHours=this.disabledHours.bind(this);
@@ -39,7 +41,7 @@ class AddWorkTime extends React.Component {
                 staff: newProps.currentStaff,
                 date: newProps.date,
                 staffs:newProps.staff,
-                repeat:newProps.editing_object?newProps.editing_object[0].repeat: this.state.repeat })
+                repeat:(newProps.editing_object && newProps.editing_object[0])?newProps.editing_object[0].repeat: this.state.repeat })
 
         }
     }
@@ -165,7 +167,15 @@ class AddWorkTime extends React.Component {
                                     </div>
                                     {countTimes && countTimes.map((item, key) =>
                                         <div key={key} className="border-bottom m-b-5">
-                                            <p>Начало</p>
+                                            <p>Начало
+                                                <span
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        float: 'right',
+                                                        fontSize: '18px'
+                                                    }}
+                                                    onClick={() => this.onRemoveTime(key)} >X</span>
+                                            </p>
                                             <TimePicker
                                                 id={"startTimeMillis" + key}
                                                 key={"startTimeMillis" + key}
@@ -176,7 +186,7 @@ class AddWorkTime extends React.Component {
                                                 disabledHours={()=>this.disabledHours(parseInt(moment(date, 'DD/MM/YYYY').zone("+0800").isoWeekday())-1, key, 'start')}
                                                 showSecond={false}
                                                 disabledMinutes={this.disabledMinutes}
-                                                onChange={(startTimeMillis) => this.onChangeTime('startTimeMillis', key, moment(startTimeMillis).format('x'))}
+                                                onChange={(startTimeMillis,q,w,e) => this.onChangeTime('startTimeMillis', key, moment(startTimeMillis).format('x'),q,w,e)}
                                             />
                                             <p>Конец</p>
                                             <TimePicker
@@ -227,7 +237,25 @@ class AddWorkTime extends React.Component {
         this.setState({countTimes:arrayCounts});
     }
 
-    onChangeTime(field, key, time) {
+    onRemoveTime(index) {
+        const {countTimes, deletedCountTimes} = this.state;
+        if (countTimes[index].staffTimetableId) {
+            deletedCountTimes.push(countTimes[index])
+        }
+        countTimes.splice(index, 1);
+
+        this.setState({ countTimes });
+    }
+
+    finalRemove() {
+        const { deletedCountTimes } = this.state;
+        deletedCountTimes.forEach((item, i) => {
+            setTimeout(() => {
+                this.onDelete(item.startTimeMillis, item.endTimeMillis)
+            }, (i * 100))
+        })
+    }
+    onChangeTime(field, key, time, q, w, e) {
         const {times, repeat, staff, date} = this.state;
         let timeVar=moment(date +' '+moment(time, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm');
 
@@ -248,6 +276,7 @@ class AddWorkTime extends React.Component {
 
         let timing=[];
         times && times.map(time=>timing.push({...time, repeat:repeat}));
+        this.finalRemove();
 
         return addWorkingHours(timing, staff.staffId, );
     }

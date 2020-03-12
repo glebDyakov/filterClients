@@ -9,6 +9,7 @@ export const staffActions = {
     add,
     update,
     get,
+    getFeedback,
     getAccess,
     getAccessList,
     updateAccess,
@@ -206,6 +207,21 @@ function get() {
     function failure() { return { type: staffConstants.GET_FAILURE } }
 }
 
+function getFeedback(currentPage) {
+    return dispatch => {
+        dispatch(request())
+        staffService.getFeedback(currentPage)
+            .then(
+                feedback => dispatch(success(feedback)),
+                () => dispatch(failure())
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_FEEDBACK } }
+    function success(feedback) { return { type: staffConstants.GET_FEEDBACK_SUCCESS, feedback } }
+    function failure() { return { type: staffConstants.GET_FEEDBACK_FAILURE } }
+}
+
 function getAccessList() {
      return { type: staffConstants.GET_ACCESS_LIST_NAMES_SUCCESS }
 }
@@ -232,16 +248,16 @@ function getClosedDates() {
     function success(closedDates) { return { type: staffConstants.GET_CLOSED_DATES_SUCCESS, closedDates } }
 }
 
-function getTimetable(from, to) {
+function getTimetable(from, to, isLoading = true) {
     return dispatch => {
-        dispatch(request());
+        dispatch(request(isLoading));
         staffService.getTimetable(from, to)
             .then(
                 timetable => dispatch(success(timetable)),
                 () => dispatch(failure())
             );
     };
-    function request() { return { type: staffConstants.GET_TIMETABLE_REQUEST} }
+    function request(isLoading) { return { type: staffConstants.GET_TIMETABLE_REQUEST, isLoading} }
     function success(timetable) { return { type: staffConstants.GET_TIMETABLE_SUCCESS, timetable } }
     function failure() { return { type: staffConstants.GET_TIMETABLE_FAILURE } }
 }
@@ -313,12 +329,22 @@ function deleteClosedDates(id) {
 
 function deleteWorkingHours(id, startTime, endTime, from, to) {
     return dispatch => {
+        dispatch(request(0))
         staffService.deleteWorkingHours(id, startTime, endTime)
             .then(
-                closedDates => dispatch(staffActions.getTimetable(from, to))
+                closedDates => {
+                    dispatch(staffActions.getTimetable(from, to, false))
+                    setTimeout(() => {dispatch(successTime(0))}, 500)
+                },
+                () => {
+                    setTimeout(() => {dispatch(failureTime(0))}, 500)
+                }
             );
     };
 
+    function request(id) { return { type: staffConstants.STAFF_REQUEST, id } }
+    function successTime(id) { return { type: staffConstants.STAFF_SUCCESS_TIME, id } }
+    function failureTime(id) { return { type: staffConstants.STAFF_FAILURE_TIME, id } }
     function success(id, startTime, endTime) { return { type: staffConstants.DELETE_WORKING_HOURS_SUCCESS, id, startTime, endTime } }
     function failure(error) { return { type: staffConstants.DELETE_WORKING_HOURS_FAILURE, error } }
 }
