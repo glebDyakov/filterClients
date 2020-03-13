@@ -224,6 +224,7 @@ class Index extends Component {
         const {workersCount, specialWorkersCount, period} = this.state.rate;
         const {countryCode} = this.state.country;
 
+        const price1to10 =  (packets && packets.find(item => item.packetId === parseInt(workersCount)) || {})
         const priceTo20packet =  (packets && packets.find(item => item.packetId ===11) || {})
         const priceTo30packet =  (packets && packets.find(item => item.packetId ===12) || {})
         const priceFrom30packet =  (packets && packets.find(item => item.packetId ===13) || {})
@@ -249,62 +250,35 @@ class Index extends Component {
             priceForOneWorker = 5;
         }
 
-        switch (period) {
-            case '1':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 3;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 3;
 
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 3;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 3;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 3;
+        switch (specialWorkersCount) {
+            case 'to 20':
+                finalPriceMonth = priceTo20packet.price
                 break;
-            case '2':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 5;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 5;
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 5;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 5;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 6;
+            case 'to 30':
+                finalPriceMonth = priceTo30packet.price
                 break;
-            case '3':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 9;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 9;
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 9;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 9;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 12;
+            case 'from 30':
+                finalPriceMonth = priceFrom30packet.price
+                break;
+            case '':
+                finalPriceMonth = price1to10.price
                 break;
         }
-        finalPriceMonth = finalPriceMonth.toFixed(2);
-        this.setState({finalPrice: finalPrice, finalPriceMonth: finalPriceMonth});
+
+        switch (period) {
+            case '1':
+                finalPrice = finalPriceMonth * 3
+                break;
+            case '2':
+                finalPrice = finalPriceMonth * 5
+                break;
+            case '3':
+                finalPrice = finalPriceMonth * 9
+                break;
+        }
+
+        this.setState({ finalPrice, finalPriceMonth });
     }
 
     changeSMSResult() {
