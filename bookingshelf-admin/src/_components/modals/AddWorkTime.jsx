@@ -59,16 +59,16 @@ class AddWorkTime extends React.Component {
                 hoursArray.push(i);
             }
 
-            if(str==='end' && times[key] && times[key].startTimeMillis && i<moment(times[key].startTimeMillis, 'x').format('H')){
+            if(str==='end' && times[key] && (times[key].startTimeMillis && i<moment(times[key].startTimeMillis, 'x').format('H'))){
                 hoursArray.push(i);
             }
 
-            if(str==='start' && times[key] && times[key].startTimeMillis && i>=moment(times[key].endTimeMillis, 'x').format('H')){
+            if(str==='start' && times[key] && (times[key].startTimeMillis && i>=moment(times[key].endTimeMillis, 'x').format('H'))){
                 hoursArray.push(i);
             }
         }
 
-        if (str === 'end') {
+        if (str === 'end' && times[key]) {
             let workEndMilisH= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('H'));
             let workEndMilisM= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('mm'));
             if (workEndMilisM === 45) {
@@ -137,6 +137,7 @@ class AddWorkTime extends React.Component {
 
         const {countTimes, staff, repeat, date, editWorkingHours, editing_object, times, staffs}=this.state;
 
+        debugger;
         return (
             <Modal size="md" style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="modal_dates">
@@ -229,12 +230,13 @@ class AddWorkTime extends React.Component {
     }
 
     onAddTime(){
-        const {countTimes} = this.state;
+        const {countTimes, times} = this.state;
 
         let arrayCounts=countTimes;
 
         arrayCounts.push(1);
-        this.setState({countTimes:arrayCounts});
+        times.push({})
+        this.setState({countTimes:arrayCounts, times});
     }
 
     onRemoveTime(index) {
