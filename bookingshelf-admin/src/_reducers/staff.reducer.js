@@ -5,11 +5,19 @@ const initialState = {
     error: false,
     isAvailableTimesChecked: false,
     isLoadingStaffInit: false,
-    feedbackTotalPages: 0
+    feedbackStaff: {
+        content: [],
+        totalPages: 0
+    }
 }
 
 export function staff(state = initialState, action) {
     switch (action.type) {
+        case staffConstants.UPDATE_FEEDBACK_STAFF:
+            return {
+                ...state,
+                feedbackStaff: action.feedbackStaff
+            }
         case staffConstants.STAFF_SUCCESS_TIME:
             return {
                 ...state,
@@ -18,8 +26,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_FEEDBACK_SUCCESS:
             return {
                 ...state,
-                feedback: action.feedback.content,
-                feedbackTotalPages: action.feedback.totalPages
+                feedback: action.feedback
             }
         case staffConstants.UPDATE_REQUEST:
             return {

@@ -14,6 +14,7 @@ export const staffActions = {
     getAccessList,
     updateAccess,
     addClosedDates,
+    updateFeedbackStaff,
     getClosedDates,
     deleteClosedDates,
     getTimetable,
@@ -224,6 +225,10 @@ function getFeedback(currentPage) {
 
 function getAccessList() {
      return { type: staffConstants.GET_ACCESS_LIST_NAMES_SUCCESS }
+}
+
+function updateFeedbackStaff(feedbackStaff) {
+    return { type: staffConstants.UPDATE_FEEDBACK_STAFF, feedbackStaff }
 }
 
 function getAccess() {
