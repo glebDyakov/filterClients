@@ -20,6 +20,7 @@ import {getWeekRange} from '../_helpers/time'
 import {access} from "../_helpers/access";
 import DragDrop from "../_components/DragDrop";
 import Paginator from "../_components/Paginator";
+import FeedbackStaff from "../_components/modals/FeedbackStaff";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -192,7 +193,7 @@ class Index extends Component {
 
     render() {
         const { staff } = this.props;
-        const { emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -564,47 +565,77 @@ class Index extends Component {
 
                                 </div>
                                 {
-                                    staff.feedback && staff.feedback.map((item, key)=>
-                                        <div className="row holiday-list p-2 mb-2" key={key}>
-                                            <div className="col">
-                                                <p>
-                                                    <strong>{item.clientName}</strong>
-                                                    <p>
-                                                        <StarRatings
-                                                            rating={item.rating}
-                                                            starHoverColor={'#ff9500'}
-                                                            starRatedColor={'#ff9500'}
-                                                            starDimension="14px"
-                                                            starSpacing="0"
-                                                        />
-                                                        <span style={{ marginLeft: '4px'}}>{moment(item.feedbackDate).format('DD MMMM YYYY, HH:mm')}</span>
-                                                    </p>
-                                                    <p>
-                                                        {item.comment}
-                                                    </p>
-                                                </p>
+                                    staff.feedback && staff.feedback.map((feedbackStaff, key)=> {
+                                        const activeStaff = staff.staff && staff.staff.find(item => item.staffId === feedbackStaff.staffId)
 
-                                            </div>
+                                        return (
+                                            <div className="holiday-list p-2 mb-2">
+                                                {activeStaff && (
+                                                    <div style={{ alignItems: 'center', justifyContent: 'space-between' }} className="row px-4 py-2 mb-2">
+                                                        <div style={{ display: 'flex' }}>
+                                                            <div>
+                                                                <img style={{ display: 'block', height: '40px', margin: '0 auto' }} className="rounded-circle"
+                                                                     src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                     alt=""
+                                                                />
+                                                                <div style={{ width: '70px' }}>
+                                                                    <StarRatings
+                                                                        rating={feedbackStaff.averageStaffRating || 0}
+                                                                        starHoverColor={'#ff9500'}
+                                                                        starRatedColor={'#ff9500'}
+                                                                        starDimension="14px"
+                                                                        starSpacing="0"
+                                                                    />
+                                                                </div>
+                                                            </div>
+
+                                                            <div style={{ width: '60%', marginLeft: '4px' }}>
+                                                                <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                                <p>{activeStaff.description}</p>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" onClick={()=> {
+                                                            $('.feedback-staff').modal('show');
+                                                            this.props.dispatch(staffActions.updateFeedbackStaff(activeStaff))
+                                                        }} className="button">Все отзывы
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            {/*    {feedbackStaff.content.map((item, i) => i < 3 && (*/}
+                                            {/*    <div style={{ borderTop: '2px solid rgb(245, 245, 246)'}} className="row p-2 mb-2" key={key}>*/}
+                                            {/*        <div className="col">*/}
+                                            {/*            <p>*/}
+                                            {/*                <strong>{item.clientName}</strong>*/}
+                                            {/*                <p>*/}
+                                            {/*                    <StarRatings*/}
+                                            {/*                        rating={item.rating}*/}
+                                            {/*                        starHoverColor={'#ff9500'}*/}
+                                            {/*                        starRatedColor={'#ff9500'}*/}
+                                            {/*                        starDimension="14px"*/}
+                                            {/*                        starSpacing="0"*/}
+                                            {/*                    />*/}
+                                            {/*                    <span style={{ marginLeft: '4px'}}>{moment(item.feedbackDate).format('DD MMMM YYYY, HH:mm')}</span>*/}
+                                            {/*                </p>*/}
+                                            {/*                <p>*/}
+                                            {/*                    {item.comment}*/}
+                                            {/*                </p>*/}
+                                            {/*            </p>*/}
+                                            {/*        </div>*/}
+                                            {/*    </div>*/}
+                                            {/*))}*/}
+                                            {/*    {feedbackStaff.content}*/}
                                         </div>
+                                        )}
                                     )
                                 }
-                                <Paginator
-                                    finalTotalPages={staff.feedbackTotalPages}
-                                    onPageChange={this.handlePageClick}
-                                />
-                            </div>
-                            <a className="add"/>
-                            <div className="hide buttons-container">
-                                <div className="p-4">
-                                    <button type="button" className="button new-holiday">Новый выходной</button>
-                                </div>
-                                <div className="arrow"></div>
                             </div>
                         </div>
                         {staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         {staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                     </div>
                 </div>
+                <FeedbackStaff />
+
                 {activeTab==='staff' &&
                 <a className="add"/>
                 }
