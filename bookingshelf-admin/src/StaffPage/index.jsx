@@ -572,7 +572,7 @@ class Index extends Component {
                                             <div className="holiday-list p-2 mb-2">
                                                 {activeStaff && (
                                                     <div style={{ alignItems: 'center', justifyContent: 'space-between' }} className="row px-4 py-2 mb-2">
-                                                        <div style={{ display: 'flex' }}>
+                                                        <div style={{ display: 'flex', width: 'calc(100% - 200px)' }}>
                                                             <div>
                                                                 <img style={{ display: 'block', height: '40px', margin: '0 auto' }} className="rounded-circle"
                                                                      src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -589,7 +589,7 @@ class Index extends Component {
                                                                 </div>
                                                             </div>
 
-                                                            <div style={{ width: '60%', marginLeft: '4px' }}>
+                                                            <div style={{ width: '60%', marginLeft: '24px' }}>
                                                                 <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
                                                                 <p>{activeStaff.description}</p>
                                                             </div>
