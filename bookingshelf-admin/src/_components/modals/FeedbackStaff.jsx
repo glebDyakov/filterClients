@@ -56,8 +56,13 @@ class FeedbackStaff extends React.Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-6" style={{textAlign:'center'}}>
-                                        <strong>{activeFeedbackStaff && activeFeedbackStaff.content.length} </strong><br/>
+                                        <strong>{activeFeedbackStaff && activeFeedbackStaff.totalNumber} </strong><br/>
                                         <span className="gray-text">Всего отзывов</span>
+                                    </div>
+
+                                    <div className="col-6" style={{textAlign:'center'}}>
+                                        <strong>{(activeFeedbackStaff && activeFeedbackStaff.averageStaffRating && activeFeedbackStaff.averageStaffRating.toFixed(2)) || 'Нет оценок'} </strong><br/>
+                                        <span className="gray-text">Средняя оценка</span>
                                     </div>
                                 </div>
                             </div>

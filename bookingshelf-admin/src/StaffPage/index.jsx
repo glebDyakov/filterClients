@@ -5,6 +5,7 @@ import StarRatings from 'react-star-ratings';
 import {notificationActions, staffActions} from '../_actions';
 import {AddWorkTime} from "../_components/modals/AddWorkTime";
 import {NewStaff} from "../_components/modals/NewStaff";
+import {isMobile} from "react-device-detect";
 
 import '../../public/scss/staff.scss'
 
@@ -105,6 +106,7 @@ class Index extends Component {
         this.updateTimetable = this.updateTimetable.bind(this);
         this.deleteStaff = this.deleteStaff.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        this.handleAllFeedbackClick = this.handleAllFeedbackClick.bind(this);
         this.addStaffEmail = this.addStaffEmail.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
@@ -189,6 +191,12 @@ class Index extends Component {
             })
         })
         this.props.dispatch(staffActions.update(JSON.stringify(updatedSortOrderStaffs)))
+    }
+
+    handleAllFeedbackClick(activeStaff) {
+        $('.feedback-staff').modal('show');
+        this.props.dispatch(staffActions.updateFeedbackStaff(activeStaff));
+        this.props.dispatch(staffActions.getFeedback(1));
     }
 
     render() {
@@ -571,35 +579,41 @@ class Index extends Component {
                                         return (
                                             <div className="holiday-list p-2 mb-2">
                                                 {activeStaff && (
-                                                    <div style={{ alignItems: 'center', justifyContent: 'space-between' }} className="row px-4 py-2 mb-2">
-                                                        <div style={{ display: 'flex', width: 'calc(100% - 200px)' }}>
-                                                            <div>
-                                                                <img style={{ display: 'block', height: '40px', margin: '0 auto' }} className="rounded-circle"
-                                                                     src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                     alt=""
-                                                                />
-                                                                <div style={{ width: '70px' }}>
-                                                                    <StarRatings
-                                                                        rating={feedbackStaff.averageStaffRating || 0}
-                                                                        starHoverColor={'#ff9500'}
-                                                                        starRatedColor={'#ff9500'}
-                                                                        starDimension="14px"
-                                                                        starSpacing="0"
+                                                    <React.Fragment>
+                                                        <div style={{ alignItems: 'center', justifyContent: 'space-between' }} className="row px-4 py-2 mb-2">
+                                                            <div style={{ display: 'flex', width: isMobile ? '100%' : 'calc(100% - 200px)' }}>
+                                                                <div>
+                                                                    <img style={{ display: 'block', height: '40px', margin: '0 auto' }} className="rounded-circle"
+                                                                         src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                         alt=""
                                                                     />
+                                                                    <div style={{ width: '70px' }}>
+                                                                        <StarRatings
+                                                                            rating={feedbackStaff.averageStaffRating || 0}
+                                                                            starHoverColor={'#ff9500'}
+                                                                            starRatedColor={'#ff9500'}
+                                                                            starDimension="14px"
+                                                                            starSpacing="0"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px' }}>
+                                                                    <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                                    <p>{activeStaff.description}</p>
                                                                 </div>
                                                             </div>
-
-                                                            <div style={{ width: '60%', marginLeft: '24px' }}>
-                                                                <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
-                                                                <p>{activeStaff.description}</p>
-                                                            </div>
+                                                            <button type="button" onClick={()=> {
+                                                                this.handleAllFeedbackClick(activeStaff)
+                                                            }} className="button desktop-visible">Все отзывы
+                                                            </button>
                                                         </div>
-                                                        <button type="button" onClick={()=> {
-                                                            $('.feedback-staff').modal('show');
-                                                            this.props.dispatch(staffActions.updateFeedbackStaff(activeStaff))
-                                                        }} className="button">Все отзывы
-                                                        </button>
-                                                    </div>
+
+                                                        <p style={{ textDecoration: 'underline', textAlign: 'center' }} onClick={()=> {
+                                                            this.handleAllFeedbackClick(activeStaff)
+                                                        }} className="mobile-visible">Все отзывы
+                                                        </p>
+                                                    </React.Fragment>
                                                 )}
                                             {/*    {feedbackStaff.content.map((item, i) => i < 3 && (*/}
                                             {/*    <div style={{ borderTop: '2px solid rgb(245, 245, 246)'}} className="row p-2 mb-2" key={key}>*/}
