@@ -226,7 +226,7 @@ const CellAppointment = (props) => {
                             {service.serviceName} {details ? `(${details})` : ''}
 
                             <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
-                                                        {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                        {String(service.price) ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
                                                                 ({service.totalAmount} {service.currency})
                                                             </span>}
                                                         </span>
