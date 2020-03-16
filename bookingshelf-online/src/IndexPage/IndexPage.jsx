@@ -205,7 +205,6 @@ class IndexPage extends PureComponent {
 
         if (flagAllStaffs) {
             screen = 3;
-            this.setDefaultFlag();
             this.refreshTimetable(this.state.month, staff)
         }
         if (isStartMovingVisit) {
@@ -253,6 +252,7 @@ class IndexPage extends PureComponent {
         } else {
             dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
         }
+        this.setDefaultFlag();
     }
 
 
@@ -472,6 +472,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        setDefaultFlag={this.setDefaultFlag}
                         flagAllStaffs={flagAllStaffs}
                         forceUpdateStaff={this.forceUpdateStaff}
                         enteredCodeError={enteredCodeError}

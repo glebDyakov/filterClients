@@ -137,7 +137,6 @@ class AddWorkTime extends React.Component {
 
         const {countTimes, staff, repeat, date, editWorkingHours, editing_object, times, staffs}=this.state;
 
-        debugger;
         return (
             <Modal size="md" style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="modal_dates">

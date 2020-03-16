@@ -1,7 +1,9 @@
 import {staffConstants} from '../_constants';
-import { getCookie, deleteCookie } from "../_helpers/cookie";
+import moment from 'moment';
+import {getCookie, deleteCookie, setCookie} from "../_helpers/cookie";
 
 const client = getCookie('client');
+const sendSmsTimer = getCookie('sendSmsTimer')
 const clientCookie = (client) && JSON.parse(client);
 
 const initialState = {
@@ -11,6 +13,7 @@ const initialState = {
     clientCookie,
     isLoading: false,
     subcompanies: [],
+    sendSmsTimer,
     serviceGroups: [],
     superCompany: true
 }
@@ -74,7 +77,7 @@ export function staff(state = initialState, action) {
         case staffConstants.CLIENT_LOGIN_FAILURE:
             return {
                 ...state,
-                clientLoginMessage: 'Ваш телефон не входит в базу компании либо Вы ввели неверный персональный пароль.',
+                clientLoginMessage: 'Вы не являетесь клиентом компании или ввели неверный пароль.',
                 isLoading: false
             }
 
@@ -85,11 +88,19 @@ export function staff(state = initialState, action) {
                 commentPassword: '',
                 isLoading: true
             }
-        case staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS:
+        case staffConstants.CLEAR_SEND_SMS_TIMER:
             return {
                 ...state,
-                commentPassword: 'Персональный пароль отправлен на указанный номер.',
-                isLoading: false
+                sendSmsTimer: false
+            }
+        case staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS:
+            const expires = moment().add(5 * 60 + 1, 'seconds').format("YYYY/MM/DD HH:mm:ss")
+            setCookie('sendSmsTimer', expires, { 'max-age': 5 * 60 })
+            return {
+                ...state,
+                commentPassword: 'Персональный пароль отправлен на указанный номер. Новый пароль можно будет запросить через 5 минут.',
+                isLoading: false,
+                sendSmsTimer: true
             }
 
         case staffConstants.CREATE_COMMENT_PASSWORD_FAILURE:
