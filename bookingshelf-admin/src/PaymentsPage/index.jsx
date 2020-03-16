@@ -229,7 +229,7 @@ class Index extends Component {
         const priceTo30packet =  (packets && packets.find(item => item.packetId ===12) || {})
         const priceFrom30packet =  (packets && packets.find(item => item.packetId ===13) || {})
 
-        let finalPrice = 0, finalPriceMonth = 0;
+        let finalPrice = 0, finalPriceMonth = 0, finalPriceMonthDiscount = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
         let priceForOneWorker = 5;
 
@@ -254,31 +254,37 @@ class Index extends Component {
         switch (specialWorkersCount) {
             case 'to 20':
                 finalPriceMonth = priceTo20packet.price
+                finalPriceMonthDiscount = priceTo20packet.discountPrice
                 break;
             case 'to 30':
                 finalPriceMonth = priceTo30packet.price
+                finalPriceMonthDiscount = priceTo30packet.discountPrice
                 break;
             case 'from 30':
                 finalPriceMonth = priceFrom30packet.price
+                finalPriceMonthDiscount = priceFrom30packet.discountPrice
                 break;
             case '':
                 finalPriceMonth = price1to10.price
+                finalPriceMonthDiscount = price1to10.discountPrice
                 break;
         }
+
+        finalPriceMonthDiscount = finalPriceMonthDiscount === finalPriceMonth ? null : finalPriceMonthDiscount
 
         switch (period) {
             case '1':
-                finalPrice = finalPriceMonth * 3
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 3
                 break;
             case '2':
-                finalPrice = finalPriceMonth * 5
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5
                 break;
             case '3':
-                finalPrice = finalPriceMonth * 9
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9
                 break;
         }
 
-        this.setState({ finalPrice, finalPriceMonth });
+        this.setState({ finalPrice, finalPriceMonth, finalPriceMonthDiscount });
     }
 
     changeSMSResult() {
@@ -322,7 +328,7 @@ class Index extends Component {
 
     render() {
         const {authentication} = this.props;
-        const { chosenAct, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
+        const { chosenAct, finalPriceMonthDiscount, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets, isLoading} = this.props.payments;
@@ -566,9 +572,16 @@ class Index extends Component {
                                             <span>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
                                         </div>
                                         <div>
-                                            <p>Стоимость в месяц: </p>
+                                            <p>Стоимость в месяц{finalPriceMonthDiscount ? ' без скидки ' : ''}: </p>
                                             <span>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                         </div>
+
+                                        {finalPriceMonthDiscount && (
+                                            <div >
+                                                <p style={{ color: 'red', fontSize: '18px' }}>Стоимость в месяц со скидкой: </p>
+                                                <span style={{ color: 'red', fontSize: '18px' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            </div>
+                                        )}
                                         <hr/>
                                         <div>
                                             <p className="total-price">Итоговая стоимость:

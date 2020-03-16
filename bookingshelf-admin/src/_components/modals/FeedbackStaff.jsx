@@ -95,7 +95,7 @@ class FeedbackStaff extends React.Component {
                                                             />
                                                             <span style={{ marginLeft: '4px'}}>{moment(item.feedbackDate).format('DD MMMM YYYY, HH:mm')}</span>
                                                         </p>
-                                                        <p>
+                                                        <p style={{ wordBreak: 'break-all'}}>
                                                             {item.comment}
                                                         </p>
                                                     </p>
