@@ -245,17 +245,15 @@ function createComment(companyId, staffId, params) {
 function sendPassword(companyId, staffId, params) {
     return dispatch => {
         dispatch(request());
-
-        dispatch(success())
-        // staffService.createComment(companyId, staffId, params)
-        //     .then(
-        //         () => {
-        //             dispatch(success())
-        //         },
-        //         (err) => {
-        //             dispatch(failure());
-        //         }
-        //     );
+        staffService.createComment(companyId, staffId, params)
+            .then(
+                () => {
+                    dispatch(success())
+                },
+                (err) => {
+                    dispatch(failure());
+                }
+            );
     };
 
     function request() { return { type: staffConstants.CREATE_COMMENT } }

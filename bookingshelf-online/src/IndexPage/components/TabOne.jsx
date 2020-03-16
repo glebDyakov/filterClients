@@ -54,7 +54,7 @@ class TabOne extends  PureComponent{
                     {!isStartMovingVisit && subcompanies.length > 1 && (
                         <span className="prev_block" onClick={() => {
                             if (flagAllStaffs) {
-                                setScreen(2);
+                                setScreen(4);
                             } else {
                                 clearStaff();
                                 setDefaultFlag();

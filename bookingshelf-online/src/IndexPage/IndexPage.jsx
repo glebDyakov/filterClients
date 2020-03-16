@@ -205,7 +205,6 @@ class IndexPage extends PureComponent {
 
         if (flagAllStaffs) {
             screen = 3;
-            this.setDefaultFlag();
             this.refreshTimetable(this.state.month, staff)
         }
         if (isStartMovingVisit) {
