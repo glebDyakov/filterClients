@@ -332,10 +332,10 @@ function deleteClosedDates(id) {
     function failure(error) { return { type: staffConstants.DELETE_CLOSED_DATES_FAILURE, error } }
 }
 
-function deleteWorkingHours(id, startTime, endTime, from, to) {
+function deleteWorkingHours(id, startTime, endTime, from, to, staffTimetableId) {
     return dispatch => {
         dispatch(request(0))
-        staffService.deleteWorkingHours(id, startTime, endTime)
+        staffService.deleteWorkingHours(id, startTime, endTime, staffTimetableId)
             .then(
                 closedDates => {
                     dispatch(staffActions.getTimetable(from, to, false))

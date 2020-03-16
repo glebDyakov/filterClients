@@ -569,17 +569,17 @@ class Index extends Component {
                                         <p className="title-payments">К оплате</p>
                                         <div>
                                             <p>Срок действия лицензии: </p>
-                                            <span>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
+                                            <span style={{ textAlign: 'right' }}>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
                                         </div>
                                         <div>
                                             <p>Стоимость в месяц{finalPriceMonthDiscount ? ' без скидки ' : ''}: </p>
-                                            <span>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            <span style={{ textAlign: 'right' }}>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                         </div>
 
                                         {finalPriceMonthDiscount && (
                                             <div >
-                                                <p style={{ color: 'red', fontSize: '18px' }}>Стоимость в месяц со скидкой: </p>
-                                                <span style={{ color: 'red', fontSize: '18px' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                                <p style={{ color: 'red' }}>Стоимость в месяц со скидкой: </p>
+                                                <span style={{ color: 'red', textAlign: 'right' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                             </div>
                                         )}
                                         <hr/>

@@ -110,7 +110,7 @@ class AddWorkTime extends React.Component {
         // let workEndMilisH=parseInt(moment(JSON.parse(localStorage.getItem('user')).companyTimetables[num].endTimeMillis, 'x').format('H'));
         // let workEndMilisM=parseInt(moment(JSON.parse(localStorage.getItem('user')).companyTimetables[num].endTimeMillis, 'x').format('mm'));
 
-        if (str === 'end') {
+        if (str === 'end' && times[key]) {
             let workEndMilisH= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('H'));
             let workEndMilisM= parseInt(moment(parseInt(times[key].startTimeMillis), 'x').format('mm'));
 
@@ -234,7 +234,6 @@ class AddWorkTime extends React.Component {
         let arrayCounts=countTimes;
 
         arrayCounts.push(1);
-        times.push({})
         this.setState({countTimes:arrayCounts, times});
     }
 
@@ -252,7 +251,7 @@ class AddWorkTime extends React.Component {
         const { deletedCountTimes } = this.state;
         deletedCountTimes.forEach((item, i) => {
             setTimeout(() => {
-                this.onDelete(item.startTimeMillis, item.endTimeMillis)
+                this.onDelete(item.startTimeMillis, item.endTimeMillis, item.staffTimetableId)
             }, (i * 100))
         })
     }
@@ -281,11 +280,11 @@ class AddWorkTime extends React.Component {
 
         return addWorkingHours(timing, staff.staffId, );
     }
-    onDelete(startDay, endOfDay) {
+    onDelete(startDay, endOfDay, staffTimetableId) {
         const {deleteWorkingHours} = this.props;
         const {staff} = this.state;
 
-        return deleteWorkingHours(staff.staffId, startDay, endOfDay);
+        return deleteWorkingHours(staff.staffId, startDay, endOfDay, staffTimetableId);
     }
 
     closeModal () {

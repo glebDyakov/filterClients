@@ -794,11 +794,11 @@ class Index extends Component {
             : dispatch(staffActions.updateWorkingHours(JSON.stringify(timing), id))
     };
 
-    deleteWorkingHours(id, startDay, endDay){
+    deleteWorkingHours(id, startDay, endDay, staffTimetableId){
         const { dispatch } = this.props;
         const { timetableFrom, timetableTo } = this.state;
 
-        dispatch(staffActions.deleteWorkingHours(id, startDay, endDay, timetableFrom, timetableTo))
+        dispatch(staffActions.deleteWorkingHours(id, startDay, endDay, timetableFrom, timetableTo, staffTimetableId))
     }
 
     addClosedDate(){

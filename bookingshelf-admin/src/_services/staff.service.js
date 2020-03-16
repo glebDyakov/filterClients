@@ -253,7 +253,7 @@ function deleteClosedDates(id) {
     return fetch(`${config.apiUrl}/closeddates/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
-function deleteWorkingHours(id, start, end) {
+function deleteWorkingHours(id, start, end, staffTimetableId) {
     const requestOptions = {
         method: 'DELETE',
         crossDomain: true,
@@ -264,7 +264,7 @@ function deleteWorkingHours(id, start, end) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}/timetables?dateFrom=${start}&dateTo=${end}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${config.apiUrl}/staffs/${id}/timetables${staffTimetableId ? `/${staffTimetableId}`: ''}?dateFrom=${start}&dateTo=${end}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteStaff(id) {
