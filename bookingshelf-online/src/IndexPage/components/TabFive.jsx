@@ -20,7 +20,7 @@ class TabFive extends PureComponent {
 
     render() {
 
-        const {setScreen, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
+        const {setScreen, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
             group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
         const { enteredCode } = this.state;
 
@@ -65,9 +65,13 @@ class TabFive extends PureComponent {
                             <span className="prev_block" onClick={()=>{
                                 if (flagAllStaffs) {
                                     forceUpdateStaff([]);
+                                    setScreen(1)
+                                } else {
+                                    setScreen(4);
+                                    refreshTimetable()
                                 }
-                                setScreen(4);
-                                refreshTimetable()}}
+                            }
+                            }
                             >
                                 <span className="title_block_text">Назад</span>
                             </span>

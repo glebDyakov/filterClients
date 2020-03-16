@@ -220,7 +220,7 @@ class TabCreateComment extends  PureComponent{
                                         {clientLoginMessage && (
                                             <p style={{ display: 'flex' }}>
                                                 <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                /> <span>{clientLoginMessage}</span>
+                                                /> <span style={{ color: 'red' }}>{clientLoginMessage}</span>
                                             </p>
                                         )}
                                         <input

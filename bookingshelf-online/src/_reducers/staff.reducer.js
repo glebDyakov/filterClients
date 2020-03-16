@@ -77,7 +77,7 @@ export function staff(state = initialState, action) {
         case staffConstants.CLIENT_LOGIN_FAILURE:
             return {
                 ...state,
-                clientLoginMessage: 'Ваш телефон не входит в базу компании либо Вы ввели неверный персональный пароль.',
+                clientLoginMessage: 'Вы не являетесь клиентом компании или ввели неверный пароль.',
                 isLoading: false
             }
 
