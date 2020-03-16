@@ -253,6 +253,7 @@ class IndexPage extends PureComponent {
         } else {
             dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
         }
+        this.setDefaultFlag();
     }
 
 
@@ -472,6 +473,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        setDefaultFlag={this.setDefaultFlag}
                         flagAllStaffs={flagAllStaffs}
                         forceUpdateStaff={this.forceUpdateStaff}
                         enteredCodeError={enteredCodeError}

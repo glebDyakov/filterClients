@@ -20,7 +20,7 @@ class TabFive extends PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
+        const {setScreen, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
             group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
         const { enteredCode } = this.state;
 

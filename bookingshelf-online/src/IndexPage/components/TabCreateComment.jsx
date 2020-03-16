@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
 import { connect } from 'react-redux';
 import StarRatings from 'react-star-ratings';
-import ReactPhoneInput from 'react-phone-input-2';
-import { isValidNumber } from "libphonenumber-js";
 import {staffActions} from "../../_actions";
-import {isValidEmailAddress} from "../../_helpers/validators";
 import PhoneInput from "../../_components/PhoneInput";
+import {getCookie} from "../../_helpers/cookie";
+import moment from "moment";
 
 class TabCreateComment extends  PureComponent{
     constructor(props) {
@@ -26,12 +25,46 @@ class TabCreateComment extends  PureComponent{
         this.changeRating = this.changeRating.bind(this);
         this.updateTab = this.updateTab.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.timer = this.timer.bind(this);
         this.handleSendPassword = this.handleSendPassword.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.sendSmsTimer) {
+            this.runSendSmsTimerChecker()
+        }
     }
 
     componentWillReceiveProps(newProps) {
         if (newProps.commentCreated && (newProps.commentCreated !== this.props.commentCreated)) {
             this.props.setScreen('staff-comments')
+        }
+    }
+
+    componentWillUnmount() {
+        this.clearInterval()
+    }
+    clearInterval() {
+        clearInterval(this.state.sendSmsTimerInterval)
+        this.setState({ sendSmsTimerInterval: null, timeExpires: null })
+    }
+
+    runSendSmsTimerChecker() {
+        const sendSmsTimerInterval = setInterval(this.timer, 1000);
+        // store intervalId in the state so it can be accessed later:
+        this.setState({ sendSmsTimerInterval });
+    }
+
+    timer() {
+        const sendSmsTimer = getCookie('sendSmsTimer');
+        if (sendSmsTimer) {
+            const expires = moment(sendSmsTimer, 'YYYY/MM/DD HH:mm:ss').format('x');
+            const now = moment().format('x')
+            this.setState({ timeExpires: moment(expires - now).format('mm:ss')})
+        }
+        if (!sendSmsTimer) {
+            this.props.dispatch(staffActions.clearSendSmsTimer())
+            this.clearInterval()
         }
     }
 
@@ -55,6 +88,7 @@ class TabCreateComment extends  PureComponent{
         const { company } = this.props.match.params
 
         dispatch(staffActions.sendPassword(company, staffCommentsStaff.staffId,  { clientPhone: sendPasswordPhone }))
+        this.runSendSmsTimerChecker()
     }
 
     handleSave() {
@@ -93,8 +127,8 @@ class TabCreateComment extends  PureComponent{
     }
 
     render() {
-        const { setScreen, staffCommentsStaff, isLoading, commentPassword, clientCookie, clientLoginMessage } = this.props;
-        const { group, tab, isValidSendPasswordPhone, sendPasswordPhone, loginPhone, loginPassword, isValidLoginPhone } = this.state;
+        const { setScreen, sendSmsTimer, staffCommentsStaff, isLoading, commentPassword, clientCookie, clientLoginMessage } = this.props;
+        const { group, timeExpires, tab, isValidSendPasswordPhone, sendPasswordPhone, loginPhone, loginPassword, isValidLoginPhone } = this.state;
 
         return(
             <div className="service_selection screen1 screen5">
@@ -182,7 +216,7 @@ class TabCreateComment extends  PureComponent{
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации</span>
                                         </p>
-                                        <input type="text" placeholder="Введите код" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
+                                        <input type="text" placeholder="Введите пароль" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
                                         {clientLoginMessage && (
                                             <p style={{ display: 'flex' }}>
                                                 <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
@@ -221,10 +255,16 @@ class TabCreateComment extends  PureComponent{
                                             </p>
                                         )}
 
+                                        {timeExpires && (
+                                            <p style={{ display: 'flex', marginTop: '10px' }}>
+                                                <span>Осталось времени: {timeExpires}</span>
+                                            </p>
+                                        )}
+
                                         <input
                                             style={{ margin: '20px auto' }}
-                                            className={(!isValidSendPasswordPhone ? 'disabledField': '')+" book_button"}
-                                            disabled={!isValidSendPasswordPhone}
+                                            className={((!isValidSendPasswordPhone || sendSmsTimer) ? 'disabledField': '')+" book_button"}
+                                            disabled={!isValidSendPasswordPhone || sendSmsTimer}
                                             type="submit" value="Отправить" onClick={this.handleSendPassword}
                                         />
                                     </React.Fragment>
@@ -240,10 +280,10 @@ class TabCreateComment extends  PureComponent{
 }
 
 function mapStateToProps(store) {
-    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage } }=store;
+    const { staff: { staffComments, sendSmsTimer, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage } }=store;
 
     return {
-        staffComments, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage
+        staffComments, sendSmsTimer, staffCommentsTotalPages, staffCommentsStaff, commentCreated, commentPassword, clientCookie, clientLoginMessage
     };
 }
 

@@ -1,6 +1,7 @@
 import {staffConstants} from '../_constants';
 import {staffService} from '../_services';
 import { alertActions } from './';
+import {setCookie} from "../_helpers/cookie";
 
 export const staffActions = {
     get,
@@ -12,6 +13,7 @@ export const staffActions = {
     clearClientLogin,
     getServiceGroups,
     getSubcompanies,
+    clearSendSmsTimer,
     sendPassword,
     getStaffComments,
     createComment,
@@ -48,6 +50,10 @@ function clearStaff() {
     };
 
     function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
+}
+
+function clearSendSmsTimer() {
+    return { type: staffConstants.CLEAR_SEND_SMS_TIMER }
 }
 
 function _move(appointment, time, staffId, companyId, coStaffs) {
@@ -239,15 +245,17 @@ function createComment(companyId, staffId, params) {
 function sendPassword(companyId, staffId, params) {
     return dispatch => {
         dispatch(request());
-        staffService.createComment(companyId, staffId, params)
-            .then(
-                () => {
-                    dispatch(success())
-                },
-                (err) => {
-                    dispatch(failure());
-                }
-            );
+
+        dispatch(success())
+        // staffService.createComment(companyId, staffId, params)
+        //     .then(
+        //         () => {
+        //             dispatch(success())
+        //         },
+        //         (err) => {
+        //             dispatch(failure());
+        //         }
+        //     );
     };
 
     function request() { return { type: staffConstants.CREATE_COMMENT } }
