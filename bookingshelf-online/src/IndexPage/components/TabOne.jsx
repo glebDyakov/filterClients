@@ -51,7 +51,7 @@ class TabOne extends  PureComponent{
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
-                    {!isStartMovingVisit && subcompanies.length > 1 && (
+                    {!isStartMovingVisit && (flagAllStaffs || subcompanies.length > 1) && (
                         <span className="prev_block" onClick={() => {
                             if (flagAllStaffs) {
                                 setScreen(4);
