@@ -51,6 +51,13 @@ class TabStaffComments extends  PureComponent{
                                         alt=""/>
                                     <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br/>
                                                     <span style={{ fontSize: "13px"}}>{staffCommentsStaff.description}</span>
+                                        <StarRatings
+                                            rating={staffCommentsStaff.rating}
+                                            starHoverColor={'#ff9500'}
+                                            starRatedColor={'#ff9500'}
+                                            starDimension="18px"
+                                            starSpacing="0"
+                                        />
                                                 </span>
                                 </div>
 
