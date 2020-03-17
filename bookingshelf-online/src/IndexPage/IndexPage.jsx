@@ -46,6 +46,7 @@ class IndexPage extends PureComponent {
 
 
         this.selectStaff=this.selectStaff.bind(this);
+        this.handleMoveVisit=this.handleMoveVisit.bind(this);
         this.getDurationForCurrentStaff = this.getDurationForCurrentStaff.bind(this);
         this.clearStaff=this.clearStaff.bind(this);
         this.refreshTimetable=this.refreshTimetable.bind(this);
@@ -344,6 +345,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        handleMoveVisit={this.handleMoveVisit}
+                        handleDayClick={this.handleDayClick}
                         forceUpdateStaff={this.forceUpdateStaff}
                         selectedTime={selectedTime}
                         timetableAvailable={timetableAvailable}
@@ -633,27 +636,32 @@ class IndexPage extends PureComponent {
         return serviceIdList;
     }
 
-    setTime (time){
+    handleMoveVisit(time = this.state.selectedTime) {
         const { dispatch } = this.props
-        const { isStartMovingVisit, timetableAvailable, movingVisit, staff } = this.props.staff
-        const { selectedStaff, staffs, flagAllStaffs, selectedServices } = this.state;
-
-        if (isStartMovingVisit) {
-            let coStaffs;
-            if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
-                const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
-                const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
-                coStaffs = [
-                    ...movingVisit[0].coStaffs,
-                ]
-                if (oldStaffIndex !== -1) {
-                    movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
-                    coStaffs.push(updatedCoStaff)
-                }
-
+        const { movingVisit, staff } = this.props.staff
+        const { selectedStaff} = this.state;
+        let coStaffs;
+        if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
+            const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
+            const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
+            coStaffs = [
+                ...movingVisit[0].coStaffs,
+            ]
+            if (oldStaffIndex !== -1) {
+                movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
+                coStaffs.push(updatedCoStaff)
             }
-            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
-            this.setState({ screen: 6, selectedTime: time })
+
+        }
+        dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
+        this.setState({ screen: 6, selectedTime: time })
+    }
+
+    setTime (time, shouldMove){
+        const { flagAllStaffs } = this.state;
+
+        if (shouldMove) {
+            this.handleMoveVisit(time)
         } else {
             const updatedState = {}
             let screen = 5;

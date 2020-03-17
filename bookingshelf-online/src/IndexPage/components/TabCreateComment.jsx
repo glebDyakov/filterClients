@@ -251,7 +251,7 @@ class TabCreateComment extends  PureComponent{
                                         {commentPassword && (
                                             <p style={{ display: 'flex', marginTop: '10px' }}>
                                                 <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                /> <span>{commentPassword}</span>
+                                                /> <span style={{ color: 'red' }}>{commentPassword}</span>
                                             </p>
                                         )}
 

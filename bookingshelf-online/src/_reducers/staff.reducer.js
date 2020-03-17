@@ -106,7 +106,7 @@ export function staff(state = initialState, action) {
         case staffConstants.CREATE_COMMENT_PASSWORD_FAILURE:
             return {
                 ...state,
-                commentPassword: 'Пароль был отправлен. Новый пароль можно будет запросить через 5 минут.',
+                commentPassword: action.commentPassword,
                 isLoading: false
             }
 
