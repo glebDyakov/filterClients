@@ -334,7 +334,6 @@ class AddService extends React.Component {
         const { name, value } = e.target;
         const { service } = this.state;
 
-        debugger
         this.setState({service:{...service, priceFrom: value, priceTo:value}});
     }
 

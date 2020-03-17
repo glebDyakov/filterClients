@@ -9,6 +9,7 @@ import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
 import {getNearestAvailableTime} from "../../_helpers/available-time";
 import {getCurrentCellTime} from "../../_helpers";
+import Popover from "../../_components/Popover";
 
 const CellAppointment = (props) => {
     const {
@@ -135,25 +136,26 @@ const CellAppointment = (props) => {
             <p className="notes-title" onClick={()=> dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 {!appointment.coappointment && (
                     <React.Fragment>
-                        <span className="delete"
-                              data-toggle="modal"
-                              data-target=".delete-notes-modal"
-                              title="Отменить встречу"
-                              onClick={() => updateAppointmentForDeleting({
-                                  ...appointment,
-                                  staffId: workingStaffElement.staffId
-                              })}/>
-                        {!appointment.online && <span className="pen" title="Запись через журнал"/>}
-                        {appointment.online && <span className="globus" title="Онлайн-запись"/>}
-                        {appointment.clientId && <span className={`${appointment.regularClient? 'old' : 'new'}-client-icon`} title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
-                        {!appointment.clientId && <span className="no-client-icon" title="Визит от двери"/>}
-                        {!!appointment.discountPercent && <span className="percentage" title={`${appointment.discountPercent}%`}/>}
+                        <Popover props={{className:"delete",
+                                                'data-toggle': "modal",
+                                                'data-target': ".delete-notes-modal",
+                                                title: "Отменить встречу",
+                                                onClick: () => updateAppointmentForDeleting({
+                                                    ...appointment,
+                                                    staffId: workingStaffElement.staffId
+                                                })}}/>
+
+                        {!appointment.online && <Popover props={{className:"pen", title:"Запись через журнал"}}/>}
+                        {appointment.online && <Popover props={{className: "globus", title: "Онлайн-запись"}} />}
+                        {appointment.clientId && <Popover props={{className:`${appointment.regularClient? 'old' : 'new'}-client-icon`, title: appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент', minWidth: '100px' }}/>}
+                        {!appointment.clientId && <Popover props={{className:"no-client-icon", title:"Визит от двери", minWidth: '55px'}} />}
+                        {!!appointment.discountPercent && <Popover props={{className:"percentage", title:`${appointment.discountPercent}%`, minWidth: '30px'}} />}
                     </React.Fragment>
                 )}
 
-                {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                {appointment.hasCoAppointments && <Popover props={{className:"super-visit", title:"Мультивизит"}} />}
                 <span className="service_time">
-                                                {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
+                                                {appointment.clientNotCome && <Popover props={{className:"client-not-come", title:"Клиент не пришел", minWidth: '61px'}} />}
                     {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
                     {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                         </span>
