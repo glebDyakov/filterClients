@@ -15,7 +15,7 @@ class Popover extends React.PureComponent {
     }
 
     render() {
-        const { props: { minWidth, ...rest} } = this.props;
+        const { props: { minWidth, title, ...rest} } = this.props;
         const { opened } = this.state;
 
         return (
@@ -24,7 +24,7 @@ class Popover extends React.PureComponent {
                     <span
                         style={{ color: 'black', padding: '2px 4px', textAlign: 'center', minWidth }}
                         className="questions_dropdown">
-                        {rest && rest.title}
+                        {title}
                     </span>
                 )}
             </span>
