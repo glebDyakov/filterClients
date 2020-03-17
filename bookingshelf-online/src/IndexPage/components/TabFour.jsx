@@ -57,10 +57,10 @@ class TabFour extends  PureComponent {
                                         time: moment(arrayTime).format('HH:mm'),
                                         markup: (
                                             <div key={arrayTime} onClick={() => {
-                                                if (isStartMovingVisit) {
+                                                if (isStartMovingVisit && !flagAllStaffs) {
                                                     this.setState({arrayTime})
                                                 } else {
-                                                    setTime(arrayTime)
+                                                    setTime(arrayTime, false)
                                                 }
                                             }}>
                                                 <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
@@ -154,7 +154,7 @@ class TabFour extends  PureComponent {
                         <div className="approveF">
 
                             <button className="approveFYes"  onClick={()=>{
-                                setTime(this.state.arrayTime)
+                                setTime(this.state.arrayTime, true)
                                 this.setState({arrayTime: 0})
                             }}>Да
                             </button>

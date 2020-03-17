@@ -251,14 +251,20 @@ function sendPassword(companyId, staffId, params) {
                     dispatch(success())
                 },
                 (err) => {
-                    dispatch(failure());
+                    if (err === 'client not found') {
+                        dispatch(failure('Вы не являетесь клиентом компании.'));
+                    } else if (err === 'timeout error') {
+                        dispatch(failure('Новый пароль можно будет запросить через 5 минут.'));
+                    } else {
+                        dispatch(failure('Ошибка отправки смс.'));
+                    }
                 }
             );
     };
 
     function request() { return { type: staffConstants.CREATE_COMMENT } }
     function success() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS } }
-    function failure() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_FAILURE } }
+    function failure(commentPassword) { return { type: staffConstants.CREATE_COMMENT_PASSWORD_FAILURE, commentPassword } }
 }
 
 function clientLogin(companyId, params) {
