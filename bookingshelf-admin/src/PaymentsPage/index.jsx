@@ -284,7 +284,7 @@ class Index extends Component {
                 break;
         }
 
-        this.setState({ finalPrice, finalPriceMonth, finalPriceMonthDiscount });
+        this.setState({ finalPrice: finalPrice.toFixed(2), finalPriceMonth, finalPriceMonthDiscount });
     }
 
     changeSMSResult() {
