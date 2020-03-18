@@ -39,6 +39,13 @@ class TabCreateComment extends  PureComponent{
         if (newProps.commentCreated && (newProps.commentCreated !== this.props.commentCreated)) {
             this.props.setScreen('staff-comments')
         }
+        if (newProps.commentPassword !== this.props.commentPassword) {
+            this.setState({ commentPassword: newProps.commentPassword })
+        }
+
+        if (newProps.clientLoginMessage !== this.props.clientLoginMessage) {
+            this.setState({ clientLoginMessage: newProps.clientLoginMessage })
+        }
     }
 
     componentWillUnmount() {
@@ -124,6 +131,7 @@ class TabCreateComment extends  PureComponent{
     }
     updateTab(tab) {
         this.setState({ tab })
+        this.props.dispatch(staffActions.clearMessages())
     }
 
     render() {
@@ -135,6 +143,7 @@ class TabCreateComment extends  PureComponent{
                 <div className="title_block n">
                     <span className="prev_block" onClick={() => {
                         setScreen('staff-comments');
+                        this.props.dispatch(staffActions.clearMessages())
 
                     }}><span className="title_block_text">Назад</span></span>
                     <p className="modal_title">Отзывы</p>

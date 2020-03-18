@@ -238,7 +238,7 @@ class SidebarMain extends React.Component {
                                         <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                     </p>
                                 </div>
-                                <div style={{width: "40%"}}>
+                                <div style={{width: "40%", wordBreak: 'break-all'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
@@ -295,7 +295,7 @@ class SidebarMain extends React.Component {
                                     <span
                                         className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
-                                <div style={{width: "40%"}}>
+                                <div style={{width: "40%", wordBreak: 'break-all'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
@@ -499,7 +499,7 @@ class SidebarMain extends React.Component {
                                                                     className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                                             </p>
                                                         </div>
-                                                        <div style={{width: "40%"}}>
+                                                        <div style={{width: "40%",  wordBreak: 'break-all'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
