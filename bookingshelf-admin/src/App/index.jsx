@@ -12,6 +12,7 @@ import {
 } from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
 import 'moment-duration-format';
+import 'moment/locale/ru';
 
 import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'

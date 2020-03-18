@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 import '../../public/scss/calendar.scss'
 
 import moment from 'moment';
-import 'moment/locale/ru';
 
 import 'react-day-picker/lib/style.css';
 import DayPicker from "react-day-picker";
