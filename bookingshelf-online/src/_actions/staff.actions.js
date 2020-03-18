@@ -6,6 +6,7 @@ import {setCookie} from "../_helpers/cookie";
 export const staffActions = {
     get,
     add,
+    clearMessages,
     _delete,
     _move,
     getInfo,
@@ -54,6 +55,10 @@ function clearStaff() {
 
 function clearSendSmsTimer() {
     return { type: staffConstants.CLEAR_SEND_SMS_TIMER }
+}
+
+function clearMessages() {
+    return { type: staffConstants.CLEAR_MESSAGES }
 }
 
 function _move(appointment, time, staffId, companyId, coStaffs) {

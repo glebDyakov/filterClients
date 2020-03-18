@@ -345,6 +345,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        newAppointments={newAppointments}
                         handleMoveVisit={this.handleMoveVisit}
                         handleDayClick={this.handleDayClick}
                         forceUpdateStaff={this.forceUpdateStaff}
@@ -440,6 +441,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 3 &&
                     <TabThird
+                        setDefaultFlag={this.setDefaultFlag}
                         isStartMovingVisit={isStartMovingVisit}
                         selectedDay={selectedDay}
                         selectedStaff={selectedStaff}

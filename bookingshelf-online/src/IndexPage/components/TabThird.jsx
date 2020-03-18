@@ -14,7 +14,7 @@ class TabThird extends  PureComponent {
 
     render() {
 
-        const {setScreen,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, getDurationForCurrentStaff, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
+        const {setScreen, setDefaultFlag,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, getDurationForCurrentStaff, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek } = this.props;
 
 
         let serviceInfo = null
@@ -52,9 +52,9 @@ class TabThird extends  PureComponent {
                 <div className="title_block">
                             <span className="prev_block" onClick={()=>{
                                 setScreen(isStartMovingVisit ? 1 : 2);
-                                //if (!isStartMovingVisit) {
-                                    refreshTimetable()
-                                //}
+                                if (isStartMovingVisit) {
+                                    setDefaultFlag()
+                                }
                             }
                             }><span className="title_block_text">Назад</span>
                             </span>

@@ -56,6 +56,12 @@ export function staff(state = initialState, action) {
                 clientCookie: null
             }
 
+        case staffConstants.CLEAR_MESSAGES:
+            return {
+                ...state,
+                clientLoginMessage: '',
+                commentPassword: ''
+            }
         case staffConstants.CLIENT_LOGIN:
             return {
                 ...state,

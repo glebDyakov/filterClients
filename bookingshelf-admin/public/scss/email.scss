@@ -118,6 +118,7 @@
     }
 
     .clients-list {
+        word-break: break-all;
         display: flex;
         position: relative;
         padding-left: 65px;

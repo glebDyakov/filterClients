@@ -70,15 +70,17 @@ class TabOne extends  PureComponent{
     }
 
     render() {
-        const {staffId, handleMoveVisit, handleDayClick, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, handleMoveVisit, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
-                    {!isStartMovingVisit && (flagAllStaffs || (subcompanies.length > 1)) && (
+                    {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
                         <span className="prev_block" onClick={() => {
                             if (flagAllStaffs) {
                                 setScreen(4);
+                            } else if (isStartMovingVisit && newAppointments && newAppointments.length) {
+                                setScreen(6);
                             } else {
                                 clearStaff();
                                 setDefaultFlag();

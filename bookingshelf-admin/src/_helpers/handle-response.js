@@ -1,6 +1,6 @@
 import {userService} from "../_services";
 
-const clearStorage = () => {
+export const clearStorage = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('menu');
     localStorage.clear();
