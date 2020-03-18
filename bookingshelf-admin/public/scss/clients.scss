@@ -140,7 +140,7 @@
     }
 
     .tab-content-list {
-        word-break: break-all;
+        word-break: break-word;
         justify-content: space-between;
         display: flex;
         margin-bottom: 5px;
@@ -364,7 +364,7 @@
     }
 }
 .client-info{
-    word-break: break-all;
+    word-break: break-word;
     .search-block{
         width: 95%;
         padding: 0 0 5px;
