@@ -70,7 +70,13 @@ class HeaderMain extends React.PureComponent {
         if (path === '/invoices') {
             redTitle = 'Счета'
         } else {
-            redTitle = authentication.user && authentication.menu && authentication.menu[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name
+            redTitle = ''
+            if (authentication.user && authentication.menu && authentication.menu[0]) {
+                const titleKey = Object.keys(authentication.menu[0]).find((key)=>authentication.menu[0][key].url === path)
+                if (titleKey) {
+                    redTitle = authentication.menu[0][titleKey].name
+                }
+            }
         }
 
         const activeStaff = staff && staff.find(item =>

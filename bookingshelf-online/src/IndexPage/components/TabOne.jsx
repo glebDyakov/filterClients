@@ -150,7 +150,7 @@ class TabOne extends  PureComponent{
                                         <div className="img_container_block">
                                             <div>
                                                 <img
-                                                    style={{ marginRight: 0 }}
+                                                    style={{ marginRight: staffs.length <= 3 ? 'auto': 0 }}
                                                     src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                     alt=""/>
                                             </div>
@@ -171,7 +171,7 @@ class TabOne extends  PureComponent{
 
 
                                      <span className="staff_popup_name">{staff.firstName} {staff.lastName ? staff.lastName : ''}<br/>
-                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px' }}>{staff.description} <br/></p>}
+                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px', margin: staffs.length <= 3 ? 'auto' : '0' }}>{staff.description} <br/></p>}
 
                                             {nearestTime && nearestTime.map((time, id)=>
                                                 time.staffId===staff.staffId && time.availableDays.length!==0 &&
