@@ -29,6 +29,8 @@
     }
 
     .clients-list{
+        max-height: 120px;
+        overflow: auto;
         position: absolute;
         top: 0;
         left: 0;
