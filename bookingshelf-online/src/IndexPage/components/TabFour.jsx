@@ -28,7 +28,7 @@ class TabFour extends  PureComponent {
 
         if(!this.state.arrayTime && timetableAvailable) {
             timetableAvailable.map(timetableItem =>
-              timetableItem.availableDays && timetableItem.availableDays.map((workingStaffElement, i) =>
+                timetableItem.availableDays.map((workingStaffElement, i) =>
                     parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x'))===parseInt(moment(selectedDay).startOf('day').format('x')) &&
                     workingStaffElement.availableTimes.map((workingTime) => {
                         const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
