@@ -41,7 +41,7 @@ class TabOne extends  PureComponent{
         const updatedState = {};
 
         const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
-            timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+          timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                 return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
             })));
         const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
@@ -131,7 +131,7 @@ class TabOne extends  PureComponent{
                             .filter(staff => {
                                 if (flagAllStaffs) {
                                     return timetableAvailable.filter(timetableItem =>
-                                        timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                      timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                                             return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
                                         })))
                                         .some(item => item.staffId === staff.staffId);
@@ -243,7 +243,7 @@ class TabOne extends  PureComponent{
                           .filter(staff => {
                               if (flagAllStaffs) {
                                   return timetableAvailable.filter(timetableItem =>
-                                      timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                    timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                                           return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
                                       })))
                                       .some(item => item.staffId === staff.staffId);

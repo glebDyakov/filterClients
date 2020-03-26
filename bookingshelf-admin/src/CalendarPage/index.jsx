@@ -368,6 +368,15 @@ class Index extends PureComponent {
         return !isOnAnotherVisit;
     }
 
+    handleHorizontalScroll(event, type) {
+        const scrollElement = document.getElementById('scroll-content');
+        if (type === 'right') {
+            scrollElement.scrollLeft += 800;
+        } else {
+            scrollElement.scrollLeft -= 800;
+        }
+        event.preventDefault();
+    }
 
     render() {
         const { services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
@@ -421,7 +430,10 @@ class Index extends PureComponent {
                 </div>
                 <div className="days-container">
                     <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                         <div className="calendar-list">
+                        <div onClick={(e) => this.handleHorizontalScroll(e, 'left')} className="left-scroll">
+                            <div className="scroll-arrow">{"<"}</div>
+                        </div>
+                         <div id="scroll-content" className="calendar-list">
                             <TabScrollHeader
                                 selectedDays={selectedDays}
                                 timetable={workingStaff.timetable }
@@ -444,6 +456,9 @@ class Index extends PureComponent {
                                 changeTimeFromCell={this.changeTimeFromCell}
                                 moveVisit={this.moveVisit}
                             />
+                         </div>
+                        <div onClick={(e) => this.handleHorizontalScroll(e, 'right')} className="right-scroll">
+                            <div className="scroll-arrow">></div>
                         </div>
                     </div>
                 </div>

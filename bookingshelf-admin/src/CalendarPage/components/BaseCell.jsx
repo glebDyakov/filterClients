@@ -39,17 +39,18 @@ class BaseCell extends React.Component {
     }
 
     shouldComponentUpdate(newProps, newState) {
-        return (this.state.cellType !== newState.cellType)
+        const qw = (this.state.cellType !== newState.cellType)
             || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]
                     .some(cellType => (this.state.cellType === cellType && newState.cellType === cellType))
                 && JSON.stringify(this.state.cell) !== JSON.stringify(newState.cell)
             )
             || (this.state.isPresent !== newState.isPresent)
             || (JSON.stringify(this.props.numbers) !== JSON.stringify(newProps.numbers));
+        return true
     }
 
     componentWillReceiveProps(newProps, nextContext) {
-        if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) || (newProps.selectedDays.length !== this.props.selectedDays.length)) {
+        if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) || (newProps.selectedDays.length !== this.props.selectedDays.length) || (JSON.stringify(this.props.numbers) !== JSON.stringify(newProps.numbers))) {
             const currentCellTime = getCurrentCellTime(newProps.selectedDays, newProps.selectedDaysKey, newProps.time);
             if (this.getIsPresent(currentCellTime)) {
                 this.setState({ isPresent: true });
