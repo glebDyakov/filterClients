@@ -1,15 +1,23 @@
 import {staffConstants} from '../_constants';
 import {staffService} from '../_services';
 import { alertActions } from './';
+import {setCookie} from "../_helpers/cookie";
 
 export const staffActions = {
     get,
     add,
+    clearMessages,
     _delete,
     _move,
     getInfo,
+    clientLogin,
+    clearClientLogin,
     getServiceGroups,
     getSubcompanies,
+    clearSendSmsTimer,
+    sendPassword,
+    getStaffComments,
+    createComment,
     clearStaff,
     getServices,
     getTimetable,
@@ -45,6 +53,14 @@ function clearStaff() {
     function success() { return { type: staffConstants.CLEAR_STAFF_SUCCESS } }
 }
 
+function clearSendSmsTimer() {
+    return { type: staffConstants.CLEAR_SEND_SMS_TIMER }
+}
+
+function clearMessages() {
+    return { type: staffConstants.CLEAR_MESSAGES }
+}
+
 function _move(appointment, time, staffId, companyId, coStaffs) {
     return dispatch => {
         dispatch(request())
@@ -77,6 +93,10 @@ function toggleMovedVisitSuccess(movedVisitSuccess) {
     function success(movedVisitSuccess) { return { type: staffConstants.TOGGLE_MOVED_VISIT, movedVisitSuccess } }
 }
 
+function clearClientLogin() {
+    return { type: staffConstants.CLIENT_LOGIN_CLEAR }
+}
+
 function getInfo(id, loaded) {
     return dispatch => {
         dispatch(request());
@@ -90,6 +110,22 @@ function getInfo(id, loaded) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info, loaded } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+
+
+function getStaffComments(companyId, staff, currentPage) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getStaffComments(companyId, staff.staffId, currentPage)
+            .then(
+                staffCommentsInfo => dispatch(success(staffCommentsInfo)),
+                () => failure()
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_STAFF_COMMENTS } }
+    function success(staffCommentsInfo) { return { type: staffConstants.GET_STAFF_COMMENTS_SUCCESS, staffCommentsInfo, staffCommentsStaff: staff } }
+    function failure() { return { type: staffConstants.GET_STAFF_COMMENTS_FAILURE } }
 }
 
 function getServiceGroups(id) {
@@ -188,6 +224,73 @@ function add(id, staff, service, params) {
     function request() { return { type: staffConstants.ADD_APPOINTMENT } }
     function success(payload) { return { type: staffConstants.ADD_APPOINTMENT_SUCCESS, payload } }
     function failure(payload) { return { type: staffConstants.ADD_APPOINTMENT_FAILURE, payload } }
+}
+
+function createComment(companyId, staffId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.createComment(companyId, staffId, params)
+            .then(
+                result => {
+                    if(result) {
+                        dispatch(success(result))
+                    }
+                },
+                (err) => {
+                    dispatch(failure());
+                }
+            );
+    };
+
+    function request() { return { type: staffConstants.CREATE_COMMENT } }
+    function success(comment) { return { type: staffConstants.CREATE_COMMENT_SUCCESS, comment } }
+    function failure() { return { type: staffConstants.CREATE_COMMENT_FAILURE } }
+}
+
+function sendPassword(companyId, staffId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.createComment(companyId, staffId, params)
+            .then(
+                () => {
+                    dispatch(success())
+                },
+                (err) => {
+                    if (err === 'client not found') {
+                        dispatch(failure('Вы не являетесь клиентом компании.'));
+                    } else if (err === 'timeout error') {
+                        dispatch(failure('Новый пароль можно будет запросить через 5 минут.'));
+                    } else {
+                        dispatch(failure('Ошибка отправки смс.'));
+                    }
+                }
+            );
+    };
+
+    function request() { return { type: staffConstants.CREATE_COMMENT } }
+    function success() { return { type: staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS } }
+    function failure(commentPassword) { return { type: staffConstants.CREATE_COMMENT_PASSWORD_FAILURE, commentPassword } }
+}
+
+function clientLogin(companyId, params) {
+    return dispatch => {
+        dispatch(request());
+        staffService.clientLogin(companyId, params)
+            .then(
+                result => {
+                    if(result) {
+                        dispatch(success(result))
+                    } else {
+                        dispatch(successPassword())
+                    }
+                },
+                () => dispatch(failure())
+            );
+    };
+
+    function request() { return { type: staffConstants.CLIENT_LOGIN } }
+    function success(client) { return { type: staffConstants.CLIENT_LOGIN_SUCCESS, client, params } }
+    function failure(payload) { return { type: staffConstants.CLIENT_LOGIN_FAILURE, payload } }
 }
 
 function _delete(id) {

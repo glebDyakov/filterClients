@@ -9,6 +9,9 @@ export const staffService = {
     getServiceGroups,
     getSubcompanies,
     getInfo,
+    getStaffComments,
+    clientLogin,
+    createComment,
     getTimetable,
     getClientAppointments,
     _delete,
@@ -43,6 +46,15 @@ function getInfo(id) {
     };
 
     return fetch(`${config.apiUrl}/${id}`, requestOptions).then(handleResponse);
+}
+
+function getStaffComments(companyId, staffId, pageNum = 1) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${config.apiUrl}/${companyId}/staffs/${staffId}/feedback?pageNum=${pageNum}&pageSize=10`, requestOptions).then(handleResponse);
 }
 
 function getServiceGroups(id) {
@@ -118,6 +130,26 @@ function add(id, staff, service, params) {
     return fetch(`${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestOptions).then(handleResponse);
 }
 
+function createComment(companyId, staffId, params) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${config.apiUrl}/${companyId}/staffs/${staffId}/feedback`, requestOptions).then(handleResponse);
+}
+
+function clientLogin(companyId, params) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${config.apiUrl}/${companyId}/clients/feedback`, requestOptions).then(handleResponse);
+}
+
 function _move(appointment, time, staffId, companyId, coStaffs) {
     const requestOptions = {
         method: 'PATCH',
@@ -162,10 +194,6 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            if (response.status === 401) {
-                location.reload(true);
-            }
-
             const error = (data && data.message) || (data && data.exceptionMessage) || response.statusText;
             return Promise.reject(error);
         }

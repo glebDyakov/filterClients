@@ -4,16 +4,30 @@ const initialState = {
     isLoading: false,
     error: false,
     isAvailableTimesChecked: false,
-    isLoadingStaffInit: false
+    isLoadingStaffInit: false,
+    feedbackStaff: {
+        content: [],
+        totalPages: 0
+    }
 }
 
 export function staff(state = initialState, action) {
     switch (action.type) {
+        case staffConstants.UPDATE_FEEDBACK_STAFF:
+            return {
+                ...state,
+                feedbackStaff: action.feedbackStaff
+            }
         case staffConstants.STAFF_SUCCESS_TIME:
             return {
                 ...state,
                 status: 209
             };
+        case staffConstants.GET_FEEDBACK_SUCCESS:
+            return {
+                ...state,
+                feedback: action.feedback
+            }
         case staffConstants.UPDATE_REQUEST:
             return {
                 ...state,
@@ -42,7 +56,7 @@ export function staff(state = initialState, action) {
             const timetableCurrent=state.timetable;
 
             timetableCurrent.map((staff,key)=>
-                action.timing.map(item=>
+                action.timing && action.timing.map(item=>
                     staff.staffId===action.id && timetableCurrent[key].timetables.push(item)
                 )
             );
@@ -57,7 +71,7 @@ export function staff(state = initialState, action) {
             let timetableCurrent2=state.timetable;
             timetableCurrent2.map((staff, key)=>
                 staff.timetables.map((item, key2)=> {
-                        action.timing.map((item2) => {
+                    action.timing && action.timing.map((item2) => {
                                 if (staff.staffId === action.id && item.staffTimetableId===item2.staffTimetableId) {
                                     timetableCurrent2[key].timetables[key2] = item2
                                 }
@@ -226,8 +240,8 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_TIMETABLE_REQUEST:
             return {
                 ...state,
-                isLoadingStaffInit: true,
-                isLoadingTimetable: true,
+                isLoadingStaffInit: action.isLoading,
+                isLoadingTimetable: action.isLoading,
             };
         case staffConstants.GET_TIMETABLE_SUCCESS:
             return {

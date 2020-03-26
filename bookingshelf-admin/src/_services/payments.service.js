@@ -51,7 +51,7 @@ function getPackets() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/packets`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${config.apiUrlv2}/packets`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 function makePayment(invoiceId) {
     const requestOptions = {

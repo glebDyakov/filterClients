@@ -18,6 +18,8 @@ import Header from "./components/Header";
 import TabError from "./components/TabError";
 import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
+import TabStaffComments from "./components/TabStaffComments";
+import TabCreateComment from "./components/TabCreateComment";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -44,11 +46,13 @@ class IndexPage extends PureComponent {
 
 
         this.selectStaff=this.selectStaff.bind(this);
+        this.handleMoveVisit=this.handleMoveVisit.bind(this);
         this.getDurationForCurrentStaff = this.getDurationForCurrentStaff.bind(this);
         this.clearStaff=this.clearStaff.bind(this);
         this.refreshTimetable=this.refreshTimetable.bind(this);
         this.selectService=this.selectService.bind(this);
         this.selectSubcompany=this.selectSubcompany.bind(this);
+        this.setStaffComments=this.setStaffComments.bind(this);
         this.handleDayClick=this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -202,7 +206,6 @@ class IndexPage extends PureComponent {
 
         if (flagAllStaffs) {
             screen = 3;
-            this.setDefaultFlag();
             this.refreshTimetable(this.state.month, staff)
         }
         if (isStartMovingVisit) {
@@ -250,6 +253,7 @@ class IndexPage extends PureComponent {
         } else {
             dispatch(staffActions.add(company, selectedStaff.staffId, '', JSON.stringify(data)))
         }
+        this.setDefaultFlag();
     }
 
 
@@ -269,6 +273,11 @@ class IndexPage extends PureComponent {
         //if (!isStartMovingVisit) {
             this.refreshTimetable();
         //}
+    }
+
+    setStaffComments(staffId) {
+        const { company } = this.props.match.params;
+        this.props.dispatch(staffActions.getStaffComments(company, staffId))
     }
 
     setScreen (num) {
@@ -336,6 +345,13 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        newAppointments={newAppointments}
+                        handleMoveVisit={this.handleMoveVisit}
+                        handleDayClick={this.handleDayClick}
+                        forceUpdateStaff={this.forceUpdateStaff}
+                        selectedTime={selectedTime}
+                        timetableAvailable={timetableAvailable}
+                        setStaffComments={this.setStaffComments}
                         setDefaultFlag={this.setDefaultFlag}
                         match={match}
                         history={history}
@@ -356,6 +372,56 @@ class IndexPage extends PureComponent {
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
                     />}
+                    {screen === 'staff-comments' &&
+                    <TabStaffComments
+                        isLoading={isLoading}
+                        setStaffComments={this.setStaffComments}
+                        setDefaultFlag={this.setDefaultFlag}
+                        match={match}
+                        history={history}
+                        clearStaff={this.clearStaff}
+                        subcompanies={subcompanies}
+                        flagAllStaffs={flagAllStaffs}
+                        selectedServices={selectedServices}
+                        info={info}
+                        movingVisit={movingVisit}
+                        services={services}
+                        staffId={selectedStaff.staffId }
+                        staffs={staffs}
+                        isStartMovingVisit={isStartMovingVisit}
+                        nearestTime={nearestTime}
+                        selectStaff={this.selectStaff}
+                        setScreen={this.setScreen}
+                        selectService={this.selectService}
+                        refreshTimetable={this.refreshTimetable}
+                        roundDown={this.roundDown}
+                    />
+                    }
+                    {screen === 'staff-create-comment' &&
+                    <TabCreateComment
+                        isLoading={isLoading}
+                        setStaffComments={this.setStaffComments}
+                        setDefaultFlag={this.setDefaultFlag}
+                        match={match}
+                        history={history}
+                        clearStaff={this.clearStaff}
+                        subcompanies={subcompanies}
+                        flagAllStaffs={flagAllStaffs}
+                        selectedServices={selectedServices}
+                        info={info}
+                        movingVisit={movingVisit}
+                        services={services}
+                        staffId={selectedStaff.staffId }
+                        staffs={staffs}
+                        isStartMovingVisit={isStartMovingVisit}
+                        nearestTime={nearestTime}
+                        selectStaff={this.selectStaff}
+                        setScreen={this.setScreen}
+                        selectService={this.selectService}
+                        refreshTimetable={this.refreshTimetable}
+                        roundDown={this.roundDown}
+                    />
+                    }
                     {screen === 2 &&
                     <TabTwo
                         isStartMovingVisit={isStartMovingVisit}
@@ -375,6 +441,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 3 &&
                     <TabThird
+                        setDefaultFlag={this.setDefaultFlag}
                         isStartMovingVisit={isStartMovingVisit}
                         selectedDay={selectedDay}
                         selectedStaff={selectedStaff}
@@ -391,6 +458,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 4 &&
                     <TabFour
+                        flagAllStaffs={flagAllStaffs}
                         serviceIntervalOn={info.serviceIntervalOn}
                         isStartMovingVisit={isStartMovingVisit}
                         selectedTime={selectedTime}
@@ -410,6 +478,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        setDefaultFlag={this.setDefaultFlag}
                         flagAllStaffs={flagAllStaffs}
                         forceUpdateStaff={this.forceUpdateStaff}
                         enteredCodeError={enteredCodeError}
@@ -569,49 +638,44 @@ class IndexPage extends PureComponent {
         return serviceIdList;
     }
 
-    randomInteger(min, max) {
-        let rand = min + Math.random() * (max + 1 - min);
-        return Math.floor(rand);
+    handleMoveVisit(time = this.state.selectedTime) {
+        const { dispatch } = this.props
+        const { movingVisit, staff } = this.props.staff
+        const { selectedStaff} = this.state;
+        let coStaffs;
+        if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
+            const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
+            const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
+            coStaffs = [
+                ...movingVisit[0].coStaffs,
+            ]
+            if (oldStaffIndex !== -1) {
+                movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
+                coStaffs.push(updatedCoStaff)
+            }
+
+        }
+        dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
+        this.setState({ screen: 6, selectedTime: time })
     }
 
-    setTime (time){
-        const { dispatch } = this.props
-        const { isStartMovingVisit, timetableAvailable, movingVisit, staff } = this.props.staff
-        const { selectedStaff, staffs, flagAllStaffs, selectedServices } = this.state;
+    setTime (time, shouldMove){
+        const { flagAllStaffs } = this.state;
 
-        if (isStartMovingVisit) {
-            let coStaffs;
-            if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
-                const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
-                const oldStaffIndex = movingVisit[0].coStaffs.findIndex(item => item.staffId === selectedStaff.staffId)
-                coStaffs = [
-                    ...movingVisit[0].coStaffs,
-                ]
-                if (oldStaffIndex !== -1) {
-                    movingVisit[0].coStaffs.splice(oldStaffIndex, 1)
-                    coStaffs.push(updatedCoStaff)
-                }
-
-            }
-            dispatch(staffActions._move(movingVisit, time, selectedStaff.staffId, this.props.match.params.company, coStaffs));
-            this.setState({ screen: 6, selectedTime: time })
+        if (shouldMove) {
+            this.handleMoveVisit(time)
         } else {
             const updatedState = {}
-            if (flagAllStaffs) {
-                const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
-                    timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
-                        return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
-                    })))
-                const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
-                const selectedStaffFromTimetable = selectedStaffFromTimetableList[randomStaffIndex]
+            let screen = 5;
 
-                updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId)
+            if (flagAllStaffs) {
+                screen = 1;
             }
 
             this.setState({
                 newAppointments: [],
                 selectedTime:time,
-                screen: 5,
+                screen,
                 ...updatedState
             });
         }

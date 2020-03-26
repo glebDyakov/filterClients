@@ -1,9 +1,19 @@
 import {staffConstants} from '../_constants';
+import moment from 'moment';
+import {getCookie, deleteCookie, setCookie} from "../_helpers/cookie";
+
+const client = getCookie('client');
+const sendSmsTimer = getCookie('sendSmsTimer')
+const clientCookie = (client) && JSON.parse(client);
 
 const initialState = {
     error: '',
+    staffCommentsStaff: {},
+    staffCommentsTotalPages: 0,
+    clientCookie,
     isLoading: false,
     subcompanies: [],
+    sendSmsTimer,
     serviceGroups: [],
     superCompany: true
 }
@@ -39,6 +49,92 @@ export function staff(state = initialState, action) {
                 staff: (action.staff || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
+        case staffConstants.CLIENT_LOGIN_CLEAR:
+            deleteCookie('client');
+            return {
+                ...state,
+                clientCookie: null
+            }
+
+        case staffConstants.CLEAR_MESSAGES:
+            return {
+                ...state,
+                clientLoginMessage: '',
+                commentPassword: ''
+            }
+        case staffConstants.CLIENT_LOGIN:
+            return {
+                ...state,
+                isLoading: true,
+                clientLoginMessage: ''
+            }
+        case staffConstants.CLIENT_LOGIN_SUCCESS:
+            let client = {
+                clientPassword: action.params.clientPassword,
+                ...action.client
+            }
+
+            document.cookie = `client=${JSON.stringify(client)}`;
+            return {
+                ...state,
+                isLoading: false,
+                clientCookie: client
+            }
+        case staffConstants.CLIENT_LOGIN_FAILURE:
+            return {
+                ...state,
+                clientLoginMessage: 'Вы не являетесь клиентом компании или ввели неверный пароль.',
+                isLoading: false
+            }
+
+        case staffConstants.CREATE_COMMENT:
+            return {
+                ...state,
+                commentCreated: false,
+                commentPassword: '',
+                isLoading: true
+            }
+        case staffConstants.CLEAR_SEND_SMS_TIMER:
+            return {
+                ...state,
+                sendSmsTimer: false
+            }
+        case staffConstants.CREATE_COMMENT_PASSWORD_SUCCESS:
+            const expires = moment().add(5 * 60 + 1, 'seconds').format("YYYY/MM/DD HH:mm:ss")
+            setCookie('sendSmsTimer', expires, { 'max-age': 5 * 60 })
+            return {
+                ...state,
+                commentPassword: 'Персональный пароль отправлен на указанный номер. Новый пароль можно будет запросить через 5 минут.',
+                isLoading: false,
+                sendSmsTimer: true
+            }
+
+        case staffConstants.CREATE_COMMENT_PASSWORD_FAILURE:
+            return {
+                ...state,
+                commentPassword: action.commentPassword,
+                isLoading: false
+            }
+
+        case staffConstants.CREATE_COMMENT_SUCCESS:
+            let updatedComments = [action.comment];
+            updatedComments = updatedComments.concat(state.staffComments)
+            return {
+                ...state,
+                staffComments: updatedComments,
+                commentCreated: true,
+                isLoading: false
+            }
+        case staffConstants.GET_STAFF_COMMENTS_SUCCESS:
+            const staffCommentsTotalPages = action.staffCommentsInfo.totalPages || 0;
+            const staffComments = (action.staffCommentsInfo.content || [])
+            return {
+                ...state,
+                staffCommentsTotalPages,
+                staffCommentsStaff: action.staffCommentsStaff,
+                staffComments,
+                isLoading: false
+            }
         case staffConstants.GET_SERVICES_SUCCESS:
             return {
                 ...state,
@@ -68,6 +164,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_APPOINTMENT_CUSTOM:
         case staffConstants.GET_TIMETABLE:
         case staffConstants.GET_TIMETABLE_AVAILABLE:
+        case staffConstants.GET_STAFF_COMMENTS:
         case staffConstants.MOVE_VISIT:
         case staffConstants.DELETE_APPOINTMENT:
             return {
@@ -114,6 +211,8 @@ export function staff(state = initialState, action) {
                 ...toggleStartState
             }
         case staffConstants.GET_INFO_FAILURE:
+        case staffConstants.GET_STAFF_COMMENTS_FAILURE:
+        case staffConstants.CREATE_COMMENT_FAILURE:
         case staffConstants.GET_SERVICES_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
         case staffConstants.GET_TIMETABLE_FAILURE:

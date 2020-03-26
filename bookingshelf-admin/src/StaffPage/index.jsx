@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import StarRatings from 'react-star-ratings';
 
-import {staffActions} from '../_actions';
+import {notificationActions, staffActions} from '../_actions';
 import {AddWorkTime} from "../_components/modals/AddWorkTime";
 import {NewStaff} from "../_components/modals/NewStaff";
+import {isMobile} from "react-device-detect";
 
 import '../../public/scss/staff.scss'
 
@@ -18,6 +20,8 @@ import {DatePicker} from '../_components/DatePicker'
 import {getWeekRange} from '../_helpers/time'
 import {access} from "../_helpers/access";
 import DragDrop from "../_components/DragDrop";
+import Paginator from "../_components/Paginator";
+import FeedbackStaff from "../_components/modals/FeedbackStaff";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -47,6 +51,7 @@ class Index extends Component {
             props.match.params.activeTab!=='permissions' &&
             props.match.params.activeTab!=='workinghours' &&
             props.match.params.activeTab!=='holidays' &&
+            props.match.params.activeTab!=='feedback' &&
             props.match.params.activeTab!=='staff'
         ){
             props.history.push('/nopage')
@@ -55,6 +60,7 @@ class Index extends Component {
         if(props.match.params.activeTab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(props.match.params.activeTab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
         if(props.match.params.activeTab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
+        if(props.match.params.activeTab==='feedback'){document.title = "Отзывы | Онлайн-запись"}
         if(!props.match.params.activeTab || props.match.params.activeTab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
 
@@ -100,6 +106,7 @@ class Index extends Component {
         this.updateTimetable = this.updateTimetable.bind(this);
         this.deleteStaff = this.deleteStaff.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        this.handleAllFeedbackClick = this.handleAllFeedbackClick.bind(this);
         this.addStaffEmail = this.addStaffEmail.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
@@ -125,6 +132,7 @@ class Index extends Component {
     queryInitData() {
         const {selectedDays}=this.state;
         this.props.dispatch(staffActions.get());
+        this.props.dispatch(staffActions.getFeedback(1));
         this.props.dispatch(staffActions.getAccess());
         this.props.dispatch(staffActions.getAccessList());
         this.props.dispatch(staffActions.getClosedDates());
@@ -168,6 +176,12 @@ class Index extends Component {
 
     }
 
+    handlePageClick(data) {
+        const { selected } = data;
+        const currentPage = selected + 1;
+        this.props.dispatch(staffActions.getFeedback(currentPage));
+    };
+
     handleDrogEnd(dragDropItems) {
         const updatedSortOrderStaffs = []
         dragDropItems.forEach((item, i) => {
@@ -179,9 +193,15 @@ class Index extends Component {
         this.props.dispatch(staffActions.update(JSON.stringify(updatedSortOrderStaffs)))
     }
 
+    handleAllFeedbackClick(activeStaff) {
+        $('.feedback-staff').modal('show');
+        this.props.dispatch(staffActions.updateFeedbackStaff(activeStaff));
+        this.props.dispatch(staffActions.getFeedback(1));
+    }
+
     render() {
         const { staff } = this.props;
-        const { emailNew, emailIsValid, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+        const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const daysAreSelected = selectedDays.length > 0;
 
@@ -293,6 +313,9 @@ class Index extends Component {
                                 <a className={"nav-link"+(activeTab==='permissions'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('permissions')}>Доступ</a>
                             </li>
                             }
+                            <li className="nav-item">
+                                <a className={"nav-link"+(activeTab==='feedback'?' active show':'')} data-toggle="tab" href="#tab5" onClick={()=>this.setTab('feedback')}>Отзывы</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -542,10 +565,91 @@ class Index extends Component {
                             </div>
                         </div>
                         }
+
+                        <div className={"tab-pane"+(activeTab==='feedback'?' active':'')}  id="tab5">
+                            <div className="holiday-tab">
+                                <div className="add-holiday p-4 mb-3">
+                                    <p className="title_block">Отзывы</p>
+
+                                </div>
+                                {
+                                    staff.feedback && staff.feedback.map((feedbackStaff, key)=> {
+                                        const activeStaff = staff.staff && staff.staff.find(item => item.staffId === feedbackStaff.staffId)
+
+                                        return (
+                                            <div className="holiday-list p-2 mb-2">
+                                                {activeStaff && (
+                                                    <React.Fragment>
+                                                        <div style={{ alignItems: 'center', justifyContent: 'space-between' }} className="row px-4 py-2 mb-2">
+                                                            <div style={{ display: 'flex', width: isMobile ? '100%' : 'calc(100% - 200px)' }}>
+                                                                <div>
+                                                                    <img style={{ display: 'block', height: '40px', margin: '0 auto' }} className="rounded-circle"
+                                                                         src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                         alt=""
+                                                                    />
+                                                                    <div style={{ width: '70px' }}>
+                                                                        <StarRatings
+                                                                            rating={feedbackStaff.averageStaffRating || 0}
+                                                                            starHoverColor={'#ff9500'}
+                                                                            starRatedColor={'#ff9500'}
+                                                                            starDimension="14px"
+                                                                            starSpacing="0"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px' }}>
+                                                                    <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                                    <p>{activeStaff.description}</p>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" onClick={()=> {
+                                                                this.handleAllFeedbackClick(activeStaff)
+                                                            }} className="button desktop-visible">Все отзывы
+                                                            </button>
+                                                        </div>
+
+                                                        <p style={{ textDecoration: 'underline', textAlign: 'center' }} onClick={()=> {
+                                                            this.handleAllFeedbackClick(activeStaff)
+                                                        }} className="mobile-visible">Все отзывы
+                                                        </p>
+                                                    </React.Fragment>
+                                                )}
+                                            {/*    {feedbackStaff.content.map((item, i) => i < 3 && (*/}
+                                            {/*    <div style={{ borderTop: '2px solid rgb(245, 245, 246)'}} className="row p-2 mb-2" key={key}>*/}
+                                            {/*        <div className="col">*/}
+                                            {/*            <p>*/}
+                                            {/*                <strong>{item.clientName}</strong>*/}
+                                            {/*                <p>*/}
+                                            {/*                    <StarRatings*/}
+                                            {/*                        rating={item.rating}*/}
+                                            {/*                        starHoverColor={'#ff9500'}*/}
+                                            {/*                        starRatedColor={'#ff9500'}*/}
+                                            {/*                        starDimension="14px"*/}
+                                            {/*                        starSpacing="0"*/}
+                                            {/*                    />*/}
+                                            {/*                    <span style={{ marginLeft: '4px'}}>{moment(item.feedbackDate).format('DD MMMM YYYY, HH:mm')}</span>*/}
+                                            {/*                </p>*/}
+                                            {/*                <p>*/}
+                                            {/*                    {item.comment}*/}
+                                            {/*                </p>*/}
+                                            {/*            </p>*/}
+                                            {/*        </div>*/}
+                                            {/*    </div>*/}
+                                            {/*))}*/}
+                                            {/*    {feedbackStaff.content}*/}
+                                        </div>
+                                        )}
+                                    )
+                                }
+                            </div>
+                        </div>
                         {staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         {staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
                     </div>
                 </div>
+                <FeedbackStaff />
+
                 {activeTab==='staff' &&
                 <a className="add"/>
                 }
@@ -690,11 +794,11 @@ class Index extends Component {
             : dispatch(staffActions.updateWorkingHours(JSON.stringify(timing), id))
     };
 
-    deleteWorkingHours(id, startDay, endDay){
+    deleteWorkingHours(id, startDay, endDay, staffTimetableId){
         const { dispatch } = this.props;
         const { timetableFrom, timetableTo } = this.state;
 
-        dispatch(staffActions.deleteWorkingHours(id, startDay, endDay, timetableFrom, timetableTo))
+        dispatch(staffActions.deleteWorkingHours(id, startDay, endDay, timetableFrom, timetableTo, staffTimetableId))
     }
 
     addClosedDate(){

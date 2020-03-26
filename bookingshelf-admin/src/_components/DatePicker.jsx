@@ -3,7 +3,6 @@ import React, {PureComponent} from 'react';
 import '../../public/scss/calendar.scss'
 
 import moment from 'moment';
-import 'moment/locale/ru';
 
 import 'react-day-picker/lib/style.css';
 import DayPicker from "react-day-picker";
@@ -148,7 +147,7 @@ class DatePicker extends PureComponent {
                             {selectedDaysText}
                         </span>
                         <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
-                            <i className="datepicker--pointer"></i>
+                            <i className="datepicker--pointer" />
                             <DayPicker
                                 selectedDays={selectedDays}
                                 onDayClick={(date) => this.handleLocalDayClick(date)}

@@ -9,6 +9,7 @@ import {isMobile} from "react-device-detect";
 import Box from "../../_components/dragAndDrop/Box";
 import {getNearestAvailableTime} from "../../_helpers/available-time";
 import {getCurrentCellTime} from "../../_helpers";
+import Popover from "../../_components/Popover";
 
 const CellAppointment = (props) => {
     const {
@@ -94,7 +95,7 @@ const CellAppointment = (props) => {
     const maxTextAreaHeight = maxTextAreaCellCount * 20;
 
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
-    const resultTextArea = `${appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
+    const resultTextArea = `${appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : ''}${appointment.serviceName} ${serviceDetails ? `(${serviceDetails})` : ''} ${extraServiceText} ${('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;
 
     const startMovingVisit = (movingVisit, totalDuration, prevVisitStaffId, draggingAppointmentId) => {
         dispatch(appointmentActions.togglePayload({ movingVisit, movingVisitDuration: totalDuration, prevVisitStaffId, draggingAppointmentId, isStartMovingVisit: true }));
@@ -135,25 +136,26 @@ const CellAppointment = (props) => {
             <p className="notes-title" onClick={()=> dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 {!appointment.coappointment && (
                     <React.Fragment>
-                        <span className="delete"
-                              data-toggle="modal"
-                              data-target=".delete-notes-modal"
-                              title="Отменить встречу"
-                              onClick={() => updateAppointmentForDeleting({
-                                  ...appointment,
-                                  staffId: workingStaffElement.staffId
-                              })}/>
-                        {!appointment.online && <span className="pen" title="Запись через журнал"/>}
-                        {appointment.online && <span className="globus" title="Онлайн-запись"/>}
-                        {appointment.clientId && <span className={`${appointment.regularClient? 'old' : 'new'}-client-icon`} title={appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент'}/>}
-                        {!appointment.clientId && <span className="no-client-icon" title="Визит от двери"/>}
-                        {!!appointment.discountPercent && <span className="percentage" title={`${appointment.discountPercent}%`}/>}
+                        <Popover props={{className:"delete",
+                                                'data-toggle': "modal",
+                                                'data-target': ".delete-notes-modal",
+                                                title: "Отменить встречу",
+                                                onClick: () => updateAppointmentForDeleting({
+                                                    ...appointment,
+                                                    staffId: workingStaffElement.staffId
+                                                })}}/>
+
+                        {!appointment.online && <Popover props={{className:"pen", title:"Запись через журнал"}}/>}
+                        {appointment.online && <Popover props={{className: "globus", title: "Онлайн-запись"}} />}
+                        {appointment.clientId && <Popover props={{className:`${appointment.regularClient? 'old' : 'new'}-client-icon`, title: appointment.regularClient ? 'Подтвержденный клиент' : 'Новый клиент', minWidth: '100px' }}/>}
+                        {!appointment.clientId && <Popover props={{className:"no-client-icon", title:"Визит от двери", minWidth: '55px'}} />}
+                        {!!appointment.discountPercent && <Popover props={{className:"percentage", title:`${appointment.discountPercent}%`, minWidth: '30px'}} />}
                     </React.Fragment>
                 )}
 
-                {appointment.hasCoAppointments && <span className="super-visit" title="Мультивизит"/>}
+                {appointment.hasCoAppointments && <Popover props={{className:"super-visit", title:"Мультивизит"}} />}
                 <span className="service_time">
-                                                {appointment.clientNotCome && <span className="client-not-come" title="Клиент не пришел"/>}
+                                                {appointment.clientNotCome && <Popover props={{className:"client-not-come", title:"Клиент не пришел", minWidth: '61px'}} />}
                     {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
                     {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                         </span>
@@ -200,7 +202,16 @@ const CellAppointment = (props) => {
                                 <div style={{ margin: '0 0 0 auto', left: '15px' }} className="cell loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                 :
                                 <label>
-                                    <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>dispatch(calendarActions.updateAppointmentCheckbox(appointment.appointmentId, JSON.stringify({ clientNotCome: !appointment.clientNotCome } )))}
+                                    <input className="form-check-input" checked={appointment.clientNotCome} onChange={()=>{
+                                        const newClientNotCome = !currentAppointments[0].clientNotCome
+                                        const params = currentAppointments.map(item => {
+                                            return {
+                                                ...item,
+                                                clientNotCome: newClientNotCome
+                                            }
+                                        })
+                                        dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                    }}
                                            type="checkbox"/>
                                     <span style={{ width: '20px', margin: '-3px 0 0 11px'}} className="check" />
                                 </label>
@@ -217,7 +228,7 @@ const CellAppointment = (props) => {
                             {service.serviceName} {details ? `(${details})` : ''}
 
                             <span style={{display: 'inline-block', textAlign: 'left', fontWeight: 'bold'}}>
-                                                        {service.price ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
+                                                        {String(service.price) ? service.price : service.priceFrom} {service.currency} {!!service.discountPercent && <span style={{ display: 'inline', textAlign: 'left', fontWeight: 'bold', color: 'rgb(212, 19, 22)'}}>
                                                                 ({service.totalAmount} {service.currency})
                                                             </span>}
                                                         </span>

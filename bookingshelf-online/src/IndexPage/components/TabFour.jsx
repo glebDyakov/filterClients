@@ -14,7 +14,7 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime} = this.props;
+        const {selectedTime, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime} = this.props;
 
         const availableTimes = []
 
@@ -57,10 +57,10 @@ class TabFour extends  PureComponent {
                                         time: moment(arrayTime).format('HH:mm'),
                                         markup: (
                                             <div key={arrayTime} onClick={() => {
-                                                if (isStartMovingVisit) {
+                                                if (isStartMovingVisit && !flagAllStaffs) {
                                                     this.setState({arrayTime})
                                                 } else {
-                                                    setTime(arrayTime)
+                                                    setTime(arrayTime, false)
                                                 }
                                             }}>
                                                 <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
@@ -120,8 +120,12 @@ class TabFour extends  PureComponent {
                             </span>
                     <p className="modal_title">Выбор времени</p>
                     {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
-                        setScreen(5);
-                        refreshTimetable();
+                        if (flagAllStaffs) {
+                            setScreen(1);
+                        } else {
+                            setScreen(5);
+                            refreshTimetable();
+                        }
                     }}><span className="title_block_text">Далее</span>
                     </span>}
                 </div>
@@ -150,7 +154,7 @@ class TabFour extends  PureComponent {
                         <div className="approveF">
 
                             <button className="approveFYes"  onClick={()=>{
-                                setTime(this.state.arrayTime)
+                                setTime(this.state.arrayTime, true)
                                 this.setState({arrayTime: 0})
                             }}>Да
                             </button>

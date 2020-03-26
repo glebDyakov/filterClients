@@ -108,7 +108,7 @@ class ClientDetails extends React.Component {
                             <div className="clients-list pt-4 pl-4 pr-4">
                                 <div className="client">
                                     <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
-                                    <span className="name_container">{client.firstName} {client.lastName}
+                                    <span style={{ maxWidth: '350px' }} className="name_container">{client.firstName} {client.lastName}
                                         {access(12) && (
                                             <React.Fragment>
                                                 <span className="email-user">{client.email}</span>

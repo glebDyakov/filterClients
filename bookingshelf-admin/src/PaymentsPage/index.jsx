@@ -224,11 +224,12 @@ class Index extends Component {
         const {workersCount, specialWorkersCount, period} = this.state.rate;
         const {countryCode} = this.state.country;
 
+        const price1to10 =  (packets && packets.find(item => item.packetId === parseInt(workersCount)) || {})
         const priceTo20packet =  (packets && packets.find(item => item.packetId ===11) || {})
         const priceTo30packet =  (packets && packets.find(item => item.packetId ===12) || {})
         const priceFrom30packet =  (packets && packets.find(item => item.packetId ===13) || {})
 
-        let finalPrice = 0, finalPriceMonth = 0;
+        let finalPrice = 0, finalPriceMonth = 0, finalPriceMonthDiscount = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
         let priceForOneWorker = 5;
 
@@ -249,62 +250,41 @@ class Index extends Component {
             priceForOneWorker = 5;
         }
 
-        switch (period) {
-            case '1':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 3;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 3;
 
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 3;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 3;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 3;
+        switch (specialWorkersCount) {
+            case 'to 20':
+                finalPriceMonth = priceTo20packet.price
+                finalPriceMonthDiscount = priceTo20packet.discountPrice
                 break;
-            case '2':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 5;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 5;
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 5;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 5;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 6;
+            case 'to 30':
+                finalPriceMonth = priceTo30packet.price
+                finalPriceMonthDiscount = priceTo30packet.discountPrice
                 break;
-            case '3':
-                switch (specialWorkersCount) {
-                    case 'to 20':
-                        finalPrice = priceTo20 * 9;
-                        break;
-                    case 'to 30':
-                        finalPrice = priceTo30 * 9;
-                        break;
-                    case 'from 30':
-                        finalPrice = priceFrom30 * 9;
-                        break;
-                    case '':
-                        finalPrice = workersCount * priceForOneWorker * 9;
-                        break;
-                }
-                finalPriceMonth = finalPrice / 12;
+            case 'from 30':
+                finalPriceMonth = priceFrom30packet.price
+                finalPriceMonthDiscount = priceFrom30packet.discountPrice
+                break;
+            case '':
+                finalPriceMonth = price1to10.price
+                finalPriceMonthDiscount = price1to10.discountPrice
                 break;
         }
-        finalPriceMonth = finalPriceMonth.toFixed(2);
-        this.setState({finalPrice: finalPrice, finalPriceMonth: finalPriceMonth});
+
+        finalPriceMonthDiscount = finalPriceMonthDiscount === finalPriceMonth ? null : finalPriceMonthDiscount
+
+        switch (period) {
+            case '1':
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 3
+                break;
+            case '2':
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5
+                break;
+            case '3':
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9
+                break;
+        }
+
+        this.setState({ finalPrice: finalPrice.toFixed(2), finalPriceMonth, finalPriceMonthDiscount });
     }
 
     changeSMSResult() {
@@ -348,7 +328,7 @@ class Index extends Component {
 
     render() {
         const {authentication} = this.props;
-        const { chosenAct, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
+        const { chosenAct, finalPriceMonthDiscount, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets, isLoading} = this.props.payments;
@@ -589,12 +569,19 @@ class Index extends Component {
                                         <p className="title-payments">К оплате</p>
                                         <div>
                                             <p>Срок действия лицензии: </p>
-                                            <span>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
+                                            <span style={{ textAlign: 'right' }}>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
                                         </div>
                                         <div>
-                                            <p>Стоимость в месяц: </p>
-                                            <span>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            <p>Стоимость в месяц{finalPriceMonthDiscount ? ' без скидки ' : ''}: </p>
+                                            <span style={{ textAlign: 'right' }}>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                         </div>
+
+                                        {finalPriceMonthDiscount && (
+                                            <div >
+                                                <p style={{ color: 'red' }}>Стоимость в месяц со скидкой: </p>
+                                                <span style={{ color: 'red', textAlign: 'right' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            </div>
+                                        )}
                                         <hr/>
                                         <div>
                                             <p className="total-price">Итоговая стоимость:

@@ -60,7 +60,7 @@ class HeaderMain extends React.PureComponent {
 
     render() {
         const {location, staff }=this.props;
-        const {authentication, company, userSettings}=this.state;
+        const {authentication, company }=this.state;
 
         const { count } = company;
 
@@ -70,7 +70,13 @@ class HeaderMain extends React.PureComponent {
         if (path === '/invoices') {
             redTitle = 'Счета'
         } else {
-            redTitle = authentication.user && authentication.menu && authentication.menu[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0] && Object.values(authentication.menu[0]).filter((item)=>item.url==path)[0].name
+            redTitle = ''
+            if (authentication.user && authentication.menu && authentication.menu[0]) {
+                const titleKey = Object.keys(authentication.menu[0]).find((key)=>authentication.menu[0][key].url === path)
+                if (titleKey) {
+                    redTitle = authentication.menu[0][titleKey].name
+                }
+            }
         }
 
         const activeStaff = staff && staff.find(item =>
@@ -264,11 +270,9 @@ class HeaderMain extends React.PureComponent {
         // return onOpen();
 
         $('.modal_user_setting').modal('show');
-        this.setState({ userSettings: true })
     }
     onClose() {
         $('.modal_user_setting').modal('hide');
-        this.setState({ userSettings: false})
     }
     openAppointments(){
         this.props.dispatch(staffActions.get());

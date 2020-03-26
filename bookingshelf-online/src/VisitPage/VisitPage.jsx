@@ -200,6 +200,7 @@ class VisitPage extends React.Component {
                         </div>
                         {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
                             <button className="approveFYes" onClick={()=> {
+                                deleted
                                 if (appointment.customId) {
                                     this.setScreen(2)
                                     this._delete(appointment.customId)

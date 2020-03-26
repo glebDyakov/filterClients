@@ -1,7 +1,7 @@
 import {clientConstants, menuConstants, userConstants} from '../_constants';
 import {clientService, userService} from '../_services';
 import {alertActions, socketActions, staffActions} from './';
-import { history } from '../_helpers';
+import {clearStorage, history} from '../_helpers';
 import {staffConstants} from "../_constants/staff.constants";
 
 export const userActions = {
@@ -51,7 +51,8 @@ function checkLogin(localStorageUser) {
                         dispatch(success(user));
                     },
                     error => {
-
+                        clearStorage()
+                        history.push('/login');
                         dispatch(failure(error || 'error'));
                         dispatch(alertActions.error(error || 'error'));
                     }

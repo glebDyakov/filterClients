@@ -5,6 +5,8 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import {isValidEmailAddress} from "../../_helpers/validators";
 import PhoneInput from "../PhoneInput";
+import InputCounter from "../InputCounter";
+import moment from "moment";
 
 class NewClient extends React.Component {
     constructor(props) {
@@ -26,13 +28,23 @@ class NewClient extends React.Component {
                 "acceptNewsletter": true
             }
         }
+        const [year, month, day] = client.birthDate
+            ? client.birthDate.slice(0, 10).split('-')
+            : ['' , '' , '']
         this.state={
-            client: client,
+            client: {
+                ...client,
+                birthDate: client.birthDate ? moment(client.birthDate).format('DD.MM.YYYY') : null
+            },
+            year,
+            month,
+            day,
             edit: props.edit,
             clients: props.client
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBirthdayChange = this.handleBirthdayChange.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
@@ -55,8 +67,84 @@ class NewClient extends React.Component {
         }
     }
 
+    getDayOptionList() {
+        const options = []
+        for(let i = 1; i <= 31; i++) {
+            options.push(i)
+        }
+
+        return options.map(item => {
+            const optionValue = String(item).length === 1 ? `0${item}` : item;
+            return <option value={optionValue}>{optionValue}</option>
+        });
+    }
+
+    getMonthOptionList() {
+        const options = [
+            {
+                value: '01',
+                label: "январь"
+            },
+            {
+                value: '02',
+                label: "февраль"
+            },
+            {
+                value: '03',
+                label: "март"
+            },
+            {
+                value: '04',
+                label: "апрель"
+            },
+            {
+                value: '05',
+                label: "май"
+            },
+            {
+                value: '06',
+                label: "июнь"
+            },
+            {
+                value: '07',
+                label: "июль"
+            },
+            {
+                value: '08',
+                label: "август"
+            },
+            {
+                value: '09',
+                label: "сентябрь"
+            },
+            {
+                value: '10',
+                label: "октябрь"
+            },
+            {
+                value: '11',
+                label: "ноябрь"
+            },
+            {
+                value: '12',
+                label: "декабрь"
+            }
+            ];
+
+        return options.map(({ value, label }) => <option value={value}>{label}</option>);
+    }
+
+    getYearOptionList() {
+        const options = []
+        for(let i = parseInt(moment().format('YYYY')); i >= 1900; i--) {
+            options.push(i)
+        }
+
+        return options.map(item => <option value={item}>{item}</option>);
+    }
+
     render() {
-        const { client, edit, alert, clients, isValidPhone }=this.state;
+        const { day, month, year, client, edit, alert, clients, isValidPhone }=this.state;
 
         return (
             <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -76,9 +164,12 @@ class NewClient extends React.Component {
                             <p className="title mb-2">Общая информация</p>
                             <div className="row">
                                 <div className="col-sm-6">
-                                    <p className="title_block">Имя</p>
-                                    <input type="text" placeholder="Например: Иван" value={client.firstName}
-                                           name="firstName" onChange={this.handleChange}/>
+                                    <InputCounter title="Имя" placeholder="Например: Иван" value={client.firstName}
+                                                  name="firstName" handleChange={this.handleChange} maxLength={128} />
+
+                                    <InputCounter title="Отчество" placeholder="Например: Иванович" value={client.middleName}
+                                                  name="middleName"  handleChange={this.handleChange} maxLength={128} />
+
                                     <p className="title_block">Номер телефона</p>
                                     <PhoneInput
                                         value={client.phone}
@@ -87,29 +178,69 @@ class NewClient extends React.Component {
                                     />
                                 </div>
                                 <div className="col-sm-6">
-                                    <p className="title_block">Фамилия</p>
-                                    <input type="text" placeholder="Например: Иванов" value={client.lastName}
-                                           name="lastName" onChange={this.handleChange}/>
-                                    <p className="title_block">Email</p>
-                                    <input type="email" placeholder="Например: ivanov@gmail.com" value={client.email}
-                                           name="email" onChange={this.handleChange}
-                                           onKeyUp={() => this.setState({
-                                               emailIsValid: isValidEmailAddress(client.email)
-                                           })}
-                                           className={'' + (!isValidEmailAddress(client.email) && client.email!=='' ? ' redBorder' : '')}
-                                    />
+                                    <InputCounter title="Фамилия" placeholder="Например: Иванов" value={client.lastName}
+                                                  name="lastName"  handleChange={this.handleChange} maxLength={128} />
+
+                                    <p>День рождения</p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <select style={{ marginRight: '4px '}}  className="custom-select" onChange={this.handleBirthdayChange} name="day" value={day}>
+                                            <option value={''}>День</option>
+                                            {this.getDayOptionList()}
+                                        </select>
+
+                                        <select style={{ marginRight: '4px '}} className="custom-select" onChange={this.handleBirthdayChange} name="month" value={month}>
+                                            <option value={''}>Месяц</option>
+                                            {this.getMonthOptionList()}
+                                        </select>
+
+                                        <select className="custom-select" onChange={this.handleBirthdayChange} name="year" value={year}>
+                                            <option value={''}>Год</option>
+                                            {this.getYearOptionList()}
+                                        </select>
+                                    </div>
+
+                                    <InputCounter type="email" placeholder="Например: ivanov@gmail.com" value={client.email}
+                                                  name="email" title="Email"
+                                                  handleKeyUp={() => this.setState({
+                                                      emailIsValid: isValidEmailAddress(client.email)
+                                                  })}
+                                                  extraClassName={'' + (!isValidEmailAddress(client.email) && client.email!=='' ? ' redBorder' : '')}
+                                                  handleChange={this.handleChange} maxLength={128} />
                                 </div>
 
                             </div>
-                            <p className="title mb-2">Адрес (необязательно)</p>
+                            <p className="title mb-2">Адрес</p>
                             <div className="row">
                                 <div className="col-sm-6">
-                                    <p className="title_block">Страна</p>
-                                    <input type="text" placeholder="Например: Россия" value={client.country}
-                                           name="country" onChange={this.handleChange}/>
-                                    <p className="title_block">Область</p>
-                                    <input type="text" placeholder="Например: Московская" value={client.province}
-                                           name="province" onChange={this.handleChange}/>
+                                    <InputCounter title="Страна" placeholder="Например: Россия" value={client.country}
+                                                  name="country" handleChange={this.handleChange} maxLength={128} />
+                                    <InputCounter title="Область" placeholder="Например: Московская" value={client.province}
+                                                  name="province" handleChange={this.handleChange} maxLength={128} />
+                                </div>
+                                <div className="col-sm-6">
+                                    <InputCounter title="Город" placeholder="Например: Москва" value={client.city} name="city"
+                                                  handleChange={this.handleChange} maxLength={128} />
+
+                                    <InputCounter title="Адрес" placeholder="Например: ул. Ленина, дом 5" value={client.address}
+                                           name="address" handleChange={this.handleChange} maxLength={128} />
+                                </div>
+                            </div>
+                            <p className="title mb-2">Программы лояльности</p>
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <p className="title_block">Персональная скидка, %</p>
+                                    <input type="text" value={client.discountPercent} step="1" min="1" max="100" name="discountPercent"
+                                           onChange={this.handleChange}/>
+                                </div>
+                            </div>
+                            <p className="title mb-2">Соц. сети</p>
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <InputCounter title="Vk" placeholder="" value={client.vk} name="vk"
+                                                  handleChange={this.handleChange} maxLength={128} />
+
+                                    <InputCounter title="Facebook" placeholder="" value={client.facebook} name="facebook"
+                                                  handleChange={this.handleChange} maxLength={128} />
                                     {clients && clients.status === 200 &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
@@ -119,12 +250,11 @@ class NewClient extends React.Component {
                                     }
                                 </div>
                                 <div className="col-sm-6">
-                                    <p className="title_block">Город</p>
-                                    <input type="text" placeholder="Например: Москва" value={client.city} name="city"
-                                           onChange={this.handleChange}/>
-                                    <p className="title_block">Персональная скидка, %</p>
-                                    <input type="text" value={client.discountPercent} step="1" min="1" max="100" name="discountPercent"
-                                           onChange={this.handleChange}/>
+                                    <InputCounter title="Instagram" placeholder="" value={client.instagram} name="instagram"
+                                                  handleChange={this.handleChange} maxLength={128} />
+
+                                    <InputCounter title="Tik Tok" placeholder="" value={client.tiktok} name="tiktok"
+                                                  handleChange={this.handleChange} maxLength={128} />
                                     <div className="check-box">
                                         <label>
                                             <input className="form-check-input" type="checkbox"
@@ -140,8 +270,8 @@ class NewClient extends React.Component {
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
 
-                            <button className={((clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
-                                    disabled={clients.adding || !client.firstName || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
+                            <button className={((clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
+                                    disabled={clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
                                     type="button"
                                     onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addClient)}
                             >Сохранить
@@ -153,6 +283,10 @@ class NewClient extends React.Component {
             </div>
             </Modal>
         )
+    }
+
+    handleBirthdayChange({ target: { name, value } }) {
+        this.setState({ [name]: value })
     }
 
     handleChange(e) {
@@ -177,21 +311,28 @@ class NewClient extends React.Component {
 
     updateClient(){
         const {updateClient} = this.props;
-        const {client} = this.state;
-
+        const {client, day, month, year } = this.state;
+        let birthDate;
+        if (day || month || year) {
+            birthDate =`${year}-${month}-${day}`;
+        }
         delete client.appointments;
 
-        return updateClient(client);
+        return updateClient({ ...client, birthDate });
     };
 
     addClient(){
         const {addClient, isModalShouldPassClient} = this.props;
-        const {client} = this.state;
+        const {client, day, month, year } = this.state;
+        let birthDate;
+        if (day || month || year) {
+            birthDate =`${year}-${month}-${day}`;
+        }
         if (isModalShouldPassClient) {
             this.props.checkUser(client);
         }
 
-        return addClient(client);
+        return addClient({ ...client, birthDate });
     };
 
     closeModal () {
