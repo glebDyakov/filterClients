@@ -107,7 +107,7 @@ class IndexPage extends PureComponent {
             }
             for(let i=firstDayOfMonth; i<=lastDayOfMonth;i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
-                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays && timetableItem.availableDays.some((time, key, elements) =>{
+                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays.some((time, key, elements) =>{
                         const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
                         const checkingDayTimesArray = time.availableTimes;
 
@@ -137,7 +137,7 @@ class IndexPage extends PureComponent {
 
             }
 
-            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays && (timetableItem.availableDays.length===0)) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
+            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
             if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.staff.newAppointment)) {
                 this.setState({ screen: 6})
