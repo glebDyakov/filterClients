@@ -6,6 +6,7 @@ import 'moment-duration-format';
 import 'moment/locale/ru';
 import 'moment-timezone';
 import { isValidEmailAddress } from "../_helpers/validators";
+import Helmet from "react-helmet";
 
 import TabCompanySelection from "./components/TabCompanySelection";
 import TabOne from "./components/TabOne";
@@ -538,8 +539,15 @@ class IndexPage extends PureComponent {
             )
         }
 
+        const description = `Онлайн-запись в ${info ? info.companyName : ''}. Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.`
         return (
-
+          <React.Fragment>
+            <Helmet>
+                <title>Как влияет сервис онлайн-записи и автоматизации бизнеса на лояльность потребителей?</title>
+                <meta name="description" content={description} />
+                <meta property="og:description" content={description} />
+                <meta name="twitter:description" content={description} />
+            </Helmet>
             <div className="container_popups">
 
                 {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}
@@ -550,7 +558,7 @@ class IndexPage extends PureComponent {
                 </div>
                 <Footer/>
             </div>
-
+          </React.Fragment>
         );
     }
 
