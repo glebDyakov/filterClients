@@ -310,25 +310,19 @@ class Index extends PureComponent {
     initAvailableTime(staff, authentication, selectedDays) {
         const { timetable } = staff;
         if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
-            const updatedWorkingStaff = this.state.typeSelected===3 || this.state.type === 'week'
-              ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
-                    (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
-                      ? JSON.parse(this.state.selectedStaff).staffId
-                      :this.state.staffFromUrl)))
-              }
-              : staff
-            if (this.state.type === 'week' && updatedWorkingStaff && updatedWorkingStaff.timetable) {
-                for(let i = 0; i < 6; i++) {
-                    updatedWorkingStaff.timetable.push(updatedWorkingStaff.timetable[0]);
-                }
-            }
             this.setState({
                 opacity: false,
                 typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
                 selectedStaff: this.state.staffFromUrl!==null && timetable
                     ?JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2) ? (authentication.user && authentication.user.profile.staffId) : this.state.staffFromUrl))[0])
                     :[],
-                workingStaff: updatedWorkingStaff
+                workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
+                    ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
+                            (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
+                                ? JSON.parse(this.state.selectedStaff).staffId
+                                :this.state.staffFromUrl)))
+                    }
+                    : staff
             });
         }
 
@@ -390,7 +384,6 @@ class Index extends PureComponent {
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };
-        debugger
         const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
@@ -692,7 +685,6 @@ class Index extends PureComponent {
         const { workingStaff, type, selectedStaff } = this.state;
         let newState = {};
         let url;
-        debugger
 
         if (typeSelected === 1) {
             let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
@@ -724,18 +716,6 @@ class Index extends PureComponent {
         } else {
             staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
             let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
-
-            if (type === 'week') {
-                staffEl.push(staffEl[0])
-                staffEl.push(staffEl[0])
-                staffEl.push(staffEl[0])
-                staffEl.push(staffEl[0])
-                staffEl.push(staffEl[0])
-                staffEl.push(staffEl[0])
-
-                for(let i = 0; i < 6; i++) {
-                }
-            }
 
             newState = {
                 workingStaff: {...workingStaff, timetable: staffEl},

@@ -73,7 +73,7 @@ class TabScroll extends React.Component{
                     {numbers && numbers.map((time, key) =>
                         <div key={`number-${key}`} className="tab-content-list" >
                             <TabScrollLeftMenu time={time}/>
-                            {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
+                            {availableTimetable && (type === 'day' ? [0] : [0,1,2,3,4,5,6]).map((selectedDaysKey) => availableTimetable.map((workingStaffElement, staffKey) =>
                                 <BaseCell
                                     checkForCostaffs={checkForCostaffs}
                                     getCellTime={getCellTime}
@@ -87,11 +87,12 @@ class TabScroll extends React.Component{
                                     services={services}
                                     workingStaffElement={workingStaffElement}
                                     updateAppointmentForDeleting={updateAppointmentForDeleting}
-                                    selectedDaysKey={staffKey}
+                                    selectedDaysKey={selectedDaysKey}
                                     time={time}
                                     moveVisit={moveVisit}
                                 />
-                            )}
+                            ))
+                            }
                         </div>
                     )}
                 </DndProvider>
