@@ -539,11 +539,12 @@ class IndexPage extends PureComponent {
             )
         }
 
-        const description = `Онлайн-запись в ${info ? info.companyName : ''}. Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.`
+        const title = `Онлайн-запись в ${info ? info.companyName : ''}`;
+        const description = `${title}. Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.`
         return (
           <React.Fragment>
             <Helmet>
-                <title>Как влияет сервис онлайн-записи и автоматизации бизнеса на лояльность потребителей?</title>
+                <meta name="title" content={title} />
                 <meta name="description" content={description} />
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
