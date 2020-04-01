@@ -87,7 +87,7 @@ class TabScroll extends React.Component{
                                     services={services}
                                     workingStaffElement={workingStaffElement}
                                     updateAppointmentForDeleting={updateAppointmentForDeleting}
-                                    selectedDaysKey={staffKey}
+                                    selectedDaysKey={type === 'day' ? 0 : staffKey}
                                     time={time}
                                     moveVisit={moveVisit}
                                 />
