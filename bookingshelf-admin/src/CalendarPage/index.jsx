@@ -390,7 +390,6 @@ class Index extends PureComponent {
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };
-        debugger
         const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
@@ -692,7 +691,6 @@ class Index extends PureComponent {
         const { workingStaff, type, selectedStaff } = this.state;
         let newState = {};
         let url;
-        debugger
 
         if (typeSelected === 1) {
             let staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
