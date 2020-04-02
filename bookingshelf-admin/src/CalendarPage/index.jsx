@@ -310,19 +310,25 @@ class Index extends PureComponent {
     initAvailableTime(staff, authentication, selectedDays) {
         const { timetable } = staff;
         if(this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
+            const updatedWorkingStaff = this.state.typeSelected===3 || this.state.type === 'week'
+              ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
+                    (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
+                      ? JSON.parse(this.state.selectedStaff).staffId
+                      :this.state.staffFromUrl)))
+              }
+              : staff
+            if (this.state.type === 'week' && updatedWorkingStaff && updatedWorkingStaff.timetable) {
+                for(let i = 0; i < 6; i++) {
+                    updatedWorkingStaff.timetable.push(updatedWorkingStaff.timetable[0]);
+                }
+            }
             this.setState({
                 opacity: false,
                 typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
                 selectedStaff: this.state.staffFromUrl!==null && timetable
                     ?JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2) ? (authentication.user && authentication.user.profile.staffId) : this.state.staffFromUrl))[0])
                     :[],
-                workingStaff: this.state.typeSelected===3 || this.state.type === 'week'
-                    ? {timetable: timetable && timetable.filter((staff)=>staff.staffId===
-                            (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
-                                ? JSON.parse(this.state.selectedStaff).staffId
-                                :this.state.staffFromUrl)))
-                    }
-                    : staff
+                workingStaff: updatedWorkingStaff
             });
         }
 
@@ -717,6 +723,18 @@ class Index extends PureComponent {
             staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
             let staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
 
+            if (type === 'week') {
+                staffEl.push(staffEl[0])
+                staffEl.push(staffEl[0])
+                staffEl.push(staffEl[0])
+                staffEl.push(staffEl[0])
+                staffEl.push(staffEl[0])
+                staffEl.push(staffEl[0])
+
+                for(let i = 0; i < 6; i++) {
+                }
+            }
+
             newState = {
                 workingStaff: {...workingStaff, timetable: staffEl},
                 timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
@@ -742,7 +760,7 @@ class Index extends PureComponent {
 
     getHours(idStaff, timeClicked){
         const { appointments, reservedTimeFromProps } = this.props;
-        const { workingStaff }=this.state
+        const { workingStaff, type }=this.state
 
         let hoursArray=[];
         let day=timeClicked;
@@ -756,24 +774,33 @@ class Index extends PureComponent {
         numbers.map((time) =>
             hoursArray.push(moment(time, 'x').format('H:mm'))
         );
-
-
+        const timetable = type === 'day' ? workingStaff.timetable : [workingStaff.timetable[0]];
+        const dayPart = moment(day, 'x').format('DD/MM/YYYY')+' '
+        const subtractWeek = moment().subtract(1, 'week').format('x');
 
         const newStaff = appointments && appointments.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
         const staffWithReservedTime = reservedTimeFromProps && reservedTimeFromProps.find(item => (item.staff && item.staff.staffId) === idStaff.staffId)
-        numbers.map((item)=> {
-            let currentTime=parseInt(moment(moment(day, 'x').format('DD/MM/YYYY')+' '+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+        numbers.forEach((item)=> {
+            const currentTime=parseInt(moment(dayPart+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+            const hoursPart = moment(item, 'x').format('HH:mm');
+            const formattedDayPart = parseInt(moment(dayPart + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))
 
-            return workingStaff.timetable.map((timing) =>
-                timing.staffId === idStaff.staffId && timing.timetables.map((time) => {
-
-                    if (parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x')) === parseInt(moment(moment(day, 'x').format('DD/MM/YYYY') + ' ' + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'))) {
-
+            timetable.forEach((timing) =>
+                timing.staffId === idStaff.staffId && timing.timetables.forEach((time) => {
+                    if (
+                      parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + hoursPart, 'DD/MM/YYYY HH:mm').format('x')) ===
+                      formattedDayPart
+                    ) {
                         const isOnAnotherVisit = checkIsOnAnotherVisit(newStaff, currentTime)
-                        const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime)
+                        if (!isOnAnotherVisit) {
+                            const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime)
 
-                        return (!isOnAnotherVisit && !isOnAnotherReservedTime && currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= moment().subtract(1, 'week').format('x'))
-                            && hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
+                            if (!isOnAnotherReservedTime) {
+                                if(currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= subtractWeek) {
+                                    hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1)
+                                }
+                            }
+                        }
                     }
                 })
             )
