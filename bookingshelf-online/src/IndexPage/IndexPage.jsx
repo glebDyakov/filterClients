@@ -21,6 +21,7 @@ import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
 import TabStaffComments from "./components/TabStaffComments";
 import TabCreateComment from "./components/TabCreateComment";
+import { getFirstScreen } from "../_helpers/common";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -155,14 +156,15 @@ class IndexPage extends PureComponent {
         }
         if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
         || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies))))) {
-            this.setScreen(1)
+            this.setScreen(getFirstScreen(newProps.staff.info.firstScreen))
         }
+
     }
 
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if (prevState.screen === 0 && this.state.screen === 1) {
+        if (prevState.screen === 0 && this.state.screen === (this.props.staff.info && getFirstScreen(this.props.staff.info.firstScreen))) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
@@ -221,7 +223,12 @@ class IndexPage extends PureComponent {
     }
 
     selectSubcompany(subcompany) {
-        this.setState({ selectedSubcompany: subcompany, screen: 1 })
+        const updatedState = {}
+        const firstScreen = getFirstScreen(subcompany.firstScreen)
+        if (firstScreen === 2) {
+            updatedState.flagAllStaffs = true
+        }
+        this.setState({ selectedSubcompany: subcompany, screen: firstScreen, ...updatedState })
     }
 
     handleChange(e) {
