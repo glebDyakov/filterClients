@@ -330,6 +330,9 @@
                 &:hover .visible-fade-time{
                     display: block;
                 }
+                &:not(.expired):hover .fade-time{
+                    display: block !important;
+                }
                 .col-note {
                     cursor: cell;
                     width: 100%;
@@ -354,6 +357,10 @@
                 overflow: visible;
                 padding: 0 0 !important;
                 min-width: 161px;
+
+                &.day-active {
+                    border-top: 3px solid red;
+                }
 
                 &.hovered{
                     z-index: 9999 !important;
@@ -466,6 +473,7 @@
                     width: 100%;
                     justify-content: right;
                     padding-right: 10px;
+
                 }
                 .visible-fade-time{
                     float:right;

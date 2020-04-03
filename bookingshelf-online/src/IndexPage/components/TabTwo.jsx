@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import moment from 'moment';
+import { getFirstScreen } from "../../_helpers/common";
 
 class TabTwo extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const { searchValue } = this.state;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
@@ -60,14 +61,25 @@ class TabTwo extends Component {
         return (
             <div className="service_selection screen1">
                 <div className="title_block">
-                    <span className="prev_block" onClick={() => {
-                        setScreen(1);
-                        refreshTimetable();
-                        setDefaultFlag();
-                        if (!isStartMovingVisit) {
-                            clearSelectedServices()
+                    {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) && <span className="prev_block" onClick={() => {
+                        if (getFirstScreen(firstScreen) === 2) {
+                            if (!isStartMovingVisit) {
+                                clearSelectedServices()
+                            }
+                            setDefaultFlag();
+                            setScreen(0);
+                            let {company} = match.params;
+                            let url = company.includes('_') ? company.split('_')[0] : company
+                            history.push(`/${url}`)
+                        } else {
+                            setScreen(1);
+                            refreshTimetable();
+                            setDefaultFlag();
+                            if (!isStartMovingVisit) {
+                                clearSelectedServices()
+                            }
                         }
-                    }}><span className="title_block_text">Назад</span></span>
+                    }}><span className="title_block_text">Назад</span></span>}
                     <p className="modal_title">Выбор услуги</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
                         if (selectedServices.length) {

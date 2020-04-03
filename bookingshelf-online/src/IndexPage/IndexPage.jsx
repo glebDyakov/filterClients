@@ -432,10 +432,14 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        history={history}
+                        match={match}
+                        firstScreen={info.firstScreen}
                         isStartMovingVisit={isStartMovingVisit}
                         clearSelectedServices={this.clearSelectedServices}
                         flagAllStaffs={flagAllStaffs}
                         serviceGroups={serviceGroups}
+                        subcompanies={subcompanies}
                         selectedServices={selectedServices}
                         selectedStaff={selectedStaff}
                         services={services}
