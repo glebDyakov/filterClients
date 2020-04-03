@@ -387,7 +387,7 @@ class Index extends Component {
                                 </button>
                             </div>
 
-                            <div className=" content-pages-bg p-4 h-auto">
+                            <div className=" content-pages-bg p-4 mb-3 h-auto">
                                 <p className="title mb-3">Интервал записи</p>
                                 <div style={{ position: 'relative' }} className="check-box">
                                     <label>
@@ -416,7 +416,7 @@ class Index extends Component {
                             </div>
 
                             <div className=" content-pages-bg p-4 h-auto">
-                                <p className="title mb-3">Начальное окно в онлайн-записе</p>
+                                <p className="title mb-3">Начальное окно в онлайн-записи</p>
                                 <div style={{ position: 'relative' }} className="check-box">
                                     <label>
                                         {isFirstScreenLoading
