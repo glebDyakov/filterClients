@@ -80,10 +80,18 @@ class Index extends Component {
             [checkboxKey]: !this.state[checkboxKey]
         }
         this.setState(newState)
-        this.props.dispatch(companyActions.updateServiceIntervalOn({
+        this.props.dispatch(companyActions.updateCompanySettings({
             ...this.props.company.settings,
             [checkboxKey]: newState[checkboxKey]
-        }));
+        }, 'isServiceIntervalLoading'));
+    }
+
+    handleScreenCheckboxChange(firstScreen) {
+        this.setState({ firstScreen })
+        this.props.dispatch(companyActions.updateCompanySettings({
+            ...this.props.company.settings,
+            firstScreen
+        }, 'isFirstScreenLoading'));
     }
 
     handleChange(e) {
@@ -171,7 +179,7 @@ class Index extends Component {
 
         const isOnlineZapisChecked = !onlineZapisOn
 
-        const { isServiceIntervalLoading, isBookingInfoLoading } = company;
+        const { isServiceIntervalLoading, isBookingInfoLoading, isFirstScreenLoading } = company;
 
         const dayPickerProps = {
             month: new Date(),
@@ -379,7 +387,7 @@ class Index extends Component {
                                 </button>
                             </div>
 
-                            <div className=" content-pages-bg p-4 h-auto">
+                            <div className=" content-pages-bg p-4 mb-3 h-auto">
                                 <p className="title mb-3">Интервал записи</p>
                                 <div style={{ position: 'relative' }} className="check-box">
                                     <label>
@@ -403,6 +411,34 @@ class Index extends Component {
                                             </React.Fragment>
                                         }
                                         Равен времени услуги
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className=" content-pages-bg p-4 h-auto">
+                                <p className="title mb-3">Начальное окно в онлайн-записи</p>
+                                <div style={{ position: 'relative' }} className="check-box">
+                                    <label>
+                                        {isFirstScreenLoading
+                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                          : <React.Fragment>
+                                              <input className="form-check-input" type="checkbox" checked={company.settings.firstScreen === 'staffs'} onChange={() => this.handleScreenCheckboxChange('staffs')}/>
+                                              <span className="check"/>
+                                          </React.Fragment>
+                                        }
+                                        Сотрудники
+                                    </label>
+                                </div>
+                                <div style={{ position: 'relative' }} className="check-box">
+                                    <label>
+                                        {isFirstScreenLoading
+                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                          : <React.Fragment>
+                                              <input className="form-check-input" type="checkbox" checked={company.settings.firstScreen === 'services'} onChange={() => this.handleScreenCheckboxChange('services')}/>
+                                              <span className="check"/>
+                                          </React.Fragment>
+                                        }
+                                        Услуги
                                     </label>
                                 </div>
                             </div>

@@ -577,7 +577,7 @@ class Index extends PureComponent {
 
     showPrevWeek (){
         const { selectedDays } = this.props;
-        const { workingStaff, selectedStaff } = this.state;
+        const { selectedStaff } = this.state;
         const weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).subtract(7, 'days')).from);
         const statTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x');
@@ -586,17 +586,13 @@ class Index extends PureComponent {
         this.getTimetable(selectedDays[0], weeks[0]);
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
-        this.setState({
-            workingStaff: {...workingStaff, timetable:[workingStaff.timetable[0]]},
-            type: 'week',
-        });
 
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
     }
 
     showNextWeek (){
         const { selectedDays } = this.props
-        const { workingStaff, selectedStaff } = this.state;
+        const { selectedStaff } = this.state;
         const weeks = getWeekDays(getWeekRange(moment(selectedDays[0]).add(7, 'days')).from);
         const startTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x')
@@ -604,10 +600,6 @@ class Index extends PureComponent {
         this.getTimetable(selectedDays[0], weeks[0]);
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
-        this.setState({
-            workingStaff: {...workingStaff, timetable:[workingStaff.timetable[0]]},
-            type: 'week',
-        });
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
     }
 

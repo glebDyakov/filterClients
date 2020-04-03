@@ -91,22 +91,22 @@ export function company(state = initialState, action) {
                 switchedStaffId: action.company.staffId
 
             }
-        case companyConstants.UPDATE_SERVICE_INTERVAL_REQUEST:
+        case companyConstants.UPDATE_COMPANY_SETTINGS_REQUEST:
             return {
                 ...state,
-                isServiceIntervalLoading: true
+                [action.loadingKey]: true
             }
-        case companyConstants.UPDATE_SERVICE_INTERVAL_SUCCESS:
+        case companyConstants.UPDATE_COMPANY_SETTINGS_SUCCESS:
             companyAllInfo = {...action.company, menu: action.menu, profile: action.profile};
             return {
                 ...state,
                 settings: companyAllInfo,
-                isServiceIntervalLoading: false
+                [action.loadingKey]: false
             }
-        case companyConstants.UPDATE_SERVICE_INTERVAL_FAILURE:
+        case companyConstants.UPDATE_COMPANY_SETTINGS_FAILURE:
             return {
                 ...state,
-                isServiceIntervalLoading: false,
+                [action.loadingKey]: false,
                 error: action.error
             }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:

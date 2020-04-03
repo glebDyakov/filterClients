@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {staffActions} from "../../_actions";
 import { connect } from 'react-redux';
+import { getFirstScreen } from "../../_helpers/common";
 
 
 
@@ -42,7 +43,7 @@ class TabCompanySelection extends  PureComponent{
                     <p className="modal_title">Выберите филиал</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
-                        setScreen(1);
+                        setScreen(getFirstScreen(selectedSubcompany.firstScreen));
                         this.props.history.push(`/${selectedSubcompany.bookingPage}`)
                         //refreshTimetable();
                     }}>Далее</span>}
