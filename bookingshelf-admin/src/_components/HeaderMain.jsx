@@ -87,7 +87,7 @@ class HeaderMain extends React.PureComponent {
             <div style={{ height: 'auto' }} className="container_wrapper">
                 <div style={{ height: 'auto', padding: 0 }} className="content-wrapper full-container">
                     <div className="container-fluid">
-                        <div className="no-scroll row retreats">
+                        <div id="header-layout" className={"no-scroll row retreats" + (localStorage.getItem('collapse') === 'true' ? ' collapsed-header' : '')}>
 
                             <div className="col-1 mob-menu b">
                                 <div>
