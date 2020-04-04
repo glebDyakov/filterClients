@@ -137,6 +137,11 @@ class SidebarMain extends React.Component {
         const collapse = value === 'true';
         localStorage.setItem('collapse', value);
         this.setState({ collapse });
+
+        const elems = document.getElementsByClassName('modal---modal-overlay---3D5Nr')
+        if (elems) {
+            elems[0].style.marginLeft = collapse ? '70px' : '250px'
+        }
     }
 
     toggleDropdown(key) {

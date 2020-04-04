@@ -368,7 +368,7 @@ class Index extends Component {
                                                     ((item.staffId) === (time.staffId)));
                                                 return (
                                                     <div className="tab-content-list" key={keyTime}>
-                                                        <div>
+                                                        <div className="staff-time-schedule" onClick={() => this.handleClick(time.staffId, false)}>
                                                             <img className="rounded-circle"
                                                                  src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                  alt=""/>

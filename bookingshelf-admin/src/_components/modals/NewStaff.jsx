@@ -30,6 +30,8 @@ class NewStaff extends React.Component {
                 "roleId":1,
                 "workStartMilis":moment().format('x'),
                 "workEndMilis":1000000000000,
+                "startDateOffMilis":moment().format('x'),
+                "endDateOffMilis":moment().format('x'),
                 "onlineBooking":true,
                 "adminBooking":true,
                 "imageBase64":'',
@@ -54,6 +56,12 @@ class NewStaff extends React.Component {
         this.handleChangeMultiple = this.handleChangeMultiple.bind(this)
         this.handleDayClick = this.handleDayClick.bind(this)
         this.handleChangeCoStaff = this.handleChangeCoStaff.bind(this)
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem('collapse') === 'true') {
+            document.getElementsByClassName('modal---modal-overlay---3D5Nr')[0].style.marginLeft = '70px'
+        }
     }
 
     onCrop(preview) {
