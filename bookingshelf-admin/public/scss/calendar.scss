@@ -359,7 +359,9 @@
                 min-width: 161px;
 
                 &.day-active {
-                    border-top: 3px solid red;
+                    border-top: 2px solid #ed1b24;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
                 }
 
                 &.hovered{

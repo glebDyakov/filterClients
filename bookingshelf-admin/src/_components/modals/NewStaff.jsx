@@ -31,6 +31,7 @@ class NewStaff extends React.Component {
                 "workStartMilis":moment().format('x'),
                 "workEndMilis":1000000000000,
                 "onlineBooking":true,
+                "adminBooking":true,
                 "imageBase64":'',
                 'costaffs':[]
             },
@@ -258,11 +259,20 @@ class NewStaff extends React.Component {
                                                             </div>
                                                             <div className="check-box">
                                                                 <label>
-                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={this.toggleChange}/>
+                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={() => this.toggleChange('onlineBooking')}/>
                                                                     <span className="check"/>
                                                                     Включить онлайн запись
                                                                 </label>&nbsp;
                                                                 <Hint hintMessage="Включает возможность записи к сотруднику через онлайн-запись" />
+                                                            </div>
+
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.adminBooking}  onChange={() => this.toggleChange('adminBooking')}/>
+                                                                    <span className="check"/>
+                                                                    Включить отображение в журнале
+                                                                </label>&nbsp;
+                                                                <Hint hintMessage="Включает возможность записи к сотруднику в журнале" />
                                                             </div>
 
 
@@ -365,10 +375,10 @@ class NewStaff extends React.Component {
     }
 
 
-    toggleChange () {
+    toggleChange (checkboxKey) {
         const { staff } = this.state;
 
-        this.setState({ staff: {...staff, onlineBooking: !staff.onlineBooking }});
+        this.setState({ staff: {...staff, [checkboxKey]: !staff[checkboxKey] }});
     }
 
     updateStaff(){
