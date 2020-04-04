@@ -142,6 +142,15 @@ class SidebarMain extends React.Component {
         if (elems) {
             elems[0].style.marginLeft = collapse ? '70px' : '250px'
         }
+
+        const headerLayout = document.getElementById('header-layout');
+        if (headerLayout) {
+            if (collapse) {
+                headerLayout.classList.remove("collapsed-header");
+            } else {
+                headerLayout.classList.add("collapsed-header");
+            }
+        }
     }
 
     toggleDropdown(key) {

@@ -1353,6 +1353,9 @@ input{
 
             @media (max-width: $laptop-width){
                 padding-left: 255px;
+                &.collapsed-header {
+                    padding-left: 75px;
+                }
             }
             @media (max-width: $tablet-width){
                 padding: 0;
