@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions, calendarActions } from "../../_actions";
 import {isAvailableTime} from "../../_helpers/available-time";
+import moment from "moment";
 
 class DragVertController extends React.Component {
     constructor(props) {
@@ -23,12 +24,25 @@ class DragVertController extends React.Component {
     handleMouseMove(e) {
         const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
         const node = document.getElementById(textAreaId)
+        const appointmentId = textAreaId.split('-')[0]
+        const serviceTimeNode = document.getElementById(`${appointmentId}-service-time`)
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
         if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
             node.style.height = res + "px";
             currentTarget.style.bottom = -(res + 3) + "px";
+
+            const [firstTime] = serviceTimeNode.innerHTML.split('-')
+            const resultSecondTime = Math.ceil((res + 10) / 20);
+            const firstTimeMoment = moment(firstTime, 'HH:mm')
+
+            for (let i = 0; i < resultSecondTime; i++) {
+                firstTimeMoment.add(15, 'minutes');
+            }
+            const updatedSecondTime = firstTimeMoment.format('HH:mm')
+
+            serviceTimeNode.innerHTML = `${firstTime}-${updatedSecondTime}`;
         }
     }
 
