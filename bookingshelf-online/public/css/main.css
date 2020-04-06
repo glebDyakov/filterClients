@@ -836,7 +836,7 @@ q:before, q:after { content:''; }
     border-radius: 5px;
     background-color: #39434f;
     border: none;
-    margin: auto;
+    margin: auto auto 45px;
     display: block;
     color: #fff;
     font-size: 20px;
