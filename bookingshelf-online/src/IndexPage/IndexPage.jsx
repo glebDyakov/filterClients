@@ -154,9 +154,18 @@ class IndexPage extends PureComponent {
 
             })
         }
-        if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
-        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies))))) {
+        if (newProps.staff.info && ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
+        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies)))))) {
             this.setScreen(getFirstScreen(newProps.staff.info.firstScreen))
+        }
+
+        if (!this.state.firstScreenSet && newProps.staff.info && !newProps.staff.info.subCompanies) {
+            const screen = getFirstScreen(newProps.staff.info.firstScreen)
+            this.setScreen(screen)
+            this.setState({ firstScreenSet: true })
+            if (screen === 2) {
+                this.setState({ flagAllStaffs: true})
+            }
         }
 
     }
