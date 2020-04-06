@@ -444,7 +444,7 @@ class SidebarMain extends React.Component {
                     </Link></div>
 
                 </ul>
-                <div className="modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
+                <div className="sidebar-modal modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
                         <div className="modal-content modal-height">
                             <div className="modal-header">

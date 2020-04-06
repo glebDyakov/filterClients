@@ -2695,6 +2695,13 @@ select{
 
     }
 }
+.sidebar-modal {
+    @media (max-width: $mob-width) {
+        .modal-height {
+            height: 98vh;
+        }
+    }
+}
 .notification-mob{
     background-image: url(../img/icons/support_mob.svg);
     background-position: left center;
