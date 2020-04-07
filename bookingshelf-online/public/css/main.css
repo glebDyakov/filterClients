@@ -972,11 +972,11 @@ input[type="search"]::-moz-placeholder {
 }
 .staff_popup {
     overflow: visible;
-    margin-bottom: 0;
+    margin-bottom: 60px;
     height: auto;
 }
 .calendar_modal {
-    margin-bottom: 10px;
+    margin-bottom: 50px;
 }
 
 .service_list {
@@ -1259,9 +1259,6 @@ input[type="search"]::-moz-placeholder {
     }
     .calendar_modal table {
         margin-bottom: 22px;
-    }
-    .calendar_modal {
-        margin-bottom: 0;
     }
     .calendar_modal tr {
         padding-bottom: 10px;
