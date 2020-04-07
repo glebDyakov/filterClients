@@ -296,7 +296,13 @@ class NewStaff extends React.Component {
                                                                     <span className="check"/>
                                                                     Включить отображение в журнале
                                                                 </label>&nbsp;
-                                                                <Hint hintMessage="Включает возможность записи к сотруднику в журнале" />
+                                                                <Hint hintMessage={
+                                                                    <React.Fragment>
+                                                                        <p>Включает возможность</p>
+                                                                        <p>записи к сотруднику</p>
+                                                                        <p>в журнале</p>
+                                                                    </React.Fragment>
+                                                                    } />
                                                             </div>
 
                                                             <div className="check-box">
@@ -315,7 +321,7 @@ class NewStaff extends React.Component {
                                                                     // closedDates={staffAll.closedDates}
                                                                     type="day"
                                                                     selectedDay={selectedStartDayOff}
-                                                                    handleDayClick={(day) => this.handleDayOffClick(day, 'selectedStartDayOff')}
+                                                                    handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
                                                                     dayPickerProps={dayPickerProps}
                                                                 />
                                                             </div>
@@ -327,7 +333,7 @@ class NewStaff extends React.Component {
                                                                     // closedDates={staffAll.closedDates}
                                                                     type="day"
                                                                     selectedDay={selectedEndDayOff}
-                                                                    handleDayClick={(day) => this.handleDayOffClick(day, 'selectedEndDayOff')}
+                                                                    handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
                                                                     dayPickerProps={{
                                                                         ...dayPickerProps,
                                                                         disabledDays: [
@@ -449,7 +455,7 @@ class NewStaff extends React.Component {
         this.setState({ staff: {...staff, [checkboxKey]: !staff[checkboxKey] }});
     }
 
-    handleDayOffClick(day, dayKey){
+    handleDayOffClick(day, modifiers = {}, dayKey){
         const { staff } = this.state;
 
         let daySelected = moment(day);
