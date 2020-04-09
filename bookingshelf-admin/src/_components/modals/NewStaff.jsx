@@ -22,8 +22,8 @@ class NewStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            selectedStartDayOff: props.edit && props.edit ? moment(props.staff_working.startDateOffMilis).utc().toDate() : moment().utc().toDate(),
-            selectedEndDayOff: props.edit && props.edit ? moment(props.staff_working.endDateOffMilis).utc().toDate() : moment().utc().toDate(),
+            selectedStartDayOff: props.edit && props.edit ? moment(props.staff_working.startDateOffMilis).add(1, 'day').utc().toDate() : moment().utc().toDate(),
+            selectedEndDayOff: props.edit && props.edit ? moment(props.staff_working.endDateOffMilis).subtract(1 ,'day').utc().toDate() : moment().utc().toDate(),
             staff: props.edit && props.edit ? props.staff_working : {
                 "firstName":"",
                 "lastName":"",
@@ -466,14 +466,14 @@ class NewStaff extends React.Component {
             updatedState.selectedEndDayOff = daySelected.add(1, 'day').utc().startOf('day').toDate();
             updatedState.staff = {
                 ...staff,
-                startDateOffMilis: parseInt(moment(day).format('x')),
-                endDateOffMilis: parseInt(moment(day).add(1, 'day').format('x'))
+                startDateOffMilis: parseInt(moment(day).subtract(1, 'day').format('x')),
+                endDateOffMilis: parseInt(moment(day).add(2, 'day').format('x'))
             }
         } else {
             updatedState.selectedEndDayOff = daySelected.utc().startOf('day').toDate();
             updatedState.staff = {
                 ...staff,
-                endDateOffMilis: parseInt(moment(day).format('x'))
+                endDateOffMilis: parseInt(moment(day).add(1, 'day').format('x'))
             }
         }
 
@@ -488,8 +488,8 @@ class NewStaff extends React.Component {
         if (this.state.staff.startDateOffMilis === this.state.staff.endDateOffMilis) {
             updatedState.staff= {
                 ...staff,
-                startDateOffMilis: parseInt(moment().format('x')),
-                endDateOffMilis: parseInt(moment().add(1, 'day').format('x'))
+                startDateOffMilis: parseInt(moment().subtract(1, 'day').format('x')),
+                endDateOffMilis: parseInt(moment().add(2, 'day').format('x'))
             };
             updatedState.selectedStartDayOff = moment().utc().startOf('day').toDate();
             updatedState.selectedEndDayOff = moment().add(1, 'day').utc().startOf('day').toDate();
