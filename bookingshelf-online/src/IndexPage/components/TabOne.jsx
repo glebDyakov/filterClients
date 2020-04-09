@@ -293,7 +293,7 @@ class TabOne extends  PureComponent{
 
                                   }
 
-                                  <div style={{ textAlign: 'center', width: '70px' }}>
+                                  <div style={{ textAlign: 'center', width: '90px', margin: '0 auto' }}>
                                             <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             />
                                             {staff.rating ? (

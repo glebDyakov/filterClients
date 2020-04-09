@@ -296,13 +296,7 @@ class NewStaff extends React.Component {
                                                                     <span className="check"/>
                                                                     Включить отображение в журнале
                                                                 </label>&nbsp;
-                                                                <Hint hintMessage={
-                                                                    <React.Fragment>
-                                                                        <p>Включает возможность</p>
-                                                                        <p>записи к сотруднику</p>
-                                                                        <p>в журнале</p>
-                                                                    </React.Fragment>
-                                                                    } />
+                                                                <Hint hintMessage={`Включает возможность\nзаписи к сотруднику\nв журнале`} />
                                                             </div>
 
                                                             <div className="check-box">
@@ -338,7 +332,7 @@ class NewStaff extends React.Component {
                                                                         ...dayPickerProps,
                                                                         disabledDays: [
                                                                             {
-                                                                                before: new Date(moment(selectedStartDayOff).utc().add(1, 'day').toDate()),
+                                                                                before: new Date(moment(selectedStartDayOff).utc().toDate()),
                                                                             },
                                                                             {
                                                                                 after: new Date(moment().utc().add(6, 'month').toDate()),
