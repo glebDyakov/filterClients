@@ -824,11 +824,15 @@ function mapStateToProps(store) {
             selectedDays
         }
     } = store;
+
     return {
         selectedDays,
         appointments,
         reservedTimeFromProps: reservedTime,
-        staff,
+        staff: {
+            ...staff,
+            timetable: staff.timetable && staff.timetable.filter(item => item.adminBooking)
+        },
         clients: client,
         services,
         authentication,
