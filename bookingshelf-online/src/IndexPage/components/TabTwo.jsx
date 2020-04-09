@@ -12,7 +12,7 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const { searchValue } = this.state;
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
@@ -199,7 +199,7 @@ class TabTwo extends Component {
                             }
                         </div>
                     </React.Fragment>
-                ) : (
+                ) : (!isLoading &&
                     <div className="final-book">
                         <p>Нет доступных услуг</p>
                     </div>

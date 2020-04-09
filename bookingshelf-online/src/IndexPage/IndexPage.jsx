@@ -319,8 +319,9 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
+        const { error, isLoading: isLoadingFromProps, isLoadingServices, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
 
+        const isLoading = isLoadingFromProps || isLoadingServices
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
         });
@@ -441,6 +442,7 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        isLoading={isLoading}
                         history={history}
                         match={match}
                         firstScreen={info.firstScreen}
