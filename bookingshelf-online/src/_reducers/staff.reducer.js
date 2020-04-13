@@ -41,6 +41,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_SERVICE_GROUPS_SUCCESS:
             return {
                 ...state,
+                isLoading: false,
                 serviceGroups: (action.serviceGroups || []).sort((a, b) => a.sortOrder - b.sortOrder)
             }
         case staffConstants.GET_SUCCESS:
@@ -139,7 +140,7 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 services: action.services,
-                isLoading: false
+                isLoadingServices: false
             };
         case staffConstants.GET_INFO_SUCCESS:
             let ownerCompany = {
@@ -157,9 +158,14 @@ export function staff(state = initialState, action) {
                 info: action.info,
                 isLoading: false
             };
+        case staffConstants.GET_SERVICES:
+            return {
+                ...state,
+                isLoadingServices: true
+            }
         case staffConstants.GET:
         case staffConstants.GET_INFO:
-        case staffConstants.GET_SERVICES:
+        case staffConstants.GET_SERVICE_GROUPS:
         case staffConstants.GET_NEAREST_TIME:
         case staffConstants.GET_APPOINTMENT_CUSTOM:
         case staffConstants.GET_TIMETABLE:
@@ -210,10 +216,15 @@ export function staff(state = initialState, action) {
                 movingVisit: action.movingVisit,
                 ...toggleStartState
             }
+        case staffConstants.GET_SERVICES_FAILURE:
+            return {
+                ...state,
+                isLoadingServices: false
+            }
         case staffConstants.GET_INFO_FAILURE:
         case staffConstants.GET_STAFF_COMMENTS_FAILURE:
         case staffConstants.CREATE_COMMENT_FAILURE:
-        case staffConstants.GET_SERVICES_FAILURE:
+        case staffConstants.GET_SERVICE_GROUPS_FAILURE:
         case staffConstants.GET_NEAREST_TIME_FAILURE:
         case staffConstants.GET_TIMETABLE_FAILURE:
         case staffConstants.GET_TIMETABLE_AVAILABLE_FAILURE:

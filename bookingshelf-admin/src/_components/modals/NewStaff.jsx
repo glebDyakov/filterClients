@@ -12,6 +12,7 @@ import Modal from "@trendmicro/react-modal";
 import {isValidEmailAddress} from "../../_helpers/validators";
 import PhoneInput from "../PhoneInput";
 import Hint from "../Hint";
+import { DatePicker } from "../DatePicker";
 
 const staffErrors = {
     emailFound: 'validation.email.found'
@@ -21,7 +22,8 @@ class NewStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-
+            selectedStartDayOff: props.edit && props.edit ? moment(props.staff_working.startDateOffMilis).add(1, 'day').utc().toDate() : moment().utc().toDate(),
+            selectedEndDayOff: props.edit && props.edit ? moment(props.staff_working.endDateOffMilis).subtract(1 ,'day').utc().toDate() : moment().utc().toDate(),
             staff: props.edit && props.edit ? props.staff_working : {
                 "firstName":"",
                 "lastName":"",
@@ -30,7 +32,10 @@ class NewStaff extends React.Component {
                 "roleId":1,
                 "workStartMilis":moment().format('x'),
                 "workEndMilis":1000000000000,
+                "startDateOffMilis":moment().format('x'),
+                "endDateOffMilis":moment().format('x'),
                 "onlineBooking":true,
+                "adminBooking":true,
                 "imageBase64":'',
                 'costaffs':[]
             },
@@ -39,7 +44,6 @@ class NewStaff extends React.Component {
             edit: props.edit && props.edit,
             preview: null,
             selectedItems: []
-
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -52,7 +56,14 @@ class NewStaff extends React.Component {
         this.closeModal = this.closeModal.bind(this)
         this.handleChangeMultiple = this.handleChangeMultiple.bind(this)
         this.handleDayClick = this.handleDayClick.bind(this)
+        this.handleDayOffClick = this.handleDayOffClick.bind(this)
         this.handleChangeCoStaff = this.handleChangeCoStaff.bind(this)
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem('collapse') === 'true') {
+            document.getElementsByClassName('modal---modal-overlay---3D5Nr')[0].style.marginLeft = '70px'
+        }
     }
 
     onCrop(preview) {
@@ -80,7 +91,7 @@ class NewStaff extends React.Component {
 
     render() {
         const { authentication, staffs } = this.props;
-        const { staff, edit, extraSuccessText, emailIsValid }=this.state;
+        const { staff, edit, extraSuccessText, selectedStartDayOff, selectedEndDayOff }=this.state;
 
         const isOwner = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 4
         const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email);
@@ -127,6 +138,20 @@ class NewStaff extends React.Component {
                 />
             </React.Fragment>
         )
+
+        const dayPickerProps = {
+            month: new Date(),
+            fromMonth: new Date(),
+            toMonth: new Date(moment().utc().add(6, 'month').toDate()),
+            disabledDays:[
+                {
+                    before: new Date(),
+                },
+                {
+                    after: new Date(moment().utc().add(6, 'month').toDate()),
+                },
+            ]
+        }
 
         return (
             <Modal size="lg" style={{maxWidth: '90%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -258,12 +283,65 @@ class NewStaff extends React.Component {
                                                             </div>
                                                             <div className="check-box">
                                                                 <label>
-                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={this.toggleChange}/>
+                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.onlineBooking}  onChange={() => this.toggleChange('onlineBooking')}/>
                                                                     <span className="check"/>
                                                                     Включить онлайн запись
                                                                 </label>&nbsp;
                                                                 <Hint hintMessage="Включает возможность записи к сотруднику через онлайн-запись" />
                                                             </div>
+
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" type="checkbox" checked={this.state.staff.adminBooking}  onChange={() => this.toggleChange('adminBooking')}/>
+                                                                    <span className="check"/>
+                                                                    Включить отображение в журнале
+                                                                </label>&nbsp;
+                                                                <Hint hintMessage={`Включает возможность\nзаписи к сотруднику\nв журнале`} />
+                                                            </div>
+
+                                                            <div className="check-box">
+                                                                <label>
+                                                                    <input className="form-check-input" type="checkbox"
+                                                                           checked={this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis}
+                                                                           onChange={(e) => this.toggleOnlineZapisOffChange(e)}/>
+                                                                    <span className="check"/>
+                                                                    Отключить онлайн-запись на определённый период
+                                                                </label>&nbsp;
+                                                            </div>
+
+                                                            {this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                                <p className="staff-day-picker-title">Начало</p>
+                                                                <DatePicker
+                                                                    // closedDates={staffAll.closedDates}
+                                                                    type="day"
+                                                                    selectedDay={selectedStartDayOff}
+                                                                    handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
+                                                                    dayPickerProps={dayPickerProps}
+                                                                />
+                                                            </div>
+                                                            }
+
+                                                            {this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                                <p className="staff-day-picker-title">Конец</p>
+                                                                <DatePicker
+                                                                    // closedDates={staffAll.closedDates}
+                                                                    type="day"
+                                                                    selectedDay={selectedEndDayOff}
+                                                                    handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
+                                                                    dayPickerProps={{
+                                                                        ...dayPickerProps,
+                                                                        disabledDays: [
+                                                                            {
+                                                                                before: new Date(moment(selectedStartDayOff).utc().toDate()),
+                                                                            },
+                                                                            {
+                                                                                after: new Date(moment().utc().add(6, 'month').toDate()),
+                                                                            },
+                                                                        ]
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            }
 
 
                                                             {/*<p>Конец работы</p>*/}
@@ -365,10 +443,60 @@ class NewStaff extends React.Component {
     }
 
 
-    toggleChange () {
+    toggleChange (checkboxKey) {
         const { staff } = this.state;
 
-        this.setState({ staff: {...staff, onlineBooking: !staff.onlineBooking }});
+        this.setState({ staff: {...staff, [checkboxKey]: !staff[checkboxKey] }});
+    }
+
+    handleDayOffClick(day, modifiers = {}, dayKey){
+        const { staff } = this.state;
+
+        let daySelected = moment(day);
+
+        const updatedState = {};
+        if (dayKey === 'selectedStartDayOff') {
+            updatedState.selectedStartDayOff = daySelected.utc().startOf('day').toDate();
+            updatedState.selectedEndDayOff = daySelected.add(1, 'day').utc().startOf('day').toDate();
+            updatedState.staff = {
+                ...staff,
+                startDateOffMilis: parseInt(moment(day).subtract(1, 'day').format('x')),
+                endDateOffMilis: parseInt(moment(day).add(2, 'day').format('x'))
+            }
+        } else {
+            updatedState.selectedEndDayOff = daySelected.utc().startOf('day').toDate();
+            updatedState.staff = {
+                ...staff,
+                endDateOffMilis: parseInt(moment(day).add(1, 'day').format('x'))
+            }
+        }
+
+        this.setState(updatedState);
+    }
+
+    toggleOnlineZapisOffChange(e) {
+        const { staff } = this.state;
+
+        const updatedState = {};
+
+        if (this.state.staff.startDateOffMilis === this.state.staff.endDateOffMilis) {
+            updatedState.staff= {
+                ...staff,
+                startDateOffMilis: parseInt(moment().subtract(1, 'day').format('x')),
+                endDateOffMilis: parseInt(moment().add(2, 'day').format('x'))
+            };
+            updatedState.selectedStartDayOff = moment().utc().startOf('day').toDate();
+            updatedState.selectedEndDayOff = moment().add(1, 'day').utc().startOf('day').toDate();
+        } else {
+            updatedState.staff= {
+                ...staff,
+                startDateOffMilis: parseInt(moment().format('x')),
+                endDateOffMilis: parseInt(moment().format('x'))
+            };
+            updatedState.selectedStartDayOff = moment().utc().startOf('day').toDate();
+            updatedState.selectedEndDayOff = moment().utc().startOf('day').toDate();
+        }
+        this.setState(updatedState);
     }
 
     updateStaff(){

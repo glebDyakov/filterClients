@@ -21,6 +21,7 @@ import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
 import TabStaffComments from "./components/TabStaffComments";
 import TabCreateComment from "./components/TabCreateComment";
+import { getFirstScreen } from "../_helpers/common";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -153,16 +154,26 @@ class IndexPage extends PureComponent {
 
             })
         }
-        if ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
-        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies))))) {
-            this.setScreen(1)
+        if (newProps.staff.info && ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
+        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies)))))) {
+            this.setScreen(getFirstScreen(newProps.staff.info.firstScreen))
         }
+
+        if (!this.state.firstScreenSet && newProps.staff.info && !newProps.staff.info.subCompanies) {
+            const screen = getFirstScreen(newProps.staff.info.firstScreen)
+            this.setScreen(screen)
+            this.setState({ firstScreenSet: true })
+            if (screen === 2) {
+                this.setState({ flagAllStaffs: true})
+            }
+        }
+
     }
 
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if (prevState.screen === 0 && this.state.screen === 1) {
+        if (prevState.screen === 0 && this.state.screen === (this.props.staff.info && getFirstScreen(this.props.staff.info.firstScreen))) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
@@ -221,7 +232,12 @@ class IndexPage extends PureComponent {
     }
 
     selectSubcompany(subcompany) {
-        this.setState({ selectedSubcompany: subcompany, screen: 1 })
+        const updatedState = {}
+        const firstScreen = getFirstScreen(subcompany.firstScreen)
+        if (firstScreen === 2) {
+            updatedState.flagAllStaffs = true
+        }
+        this.setState({ selectedSubcompany: subcompany, screen: firstScreen, ...updatedState })
     }
 
     handleChange(e) {
@@ -303,8 +319,9 @@ class IndexPage extends PureComponent {
         const { history, match } = this.props;
         const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
-        const { error, isLoading, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
+        const { error, isLoading: isLoadingFromProps, isLoadingServices, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
 
+        const isLoading = isLoadingFromProps || isLoadingServices
         let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
             return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
         });
@@ -425,10 +442,15 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        isLoading={isLoading}
+                        history={history}
+                        match={match}
+                        firstScreen={info.firstScreen}
                         isStartMovingVisit={isStartMovingVisit}
                         clearSelectedServices={this.clearSelectedServices}
                         flagAllStaffs={flagAllStaffs}
                         serviceGroups={serviceGroups}
+                        subcompanies={subcompanies}
                         selectedServices={selectedServices}
                         selectedStaff={selectedStaff}
                         services={services}

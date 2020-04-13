@@ -154,9 +154,9 @@ const CellAppointment = (props) => {
                 )}
 
                 {appointment.hasCoAppointments && <Popover props={{className:"super-visit", title:"Мультивизит"}} />}
-                <span className="service_time">
+                <span id={`${appointment.appointmentId}-service-time`} className="service_time">
                                                 {appointment.clientNotCome && <Popover props={{className:"client-not-come", title:"Клиент не пришел", minWidth: '61px'}} />}
-                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} -
+                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}-
                     {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                         </span>
             </p>

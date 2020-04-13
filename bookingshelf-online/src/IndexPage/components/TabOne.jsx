@@ -154,7 +154,7 @@ class TabOne extends  PureComponent{
                                                     src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                     alt=""/>
                                             </div>
-                                            <div style={{ textAlign: 'center' }}>
+                                            <div style={{ textAlign: 'center', width: '70px' }}>
                                             {staff.rating ? (
                                                 <StarRatings
                                                     rating={staff.rating}
@@ -293,7 +293,7 @@ class TabOne extends  PureComponent{
 
                                   }
 
-                                  <div style={{ textAlign: 'center' }}>
+                                  <div style={{ textAlign: 'center', width: '95px', margin: '0 auto' }}>
                                             <img className="staff-comments" onClick={() => this.handleStaffCommentsClick(staff)} style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             />
                                             {staff.rating ? (

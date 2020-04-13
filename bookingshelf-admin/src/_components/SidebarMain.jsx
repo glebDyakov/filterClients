@@ -137,6 +137,20 @@ class SidebarMain extends React.Component {
         const collapse = value === 'true';
         localStorage.setItem('collapse', value);
         this.setState({ collapse });
+
+        const elems = document.getElementsByClassName('modal---modal-overlay---3D5Nr')
+        if (elems) {
+            elems[0].style.marginLeft = collapse ? '70px' : '250px'
+        }
+
+        const headerLayout = document.getElementById('header-layout');
+        if (headerLayout) {
+            if (collapse) {
+                headerLayout.classList.remove("collapsed-header");
+            } else {
+                headerLayout.classList.add("collapsed-header");
+            }
+        }
     }
 
     toggleDropdown(key) {
@@ -430,7 +444,7 @@ class SidebarMain extends React.Component {
                     </Link></div>
 
                 </ul>
-                <div className="modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
+                <div className="sidebar-modal modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
                         <div className="modal-content modal-height">
                             <div className="modal-header">
