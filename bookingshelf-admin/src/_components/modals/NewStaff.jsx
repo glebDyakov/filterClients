@@ -21,9 +21,10 @@ const staffErrors = {
 class NewStaff extends React.Component {
     constructor(props) {
         super(props);
+
         this.state={
-            selectedStartDayOff: props.edit && props.edit ? moment(props.staff_working.startDateOffMilis).add(1, 'day').utc().toDate() : moment().utc().toDate(),
-            selectedEndDayOff: props.edit && props.edit ? moment(props.staff_working.endDateOffMilis).subtract(1 ,'day').utc().toDate() : moment().utc().toDate(),
+            selectedStartDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.startDateOffMilis).add(1, 'day').utc().toDate() : moment().utc().toDate(),
+            selectedEndDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.endDateOffMilis).subtract(1 ,'day').utc().toDate() : moment().utc().toDate(),
             staff: props.edit && props.edit ? props.staff_working : {
                 "firstName":"",
                 "lastName":"",
@@ -302,14 +303,14 @@ class NewStaff extends React.Component {
                                                             <div className="check-box">
                                                                 <label>
                                                                     <input className="form-check-input" type="checkbox"
-                                                                           checked={this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis}
+                                                                           checked={(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis}
                                                                            onChange={(e) => this.toggleOnlineZapisOffChange(e)}/>
                                                                     <span className="check"/>
                                                                     Отключить онлайн-запись на определённый период
                                                                 </label>&nbsp;
                                                             </div>
 
-                                                            {this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                            {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
                                                                 <p className="staff-day-picker-title">Начало</p>
                                                                 <DatePicker
                                                                     // closedDates={staffAll.closedDates}
@@ -321,7 +322,7 @@ class NewStaff extends React.Component {
                                                             </div>
                                                             }
 
-                                                            {this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                            {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis && <div className="staff-day-picker online-zapis-date-picker mb-3">
                                                                 <p className="staff-day-picker-title">Конец</p>
                                                                 <DatePicker
                                                                     // closedDates={staffAll.closedDates}
