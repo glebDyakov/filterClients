@@ -674,6 +674,19 @@
                                 width: 200px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .msg-inner-buttons {
+                                    position: absolute;
+                                    left: -2px;
+                                    margin-top: 2px;
+                                    display: flex;
+                                    width: 200px;
+                                    border-radius: 0 !important;
+
+                                    &:hover {
+                                        opacity: 1 !important;
+                                    }
+                                }
+
                                 .msg-inner-button-wrapper {
                                     position: relative;
                                     min-width: unset !important;
