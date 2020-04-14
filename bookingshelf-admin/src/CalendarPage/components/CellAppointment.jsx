@@ -248,7 +248,7 @@ const CellAppointment = (props) => {
                                 marginTop: '2px',
                             }}
                                  onClick={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId)}
-                                 className="cell msg-inner-button-wrapper"
+                                 className="msg-inner-button-wrapper"
                             >
                                 <button className="button"
                                         style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
@@ -260,7 +260,7 @@ const CellAppointment = (props) => {
                                 marginTop: '5px',
                             }}
                                  onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                 className="cell msg-inner-button-wrapper"
+                                 className="msg-inner-button-wrapper"
                             >
                                 <button className="button"
                                         style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
