@@ -237,6 +237,16 @@ class Index extends Component {
 
                                 </div>
 
+                                <div className="col-sm-8">
+                                    <p>Банковские реквизиты</p>
+                                    <div style={{ height: '80px' }} className="name_company_wrapper form-control">
+                                        <textarea style={{ paddingRight: '55px' }} className="company_input" name="bankDetails" maxLength="1800"
+                                               value={subcompanies[0].bankDetails} onChange={(e) => this.handleChange(e, 0)}/>
+                                        <span className="company_counter">{subcompanies[0].bankDetails.length}/1800</span>
+
+                                    </div>
+                                </div>
+
                             </div>
 
                         </form>}
