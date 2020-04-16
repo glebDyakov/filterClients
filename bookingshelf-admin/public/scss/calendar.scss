@@ -674,14 +674,61 @@
                                 width: 200px;
                                 box-shadow: 0 0 5px #ccc;
 
+                                .msg-inner-buttons {
+                                    position: absolute;
+                                    left: -2px;
+                                    margin-top: 2px;
+                                    display: flex;
+                                    width: 200px;
+                                    border-radius: 0 !important;
+
+                                    &:hover {
+                                        opacity: 1 !important;
+                                    }
+                                }
+
                                 .msg-inner-button-wrapper {
                                     position: relative;
                                     min-width: unset !important;
                                     max-width: unset !important;
-                                    width: 150px;
-                                    margin: 0 auto;
+                                    overflow: visible;
+                                    width: 67px;
+                                    margin: 0;
                                     cursor: pointer;
                                     font-size: 14px;
+                                }
+
+                                .msg-inner-button-wrapper-1 {
+                                    border-top-left-radius: 0;
+                                    border-top-right-radius: 0;
+                                    border-bottom-right-radius: 0;
+                                    border-bottom-left-radius: 5px;
+                                    background-color: #f3a410;
+                                }
+                                .msg-inner-button-wrapper-2 {
+                                    border-radius: 0;
+                                    background-color: #909090;
+                                }
+                                .msg-inner-button-wrapper-3 {
+                                    border-top-left-radius: 0;
+                                    border-top-right-radius: 0;
+                                    border-bottom-left-radius: 0;
+                                    border-bottom-right-radius: 5px;
+                                    background-color: #d41316;
+                                }
+
+                                .msg-inner-button-wrapper-1, .msg-inner-button-wrapper-2, .msg-inner-button-wrapper-3 {
+                                    color: white;
+                                    text-align: center;
+                                    border: none;
+                                    margin: 0 auto;
+                                    display: flex;
+                                    justify-content: center;
+                                    flex-direction: column;
+                                    width: 150px;
+                                    height: 61px;
+                                    font-size: 12px;
+                                    font-family: HelveticaNeueCyr;
                                 }
 
                                 .move-white {
@@ -749,12 +796,13 @@
                                     border-bottom: 1px solid rgba(172, 172, 172, 0.5);
 
                                     &.new-text {
+                                        padding-left: 10px;
                                         height: 35px;
                                         line-height: 35px;
                                         border: none;
                                         background: #0a1330;
                                         color: #fff;
-                                        text-align: center;
+                                        text-align: left;
                                         font-weight: bold;
                                         position: absolute;
                                         top: 0;

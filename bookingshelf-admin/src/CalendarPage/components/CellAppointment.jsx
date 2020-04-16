@@ -243,35 +243,29 @@ const CellAppointment = (props) => {
                     {appointment.description && <p>Заметка: {appointment.description}</p>}
 
                     {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
-                        <React.Fragment>
-                            <div style={{
-                                marginTop: '2px',
-                            }}
+                        <div className="msg-inner-buttons">
+                            <div
                                  onClick={() => startMovingVisit(appointment, totalDuration, workingStaffElement.staffId)}
-                                 className="cell msg-inner-button-wrapper"
+                                 className="msg-inner-button-wrapper"
                             >
-                                <button className="button"
-                                        style={{backgroundColor: '#f3a410', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                    Перенести визит
-                                </button>
+                                <div className="msg-inner-button-wrapper-1">
+                                    <img style={{ width: '20px' }} src={`${process.env.CONTEXT}public/img/appointment_move.svg`} alt=""/>
+                                    Перенести
+                                </div>
                                 {/*<span className="move-white"/>*/}
                             </div>
-                            <div style={{
-                                marginTop: '5px',
-                            }}
+                            <div
                                  onClick={() => changeTime(currentTime, workingStaffElement, numbers, true, currentAppointments)}
-                                 className="cell msg-inner-button-wrapper"
+                                 className="msg-inner-button-wrapper"
                             >
-                                <button className="button"
-                                        style={{backgroundColor: '#909090', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}>
-                                    Изменить визит
-                                </button>
+                                <div className="msg-inner-button-wrapper-2">
+                                    <img style={{ width: '20px' }} src={`${process.env.CONTEXT}public/img/appointment_edit.svg`} alt=""/>
+                                    Изменить
+                                </div>
                                 {/*<span className="move-white"/>*/}
                             </div>
-                            <div style={{
-                                marginTop: '5px',
-                            }}
-                                 className="cell msg-inner-button-wrapper"
+                            <div
+                                 className="msg-inner-button-wrapper"
                                  data-toggle="modal"
                                  data-target=".delete-notes-modal"
                                  onClick={() => updateAppointmentForDeleting({
@@ -279,15 +273,14 @@ const CellAppointment = (props) => {
                                      staffId: workingStaffElement.staffId
                                  })}
                             >
-                                <button className="button"
-                                        style={{backgroundColor: '#d41316', border: 'none', margin: '0 auto', display: 'block', width: '150px', minHeight: '32px', height: '32px', fontSize: '14px'}}
-                                >
-                                    Удалить визит
-                                </button>
+                                <div className="msg-inner-button-wrapper-3">
+                                    <img style={{ width: '17px' }} src={`${process.env.CONTEXT}public/img/appointment_delete.svg`} alt=""/>
+                                    Удалить
+                                </div>
                                 {/*<span className="cancel-white"/>*/}
                             </div>
 
-                        </React.Fragment>)
+                        </div>)
                     }
                 </div>
             </div> }

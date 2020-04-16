@@ -565,12 +565,12 @@ class IndexPage extends PureComponent {
         const description = `${title}. Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.`
         return (
           <React.Fragment>
-            <Helmet>
+            {info && info.companyName && <Helmet>
                 <meta name="title" content={title} />
                 <meta name="description" content={description} />
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
-            </Helmet>
+            </Helmet>}
             <div className="container_popups">
 
                 {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}
