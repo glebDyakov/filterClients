@@ -154,7 +154,7 @@ class TabOne extends  PureComponent{
                                                     src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                     alt=""/>
                                             </div>
-                                            <div style={{ textAlign: 'center', width: '70px' }}>
+                                            <div style={{ textAlign: 'center', width: '70px', margin: '0 auto' }}>
                                             {staff.rating ? (
                                                 <StarRatings
                                                     rating={staff.rating}
