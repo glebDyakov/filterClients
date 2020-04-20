@@ -205,7 +205,7 @@ class Index extends React.Component {
                                 <span>Телефон</span>
                                 <PhoneInput
                                     value={user.phone}
-                                    onChange={phone => this.setState({ user: { ...user, phone } })}
+                                    handleChange={phone => this.setState({ user: { ...user, phone } })}
                                     getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
                                 />
 

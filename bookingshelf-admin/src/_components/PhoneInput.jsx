@@ -54,7 +54,7 @@ class PhoneInput extends React.Component {
     handleChange(phone) {
         const value = phone.startsWith('+') ? phone : `+${phone}`;
         this.setState({ isValidPhone: this.validatePhone(value) })
-        this.props.onChange(value.replace(/[() ]/g, ''));
+        this.props.handleChange(value.replace(/[() ]/g, ''));
     }
 
     handleBlur(event) {
@@ -92,8 +92,6 @@ class PhoneInput extends React.Component {
                 country={countryCode}
                 regions={['america', 'europe']}
                 placeholder=""
-                enableLongNumbers={true}
-                disableAreaCodes={true}
                 inputClass={`${((!isTouchedPhone || isValidPhone) ? '' : ' redBorder')}`}
                 value={value}
                 onChange={this.handleChange}

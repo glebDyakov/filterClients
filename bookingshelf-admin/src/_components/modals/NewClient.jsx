@@ -173,7 +173,7 @@ class NewClient extends React.Component {
                                     <p className="title_block">Номер телефона</p>
                                     <PhoneInput
                                         value={client.phone}
-                                        onChange={phone => this.setState({ client: { ...client, phone } })}
+                                        handleChange={phone => this.setState({ client: { ...client, phone } })}
                                         getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
                                     />
                                 </div>
