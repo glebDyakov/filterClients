@@ -19,7 +19,7 @@ class PhoneInput extends React.Component {
 
     componentDidMount() {
         this.getIsValidPhone(this.state.isValidPhone);
-        this.updateCountryCode(this.props.countryCode)
+        //this.updateCountryCode(this.props.countryCode)
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -29,26 +29,26 @@ class PhoneInput extends React.Component {
         }
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.countryCode && (newProps.countryCode !== this.props.countryCode)) {
-            this.updateCountryCode(newProps.countryCode)
-        }
-    }
+    // componentWillReceiveProps(newProps) {
+    //     if (newProps.countryCode && (newProps.countryCode !== this.props.countryCode)) {
+    //         this.updateCountryCode(newProps.countryCode)
+    //     }
+    // }
 
-    updateCountryCode(newCountryCode) {
-        let countryCode;
-        switch (newCountryCode) {
-            case 'UKR':
-                countryCode = 'ua';
-                break;
-            case 'RUS':
-                countryCode = 'ru';
-                break;
-            default:
-                countryCode = 'by';
-        }
-        this.setState( { countryCode });
-    }
+    // updateCountryCode(newCountryCode) {
+    //     let countryCode;
+    //     switch (newCountryCode) {
+    //         case 'UKR':
+    //             countryCode = 'ua';
+    //             break;
+    //         case 'RUS':
+    //             countryCode = 'ru';
+    //             break;
+    //         default:
+    //             countryCode = 'by';
+    //     }
+    //     this.setState( { countryCode });
+    // }
 
     handleChange(phone) {
         const value = phone.startsWith('+') ? phone : `+${phone}`;
