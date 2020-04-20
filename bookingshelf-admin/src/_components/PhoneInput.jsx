@@ -90,7 +90,6 @@ class PhoneInput extends React.Component {
         return (
             <ReactPhoneInput
                 defaultCountry={countryCode}
-                country={countryCode}
                 regions={['america', 'europe']}
                 placeholder=""
                 inputClass={`${((!isTouchedPhone || isValidPhone) ? '' : ' redBorder')}`}
