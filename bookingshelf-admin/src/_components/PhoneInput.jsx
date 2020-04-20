@@ -92,8 +92,6 @@ class PhoneInput extends React.Component {
                 country={countryCode}
                 regions={['america', 'europe']}
                 placeholder=""
-                enableLongNumbers={true}
-                disableAreaCodes={true}
                 inputClass={`${((!isTouchedPhone || isValidPhone) ? '' : ' redBorder')}`}
                 value={value}
                 onChange={this.handleChange}
