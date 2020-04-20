@@ -201,7 +201,7 @@ class NewStaff extends React.Component {
                                                             <p>Номер телефона</p>
                                                             <PhoneInput
                                                                 value={staff.phone}
-                                                                onChange={phone => this.setState({ staff: { ...staff, phone } })}
+                                                                handleChange={phone => this.setState({ staff: { ...staff, phone } })}
                                                                 getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
                                                             />
 

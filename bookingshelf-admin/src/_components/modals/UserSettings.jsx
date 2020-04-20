@@ -133,7 +133,7 @@ class UserSettings extends React.Component {
                                         <p>Номер телефона</p>
                                         <PhoneInput
                                             value={phone}
-                                            onChange={phone => {
+                                            handleChange={phone => {
                                                 this.setState({
                                                     authentication: {
                                                         ...authentication,

@@ -323,7 +323,7 @@ class Index extends Component {
 
                                                 <PhoneInput
                                                     value={subcompany.companyPhone1}
-                                                    onChange={companyPhone1 => {
+                                                    handleChange={companyPhone1 => {
                                                         const newSubcompanies = subcompanies;
                                                         newSubcompanies[i].companyPhone1 = companyPhone1
                                                         this.setState({ subcompanies: newSubcompanies });
@@ -345,7 +345,7 @@ class Index extends Component {
                                                 </div>
                                                 <PhoneInput
                                                     value={subcompany.companyPhone2}
-                                                    onChange={companyPhone2 => {
+                                                    handleChange={companyPhone2 => {
                                                         const newSubcompanies = subcompanies;
                                                         newSubcompanies[i].companyPhone2 = companyPhone2
                                                         this.setState({ subcompanies: newSubcompanies });
@@ -365,7 +365,7 @@ class Index extends Component {
                                                 </div>
                                                 <PhoneInput
                                                     value={subcompany.companyPhone3}
-                                                    onChange={companyPhone3 => {
+                                                    handleChange={companyPhone3 => {
                                                         const newSubcompanies = subcompanies;
                                                         newSubcompanies[i].companyPhone3 = companyPhone3
                                                         this.setState({ subcompanies: newSubcompanies });
