@@ -209,7 +209,10 @@ class Index extends React.Component {
                                     regions={['america', 'europe']}
                                     placeholder=""
                                     value={user.phone}
-                                    onChange={phone => this.setState({ user: { ...user, phone } })}
+                                    onChange={phone => {
+                                        const value = phone.startsWith('+') ? phone : `+${phone}`;
+                                        this.setState({ user: { ...user, phone: value } })
+                                    }}
                                 />
 
                                 <span>Введите email</span>
