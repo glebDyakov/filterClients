@@ -6,7 +6,9 @@ import config from 'config';
 import '../../public/scss/log_in.scss'
 
 import { userActions } from '../_actions';
-import PhoneInput from "../_components/PhoneInput";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+
 import {isValidEmailAddress} from "../_helpers/validators";
 
 class Index extends React.Component {
@@ -204,9 +206,12 @@ class Index extends React.Component {
 
                                 <span>Телефон</span>
                                 <PhoneInput
+                                    defaultCountry={'by'}
+                                    country={'by'}
+                                    regions={['america', 'europe']}
+                                    placeholder=""
                                     value={user.phone}
-                                    handleChange={phone => this.setState({ user: { ...user, phone } })}
-                                    getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                    onChange={phone => this.setState({ user: { ...user, phone } })}
                                 />
 
                                 <span>Введите email</span>
