@@ -209,7 +209,7 @@ class Index extends React.Component {
                                     regions={['america', 'europe']}
                                     placeholder=""
                                     value={user.phone}
-                                    handleChange={phone => this.setState({ user: { ...user, phone } })}
+                                    onChange={phone => this.setState({ user: { ...user, phone } })}
                                 />
 
                                 <span>Введите email</span>
