@@ -378,7 +378,7 @@ class Index extends Component {
                                                     country={'by'}
                                                     regions={['america', 'europe']}
                                                     placeholder=""
-                                                    value={subcompany.companyPhone2}
+                                                    value={subcompany.companyPhone3}
                                                     onChange={companyPhone3 => {
                                                         const newSubcompanies = subcompanies;
                                                         newSubcompanies[i].companyPhone3 = companyPhone3.replace(/[() ]/g, '')

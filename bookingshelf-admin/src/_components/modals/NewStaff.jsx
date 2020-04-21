@@ -516,7 +516,6 @@ class NewStaff extends React.Component {
         if(staff.costaffs && staff.costaffs.length===0) {
             staff.costaffs = [];
         }
-        staff.phone = staff.phone.startsWith('+') ? staff.phone : `+${staff.phone}`;
         return updateStaff(staff);
     };
 
@@ -529,7 +528,6 @@ class NewStaff extends React.Component {
             this.setState({ extraSuccessText: false });
         }
 
-        staff.phone = staff.phone.startsWith('+') ? staff.phone : `+${staff.phone}`;
         return addStaff(staff);
     };
 

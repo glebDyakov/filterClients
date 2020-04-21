@@ -775,13 +775,18 @@ class Index extends Component {
     updateStaff(staff){
         const { dispatch } = this.props;
 
-        dispatch(staffActions.update(JSON.stringify([staff]), staff.staffId));
+        const body = JSON.parse(JSON.stringify(staff));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+
+        dispatch(staffActions.update(JSON.stringify([body]), staff.staffId));
     };
 
     addStaff(staff){
         const { dispatch } = this.props;
 
-        dispatch(staffActions.add(JSON.stringify(staff)));
+        const body = JSON.parse(JSON.stringify(staff));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+        dispatch(staffActions.add(JSON.stringify(body)));
     };
 
     addWorkingHours(timing, id, edit){
