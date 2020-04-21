@@ -67,7 +67,7 @@ class UserSettings extends React.Component {
     handleSubmit(e) {
         const { authentication } = this.state;
         const { dispatch, staff } = this.props;
-        const isValidPhone = authentication.user.profile.phone && isValidNumber(authentication.user.profile.phone);
+        const isValidPhone = authentication.user.profile.phone && isValidNumber(authentication.user.profile.phone.startsWith('+') ? authentication.user.profile.phone : `+${authentication.user.profile.phone}`);
 
         const activeStaff = staff.staff && staff.staff.find(item => item.staffId === authentication.user.profile.staffId);
         const imageBase64 = (activeStaff && activeStaff.imageBase64) ? activeStaff.imageBase64 : '';
@@ -98,7 +98,7 @@ class UserSettings extends React.Component {
             }
 
             localStorage.setItem('sound', this.state.sound);
-
+            profile.phone = profile.phone.startsWith('+') ? profile.phone : `+${profile.phone}`
             dispatch(
                 userActions.updateProfile({
                     ...profile,
