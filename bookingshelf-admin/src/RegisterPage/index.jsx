@@ -210,8 +210,7 @@ class Index extends React.Component {
                                     placeholder=""
                                     value={user.phone}
                                     onChange={phone => {
-                                        const value = phone.startsWith('+') ? phone : `+${phone}`;
-                                        this.setState({ user: { ...user, phone: value } })
+                                        this.setState({ user: { ...user, phone } })
                                     }}
                                 />
 
