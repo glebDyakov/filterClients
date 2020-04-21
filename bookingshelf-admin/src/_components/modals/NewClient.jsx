@@ -148,7 +148,7 @@ class NewClient extends React.Component {
     render() {
         const { day, month, year, client, edit, alert, clients }=this.state;
 
-        const isValidPhone = client.phone && isValidNumber(client.phone);
+        const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
 
         return (
             <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
