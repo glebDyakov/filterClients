@@ -112,6 +112,7 @@ class Index extends React.Component {
 
         this.setState({ submitted: true });
         const { user, agreed, authentication, emailIsValid,  } = this.state;
+        user.phone = user.phone.startsWith('+') ? user.phone : `+${user.phone}`;
         const { dispatch } = this.props;
         if ( emailIsValid && user.companyName && user.email && user.password && user.timezoneId!=='' && user.countryCode!=='' && agreed && !authentication.registering) {
             dispatch(userActions.register(user));
