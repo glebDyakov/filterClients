@@ -115,6 +115,7 @@ class Index extends Component {
     handleSubmit() {
         const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
         this.props.dispatch(companyActions.add({
+            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
             ...this.props.company.settings,
             appointmentMessage,
             onlineZapisEndTimeMillis,

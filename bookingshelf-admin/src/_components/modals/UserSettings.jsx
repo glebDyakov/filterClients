@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from "@trendmicro/react-modal";
 import PhoneInput from "../PhoneInput";
+import ReactPhoneInput from "react-phone-input-2";
+import { isValidNumber } from "libphonenumber-js";
 
 class UserSettings extends React.Component {
     constructor(props) {
@@ -63,8 +65,9 @@ class UserSettings extends React.Component {
     }
 
     handleSubmit(e) {
-        const { authentication, isValidPhone } = this.state;
+        const { authentication } = this.state;
         const { dispatch, staff } = this.props;
+        const isValidPhone = authentication.user.profile.phone && isValidNumber(authentication.user.profile.phone);
 
         const activeStaff = staff.staff && staff.staff.find(item => item.staffId === authentication.user.profile.staffId);
         const imageBase64 = (activeStaff && activeStaff.imageBase64) ? activeStaff.imageBase64 : '';
@@ -131,17 +134,20 @@ class UserSettings extends React.Component {
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Номер телефона</p>
-                                        <PhoneInput
+                                        <ReactPhoneInput
+                                            defaultCountry={'by'}
+                                            country={'by'}
+                                            regions={['america', 'europe']}
+                                            placeholder=""
                                             value={phone}
-                                            handleChange={phone => {
+                                            onChange={phone => {
                                                 this.setState({
                                                     authentication: {
                                                         ...authentication,
-                                                        user: { ...authentication.user, profile: {...authentication.user.profile, phone } }
+                                                        user: { ...authentication.user, profile: {...authentication.user.profile, phone: phone.replace(/[() ]/g, '') } }
                                                     }
                                                 });
                                             }}
-                                            getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
                                         />
                                     </div>
                                 </div>
