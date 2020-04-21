@@ -325,6 +325,8 @@ class NewClient extends React.Component {
         }
         delete client.appointments;
 
+        client.phone = client.phone.startsWith('+') ? client.phone : `+${client.phone}`
+
         return updateClient({ ...client, birthDate });
     };
 
@@ -339,6 +341,7 @@ class NewClient extends React.Component {
             this.props.checkUser(client);
         }
 
+        client.phone = client.phone.startsWith('+') ? client.phone : `+${client.phone}`
         return addClient({ ...client, birthDate });
     };
 
