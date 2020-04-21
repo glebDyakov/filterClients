@@ -211,7 +211,7 @@ class Index extends React.Component {
                                     placeholder=""
                                     value={user.phone}
                                     onChange={phone => {
-                                        this.setState({ user: { ...user, phone } })
+                                        this.setState({ user: { ...user, phone: phone.replace(/[() ]/g, '') } })
                                     }}
                                 />
 
