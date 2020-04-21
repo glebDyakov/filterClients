@@ -81,6 +81,7 @@ class Index extends Component {
         }
         this.setState(newState)
         this.props.dispatch(companyActions.updateCompanySettings({
+            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
             ...this.props.company.settings,
             [checkboxKey]: newState[checkboxKey]
         }, 'isServiceIntervalLoading'));
@@ -89,6 +90,7 @@ class Index extends Component {
     handleScreenCheckboxChange(firstScreen) {
         this.setState({ firstScreen })
         this.props.dispatch(companyActions.updateCompanySettings({
+            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
             ...this.props.company.settings,
             firstScreen
         }, 'isFirstScreenLoading'));
@@ -131,6 +133,7 @@ class Index extends Component {
     }
 
     queryInitData() {
+        this.props.dispatch(companyActions.getSubcompanies());
         this.props.dispatch(companyActions.getBookingInfo());
     }
 
