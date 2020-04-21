@@ -7,7 +7,7 @@ import '../../public/scss/log_in.scss'
 
 import { userActions } from '../_actions';
 import {isValidEmailAddress} from "../_helpers/validators";
-import PhoneInput from "../_components/PhoneInput";
+import ReactPhoneInput from "react-phone-input-2";
 
 class Index extends React.Component {
     constructor(props) {
@@ -111,16 +111,16 @@ class Index extends React.Component {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { user, agreed, authentication, emailIsValid, isValidPhone } = this.state;
+        const { user, agreed, authentication, emailIsValid,  } = this.state;
         user.phone = user.phone.startsWith('+') ? user.phone : `+${user.phone}`;
         const { dispatch } = this.props;
-        if (isValidPhone && emailIsValid && user.companyName && user.email && user.password && user.timezoneId!=='' && user.countryCode!=='' && agreed && !authentication.registering) {
+        if ( emailIsValid && user.companyName && user.email && user.password && user.timezoneId!=='' && user.countryCode!=='' && agreed && !authentication.registering) {
             dispatch(userActions.register(user));
         }
     }
 
     render() {
-        const { user, isValidPhone, emailIsValid, agreed, authentication, invalidFields,  } = this.state;
+        const { user, emailIsValid, agreed, authentication, invalidFields,  } = this.state;
 
         return (
             <div>
@@ -204,10 +204,15 @@ class Index extends React.Component {
                                 </div>
 
                                 <span>Телефон</span>
-                                <PhoneInput
+                                <ReactPhoneInput
+                                    defaultCountry={'by'}
+                                    country={'by'}
+                                    regions={['america', 'europe']}
+                                    placeholder=""
                                     value={user.phone}
-                                    handleChange={phone => this.setState({ user: { ...user, phone } })}
-                                    getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                    onChange={phone => {
+                                        this.setState({ user: { ...user, phone } })
+                                    }}
                                 />
 
                                 <span>Введите email</span>
@@ -243,8 +248,8 @@ class Index extends React.Component {
                                     authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)  &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
                                 }
-                                <button className={((!isValidPhone || !emailIsValid || !user.companyName.replace(/[ ]/g, '') || user.countryCode==='' || user.timezoneId==='' || user.password.replace(/[ ]/g, '')==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
-                                        type={isValidPhone && emailIsValid && user.companyName.replace(/[ ]/g, '') && user.countryCode!=='' && user.timezoneId!=='' && user.password.replace(/[ ]/g, '')!=='' && agreed && 'submit'}
+                                <button className={((!emailIsValid || !user.companyName.replace(/[ ]/g, '') || user.countryCode==='' || user.timezoneId==='' || user.password.replace(/[ ]/g, '')==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
+                                        type={emailIsValid && user.companyName.replace(/[ ]/g, '') && user.countryCode!=='' && user.timezoneId!=='' && user.password.replace(/[ ]/g, '')!=='' && agreed && 'submit'}
                                 >Регистрация
                                 </button>
 
