@@ -6,6 +6,7 @@ import Avatar from "react-avatar-edit";
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import {access} from "../_helpers/access";
 import PhoneInput from "../_components/PhoneInput";
+import ReactPhoneInput from "react-phone-input-2";
 
 class Index extends Component {
     constructor(props) {
@@ -321,11 +322,15 @@ class Index extends Component {
                                                 {/*    <input type="radio" aria-label="" name="defaultPhone1" disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}  checked={subcompany.defaultPhone===1} onChange={(e) => this.handleChangePhone(e, i)}/>*/}
                                                 {/*</div>*/}
 
-                                                <PhoneInput
+                                                <ReactPhoneInput
+                                                    defaultCountry={'by'}
+                                                    country={'by'}
+                                                    regions={['america', 'europe']}
+                                                    placeholder=""
                                                     value={subcompany.companyPhone1}
-                                                    handleChange={companyPhone1 => {
+                                                    onChange={companyPhone1 => {
                                                         const newSubcompanies = subcompanies;
-                                                        newSubcompanies[i].companyPhone1 = companyPhone1
+                                                        newSubcompanies[i].companyPhone1 = companyPhone1.replace(/[() ]/g, '')
                                                         this.setState({ subcompanies: newSubcompanies });
                                                     }}
                                                 />
@@ -343,11 +348,15 @@ class Index extends Component {
                                                 <div className="input-text2">
                                                     <input type="radio" aria-label="" name="defaultPhone2" disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}  checked={subcompany.defaultPhone===2} onChange={(e) => this.handleChangePhone(e, i)}/>
                                                 </div>
-                                                <PhoneInput
+                                                <ReactPhoneInput
+                                                    defaultCountry={'by'}
+                                                    country={'by'}
+                                                    regions={['america', 'europe']}
+                                                    placeholder=""
                                                     value={subcompany.companyPhone2}
-                                                    handleChange={companyPhone2 => {
+                                                    onChange={companyPhone2 => {
                                                         const newSubcompanies = subcompanies;
-                                                        newSubcompanies[i].companyPhone2 = companyPhone2
+                                                        newSubcompanies[i].companyPhone2 = companyPhone2.replace(/[() ]/g, '')
                                                         this.setState({ subcompanies: newSubcompanies });
                                                     }}
                                                 />
@@ -363,11 +372,16 @@ class Index extends Component {
                                                 <div className="input-text2">
                                                     <input type="radio" aria-label="" name="defaultPhone3" disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}  checked={subcompany.defaultPhone===3} onChange={(e) => this.handleChangePhone(e, i)}/>
                                                 </div>
-                                                <PhoneInput
-                                                    value={subcompany.companyPhone3}
-                                                    handleChange={companyPhone3 => {
+
+                                                <ReactPhoneInput
+                                                    defaultCountry={'by'}
+                                                    country={'by'}
+                                                    regions={['america', 'europe']}
+                                                    placeholder=""
+                                                    value={subcompany.companyPhone2}
+                                                    onChange={companyPhone3 => {
                                                         const newSubcompanies = subcompanies;
-                                                        newSubcompanies[i].companyPhone3 = companyPhone3
+                                                        newSubcompanies[i].companyPhone3 = companyPhone3.replace(/[() ]/g, '')
                                                         this.setState({ subcompanies: newSubcompanies });
                                                     }}
                                                 />
