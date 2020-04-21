@@ -51,9 +51,8 @@ class PhoneInput extends React.Component {
     // }
 
     handleChange(phone) {
-        const value = phone.startsWith('+') ? phone : `+${phone}`;
-        this.setState({ isValidPhone: this.validatePhone(value) })
-        this.props.handleChange(value.replace(/[() ]/g, ''));
+        this.setState({ isValidPhone: this.validatePhone(phone) })
+        this.props.handleChange(phone.replace(/[() ]/g, ''));
     }
 
     handleBlur(event) {
