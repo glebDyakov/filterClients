@@ -325,9 +325,10 @@ class NewClient extends React.Component {
         }
         delete client.appointments;
 
-        client.phone = client.phone.startsWith('+') ? client.phone : `+${client.phone}`
+        const body = JSON.parse(JSON.stringify(client));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
 
-        return updateClient({ ...client, birthDate });
+        return updateClient({ ...body, birthDate });
     };
 
     addClient(){
@@ -340,9 +341,10 @@ class NewClient extends React.Component {
         if (isModalShouldPassClient) {
             this.props.checkUser(client);
         }
+        const body = JSON.parse(JSON.stringify(client));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
 
-        client.phone = client.phone.startsWith('+') ? client.phone : `+${client.phone}`
-        return addClient({ ...client, birthDate });
+        return addClient({ ...body, birthDate });
     };
 
     closeModal () {
