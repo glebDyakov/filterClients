@@ -80,8 +80,10 @@ class Index extends Component {
             [checkboxKey]: !this.state[checkboxKey]
         }
         this.setState(newState)
+
+        const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
         this.props.dispatch(companyActions.updateCompanySettings({
-            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
+            imageBase64: activeCompany && activeCompany.imageBase64,
             ...this.props.company.settings,
             [checkboxKey]: newState[checkboxKey]
         }, 'isServiceIntervalLoading'));
@@ -89,8 +91,9 @@ class Index extends Component {
 
     handleScreenCheckboxChange(firstScreen) {
         this.setState({ firstScreen })
+        const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
         this.props.dispatch(companyActions.updateCompanySettings({
-            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
+            imageBase64: activeCompany && activeCompany.imageBase64,
             ...this.props.company.settings,
             firstScreen
         }, 'isFirstScreenLoading'));
@@ -114,8 +117,9 @@ class Index extends Component {
 
     handleSubmit() {
         const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
+        const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
         this.props.dispatch(companyActions.add({
-            imageBase64: this.props.company.subcompanies && this.props.company.subcompanies[0].imageBase64,
+            imageBase64: activeCompany && activeCompany.imageBase64,
             ...this.props.company.settings,
             appointmentMessage,
             onlineZapisEndTimeMillis,
@@ -373,7 +377,7 @@ class Index extends Component {
                                     </label>&nbsp;
                                     <Hint hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
                                 </div>
-                                {isOnlineZapisChecked && <div className="online-zapis-date-picker mb-3">
+                                {isOnlineZapisChecked && <div className="online-page-picker online-zapis-date-picker mb-3">
                                     <DatePicker
                                         // closedDates={staffAll.closedDates}
                                         type="day"
