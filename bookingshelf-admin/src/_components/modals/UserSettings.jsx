@@ -77,12 +77,7 @@ class UserSettings extends React.Component {
         this.setState({ submitted: true });
 
         if (authentication.user.profile.firstName && ((!authentication.user.profile.phone || authentication.user.profile.phone.length <=4) || isValidPhone) && authentication.user.profile.email) {
-            const profile= {}
-            Object.keys(authentication.user.profile).forEach(key => {
-                if (authentication.user.profile[key]) {
-                    profile[key] = authentication.user.profile[key]
-                }
-            });
+            const { profile } = authentication.user
 
             if(profile.password && !profile.newPassword){
                 this.setState({ error: 'Поле "Новый пароль" не может быть пустым когда введён текущий пароль'})
@@ -98,10 +93,12 @@ class UserSettings extends React.Component {
             }
 
             localStorage.setItem('sound', this.state.sound);
-            profile.phone = profile.phone.startsWith('+') ? profile.phone : `+${profile.phone}`
+
+            const body = JSON.parse(JSON.stringify(profile));
+            body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
             dispatch(
                 userActions.updateProfile({
-                    ...profile,
+                    ...body,
                     imageBase64
                 })
             );
