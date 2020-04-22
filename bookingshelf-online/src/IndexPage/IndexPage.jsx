@@ -173,7 +173,7 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if (prevState.screen === 0 && this.state.screen === (this.props.staff.info && getFirstScreen(this.props.staff.info.firstScreen))) {
+        if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
