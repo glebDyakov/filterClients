@@ -17,6 +17,7 @@ class UserSettings extends React.Component {
 
         this.state = {
             authentication: props.authentication,
+            profile: props.authentication.user.profile,
             key: props.key,
             users: props.users,
             sound: soundSettings !=='false'
@@ -31,11 +32,6 @@ class UserSettings extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication) || newProps.randNum !== this.props.randNum) {
-
-                this.setState({...this.state, authentication: newProps.authentication })
-        }
-
         if ( JSON.stringify(this.props.users) !==  JSON.stringify(newProps.users)) {
             this.setState({users:newProps.users});
         }
@@ -44,7 +40,7 @@ class UserSettings extends React.Component {
 
     componentDidMount() {
 
-        this.setState({...this.state, authentication: this.props.authentication })
+        this.setState({ profile: this.props.authentication.user.profile })
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,27 +53,27 @@ class UserSettings extends React.Component {
 
     handleChange(e) {
         const { name, value } = e.target;
-        const { authentication } = this.state;
+        const { authentication } = this.props;
+        const { profile } = this.state;
 
 
 
-        this.setState({...this.state, submitted: false, authentication: {...authentication, errorPass: false, user: {...authentication.user, profile: {...authentication.user.profile, [name]: value }}}});
+        this.setState({ submitted: false, profile: {...profile, [name]: value } });
     }
 
     handleSubmit(e) {
-        const { authentication } = this.state;
-        const { dispatch, staff } = this.props;
-        const isValidPhone = authentication.user.profile.phone && isValidNumber(authentication.user.profile.phone.startsWith('+') ? authentication.user.profile.phone : `+${authentication.user.profile.phone}`);
+        const { profile } = this.state;
+        const { dispatch, staff,  } = this.props;
+        const isValidPhone = profile.phone && isValidNumber(profile.phone.startsWith('+') ? profile.phone : `+${profile.phone}`);
 
-        const activeStaff = staff.staff && staff.staff.find(item => item.staffId === authentication.user.profile.staffId);
+        const activeStaff = staff.staff && staff.staff.find(item => item.staffId === profile.staffId);
         const imageBase64 = (activeStaff && activeStaff.imageBase64) ? activeStaff.imageBase64 : '';
 
         e.preventDefault();
 
         this.setState({ submitted: true });
 
-        if (authentication.user.profile.firstName && ((!authentication.user.profile.phone || authentication.user.profile.phone.length <=4) || isValidPhone) && authentication.user.profile.email) {
-            const { profile } = authentication.user
+        if (profile.firstName && ((!profile.phone ||profile.phone.length <=4) || isValidPhone) && profile.email) {
 
             if(profile.password && !profile.newPassword){
                 this.setState({ error: 'Поле "Новый пароль" не может быть пустым когда введён текущий пароль'})
@@ -107,9 +103,9 @@ class UserSettings extends React.Component {
     }
 
     render() {
-        const { firstName, lastName, email, phone, newPassword, newPasswordRepeat } = this.state.authentication && this.state.authentication.user && this.state.authentication.user.profile;
-
-        const { authentication, error } = this.state;
+        const { authentication } = this.props;
+        const { profile, error } = this.state;
+        const { firstName, lastName, email, phone, newPassword, newPasswordRepeat } = profile;
 
         return (
             <div className="modal fade modal_user_setting">
@@ -139,10 +135,7 @@ class UserSettings extends React.Component {
                                             value={phone}
                                             onChange={phone => {
                                                 this.setState({
-                                                    authentication: {
-                                                        ...authentication,
-                                                        user: { ...authentication.user, profile: {...authentication.user.profile, phone: phone.replace(/[() ]/g, '') } }
-                                                    }
+                                                    profile: {...profile, phone: phone.replace(/[() ]/g, '') }
                                                 });
                                             }}
                                         />
@@ -168,7 +161,7 @@ class UserSettings extends React.Component {
                                             <input type="password"
                                                    placeholder=""
                                                    autoComplete="new-password"
-                                                   value={authentication.user.profile.password && authentication.user.profile.password}
+                                                   value={profile.password && profile.password}
                                                    name="password" onChange={this.handleChange}/>
 
                                         </p>
@@ -177,11 +170,11 @@ class UserSettings extends React.Component {
                                 <div className="row">
                                     <div className="calendar col-xl-6">
                                         <p>Новый пароль</p>
-                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && authentication.user.profile.newPassword && authentication.user.profile.newPassword} onChange={this.handleChange} placeholder=""/>
+                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPassword && profile.newPassword} onChange={this.handleChange} placeholder=""/>
                                     </div>
                                     <div className="calendar col-xl-6">
                                         <p>Повторить пароль</p>
-                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && authentication.user.profile.newPasswordRepeat && authentication.user.profile.newPasswordRepeat} onChange={this.handleChange} placeholder=""/>
+                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPasswordRepeat && profile.newPasswordRepeat} onChange={this.handleChange} placeholder=""/>
                                     </div>
                                 </div>
                                 <div className="check-box">
