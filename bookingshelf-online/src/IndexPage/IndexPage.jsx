@@ -109,7 +109,7 @@ class IndexPage extends PureComponent {
             }
             for(let i=firstDayOfMonth; i<=lastDayOfMonth;i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
-                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays.some((time, key, elements) =>{
+                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays && timetableItem.availableDays.some((time, key, elements) =>{
                         const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
                         const checkingDayTimesArray = time.availableTimes;
 
@@ -139,7 +139,7 @@ class IndexPage extends PureComponent {
 
             }
 
-            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
+            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays && timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
             if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.staff.newAppointment)) {
                 this.setState({ screen: 6})
@@ -173,7 +173,7 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if (prevState.screen === 0 && this.state.screen === (this.props.staff.info && getFirstScreen(this.props.staff.info.firstScreen))) {
+        if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
