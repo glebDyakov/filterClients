@@ -169,7 +169,16 @@ class Index extends Component {
         setTimeout(() => this.setState({ isAvatarOpened: true }), 100);
 
         if ((companyName || companyAddress || companyEmail || companyPhone) && timezoneId!=='') {
-            dispatch(companyActions.updateSubcompany(subcompany));
+            const body = JSON.parse(JSON.stringify(subcompany));
+            body.companyPhone1 = body.companyPhone1.length === 1 ? '' : `${body.companyPhone1}`;
+            body.companyPhone1 = body.companyPhone1.startsWith('+') ? body.companyPhone1 : `+${body.companyPhone1}`;
+
+            body.companyPhone2 = body.companyPhone2.length === 1 ? '' : `${body.companyPhone2}`;
+            body.companyPhone2 = body.companyPhone2.startsWith('+') ? body.companyPhone2 : `+${body.companyPhone2}`;
+
+            body.companyPhone3 = body.companyPhone3.length === 1 ? '' : `${body.companyPhone3}`;
+            body.companyPhone3 = body.companyPhone3.startsWith('+') ? body.companyPhone3 : `+${body.companyPhone3}`;
+            dispatch(companyActions.updateSubcompany(body));
         }
         dispatch(notificationActions.updateSubcompanySMS_EMAIL(JSON.stringify({template: subcompany.template}), subcompany.companyId))
     }
