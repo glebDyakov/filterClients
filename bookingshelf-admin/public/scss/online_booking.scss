@@ -1,6 +1,13 @@
 @import "styles-group";
 
-
+.online-page-picker {
+    .button-calendar {
+        min-width: 311px;
+    }
+    .SelectedWeekExample {
+        padding: 0 9px !important;
+    }
+}
 .online-zapis-date-picker {
     .arrow-left, .arrow-right {
         display: none !important;
