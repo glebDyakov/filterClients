@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import { getFirstScreen } from "../../_helpers/common";
+import { staffActions } from "../../_actions";
 
 class TabTwo extends Component {
     constructor(props) {
@@ -14,6 +15,22 @@ class TabTwo extends Component {
 
         const {selectedServices, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
         const { searchValue } = this.state;
+        if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
+            return (
+                <div className="online-zapis-off">
+                    Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                    {(subcompanies.length > 1) && (
+                        <button onClick={() => {
+                            setScreen(0)
+                            this.props.dispatch(staffActions.clearError());
+                            let {company} = match.params;
+                            let url = company.includes('_') ? company.split('_')[0] : company
+                            history.push(`/${url}`)
+                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                    )}
+                </div>
+            )
+        }
         const userNameStyle = {}
         if ((selectedStaff.firstName && selectedStaff.firstName.length > 15) || (selectedStaff.lastName && selectedStaff.lastName > 15)) {
             userNameStyle.fontSize = '13px'
@@ -58,7 +75,7 @@ class TabTwo extends Component {
             )
         }
 
-        return (
+        return  info && (info.bookingPage === match.params.company) && info.onlineZapisOn && (
             <div className="service_selection screen1">
                 <div className="title_block">
                     {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) && <span className="prev_block" onClick={() => {

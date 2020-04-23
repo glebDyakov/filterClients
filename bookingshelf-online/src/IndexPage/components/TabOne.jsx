@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { connect } from 'react-redux';
 import StarRatings from "react-star-ratings";
 import {staffActions} from "../../_actions";
-
+import moment from 'moment';
 
 class TabOne extends  PureComponent{
     constructor(props) {
@@ -70,9 +70,25 @@ class TabOne extends  PureComponent{
     }
 
     render() {
-        const {staffId, handleMoveVisit, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
-        return(
+        if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
+            return (
+                <div className="online-zapis-off">
+                    Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                    {(subcompanies.length > 1) && (
+                        <button onClick={() => {
+                            setScreen(0)
+                            this.props.dispatch(staffActions.clearError());
+                            let {company} = match.params;
+                            let url = company.includes('_') ? company.split('_')[0] : company
+                            history.push(`/${url}`)
+                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                    )}
+                </div>
+            )
+        }
+        return info && (info.bookingPage === match.params.company) && info.onlineZapisOn && (
             <div className="service_selection screen1">
                 <div className="title_block n">
                     {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
