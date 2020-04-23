@@ -328,13 +328,7 @@ class IndexPage extends PureComponent {
 
         let content;
 
-        if (info && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
-            content = (
-                <div className="online-zapis-off">
-                    Онлайн-запись для этой компании отключена
-                </div>
-            )
-        } else if (!info && !error) {
+        if (!info && !error) {
             content = <div className="online-zapis-off">
                 Подождите...
             </div>
@@ -372,6 +366,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        isLoading={isLoading}
+                        error={error}
                         newAppointments={newAppointments}
                         handleMoveVisit={this.handleMoveVisit}
                         handleDayClick={this.handleDayClick}
@@ -451,6 +447,7 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        error={error}
                         isLoading={isLoading}
                         history={history}
                         match={match}

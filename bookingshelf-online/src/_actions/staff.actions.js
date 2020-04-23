@@ -20,6 +20,7 @@ export const staffActions = {
     getStaffComments,
     createComment,
     clearStaff,
+    setError,
     getServices,
     getTimetable,
     getClientAppointments,
@@ -180,6 +181,14 @@ function clearError() {
     };
 
     function success() { return { type: staffConstants.CLEAR_ERROR } }
+}
+
+function setError() {
+    return dispatch => {
+        dispatch(success());
+    };
+
+    function success() { return { type: staffConstants.SET_ERROR } }
 }
 
 function getNearestTime(id) {

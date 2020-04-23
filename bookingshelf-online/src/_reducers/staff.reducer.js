@@ -200,6 +200,7 @@ export function staff(state = initialState, action) {
                 isLoading: false
             };
         case staffConstants.GET_FAILURE:
+        case staffConstants.SET_ERROR:
             return {
                 ...state,
                 isLoading: false,
