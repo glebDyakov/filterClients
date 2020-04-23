@@ -20,6 +20,11 @@ const initialState = {
 
 export function staff(state = initialState, action) {
     switch (action.type) {
+        case staffConstants.CLEAR_ERROR:
+            return {
+                ...state,
+                error: ''
+            }
         case staffConstants.CLEAR_STAFF_SUCCESS:
             return {
                 ...state,
@@ -219,6 +224,7 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_SERVICES_FAILURE:
             return {
                 ...state,
+                isLoading: false,
                 isLoadingServices: false
             }
         case staffConstants.GET_INFO_FAILURE:

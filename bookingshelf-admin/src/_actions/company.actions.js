@@ -25,7 +25,8 @@ function add(companyInfo) {
         companyService.add(companyInfo)
             .then(
                 company => {
-                    dispatch(success(companyInfo, menu, profile));
+                    const localStorageUser = JSON.parse(localStorage.getItem('user'))
+                    dispatch(success({...localStorageUser, ...companyInfo }, menu, profile));
                 },
                 error => {
                     // dispatch(failure(error.toString()));

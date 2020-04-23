@@ -341,6 +341,15 @@ class IndexPage extends PureComponent {
         } else if (error) {
             content =  <div className="online-zapis-off">
                 {error}
+                {(error.startsWith('Онлайн-запись отключена.') && subcompanies.length > 1) && (
+                    <button onClick={() => {
+                        this.setScreen(0)
+                        this.props.dispatch(staffActions.clearError());
+                        let {company} = match.params;
+                        let url = company.includes('_') ? company.split('_')[0] : company
+                        history.push(`/${url}`)
+                    }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                )}
             </div>
         } else {
             content = (
