@@ -447,6 +447,7 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        info={info}
                         error={error}
                         isLoading={isLoading}
                         history={history}
