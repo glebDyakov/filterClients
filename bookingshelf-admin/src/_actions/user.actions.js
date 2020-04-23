@@ -1,6 +1,6 @@
 import {clientConstants, menuConstants, userConstants} from '../_constants';
 import {clientService, userService} from '../_services';
-import {alertActions, socketActions, staffActions} from './';
+import { alertActions, companyActions, socketActions, staffActions } from './';
 import {clearStorage, history} from '../_helpers';
 import {staffConstants} from "../_constants/staff.constants";
 
@@ -119,6 +119,7 @@ function updateProfile(userProfile) {
         userService.updateProfile(userProfile)
             .then(
                 user => {
+                    dispatch(companyActions.getSubcompanies());
                     dispatch(success(userProfile, user));
                     dispatch(successUser({
                         staffId: user.staffId,
