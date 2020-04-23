@@ -102,7 +102,7 @@ class Index extends React.Component {
         } catch (e) {
 
         }
-        const user = newProps.authentication.user ? {...localStorageUser, ...newProps.authentication.user } : localStorageUser
+        const user = newProps.authentication.user || localStorageUser
         if (user && (user.forceActive
           || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
           || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
