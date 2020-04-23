@@ -88,7 +88,7 @@ class TabOne extends  PureComponent{
                 </div>
             )
         }
-        return info && (info.bookingPage === match.params.company) && info.onlineZapisOn && (
+        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
                 <div className="title_block n">
                     {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (

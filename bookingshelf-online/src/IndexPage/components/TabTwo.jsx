@@ -75,7 +75,7 @@ class TabTwo extends Component {
             )
         }
 
-        return  info && (info.bookingPage === match.params.company) && info.onlineZapisOn && (
+        return  info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
                 <div className="title_block">
                     {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) && <span className="prev_block" onClick={() => {
