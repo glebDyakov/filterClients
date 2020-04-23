@@ -573,7 +573,6 @@ class SidebarMain extends React.Component {
     }
 
     handleClick(url, e){
-        debugger;
         if (e.target.className !== 'sidebar-notification') {
             if (this.props.location.pathname === '/settings') {
                 this.props.dispatch(companyActions.getSubcompanies())
