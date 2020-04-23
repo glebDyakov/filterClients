@@ -7,6 +7,7 @@ export const staffActions = {
     get,
     add,
     clearMessages,
+    clearError,
     _delete,
     _move,
     getInfo,
@@ -19,6 +20,7 @@ export const staffActions = {
     getStaffComments,
     createComment,
     clearStaff,
+    setError,
     getServices,
     getTimetable,
     getClientAppointments,
@@ -103,7 +105,7 @@ function getInfo(id, loaded) {
         staffService.getInfo(id)
             .then(
                 info => dispatch(success(info)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -119,7 +121,7 @@ function getStaffComments(companyId, staff, currentPage) {
         staffService.getStaffComments(companyId, staff.staffId, currentPage)
             .then(
                 staffCommentsInfo => dispatch(success(staffCommentsInfo)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -134,7 +136,7 @@ function getServiceGroups(id) {
         staffService.getServiceGroups(id)
             .then(
                 serviceGroups => dispatch(success(serviceGroups)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -164,7 +166,7 @@ function getServices(id) {
         staffService.getServices(id)
             .then(
                 services => dispatch(success(services)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -173,13 +175,29 @@ function getServices(id) {
     function failure() { return { type: staffConstants.GET_SERVICES_FAILURE } }
 }
 
+function clearError() {
+    return dispatch => {
+        dispatch(success());
+    };
+
+    function success() { return { type: staffConstants.CLEAR_ERROR } }
+}
+
+function setError() {
+    return dispatch => {
+        dispatch(success());
+    };
+
+    function success() { return { type: staffConstants.SET_ERROR } }
+}
+
 function getNearestTime(id) {
     return dispatch => {
         dispatch(request());
         staffService.getNearestTime(id)
             .then(
                 nearestTime => dispatch(success(nearestTime)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -329,7 +347,7 @@ function getTimetable(company, date1, date2) {
         staffService.getTimetable(company, date1, date2)
             .then(
                 timetable => dispatch(success(timetable)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 
@@ -344,7 +362,7 @@ function getClientAppointments(company, clientId, pageNum) {
         staffService.getClientAppointments(company, clientId, pageNum)
             .then(
                 clientAppointments => dispatch(success(clientAppointments)),
-                () => failure()
+                () => dispatch(failure())
             );
     };
 

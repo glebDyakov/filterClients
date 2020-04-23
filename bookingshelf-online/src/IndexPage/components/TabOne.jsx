@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { connect } from 'react-redux';
 import StarRatings from "react-star-ratings";
 import {staffActions} from "../../_actions";
-
+import moment from 'moment';
 
 class TabOne extends  PureComponent{
     constructor(props) {
@@ -41,7 +41,7 @@ class TabOne extends  PureComponent{
         const updatedState = {};
 
         const selectedStaffFromTimetableList = timetableAvailable.filter(timetableItem =>
-            timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+            timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                 return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
             })));
         const randomStaffIndex = this.randomInteger(0, (selectedStaffFromTimetableList.length - 1));
@@ -70,9 +70,25 @@ class TabOne extends  PureComponent{
     }
 
     render() {
-        const {staffId, handleMoveVisit, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
-        return(
+        if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
+            return (
+                <div className="online-zapis-off">
+                    Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                    {(subcompanies.length > 1) && (
+                        <button onClick={() => {
+                            setScreen(0)
+                            this.props.dispatch(staffActions.clearError());
+                            let {company} = match.params;
+                            let url = company.includes('_') ? company.split('_')[0] : company
+                            history.push(`/${url}`)
+                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                    )}
+                </div>
+            )
+        }
+        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
                 <div className="title_block n">
                     {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
@@ -100,7 +116,7 @@ class TabOne extends  PureComponent{
                 </div>
                 {!this.state.staff && (
                     <React.Fragment>
-                        <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                        <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                         {flagAllStaffs && (
                             <li className={'nb'}
                                 onClick={() => {
@@ -131,7 +147,7 @@ class TabOne extends  PureComponent{
                             .filter(staff => {
                                 if (flagAllStaffs) {
                                     return timetableAvailable.filter(timetableItem =>
-                                        timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                        timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                                             return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
                                         })))
                                         .some(item => item.staffId === staff.staffId);
@@ -150,11 +166,11 @@ class TabOne extends  PureComponent{
                                         <div className="img_container_block">
                                             <div>
                                                 <img
-                                                    style={{ marginRight: staffs.length <= 3 ? 'auto': 0 }}
+                                                    style={{ marginRight: staffs.length <= 23 ? 'auto': 0 }}
                                                     src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                     alt=""/>
                                             </div>
-                                            <div style={{ textAlign: 'center', width: '70px' }}>
+                                            <div style={{ textAlign: 'center', width: '70px', margin: '0 auto' }}>
                                             {staff.rating ? (
                                                 <StarRatings
                                                     rating={staff.rating}
@@ -171,7 +187,7 @@ class TabOne extends  PureComponent{
 
 
                                      <span className="staff_popup_name">{staff.firstName} {staff.lastName ? staff.lastName : ''}<br/>
-                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px', margin: staffs.length <= 3 ? 'auto' : '0' }}>{staff.description} <br/></p>}
+                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px', margin: staffs.length <= 23 ? 'auto' : '0' }}>{staff.description} <br/></p>}
 
                                             {nearestTime && nearestTime.map((time, id)=>
                                                 time.staffId===staff.staffId && time.availableDays.length!==0 &&
@@ -243,7 +259,7 @@ class TabOne extends  PureComponent{
                           .filter(staff => {
                               if (flagAllStaffs) {
                                   return timetableAvailable.filter(timetableItem =>
-                                      timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                      timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
                                           return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
                                       })))
                                       .some(item => item.staffId === staff.staffId);
@@ -262,7 +278,7 @@ class TabOne extends  PureComponent{
                                         <img
                                           src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                           alt=""/>
-                                        <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length <= 3 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
+                                        <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length <= 23 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
                                             <span style={{ fontSize: "13px"}}>{staff.description}</span>
                                         </span>
                                     </div>

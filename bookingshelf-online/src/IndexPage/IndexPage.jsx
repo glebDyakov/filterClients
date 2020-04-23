@@ -109,7 +109,7 @@ class IndexPage extends PureComponent {
             }
             for(let i=firstDayOfMonth; i<=lastDayOfMonth;i++) {
                 let avDay=newProps.staff && newProps.staff.timetableAvailable &&
-                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays.some((time, key, elements) =>{
+                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays && timetableItem.availableDays.some((time, key, elements) =>{
                         const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
                         const checkingDayTimesArray = time.availableTimes;
 
@@ -139,7 +139,7 @@ class IndexPage extends PureComponent {
 
             }
 
-            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
+            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays && timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
 
             if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.staff.newAppointment)) {
                 this.setState({ screen: 6})
@@ -173,7 +173,7 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-        if (prevState.screen === 0 && this.state.screen === (this.props.staff.info && getFirstScreen(this.props.staff.info.firstScreen))) {
+        if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
@@ -328,19 +328,22 @@ class IndexPage extends PureComponent {
 
         let content;
 
-        if (info && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
-            content = (
-                <div className="online-zapis-off">
-                    Онлайн-запись для этой компании отключена
-                </div>
-            )
-        } else if (!info && !error) {
+        if (!info && !error) {
             content = <div className="online-zapis-off">
                 Подождите...
             </div>
         } else if (error) {
             content =  <div className="online-zapis-off">
                 {error}
+                {(error.startsWith('Онлайн-запись отключена.') && subcompanies.length > 1) && (
+                    <button onClick={() => {
+                        this.setScreen(0)
+                        this.props.dispatch(staffActions.clearError());
+                        let {company} = match.params;
+                        let url = company.includes('_') ? company.split('_')[0] : company
+                        history.push(`/${url}`)
+                    }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                )}
             </div>
         } else {
             content = (
@@ -363,6 +366,8 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 1 &&
                     <TabOne
+                        isLoading={isLoading}
+                        error={error}
                         newAppointments={newAppointments}
                         handleMoveVisit={this.handleMoveVisit}
                         handleDayClick={this.handleDayClick}
@@ -442,6 +447,8 @@ class IndexPage extends PureComponent {
                     }
                     {screen === 2 &&
                     <TabTwo
+                        info={info}
+                        error={error}
                         isLoading={isLoading}
                         history={history}
                         match={match}

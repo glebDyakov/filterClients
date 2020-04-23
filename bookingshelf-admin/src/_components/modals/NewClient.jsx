@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import {isValidEmailAddress} from "../../_helpers/validators";
+import {isValidNumber} from "libphonenumber-js";
 import PhoneInput from "../PhoneInput";
 import InputCounter from "../InputCounter";
 import moment from "moment";
+import ReactPhoneInput from "react-phone-input-2";
 
 class NewClient extends React.Component {
     constructor(props) {
@@ -144,7 +146,9 @@ class NewClient extends React.Component {
     }
 
     render() {
-        const { day, month, year, client, edit, alert, clients, isValidPhone }=this.state;
+        const { day, month, year, client, edit, alert, clients }=this.state;
+
+        const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
 
         return (
             <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -171,10 +175,13 @@ class NewClient extends React.Component {
                                                   name="middleName"  handleChange={this.handleChange} maxLength={128} />
 
                                     <p className="title_block">Номер телефона</p>
-                                    <PhoneInput
+                                    <ReactPhoneInput
+                                        defaultCountry={'by'}
+                                        country={'by'}
+                                        regions={['america', 'europe']}
+                                        placeholder=""
                                         value={client.phone}
-                                        onChange={phone => this.setState({ client: { ...client, phone } })}
-                                        getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                        onChange={phone => this.setState({ client: { ...client, phone: phone.replace(/[() ]/g, '') } })}
                                     />
                                 </div>
                                 <div className="col-sm-6">
@@ -318,7 +325,10 @@ class NewClient extends React.Component {
         }
         delete client.appointments;
 
-        return updateClient({ ...client, birthDate });
+        const body = JSON.parse(JSON.stringify(client));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+
+        return updateClient({ ...body, birthDate });
     };
 
     addClient(){
@@ -331,8 +341,10 @@ class NewClient extends React.Component {
         if (isModalShouldPassClient) {
             this.props.checkUser(client);
         }
+        const body = JSON.parse(JSON.stringify(client));
+        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
 
-        return addClient({ ...client, birthDate });
+        return addClient({ ...body, birthDate });
     };
 
     closeModal () {

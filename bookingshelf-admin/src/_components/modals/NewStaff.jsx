@@ -10,9 +10,9 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import Modal from "@trendmicro/react-modal";
 import {isValidEmailAddress} from "../../_helpers/validators";
-import PhoneInput from "../PhoneInput";
 import Hint from "../Hint";
 import { DatePicker } from "../DatePicker";
+import ReactPhoneInput from "react-phone-input-2";
 
 const staffErrors = {
     emailFound: 'validation.email.found'
@@ -199,10 +199,13 @@ class NewStaff extends React.Component {
                                                             </div>
 
                                                             <p>Номер телефона</p>
-                                                            <PhoneInput
+                                                            <ReactPhoneInput
+                                                                defaultCountry={'by'}
+                                                                country={'by'}
+                                                                regions={['america', 'europe']}
+                                                                placeholder=""
                                                                 value={staff.phone}
-                                                                onChange={phone => this.setState({ staff: { ...staff, phone } })}
-                                                                getIsValidPhone={isValidPhone => this.setState({ isValidPhone })}
+                                                                onChange={phone => this.setState({ staff: { ...staff, phone: phone.replace(/[() ]/g, '') } })}
                                                             />
 
                                                             <div className="mobile-visible">
