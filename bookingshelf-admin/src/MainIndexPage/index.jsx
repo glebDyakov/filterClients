@@ -312,6 +312,14 @@ class Index extends Component {
                                                    value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
                                             <span className="company_counter">{subcompany.city.length}/40</span>
                                         </div>
+
+                                        <p>Тип компании</p>
+                                        <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="companyTypeId"
+                                                value={subcompany && subcompany.companyTypeId}>
+                                            <option value={1}>Салоны красоты, барбершопы, SPA</option>
+                                            <option value={2}>СТО, автомойки, шиномонтажи</option>
+                                            <option value={3}>Коворкинг</option>
+                                        </select>
                                     </div>
                                     <div className="col-sm-4">
                                         <p>Email</p>
