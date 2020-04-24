@@ -107,7 +107,7 @@ class TabOne extends  PureComponent{
                             }
                         }}><span className="title_block_text">Назад</span></span>
                     )}
-                    <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
+                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Выбор рабочего места' : 'Выбор сотрудника' }</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
