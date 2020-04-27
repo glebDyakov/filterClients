@@ -20,7 +20,7 @@ class TabFive extends PureComponent {
 
     render() {
 
-        const {setScreen, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
+        const {setScreen, info, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
             group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
         const { enteredCode } = this.state;
 
@@ -138,6 +138,19 @@ class TabFive extends PureComponent {
                            value={group.email}
                            className={'' + ((group.email && group.email!=='' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
                     />
+                    {info.companyTypeId === 2 && (
+                      <React.Fragment>
+                          <p>Марка авто</p>
+                          <input type="text" placeholder="Введите марку авто" name="carBrand" onChange={handleChange}
+                                 value={group.carBrand && group.carBrand}
+                          />
+
+                          <p>Гос. номер</p>
+                          <input type="text" placeholder="Введите гос. номер" name="carNumber" onChange={handleChange}
+                                 value={group.carNumber && group.carNumber}
+                          />
+                      </React.Fragment>
+                    )}
                     <p>Комментарии</p>
                     <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
                     <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${config.baseUrl}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
