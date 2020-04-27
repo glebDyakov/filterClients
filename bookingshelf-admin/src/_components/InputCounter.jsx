@@ -1,7 +1,7 @@
 import React from "react";
 
-const InputCounter = ({ title, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength }) => (
-    <div style={{position: 'relative'}}>
+const InputCounter = ({ title, extraWrapperClassName, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength }) => (
+    <div className={extraWrapperClassName}  style={{position: 'relative'}}>
         <p>{title}</p>
         <input
             style={{paddingRight: '57px'}}
