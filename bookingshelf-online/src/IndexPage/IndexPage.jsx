@@ -508,6 +508,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        info={info}
                         setDefaultFlag={this.setDefaultFlag}
                         flagAllStaffs={flagAllStaffs}
                         forceUpdateStaff={this.forceUpdateStaff}
