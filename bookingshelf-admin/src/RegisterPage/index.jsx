@@ -147,6 +147,7 @@ class Index extends React.Component {
                                     <option value={1}>Салоны красоты, барбершопы, SPA</option>
                                     <option value={2}>СТО, автомойки, шиномонтажи</option>
                                     <option value={3}>Коворкинг</option>
+                                    <option value={4}>Медицинские центры</option>
                                     <option value={1}>Другое</option>
                                 </select>
 
