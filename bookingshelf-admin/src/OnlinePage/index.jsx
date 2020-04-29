@@ -27,6 +27,8 @@ class Index extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleStepChange = this.handleStepChange.bind(this);
+        this.handleStepSubmit = this.handleStepSubmit.bind(this);
         this.handleMessageChange = this.handleMessageChange.bind(this);
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
@@ -49,6 +51,7 @@ class Index extends Component {
         }
         if (newProps.company.settings) {
             this.setState({
+                booktimeStep: newProps.company.settings.booktimeStep,
                 selectedDay: newProps.company.settings.onlineZapisOn
                     ? this.state.selectedDay
                     : moment(newProps.company.settings.onlineZapisEndTimeMillis).utc().toDate(),
@@ -97,6 +100,21 @@ class Index extends Component {
             ...this.props.company.settings,
             firstScreen
         }, 'isFirstScreenLoading'));
+    }
+
+    handleStepChange({ target: { name, value }}) {
+        this.setState({ [name]: value });
+    }
+
+    handleStepSubmit() {
+        const { booktimeStep } = this.state;
+        const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
+
+        this.props.dispatch(companyActions.updateCompanySettings({
+            imageBase64: activeCompany && activeCompany.imageBase64,
+            ...this.props.company.settings,
+            booktimeStep
+        }));
     }
 
     handleChange(e) {
@@ -183,11 +201,11 @@ class Index extends Component {
 
     render() {
         const { company } = this.props
-        const { booking, submitted, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
+        const { booking, submitted, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
-        const { isServiceIntervalLoading, isBookingInfoLoading, isFirstScreenLoading } = company;
+        const { isServiceIntervalLoading, settings, isBookingInfoLoading, isFirstScreenLoading } = company;
 
         const dayPickerProps = {
             month: new Date(),
@@ -396,7 +414,20 @@ class Index extends Component {
                             </div>
 
                             <div className=" content-pages-bg p-4 mb-3 h-auto">
-                                <p className="title mb-3">Интервал записи</p>
+                                <p className="title mb-3">Интервал записи в журнал</p>
+                                <select className="custom-select" name="booktimeStep" onChange={this.handleStepChange}
+                                        value={booktimeStep}>
+                                    <option value={300}>5 мин</option>
+                                    <option value={600}>10 мин</option>
+                                    <option value={900}>15 мин</option>
+                                </select>
+                                <button className="ahref button mt-3 mb-3" onClick={this.handleStepSubmit}>
+                                    Сохранить
+                                </button>
+                            </div>
+
+                            <div className=" content-pages-bg p-4 mb-3 h-auto">
+                                <p className="title mb-3">Интервал онлайн-записи</p>
                                 <div style={{ position: 'relative' }} className="check-box">
                                     <label>
                                         {isServiceIntervalLoading
@@ -430,7 +461,7 @@ class Index extends Component {
                                         {isFirstScreenLoading
                                           ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                           : <React.Fragment>
-                                              <input className="form-check-input" type="checkbox" checked={company.settings.firstScreen === 'staffs'} onChange={() => this.handleScreenCheckboxChange('staffs')}/>
+                                              <input className="form-check-input" type="checkbox" checked={(company.settings && company.settings.firstScreen) === 'staffs'} onChange={() => this.handleScreenCheckboxChange('staffs')}/>
                                               <span className="check"/>
                                           </React.Fragment>
                                         }
@@ -442,7 +473,7 @@ class Index extends Component {
                                         {isFirstScreenLoading
                                           ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                           : <React.Fragment>
-                                              <input className="form-check-input" type="checkbox" checked={company.settings.firstScreen === 'services'} onChange={() => this.handleScreenCheckboxChange('services')}/>
+                                              <input className="form-check-input" type="checkbox" checked={(company.settings && company.settings.firstScreen) === 'services'} onChange={() => this.handleScreenCheckboxChange('services')}/>
                                               <span className="check"/>
                                           </React.Fragment>
                                         }

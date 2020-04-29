@@ -501,10 +501,30 @@
                 }
             }
 
-            &:nth-child(4n) {
-                border-bottom: 1px solid #0a1330;
-                &.loading {
-                    border-bottom: 1px solid transparent;
+            &.list-5 {
+                &:nth-child(12n) {
+                    border-bottom: 1px solid #0a1330;
+                    &.loading {
+                        border-bottom: 1px solid transparent;
+                    }
+                }
+            }
+
+            &.list-10 {
+                &:nth-child(6n) {
+                    border-bottom: 1px solid #0a1330;
+                    &.loading {
+                        border-bottom: 1px solid transparent;
+                    }
+                }
+            }
+
+            &.list-15 {
+                &:nth-child(4n) {
+                    border-bottom: 1px solid #0a1330;
+                    &.loading {
+                        border-bottom: 1px solid transparent;
+                    }
                 }
             }
         }

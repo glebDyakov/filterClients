@@ -30,6 +30,8 @@ class TabScroll extends React.Component{
     }
 
     getHours24 (timetable){
+        const { booktimeStep } = this.props.company.settings
+        const step  = booktimeStep / 60;
         const numbers =[];
 
         let minTime = 0
@@ -55,7 +57,7 @@ class TabScroll extends React.Component{
 
             let endNumber = endTime - parseInt(moment(maxTime).format('mm')) + 60
 
-            for (let i = startNumber; i < endNumber; i = i + 15) {
+            for (let i = startNumber; i < endNumber; i = i + step) {
                 numbers.push(moment().startOf('day').add(i, 'minutes').format('HH:mm'));
             }
         }
@@ -64,14 +66,27 @@ class TabScroll extends React.Component{
     }
 
     render(){
-        const { availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell } = this.props;
+        const { company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell } = this.props;
         const { numbers } = this.state;
+        const { booktimeStep } = company.settings
+        const step  = booktimeStep / 60;
+        let listClass = 'list-15'
+        switch (step) {
+            case 5:
+                listClass = 'list-5';
+                break;
+
+            case 10:
+                listClass = 'list-10';
+                break;
+            default:
+        }
 
         return(
             <div className="tabs-scroll">
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) =>
-                        <div key={`number-${key}`} className="tab-content-list" >
+                        <div key={`number-${key}`} className={"tab-content-list " + listClass} >
                             <TabScrollLeftMenu time={time}/>
                             {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
                                 <BaseCell

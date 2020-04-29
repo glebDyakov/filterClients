@@ -61,7 +61,9 @@ class BaseCell extends React.Component {
     }
 
     getIsPresent(currentCellTime) {
-        return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(15, "minutes").format("x")
+        const { booktimeStep } = this.props.company.settings;
+        const step  = booktimeStep / 60;
+        return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
     }
 
     onUpdateWorkingStaff(props) {
@@ -236,6 +238,7 @@ class BaseCell extends React.Component {
 
 function mapStateToProps(state) {
     const {
+        company,
         calendar: {
             appointments,
             reservedTime,
@@ -244,6 +247,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        company,
         appointments,
         reservedTime,
         selectedDays
