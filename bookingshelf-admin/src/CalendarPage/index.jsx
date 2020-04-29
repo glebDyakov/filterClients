@@ -376,7 +376,7 @@ class Index extends PureComponent {
 
 
     render() {
-        const { services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
+        const { company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
         const { appointmentForDeleting, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             type, appointmentModal, edit_appointment, infoClient,
@@ -435,21 +435,24 @@ class Index extends PureComponent {
                                 closedDates={staff.closedDates}
                                 staff={staff && staff.staff}
                             />
-                            <TabScrollContent
-                                checkForCostaffs={this.checkForCostaffs}
-                                getCellTime={this.getCellTime}
-                                type={type}
-                                timetable={staff.timetable}
-                                services={services}
-                                availableTimetable={workingStaff.timetable}
-                                closedDates={staff.closedDates}
-                                clients={clients && clients.client}
-                                handleUpdateClient={this.handleUpdateClient}
-                                updateAppointmentForDeleting={this.updateAppointmentForDeleting}
-                                changeTime={this.changeTime}
-                                changeTimeFromCell={this.changeTimeFromCell}
-                                moveVisit={this.moveVisit}
-                            />
+                             {company.settings && (
+                                 <TabScrollContent
+                                    company={company}
+                                    checkForCostaffs={this.checkForCostaffs}
+                                    getCellTime={this.getCellTime}
+                                    type={type}
+                                    timetable={staff.timetable}
+                                    services={services}
+                                    availableTimetable={workingStaff.timetable}
+                                    closedDates={staff.closedDates}
+                                    clients={clients && clients.client}
+                                    handleUpdateClient={this.handleUpdateClient}
+                                    updateAppointmentForDeleting={this.updateAppointmentForDeleting}
+                                    changeTime={this.changeTime}
+                                    changeTimeFromCell={this.changeTimeFromCell}
+                                    moveVisit={this.moveVisit}
+                                />)
+                             }
                         </div>
                     </div>
                 </div>
@@ -804,6 +807,7 @@ class Index extends PureComponent {
 
 function mapStateToProps(store) {
     const {
+        company,
         staff,
         client,
         services,
@@ -826,6 +830,7 @@ function mapStateToProps(store) {
     } = store;
 
     return {
+        company,
         selectedDays,
         appointments,
         reservedTimeFromProps: reservedTime,

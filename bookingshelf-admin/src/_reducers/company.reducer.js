@@ -1,6 +1,6 @@
 import {companyConstants, userConstants} from '../_constants';
 const initialState = {
-    subcompanies: []
+    subcompanies: [],
 }
 
 export function company(state = initialState, action) {

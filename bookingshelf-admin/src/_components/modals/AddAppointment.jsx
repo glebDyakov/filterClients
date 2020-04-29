@@ -504,11 +504,14 @@ class AddAppointment extends React.Component {
     getVisitFreeMinutes(appointment) {
         let visitFreeMinutes = []
 
+        const { booktimeStep } = this.props.company.settings
+        const step  = booktimeStep / 60;
+
         if (appointment && appointment[0]) {
             const startTime = appointment[0].appointmentTimeMillis
             const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
 
-            for (let i = startTime; i <= endTime; i += 15 * 60 * 1000) {
+            for (let i = startTime; i <= endTime; i += step * 60 * 1000) {
                 visitFreeMinutes.push(i);
             }
         }
@@ -518,11 +521,14 @@ class AddAppointment extends React.Component {
     getTimeArrange(time, minutes, appointment){
         let timeArrange=[];
 
+        const { booktimeStep } = this.props.company.settings
+        const step  = booktimeStep / 60;
+
         if (appointment && appointment[0]) {
             const startTime = appointment[0].appointmentTimeMillis
             const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
 
-            for (let i = startTime; i <= endTime; i += 15 * 60 * 1000) {
+            for (let i = startTime; i <= endTime; i += step * 60 * 1000) {
                 const minutesIndex = minutes.findIndex(minute => minute === moment(i).format('HH:mm'))
                 if (minutesIndex) {
                     minutes.splice(minutesIndex, 1)
@@ -536,7 +542,7 @@ class AddAppointment extends React.Component {
             let minute=time;
 
              while(minutes.indexOf(moment(minute, 'x').format("H:mm"))===-1){
-                minute=parseInt(minute)+900000;
+                minute=parseInt(minute)+(step * 60 * 100);
                 let bool=minutes.indexOf(moment(minute, 'x').format("H:mm"));
 
                 if(bool!==-1){
@@ -830,7 +836,7 @@ class AddAppointment extends React.Component {
     }
 
     render() {
-        const { status, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } =this.props;
+        const { status, company, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
             services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
             servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
@@ -1489,9 +1495,9 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, staff: { staff }, authentication, calendar: { appointments, reservedTime } } = state;
+    const { alert, company, services, staff: { staff }, authentication, calendar: { appointments, reservedTime } } = state;
     return {
-        alert, services, staff, authentication, appointmentsFromProps: appointments, reservedTimeFromProps: reservedTime
+        alert, company, services, staff, authentication, appointmentsFromProps: appointments, reservedTimeFromProps: reservedTime
     };
 }
 
