@@ -27,7 +27,6 @@ class NewStaffByMail extends React.Component {
     render() {
         const { emailNew, emailIsValid, staffs } = this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-
         return (
             <Modal size="md" style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-mail">
