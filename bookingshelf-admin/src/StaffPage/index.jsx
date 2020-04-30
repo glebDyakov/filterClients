@@ -776,7 +776,7 @@ class Index extends Component {
         const { dispatch } = this.props;
 
         const body = JSON.parse(JSON.stringify(staff));
-        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+        body.phone = body.phone && (body.phone.startsWith('+') ? body.phone : `+${body.phone}`);
 
         dispatch(staffActions.update(JSON.stringify([body]), staff.staffId));
     };
@@ -785,7 +785,7 @@ class Index extends Component {
         const { dispatch } = this.props;
 
         const body = JSON.parse(JSON.stringify(staff));
-        body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+        body.phone = body.phone && (body.phone.startsWith('+') ? body.phone : `+${body.phone}`);
         dispatch(staffActions.add(JSON.stringify(body)));
     };
 
