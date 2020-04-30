@@ -85,6 +85,7 @@ function updateSubcompany(companyInfo) {
             .then(
                 company => {
                     dispatch(success(company));
+                    dispatch(companyActions.get());
                 },
                 error => {
                     // dispatch(failure(error.toString()));

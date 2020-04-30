@@ -57,9 +57,10 @@ class Index extends Component {
             props.history.push('/nopage')
         }
 
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         if(props.match.params.activeTab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(props.match.params.activeTab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
-        if(props.match.params.activeTab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
+        if(props.match.params.activeTab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
         if(props.match.params.activeTab==='feedback'){document.title = "Отзывы | Онлайн-запись"}
         if(!props.match.params.activeTab || props.match.params.activeTab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
@@ -143,6 +144,12 @@ class Index extends Component {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
             this.queryInitData()
         }
+
+        if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
+            const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
+            if(newProps.match.params.activeTab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
+        }
+
         if (this.props.staff.status !== newProps.staff.status) {
             this.setState({
                 addWorkTime: newProps.staff.status && newProps.staff.status===209 ? false : this.state.addWorkTime,
@@ -167,9 +174,10 @@ class Index extends Component {
             activeTab: tab
         })
 
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         if(tab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(tab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
-        if(tab==='staff'){document.title = "Сотрудники | Онлайн-запись"}
+        if(tab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" :"Сотрудники | Онлайн-запись"}
         if(tab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
         history.pushState(null, '', '/staff/'+tab);
@@ -200,9 +208,10 @@ class Index extends Component {
     }
 
     render() {
-        const { staff } = this.props;
+        const { staff, company } = this.props;
         const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
+        const companyTypeId = company.settings && company.settings.companyTypeId;
         const daysAreSelected = selectedDays.length > 0;
 
         const modifiers = {
@@ -303,7 +312,7 @@ class Index extends Component {
                                 <a className={"nav-link"+(activeTab==='workinghours'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.updateTimetable(); this.setTab('workinghours')}}>Рабочие часы</a>
                             </li>
                             <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>Сотрудники</a>
+                                <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>{companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники'}</a>
                             </li>
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='holidays'?' active show':'')} data-toggle="tab" href="#tab3" onClick={()=>this.setTab('holidays')}>Выходные дни</a>
@@ -1001,10 +1010,10 @@ class Index extends Component {
 }
 
 function mapStateToProps(store) {
-    const {staff, timetable, authentication}=store;
+    const {staff, company, timetable, authentication}=store;
 
     return {
-        staff, timetable, authentication
+        staff, company, timetable, authentication
     };
 }
 
