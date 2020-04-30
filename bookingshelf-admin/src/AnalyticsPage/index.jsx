@@ -69,10 +69,14 @@ class Index extends Component{
 
         let dataToChartStaff = moment().endOf('day').format('x');
         let dataFromChartStaff = moment(dateNow - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
-
-
-
-
+        const companyTypeId = props.company.settings && props.company.settings.companyTypeId;
+        const staffOptions = companyTypeId === 2 ? {
+            firstName: 'Доступные',
+            lastName: 'рабочие места'
+        } : {
+            firstName: 'Работающие',
+            lastName: 'сотрудники'
+        };
 
         this.state = {
             type: 'day',
@@ -85,14 +89,8 @@ class Index extends Component{
             staffAll: props.staff,
             analitics: props.analitics,
             countRecAndCli: props.countRecAndCli,
-            currentSelectedStaff: {
-                firstName: 'Работающие',
-                lastName: 'сотрудники'
-            },
-            currentSelectedStaffChart: {
-                firstName: 'Работающие',
-                lastName: 'сотрудники'
-            },
+            currentSelectedStaff: staffOptions,
+            currentSelectedStaffChart: staffOptions,
             initChartData: false,
             chosenPeriod: 1,
             dateArray: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -104,11 +102,7 @@ class Index extends Component{
             dataFromChartStaff: dataFromChartStaff,
             chartFirstDateTo: dataToChartStaff,
             chartFirstDateFrom: dataFromChartStaff,
-
         };
-
-
-
     }
 
     componentDidMount() {
@@ -120,7 +114,7 @@ class Index extends Component{
             document.title = "Аналитика | Онлайн-запись";
         }
     }
-    
+
     queryInitData() {
         const dateNow = moment().utc().startOf('day');
         const dateNowEnd = moment().utc().endOf('day');
@@ -324,8 +318,16 @@ class Index extends Component{
         let selectedWeekEnd =  moment(this.state.selectedDay).endOf('week').format('x');
 
         if (staff === 2) {
-            resStaff.firstName = "Работающие ";
-            resStaff.lastName = "сотрудники";
+            const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+            const staffOptions = companyTypeId === 2 ? {
+                firstName: 'Доступные',
+                lastName: 'рабочие места'
+            } : {
+                firstName: 'Работающие ',
+                lastName: 'сотрудники'
+            };
+            resStaff.firstName = staffOptions.firstName;
+            resStaff.lastName = staffOptions.lastName;
 
             if (type === 'week') {
                 this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedWeekStart, selectedWeekEnd))
@@ -353,9 +355,17 @@ class Index extends Component{
 
         const {dataFromChartStaff, dataToChartStaff} = this.state;
         let resStaff = {}
-        if (staff===2){
-            resStaff.firstName = "Работающие";
-            resStaff.lastName = "сотрудники";
+        if (staff === 2){
+            const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+            const staffOptions = companyTypeId === 2 ? {
+                firstName: 'Доступные',
+                lastName: 'рабочие места'
+            } : {
+                firstName: 'Работающие',
+                lastName: 'сотрудники'
+            };
+            resStaff.firstName = staffOptions.firstName;
+            resStaff.lastName = staffOptions.lastName;
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dataFromChartStaff, dataToChartStaff));
         }else{
             resStaff = staff;
@@ -415,6 +425,21 @@ class Index extends Component{
         if(this.state.initChartData && JSON.stringify(newProps.analitics.countRecAndCliChart)) {
 
             this.setState({ initChartData: true })
+        }
+
+        if(JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
+            const staffOptions = newProps.company.settings.companyTypeId === 2 ? {
+                firstName: 'Доступные',
+                lastName: 'рабочие места'
+            } : {
+                firstName: 'Работающие',
+                lastName: 'сотрудники'
+            };
+
+            this.setState({
+                currentSelectedStaff: staffOptions,
+                currentSelectedStaffChart: staffOptions
+            })
         }
         if ((JSON.stringify( this.props.analitics.charStatsFor) !== JSON.stringify(newProps.analitics.charStatsFor))){
             const {chartFirstDateFrom, chartFirstDateTo} = this.state;
@@ -524,7 +549,7 @@ class Index extends Component{
                }]
            }
        };
-
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
         return(
             <div className="retreats analytics_container">
@@ -688,7 +713,7 @@ class Index extends Component{
                                 </div>
                                 <ul className="dropdown-menu">
                                     <li onClick={()=>this.setCurrentSelectedStaff(2)}>
-                                        <a ><p>Работающие сотрудники</p></a>
+                                        <a ><p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
                                     </li>
                                     {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
@@ -765,7 +790,7 @@ class Index extends Component{
                                 </div>
                                 <ul className="dropdown-menu">
                                     <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
-                                        <a ><p>Работающие сотрудники</p></a>
+                                        <a ><p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
                                     </li>
                                     {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
@@ -926,7 +951,7 @@ class Index extends Component{
                 break;
         }
         this.setState({dataFromChartStaff: dataFrom, dataToChartStaff: dataTo})
-        if (this.state.currentSelectedStaffChart.firstName === 'Работающие'){
+        if ((this.state.currentSelectedStaffChart.firstName === 'Работающие') || this.state.currentSelectedStaffChart.firstName === 'Доступные'){
             this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dataFrom, dataTo));
         }else{
             this.props.dispatch(analiticsActions.getStaffsAnalyticChart(currentSelectedStaffChart.staffId, dataFrom, dataTo));
@@ -936,9 +961,9 @@ class Index extends Component{
 }
 
 function mapStateToProps(state) {
-    const { analitics, staff, authentication} = state;
+    const { analitics, staff, authentication, company} = state;
     return {
-        analitics, staff, authentication
+        analitics, staff, authentication, company
     };
 }
 
