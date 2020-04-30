@@ -234,6 +234,8 @@ class Index extends Component {
     calculateRate(packets = this.props.payments.packets) {
         const {workersCount, specialWorkersCount, period} = this.state.rate;
         const {countryCode} = this.state.country;
+        const { company } = this.props
+        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         const price1to10 =  (packets && packets.find(item => item.packetId === parseInt(workersCount)) || {})
         const priceTo20packet =  (packets && packets.find(item => item.packetId ===11) || {})
@@ -288,10 +290,10 @@ class Index extends Component {
                 finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 3
                 break;
             case '2':
-                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * (companyTypeId === 2 ? 6 : 5)
                 break;
             case '3':
-                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * (companyTypeId === 2 ? 12 : 9)
                 break;
         }
 
@@ -567,21 +569,20 @@ class Index extends Component {
                                                         ...this.state.rate,
                                                         period: "2"
                                                     }
-                                                })}>6 месяцев <span>+1 месяц бесплатно</span></li>
+                                                })}>6 месяцев {companyTypeId !== 2 && <span>+1 месяц бесплатно</span>}</li>
                                             <li className={period === '3' ? "active selected" : ""}
                                                 onClick={() => this.setState({
                                                     rate: {
                                                         ...this.state.rate,
                                                         period: "3"
                                                     }
-                                                })}>12 месяцев <span>+3 месяца бесплатно</span></li>
+                                                })}>12 месяцев {companyTypeId !== 2 && <span>+3 месяца бесплатно</span>}</li>
                                         </ul>
 
                                         <div className="range" style={{position: "relative"}}>
                                             <input type="range" min="1" max="3" value={period}
                                                    onChange={(e) => this.rateChangePeriod(e)}/>
-                                            <div className="rateLine"
-                                                 style={{width: ((period - 1) * 50) + "%"}}></div>
+                                            <div className="rateLine" style={{width: ((period - 1) * 50) + "%"}} />
                                         </div>
 
                                     </div>
