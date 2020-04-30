@@ -62,6 +62,8 @@ class SidebarMain extends React.Component {
             })
         }
         if ( JSON.stringify(this.props.company) !==  JSON.stringify(newProps.company)) {
+            const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
+            if(newProps.match.params.activeTab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
             this.setState({
                 company: newProps.company,
                 count: newProps.company.count && newProps.company.count
@@ -190,6 +192,8 @@ class SidebarMain extends React.Component {
         const { isLoadingModalAppointment, isLoadingModalCount, isLoadingModalCanceled} = this.props.calendar;
         const { authentication, menu, company, collapse, openedTab,  count, userSettings, isNotificationDropdown, isPaymentDropdown }=this.state;
         let path="/"+location.pathname.split('/')[1]
+
+        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
         let packetEnd, packetEndText;
@@ -380,7 +384,9 @@ class SidebarMain extends React.Component {
                                 <img
                                     src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                     alt=""/>
-                                <span>{item.name}</span>
+                                <span>{item.id === 'staff_menu_id' ? (
+                                    companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники'
+                                ) : item.name}</span>
                                 {keyStore===0 &&
                                 ((count && count.appointments && count.appointments.count>0) ||
                                 (count && count.canceled && count.canceled.count>0) ||
