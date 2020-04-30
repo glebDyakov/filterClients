@@ -52,7 +52,6 @@ class IndexPage extends PureComponent {
             flagAllStaffs: false
         };
 
-
         this.selectStaff=this.selectStaff.bind(this);
         this.handleMoveVisit=this.handleMoveVisit.bind(this);
         this.getDurationForCurrentStaff = this.getDurationForCurrentStaff.bind(this);
