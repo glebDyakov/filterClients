@@ -27,7 +27,13 @@ class IndexPage extends PureComponent {
     constructor(props) {
         super(props);
         const group = localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''}
-        group.description = ''
+        group.description = '';
+        if (!group.carBrand) {
+            group.carBrand = '';
+        }
+        if (!group.carNumber) {
+            group.carNumber = '';
+        }
         this.state = {
             selectedStaff: [],
             selectedSubcompany: {},
