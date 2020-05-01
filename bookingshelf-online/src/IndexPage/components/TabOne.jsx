@@ -241,7 +241,7 @@ class TabOne extends  PureComponent{
                           >
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }} className="img_container">
-                                        <span className="staff_popup_name no-staff">Сотрудник не важен<br/>
+                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Рабочее место не важно' : 'Сотрудник не важен'}<br/>
                                         </span>
                                     </div>
                                 </span>
