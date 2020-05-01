@@ -104,22 +104,22 @@ class Index extends Component {
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const count = staff ? staff.length : -1;
         if (companyTypeId === 2) {
+            this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
             if (count <= 5) {
             } else {
-                this.rateChangeSpecialWorkersCount('to 30')
+                this.rateChangeSpecialWorkersCount('to 30', count)
             }
         } else {
             if (count <= 10) {
+                this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
             } else if (count > 10 && count <= 20) {
-                this.rateChangeSpecialWorkersCount('to 20')
+                this.rateChangeSpecialWorkersCount('to 20', count)
             } else if (count > 20 && count <= 30) {
-                this.rateChangeSpecialWorkersCount('to 30')
+                this.rateChangeSpecialWorkersCount('to 30', count)
             } else {
-                this.rateChangeSpecialWorkersCount('from 30')
+                this.rateChangeSpecialWorkersCount('from 30', count)
             }
         }
-
-        this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
     }
 
     AddingInvoice() {
@@ -221,8 +221,8 @@ class Index extends Component {
         this.setState({rate: {...this.state.rate, workersCount: value, specialWorkersCount: ''}});
     }
 
-    rateChangeSpecialWorkersCount(value) {
-        this.setState({rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
+    rateChangeSpecialWorkersCount(value, count) {
+        this.setState({staffCount: count, rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
     }
 
     rateChangePeriod(e) {
@@ -291,13 +291,21 @@ class Index extends Component {
                 break;
             case '2':
                 finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5;
+                finalPriceMonth *= 5/6;
+                finalPriceMonthDiscount *= 5/6;
                 break;
             case '3':
                 finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9;
+                finalPriceMonth *= 9/12;
+                finalPriceMonthDiscount *= 9/12;
                 break;
         }
 
-        this.setState({ finalPrice: finalPrice.toFixed(2), finalPriceMonth, finalPriceMonthDiscount });
+        this.setState({
+            finalPrice: finalPrice.toFixed(2),
+            finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
+            finalPriceMonthDiscount: finalPriceMonthDiscount && finalPriceMonthDiscount.toFixed(2)
+        });
     }
 
     changeSMSResult() {
