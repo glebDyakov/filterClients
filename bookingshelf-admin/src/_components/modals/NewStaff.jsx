@@ -166,14 +166,14 @@ class NewStaff extends React.Component {
                                     <div className="form-group">
                                         {!edit ?
                                             <div className="modal-header">
-                                                <h5 className="modal-title">{companyTypeId === 2 ? 'Новое рабочее место' : 'Новый сотрудник'}</h5>
+                                                <h5 className="modal-title">{(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}</h5>
                                                 <button type="button" className="close" onClick={this.closeModal}>
                                                     <span aria-hidden="true" />
                                                 </button>
                                             </div>
                                             :
                                             <div className="modal-header">
-                                                <h5 className="modal-title">Редактирование {companyTypeId === 2 ? 'рабочего места' : 'сотрудника'}</h5>
+                                                <h5 className="modal-title">Редактирование {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</h5>
                                                 < span> {staff.firstName} {staff.lastName ? staff.lastName : ''}</span>
                                                 <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
                                                     <span aria-hidden="true" />
@@ -186,16 +186,16 @@ class NewStaff extends React.Component {
                                                     <div className="row">
                                                         <div className="col-md-6">
                                                             <div style={{position: 'relative'}}>
-                                                                <p>{companyTypeId === 2 ? 'Название 1' : 'Имя'}</p>
-                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={companyTypeId === 2 ? 'Например: Шиномонтаж' : ''} value={staff.firstName} name="firstName"  onChange={this.handleChange}
+                                                                <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 1' : 'Имя'}</p>
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Шиномонтаж' : ''} value={staff.firstName} name="firstName"  onChange={this.handleChange}
                                                                        className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
                                                                        maxLength="100"
                                                                 />
                                                                 <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.firstName ? staff.firstName.length : 0}/100</span>
                                                             </div>
                                                             <div style={{position: 'relative'}} className="mobile-visible">
-                                                                <p>{companyTypeId === 2 ? 'Название 2' : 'Фамилия'}</p>
-                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={companyTypeId === 2 ? 'Например: Площадка 1' : ''} value={staff.lastName} name="lastName" onChange={this.handleChange} maxLength="100" />
+                                                                <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 2' : 'Фамилия'}</p>
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Площадка 1' : ''} value={staff.lastName} name="lastName" onChange={this.handleChange} maxLength="100" />
                                                                 <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                             </div>
 
@@ -219,7 +219,7 @@ class NewStaff extends React.Component {
                                                                 <option value="2">Средний</option>
                                                                 <option value="3">Админ</option>
                                                             </select>
-                                                            <p>Напарник <Hint hintMessage={companyTypeId === 2 ? 'Например: Если у вас 1 комплект оборудования на 2 рабочих места' : 'Например: Если у вас 2 сотрудника на 1 кабинет'} /></p>
+                                                            <p>Напарник <Hint hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Если у вас 1 комплект оборудования на 2 рабочих места' : 'Например: Если у вас 2 сотрудника на 1 кабинет'} /></p>
                                                             {/*<select className="custom-select" value={staff.costaffs && staff.costaffs[0] && staff.costaffs[0].staffId} name="costaffs" onChange={this.handleChangeCoStaff}>*/}
                                                                 {/*<option value="">-</option>*/}
                                                                 {/*{ staffs && staffs.staff && staffs.staff.map((st)=>(!staff.staffId || (staff.staffId && staff.staffId !== st.staffId)) && <option value={st.staffId}>{st.lastName} {st.firstName}</option>)}*/}
@@ -264,15 +264,15 @@ class NewStaff extends React.Component {
                                                         </div>
                                                         <div className="col-md-6">
                                                             <div style={{ position: 'relative' }} className="desktop-visible">
-                                                                <p>{companyTypeId === 2 ? 'Название 2' : 'Фамилия'}</p>
-                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={companyTypeId === 2 ? 'Например: Площадка 1' : ''} value={staff.lastName} name="lastName"  onChange={this.handleChange} maxLength="100" />
+                                                                <p>{(companyTypeId === 2 || companyTypeId === 3)? 'Название 2' : 'Фамилия'}</p>
+                                                                <input style={{paddingRight: '57px'}} type="text" placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Площадка 1' : ''} value={staff.lastName} name="lastName"  onChange={this.handleChange} maxLength="100" />
                                                                 <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                             </div>
                                                             <div className="desktop-visible">
                                                                 {emailInput}
                                                             </div>
                                                             <div className="input_limited_wrapper_3_digital">
-                                                                <p>Описание (специализация) <Hint hintMessage={companyTypeId === 2 ? 'Например: Шиномонтаж 4 колес, балансировка, снятие установка' : 'Например: Массажист высшей категории'} /></p>
+                                                                <p>Описание (специализация) <Hint hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Шиномонтаж 4 колес, балансировка, снятие установка' : 'Например: Массажист высшей категории'} /></p>
 
                                                                 <input
                                                                     type="text"
@@ -292,7 +292,7 @@ class NewStaff extends React.Component {
                                                                     <span className="check"/>
                                                                     Включить онлайн запись
                                                                 </label>&nbsp;
-                                                                <Hint hintMessage={`Включает возможность записи ${companyTypeId === 2 ? 'на рабочее место' : 'к сотруднику'} через онлайн-запись`} />
+                                                                <Hint hintMessage={`Включает возможность записи ${(companyTypeId === 2 || companyTypeId === 3) ? 'на рабочее место' : 'к сотруднику'} через онлайн-запись`} />
                                                             </div>
 
                                                             <div className="check-box">
@@ -301,7 +301,7 @@ class NewStaff extends React.Component {
                                                                     <span className="check"/>
                                                                     Включить отображение в журнале
                                                                 </label>&nbsp;
-                                                                <Hint hintMessage={`Включает возможность\nзаписи ${companyTypeId === 2 ? 'на рабочее место' : 'к сотруднику'}\nв журнале`} />
+                                                                <Hint hintMessage={`Включает возможность\nзаписи ${(companyTypeId === 2 || companyTypeId === 3) ? 'на рабочее место' : 'к сотруднику'}\nв журнале`} />
                                                             </div>
 
                                                             <div className="check-box">

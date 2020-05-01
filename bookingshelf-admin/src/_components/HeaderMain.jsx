@@ -78,7 +78,7 @@ class HeaderMain extends React.PureComponent {
                     redTitle = authentication.menu[0][titleKey].name
                 }
                 if (redTitle === 'Сотрудники') {
-                    redTitle = companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники'
+                    redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'
                 }
             }
         }

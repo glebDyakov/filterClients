@@ -60,7 +60,7 @@ class Index extends Component {
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         if(props.match.params.activeTab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(props.match.params.activeTab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
-        if(props.match.params.activeTab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
+        if(props.match.params.activeTab==='staff'){document.title = (companyTypeId === 2 || companyTypeId === 3) ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
         if(props.match.params.activeTab==='feedback'){document.title = "Отзывы | Онлайн-запись"}
         if(!props.match.params.activeTab || props.match.params.activeTab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
@@ -147,7 +147,7 @@ class Index extends Component {
 
         if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
             const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
-            if(newProps.match.params.activeTab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
+            if(newProps.match.params.activeTab==='staff'){document.title = (companyTypeId === 2 || companyTypeId === 3) ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
         }
 
         if (this.props.staff.status !== newProps.staff.status) {
@@ -177,7 +177,7 @@ class Index extends Component {
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         if(tab==='permissions') {document.title = "Доступы | Онлайн-запись";}
         if(tab==='holidays'){document.title = "Выходные дни | Онлайн-запись"}
-        if(tab==='staff'){document.title = companyTypeId === 2 ? "Рабочие места | Онлайн-запись" :"Сотрудники | Онлайн-запись"}
+        if(tab==='staff'){document.title = (companyTypeId === 2 || companyTypeId === 3) ? "Рабочие места | Онлайн-запись" :"Сотрудники | Онлайн-запись"}
         if(tab==='workinghours'){document.title = "Рабочие часы | Онлайн-запись"}
 
         history.pushState(null, '', '/staff/'+tab);
@@ -211,9 +211,9 @@ class Index extends Component {
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         switch (itemList.permissionCode) {
             case 2:
-                return companyTypeId === 2 ? 'Календарь других рабочих мест' : 'Календарь других сотрудников';
+                return (companyTypeId === 2 || companyTypeId === 3) ? 'Календарь других рабочих мест' : 'Календарь других сотрудников';
             case 10:
-                return companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники';
+                return (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники';
             default:
                 return itemList.name
         }
@@ -324,7 +324,7 @@ class Index extends Component {
                                 <a className={"nav-link"+(activeTab==='workinghours'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.updateTimetable(); this.setTab('workinghours')}}>Рабочие часы</a>
                             </li>
                             <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>{companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники'}</a>
+                                <a className={"nav-link"+(activeTab==='staff'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('staff')}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
                             </li>
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='holidays'?' active show':'')} data-toggle="tab" href="#tab3" onClick={()=>this.setTab('holidays')}>Выходные дни</a>
@@ -678,7 +678,7 @@ class Index extends Component {
                 <div className="hide buttons-container">
                     <div className="p-4">
                         <button className="button new-staff" type="button" onClick={()=>this.handleClick(null, true)}>Пригласить по Email</button>
-                        <button className="button new-staff" type="button"  onClick={()=>this.handleClick(null, false)}>{companyTypeId === 2 ? 'Новое рабочее место' : 'Новый сотрудник'}</button>
+                        <button className="button new-staff" type="button"  onClick={()=>this.handleClick(null, false)}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}</button>
 
                     </div>
                     <div className="arrow"/>

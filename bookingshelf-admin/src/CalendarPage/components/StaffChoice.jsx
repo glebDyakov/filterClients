@@ -29,11 +29,11 @@ class StaffChoice extends PureComponent {
                                                     />
                                                 </span>
                         )}
-                        {typeSelected && typeSelected===1 && < p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>}
+                        {typeSelected && typeSelected===1 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>}
                         {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
                             <p>{currentSelectedStaff.firstName + " " + (currentSelectedStaff.lastName ? currentSelectedStaff.lastName : '')}</p>)
                         }
-                        {typeSelected && typeSelected===2 && < p> Все {companyTypeId === 2 ? 'рабочие места' : 'сотрудники'} </p>}
+                        {typeSelected && typeSelected===2 && < p> Все {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочие места' : 'сотрудники'} </p>}
 
                     </div>
                 )}
@@ -55,12 +55,12 @@ class StaffChoice extends PureComponent {
                     <ul className="dropdown-menu">
                         <li>
                             <a onClick={() => setWorkingStaff(timetable, 2)}>
-                                <p>Все {companyTypeId === 2 ? 'рабочие места' : 'сотрудники'}</p>
+                                <p>Все {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочие места' : 'сотрудники'}</p>
                             </a>
                         </li>
                         {!hideWorkingStaff && <li>
                             <a onClick={() => setWorkingStaff(timetable, 1)}>
-                                <p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>
+                                <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>
                             </a>
                         </li>}
 

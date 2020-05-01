@@ -70,7 +70,7 @@ class Index extends Component{
         let dataToChartStaff = moment().endOf('day').format('x');
         let dataFromChartStaff = moment(dateNow - (3600 * 1000 * 6 * 24)).startOf('day').format('x');
         const companyTypeId = props.company.settings && props.company.settings.companyTypeId;
-        const staffOptions = companyTypeId === 2 ? {
+        const staffOptions = (companyTypeId === 2 || companyTypeId === 3) ? {
             firstName: 'Доступные',
             lastName: 'рабочие места'
         } : {
@@ -319,7 +319,7 @@ class Index extends Component{
 
         if (staff === 2) {
             const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-            const staffOptions = companyTypeId === 2 ? {
+            const staffOptions = (companyTypeId === 2 || companyTypeId === 3) ? {
                 firstName: 'Доступные',
                 lastName: 'рабочие места'
             } : {
@@ -357,7 +357,7 @@ class Index extends Component{
         let resStaff = {}
         if (staff === 2){
             const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-            const staffOptions = companyTypeId === 2 ? {
+            const staffOptions = (companyTypeId === 2 || companyTypeId === 3) ? {
                 firstName: 'Доступные',
                 lastName: 'рабочие места'
             } : {
@@ -428,7 +428,7 @@ class Index extends Component{
         }
 
         if(JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
-            const staffOptions = newProps.company.settings.companyTypeId === 2 ? {
+            const staffOptions = (newProps.company.settings.companyTypeId === 2 || newProps.company.settings.companyTypeId === 3) ? {
                 firstName: 'Доступные',
                 lastName: 'рабочие места'
             } : {
@@ -713,7 +713,7 @@ class Index extends Component{
                                 </div>
                                 <ul className="dropdown-menu">
                                     <li onClick={()=>this.setCurrentSelectedStaff(2)}>
-                                        <a ><p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
+                                        <a ><p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
                                     </li>
                                     {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
@@ -790,7 +790,7 @@ class Index extends Component{
                                 </div>
                                 <ul className="dropdown-menu">
                                     <li onClick={()=>this.setCurrentSelectedStaffChart(2)}>
-                                        <a ><p>{companyTypeId === 2 ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
+                                        <a ><p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p></a>
                                     </li>
                                     {staff && staff.timetable && staff.timetable.map(staffEl =>{
                                         const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
