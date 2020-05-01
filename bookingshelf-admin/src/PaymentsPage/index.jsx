@@ -287,13 +287,13 @@ class Index extends Component {
 
         switch (period) {
             case '1':
-                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 3
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 3;
                 break;
             case '2':
-                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * (companyTypeId === 2 ? 6 : 5)
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5;
                 break;
             case '3':
-                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * (companyTypeId === 2 ? 12 : 9)
+                finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9;
                 break;
         }
 
@@ -569,14 +569,14 @@ class Index extends Component {
                                                         ...this.state.rate,
                                                         period: "2"
                                                     }
-                                                })}>6 месяцев {companyTypeId !== 2 && <span>+1 месяц бесплатно</span>}</li>
+                                                })}>6 месяцев <span>+1 месяц бесплатно</span></li>
                                             <li className={period === '3' ? "active selected" : ""}
                                                 onClick={() => this.setState({
                                                     rate: {
                                                         ...this.state.rate,
                                                         period: "3"
                                                     }
-                                                })}>12 месяцев {companyTypeId !== 2 && <span>+3 месяца бесплатно</span>}</li>
+                                                })}>12 месяцев <span>+3 месяца бесплатно</span></li>
                                         </ul>
 
                                         <div className="range" style={{position: "relative"}}>
