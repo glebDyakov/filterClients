@@ -207,6 +207,18 @@ class Index extends Component {
         this.props.dispatch(staffActions.getFeedback(1));
     }
 
+    getItemListName(itemList) {
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+        switch (itemList.permissionCode) {
+            case 2:
+                return companyTypeId === 2 ? 'Календарь других рабочих мест' : 'Календарь других сотрудников';
+            case 10:
+                return companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники';
+            default:
+                return itemList.name
+        }
+    }
+
     render() {
         const { staff, company } = this.props;
         const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
@@ -543,7 +555,7 @@ class Index extends Component {
                                     staff.accessList && staff.accessList.map((itemList, index) =>
                                         <div className="tab-content-list" key={itemList.permissionCode}>
                                             <div>
-                                                {itemList.name}
+                                                {this.getItemListName(itemList)}
                                             </div>
                                             {staff.access && staff.access.map((item) => {
                                                     const checkedPermission = item.permissions.find((element) => {

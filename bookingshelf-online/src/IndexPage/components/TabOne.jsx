@@ -357,7 +357,7 @@ class TabOne extends  PureComponent{
                         </div>
                     </React.Fragment>
                 )}
-                {!flagAllStaffs && info.template === 1 && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
+                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</p>}
             </div>
         );
     }
