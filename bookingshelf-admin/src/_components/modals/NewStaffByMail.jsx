@@ -26,7 +26,7 @@ class NewStaffByMail extends React.Component {
 
     render() {
         const { emailNew, emailIsValid, staffs } = this.state;
-
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         return (
             <Modal size="md" style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-mail">
@@ -34,7 +34,7 @@ class NewStaffByMail extends React.Component {
                         <div className="modal-content">
                             <div className="form-group">
                                 <div className="modal-header">
-                                    <h4 className="modal-title">Пригласить сотрудника по Email</h4>
+                                    <h4 className="modal-title">Пригласить по Email</h4>
                                     <button type="button" className="close" onClick={this.closeModal} />
                                     {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                     {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -42,7 +42,7 @@ class NewStaffByMail extends React.Component {
                                 </div>
                                 <form className="pl-4 pr-4">
                                     <div className="form-group">
-                                        <span>Email нового сотрудника</span>
+                                        <span>Email нового {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</span>
                                         <input type="email" placeholder=""
                                                name="email"
                                                value={emailNew}  onChange={this.handleChangeEmail}
@@ -96,9 +96,9 @@ class NewStaffByMail extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, staff  } = state;
+    const { alert, authentication, staff, company  } = state;
     return {
-        alert, authentication, staff
+        alert, authentication, staff, company
     };
 }
 

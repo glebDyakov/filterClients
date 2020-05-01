@@ -62,6 +62,7 @@ class AddService extends React.Component {
 
     render() {
         const {service, editServiceItem, colors, staffs, group, allStaffs, services}=this.state;
+        const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
         const optionList = (
             <React.Fragment>
@@ -230,7 +231,7 @@ class AddService extends React.Component {
                                 <div className="col-lg-6">
                                     <div className="block-style2 container">
                                         <div className="row">
-                                            <div className="col-sm-12"><p className="title mb-2">Сотрудники, оказывающие услугу</p></div>
+                                            <div className="col-sm-12"><p className="title mb-2">{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места': 'Сотрудники'}, оказывающие услугу</p></div>
                                         </div>
                                         {allStaffs && allStaffs.length > 0 &&
                                         <div className="search dropdown row">
@@ -423,9 +424,9 @@ class AddService extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services } = state;
+    const { alert, services, company } = state;
     return {
-        alert, services
+        alert, services, company
     };
 }
 

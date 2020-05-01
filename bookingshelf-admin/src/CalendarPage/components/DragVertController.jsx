@@ -22,10 +22,13 @@ class DragVertController extends React.Component {
     }
 
     handleMouseMove(e) {
-        const { currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
+        const { currentTarget, company, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
         const node = document.getElementById(textAreaId)
         const appointmentId = textAreaId.split('-')[0]
         const serviceTimeNode = document.getElementById(`${appointmentId}-service-time`)
+
+        const { booktimeStep } = company.settings
+        const step  = booktimeStep / 60;
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
@@ -38,7 +41,7 @@ class DragVertController extends React.Component {
             const firstTimeMoment = moment(firstTime, 'HH:mm')
 
             for (let i = 0; i < resultSecondTime; i++) {
-                firstTimeMoment.add(15, 'minutes');
+                firstTimeMoment.add(step, 'minutes');
             }
             const updatedSecondTime = firstTimeMoment.format('HH:mm')
 
@@ -47,11 +50,14 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
-        const { appointments, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
+        const { appointments, staff, company, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
         const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
 
-        let newDuration = (15 * 60 * offsetDifference)
+        const { booktimeStep } = company.settings
+        const step  = booktimeStep / 60;
+
+        let newDuration = (step * 60 * offsetDifference)
 
         let currentTotalDuration = changingVisit.duration
         if (changingVisit.hasCoAppointments) {
@@ -98,7 +104,7 @@ class DragVertController extends React.Component {
                     coAppointments.forEach(coAppointment => {
                         if (shouldUpdateDuration) {
                             newDuration = coAppointment.duration + newDuration
-                            if (newDuration > 900) {
+                            if (newDuration > booktimeStep) {
                                 shouldUpdateDuration = false
                                 setTimeout(() => {
                                     this.props.dispatch(calendarActions.updateAppointment(
@@ -109,12 +115,12 @@ class DragVertController extends React.Component {
                                     ))
                                 }, 1000 * timeout)
                             } else {
-                                newDuration-=900
+                                newDuration-=booktimeStep
 
                                 setTimeout(() => {
                                     this.props.dispatch(calendarActions.updateAppointment(
                                         coAppointment.appointmentId,
-                                        JSON.stringify({duration: 900}),
+                                        JSON.stringify({duration: booktimeStep}),
                                         false,
                                         true
                                     ))
@@ -152,6 +158,7 @@ class DragVertController extends React.Component {
 
 function mapStateToProps(state) {
     const {
+        company,
         calendar: { appointments, reservedTime },
         staff: { timetable, staff },
         appointment: {
@@ -160,7 +167,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
-        appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
+        company, appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
     }
 }
 

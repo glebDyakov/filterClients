@@ -88,8 +88,9 @@ class ClientDetails extends React.Component {
     }
 
     render() {
-        const {client, defaultAppointmentsList}=this.state;
-        const {editClient, services, staff}=this.props;
+        const { client, defaultAppointmentsList }=this.state;
+        const { editClient, services, staff, company }=this.props;
+        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         return (
 
@@ -171,7 +172,7 @@ class ClientDetails extends React.Component {
                                                         <span style={{
                                                             whiteSpace: 'normal',
                                                             fontSize: '12px'
-                                                        }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
+                                                        }}><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
                                                         <strong
                                                             style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                         {(activeService && activeService.details) ?
@@ -224,9 +225,9 @@ class ClientDetails extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, calendar, staff, client} = state;
+    const { alert, services, calendar, staff, client, company} = state;
     return {
-        alert, services, calendar, staff, client
+        alert, services, calendar, staff, client, company
     };
 }
 

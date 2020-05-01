@@ -13,6 +13,7 @@ import Popover from "../../_components/Popover";
 
 const CellAppointment = (props) => {
     const {
+        company,
         dispatch,
         moveVisit,
         movingVisit,
@@ -45,7 +46,6 @@ const CellAppointment = (props) => {
     let totalAmount = appointment.totalAmount
     const currentAppointments = [appointment]
     const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time)
-
     const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
     appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
 
@@ -63,7 +63,10 @@ const CellAppointment = (props) => {
             }
         }))
     }
-    const resultTextAreaHeight = ((totalDuration / 60 / 15) - 1) * 20;
+
+    const { booktimeStep } = company.settings
+    const step  = booktimeStep / 60;
+    const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * 20;
 
     let extraServiceText;
     switch (totalCount) {
@@ -91,7 +94,7 @@ const CellAppointment = (props) => {
 
     const isOwnInterval = i => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis + (totalDuration * 1000)) > i
     const nearestAvailableMillis = getNearestAvailableTime(appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems, appointments, reservedTime, staff, isOwnInterval);
-    const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (15 * 60000))) / 1000 / 60 / 15;
+    const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (step * 60000))) / 1000 / 60 / step;
     const maxTextAreaHeight = maxTextAreaCellCount * 20;
 
     const textAreaId = `${appointment.appointmentId}-${numberKey}-${staffKey}-textarea-wrapper`
@@ -288,7 +291,7 @@ const CellAppointment = (props) => {
     )
 
 
-    const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(15, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
+    const wrapperClassName = 'cell default-width ' +(currentTime <= moment().format("x") && currentTime >= moment().subtract(step, "minutes").format("x") ? 'present-time ' : '') + (appointment.appointmentId === selectedNote ? 'selectedNote' : '')
 
     const dragVert = ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
         <p onMouseDown={(e) => {
@@ -337,6 +340,7 @@ const CellAppointment = (props) => {
 
 function mapStateToProps(state) {
     const {
+        company,
         calendar: {
             appointments,
             reservedTime,
@@ -354,6 +358,7 @@ function mapStateToProps(state) {
     } = state;
 
     return {
+        company,
         staff,
         appointments,
         reservedTime,

@@ -9,6 +9,7 @@ import PhoneInput from "../PhoneInput";
 import InputCounter from "../InputCounter";
 import moment from "moment";
 import ReactPhoneInput from "react-phone-input-2";
+import { companyActions } from "../../_actions";
 
 class NewClient extends React.Component {
     constructor(props) {
@@ -51,6 +52,10 @@ class NewClient extends React.Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.dispatch(companyActions.get())
     }
 
     componentWillReceiveProps(newProps) {
@@ -146,7 +151,9 @@ class NewClient extends React.Component {
     }
 
     render() {
+        const { company } = this.props;
         const { day, month, year, client, edit, alert, clients }=this.state;
+        const companyTypeId = company.settings && company.settings.companyTypeId
 
         const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
 
@@ -173,6 +180,9 @@ class NewClient extends React.Component {
 
                                     <InputCounter title="Отчество" placeholder="Например: Иванович" value={client.middleName}
                                                   name="middleName"  handleChange={this.handleChange} maxLength={128} />
+
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter extraWrapperClassName="desktop-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
+                                                  name="carBrand" handleChange={this.handleChange} maxLength={128} />}
 
                                     <p className="title_block">Номер телефона</p>
                                     <ReactPhoneInput
@@ -205,6 +215,10 @@ class NewClient extends React.Component {
                                             {this.getYearOptionList()}
                                         </select>
                                     </div>
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter extraWrapperClassName="mobile-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
+                                                                          name="carBrand" handleChange={this.handleChange} maxLength={128} />}
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter title="Гос. номер" placeholder="" value={client.carNumber}
+                                                                          name="carNumber" handleChange={this.handleChange} maxLength={128} />}
 
                                     <InputCounter type="email" placeholder="Например: ivanov@gmail.com" value={client.email}
                                                   name="email" title="Email"
@@ -355,9 +369,9 @@ class NewClient extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, client} = state;
+    const { alert, client, company } = state;
     return {
-        alert, client
+        alert, client, company
     };
 }
 

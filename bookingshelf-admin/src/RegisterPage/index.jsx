@@ -18,6 +18,7 @@ class Index extends React.Component {
         this.state = {
             user: {
                 companyName: '',
+                companyTypeId: 1,
                 phone: '',
                 email: params.search.length!==0 ? params.search.split('?email=')[1].replace("%40", "@"):'',
                 password: '',
@@ -139,6 +140,15 @@ class Index extends React.Component {
                                 <p>Зарегистрируйтесь и получите бесплатный пробный период 30 дней</p>
                                 <span>Название компании</span>
                                 <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')} onBlur={this.handleBlur}  name="companyName" value={user.companyName} onChange={this.handleChange} />
+
+                                <span>Вид деятельности</span>
+                                <select className="custom-select" name="companyTypeId" onChange={this.handleChange}
+                                        value={user.companyTypeId}>
+                                    <option value={1}>Салоны красоты, барбершопы, SPA</option>
+                                    <option value={2}>СТО, автомойки, шиномонтажи</option>
+                                    <option value={3}>Коворкинг</option>
+                                    <option value={4}>Медицинские центры</option>
+                                </select>
 
                                 <span>Cтрана</span>
                                 <div className="">

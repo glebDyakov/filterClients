@@ -27,7 +27,13 @@ class IndexPage extends PureComponent {
     constructor(props) {
         super(props);
         const group = localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''}
-        group.description = ''
+        group.description = '';
+        if (!group.carBrand) {
+            group.carBrand = '';
+        }
+        if (!group.carNumber) {
+            group.carNumber = '';
+        }
         this.state = {
             selectedStaff: [],
             selectedSubcompany: {},
@@ -45,7 +51,6 @@ class IndexPage extends PureComponent {
             allPriceTo: 0,
             flagAllStaffs: false
         };
-
 
         this.selectStaff=this.selectStaff.bind(this);
         this.handleMoveVisit=this.handleMoveVisit.bind(this);
@@ -508,6 +513,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 5 &&
                     <TabFive
+                        info={info}
                         setDefaultFlag={this.setDefaultFlag}
                         flagAllStaffs={flagAllStaffs}
                         forceUpdateStaff={this.forceUpdateStaff}

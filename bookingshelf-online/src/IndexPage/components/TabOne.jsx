@@ -107,7 +107,7 @@ class TabOne extends  PureComponent{
                             }
                         }}><span className="title_block_text">Назад</span></span>
                     )}
-                    <p className="modal_title">{info.template === 1 ? 'Выбор сотрудника' : 'Выбор рабочего места'}</p>
+                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Выбор рабочего места' : 'Выбор сотрудника' }</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
@@ -126,7 +126,7 @@ class TabOne extends  PureComponent{
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }} className="img_container">
 
-                                        <span className="staff_popup_name no-staff">Сотрудник не важен<br/>
+                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Рабочее место не важно' : 'Сотрудник не важен'}<br/>
 
 
                                         </span>
@@ -241,7 +241,7 @@ class TabOne extends  PureComponent{
                           >
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }} className="img_container">
-                                        <span className="staff_popup_name no-staff">Сотрудник не важен<br/>
+                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Рабочее место не важно' : 'Сотрудник не важен'}<br/>
                                         </span>
                                     </div>
                                 </span>
@@ -357,7 +357,7 @@ class TabOne extends  PureComponent{
                         </div>
                     </React.Fragment>
                 )}
-                {!flagAllStaffs && info.template === 1 && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор сотрудника</p>}
+                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</p>}
             </div>
         );
     }

@@ -398,10 +398,12 @@ class Index extends Component {
                                             <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                                         </div>
                                         <p>Вид деятельности</p>
-                                        <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="template"
-                                                value={subcompany && subcompany.template}>
-                                            <option value={1}>Сфера услуг</option>
-                                            <option value={2}>Коворкинг</option>
+                                        <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="companyTypeId"
+                                                value={subcompany && subcompany.companyTypeId}>
+                                            <option value={1}>Салоны красоты, барбершопы, SPA</option>
+                                            <option value={2}>СТО, автомойки, шиномонтажи</option>
+                                            <option value={3}>Коворкинг</option>
+                                            <option value={4}>Медицинские центры</option>
                                         </select>
                                     </div>
                                     <div className="col-sm-4">
