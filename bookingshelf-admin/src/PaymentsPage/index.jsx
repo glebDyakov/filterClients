@@ -492,7 +492,7 @@ class Index extends Component {
                             <div className="payments-inner">
                                 <div className="payments-list-block">
                                     <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
-                                    <p className="title-payments">{(companyTypeId === 2 ) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+                                    <p className="title-payments">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
                                     <div id="range-staff">
                                         <ul className="range-labels">
                                             {options.map(option => (
