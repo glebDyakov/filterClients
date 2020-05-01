@@ -172,7 +172,7 @@ class ClientDetails extends React.Component {
                                                         <span style={{
                                                             whiteSpace: 'normal',
                                                             fontSize: '12px'
-                                                        }}><strong>{companyTypeId === 2 ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
+                                                        }}><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
                                                         <strong
                                                             style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                         {(activeService && activeService.details) ?

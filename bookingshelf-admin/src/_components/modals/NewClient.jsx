@@ -181,7 +181,7 @@ class NewClient extends React.Component {
                                     <InputCounter title="Отчество" placeholder="Например: Иванович" value={client.middleName}
                                                   name="middleName"  handleChange={this.handleChange} maxLength={128} />
 
-                                    {companyTypeId === 2 && <InputCounter extraWrapperClassName="desktop-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter extraWrapperClassName="desktop-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
                                                   name="carBrand" handleChange={this.handleChange} maxLength={128} />}
 
                                     <p className="title_block">Номер телефона</p>
@@ -215,9 +215,9 @@ class NewClient extends React.Component {
                                             {this.getYearOptionList()}
                                         </select>
                                     </div>
-                                    {companyTypeId === 2 && <InputCounter extraWrapperClassName="mobile-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter extraWrapperClassName="mobile-visible" title="Марка авто" placeholder="Например: BMW" value={client.carBrand}
                                                                           name="carBrand" handleChange={this.handleChange} maxLength={128} />}
-                                    {companyTypeId === 2 && <InputCounter title="Гос. номер" placeholder="" value={client.carNumber}
+                                    {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter title="Гос. номер" placeholder="" value={client.carNumber}
                                                                           name="carNumber" handleChange={this.handleChange} maxLength={128} />}
 
                                     <InputCounter type="email" placeholder="Например: ivanov@gmail.com" value={client.email}

@@ -103,7 +103,7 @@ class Index extends Component {
         const { company } = this.props
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const count = staff ? staff.length : -1;
-        if (companyTypeId === 2) {
+        if ((companyTypeId === 2 || companyTypeId === 3)) {
             this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
             if (count <= 5) {
             } else {
@@ -464,7 +464,7 @@ class Index extends Component {
             </div>
         </React.Fragment>
 
-        const options = companyTypeId === 2 ? [1, 2, 3, 4, 5] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const options = (companyTypeId === 2 || companyTypeId === 3) ? [1, 2, 3, 4, 5] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         return (
             <React.Fragment>
                 {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
@@ -492,7 +492,7 @@ class Index extends Component {
                             <div className="payments-inner">
                                 <div className="payments-list-block">
                                     <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
-                                    <p className="title-payments">{companyTypeId === 2 ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+                                    <p className="title-payments">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
                                     <div id="range-staff">
                                         <ul className="range-labels">
                                             {options.map(option => (
@@ -515,7 +515,7 @@ class Index extends Component {
                                         <div
                                             className={(specialWorkersCount !== '') ? "range range-hidden" : "range"}
                                             style={{position: "relative"}}>
-                                            <input type="range" min="1" max={companyTypeId === 2 ? 5 : 10} value={workersCount}
+                                            <input type="range" min="1" max={(companyTypeId === 2 || companyTypeId === 3) ? 5 : 10} value={workersCount}
                                                    onChange={(e) => {
                                                        if ((staffCount) <= e.target.value) {
                                                            this.rateChangeWorkersCount(e)
@@ -523,13 +523,13 @@ class Index extends Component {
                                                    }}/>
                                             <div
                                                 className={(specialWorkersCount !== '') ? "rateLine rateLineHidden" : "rateLine"}
-                                                style={{width: ((workersCount - 1) * (companyTypeId === 2 ? 25 : 11)) + "%"}} />
+                                                style={{width: ((workersCount - 1) * ((companyTypeId === 2 || companyTypeId === 3) ? 25 : 11)) + "%"}} />
                                         </div>
 
 
                                     </div>
                                     <div className="radio-buttons">
-                                        {companyTypeId === 2 ? (
+                                        {(companyTypeId === 2 || companyTypeId === 3) ? (
 
                                             <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
                                                 <input type="radio" className="radio" id="radio2"

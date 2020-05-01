@@ -42,7 +42,7 @@ class NewStaffByMail extends React.Component {
                                 </div>
                                 <form className="pl-4 pr-4">
                                     <div className="form-group">
-                                        <span>Email нового {companyTypeId === 2 ? 'рабочего места' : 'сотрудника'}</span>
+                                        <span>Email нового {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</span>
                                         <input type="email" placeholder=""
                                                name="email"
                                                value={emailNew}  onChange={this.handleChangeEmail}
