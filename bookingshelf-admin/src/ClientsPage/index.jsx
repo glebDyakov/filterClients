@@ -10,6 +10,7 @@ import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
 import {servicesActions} from "../_actions/services.actions";
 import Paginator from "../_components/Paginator";
+import { staffActions } from "../_actions/staff.actions";
 
 class Index extends Component {
     constructor(props) {
@@ -66,6 +67,7 @@ class Index extends Component {
     queryInitData() {
         // this.props.dispatch(clientActions.getClient());
         //this.props.dispatch(clientActions.getClientWithInfo());
+        this.props.dispatch(staffActions.get());
         this.props.dispatch(clientActions.getClientV2(1));
         this.props.dispatch(servicesActions.getServices());
     }
