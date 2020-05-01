@@ -46,7 +46,6 @@ const CellAppointment = (props) => {
     let totalAmount = appointment.totalAmount
     const currentAppointments = [appointment]
     const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time)
-
     const activeService = services && services.servicesList && services.servicesList.find(service => service.serviceId === appointment.serviceId)
     appointmentServices.push({ ...activeService, discountPercent: appointment.discountPercent, totalAmount: appointment.totalAmount, price: appointment.price, serviceName: appointment.serviceName, serviceId: appointment.serviceId});
 
