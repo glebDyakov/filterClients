@@ -677,7 +677,7 @@ class Index extends Component {
                 {activeTab === 'staff' &&
                 <div className="hide buttons-container">
                     <div className="p-4">
-                        <button className="button new-staff" type="button" onClick={()=>this.handleClick(null, true)}>Пригласить по Email</button>
+                        {!(companyTypeId === 2 || companyTypeId === 3) && <button className="button new-staff" type="button" onClick={()=>this.handleClick(null, true)}>Пригласить по Email</button>}
                         <button className="button new-staff" type="button"  onClick={()=>this.handleClick(null, false)}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}</button>
 
                     </div>
