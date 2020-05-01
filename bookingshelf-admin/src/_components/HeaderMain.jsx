@@ -63,6 +63,7 @@ class HeaderMain extends React.PureComponent {
         const {authentication, company }=this.state;
 
         const { count } = company;
+        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         let path="/"+location.pathname.split('/')[1]
 
@@ -75,6 +76,9 @@ class HeaderMain extends React.PureComponent {
                 const titleKey = Object.keys(authentication.menu[0]).find((key)=>authentication.menu[0][key].url === path)
                 if (titleKey) {
                     redTitle = authentication.menu[0][titleKey].name
+                }
+                if (redTitle === 'Сотрудники') {
+                    redTitle = companyTypeId === 2 ? 'Рабочие места' : 'Сотрудники'
                 }
             }
         }
