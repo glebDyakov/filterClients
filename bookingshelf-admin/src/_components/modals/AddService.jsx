@@ -60,72 +60,22 @@ class AddService extends React.Component {
         }
     }
 
+    getOptionList() {
+        const booktimeStep = this.props.company.settings && parseInt(this.props.company.settings.booktimeStep);
+        const options = []
+        for (let i = booktimeStep; i <= 54000; i += booktimeStep) {
+            const hour = Math.floor(i / 3600)
+            const minute = i % 3600;
+            options.push(<option value={i}>{`${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} мин` : '00 мин'}`}</option>)
+        }
+        return options
+    }
+
     render() {
         const {service, editServiceItem, colors, staffs, group, allStaffs, services}=this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
-        const optionList = (
-            <React.Fragment>
-                <option value="900">15 мин</option>
-                <option value="1800">30 мин</option>
-                <option value="2700">45 мин</option>
-                <option value="3600">1 ч 00 мин</option>
-                <option value="4500">1 ч 15 мин</option>
-                <option value="5400">1 ч 30 мин</option>
-                <option value="6300">1 ч 45 мин</option>
-                <option value="7200">2 ч 00 мин</option>
-                <option value="8100">2 ч 15 мин</option>
-                <option value="9000">2 ч 30 мин</option>
-                <option value="9900">2 ч 45 мин</option>
-                <option value="10800">3 ч 00 мин</option>
-                <option value="12600">3 ч 30 мин</option>
-                <option value="14400">4 ч 00 мин</option>
-                <option value="15300">4 ч 15 мин</option>
-                <option value="16200">4 ч 30 мин</option>
-                <option value="17100">4 ч 45 мин</option>
-                <option value="18000">5 ч 00 мин</option>
-                <option value="18900">5 ч 15 мин</option>
-                <option value="19800">5 ч 30 мин</option>
-                <option value="20700">5 ч 45 мин</option>
-                <option value="21600">6 ч 00 мин</option>
-                <option value="22500">6 ч 15 мин</option>
-                <option value="23400">6 ч 30 мин</option>
-                <option value="24300">6 ч 45 мин</option>
-                <option value="25200">7 ч 00 мин</option>
-                <option value="26100">7 ч 15 мин</option>
-                <option value="27000">7 ч 30 мин</option>
-                <option value="27900">7 ч 45 мин</option>
-                <option value="28800">8 ч 00 мин</option>
-                <option value="29700">8 ч 15 мин</option>
-                <option value="30600">8 ч 30 мин</option>
-                <option value="31500">8 ч 45 мин</option>
-                <option value="32400">9 ч 00 мин</option>
-                <option value="33300">9 ч 15 мин</option>
-                <option value="34200">9 ч 30 мин</option>
-                <option value="35100">9 ч 45 мин</option>
-                <option value="36000">10 ч 00 мин</option>
-                <option value="36900">10 ч 15 мин</option>
-                <option value="37800">10 ч 30 мин</option>
-                <option value="38700">10 ч 45 мин</option>
-                <option value="39600">11 ч 00 мин</option>
-                <option value="40500">11 ч 15 мин</option>
-                <option value="41400">11 ч 30 мин</option>
-                <option value="42300">11 ч 45 мин</option>
-                <option value="43200">12 ч 00 мин</option>
-                <option value="44100">12 ч 15 мин</option>
-                <option value="45000">12 ч 30 мин</option>
-                <option value="45900">12 ч 45 мин</option>
-                <option value="46800">13 ч 00 мин</option>
-                <option value="47700">13 ч 15 мин</option>
-                <option value="48600">13 ч 30 мин</option>
-                <option value="49500">13 ч 45 мин</option>
-                <option value="50400">14 ч 00 мин</option>
-                <option value="51300">14 ч 15 мин</option>
-                <option value="52200">14 ч 30 мин</option>
-                <option value="53100">14 ч 45 мин</option>
-                <option value="54000">15 ч 00 мин</option>
-            </React.Fragment>
-        )
+        const optionList = this.getOptionList()
 
         return (
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">

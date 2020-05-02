@@ -294,68 +294,14 @@ class AddAppointment extends React.Component {
     getOptionList(index) {
         const { appointmentsFromProps, reservedTimeFromProps, staff } = this.props;
         const { appointment, staffs, staffCurrent, edit_appointment } = this.state;
-        const optionList = [
-            { duration: 900, label: '15 мин'},
-            { duration: 1800, label: '30 мин'},
-            { duration: 2700, label: '45 мин'},
-            { duration: 3600, label: '1 ч 00 мин'},
-            { duration: 4500, label: '1 ч 15 мин'},
-            { duration: 5400, label: '1 ч 30 мин'},
-            { duration: 6300, label: '1 ч 45 мин'},
-            { duration: 7200, label: '2 ч 00 мин'},
-            { duration: 8100, label: '2 ч 15 мин'},
-            { duration: 9000, label: '2 ч 30 мин'},
-            { duration: 9900, label: '2 ч 45 мин'},
-            { duration: 10800, label: '3 ч 00 мин'},
-            { duration: 11700, label: '3 ч 15 мин'},
-            { duration: 12600, label: '3 ч 30 мин'},
-            { duration: 13500, label: '3 ч 30 мин'},
-            { duration: 14400, label: '4 ч 00 мин'},
-            { duration: 15300, label: '4 ч 15 мин'},
-            { duration: 16200, label: '4 ч 30 мин'},
-            { duration: 17100, label: '4 ч 45 мин'},
-            { duration: 18000, label: '5 ч 00 мин'},
-            { duration: 18900, label: '5 ч 15 мин'},
-            { duration: 19800, label: '5 ч 30 мин'},
-            { duration: 20700, label: '5 ч 45 мин'},
-            { duration: 21600, label: '6 ч 00 мин'},
-            { duration: 22500, label: '6 ч 15 мин'},
-            { duration: 23400, label: '6 ч 30 мин'},
-            { duration: 24300, label: '6 ч 45 мин'},
-            { duration: 25200, label: '7 ч 00 мин'},
-            { duration: 26100, label: '7 ч 15 мин'},
-            { duration: 27000, label: '7 ч 30 мин'},
-            { duration: 27900, label: '7 ч 45 мин'},
-            { duration: 28800, label: '8 ч 00 мин'},
-            { duration: 29700, label: '8 ч 15 мин'},
-            { duration: 30600, label: '8 ч 30 мин'},
-            { duration: 31500, label: '8 ч 45 мин'},
-            { duration: 32400, label: '9 ч 00 мин'},
-            { duration: 33300, label: '9 ч 15 мин'},
-            { duration: 34200, label: '9 ч 30 мин'},
-            { duration: 35100, label: '9 ч 45 мин'},
-            { duration: 36000, label: '10 ч 00 мин'},
-            { duration: 36900, label: '10 ч 15 мин'},
-            { duration: 37800, label: '10 ч 30 мин'},
-            { duration: 38700, label: '10 ч 45 мин'},
-            { duration: 39600, label: '11 ч 00 мин'},
-            { duration: 40500, label: '11 ч 15 мин'},
-            { duration: 41400, label: '11 ч 30 мин'},
-            { duration: 42300, label: '11 ч 45 мин'},
-            { duration: 43200, label: '12 ч 00 мин'},
-            { duration: 44100, label: '12 ч 15 мин'},
-            { duration: 45000, label: '12 ч 30 мин'},
-            { duration: 45900, label: '12 ч 45 мин'},
-            { duration: 46800, label: '13 ч 00 мин'},
-            { duration: 47700, label: '13 ч 15 мин'},
-            { duration: 48600, label: '13 ч 30 мин'},
-            { duration: 49500, label: '13 ч 45 мин'},
-            { duration: 50400, label: '14 ч 00 мин'},
-            { duration: 51300, label: '14 ч 15 мин'},
-            { duration: 52200, label: '14 ч 30 мин'},
-            { duration: 53100, label: '14 ч 45 мин'},
-            { duration: 54000, label: '15 ч 00 мин'},
-        ];
+        const optionList = []
+
+        const booktimeStep = this.props.company.settings && parseInt(this.props.company.settings.booktimeStep);
+        for (let i = booktimeStep; i <= 54000; i += booktimeStep) {
+            const hour = Math.floor(i / 3600)
+            const minute = i % 3600;
+            optionList.push({ duration: i, label: `${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} мин` : '00 мин'}`})
+        }
 
         const activeStaffTimetable = staffs.timetable.find(item => item.staffId === staffCurrent.staffId)
 
