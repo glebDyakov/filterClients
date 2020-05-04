@@ -32,7 +32,7 @@ class DragVertController extends React.Component {
 
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
-        if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
+        if (res > minTextAreaHeight && res <= maxTextAreaHeight && ((res % 20 === 0) || (res < 4))) {
             node.style.height = res + "px";
             currentTarget.style.bottom = -(res + 3) + "px";
 
