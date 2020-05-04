@@ -197,6 +197,16 @@ const CellAppointment = (props) => {
                     </p>}
                     {appointment.clientId && <p className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
+                    {appointment.carBrand
+                    && <p><strong>Марка авто: </strong>
+                        {appointment.carBrand}
+                    </p>
+                    }
+                    {appointment.carNumber
+                    && <p><strong>Гос. номер: </strong>
+                        {appointment.carNumber}
+                    </p>
+                    }
                     {appointment.clientId && <p style={{ height: '30px' }}>
                         <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }} className="cell check-box calendar-client-checkbox red-text">
                             Клиент не пришел
