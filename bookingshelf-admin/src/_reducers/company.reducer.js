@@ -10,6 +10,11 @@ export function company(state = initialState, action) {
                 ...state,
                 isBookingInfoLoading: action.isBookingInfoLoading
             }
+        case companyConstants.UPDATE_SAVED:
+            return {
+                ...state,
+                saved: null
+            }
         case companyConstants.ADD_COMPANY_SUCCESS:
             localStorage.setItem('user', action.company);
 
@@ -101,6 +106,7 @@ export function company(state = initialState, action) {
             return {
                 ...state,
                 settings: companyAllInfo,
+                saved: action.saved,
                 [action.loadingKey]: false
             }
         case companyConstants.UPDATE_COMPANY_SETTINGS_FAILURE:
