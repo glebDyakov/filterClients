@@ -125,6 +125,16 @@ class AppointmentFromSocket extends React.Component {
                                 {clientName}
                               </p>
                             : <p>Без клиента</p>}
+                        {payload && payload.carBrand
+                            && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong>
+                                {payload.carBrand}
+                            </p>
+                            }
+                        {payload && payload.carNumber
+                            && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong>
+                                {payload.carNumber}
+                            </p>
+                            }
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
                             <strong style={{textTransform: 'capitalize'}}>Время: </strong>
