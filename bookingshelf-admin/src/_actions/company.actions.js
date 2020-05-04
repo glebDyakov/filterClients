@@ -6,6 +6,7 @@ export const companyActions = {
     add,
     updateCompanySettings,
     addSubcompany,
+    updateSaved,
     updateSubcompany,
     switchSubcompany,
     get,
@@ -39,7 +40,14 @@ function add(companyInfo) {
     function success(company, menu, profile) { return { type: userConstants.UPDATE_COMPANY_SUCCESS, company, menu, profile } }
 }
 
-function updateCompanySettings(companyInfo, loadingKey) {
+function updateSaved(saved) {
+    return dispatch => {
+        dispatch(success())
+    };
+    function success() { return { type: companyConstants.UPDATE_SAVED, saved } }
+}
+
+function updateCompanySettings(companyInfo, loadingKey, saved) {
     const menu = JSON.parse(localStorage.getItem('user')).menu
     const profile = JSON.parse(localStorage.getItem('user')).profile
     return dispatch => {
@@ -47,7 +55,7 @@ function updateCompanySettings(companyInfo, loadingKey) {
         companyService.add(companyInfo)
             .then(
                 company => {
-                    dispatch(success(companyInfo, menu, profile));
+                    dispatch(success(companyInfo, menu, profile, saved));
                 },
                 error => {
                     dispatch(failure(error));
@@ -57,7 +65,7 @@ function updateCompanySettings(companyInfo, loadingKey) {
     };
 
     function request() { return { type: companyConstants.UPDATE_COMPANY_SETTINGS_REQUEST, loadingKey } }
-    function success(company, menu, profile) { return { type: companyConstants.UPDATE_COMPANY_SETTINGS_SUCCESS, company, menu, profile, loadingKey } }
+    function success(company, menu, profile) { return { type: companyConstants.UPDATE_COMPANY_SETTINGS_SUCCESS, company, menu, profile, loadingKey, saved } }
     function failure(error) { return { type: companyConstants.UPDATE_COMPANY_SETTINGS_FAILURE, error, loadingKey } }
 }
 
