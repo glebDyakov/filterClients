@@ -89,12 +89,12 @@ class ClientDetails extends React.Component {
 
     render() {
         const { client, defaultAppointmentsList }=this.state;
-        const { editClient, services, staff, company }=this.props;
+        const { editClient, services, staff, company, wrapper = 'client-detail' }=this.props;
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
         return (
 
-            <div className="modal fade client-detail">
+            <div className={"modal fade " + (wrapper)}>
 
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                     <div className="modal-content">

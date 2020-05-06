@@ -379,10 +379,10 @@ class SidebarMain extends React.Component {
                     {authentication && authentication.menu && authentication.user && authentication.user.menu &&
                     menu && menu.menuList && menu.menuList.map((item, keyStore)=>{
                         return(
-                        authentication.user.menu.map(localItem=>{
+                        authentication.user.menu.map((localItem, i)=>{
                             return(
                             localItem.id===item.id &&
-                        <li className={path === item.url ? 'active' : ''}
+                        <li style={i === 0 ? { marginTop: '30px'} : {}} className={path === item.url ? 'active' : ''}
                             key={keyStore}>
                             <a onClick={(e) => this.handleClick(item.url, e)}>
                                 <img

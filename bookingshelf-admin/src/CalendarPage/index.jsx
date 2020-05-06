@@ -376,7 +376,7 @@ class Index extends PureComponent {
 
 
     render() {
-        const { company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
+        const { authentication, company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
         const { appointmentForDeleting, workingStaff, reserved, appointmentEdited,
             clickedTime, minutes, minutesReservedtime, staffClicked,
             type, appointmentModal, edit_appointment, infoClient,
@@ -390,76 +390,101 @@ class Index extends PureComponent {
             onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
             deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
         };
+
+
+        const companyTypeId = company.settings && company.settings.companyTypeId;
+        let path="/"+location.pathname.split('/')[1]
+
+        let redTitle
+        if (path === '/invoices') {
+            redTitle = 'Счета'
+        } else {
+            redTitle = ''
+            if (authentication.user && authentication.menu && authentication.menu[0]) {
+                const titleKey = Object.keys(authentication.menu[0]).find((key)=>authentication.menu[0][key].url === path)
+                if (titleKey) {
+                    redTitle = authentication.menu[0][titleKey].name
+                }
+                if (redTitle === 'Сотрудники') {
+                    redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'
+                }
+            }
+        }
         const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
         return (
-            <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
-                if (this.state.scrollableAppointmentAction) {
-                    this.setState({scrollableAppointmentAction: false})
-                }
-            }}>
-                <div className="row content calendar-container">
-                    <StaffChoice
-                        typeSelected={typeSelected}
-                        selectedStaff={selectedStaff}
-                        timetable={staff.timetable}
-                        staff={staff && staff.staff}
-                        setWorkingStaff={this.setWorkingStaff}
-                    />
+            <React.Fragment>
+                <p className="red-title-block mob-setting">
+                    {redTitle}
+                </p>
+                <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
+                    if (this.state.scrollableAppointmentAction) {
+                        this.setState({scrollableAppointmentAction: false})
+                    }
+                }}>
+                    <div className="row content calendar-container">
+                        <StaffChoice
+                            typeSelected={typeSelected}
+                            selectedStaff={selectedStaff}
+                            timetable={staff.timetable}
+                            staff={staff && staff.staff}
+                            setWorkingStaff={this.setWorkingStaff}
+                        />
 
-                    <div className="calendar col-6">
-                        <DatePicker
-                            closedDates={staff.closedDates}
+                        <div className="calendar col-6">
+                            <DatePicker
+                                closedDates={staff.closedDates}
+                                type={type}
+                                selectedDay={selectedDays[0]}
+                                selectedDays={selectedDays}
+                                showPrevWeek={this.showPrevWeek}
+                                showNextWeek={this.showNextWeek}
+                                handleDayChange={this.handleDayChange}
+                                handleDayClick={this.handleDayClick}
+                                handleWeekClick={this.handleWeekClick}
+                            />
+                        </div>
+                        <CalendarSwitch
                             type={type}
-                            selectedDay={selectedDays[0]}
-                            selectedDays={selectedDays}
-                            showPrevWeek={this.showPrevWeek}
-                            showNextWeek={this.showNextWeek}
-                            handleDayChange={this.handleDayChange}
-                            handleDayClick={this.handleDayClick}
-                            handleWeekClick={this.handleWeekClick}
+                            selectType={this.selectType}
                         />
                     </div>
-                    <CalendarSwitch
-                        type={type}
-                        selectType={this.selectType}
-                    />
-                </div>
-                <div className="days-container">
-                    <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                         <div className="calendar-list">
-                            <TabScrollHeader
-                                selectedDays={selectedDays}
-                                timetable={workingStaff.timetable }
-                                timetableMessage={timetableMessage}
-                                closedDates={staff.closedDates}
-                                staff={staff && staff.staff}
-                            />
-                             {company.settings && (
-                                 <TabScrollContent
-                                    company={company}
-                                    checkForCostaffs={this.checkForCostaffs}
-                                    getCellTime={this.getCellTime}
-                                    type={type}
-                                    timetable={staff.timetable}
-                                    services={services}
-                                    availableTimetable={workingStaff.timetable}
+                    <div className="days-container">
+                        <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
+                             <div className="calendar-list">
+                                <TabScrollHeader
+                                    selectedDays={selectedDays}
+                                    timetable={workingStaff.timetable }
+                                    timetableMessage={timetableMessage}
                                     closedDates={staff.closedDates}
-                                    clients={clients && clients.client}
-                                    handleUpdateClient={this.handleUpdateClient}
-                                    updateAppointmentForDeleting={this.updateAppointmentForDeleting}
-                                    changeTime={this.changeTime}
-                                    changeTimeFromCell={this.changeTimeFromCell}
-                                    moveVisit={this.moveVisit}
-                                />)
-                             }
+                                    staff={staff && staff.staff}
+                                />
+                                 {company.settings && (
+                                     <TabScrollContent
+                                        company={company}
+                                        checkForCostaffs={this.checkForCostaffs}
+                                        getCellTime={this.getCellTime}
+                                        type={type}
+                                        timetable={staff.timetable}
+                                        services={services}
+                                        availableTimetable={workingStaff.timetable}
+                                        closedDates={staff.closedDates}
+                                        clients={clients && clients.client}
+                                        handleUpdateClient={this.handleUpdateClient}
+                                        updateAppointmentForDeleting={this.updateAppointmentForDeleting}
+                                        changeTime={this.changeTime}
+                                        changeTimeFromCell={this.changeTimeFromCell}
+                                        moveVisit={this.moveVisit}
+                                    />)
+                                 }
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <CalendarModals {...calendarModalsProps} />
-                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-            </div>
+                    <CalendarModals {...calendarModalsProps} />
+                    {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                </div>
+            </React.Fragment>
         );
     }
     closeAppointmentFromSocket(){
