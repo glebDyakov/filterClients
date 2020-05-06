@@ -608,12 +608,12 @@ class Index extends Component {
                                             <span style={{ textAlign: 'right' }}>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                         </div>
 
-                                        {finalPriceMonthDiscount && (
-                                            <div >
+                                        {finalPriceMonthDiscount ? (
+                                            <div>
                                                 <p style={{ color: 'red' }}>Стоимость в месяц со скидкой: </p>
                                                 <span style={{ color: 'red', textAlign: 'right' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                             </div>
-                                        )}
+                                        ) : ''}
                                         <hr/>
                                         <div>
                                             <p className="total-price">Итоговая стоимость:
