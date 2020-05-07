@@ -414,9 +414,9 @@ class Index extends PureComponent {
 
         return (
             <React.Fragment>
-                <p className="red-title-block mob-setting">
-                    {redTitle}
-                </p>
+                {/*<p className="red-title-block mob-setting">*/}
+                {/*    {redTitle}*/}
+                {/*</p>*/}
                 <div className="calendar" ref={node => { this.node = node; }} onScroll={() => {
                     if (this.state.scrollableAppointmentAction) {
                         this.setState({scrollableAppointmentAction: false})
