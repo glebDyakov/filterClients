@@ -38,6 +38,7 @@ class HeaderMain extends React.PureComponent {
         this.updateClients = this.updateClients.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.handleEditClient = this.handleEditClient.bind(this);
+        this.handleSearchOutsideClick = this.handleSearchOutsideClick.bind(this);
     }
 
     componentDidMount() {
@@ -68,6 +69,15 @@ class HeaderMain extends React.PureComponent {
         } else {
             document.removeEventListener('click', this.handleOutsideClick, false);
         }
+        if(this.state.isSearchDropdown) {
+            document.addEventListener('click', this.handleSearchOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleSearchOutsideClick, false);
+        }
+    }
+
+    handleSearchOutsideClick() {
+        this.setState({ isSearchDropdown: false })
     }
 
     handleEditClient(client, isModalShouldPassClient) {
@@ -80,42 +90,6 @@ class HeaderMain extends React.PureComponent {
 
     handleOutsideClick() {
         this.setState({ isNotificationDropdown: false })
-    }
-
-    handleTypeaheadInputChange(name, value) {
-        this.setState({ [name]: value })
-    }
-
-    handleTypeaheadSearch(name, value) {
-        this.setState({ isLoadingTypeahead: true });
-        clientService.getClientV2(1, value.replace(/[+()\- ]/g, ''), false, 5)
-            .then(data => {
-                const {typeAheadOptions} = this.state;
-                const newOptions = data.content && data.content
-                this.setState({
-                    typeAheadOptions: {
-                        ...typeAheadOptions,
-                        [name]: {...typeAheadOptions[name], options: newOptions}
-                    }, isLoadingTypeahead: false
-                })
-            })
-    }
-
-    handleTypeaheadSelect(key, value) {
-        let updatedState = {};
-        if (value.length) {
-            updatedState = { clientFirstName: value[0].firstName, clientPhone: value[0].phone, clientLastName: value[0].lastName, clientEmail: value[0].email }
-            this.checkUser(value[0])
-        } else {
-            this.removeCheckedUser(key);
-            const checkingProps = { clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null }
-            Object.entries(checkingProps).forEach(([objKey , objValue]) => {
-                if (objKey !== key) {
-                    updatedState[objKey] = objValue
-                }
-            })
-        }
-        this.setState({ selectedTypeahead: value, ...updatedState});
     }
 
     checkUser(client){
@@ -138,6 +112,7 @@ class HeaderMain extends React.PureComponent {
         const search = value;
         if (search.length >= 3) {
             this.updateClients(value);
+            this.setState({ isSearchDropdown: true })
         } else if (search.length === 0) {
             this.updateClients(value);
         }
@@ -181,7 +156,7 @@ class HeaderMain extends React.PureComponent {
 
     render() {
         const { location, staff, clients } = this.props;
-        const { authentication, company, search, infoClient, collapse }=this.state;
+        const { authentication, company, search, infoClient, collapse, isSearchDropdown }=this.state;
 
         const { count } = company;
 
@@ -214,7 +189,7 @@ class HeaderMain extends React.PureComponent {
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
                                     <button className="search-icon" type="submit"/>
                                 </div>
-                                {search.length >= 3 && clients.client && (
+                                {isSearchDropdown && search.length >= 3 && clients.client && (
                                     <div className="search-content-wrapper">
                                         {clients.client.map(item => this.renderMenuItemChildren(item))}
                                     </div>)}
