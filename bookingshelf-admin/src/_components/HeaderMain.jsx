@@ -183,7 +183,7 @@ class HeaderMain extends React.PureComponent {
                                 <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>
                             </div>}
 
-                            <div style={{ marginLeft: '30px' }} className="col search-col">
+                            <div style={{ marginLeft: '34px' }} className="col search-col">
                                 <div className="search-header search col-12">
                                     <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
