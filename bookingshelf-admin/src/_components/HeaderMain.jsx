@@ -77,7 +77,7 @@ class HeaderMain extends React.PureComponent {
     }
 
     handleSearchOutsideClick() {
-        this.setState({ isSearchDropdown: false })
+        this.setState({ isSearchDropdown: false, search: '' })
     }
 
     handleEditClient(client, isModalShouldPassClient) {
