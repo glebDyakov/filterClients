@@ -22,6 +22,11 @@
     position: relative;
     height: 36px;
     border-radius: 30px !important;
+
+    @media (max-width: $mob-width) {
+        margin-left: 36px;
+        flex: 0 0 88%;
+    }
 }
 .search-wrapper {
     cursor: pointer;
