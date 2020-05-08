@@ -212,6 +212,7 @@ class ClientDetails extends React.Component {
                             <button type="button" className="button" data-toggle="modal"
                                     data-target=".new-client"  onClick={()=> {
                                 $('.client-detail').modal('hide')
+                                $('.header-client-detail').modal('hide')
                                 editClient(client)
                             }}>Редактировать клиента
                             </button>
