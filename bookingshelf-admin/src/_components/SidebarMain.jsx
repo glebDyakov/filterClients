@@ -259,6 +259,8 @@ class SidebarMain extends React.Component {
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
+                                    {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
+                                    {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -316,6 +318,8 @@ class SidebarMain extends React.Component {
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
+                                    {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
+                                    {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -375,10 +379,10 @@ class SidebarMain extends React.Component {
                     {authentication && authentication.menu && authentication.user && authentication.user.menu &&
                     menu && menu.menuList && menu.menuList.map((item, keyStore)=>{
                         return(
-                        authentication.user.menu.map(localItem=>{
+                        authentication.user.menu.map((localItem, i)=>{
                             return(
                             localItem.id===item.id &&
-                        <li className={path === item.url ? 'active' : ''}
+                        <li style={i === 0 ? { marginTop: '30px'} : {}} className={path === item.url ? 'active' : ''}
                             key={keyStore}>
                             <a onClick={(e) => this.handleClick(item.url, e)}>
                                 <img
@@ -522,6 +526,8 @@ class SidebarMain extends React.Component {
                                                         <div style={{width: "40%",  wordBreak: 'break-word'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
+                                                            {appointment.carBrand && <p><strong style={{ textDecoration: 'underline' }}>Марка авто: </strong> {appointment.carBrand}</p>}
+                                                            {appointment.carNumber && <p><strong style={{ textDecoration: 'underline' }}>Гос. номер: </strong> {appointment.carNumber}</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
                                                             >

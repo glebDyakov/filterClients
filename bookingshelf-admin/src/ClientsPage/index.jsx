@@ -69,7 +69,6 @@ class Index extends Component {
         //this.props.dispatch(clientActions.getClientWithInfo());
         this.props.dispatch(staffActions.get());
         this.props.dispatch(clientActions.getClientV2(1));
-        this.props.dispatch(servicesActions.getServices());
     }
 
     componentWillReceiveProps(newProps) {

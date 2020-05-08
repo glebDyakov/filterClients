@@ -63,6 +63,11 @@ class Index extends Component {
                 serviceIntervalOn: newProps.company.settings.serviceIntervalOn
             })
         }
+        if (newProps.company && newProps.company.saved === 'stepSaved') {
+            setTimeout(() => {
+                this.props.dispatch(companyActions.updateSaved(newProps.company.saved));
+            }, 3000)
+        }
         if (newProps.company && newProps.company.status==='saved.settings') {
             this.setState({status: newProps.company.status})
             setTimeout(() => {
@@ -114,7 +119,7 @@ class Index extends Component {
             imageBase64: activeCompany && activeCompany.imageBase64,
             ...this.props.company.settings,
             booktimeStep
-        }));
+        }, null, 'stepSaved'));
     }
 
     handleChange(e) {
@@ -205,7 +210,7 @@ class Index extends Component {
 
         const isOnlineZapisChecked = !onlineZapisOn
 
-        const { isServiceIntervalLoading, settings, isBookingInfoLoading, isFirstScreenLoading } = company;
+        const { isServiceIntervalLoading, settings, isBookingInfoLoading, isFirstScreenLoading, saved } = company;
 
         const dayPickerProps = {
             month: new Date(),
@@ -421,6 +426,9 @@ class Index extends Component {
                                     <option value={600}>10 мин</option>
                                     <option value={900}>15 мин</option>
                                 </select>
+                                {saved === 'stepSaved' &&
+                                    <p className="alert-success p-1 rounded pl-3">Сохранено</p>
+                                }
                                 <button className="ahref button mt-3 mb-3" onClick={this.handleStepSubmit}>
                                     Сохранить
                                 </button>

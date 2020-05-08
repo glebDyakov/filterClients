@@ -89,12 +89,12 @@ class ClientDetails extends React.Component {
 
     render() {
         const { client, defaultAppointmentsList }=this.state;
-        const { editClient, services, staff, company }=this.props;
+        const { editClient, services, staff, company, wrapper = 'client-detail' }=this.props;
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
         return (
 
-            <div className="modal fade client-detail">
+            <div className={"modal fade " + (wrapper)}>
 
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                     <div className="modal-content">
@@ -212,6 +212,7 @@ class ClientDetails extends React.Component {
                             <button type="button" className="button" data-toggle="modal"
                                     data-target=".new-client"  onClick={()=> {
                                 $('.client-detail').modal('hide')
+                                $('.header-client-detail').modal('hide')
                                 editClient(client)
                             }}>Редактировать клиента
                             </button>
