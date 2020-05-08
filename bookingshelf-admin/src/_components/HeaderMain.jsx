@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import LogoutPage from "../LogoutPage";
 import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
-import { UserSettings, UserPhoto, ClientDetails } from "./modals";
+import { UserSettings, UserPhoto, ClientDetails, NewClient } from "./modals";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { clientService } from "../_services";
 import { isValidNumber } from "libphonenumber-js";
@@ -38,6 +38,9 @@ class HeaderMain extends React.PureComponent {
         this.updateClients = this.updateClients.bind(this);
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.handleEditClient = this.handleEditClient.bind(this);
+        this.onCloseClient = this.onCloseClient.bind(this);
+        this.updateClient = this.updateClient.bind(this);
+        this.addClient = this.addClient.bind(this);
         this.handleSearchOutsideClick = this.handleSearchOutsideClick.bind(this);
     }
 
@@ -154,9 +157,14 @@ class HeaderMain extends React.PureComponent {
         );
     }
 
+    onCloseClient(){
+        this.setState({ newClientModal: false });
+    }
+
     render() {
         const { location, staff, clients } = this.props;
-        const { authentication, company, search, infoClient, collapse, isSearchDropdown }=this.state;
+        const { authentication, newClientModal, client_working, editClient, isModalShouldPassClient, company, search, infoClient, collapse, isSearchDropdown }=this.state;
+
 
         const { count } = company;
 
@@ -350,6 +358,17 @@ class HeaderMain extends React.PureComponent {
                             clientId={infoClient}
                             editClient={this.handleEditClient}
                         />
+                        {newClientModal &&
+                        <NewClient
+                            client_working={client_working}
+                            edit={editClient}
+                            isModalShouldPassClient={isModalShouldPassClient}
+                            updateClient={this.updateClient}
+                            checkUser={this.checkUser}
+                            addClient={this.addClient}
+                            onClose={this.onCloseClient}
+                        />
+                        }
 
                         <UserPhoto />
                     </div>
@@ -357,6 +376,18 @@ class HeaderMain extends React.PureComponent {
             </div>
         );
     }
+
+    updateClient(client, blacklisted){
+        const { dispatch } = this.props;
+
+        dispatch(clientActions.updateClient(JSON.stringify(client), blacklisted));
+    };
+
+    addClient(client){
+        const { dispatch } = this.props;
+
+        dispatch(clientActions.addClient(JSON.stringify(client)));
+    };
 
 
     openModal() {

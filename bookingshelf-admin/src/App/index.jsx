@@ -7,7 +7,7 @@ import {
     alertActions,
     calendarActions,
     companyActions,
-    notificationActions,
+    notificationActions, servicesActions,
     socketActions, userActions
 } from '../_actions';
 import { PrivateRoute, PublicRoute } from '../_components';
@@ -146,6 +146,8 @@ class Index extends React.Component {
         this.props.dispatch(notificationActions.getBalance());
         this.props.dispatch(companyActions.get());
         this.props.dispatch(companyActions.getNewAppointments());
+        this.props.dispatch(servicesActions.getServices());
+
 
         const options = {
             url: `${config.apiSocket}/${socketStaffId}/`,

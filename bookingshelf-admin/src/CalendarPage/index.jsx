@@ -176,7 +176,6 @@ class Index extends PureComponent {
         }
 
         this.props.dispatch(staffActions.get());
-        this.props.dispatch(servicesActions.getServices());
         this.props.dispatch(staffActions.getClosedDates());
         this.refreshTable(startTime, endTime);
 
