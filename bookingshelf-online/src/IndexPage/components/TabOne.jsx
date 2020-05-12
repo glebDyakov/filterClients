@@ -116,7 +116,7 @@ class TabOne extends  PureComponent{
                 </div>
                 {!this.state.staff && (
                     <React.Fragment>
-                        <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                        <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                         {flagAllStaffs && (
                             <li className={'nb'}
                                 onClick={() => {
@@ -166,7 +166,7 @@ class TabOne extends  PureComponent{
                                         <div className="img_container_block">
                                             <div>
                                                 <img
-                                                    style={{ marginRight: staffs.length <= 3 ? 'auto': 0 }}
+                                                    style={{ marginRight: staffs.length <= 23 ? 'auto': 0 }}
                                                     src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                     alt=""/>
                                             </div>
@@ -187,7 +187,7 @@ class TabOne extends  PureComponent{
 
 
                                      <span className="staff_popup_name">{staff.firstName} {staff.lastName ? staff.lastName : ''}<br/>
-                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px', margin: staffs.length <= 3 ? 'auto' : '0' }}>{staff.description} <br/></p>}
+                                            {staff.description && <p style={{ fontSize: "13px", maxWidth: '240px', margin: staffs.length <= 23 ? 'auto' : '0' }}>{staff.description} <br/></p>}
 
                                             {nearestTime && nearestTime.map((time, id)=>
                                                 time.staffId===staff.staffId && time.availableDays.length!==0 &&
@@ -232,7 +232,7 @@ class TabOne extends  PureComponent{
                             </li>
                         )}
                     </ul>
-                    <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 3 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                    <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
                       {flagAllStaffs && (
                           <li className={'nb'}
                               onClick={() => {
@@ -278,7 +278,7 @@ class TabOne extends  PureComponent{
                                         <img
                                           src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                           alt=""/>
-                                        <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length <= 3 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
+                                        <span className="staff_popup_name">{staff.firstName} {staffs && staffs.length <= 23 ? staff.lastName : <React.Fragment><br/>{staff.lastName}</React.Fragment>}<br/>
                                             <span style={{ fontSize: "13px"}}>{staff.description}</span>
                                         </span>
                                     </div>
