@@ -941,7 +941,7 @@ input{
                     margin-top: 10px;
 
                     img{
-                        margin: 0 5px 5px 0;
+                        margin: 6px 5px 5px 0;
                         display: inline-block;
                     }
                 }
@@ -998,7 +998,7 @@ input{
                 align-items: center;
                 height: 20px;
                 float: right;
-                margin: 0;
+                margin: 6px 0 0 0;
                 background-image: url(../img/logout.svg);
                 background-repeat: no-repeat;
                 background-size: 20px 20px;
@@ -2750,6 +2750,7 @@ select{
     width: 20px;
     height: 20px;
     margin-right: 6px;
+    margin-top: 6px;
     float: right;
 
     &:hover {
