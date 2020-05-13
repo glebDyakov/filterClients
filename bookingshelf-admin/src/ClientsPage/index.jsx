@@ -222,13 +222,13 @@ class Index extends Component {
                             return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
                                 <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
                                     <div style={{position: "relative"}}>
-                                        <a onClick={(e)=>this.handleClick(client_user.clientId, e, this)}>
+                                        <a onClick={()=>this.openClientStats(client_user)}>
                                             <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
                                             <p> {client_user.firstName} {client_user.lastName}</p>
                                         </a>
                                         <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
                                     </div>
-                                    <div>
+                                    <div className="clientEmail">
                                         {client_user.email}
                                     </div>
                                     <div>
@@ -236,6 +236,9 @@ class Index extends Component {
                                     </div>
                                     <div>
                                         {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
+                                    </div>
+                                    <div className="delete clientEditWrapper">
+                                        <a className="clientEdit" onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>
                                     </div>
                                     <div className="delete dropdown">
                                         <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
