@@ -284,8 +284,9 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <br />
-                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+                                    <p style={{color: "#3E90FF",  width: '168px' }}>
+                                        Просмотреть запись
+                                    </p>
 
                                 </div>
                             </div>
@@ -334,7 +335,7 @@ class SidebarMain extends React.Component {
                                         className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
-                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p><br/></React.Fragment> : 'Без клиента'}
+                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p></React.Fragment> : 'Без клиента'}<br/>
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
                                     {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
@@ -344,8 +345,9 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <br />
-                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+                                    <p style={{color: "#3E90FF", width: '168px' }}>
+                                        Просмотреть запись
+                                    </p>
 
                                 </div>
                             </div>
