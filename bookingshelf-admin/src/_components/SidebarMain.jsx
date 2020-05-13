@@ -284,6 +284,7 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
+                                    <br />
                                     <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
 
                                 </div>
@@ -343,6 +344,7 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
+                                    <br />
                                     <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
 
                                 </div>
