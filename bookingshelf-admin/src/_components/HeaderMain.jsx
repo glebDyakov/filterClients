@@ -171,6 +171,23 @@ class HeaderMain extends React.PureComponent {
         const activeStaff = staff && staff.find(item =>
             ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
 
+        let staffType;
+        if (authentication.user && authentication.user.profile && authentication.user.profile.roleId) {
+            switch (authentication.user.profile.roleId) {
+                case 1:
+                case 2:
+                    staffType = 'Сотрудник'
+                    break;
+                case 3:
+                    staffType = 'Админ'
+                    break;
+                case 4:
+                    staffType = 'Владелец'
+                    break;
+                default:
+            }
+        }
+
 
         return (
             <div style={{ height: 'auto' }} className="container_wrapper">
@@ -341,7 +358,10 @@ class HeaderMain extends React.PureComponent {
                                     }}/>
                                 </div>
                                 <a className="setting" onClick={this.openModal}/>
-                                <a className="firm-name" onClick={this.openModal}>{authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}</a>
+                                <a className="firm-name" onClick={this.openModal}>
+                                    {authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}
+                                    <p style={{ fontSize: '11px' }}>{staffType}</p>
+                                </a>
                                 <div className="img-container" data-toggle="modal" data-target=".modal_photo">
                                     <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+activeStaff.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 

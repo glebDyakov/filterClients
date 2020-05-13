@@ -202,7 +202,7 @@ class Index extends Component {
                         {
                             (defaultServicesList.services && defaultServicesList!=="" &&
                             // (1 &&
-                                <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                <div className="row align-items-center content clients mb-2" style={{margin: "0 -7px", width: "calc(100% + 14px)"}}>
                                     <div className="search col-7">
                                         <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
                                                aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
