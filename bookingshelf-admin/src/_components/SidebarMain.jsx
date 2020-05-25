@@ -293,6 +293,7 @@ class SidebarMain extends React.Component {
                         </li>
                     )
                 }
+
                 return resultMarkup;
             })
         })
