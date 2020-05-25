@@ -1772,6 +1772,7 @@ input{
             }
         }
         .img-container{
+            min-width: 35px;
             width: 35px;
             max-height: 35px;
             border: solid 1px rgba(172, 172, 172, 0.71);
@@ -1801,10 +1802,12 @@ input{
 
             @media screen {
                 @media (max-width: $laptop-width){
+                    min-width: 40px;
                     width: 40px;
                     max-height: 40px;
                 }
                 @media (max-width: $tablet-width){
+                    min-width: 35px;
                     width: 35px;
                     max-height: 35px;
                 }
