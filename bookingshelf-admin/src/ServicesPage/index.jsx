@@ -66,14 +66,14 @@ class Index extends Component {
             this.queryInitData()
         }
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, services: newProps.services,
+            this.setState({ services: newProps.services,
                 addService: newProps.services.status && newProps.services.status===209 ? false : this.state.addService,
                 addGroup: newProps.services.status && newProps.services.status===209 ? false : this.state.addGroup,
                 createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
                 staff: newProps.staff })
         }
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
-            this.setState({ ...this.state, services: newProps.services, defaultServicesList:  newProps.services })
+            this.setState({ services: newProps.services, defaultServicesList:  newProps.services })
         }
 
     }
