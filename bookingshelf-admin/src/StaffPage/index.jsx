@@ -355,7 +355,7 @@ class Index extends Component {
                             />
                             <div style={{ overflowX: 'auto', position: 'relative', zIndex: 0 }}>
                                 <div style={{ overflowX: 'hidden', display: 'inline-block' }} className="content-tab-date min-width-desktop">
-                                    <div style={{ position: 'absolute', zIndex: 1 }} className="tab-content-inner min-width-desktop">
+                                    <div style={{ position: 'absolute', zIndex: 1, width: '100%' }} className="tab-content-inner">
                                         <div className="tab-content-list">
                                             <div>
 

@@ -66,14 +66,14 @@ class Index extends Component {
             this.queryInitData()
         }
         if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
-            this.setState({...this.state, services: newProps.services,
+            this.setState({ services: newProps.services,
                 addService: newProps.services.status && newProps.services.status===209 ? false : this.state.addService,
                 addGroup: newProps.services.status && newProps.services.status===209 ? false : this.state.addGroup,
                 createdService: newProps.services.status && newProps.services.status===209 ? false : this.state.createdService,
                 staff: newProps.staff })
         }
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
-            this.setState({ ...this.state, services: newProps.services, defaultServicesList:  newProps.services })
+            this.setState({ services: newProps.services, defaultServicesList:  newProps.services })
         }
 
     }
@@ -202,7 +202,7 @@ class Index extends Component {
                         {
                             (defaultServicesList.services && defaultServicesList!=="" &&
                             // (1 &&
-                                <div className="row align-items-center content clients mb-2" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                <div className="row align-items-center content clients mb-2" style={{margin: "0 -7px", width: "calc(100% + 14px)"}}>
                                     <div className="search col-7">
                                         <input type="search" placeholder="Введите название услуги" style={{width: "175%"}}
                                                aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>

@@ -246,7 +246,7 @@ class TabCreateComment extends  PureComponent{
                                         <p style={{ display: 'flex' }}>
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>
-                                    Введите номер телефона, на него мы отправим SMS с персональным паролем для входа.
+                                    Введите номер телефона, на него будет отправлено SMS с паролем для входа.
                                 </span>
                                         </p>
                                         <div className="phones_country">

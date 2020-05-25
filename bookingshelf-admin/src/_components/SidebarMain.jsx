@@ -215,6 +215,23 @@ class SidebarMain extends React.Component {
             }
         }
 
+        let staffType;
+        if (authentication.user && authentication.user.profile && authentication.user.profile.roleId) {
+            switch (authentication.user.profile.roleId) {
+                case 1:
+                case 2:
+                    staffType = 'Сотрудник'
+                    break;
+                case 3:
+                    staffType = 'Админ'
+                    break;
+                case 4:
+                    staffType = 'Владелец'
+                    break;
+                default:
+            }
+        }
+
         const packetShowCondition = packetEnd <= 3;
 
         const appointmentCountMarkup = appointmentsCount && appointmentsCount.map((appointmentInfo) => {
@@ -267,7 +284,9 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+                                    <p style={{color: "#3E90FF",  width: '168px' }}>
+                                        Просмотреть запись
+                                    </p>
 
                                 </div>
                             </div>
@@ -316,7 +335,7 @@ class SidebarMain extends React.Component {
                                         className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
-                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p><br/></React.Fragment> : 'Без клиента'}
+                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p></React.Fragment> : 'Без клиента'}<br/>
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
                                     {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
@@ -326,7 +345,9 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#3E90FF"}}>Просмотреть запись</p>
+                                    <p style={{color: "#3E90FF", width: '168px' }}>
+                                        Просмотреть запись
+                                    </p>
 
                                 </div>
                             </div>
@@ -349,7 +370,7 @@ class SidebarMain extends React.Component {
                             if (e.target.className !== 'notification-mob') {
                                 this.onOpen()
                             }
-                        }} style={{height: "45px"}}>
+                        }} style={{height: "55px"}}>
                             <div className="img-container">
                                 <img className="rounded-circle" style={{opacity: "1"}} src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+authentication.user.profile.imageBase64):`${process.env.CONTEXT}public/img/image.png`} alt=""/>
                             </div>
@@ -357,6 +378,7 @@ class SidebarMain extends React.Component {
                                 $('.modal_user_setting').modal('show')
                             }} className="firm-name" style={{float: "left", opacity: "0.5"}}>
                                 {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
+                                <p style={{ fontSize: '11px' }}>{staffType}</p>
                             </p>
 
                             <span  onClick={()=>this.logout()} className="log_in"/>

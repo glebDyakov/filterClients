@@ -35,6 +35,7 @@ class NewStaff extends React.Component {
                 "workEndMilis":1000000000000,
                 "startDateOffMilis":moment().format('x'),
                 "endDateOffMilis":moment().format('x'),
+                "onlineBookingPercent": 100,
                 "onlineBooking":true,
                 "adminBooking":true,
                 "imageBase64":'',
@@ -234,6 +235,14 @@ class NewStaff extends React.Component {
                                                                 options={options}
                                                                 styles={colourStyles}
                                                             />
+                                                            <p style={{ marginTop: '8px' }}>Доступное время для онлайн-записи</p>
+                                                            <select className="custom-select" name="onlineBookingPercent" onChange={this.handleChange}
+                                                                    value={staff.onlineBookingPercent}>
+                                                                <option value={25}>25%</option>
+                                                                <option value={50}>50%</option>
+                                                                <option value={75}>75%</option>
+                                                                <option value={100}>100%</option>
+                                                            </select>
                                                             <p style={{ marginTop: '12px'}}>Начало работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
                                                             {/*{!edit && <div className="button-calendar button-calendar-inline">*/}
                                                             {/*    <DayPicker*/}
