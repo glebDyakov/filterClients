@@ -1986,7 +1986,7 @@ input{
         .arrow-left{
             display: block;
             background-color: rgba(53, 61, 73, 0.02);
-            background-image: url(../img/hamburger.svg);
+            background-image: url(../img/arrow.png);
             background-repeat: no-repeat;
             background-size: 14px;
             background-position: center;
@@ -3421,13 +3421,13 @@ textarea {
             align-items: center;
             @media screen {
                 @media (max-width: $laptop-width){
-                    height: 35px;
+                    height: 36px;
                 }
             }
 
             ::after {
                 content: '';
-                background-image: url(../img/hamburger.svg);
+                background-image: url(../img/arrow.png);
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 12px 24px;
