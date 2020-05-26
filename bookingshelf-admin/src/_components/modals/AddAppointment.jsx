@@ -818,10 +818,9 @@ class AddAppointment extends React.Component {
                                         {appointment.map((appointmentItem, index)=>{
                                             return <div className="addApointmentEachBlock">
 
-                                                <p className="title">Запись <span>{index+1}</span></p>
-                                                {index !== 0 && <button className="close"  onClick={()=>this.removeService(index)}>x</button>}
-                                                <div className="row">
-                                                    {minutes.length!==0 && (index === 0) && <div className="col-md-4">
+                                                <p style={{ paddingBottom: '18px' }} className="title">Запись <span>{index+1}</span></p>
+                                                {minutes.length!==0 && (index === 0) &&
+                                                    <div style={{ position: 'absolute', top: 0, right: '-15px' }} className="col-4">
                                                         <p>Начало</p>
                                                         <TimePicker
                                                             value={appointmentItem.appointmentTimeMillis&&moment(appointmentItem.appointmentTimeMillis, 'x') }
@@ -834,9 +833,11 @@ class AddAppointment extends React.Component {
                                                             disabledMinutes={this.disabledMinutes}
                                                             onChange={(appointmentTimeMillis)=>this.setTime(appointmentTimeMillis, minutes, index)}
                                                         />
-                                                    </div>}
-
-                                                    <div className="col-md-8">
+                                                    </div>
+                                                }
+                                                {index !== 0 && <button className="close"  onClick={()=>this.removeService(index)}>x</button>}
+                                                <div className="row">
+                                                    <div className="col-12">
                                                         <p className={!servicesDisabling&&'disabledField'}>Услуга</p>
                                                         <div className="select-color dropdown mb-3 border-color">
 
@@ -941,13 +942,19 @@ class AddAppointment extends React.Component {
                                                     </React.Fragment>
                                                 )}
 
-                                                <p>Единоразовая скидка, %</p>
-                                                <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
+                                                <div className="row">
+                                                    <div className="col-6">
+                                                        <p>Единоразовая скидка, %</p>
+                                                        <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
+                                                    </div>
 
-                                                {String(serviceCurrent[index].service.priceTo)  && (<React.Fragment><p>Фактическая цена</p>
-                                                <input type="text" className={"mb-3"} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
-
-                                                </React.Fragment>)}
+                                                        {String(serviceCurrent[index].service.priceTo)  && (
+                                                            <div className="col-6">
+                                                                <p>Фактическая цена</p>
+                                                                <input type="text" className={"mb-3"} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
+                                                            </div>)
+                                                        }
+                                                </div>
                                                 {
                                                     status === 200 &&
                                                     <p className="alert-success p-1 rounded pl-3 mb-2">Запись сохранена</p>
@@ -1032,7 +1039,7 @@ class AddAppointment extends React.Component {
 
                                                     <div className="row">
                                                         <div className="col-sm-12">
-                                                            <p className="title mb-3">Добавить клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните поля"/></p>
+                                                            <p className="title mb-3">Добавить клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/></p>
                                                         </div>
 
                                                     </div>
@@ -1045,10 +1052,10 @@ class AddAppointment extends React.Component {
                                                     {/*</div>*/}
                                                     <div className="row">
                                                         <div className="col-12">
-                                                            <p style={{ fontSize: '14px' }}>Быстрое добавление клиента:</p>
-                                                            {Object.entries({ clientFirstName: typeAheadOptions.clientFirstName, clientPhone: typeAheadOptions.clientPhone }).map(([key, value]) => (
+                                                            <p style={{ fontSize: '14px', marginBottom: '10px' }}>Быстрый поиск или добавление клиента:</p>
+                                                            {Object.entries({ clientFirstName: typeAheadOptions.clientFirstName, clientPhone: typeAheadOptions.clientPhone }).map(([key, value], i) => (
                                                                 <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                    <p>{value.label}</p>
+                                                                    <p style={key === 'clientPhone' ? { marginTop: '13px'}: {}}>{value.label}</p>
                                                                     <AsyncTypeahead
                                                                         isLoading={isLoadingTypeahead}
                                                                         onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
@@ -1066,12 +1073,12 @@ class AddAppointment extends React.Component {
                                                                         renderMenuItemChildren={this.renderMenuItemChildren}
                                                                     />
                                                                 </div>
-                                                            ))}
+                                                                )
+                                                            )}
 
-                                                            <p style={{ fontSize: '14px' }}>Опционально:</p>
                                                             {Object.entries({ clientLastName: typeAheadOptions.clientLastName, clientEmail: typeAheadOptions.clientEmail }).map(([key, value]) => (
                                                                 <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                    <p>{value.label}</p>
+                                                                    <p style={key === 'clientLastName' ? { marginTop: '13px'}: {}}>{value.label}</p>
                                                                     <AsyncTypeahead
                                                                         isLoading={isLoadingTypeahead}
                                                                         onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
