@@ -962,10 +962,10 @@ class AddAppointment extends React.Component {
                                             </div>
                                         })}
                                         <div style={{ margin: '6px 0 45px' }}>
-                                            <button style={{  minHeight: '25px', height: '25px', fontSize: '12px', width: '100%', borderRadius: '30px', background: 'grey', border: 'grey' }}
-                                                    className="button text-center button-absolute"
+                                            <p style={{ cursor: 'pointer', width: '96px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
+                                                    className="text-center button-absolute"
                                                     onClick={() => this.addNewService()}>Добавить услугу
-                                            </button>
+                                            </p>
                                         </div>
 
                                         {appointmentMessage &&
