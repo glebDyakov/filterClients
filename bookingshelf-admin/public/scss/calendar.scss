@@ -1677,6 +1677,9 @@
     overflow-y: auto;
     max-height: 80%;
     .calendar_modal_buttons{
+        width: calc(100% - 30px);
+        position: absolute;
+        bottom: -15px;
         display: flex;
         justify-content: space-between;
     }
