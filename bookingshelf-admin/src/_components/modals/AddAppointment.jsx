@@ -385,7 +385,7 @@ class AddAppointment extends React.Component {
         };
         let appointmentMessage = 'Невозможно добавить ещё одну услугу';
         if (serviceCurrent[appointment.length - 1].id === -1) {
-            appointmentMessage = `Добавьте услугу в запись ${appointment.length}`;
+            appointmentMessage = `Необходимо выбрать услугу`;
             this.setState({ appointmentMessage });
             return
         }
@@ -944,8 +944,8 @@ class AddAppointment extends React.Component {
 
                                                 <div className="row">
                                                     <div className="col-6">
-                                                        <p>Единоразовая скидка, %</p>
-                                                        <input type="text" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
+                                                        <p>Единоразовая скидка</p>
+                                                        <input type="text" placeholder="%" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
                                                     </div>
 
                                                         {String(serviceCurrent[index].service.priceTo)  && (
@@ -961,25 +961,41 @@ class AddAppointment extends React.Component {
                                                 }
                                             </div>
                                         })}
-                                        {appointmentMessage && <div>{appointmentMessage}</div>}
-
-                                        <div className="calendar_modal_buttons">
-                                            <button style={{ minHeight: '28px', height: '28px', fontSize: '12px', width: '100%', borderRadius: '30px', background: 'grey', border: 'grey' }}
-                                                    className="button text-center button-absolute addService"
+                                        <div style={{ margin: '6px 0 45px' }}>
+                                            <button style={{  minHeight: '25px', height: '25px', fontSize: '12px', width: '100%', borderRadius: '30px', background: 'grey', border: 'grey' }}
+                                                    className="button text-center button-absolute"
                                                     onClick={() => this.addNewService()}>Добавить услугу
                                             </button>
                                         </div>
+
+                                        {appointmentMessage &&
+                                            <div style={{ margin: '-36px 0 36px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
+                                        }
+
                                         <div className="calendar_modal_buttons">
-                                            <button style={{ minWidth: '48%', background: '#ed1b24', border: '#ed1b24' }}
+                                            <button style={{ minWidth: '48%', margin: '0', background: '#ed1b24', border: '#ed1b24' }}
                                                     className="button text-center saveservices button-absolute addService"
                                                     onClick={this.closeModal}>Отменить
                                             </button>
                                             <button
-                                                style={{ minWidth: '48%' }}
-                                                className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
+                                                style={{ minWidth: '48%', margin: '0' }}
+                                                className={'button saveservices text-center button-absolute button-save'}
                                                 type="button"
-                                                onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                                disabled={status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key])))|| serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>Сохранить
+                                                onClick={() => {
+                                                    if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key])))|| serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
+                                                        this.setState({ appointmentMessage: 'Необходимо выбрать услугу'})
+                                                    } else {
+                                                        if (edit_appointment) {
+                                                            this.editAppointment()
+                                                        } else {
+                                                            this.addAppointment()
+                                                        }
+                                                        if (appointmentMessage) {
+                                                            this.setState({ appointmentMessage: null })
+                                                        }
+                                                    }
+
+                                                }}>Сохранить
                                             </button>
                                         </div>
                                         {adding &&
@@ -992,7 +1008,7 @@ class AddAppointment extends React.Component {
                                         <div className="calendar">
 
                                             {!edit_appointment &&
-                                                <div className="mb-3">
+                                                <div className="">
 
                                                     <div className="row">
                                                         <div className="col-sm-12">
@@ -1060,7 +1076,7 @@ class AddAppointment extends React.Component {
                                             }
                                             <div style={{ width: '100%', float: 'none' }} className="block-style2 container">
                                                 <div className="row">
-                                                    <div style={{ paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
+                                                    <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
                                                         <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
                                                         <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
 
