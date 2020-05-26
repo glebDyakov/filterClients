@@ -935,7 +935,7 @@ class AddAppointment extends React.Component {
                                                         <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
                                                         <div className="company_fields">
                                                             <div className="name_company_wrapper form-control">
-                                                                <textarea className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                                <textarea style={{ paddingTop: '6px' }} className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
                                                                 <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
                                                             </div>
                                                         </div>
@@ -964,15 +964,18 @@ class AddAppointment extends React.Component {
                                         {appointmentMessage && <div>{appointmentMessage}</div>}
 
                                         <div className="calendar_modal_buttons">
-                                            <button style={{ width: '100%' }} className="button text-center button-absolute addService"
+                                            <button style={{ minHeight: '28px', height: '28px', fontSize: '12px', width: '100%', borderRadius: '30px', background: 'grey', border: 'grey' }}
+                                                    className="button text-center button-absolute addService"
                                                     onClick={() => this.addNewService()}>Добавить услугу
                                             </button>
                                         </div>
                                         <div className="calendar_modal_buttons">
-                                            <button className="button text-center button-absolute addService"
+                                            <button style={{ minWidth: '48%', background: '#ed1b24', border: '#ed1b24' }}
+                                                    className="button text-center saveservices button-absolute addService"
                                                     onClick={this.closeModal}>Отменить
                                             </button>
                                             <button
+                                                style={{ minWidth: '48%' }}
                                                 className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button saveservices text-center button-absolute button-save disabledField' : 'button saveservices text-center button-absolute button-save'}
                                                 type="button"
                                                 onClick={edit_appointment ? this.editAppointment : this.addAppointment}
@@ -1057,7 +1060,7 @@ class AddAppointment extends React.Component {
                                             }
                                             <div style={{ width: '100%', float: 'none' }} className="block-style2 container">
                                                 <div className="row">
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
+                                                    <div style={{ paddingTop: '10px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
                                                         <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
                                                         <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
 
@@ -1227,8 +1230,13 @@ class AddAppointment extends React.Component {
 
                                     </div>
                                     <div className="mobileButton">
-                                        <button
+                                        <button style={{ minWidth: '48%', marginRight: '4%', background: '#ed1b24', border: '#ed1b24' }}
+                                                className="button text-center button-absolute disabledField"
+                                                onClick={this.closeModal}>Отменить
+                                        </button>
 
+                                        <button
+                                            style={{ minWidth: '48%' }}
                                             className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
                                             type="button"
                                             onClick={edit_appointment ? this.editAppointment : this.addAppointment}
