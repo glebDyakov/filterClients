@@ -15,8 +15,11 @@
     }
 }
 .search-col {
-    max-width: 83vw !important;
+    max-width:  318px !important;
     min-width: unset !important;
+    @media (max-width: $mob-width) {
+        max-width: 83vw !important;
+    }
 }
 .search-header {
     position: relative;
@@ -279,7 +282,7 @@ button,
     color: $button-color;
     text-align: center;
     background-color: #0a1330;
-    border-radius:0;
+    border-radius: 4px;
     cursor: pointer;
     width: auto;
     border: solid 1px #0a1330;
@@ -1165,7 +1168,7 @@ input{
     }
 }
 
-.sidebar-notification{
+.sidebar-notification {
     height: 24px;
     width: 24px;
     background-image: url(../img/attention.svg);
@@ -1208,10 +1211,18 @@ input{
     }
 }
 .desktop-visible {
-    display: block;
+    display: block !important;
 
     @media (max-width: 767px) {
-        display: none;
+        display: none !important;
+    }
+}
+
+.desktop-visible-flex {
+    display: flex !important;
+
+    @media (max-width: 767px) {
+        display: none !important;
     }
 }
 
@@ -1221,10 +1232,18 @@ input{
     }
 }
 .mobile-visible {
-    display: none;
+    display: none !important;
 
     @media (max-width: 767px) {
-        display: block;
+        display: block !important;
+    }
+}
+
+.mobile-visible-flex {
+    display: none !important;
+
+    @media (max-width: 767px) {
+        display: flex !important;
     }
 }
 .menu-notification{
@@ -1683,7 +1702,7 @@ input{
             @media screen and(max-width: $laptop-width){
                 width: 16px;
                 height: 16px;
-                margin-right:10px;
+                margin-right: 6px;
             }
             @media screen and(max-width: $mob-width){
                 display:none;
@@ -1732,7 +1751,7 @@ input{
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100% auto;
-            margin-left: 2%;
+            margin-left: 0;
             display: block;
             width: 22px;
             height: 22px;
@@ -1780,19 +1799,19 @@ input{
             margin-left: 2%;
             overflow: hidden;
 
-            &:after {
-                content: '';
-                background-image: url(../img/download.png);
-                background-repeat: no-repeat;
-                background-size: 14px 14px;
-                display: block;
-                width: 25px;
-                position: absolute;
-                height: 72%;
-                border: none;
-                bottom: -13px;
-                margin-left: 27px;
-            }
+            //&:after {
+            //    content: '';
+            //    background-image: url(../img/download.png);
+            //    background-repeat: no-repeat;
+            //    background-size: 14px 14px;
+            //    display: block;
+            //    width: 25px;
+            //    position: absolute;
+            //    height: 72%;
+            //    border: none;
+            //    bottom: -13px;
+            //    margin-left: 27px;
+            //}
             &:hover{
                 img {
                     opacity: 0.6;
@@ -2075,6 +2094,7 @@ input{
 
 .content{
     @include border-style();
+    border-radius: 4px !important;
     padding: 30px 35px;
     width: 100%;
     margin: 0 auto 30px;
@@ -2534,7 +2554,7 @@ select{
 
 .modal-content{
     width:100%;
-    border-radius:0;
+    border-radius: 4px;
     border: none;
     box-shadow: 1px 0 30px #03064299;
     overflow: hidden;
@@ -3073,6 +3093,8 @@ select{
     position: relative;
     display: inline-block;
     margin-left: 3px;
+    top: -6px;
+    left: -6px;
     padding: 0 !important;
     width: auto !important;
     overflow: visible !important;
@@ -3082,7 +3104,7 @@ select{
     }
     img {
         width: auto;
-        height: 20px;
+        height: 16px;
     }
 }
 .questions_dropdown {
@@ -3338,9 +3360,10 @@ textarea {
     .img-container{
         width: 100%;
         display: flex;
-        padding: 0 1rem 0;
+        padding: 0 8px 0;
 
         .staff-name {
+            font-size: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -3355,7 +3378,7 @@ textarea {
             }
         }
         span{
-            margin-left: 15px;
+            margin-left: 8px;
         }
     }
     .drop_menu_personal{
@@ -3373,14 +3396,15 @@ textarea {
 
         &::after{
             position: absolute;
+            margin-top: 1px;
             right: 1rem;
         }
     }
     .dropdown-menu{
         width: 100%;
 
-        a{
-            padding: 0.5rem;
+        a {
+            padding: 0.5rem 0;
             cursor: pointer;
             display: block;
 

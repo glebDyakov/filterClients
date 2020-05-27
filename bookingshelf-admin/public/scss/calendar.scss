@@ -381,7 +381,13 @@
                     }
                 }
 
-                &:first-of-type {
+                &.cell-first {
+                    &:first-of-type {
+                        min-width: 50px !important;
+                        max-width: 50px !important;
+                    }
+                }
+                &.cell-second, &:first-of-type {
                     min-width: 50px !important;
                     width: 10%;
                     max-width: 50px !important;
@@ -1685,6 +1691,9 @@
         bottom: -15px;
         display: flex;
         justify-content: space-between;
+        button {
+            border-radius: 4px;
+        }
     }
     .addService{
         width: 140px;
@@ -1730,6 +1739,7 @@
     }
     button{
         width: 100%;
+        border-radius: 4px;
     }
 }
 .client-title{
