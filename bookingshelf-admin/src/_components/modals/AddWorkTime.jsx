@@ -150,7 +150,7 @@ class AddWorkTime extends React.Component {
                                     {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                     {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                                 </div>
-                                <div className="form-group mr-3 ml-3">
+                                <div className="mr-3 ml-3">
                                     <div className="check-box">
                                         <p>Повтор</p>
                                         <div className="form-check-inline">
