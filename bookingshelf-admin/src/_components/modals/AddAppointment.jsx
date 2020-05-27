@@ -740,7 +740,7 @@ class AddAppointment extends React.Component {
         const { staff: staffFromProps } = this.props;
         const { isAddCostaff, staffCurrent, coStaffs, availableCoStaffs } = this.state;
 
-        return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '' }} className={`block-style2 container ${wrapperClassName}`}>
+        return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '', marginBottom: wrapperClassName === 'mobile-visible' ? '15px': '' }} className={`block-style2 container ${wrapperClassName}`}>
             <div className="row">
                 <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' , padding: 0 }} className="col-sm-12 mt-2">
                     <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
@@ -938,7 +938,7 @@ class AddAppointment extends React.Component {
                                                         </select>
                                                     </div>
                                                     {index === 0 && (
-                                                        <div className="col-md-8">
+                                                        <div style={{ paddingLeft: 0 }} className="col-md-8">
                                                             <p>Сотрудник</p>
                                                             <div className="dropdown add-staff mb-3">
                                                                 <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
@@ -991,21 +991,21 @@ class AddAppointment extends React.Component {
                                                         <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
                                                         <div className="company_fields">
                                                             <div style={{ height: '35px' }} className="name_company_wrapper form-control">
-                                                                <textarea style={{ paddingTop: '6px' }} className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
-                                                                <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
+                                                                <textarea style={{ paddingTop: '6px', paddingRight: '43px' }} className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
+                                                                <span style={{ right: '17px' }} className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
                                                             </div>
                                                         </div>
                                                     </React.Fragment>
                                                 )}
 
-                                                <div className="row">
-                                                    <div className="col-6">
+                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <div style={{ width: '48%' }}>
                                                         <p>Единоразовая скидка</p>
                                                         <input type="text" placeholder="%" className="mb-3" name="discountPercent"  value={appointment[index].discountPercent} onChange={(e) => this.handleChange(e, index)}/>
                                                     </div>
 
                                                         {String(serviceCurrent[index].service.priceTo)  && (
-                                                            <div className="col-6">
+                                                            <div style={{ width: '48%' }}>
                                                                 <p>Фактическая цена</p>
                                                                 <input type="text" className={"mb-3"} name="price" value={appointment[index].price} onChange={(e) => this.handleChange(e, index)}/>
                                                             </div>)
@@ -1070,7 +1070,8 @@ class AddAppointment extends React.Component {
 
                                                     <div className="row">
                                                         <div className="col-sm-12">
-                                                            <p className="title mb-3">Добавить клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/></p>
+                                                            <p className="title mobile-visible">Добавление клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/></p>
+                                                            <p className="title mb-3 desktop-visible">Добавление клиента <Hint hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/></p>
                                                         </div>
 
                                                     </div>
