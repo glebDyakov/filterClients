@@ -736,6 +736,62 @@ class AddAppointment extends React.Component {
         return <p className="staffAlert-noService">Нет доступных услуг. Выберите сотрудника в настройках услуг</p>
     }
 
+    getCoStaffMarkup(wrapperClassName) {
+        const { staff: staffFromProps } = this.props;
+        const { isAddCostaff, staffCurrent, coStaffs, availableCoStaffs } = this.state;
+
+        return <div style={{ width: '100%', float: 'none' }} className={`block-style2 container ${wrapperClassName}`}>
+            <div className="row">
+                <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
+                    <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
+                    <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
+
+                    <span style={{ width: 'auto', margin: '0 4px 0 auto'}} className="justify-content-end check-box">
+                                                        <label>
+                                                            <input className="form-check-input" type="checkbox"
+                                                                   checked={isAddCostaff}
+                                                                   onChange={() => this.setState({ isAddCostaff: !this.state.isAddCostaff})}
+                                                            />
+                                                            <span style={{ margin: '0 0 0 4px' }} className="check" />
+                                                        </label>
+                                                    </span>
+                </div>
+            </div>
+
+            {isAddCostaff && <ul style={{
+                maxHeight: '175px',
+                overflowY: 'auto',
+                overflowX: 'hidden'
+            }} className="clients-list-container">
+                {staffFromProps && staffFromProps
+                    .filter(item => item.staffId !== staffCurrent.staffId)
+                    .filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId))
+                    .map((item, keyStaffs) =>
+                        <li className="row mt-3" key={keyStaffs}>
+                            <div className="col-9">
+                                                            <span style={{ position: 'static' }} className="img-container">
+                                                                 <img className="rounded-circle"
+                                                                      src={item.imageBase64?"data:image/png;base64,"+item.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                            </span>
+                                <span style={{ marginLeft: '6px' }}>{item.firstName} {item.lastName ? item.lastName : ''}</span>
+                            </div>
+
+                            <div style={{ marginTop: '15px' }} className="col-3 justify-content-end check-box">
+                                <label>
+                                    <input className="form-check-input" type="checkbox"
+                                           checked={coStaffs && coStaffs.some((staff) => staff.staffId === item.staffId)}
+                                           onChange={(e) => this.toggleChangeStaff(e, item)}
+                                    />
+                                    <span className="check" />
+                                </label>
+                            </div>
+                        </li>
+                    )}
+            </ul>}
+        </div>
+    }
+
+
     toggleChangeStaff(e, staff) {
         const { checked } = e.target;
         const { coStaffs } = this.state;
@@ -961,11 +1017,13 @@ class AddAppointment extends React.Component {
                                                 }
                                             </div>
                                         })}
-                                        <div style={{ margin: '6px 0 45px' }}>
-                                            <p style={{ cursor: 'pointer', width: '96px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
+                                        {this.getCoStaffMarkup('mobile-visible')}
+                                        <div style={{ margin: '6px 0 45px', cursor: 'pointer' }}
+                                             onClick={() => this.addNewService()}>
+                                            <p style={{ display: 'inline-block', width: '96px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
                                                     className="text-center button-absolute"
-                                                    onClick={() => this.addNewService()}>Добавить услугу
-                                            </p>
+                                                    >Добавить услугу
+                                            </p> +
                                         </div>
 
                                         {appointmentMessage &&
@@ -1074,55 +1132,7 @@ class AddAppointment extends React.Component {
                                                     </div>
                                                 </div>
                                             }
-                                            <div style={{ width: '100%', float: 'none' }} className="block-style2 container">
-                                                <div className="row">
-                                                    <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
-                                                        <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
-                                                        <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
-
-                                                        <span style={{ width: 'auto', margin: '0 4px 0 auto'}} className="justify-content-end check-box">
-                                                        <label>
-                                                            <input className="form-check-input" type="checkbox"
-                                                                   checked={isAddCostaff}
-                                                                   onChange={() => this.setState({ isAddCostaff: !this.state.isAddCostaff})}
-                                                            />
-                                                            <span style={{ margin: '0 0 0 4px' }} className="check" />
-                                                        </label>
-                                                    </span>
-                                                    </div>
-                                                </div>
-
-                                                {isAddCostaff && <ul style={{
-                                                    maxHeight: '175px',
-                                                    overflowY: 'auto',
-                                                    overflowX: 'hidden'
-                                                }} className="clients-list-container">
-                                                    {staffFromProps && staffFromProps
-                                                        .filter(item => item.staffId !== staffCurrent.staffId)
-                                                        .filter(item => availableCoStaffs.some(availableCoStaff => item.staffId === availableCoStaff.staffId))
-                                                        .map((item, keyStaffs) =>
-                                                            <li className="row mt-3" key={keyStaffs}>
-                                                                <div className="col-9">
-                                                            <span style={{ position: 'static' }} className="img-container">
-                                                                 <img className="rounded-circle"
-                                                                      src={item.imageBase64?"data:image/png;base64,"+item.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                            </span>
-                                                                    <span style={{ marginLeft: '6px' }}>{item.firstName} {item.lastName ? item.lastName : ''}</span>
-                                                                </div>
-
-                                                                <div style={{ marginTop: '15px' }} className="col-3 justify-content-end check-box">
-                                                                    <label>
-                                                                        <input className="form-check-input" type="checkbox"
-                                                                               checked={coStaffs && coStaffs.some((staff) => staff.staffId === item.staffId)}
-                                                                               onChange={(e) => this.toggleChangeStaff(e, item)}
-                                                                        />
-                                                                        <span className="check" />
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        )}
-                                                </ul>}
-                                            </div>
+                                            {this.getCoStaffMarkup('desktop-visible')}
                                             {cl &&
                                                 <div className="client-info content-pages-bg">
                                                     <div className="clients-list pt-4 pl-4 pr-4">
