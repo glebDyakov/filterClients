@@ -740,9 +740,9 @@ class AddAppointment extends React.Component {
         const { staff: staffFromProps } = this.props;
         const { isAddCostaff, staffCurrent, coStaffs, availableCoStaffs } = this.state;
 
-        return <div style={{ width: '100%', float: 'none' }} className={`block-style2 container ${wrapperClassName}`}>
+        return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '' }} className={`block-style2 container ${wrapperClassName}`}>
             <div className="row">
-                <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' }} className="col-sm-12 mt-2">
+                <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' , padding: 0 }} className="col-sm-12 mt-2">
                     <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
                     <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
 
@@ -990,7 +990,7 @@ class AddAppointment extends React.Component {
                                                     <React.Fragment>
                                                         <p>Заметка <span className="gray-text">"Видно только сотрудникам"</span></p>
                                                         <div className="company_fields">
-                                                            <div className="name_company_wrapper form-control">
+                                                            <div style={{ height: '35px' }} className="name_company_wrapper form-control">
                                                                 <textarea style={{ paddingTop: '6px' }} className="company_input mb-3" placeholder="Например: Без окраски" name="description" maxLength={120}  value={appointment[index].description} onChange={(e) => this.handleChange(e, index)}/>
                                                                 <span className="company_counter">{appointment[index].description ? appointment[index].description.length : 0}/120</span>
                                                             </div>
@@ -1017,7 +1017,6 @@ class AddAppointment extends React.Component {
                                                 }
                                             </div>
                                         })}
-                                        {this.getCoStaffMarkup('mobile-visible')}
                                         <div style={{ margin: '6px 0 45px', cursor: 'pointer' }}
                                              onClick={() => this.addNewService()}>
                                             <p style={{ display: 'inline-block', width: '96px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
@@ -1029,6 +1028,7 @@ class AddAppointment extends React.Component {
                                         {appointmentMessage &&
                                             <div style={{ margin: '-36px 0 36px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
                                         }
+                                        {this.getCoStaffMarkup('mobile-visible')}
 
                                         <div className="calendar_modal_buttons">
                                             <button style={{ minWidth: '48%', margin: '0', background: '#ed1b24', border: '#ed1b24' }}
@@ -1083,10 +1083,10 @@ class AddAppointment extends React.Component {
                                                     {/*</div>*/}
                                                     <div className="row">
                                                         <div className="col-12">
-                                                            <p style={{ fontSize: '14px', marginBottom: '10px' }}>Быстрый поиск или добавление клиента:</p>
+                                                            <p style={{ fontSize: '14px', marginBottom: '9px' }}>Быстрый поиск или добавление клиента:</p>
                                                             {Object.entries({ clientFirstName: typeAheadOptions.clientFirstName, clientPhone: typeAheadOptions.clientPhone }).map(([key, value], i) => (
                                                                 <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                    <p style={key === 'clientPhone' ? { marginTop: '13px'}: {}}>{value.label}</p>
+                                                                    <p style={key === 'clientPhone' ? { marginTop: '14px'}: {}}>{value.label}</p>
                                                                     <AsyncTypeahead
                                                                         isLoading={isLoadingTypeahead}
                                                                         onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
@@ -1109,7 +1109,7 @@ class AddAppointment extends React.Component {
 
                                                             {Object.entries({ clientLastName: typeAheadOptions.clientLastName, clientEmail: typeAheadOptions.clientEmail }).map(([key, value]) => (
                                                                 <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                    <p style={key === 'clientLastName' ? { marginTop: '13px'}: {}}>{value.label}</p>
+                                                                    <p style={key === 'clientLastName' ? { marginTop: '14px'}: {}}>{value.label}</p>
                                                                     <AsyncTypeahead
                                                                         isLoading={isLoadingTypeahead}
                                                                         onClick={() => this.handleTypeaheadSearch(key, this.state[key])}

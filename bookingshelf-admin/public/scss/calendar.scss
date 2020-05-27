@@ -1,6 +1,9 @@
 @import "styles-group";
 .msg-client-info{display: none;}
 .calendar {
+    .typeahead-wrapper input {
+        height: 35px !important;
+    }
     .left-fixed-tab{
         width: 50px;
         position: sticky;
