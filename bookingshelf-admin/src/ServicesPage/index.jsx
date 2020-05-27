@@ -125,10 +125,16 @@ class Index extends Component {
                                 {collapse.indexOf(item.serviceGroupId) === -1 ? '-' : '+'}
                             </div>
                             <p className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
+                            <a style={{ marginLeft: 'auto' }} className="edit_service mobile-visible" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
+                            <a style={{ margin: '0 11px 0 5px' }} className="delete-icon mobile-visible" id="menu-delete4564" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                            </a>
                         </div>
+
                         <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
-                            <a className="edit_service" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
-                            <a className="delete-icon" id="menu-delete4564" data-toggle="dropdown"
+                            <a className="edit_service desktop-visible" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
+                            <a className="delete-icon desktop-visible" id="menu-delete4564" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
                                 <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                             </a>
@@ -137,46 +143,53 @@ class Index extends Component {
                                         onClick={() => this._delete(item.serviceGroupId)}>Удалить
                                 </button>
                             </div>
-                            <a className="new-service" onClick={(e) => this.newService(null, item, e, this)}>Новая услуга</a>
+                            <a className="new-service desktop-visible" onClick={(e) => this.newService(null, item, e, this)}>Новая услуга</a>
+                            <a style={{ marginLeft: 'auto' }} className="new-service mobile-visible" onClick={(e) => this.newService(null, item, e, this)}>Новая услуга</a>
                             {/*<span className="ellipsis">*/}
                             {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
                             {/*</span>*/}
 
                         </div>
 
+                        <div style={{ height: '12px', width: '100%' }}/>
+
                         {collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
                             item.services
                                 .sort((a, b) => a.duration - b.duration)
                                 .map((item2, keyService) => {
                                 return <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
-                                    <p>
-                                        <span>{item2.name}</span>
-                                        <span style={{
-                                            fontSize: '11px',
-                                            width: '100%',
-                                            display: 'inline-block'
-                                        }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
-                                        <span className="hide-item">
-                                                <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
-                                                <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                </span>
-                                    </p>
-                                    <div className="list-inner">
-                                        <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
-                                        <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                        <a className="edit_service" onClick={(e) => this.newService(item2, item, e, this)}/>
-                                        <a className="delete-icon" id="menu-delete6633"
-                                           data-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                        </a>
-                                        <div className="dropdown-menu delete-menu p-3">
-                                            <button type="button"
-                                                    className="button delete-tab"
-                                                    onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
-                                            </button>
+                                    <div className="tab-content-list mb-2"style={{position: "relative"}}>
+                                        <div>
+                                            <span>{item2.name}</span>
+                                            <span style={{
+                                                fontSize: '11px',
+                                                width: '100%',
+                                                display: 'inline-block'
+                                            }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
+                                        </div>
+                                        <div>
+                                            {item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}
+                                        </div>
+                                        <div>
+                                            {moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}
+                                        </div>
+
+                                        <div className="delete clientEditWrapper">
+                                            <a className="clientEdit" onClick={(e) => this.newService(item2, item, e, this)}/>
+                                        </div>
+                                        <div className="delete dropdown">
+                                            <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                            </a>
+                                            <div className="dropdown-menu delete-menu p-3">
+                                                <button type="button"
+                                                        className="button delete-tab"
+                                                        onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
                             }
                         )}

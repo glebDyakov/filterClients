@@ -238,8 +238,11 @@ class AddService extends React.Component {
                                     </div>
                                 </div>
 
-                                <button className={services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
-                                        onClick={!services.adding && service.name!=='' && String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)>=parseInt(service.priceFrom) &&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
+                                <div className="buttons col-12">
+                                    <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
+                                    <button className={services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))?"disabledField button":"button"} type="button"
+                                            onClick={!services.adding && service.name!=='' && String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)>=parseInt(service.priceFrom) &&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить' : 'Добавить'}</button>
+                                </div>
                             </div>
                         </div>
                     </div>

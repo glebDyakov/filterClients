@@ -491,7 +491,7 @@ class Index extends Component {
                                             <textarea className="form-control" rows="3" name="description" value={closedDates.description} onChange={this.handleClosedDate}/>
                                             <div className="float-right mt-3">
                                                 <div className="buttons">
-                                                    <button className="small-button gray-button close-holiday"
+                                                    <button className="small-button cancel-button close-holiday"
                                                             type="button" data-dismiss="modal">Отменить
                                                     </button>
                                                     <button className={((!from || !closedDates.description) ? 'disabledField': 'close-holiday')+' small-button'} type="button"
