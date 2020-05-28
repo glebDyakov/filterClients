@@ -4,19 +4,24 @@
     width: 100%;
     display: block;
 
-
+    .services_wrapper {
+        max-height: calc(100% - 100px);
+        overflow-y: auto;
+        margin: 0 -7px;
+        overflow-x: hidden;
+    }
 
     .service_one{
         @include border-style();
         justify-content: space-between; 
         padding: 15px 0;
         border-left: 3px solid;
-        position:relative;
+        position: relative;
         align-items: center;
+        display: flex;
+        flex-wrap: wrap;
 
         p{/*изменения*/
-
-
             @media screen and(max-width: 580px){/*изменения*/
                 height: auto;
                 padding-bottom: 0;

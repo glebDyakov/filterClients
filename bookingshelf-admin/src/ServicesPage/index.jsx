@@ -115,7 +115,7 @@ class Index extends Component {
                 serviceGroupId: item.serviceGroupId,
                 id: `service-group-${keyGroup}`,
                 content: (
-                    <div className={item.color.toLowerCase() + " " + 'row mb-3 service_one collapsible'} key={keyGroup}>
+                    <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3': ''}` + ' service_one collapsible'} key={keyGroup}>
 
                         <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
                             <div
@@ -210,10 +210,12 @@ class Index extends Component {
                                 </div>
                             )
                         }
-                        <DragDrop
-                            dragDropItems={dragDropGroupsItems}
-                            handleDrogEnd={this.handleDrogEnd}
-                        />
+                        <div className="services_wrapper">
+                            <DragDrop
+                                dragDropItems={dragDropGroupsItems}
+                                handleDrogEnd={this.handleDrogEnd}
+                            />
+                        </div>
                     </div>
                     <a className="add"></a>
                     <div className="hide buttons-container">
