@@ -3083,13 +3083,22 @@ select{
         height: 20px;
     }
 }
+[data-rbd-droppable-context-id="0"] {
+    padding: 0 !important;
+}
+
+.services_list_wrapper {
+    max-height: 204px;
+    overflow-y: auto;
+}
+
 .questions_black {
     cursor: pointer;
     position: relative;
     display: inline-block;
     margin-left: 3px;
     top: -6px;
-    left: -6px;
+    left: -4px;
     padding: 0 !important;
     width: auto !important;
     overflow: visible !important;
@@ -3693,7 +3702,7 @@ textarea {
         .dropdown-menu{
             width: calc(100% + 2px);
             left: -1px !important;
-            max-height: 216px;
+            max-height: 284px;
             padding: 0;
             right: 0;
             transform: translate3d(0px, 40px, 0px) !important;

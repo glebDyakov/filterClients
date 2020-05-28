@@ -8,7 +8,7 @@ import 'rc-time-picker/assets/index.css'
 import moment from 'moment';
 import PropTypes from "prop-types";
 import {access} from "../../_helpers/access";
-import {clientActions, staffActions} from "../../_actions";
+import { clientActions, servicesActions, staffActions } from "../../_actions";
 import Modal from "@trendmicro/react-modal";
 import {calendarActions} from "../../_actions/calendar.actions";
 import ReactPaginate from 'react-paginate';
@@ -143,10 +143,10 @@ class AddAppointment extends React.Component {
 
         appointmentEdited && this.getInfo(appointmentEdited)
         this.props.dispatch(clientActions.getClientV2(1));
+        this.props.dispatch(servicesActions.get());
     }
 
     componentWillReceiveProps(newProps) {
-
         if ( JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
             this.setState({
                 clients: newProps.clients,
@@ -916,7 +916,7 @@ class AddAppointment extends React.Component {
                                                             }
                                                             <ul className="dropdown-menu">
                                                                 <li className="dropdown-item">
-                                                                    <div className="row align-items-center content clients" style={{margin: "0 -15px", width: "calc(100% + 30px)"}}>
+                                                                    <div className="row align-items-center content clients" style={{margin: "0 -15px", padding: '0 8px', height: '52px', width: "calc(100% + 30px)"}}>
                                                                         <div className="search col-7">
                                                                             <input type="search" placeholder="Введите название услуги" style={{width: "185%"}}
                                                                                    aria-label="Search" value={servicesSearch} onChange={this.handleServicesSearch}/>
@@ -924,7 +924,11 @@ class AddAppointment extends React.Component {
                                                                         </div>
                                                                     </div>
                                                                 </li>
-                                                                {this.getServiceList(index)}
+                                                                <li className="services_list_wrapper">
+                                                                    <ul>
+                                                                        {this.getServiceList(index)}
+                                                                    </ul>
+                                                                </li>
                                                             </ul>
                                                             <div className="arrow-dropdown"><i></i></div>
                                                         </div>
