@@ -709,8 +709,6 @@ class AddAppointment extends React.Component {
             this.updateAvailableCoStaffs()
         }
 
-        debugger;
-
         if (filteredServiceList.length) {
             const servicesWithGroups = this.props.services.services && this.props.services.services.map(item => {
                 return {
