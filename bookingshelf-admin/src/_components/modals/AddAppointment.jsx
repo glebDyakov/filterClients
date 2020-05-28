@@ -710,23 +710,46 @@ class AddAppointment extends React.Component {
         }
 
         if (filteredServiceList.length) {
-            return filteredServiceList.map((service, key) => {
-                const durationForCurrentStaff = this.getDurationForCurrentStaff(service)
+            const servicesWithGroups = this.props.services.services && this.props.services.services.map(item => {
+                return {
+                    ...item,
+                    services: []
+                }
+            });
 
-                return (<li className="dropdown-item" key={key}>
-                    <a onClick={() => this.setService(service.serviceId, service, index)}>
-                        <span className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/>
-                        <span className={service.color && service.color.toLowerCase()}>
-                        <span className="items-color">
-                            <span>{service.name} <br/>
-                                <span style={{fontSize: '10px'}}>{service.details}</span>
+            if (this.props.services.services) {
+                filteredServiceList.forEach(filteredService => {
+                    const activeGroup = this.props.services.services.find(item => item.services.some(service => (service.serviceId === filteredService.serviceId)));
+                    const groupIndex = servicesWithGroups.findIndex(item => item.serviceGroupId === activeGroup.serviceGroupId);
+                    if (groupIndex > -1) {
+                        servicesWithGroups[groupIndex].services.push(filteredService)
+                    }
+                });
+            }
+
+            return servicesWithGroups && servicesWithGroups.map(item => {
+                return item.services.map((service, key) => {
+                    const durationForCurrentStaff = this.getDurationForCurrentStaff(service)
+
+                    return (
+                        <React.Fragment>
+                            {key === 0 && <p style={{ fontSize: '16px', padding: '12px 0 8px 10px' }}>{item.name}</p>}
+                            <li className="dropdown-item" key={key}>
+                                <a onClick={() => this.setService(service.serviceId, service, index)}>
+                                    <span className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/>
+                                    <span className={service.color && service.color.toLowerCase()}>
+                                <span className="items-color">
+                                    <span>{service.name} <br/>
+                                        <span style={{fontSize: '10px'}}>{service.details}</span>
+                                    </span>
+                                    <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>
+                                    <span>{moment.duration(parseInt(durationForCurrentStaff), "seconds").format("h[ ч] m[ мин]")}</span>
+                                </span>
                             </span>
-                            <span>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} {service.currency}</span>
-                            <span>{moment.duration(parseInt(durationForCurrentStaff), "seconds").format("h[ ч] m[ мин]")}</span>
-                        </span>
-                    </span>
-                    </a>
-                </li>)
+                                </a>
+                            </li>
+                        </React.Fragment>)
+                })
             })
         }
         if(filteredServiceListWithoutTime.length){
