@@ -91,11 +91,11 @@ class Index extends Component {
 
         localStorage.setItem('services', JSON.stringify(arrayCollapsed))
 
-        this.setState({collapse:arrayCollapsed})
+        this.setState({ collapse: arrayCollapsed })
     }
 
     handleDrogEnd(dragDropGroupsItems) {
-        const updatedSortOrderStaffs = []
+        const updatedSortOrderStaffs = [];
         dragDropGroupsItems.forEach((item, i) => {
             updatedSortOrderStaffs.push({
                 serviceGroupId: item.serviceGroupId,
@@ -107,11 +107,10 @@ class Index extends Component {
 
     render() {
         const { services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
-        const isLoading = staff.isLoading || services.isLoading
+        const isLoading = staff.isLoading || services.isLoading;
+        const dragDropGroupsItems = [];
 
-        const dragDropGroupsItems = []
-
-        services.services && services.services.forEach((item, keyGroup)=> {
+        services.services && services.services.forEach((item, keyGroup) => {
             dragDropGroupsItems.push({
                 serviceGroupId: item.serviceGroupId,
                 id: `service-group-${keyGroup}`,
