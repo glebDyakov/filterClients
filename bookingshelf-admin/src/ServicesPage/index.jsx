@@ -8,6 +8,37 @@ import {AddGroup, AddService, CreatedService} from "../_components/modals";
 
 import moment from 'moment';
 import DragDrop from "../_components/DragDrop";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+};
+
+const grid = 8;
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+    // some basic styles to make the dragDropItems look a bit nicer
+    userSelect: "none",
+    // padding: grid * 2,
+    // margin: `0 0 ${grid}px 0`,
+
+    // change background colour if dragging
+    background: isDragging ? "#f5f5f6" : "transparent",
+
+    // styles we need to apply on draggables
+    ...draggableStyle
+});
+
+const getListStyle = isDraggingOver => ({
+    //background: isDraggingOver ? "#0a1330" : "transparent",
+    padding: grid,
+    position: 'relative',
+    width: '100%'
+});
 
 class Index extends Component {
     constructor(props) {
@@ -31,8 +62,10 @@ class Index extends Component {
             addService: false,
             addGroup: false,
             createdService: false,
+            dragDropItems: []
         };
 
+        this.onDragEnd = this.onDragEnd.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.update = this.update.bind(this);
         this.add = this.add.bind(this);
@@ -44,6 +77,7 @@ class Index extends Component {
         this.newService = this.newService.bind(this);
         this.onClose = this.onClose.bind(this);
         this.handleDrogEnd = this.handleDrogEnd.bind(this);
+        this.handleServicesDrogEnd = this.handleServicesDrogEnd.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
 
@@ -104,6 +138,42 @@ class Index extends Component {
         })
         this.props.dispatch(servicesActions.updateServiceGroups(updatedSortOrderStaffs))
     }
+    handleServicesDrogEnd(dragDropGroupsItems, idGroup) {
+        const updatedSortOrderStaffs = [];
+        dragDropGroupsItems.forEach((item, i) => {
+            updatedSortOrderStaffs.push({
+                serviceId: item.serviceId,
+                sortOrder: i + 1
+            })
+        })
+        this.props.dispatch(servicesActions.updateServices(updatedSortOrderStaffs))
+    }
+
+    onDragEnd(result) {
+        const { handleDrogEnd } = this.props
+        const { dragDropItems } = this.state
+        // dropped outside the list
+        if (!result.destination) {
+            return;
+        }
+
+        const updatedDragDropItems = reorder(
+            this.state.dragDropItems,
+            result.source.index,
+            result.destination.index
+        );
+
+        const isOrderChanged = dragDropItems.some((item, i) => dragDropItems[i].id !== updatedDragDropItems[i].id)
+
+        if (isOrderChanged) {
+            this.setState({
+                dragDropItems: updatedDragDropItems
+            });
+            if (handleDrogEnd) {
+                handleDrogEnd(updatedDragDropItems)
+            }
+        }
+    }
 
     render() {
         const { services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
@@ -111,13 +181,56 @@ class Index extends Component {
         const dragDropGroupsItems = [];
 
         services.services && services.services.forEach((item, keyGroup) => {
+            const dragDropServicesItems = []
+            collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
+                    item.services
+                        .map((item2, keyService) => {
+                            dragDropServicesItems.push({
+                                serviceId: item2.serviceId,
+                                id: `service-${keyGroup}-${keyService}`,
+                                getContent: () => (
+                                    <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
+                                        <p className="services_items_name">
+                                            <span>{item2.name}</span>
+                                            <span style={{
+                                                fontSize: '11px',
+                                                width: '100%',
+                                                display: 'inline-block'
+                                            }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
+                                            <span className="hide-item">
+                                            <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
+                                            <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                            </span>
+                                        </p>
+                                        <div className="list-inner">
+                                            <span className="services_items_price">{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
+                                            <span className="services_items_time">{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                            <a className="edit_service" onClick={(e) => this.newService(item2, item, e, this)}/>
+                                            <a className="delete-icon" id="menu-delete6633"
+                                               data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">
+                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                            </a>
+                                            <div className="dropdown-menu delete-menu p-3">
+                                                <button type="button"
+                                                        className="button delete-tab"
+                                                        onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            });
+                        });
             dragDropGroupsItems.push({
+                dragDropServicesItems,
+                item,
+                keyGroup,
                 serviceGroupId: item.serviceGroupId,
                 id: `service-group-${keyGroup}`,
-                content: (
+                getContent: (dragHandleProps) => (
                     <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3': ''}` + ' service_one collapsible'} key={keyGroup}>
-
-                        <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
+                        <div {...dragHandleProps} className="col-sm-7 buttonsCollapse d-flex align-items-center">
                             <div
                                 className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3"}
                                 onClick={() => this.onCollapse(item.serviceGroupId)}>
@@ -140,45 +253,12 @@ class Index extends Component {
                             {/*<span className="ellipsis">*/}
                             {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
                             {/*</span>*/}
-
                         </div>
 
-                        {collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
-                            item.services
-                                .sort((a, b) => a.duration - b.duration)
-                                .map((item2, keyService) => {
-                                return <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
-                                    <p className="services_items_name">
-                                        <span>{item2.name}</span>
-                                        <span style={{
-                                            fontSize: '11px',
-                                            width: '100%',
-                                            display: 'inline-block'
-                                        }}>{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
-                                        <span className="hide-item">
-                                                <span>{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
-                                                <span>{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                                </span>
-                                    </p>
-                                    <div className="list-inner">
-                                        <span className="services_items_price">{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
-                                        <span className="services_items_time">{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-                                        <a className="edit_service" onClick={(e) => this.newService(item2, item, e, this)}/>
-                                        <a className="delete-icon" id="menu-delete6633"
-                                           data-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                        </a>
-                                        <div className="dropdown-menu delete-menu p-3">
-                                            <button type="button"
-                                                    className="button delete-tab"
-                                                    onClick={() => this.deleteService(item.serviceGroupId, item2.serviceId)}>Удалить
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        )}
+                        <DragDrop
+                            dragDropItems={dragDropServicesItems}
+                            handleDrogEnd={(result) => this.handleServicesDrogEnd(result, item.serviceGroupId)}
+                        />
                         {(collapse.indexOf(item.serviceGroupId) === -1 && (!item.services || item.services.length === 0)) &&
                         <div className="services_items">
                             <p>

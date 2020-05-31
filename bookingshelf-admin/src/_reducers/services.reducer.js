@@ -24,10 +24,15 @@ export function services(state= {}, action) {
                 isLoading: true
             }
         case servicesConstants.GET_GROUP_SUCCESS:
-            services = state.services
+            const updatedServices = action.services && action.services.map(item => {
+                return {
+                    ...item,
+                    services: item.services && item.services.sort((a, b) => a.sortOrder - b.sortOrder)
+                }
+            })
             return {
                 ...state,
-                services: (action.services || []).sort((a, b) => a.sortOrder - b.sortOrder),
+                services: (updatedServices || []).sort((a, b) => a.sortOrder - b.sortOrder),
                 isLoading: false
             };
         case servicesConstants.GET_GROUP_FAILURE:
@@ -58,6 +63,8 @@ export function services(state= {}, action) {
                 ...state,
                 isLoading: true
             }
+        case servicesConstants.UPDATE_SERVICES_SUCCESS:
+            return state
         case servicesConstants.UPDATE_SERVICE_GROUPS_SUCCESS:
             services = state.services
             services.forEach((item, key) => {
