@@ -100,13 +100,12 @@ class DragDrop extends Component {
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
                                                 provided.draggableProps.style
                                             )}
                                         >
-                                            {item.getContent()}
+                                            {item.getContent(provided.dragHandleProps)}
                                         </div>
                                     )}
                                 </Draggable>

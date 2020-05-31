@@ -188,8 +188,8 @@ class Index extends Component {
                             dragDropServicesItems.push({
                                 serviceId: item2.serviceId,
                                 id: `service-${keyGroup}-${keyService}`,
-                                getContent: () => (
-                                    <div className="services_items" key={keyService} id={"collapseService" + keyGroup}>
+                                getContent: (dragHandleProps) => (
+                                    <div {...dragHandleProps} className="services_items" key={keyService} id={"collapseService" + keyGroup}>
                                         <p className="services_items_name">
                                             <span>{item2.name}</span>
                                             <span style={{
@@ -230,13 +230,13 @@ class Index extends Component {
                 id: `service-group-${keyGroup}`,
                 getContent: (dragHandleProps) => (
                     <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3': ''}` + ' service_one collapsible'} key={keyGroup}>
-                        <div {...dragHandleProps} className="col-sm-7 buttonsCollapse d-flex align-items-center">
+                        <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
                             <div
                                 className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3"}
                                 onClick={() => this.onCollapse(item.serviceGroupId)}>
                                 {collapse.indexOf(item.serviceGroupId) === -1 ? '-' : '+'}
                             </div>
-                            <p className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
+                            <p {...dragHandleProps}  className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
                         </div>
                         <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
                             <a className="edit_service" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
