@@ -886,10 +886,10 @@ class Index extends Component {
                                                     Дата
                                                 </div>
                                                 <div style={{ overflow: 'visible' }} className="tab-content-header">
-                                                    Статус <Hint hintMessage={
+                                                    Статус <Hint customLeft="-1px" hintMessage={
                                                         <span>
                                                             <p>Статусы сообщений:</p>
-                                                            <span style={{ marginTop: '4px', textAlign: 'left', display: 'block' }}>
+                                                            <span style={{ marginTop: '4px', textAlign: 'left', fontSize: '10px', display: 'block' }}>
                                                                 {`"Доставлено" - сообщение доставлено абоненту.
                                                                 "Не доставлено" - сообщение не доставлено абоненту, так как абонент находится вне зоны действия сети или аппарат абонента выключен.
                                                                 "Заблокировано" - сообщение заблокировано по финансовой причине или по желанию клиента.

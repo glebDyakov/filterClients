@@ -10,6 +10,7 @@ export const servicesService = {
     getService,
     getServiceList,
     getServices,
+    updateServices,
     addService,
     updateService,
     deleteService
@@ -99,6 +100,23 @@ function updateServiceGroups(params) {
         .then((data) => handleResponse(data, requestOptions))
 }
 
+function updateServices(params) {
+    const requestOptions = {
+        method: 'PATCH',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${config.apiUrl}/services`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions))
+}
+
+
 function _delete(id) {
     const requestOptions = {
         method: 'DELETE',
@@ -170,7 +188,7 @@ function updateService(params, idGroup) {
             withCredentials: true
         },
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: params
+        body: JSON.stringify(params)
     };
 
     return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)

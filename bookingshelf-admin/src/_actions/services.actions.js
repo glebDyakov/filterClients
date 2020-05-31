@@ -6,6 +6,7 @@ export const servicesActions = {
     add,
     update,
     updateServiceGroups,
+    updateServices,
     get,
     _delete,
     getService,
@@ -87,6 +88,29 @@ function updateServiceGroups(params) {
     function request(id) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_REQUEST, id } }
     function success(services) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_SUCCESS, services } }
     function failure(error) { return { type: servicesConstants.UPDATE_SERVICE_GROUPS_FAILURE, error } }
+}
+
+function updateServices(params) {
+    return dispatch => {
+        dispatch(request(0));
+
+        servicesService.updateServices(params)
+            .then(
+                services => {
+
+                    dispatch(success(services));
+
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request(id) { return { type: servicesConstants.UPDATE_SERVICES_REQUEST, id } }
+    function success(services) { return { type: servicesConstants.UPDATE_SERVICES_SUCCESS, services } }
+    function failure(error) { return { type: servicesConstants.UPDATE_SERVICES_FAILURE, error } }
 }
 
 function update(params) {

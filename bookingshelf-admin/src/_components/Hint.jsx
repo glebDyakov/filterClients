@@ -28,10 +28,10 @@ class Hint extends React.PureComponent {
     }
 
     render() {
-        const { hintMessage } = this.props;
+        const { hintMessage, customLeft } = this.props;
 
         return (
-            <div className="questions_black" onClick={this.toggleDropdown}>
+            <div style={customLeft ? { left : customLeft } : {}} className="questions_black" onClick={this.toggleDropdown}>
                 <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information_black.svg`} alt="" />
                 {this.state.opened && <span className="questions_dropdown">{hintMessage}</span>}
             </div>

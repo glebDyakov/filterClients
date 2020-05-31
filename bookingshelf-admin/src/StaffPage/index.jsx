@@ -267,7 +267,7 @@ class Index extends Component {
                     <div className="tab-content-list" key={i}>
                         {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
                         <div style={{ display: 'block' }}>
-                            <a style={{ paddingBottom: isGroup ? '4px' : '10px' }} key={i} onClick={() => this.handleClick(staff_user.staffId, false)}>
+                            <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
                                                          src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -284,11 +284,13 @@ class Index extends Component {
                             {staff_user.email}
                         </div>
                         <div>
-                                                    <span>
-                                                        {this.renderSwitch(staff_user.roleId)}
-                                                    </span>
+                            <span>
+                                {this.renderSwitch(staff_user.roleId)}
+                            </span>
                         </div>
-
+                        <div className="delete clientEditWrapper">
+                            <a className="clientEdit" onClick={() => this.handleClick(staff_user.staffId, false)}/>
+                        </div>
                         <div className="delete dropdown">
 
                             <a className="delete-icon menu-delete-icon"
@@ -619,9 +621,11 @@ class Index extends Component {
                                                                     </div>
                                                                 </div>
 
-                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px' }}>
-                                                                    <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
-                                                                    <p>{activeStaff.description}</p>
+                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px', display: 'flex', alignItems: 'center' }}>
+                                                                    <div>
+                                                                        <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                                        <p>{activeStaff.description}</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <button type="button" onClick={()=> {

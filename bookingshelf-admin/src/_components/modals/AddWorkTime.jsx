@@ -136,7 +136,6 @@ class AddWorkTime extends React.Component {
     render() {
 
         const {countTimes, staff, repeat, date, editWorkingHours, editing_object, message, times, staffs}=this.state;
-        debugger
 
         return (
             <Modal size="md" style={{maxWidth: '37%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -145,7 +144,7 @@ class AddWorkTime extends React.Component {
                         <div className="modal-content">
                             <div className="form-group">
                                 <div className="modal-header">
-                                    <p>{!editWorkingHours ? 'Добавить часы работы': 'Изменить рабочие часы'}</p>
+                                    <p style={{ marginTop: '-5px' }}>{!editWorkingHours ? 'Добавить часы работы': 'Изменить рабочие часы'}</p>
                                     <span>{staff && staff.firstName} {staff && staff.lastName}</span>
                                     <button type="button" className="close" onClick={this.closeModal}></button>
                                     {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
@@ -218,6 +217,7 @@ class AddWorkTime extends React.Component {
                                     <div style={{ padding: '4px 12px' }} className="alert alert-danger">{message}</div>
                                     }
                                     <div className="buttons">
+                                        {!editWorkingHours && <button className="small-button cancel-button" onClick={this.closeModal}>Отменить</button>}
                                         {editWorkingHours && <button className="small-button red-button" style={{marginRight: '10px'}} type="button" onClick={() => this.onDelete(moment(date, 'DD/MM/YYYY').startOf('day').format('x'), moment(date, 'DD/MM/YYYY').endOf('day').format('x'))} data-dismiss="modal">Удалить</button>}
                                         <button className="small-button" type="button"
                                                 onClick={() => {

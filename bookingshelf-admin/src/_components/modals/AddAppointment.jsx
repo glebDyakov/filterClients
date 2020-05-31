@@ -733,7 +733,7 @@ class AddAppointment extends React.Component {
 
                     return (
                         <React.Fragment>
-                            {key === 0 && <p style={{ fontSize: '16px', padding: '12px 0 8px 10px' }}>{item.name}</p>}
+                            {key === 0 && <span style={{ display: 'inline-block', fontSize: '16px', padding: 0, borderBottom: '1px solid #000', margin: '12px 0 8px 10px' }}>{item.name}</span>}
                             <li className="dropdown-item" key={key}>
                                 <a onClick={() => this.setService(service.serviceId, service, index)}>
                                     <span className={service.color && service.color.toLowerCase() + " " + 'color-circle'}/>
@@ -765,11 +765,11 @@ class AddAppointment extends React.Component {
 
         return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '', marginBottom: wrapperClassName === 'mobile-visible' ? '15px': '' }} className={`block-style2 container ${wrapperClassName}`}>
             <div className="row">
-                <div style={{ paddingTop: '4px', display: 'flex', justifyContent: 'space-between' , padding: 0 }} className="col-sm-12 mt-2">
+                <div style={{ paddingTop: '4px', display: 'flex', padding: 0 }} className="col-sm-12 mt-2">
                     <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
                     <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
 
-                    <span style={{ width: 'auto', margin: '0 4px 0 auto'}} className="justify-content-end check-box">
+                    <span style={{ width: 'auto', margin: '0'}} className="justify-content-end check-box">
                                                         <label>
                                                             <input className="form-check-input" type="checkbox"
                                                                    checked={isAddCostaff}
@@ -965,7 +965,7 @@ class AddAppointment extends React.Component {
                                                         </select>
                                                     </div>
                                                     {index === 0 && (
-                                                        <div style={{ paddingLeft: 0 }} className="col-md-8">
+                                                        <div className="col-md-8 add_appointment_staff">
                                                             <p>Сотрудник</p>
                                                             <div className="dropdown add-staff mb-3">
                                                                 <a className={edit_appointment || timeArrange===0?"disabledField dropdown-toggle drop_menu_personal":"dropdown-toggle drop_menu_personal"} data-toggle={(!edit_appointment && timeArrange!==0) && "dropdown"}
@@ -1285,16 +1285,28 @@ class AddAppointment extends React.Component {
                                     </div>
                                     <div className="mobileButton">
                                         <button style={{ minWidth: '48%', marginRight: '4%', background: '#ed1b24', border: '#ed1b24' }}
-                                                className="button text-center button-absolute disabledField"
+                                                className="button text-center button-absolute"
                                                 onClick={this.closeModal}>Отменить
                                         </button>
 
                                         <button
                                             style={{ minWidth: '48%' }}
-                                            className={(status === 208 && !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0)) ? 'button text-center button-absolute disabledField' : 'button text-center button-absolute'}
+                                            className={'button text-center button-absolute'}
                                             type="button"
-                                            onClick={edit_appointment ? this.editAppointment : this.addAppointment}
-                                            disabled={status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis}>
+                                            onClick={() => {
+                                                if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key])))|| serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
+                                                    this.setState({ appointmentMessage: 'Необходимо выбрать услугу'})
+                                                } else {
+                                                    if (edit_appointment) {
+                                                        this.editAppointment()
+                                                    } else {
+                                                        this.addAppointment()
+                                                    }
+                                                    if (appointmentMessage) {
+                                                        this.setState({ appointmentMessage: null })
+                                                    }
+                                                }
+                                            }}>
                                             {edit_appointment ? 'Обновить запись' : 'Создать Запись'}
                                         </button>
                                     </div>
