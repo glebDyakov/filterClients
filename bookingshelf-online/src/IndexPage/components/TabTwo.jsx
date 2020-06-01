@@ -158,7 +158,7 @@ class TabTwo extends Component {
                                     <ul className="service_list">
                                         <h3 style={{ fontSize: '22px', fontWeight: 'bold', textDecoration: 'underline'}}>{serviceGroup.name}</h3>
                                         {finalServices
-                                            .sort((a, b) => a.duration - b.duration).map((service, serviceKey) =>
+                                            .map((service, serviceKey) =>
                                             <li
                                                 className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
                                             >
