@@ -110,6 +110,7 @@ class AddAppointment extends React.Component {
         this.getAppointments=this.getAppointments.bind(this);
         this.setStaff=this.setStaff.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.toggleVisits = this.toggleVisits.bind(this);
         this.setService = this.setService.bind(this);
         this.setTime = this.setTime.bind(this);
         this.disabledMinutes = this.disabledMinutes.bind(this);
@@ -763,7 +764,7 @@ class AddAppointment extends React.Component {
         const { staff: staffFromProps } = this.props;
         const { isAddCostaff, staffCurrent, coStaffs, availableCoStaffs } = this.state;
 
-        return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '', marginBottom: wrapperClassName === 'mobile-visible' ? '15px': '' }} className={`block-style2 container ${wrapperClassName}`}>
+        return <div style={{ width: '100%', float: 'none', marginTop: wrapperClassName === 'mobile-visible' ? '-40px': '-44px', marginBottom: wrapperClassName === 'mobile-visible' ? '15px': '20px' }} className={`block-style2 container ${wrapperClassName}`}>
             <div className="row">
                 <div style={{ paddingTop: '4px', display: 'flex', padding: 0 }} className="col-sm-12 mt-2">
                     <span style={{ marginRight: '4px' }} className="title mb-2">Добавить помощников</span>
@@ -832,6 +833,10 @@ class AddAppointment extends React.Component {
         this.setState({ coStaffs });
     }
 
+    toggleVisits() {
+        this.setState({ visits: !this.state.visits });
+    }
+
     goToPageCalendar(appointment, appointmentStaffId){
         $('.client-detail').modal('hide')
         const { appointmentId, appointmentTimeMillis } = appointment
@@ -863,7 +868,7 @@ class AddAppointment extends React.Component {
     render() {
         const { status, company, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } =this.props;
         const { allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
-            services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment,
+            services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment, visits,
             servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
             isLoadingTypeahead
         } = this.state;
@@ -1055,6 +1060,8 @@ class AddAppointment extends React.Component {
                                         {appointmentMessage &&
                                             <div style={{ margin: '-36px 0 36px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
                                         }
+                                        {this.getCoStaffMarkup('desktop-visible')}
+
                                         {this.getCoStaffMarkup('mobile-visible')}
 
                                         <div className="calendar_modal_buttons">
@@ -1160,122 +1167,131 @@ class AddAppointment extends React.Component {
                                                     </div>
                                                 </div>
                                             }
-                                            {this.getCoStaffMarkup('desktop-visible')}
                                             {cl &&
-                                                <div className="client-info content-pages-bg">
-                                                    <div className="clients-list pt-4 pl-4 pr-4">
-                                                        {/*<div className="client">*/}
-                                                        {/*    <span*/}
-                                                        {/*        className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>*/}
-                                                        {/*    <span*/}
-                                                        {/*        className="name_container">{cl.firstName} {cl.lastName}*/}
-                                                        {/*        {access(12) && (*/}
-                                                        {/*            <React.Fragment>*/}
-                                                        {/*                <span className="email-user">{cl.email}</span>*/}
-                                                        {/*                <span className="email-user">{cl.phone}</span>*/}
-                                                        {/*            </React.Fragment>*/}
-                                                        {/*        )}*/}
-                                                        {/*    </span>*/}
-                                                        {/*</div>*/}
-                                                        <div className="row">
-                                                            <div className="col-6">
-                                                                <strong>{cl.appointments && cl.appointments.length}</strong>
-                                                                <span className="gray-text">Всего визитов</span>
-                                                            </div>
-                                                            <div className="col-6">
-                                                                <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
-                                                                <span className="gray-text">Сумма визитов</span>
-                                                            </div>
+                                                <React.Fragment>
 
-                                                        </div>
+                                                    <div style={{ padding: '9px 0' }} className="buttons justify-content-between">
+                                                        {!edit_appointment &&
+                                                            <React.Fragment>
+                                                                <span className="button-clients" onClick={this.removeCheckedUser}>Удалить из встречи
+                                                                </span>
+                                                                <span className="button-clients" onClick={() => this.editClient(cl)}>Редактировать
+                                                                </span>
+                                                            </React.Fragment>
+                                                        }
+
+                                                        <span className="button-clients" onClick={() => this.toggleVisits()}>Визиты
+                                                        </span>
                                                     </div>
-                                                    <hr className="gray"/>
-                                                    {cl.appointments && cl.appointments.length !== 0 ?
-                                                        <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Все визиты</p> :
-                                                        <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Нет визитов</p>
-                                                    }
 
-                                                    <hr className="gray"/>
-                                                    <div className='last-visit-list'>
-                                                        {cl.appointments && cl.appointments
-                                                            .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
-                                                            .map((appointment) => {
-                                                                const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
-                                                                const activeAppointmentStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === appointment.staffId);
-
-                                                                return (
-                                                                    <div style={{
-                                                                        paddingTop: '4px',
-                                                                        cursor: 'pointer',
-                                                                        borderBottom: '10px solid rgb(245, 245, 246)'
-                                                                    }} className="visit-info row pl-4 pr-4 mb-2"
-                                                                         onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
-                                                                    >
-                                                                        <div style={{
-                                                                            display: 'flex',
-                                                                            alignItems: 'center'
-                                                                        }} className="col-9">
-                                                                            <p className="visit-detail">
-                                                                                <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
-                                                                                <span style={{
-                                                                                    whiteSpace: 'normal',
-                                                                                    fontSize: '12px'
-                                                                                }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
-                                                                                <strong
-                                                                                    style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
-                                                                                {(activeService && activeService.details) ?
-                                                                                    <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
-                                                                                {appointment.description ? <span
-                                                                                    className="visit-description">Заметка: {appointment.description}</span> : ''}
-                                                                                {appointment.clientNotCome ? <span
-                                                                                    style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
-                                                                            </p>
-                                                                        </div>
-
-                                                                        <div style={{padding: 0, textAlign: 'right'}} className="col-2">
-                                                                            {
-                                                                                activeAppointmentStaff && activeAppointmentStaff.staffId &&
-                                                                                <div style={{ position: 'static' }} className="img-container">
-                                                                                    <img className="rounded-circle"
-                                                                                         src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
-                                                                                    {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
-                                                                                </div>
-                                                                            }
-
-                                                                            <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
-
-                                                                            <br />
-
-                                                                            <strong style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
-                                                                        </div>
+                                                    {visits &&
+                                                        <div style={{ paddingTop: '34px' }} className="client-info content-pages-bg">
+                                                            <div className="clients-list pt-4 pl-4 pr-4">
+                                                                {/*<div className="client">*/}
+                                                                {/*    <span*/}
+                                                                {/*        className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>*/}
+                                                                {/*    <span*/}
+                                                                {/*        className="name_container">{cl.firstName} {cl.lastName}*/}
+                                                                {/*        {access(12) && (*/}
+                                                                {/*            <React.Fragment>*/}
+                                                                {/*                <span className="email-user">{cl.email}</span>*/}
+                                                                {/*                <span className="email-user">{cl.phone}</span>*/}
+                                                                {/*            </React.Fragment>*/}
+                                                                {/*        )}*/}
+                                                                {/*    </span>*/}
+                                                                {/*</div>*/}
+                                                                <div style={{ overflow: 'hidden' }} className="row">
+                                                                    <div className="col-6">
+                                                                        <strong>{cl.appointments && cl.appointments.length}</strong>
+                                                                        <span className="gray-text">Всего визитов</span>
                                                                     </div>
-                                                                )}
-                                                            )}
-                                                            {/*<Paginator*/}
-                                                            {/*    finalTotalPages={2}*/}
-                                                            {/*    onPageChange={this.handlePageClickAppointments}*/}
-                                                            {/*/>*/}
-                                                    </div>
-                                                    {!!cl.discountPercent &&
-                                                    <div style={{
-                                                        textAlign: 'center',
-                                                        color: '#d41316',
-                                                        margin: '16px 0'
-                                                    }}>Персональная скидка клиента: {cl.discountPercent}%</div>
-                                                    }
-                                                    <hr/>
-                                                    {!edit_appointment &&
-                                                    <div className="buttons p-4 justify-content-between">
-                                                        <button type="button" className="button"
-                                                                onClick={this.removeCheckedUser}>Удалить из встречи
-                                                        </button>
-                                                        <button type="button" className="button"
-                                                                onClick={() => this.editClient(cl)}>Редактировать
-                                                        </button>
-                                                    </div>}
 
-                                                    <span className="closer" />
-                                                </div>
+                                                                    <div className="col-6">
+                                                                        <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
+                                                                        <span className="gray-text">Сумма визитов</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <hr className="gray"/>
+                                                            {cl.appointments && cl.appointments.length !== 0 ?
+                                                                <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Все визиты</p> :
+                                                                <p style={{ textAlign: 'center', paddingBottom: 0 }} className="pl-4 pr-4">Нет визитов</p>
+                                                            }
+
+                                                            <hr className="gray"/>
+                                                            <div className='last-visit-list'>
+                                                                {cl.appointments && cl.appointments
+                                                                    .sort((a, b) => b.appointmentTimeMillis - a.appointmentTimeMillis)
+                                                                    .map((appointment) => {
+                                                                        const activeService = servicesFromProps && servicesFromProps.servicesList.find(service => service.serviceId === appointment.serviceId)
+                                                                        const activeAppointmentStaff = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === appointment.staffId);
+
+                                                                        return (
+                                                                            <div style={{
+                                                                                paddingTop: '4px',
+                                                                                cursor: 'pointer',
+                                                                                borderBottom: '10px solid rgb(245, 245, 246)'
+                                                                            }} className="visit-info row pl-4 pr-4 mb-2"
+                                                                                 onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
+                                                                            >
+                                                                                <div style={{
+                                                                                    display: 'flex',
+                                                                                    alignItems: 'center'
+                                                                                }} className="col-9">
+                                                                                    <p className="visit-detail">
+                                                                                        <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                                                        <span style={{
+                                                                                            whiteSpace: 'normal',
+                                                                                            fontSize: '12px'
+                                                                                        }}><strong>Сотрудник: </strong>{appointment.staffName}</span>
+                                                                                        <strong
+                                                                                            style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
+                                                                                        {(activeService && activeService.details) ?
+                                                                                            <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
+                                                                                        {appointment.description ? <span
+                                                                                            className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                                                        {appointment.clientNotCome ? <span
+                                                                                            style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                                                    </p>
+                                                                                </div>
+
+                                                                                <div style={{padding: 0, textAlign: 'right'}} className="col-2">
+                                                                                    {
+                                                                                        activeAppointmentStaff && activeAppointmentStaff.staffId &&
+                                                                                        <div style={{ position: 'static' }} className="img-container">
+                                                                                            <img className="rounded-circle"
+                                                                                                 src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                                            {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
+                                                                                        </div>
+                                                                                    }
+
+                                                                                    <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+
+                                                                                    <br />
+
+                                                                                    <strong style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    )}
+                                                                    {/*<Paginator*/}
+                                                                    {/*    finalTotalPages={2}*/}
+                                                                    {/*    onPageChange={this.handlePageClickAppointments}*/}
+                                                                    {/*/>*/}
+                                                            </div>
+                                                            {!!cl.discountPercent &&
+                                                            <div style={{
+                                                                textAlign: 'center',
+                                                                color: '#d41316',
+                                                                margin: '16px 0'
+                                                            }}>Персональная скидка клиента: {cl.discountPercent}%</div>
+                                                            }
+                                                            <hr/>
+
+                                                            <span className="closer" />
+                                                        </div>}
+                                                </React.Fragment>
                                             }
                                             {/*<button className="button text-center button-absolute float-right create-client" type="button"  onClick={(e)=>this.newClient(null, e)}>*/}
                                             {/*    Создать клиента*/}
