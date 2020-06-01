@@ -263,8 +263,8 @@ class Index extends Component {
             dragDropItems.push({
                 staffId: staff_user.staffId,
                 id: `staff-user-${i}`,
-                content: (
-                    <div className="tab-content-list" key={i}>
+                getContent: (dragHandleProps) => (
+                    <div {...dragHandleProps} className="tab-content-list" key={i}>
                         {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
                         <div style={{ display: 'block' }}>
                             <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>

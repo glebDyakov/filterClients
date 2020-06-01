@@ -3091,6 +3091,17 @@ select{
     width: 100%;
 }
 
+.drag-vert {
+    height: 14px;
+    width: 20px;
+    background-image: url('../img/drag-vert.png');
+    background-size: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    bottom: 0;
+}
+
 .services_list_wrapper {
     max-height: 230px;
     overflow-y: auto;
