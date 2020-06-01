@@ -230,13 +230,15 @@ class Index extends Component {
                 id: `service-group-${keyGroup}`,
                 getContent: (dragHandleProps) => (
                     <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3': ''}` + ' service_one collapsible'} key={keyGroup}>
+                        <span  {...dragHandleProps}  style={{ top: '6px', bottom: 'unset' }} className="drag-vert" />
+
                         <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
                             <div
                                 className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3"}
                                 onClick={() => this.onCollapse(item.serviceGroupId)}>
                                 {collapse.indexOf(item.serviceGroupId) === -1 ? '-' : '+'}
                             </div>
-                            <p {...dragHandleProps}  className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
+                            <p className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
                         </div>
                         <div className="col-sm-5 d-flex justify-content-between align-items-center services_buttons">
                             <a className="edit_service" onClick={(e) => this.handleClick(item.serviceGroupId, false, e, this)}/>
