@@ -44,10 +44,16 @@ export function staff(state = initialState, action) {
                 ...newState
             }
         case staffConstants.GET_SERVICE_GROUPS_SUCCESS:
+            const updatedServiceGroups = action.serviceGroups && action.serviceGroups.map(item => {
+                return {
+                    ...item,
+                    services: item.services && item.services.sort((a, b) => a.sortOrder - b.sortOrder)
+                }
+            })
             return {
                 ...state,
                 isLoading: false,
-                serviceGroups: (action.serviceGroups || []).sort((a, b) => a.sortOrder - b.sortOrder)
+                serviceGroups: (updatedServiceGroups || []).sort((a, b) => a.sortOrder - b.sortOrder)
             }
         case staffConstants.GET_SUCCESS:
             return {
