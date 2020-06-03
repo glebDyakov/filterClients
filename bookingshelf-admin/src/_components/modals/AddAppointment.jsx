@@ -873,7 +873,6 @@ class AddAppointment extends React.Component {
             servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
             isLoadingTypeahead
         } = this.state;
-        debugger;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
         const cl = clientChecked
@@ -1391,7 +1390,7 @@ class AddAppointment extends React.Component {
                 id:-1,
                 service:[]
             }],
-            clientChecked: [],
+            clientChecked: null,
             coStaffs: [],
             appointment: [{
                 appointmentTimeMillis: '',
