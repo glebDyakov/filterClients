@@ -155,7 +155,7 @@ class AddAppointment extends React.Component {
             })
         }
 
-        if(this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
+        if (this.state.shouldUpdateCheckedUser && JSON.stringify(this.props.clients) !==  JSON.stringify(newProps.clients)) {
             let user = newProps.clients.client && newProps.clients.client.length > 0 && newProps.clients.client.find(cl => cl.phone === newProps.checkedUser.phone);
             let finalUser = {}
             const updatedState = { shouldUpdateCheckedUser: false }
@@ -167,7 +167,7 @@ class AddAppointment extends React.Component {
             this.setState(updatedState)
         }
 
-        if(JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
+        if (JSON.stringify(this.props.checkedUser) !== JSON.stringify(newProps.checkedUser)) {
             this.setState({ shouldUpdateCheckedUser: true })
         }
 
@@ -872,6 +872,7 @@ class AddAppointment extends React.Component {
             servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
             isLoadingTypeahead
         } = this.state;
+        debugger;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
         const cl = clientChecked
@@ -1005,7 +1006,11 @@ class AddAppointment extends React.Component {
                                                                                             <img className="rounded-circle"
                                                                                                  src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                                                  alt=""/>
-                                                                                            <span className="">{staff.firstName + " " + (staff.lastName ? staff.lastName : '')}</span>
+                                                                                            <span style={{ lineHeight: activeStaff.description ? '8px' : '20px' }} className="">
+                                                                                                <p>{staff.firstName + " " + (staff.lastName ? staff.lastName : '')}</p>
+                                                                                                {activeStaff.description ? <p style={{ fontSize: '10px' }} className="">{activeStaff.description}</p> : ''}
+
+                                                                                            </span>
                                                                                         </div>
                                                                                     </a>
                                                                                 </li>);}
