@@ -212,6 +212,7 @@ class AddAppointment extends React.Component {
                 edit_appointment: newProps.edit_appointment,
                 editedElement: newProps.appointmentEdited && newProps.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId)
             });
+
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
         }
         // if ( (JSON.stringify(this.props.appointmentEdited) !==  JSON.stringify(newProps.appointmentEdited) ||
