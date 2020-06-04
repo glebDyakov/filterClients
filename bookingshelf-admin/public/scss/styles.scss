@@ -300,6 +300,10 @@ ul {
   background: $color-light-red;
   border: $color-light-red;
   margin-right: 8px;
+
+  &:hover {
+    background-color: darken($color-light-red, 10%);
+  }
 }
 
 button,
@@ -637,7 +641,7 @@ input {
   padding: 4px 4px;
   font-size: 18px;
   font-weight: bold;
-  color: rgb(237, 27, 36);
+  color: $color-light-red;
   @media screen and(max-width: $laptop-width) {
     font-size: 15px;
   }
@@ -3046,7 +3050,8 @@ select {
     min-width: 0;
 
     &:hover {
-      opacity: 0.7;
+      background-color: #3452e1;
+      border-color: #2948df;
     }
   }
 
@@ -3192,7 +3197,7 @@ select {
 }
 
 .closedDate {
-  color: red;
+  color: $color-light-red;
   text-transform: lowercase;
   font-size: 10px;
 

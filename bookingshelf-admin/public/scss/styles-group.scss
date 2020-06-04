@@ -38,7 +38,7 @@ $large-width: 1820px;
 
 @mixin red-title() {
   font-size: 18px;
-  color: rgb(237, 27, 36);
+  color: $color-light-red;
   @media screen {
     @media (max-width: $large-width) {
       font-size: 16px;
