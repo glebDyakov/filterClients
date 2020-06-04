@@ -98,10 +98,10 @@
                 background-color: #23D2CC;
             }
         }
-        &.colorF46A6A{
-            color: #f46a6a;
+        &.colorEA3E3E{
+            color: #EA3E3E;
             span{
-                background-color: #f46a6a;
+                background-color: #EA3E3E;
             }
         }
         &.color002F84{
@@ -174,7 +174,7 @@
                     min-height: 35px;
                 }
             }
-            @media (max-width: 1200px){
+            @media (max-width: 1200px){   
                 display: block;
                 width: 100%;
                 overflow: auto;
@@ -187,7 +187,7 @@
                 flex-direction: row;
                 flex-wrap: nowrap;
                 }
-            }
+            } 
         }
     }
 }
@@ -261,9 +261,9 @@ strong{
     --border: rgba(57, 67, 79, 0.8);
     --color: rgba(57, 67, 79, 1); }
 
-.colorF46A6A {
-    --border: #f46a6a;
-    --color: #f46a6a; }
+.colorEA3E3E {
+    --border: rgba(234, 62, 62, 0.8);
+    --color: rgba(234, 62, 62, 1); }
 
 .color2f84 {
     --border: rgba(0, 47, 132, 0.8);

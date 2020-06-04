@@ -1070,7 +1070,7 @@ class AddAppointment extends React.Component {
                                         {this.getCoStaffMarkup('mobile-visible')}
 
                                         <div className="calendar_modal_buttons">
-                                            <button style={{ minWidth: '48%', margin: '0', background: '#f46a6a', border: '#f46a6a' }}
+                                            <button style={{ minWidth: '48%', margin: '0', background: '#ed1b24', border: '#ed1b24' }}
                                                     className="button text-center saveservices button-absolute addService"
                                                     onClick={this.closeModal}>Отменить
                                             </button>
