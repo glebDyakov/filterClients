@@ -238,8 +238,8 @@ class Index extends Component {
                             <div className="chose_button">
                                 <a className={(booking.bookingColor.toString(16) === '39434f' && 'active') + " button-color color39434F"}
                                    onClick={() => this.setColor("39434F")}><span></span>39434F</a>
-                                <a className={(booking.bookingColor.toString(16) === 'ea3e3e' && 'active') + " button-color colorEA3E3E"}
-                                   onClick={() => this.setColor("EA3E3E")}><span></span>EA3E3E</a>
+                                <a className={(booking.bookingColor.toString(16) === 'f46a6a' && 'active') + " button-color colorF46A6A"}
+                                   onClick={() => this.setColor("F46A6A")}><span></span>F46A6A</a>
                                 <a className={(booking.bookingColor.toString(16) === '2f84' && 'active') + " button-color color002F84"}
                                    onClick={() => this.setColor("002F84")}><span></span>002F84</a>
                                 <a className={(booking.bookingColor.toString(16) === 'a300b7' && 'active') + " button-color colorA300B7"}
