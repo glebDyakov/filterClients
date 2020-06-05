@@ -11,7 +11,7 @@ import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import {staffActions} from "../_actions/staff.actions";
-import LicenceAgreement from "../LicenseAgreement";
+
 import ForAccountant from "../_components/modals/ForAccountant";
 
 
@@ -23,7 +23,6 @@ class Index extends Component {
         this.changeSMSResult = this.changeSMSResult.bind(this);
         this.repeatPayment = this.repeatPayment.bind(this);
         this.downloadInPdf = this.downloadInPdf.bind(this);
-        this.downloadLicense = this.downloadLicense.bind(this);
         this.calculateRate = this.calculateRate.bind(this);
         this.AddingInvoice = this.AddingInvoice.bind(this);
         this.closeModalActs = this.closeModalActs.bind(this);
@@ -43,7 +42,6 @@ class Index extends Component {
             staffCount: 0,
             chosenInvoice: {},
             invoiceSelected: false,
-            onDownloadPDF: false,
             country: this.props.company.settings || {},
             // country: '',
             rate: {
@@ -220,33 +218,6 @@ class Index extends Component {
         })
     }
 
-    downloadLicense() {
-        this.setState({onDownloadPDF: true}, () => {
-            html2canvas(document.getElementById('licenseBlockID')).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-
-                let margin = 2;
-                let imgWidth = 195;
-                let pageHeight = 300;
-                let imgHeight = canvas.height * imgWidth / canvas.width + 30;
-                let heightLeft = imgHeight;
-
-                let pdf = new jsPDF();
-                let position = 1;
-
-                pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                pdf.save('file.pdf')
-            })
-        })
-    }
 
     rateChangeWorkersCount(e) {
         let {name, value} = e.target;
@@ -825,7 +796,7 @@ class Index extends Component {
                             }
                         </div>
                         <div className="payments-license-block">
-                            <span onClick={() => this.downloadLicense()}>Лицензионный договор</span>
+                            <a href="./src/_licenseDocument/license_agreement.pdf" download>Лицензионный договор</a>
                             <span data-toggle="modal" data-target=".accountant-modal-in">
                                 Для бухгалтерии
                             </span>
@@ -833,12 +804,6 @@ class Index extends Component {
                     </div>
 
                 </div>}
-                {
-                    this.state.onDownloadPDF &&
-                    <div id={'licenseBlockID'}>
-                        <LicenceAgreement/>
-                    </div>
-                }
                 <ForAccountant/>
                 {/*<div className="modal fade modal-new-subscription" role="dialog" aria-hidden="true">*/}
                 {/*    <div className="modal-dialog modal-lg modal-dialog-centered">*/}
