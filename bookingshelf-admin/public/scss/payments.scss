@@ -16,7 +16,7 @@
   .payments-license-block {
     padding: 10px 0;
 
-    span {
+    span, a {
       line-height: 20px;
       display: inline-block;
       border-bottom: 1px solid #000;
@@ -922,7 +922,8 @@
     }
   }
 }
-#licenseBlockID{
+
+#licenseBlockID {
   position: absolute;
   bottom: 1000px
 
