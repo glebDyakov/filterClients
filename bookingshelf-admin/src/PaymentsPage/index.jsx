@@ -796,7 +796,7 @@ class Index extends Component {
                             }
                         </div>
                         <div className="payments-license-block">
-                            <a href="./src/_licenseDocument/license_agreement.pdf" download>Лицензионный договор</a>
+                            <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>Лицензионный договор</a>
                             <span data-toggle="modal" data-target=".accountant-modal-in">
                                 Для бухгалтерии
                             </span>
