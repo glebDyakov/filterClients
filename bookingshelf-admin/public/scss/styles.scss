@@ -3902,6 +3902,30 @@ textarea {
     }
 }
 
+.clientEditWrapper {
+    right: 30px !important;
+    top: -12px !important;
+}
+.clientEdit {
+    width: 30px;
+    height: 30px;
+    background-image: url(../img/pen_new.svg);
+    background-repeat: no-repeat;
+    padding: 0;
+    background-position: center;
+    background-size: 15px;
+
+    &:hover{
+        opacity: 0.7;
+        cursor: pointer;
+    }
+}
+
+.delete-icon {
+    justify-content: center;
+    padding: 0;
+    height: auto;
+}
 .tab-content{
     overflow-x: hidden;
     .tab-content{
