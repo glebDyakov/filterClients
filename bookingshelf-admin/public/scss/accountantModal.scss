@@ -1,0 +1,25 @@
+.accountant-modal-wrapper {
+
+  .modal-header {
+    height: auto;
+    padding: 10px 15px;
+    margin: 0;
+  }
+
+  .modal-body {
+    max-height: 400px;
+    overflow-x: auto;
+
+    span {
+      display: inline-block;
+
+      & + span {
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .modal-title {
+    margin-right: 20px;
+  }
+}
