@@ -198,12 +198,10 @@ class AddAppointment extends React.Component {
         if ( (JSON.stringify(this.props) !==  JSON.stringify(newProps)
             && JSON.stringify(this.props.clients) ===  JSON.stringify(newProps.clients)) ||
             newProps.randNum !== this.props.randNum
-
         ) {
             this.updateAvailableCoStaffs();
             this.setState({
                 staffs:newProps.staffs,
-                // services:newProps.services,
                 minutes:newProps.minutes,
                 staffId:newProps.staffId,
                 timeArrange:newProps.clickedTime!==0?this.getTimeArrange(newProps.clickedTime, newProps.minutes, (newProps.appointmentEdited || []).sort((a, b) => a.appointmentId - b.appointmentId)):null,
@@ -214,6 +212,12 @@ class AddAppointment extends React.Component {
             });
 
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
+        }
+
+        if ((JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services))) {
+            this.setState({
+                services: [newProps.services]
+            })
         }
         // if ( (JSON.stringify(this.props.appointmentEdited) !==  JSON.stringify(newProps.appointmentEdited) ||
         //     JSON.stringify(this.props.clickedTime) !==  JSON.stringify(newProps.clickedTime))) {
@@ -730,7 +734,7 @@ class AddAppointment extends React.Component {
             }
 
             return servicesWithGroups && servicesWithGroups.map(item => {
-                return item.services.map((service, key) => {
+                return item.services.sort((a, b) => a.sortOrder - b.sortOrder).map((service, key) => {
                     const durationForCurrentStaff = this.getDurationForCurrentStaff(service)
 
                     return (
@@ -1056,14 +1060,14 @@ class AddAppointment extends React.Component {
                                         })}
                                         <div style={{ margin: '6px 0 45px', cursor: 'pointer' }}
                                              onClick={() => this.addNewService()}>
-                                            <p style={{ display: 'inline-block', width: '96px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
+                                            <p style={{ display: 'inline-block', width: '106px', borderBottom: '1px solid #000', minHeight: '20px', height: '20px', fontSize: '12px' }}
                                                     className="text-center button-absolute"
                                                     >Добавить услугу
                                             </p> +
                                         </div>
 
                                         {appointmentMessage &&
-                                            <div style={{ margin: '-36px 0 36px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
+                                            <div style={{ margin: '-36px 0 46px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
                                         }
                                         {this.getCoStaffMarkup('desktop-visible')}
 

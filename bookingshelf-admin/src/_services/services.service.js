@@ -188,7 +188,7 @@ function updateService(params, idGroup) {
             withCredentials: true
         },
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(params)
+        body: params
     };
 
     return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)

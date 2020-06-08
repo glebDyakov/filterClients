@@ -354,6 +354,7 @@ class Index extends Component {
                     color: 'red'
                 };
             case 'NOT_DELIVERED':
+            case 'UNSUCCESS':
                 return {
                     text: 'Не доставлено',
                     color: 'red'
