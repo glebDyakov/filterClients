@@ -1066,13 +1066,12 @@ class AddAppointment extends React.Component {
                                             </p> +
                                         </div>
 
-                                        {appointmentMessage &&
-                                            <div style={{ margin: '-36px 0 46px 0', padding: '4px 12px'}} className="alert alert-danger">{appointmentMessage}</div>
-                                        }
                                         {this.getCoStaffMarkup('desktop-visible')}
-
                                         {this.getCoStaffMarkup('mobile-visible')}
 
+                                        {appointmentMessage &&
+                                        <div style={{ margin: '-20px 0 32px 0', padding: '4px 12px'}} className="desktop-visible alert alert-danger">{appointmentMessage}</div>
+                                        }
                                         <div className="calendar_modal_buttons">
                                             <button style={{ minWidth: '48%', margin: '0', background: '#ed1b24', border: '#ed1b24' }}
                                                     className="button text-center saveservices button-absolute addService"
@@ -1308,6 +1307,9 @@ class AddAppointment extends React.Component {
                                         </div>
 
                                     </div>
+                                    {appointmentMessage &&
+                                    <div style={{ margin: '6px 15px', padding: '4px 12px', width: '100%' }} className="mobile-visible alert alert-danger">{appointmentMessage}</div>
+                                    }
                                     <div className="mobileButton">
                                         <button style={{ minWidth: '48%', marginRight: '4%', background: '#ed1b24', border: '#ed1b24' }}
                                                 className="button text-center button-absolute"
