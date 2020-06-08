@@ -374,7 +374,8 @@ class Index extends Component {
                                     сайте:</p>
                                 <p className="sub-title mb-3">Ваша страница Онлайн-запись</p>
                                 <textarea value={"online-zapis.com/online/" + booking.bookingPage}/>
-                                <a target="_blank"
+                                <a style={{ borderRadius: '4px' }}
+                                    target="_blank"
                                    href={"https://online-zapis.com/online/" + booking.bookingPage}
                                    className="ahref button mt-3 mb-3 float-right button-url">Посмотреть
                                     страницу в интернете
@@ -385,7 +386,7 @@ class Index extends Component {
                             <div className=" content-pages-bg p-4 mb-3 h-auto">
                                 <p className="title mb-2">
                                     Дополнительное сообщение в онлайн-записи
-                                    <Hint hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
+                                    <Hint customLeft="-1px" hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
                                 </p>
                                 <textarea className="mb-3" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
 
@@ -398,7 +399,7 @@ class Index extends Component {
                                         <span className="check"/>
                                         Включить ограничение
                                     </label>&nbsp;
-                                    <Hint hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
+                                    <Hint customLeft="-4px" hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
                                 </div>
                                 {isOnlineZapisChecked && <div className="online-page-picker online-zapis-date-picker mb-3">
                                     <DatePicker

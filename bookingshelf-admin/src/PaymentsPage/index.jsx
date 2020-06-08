@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
+
 import '../../public/scss/payments.scss'
 
 import moment from 'moment';
@@ -10,6 +11,8 @@ import {MakePayment} from "../_components/modals/MakePayment";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import {staffActions} from "../_actions/staff.actions";
+
+import ForAccountant from "../_components/modals/ForAccountant";
 
 
 class Index extends Component {
@@ -214,6 +217,7 @@ class Index extends Component {
             pdf.save("invoice.pdf");
         })
     }
+
 
     rateChangeWorkersCount(e) {
         let {name, value} = e.target;
@@ -791,13 +795,16 @@ class Index extends Component {
                                 // );})
                             }
                         </div>
-
-
+                        <div className="payments-license-block">
+                            <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>Лицензионный договор</a>
+                            <span data-toggle="modal" data-target=".accountant-modal-in">
+                                Для бухгалтерии
+                            </span>
+                        </div>
                     </div>
 
                 </div>}
-
-
+                <ForAccountant/>
                 {/*<div className="modal fade modal-new-subscription" role="dialog" aria-hidden="true">*/}
                 {/*    <div className="modal-dialog modal-lg modal-dialog-centered">*/}
                 {/*        <div className="modal-content">*/}

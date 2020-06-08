@@ -176,7 +176,7 @@ class Index extends Component {
                 </div>
 
 
-                <div style={{ position: 'relative' }}>
+                <div style={{ position: 'relative', height: 'calc(100% - 86px)' }}>
                     <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
                         <StaffChoice
                             selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
@@ -294,10 +294,12 @@ class Index extends Component {
                         }
                     </div>
 
+                    <div className="paginator-wrapper">
                     <Paginator
                         finalTotalPages={finalTotalPages}
                         onPageChange={this.handlePageClick}
                     />
+                    </div>
                 </div>
                 <a className="add"/>
                 <div className="hide buttons-container">

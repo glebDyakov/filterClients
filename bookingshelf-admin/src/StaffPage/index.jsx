@@ -263,11 +263,11 @@ class Index extends Component {
             dragDropItems.push({
                 staffId: staff_user.staffId,
                 id: `staff-user-${i}`,
-                content: (
-                    <div className="tab-content-list" key={i}>
+                getContent: (dragHandleProps) => (
+                    <div {...dragHandleProps} className="tab-content-list" key={i}>
                         {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
                         <div style={{ display: 'block' }}>
-                            <a style={{ paddingBottom: isGroup ? '4px' : '10px' }} key={i} onClick={() => this.handleClick(staff_user.staffId, false)}>
+                            <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
                                                          src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -284,11 +284,13 @@ class Index extends Component {
                             {staff_user.email}
                         </div>
                         <div>
-                                                    <span>
-                                                        {this.renderSwitch(staff_user.roleId)}
-                                                    </span>
+                            <span>
+                                {this.renderSwitch(staff_user.roleId)}
+                            </span>
                         </div>
-
+                        <div className="delete clientEditWrapper">
+                            <a className="clientEdit" onClick={() => this.handleClick(staff_user.staffId, false)}/>
+                        </div>
                         <div className="delete dropdown">
 
                             <a className="delete-icon menu-delete-icon"
@@ -491,7 +493,7 @@ class Index extends Component {
                                             <textarea className="form-control" rows="3" name="description" value={closedDates.description} onChange={this.handleClosedDate}/>
                                             <div className="float-right mt-3">
                                                 <div className="buttons">
-                                                    <button className="small-button gray-button close-holiday"
+                                                    <button className="small-button cancel-button close-holiday"
                                                             type="button" data-dismiss="modal">Отменить
                                                     </button>
                                                     <button className={((!from || !closedDates.description) ? 'disabledField': 'close-holiday')+' small-button'} type="button"
@@ -619,9 +621,11 @@ class Index extends Component {
                                                                     </div>
                                                                 </div>
 
-                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px' }}>
-                                                                    <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
-                                                                    <p>{activeStaff.description}</p>
+                                                                <div style={{ width: isMobile ? '100%' : '60%', marginLeft: '24px', display: 'flex', alignItems: 'center' }}>
+                                                                    <div>
+                                                                        <strong>{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                                        <p>{activeStaff.description}</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <button type="button" onClick={()=> {

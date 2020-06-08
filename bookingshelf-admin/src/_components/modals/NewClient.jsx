@@ -152,7 +152,7 @@ class NewClient extends React.Component {
 
     render() {
         const { company } = this.props;
-        const { day, month, year, client, edit, alert, clients }=this.state;
+        const { day, month, year, client, edit, alert, clients, message }=this.state;
         const companyTypeId = company.settings && company.settings.companyTypeId
 
         const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
@@ -290,13 +290,28 @@ class NewClient extends React.Component {
                             {alert && alert.message && JSON.parse(alert.message).code === 9 &&
                             <p className="alert-danger p-1 rounded pl-3 mb-2">Клиент с таким номером телефона уже создан</p>
                             }
-
-                            <button className={((clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}
-                                    disabled={clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}
-                                    type="button"
-                                    onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addClient)}
-                            >Сохранить
-                            </button>
+                            {message &&
+                            <div style={{ padding: '4px 12px' }} className="alert alert-danger">{message}</div>
+                            }
+                            <div className="buttons">
+                                <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
+                                <button className={'button'}
+                                        type="button"
+                                        onClick={() => {
+                                            if (clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) {
+                                                this.setState({ message: 'Имя и телефон обязательны для заполнения' })
+                                            } else {
+                                                if (edit) {
+                                                    this.updateClient()
+                                                } else {
+                                                    this.addClient()
+                                                }
+                                                this.setState({ message: '' })
+                                            }
+                                        }}
+                                >Сохранить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

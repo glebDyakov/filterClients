@@ -72,7 +72,7 @@ class AddService extends React.Component {
     }
 
     render() {
-        const {service, editServiceItem, colors, staffs, group, allStaffs, services}=this.state;
+        const {service, editServiceItem, colors, message, staffs, group, allStaffs, services}=this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
         const optionList = this.getOptionList()
@@ -238,8 +238,25 @@ class AddService extends React.Component {
                                     </div>
                                 </div>
 
-                                <button className={services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))?"disabledField button mt-2 mb-2":"button mt-2 mb-2"} type="button"
-                                        onClick={!services.adding && service.name!=='' && String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)>=parseInt(service.priceFrom) &&(editServiceItem ? this.updateService : this.addService)}>{editServiceItem ? 'Обновить услугу' : 'Добавить услугу'}</button>
+                                {message &&
+                                <div style={{ padding: '4px 12px', margin: '16px', width: 'calc(100% - 42px)' }} className="alert alert-danger">{message}</div>
+                                }
+                                <div className="buttons col-12">
+                                    <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
+                                    <button className={"button"} type="button"
+                                            onClick={() => {
+                                                if (services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))) {
+                                                    this.setState({ message: 'Необходимо заполнить название услуги и цену' });
+                                                } else {
+                                                    this.setState({ message: '' });
+                                                    if (editServiceItem) {
+                                                        this.updateService()
+                                                    } else {
+                                                        this.addService()
+                                                    }
+                                                }
+                                            }}>{editServiceItem ? 'Обновить' : 'Добавить'}</button>
+                                </div>
                             </div>
                         </div>
                     </div>

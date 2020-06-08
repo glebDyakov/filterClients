@@ -1,6 +1,9 @@
 @import "styles-group";
 .msg-client-info{display: none;}
 .calendar {
+    .typeahead-wrapper input {
+        height: 35px !important;
+    }
     .left-fixed-tab{
         width: 50px;
         position: sticky;
@@ -378,7 +381,13 @@
                     }
                 }
 
-                &:first-of-type {
+                &.cell-first {
+                    &:first-of-type {
+                        min-width: 50px !important;
+                        max-width: 50px !important;
+                    }
+                }
+                &.cell-second, &:first-of-type {
                     min-width: 50px !important;
                     width: 10%;
                     max-width: 50px !important;
@@ -642,16 +651,6 @@
                             }
                         }
                     }
-                }
-                .drag-vert {
-                    height: 14px;
-                    width: 20px;
-                    background-image: url('../img/drag-vert.png');
-                    background-size: 17px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    position: absolute;
-                    bottom: 0;
                 }
                 .notes{ 
                     width: 100%;
@@ -1677,8 +1676,14 @@
     overflow-y: auto;
     max-height: 80%;
     .calendar_modal_buttons{
+        width: calc(100% - 30px);
+        position: absolute;
+        bottom: -15px;
         display: flex;
         justify-content: space-between;
+        button {
+            border-radius: 4px;
+        }
     }
     .addService{
         width: 140px;
@@ -1724,6 +1729,7 @@
     }
     button{
         width: 100%;
+        border-radius: 4px;
     }
 }
 .client-title{

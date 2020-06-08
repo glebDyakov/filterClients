@@ -26,7 +26,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     // margin: `0 0 ${grid}px 0`,
 
     // change background colour if dragging
-    background: isDragging ? "#f5f5f6" : "transparent",
+    background: isDragging ? "transparent" : "transparent",
 
     // styles we need to apply on draggables
     ...draggableStyle
@@ -79,17 +79,20 @@ class DragDrop extends Component {
         }
     }
 
+
     // Normally you would want to split things out into separate components.
     // But in this example everything is just done in one place for simplicity
     render() {
+        const { extraStyle, extraClassName, extraDroppableProps } = this.props;
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable">
+                <Droppable droppableId="droppable" {...extraDroppableProps}>
                     {(provided, snapshot) => (
                         <div
+                            className={extraClassName}
                             {...provided.droppableProps}
                             ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
+                            style={{...getListStyle(snapshot.isDraggingOver), ...extraStyle}}
                         >
                             {this.state.dragDropItems.map((item, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -97,13 +100,12 @@ class DragDrop extends Component {
                                         <div
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
                                             style={getItemStyle(
                                                 snapshot.isDragging,
                                                 provided.draggableProps.style
                                             )}
                                         >
-                                            {item.content}
+                                            {item.getContent(provided.dragHandleProps)}
                                         </div>
                                     )}
                                 </Draggable>

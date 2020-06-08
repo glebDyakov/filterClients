@@ -15,8 +15,11 @@
     }
 }
 .search-col {
-    max-width: 83vw !important;
+    max-width:  318px !important;
     min-width: unset !important;
+    @media (max-width: $mob-width) {
+        max-width: 83vw !important;
+    }
 }
 .search-header {
     position: relative;
@@ -273,13 +276,20 @@ ul{
     width: 100%;
     justify-content: space-between;
 }
+
+.cancel-button {
+    background: #ed1b24;
+    border: #ed1b24;
+    margin-right: 8px;
+}
+
 button,
 .new-service{
     font-size: $font-button;
     color: $button-color;
     text-align: center;
     background-color: #0a1330;
-    border-radius:0;
+    border-radius: 4px;
     cursor: pointer;
     width: auto;
     border: solid 1px #0a1330;
@@ -1165,7 +1175,7 @@ input{
     }
 }
 
-.sidebar-notification{
+.sidebar-notification {
     height: 24px;
     width: 24px;
     background-image: url(../img/attention.svg);
@@ -1208,10 +1218,18 @@ input{
     }
 }
 .desktop-visible {
-    display: block;
+    display: block !important;
 
     @media (max-width: 767px) {
-        display: none;
+        display: none !important;
+    }
+}
+
+.desktop-visible-flex {
+    display: flex !important;
+
+    @media (max-width: 767px) {
+        display: none !important;
     }
 }
 
@@ -1221,10 +1239,18 @@ input{
     }
 }
 .mobile-visible {
-    display: none;
+    display: none !important;
 
     @media (max-width: 767px) {
-        display: block;
+        display: block !important;
+    }
+}
+
+.mobile-visible-flex {
+    display: none !important;
+
+    @media (max-width: 767px) {
+        display: flex !important;
     }
 }
 .menu-notification{
@@ -1683,7 +1709,7 @@ input{
             @media screen and(max-width: $laptop-width){
                 width: 16px;
                 height: 16px;
-                margin-right:10px;
+                margin-right: 6px;
             }
             @media screen and(max-width: $mob-width){
                 display:none;
@@ -1732,7 +1758,7 @@ input{
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100% auto;
-            margin-left: 2%;
+            margin-left: 0;
             display: block;
             width: 22px;
             height: 22px;
@@ -1780,19 +1806,19 @@ input{
             margin-left: 2%;
             overflow: hidden;
 
-            &:after {
-                content: '';
-                background-image: url(../img/download.png);
-                background-repeat: no-repeat;
-                background-size: 14px 14px;
-                display: block;
-                width: 25px;
-                position: absolute;
-                height: 72%;
-                border: none;
-                bottom: -13px;
-                margin-left: 27px;
-            }
+            //&:after {
+            //    content: '';
+            //    background-image: url(../img/download.png);
+            //    background-repeat: no-repeat;
+            //    background-size: 14px 14px;
+            //    display: block;
+            //    width: 25px;
+            //    position: absolute;
+            //    height: 72%;
+            //    border: none;
+            //    bottom: -13px;
+            //    margin-left: 27px;
+            //}
             &:hover{
                 img {
                     opacity: 0.6;
@@ -1986,7 +2012,7 @@ input{
         .arrow-left{
             display: block;
             background-color: rgba(53, 61, 73, 0.02);
-            background-image: url(../img/hamburger.svg);
+            background-image: url(../img/arrow.png);
             background-repeat: no-repeat;
             background-size: 14px;
             background-position: center;
@@ -2075,6 +2101,7 @@ input{
 
 .content{
     @include border-style();
+    border-radius: 4px !important;
     padding: 30px 35px;
     width: 100%;
     margin: 0 auto 30px;
@@ -2534,7 +2561,7 @@ select{
 
 .modal-content{
     width:100%;
-    border-radius:0;
+    border-radius: 4px;
     border: none;
     box-shadow: 1px 0 30px #03064299;
     overflow: hidden;
@@ -2626,7 +2653,7 @@ select{
     .buttons{
         display: flex;
         width: 100%;
-        justify-content: flex-end;
+        justify-content: flex-start;
 
     }
     .title{
@@ -2646,7 +2673,6 @@ select{
     }
 }
 .modal-inner{
-
     padding-top: 10px;
 
     input{
@@ -2656,17 +2682,6 @@ select{
     p{
         padding-bottom: 8px;
     }
-    div {
-        button {
-            min-width: 110px;
-            width: 160px;
-        }
-        button:last-child {
-            margin-right: 0;
-            margin-left: 10px;
-        }
-    }
-
 }
 .modal-not-approved{
     overflow: hidden;
@@ -3068,11 +3083,58 @@ select{
         height: 20px;
     }
 }
+[data-rbd-droppable-context-id="0"] {
+    padding: 0 !important;
+}
+
+[data-rbd-drag-handle-context-id="0"] {
+    width: 100%;
+}
+
+.button-clients {
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+}
+
+.drag-vert {
+    height: 14px;
+    width: 20px;
+    background-image: url('../img/drag-vert.png');
+    background-size: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    bottom: 0;
+}
+
+.services_list_wrapper {
+    max-height: 230px;
+    overflow-y: auto;
+
+    @media (max-width: $mob-width) {
+        max-height: 240px;
+    }
+}
+.add_appointment_staff {
+    padding-left: 0;
+    @media (max-width: $mob-width) {
+        padding-left: 15px;
+
+    }
+}
+.paginator-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .questions_black {
     cursor: pointer;
     position: relative;
     display: inline-block;
     margin-left: 3px;
+    top: -6px;
+    left: -6px;
     padding: 0 !important;
     width: auto !important;
     overflow: visible !important;
@@ -3082,7 +3144,7 @@ select{
     }
     img {
         width: auto;
-        height: 20px;
+        height: 13px;
     }
 }
 .questions_dropdown {
@@ -3338,9 +3400,10 @@ textarea {
     .img-container{
         width: 100%;
         display: flex;
-        padding: 0 1rem 0;
+        padding: 0 8px 0;
 
         .staff-name {
+            font-size: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -3355,7 +3418,7 @@ textarea {
             }
         }
         span{
-            margin-left: 15px;
+            margin-left: 8px;
         }
     }
     .drop_menu_personal{
@@ -3373,14 +3436,15 @@ textarea {
 
         &::after{
             position: absolute;
+            margin-top: 1px;
             right: 1rem;
         }
     }
     .dropdown-menu{
         width: 100%;
 
-        a{
-            padding: 0.5rem;
+        a {
+            padding: 0.5rem 0;
             cursor: pointer;
             display: block;
 
@@ -3399,7 +3463,43 @@ textarea {
     margin-right: 10px;
     margin-left: 15px;
 }
-
+.btn-secondary {
+    color: #fff;
+    background-color: #7c8a96;
+    border-color: #7c8a96; }
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #697783;
+    border-color: #63707c; }
+.btn-secondary:focus, .btn-secondary.focus {
+    color: #fff;
+    background-color: #697783;
+    border-color: #63707c;
+    -webkit-box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5);
+    box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5); }
+.btn-secondary.disabled, .btn-secondary:disabled {
+    color: #fff;
+    background-color: #7c8a96;
+    border-color: #7c8a96; }
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #63707c;
+    border-color: #5e6a75; }
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+    -webkit-box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5);
+    box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5); }
+.waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent; }
 .select-color{
     position: relative;
 
@@ -3427,7 +3527,7 @@ textarea {
 
             ::after {
                 content: '';
-                background-image: url(../img/hamburger.svg);
+                background-image: url(../img/arrow.png);
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 12px 24px;
@@ -3638,7 +3738,6 @@ textarea {
         .dropdown-menu{
             width: calc(100% + 2px);
             left: -1px !important;
-            max-height: 216px;
             padding: 0;
             right: 0;
             transform: translate3d(0px, 40px, 0px) !important;
@@ -3803,6 +3902,35 @@ textarea {
     }
 }
 
+.clientEditWrapper {
+    right: 30px !important;
+    top: -12px !important;
+}
+.clientEdit {
+    width: 30px;
+    height: 30px;
+    background-image: url(../img/pen_new.svg);
+    background-repeat: no-repeat;
+    padding: 0;
+    background-position: center;
+    background-size: 15px;
+
+    &:hover{
+        opacity: 0.7;
+        cursor: pointer;
+    }
+}
+.rc-time-picker-panel-combobox {
+    display: flex;
+}
+.rc-time-picker-input {
+    z-index: 1;
+}
+.delete-icon {
+    justify-content: center;
+    padding: 0;
+    height: auto;
+}
 .tab-content{
     overflow-x: hidden;
     .tab-content{
