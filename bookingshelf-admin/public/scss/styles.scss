@@ -3920,7 +3920,9 @@ textarea {
         cursor: pointer;
     }
 }
-
+.rc-time-picker-panel-combobox {
+    display: flex;
+}
 .rc-time-picker-input {
     z-index: 1;
 }
