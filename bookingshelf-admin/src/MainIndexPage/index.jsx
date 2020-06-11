@@ -453,10 +453,11 @@ class Index extends Component {
                             )
                         )}
 
-                        <button style={{ display: 'block', margin: '0.5rem auto' }} type="button"  className={' small-button'} onClick={() => {
+                        <button style={{ display: 'block', margin: '0.5rem auto' }} type="button"  className={' small-button'} onClick={() => {                                debugger
                             if (!adding) {
                                 const newSubcompanies = subcompanies
                                 newSubcompanies.push({
+                                    companyTypeId: subcompanies[0].companyTypeId,
                                     city: '',
                                     companyName: '',
                                     companyAddress1: '',
