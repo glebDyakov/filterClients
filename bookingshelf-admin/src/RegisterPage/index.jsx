@@ -48,6 +48,7 @@ class Index extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
@@ -57,6 +58,7 @@ class Index extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
+            const {authentication} = newProps;
 
             this.setState({...this.state, authentication: newProps.authentication})
 
@@ -65,6 +67,10 @@ class Index extends React.Component {
                     this.setState({...this.state, authentication: [] });
                 }, 3000)
             }
+
+        if (authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)) {
+            this.setState({ opened: true })
+        }
         }
     }
 
@@ -122,8 +128,12 @@ class Index extends React.Component {
         }
     }
 
+    handleClose() {
+        this.setState({ opened: false })
+    }
+
     render() {
-        const { user, emailIsValid, agreed, authentication, invalidFields,  } = this.state;
+        const { user, emailIsValid, agreed, opened, authentication, invalidFields,  } = this.state;
 
         return (
             <div>
@@ -257,8 +267,20 @@ class Index extends React.Component {
                                 <p className="alert-danger p-1 rounded pl-3 mb-2">Название такой компании уже зарегистрировано</p>
                                 }
                                 {
-                                    authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)  &&
-                                    <p className="alert-success p-1 rounded pl-3 mb-2">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
+                                    opened  &&
+                                    <div className="modal-wrapper" onClick={(e) => {
+                                        if (e.target.className ==='modal-wrapper') {
+                                            this.handleClose()
+                                        }
+                                    }}>
+                                        <div className="modal-container">
+                                            <span className="modal-close" onClick={this.handleClose} />
+                                            <p className="modal-title modal-title-mb">Успешная регистрация!</p>
+                                            <p className="modal-text">Проверьте email и завершите регистрацию, перейдя по ссылке в письме</p>
+
+                                            <button onClick={this.handleClose} className="button modal-button">Закрыть</button>
+                                        </div>
+                                    </div>
                                 }
                                 <button className={((!emailIsValid || !user.companyName.replace(/[ ]/g, '') || user.countryCode==='' || user.timezoneId==='' || user.password.replace(/[ ]/g, '')==='' || authentication.registering) || !agreed ? 'disabledField': '')+' button text-center'}
                                         type={emailIsValid && user.companyName.replace(/[ ]/g, '') && user.countryCode!=='' && user.timezoneId!=='' && user.password.replace(/[ ]/g, '')!=='' && agreed && 'submit'}
