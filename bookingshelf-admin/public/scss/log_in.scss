@@ -1,4 +1,3 @@
-
 .sign_up_container{
     width: 30%;
     margin: 0;
@@ -11,60 +10,6 @@
     z-index: 1;
     min-width: 350px;
 
-    .modal-wrapper {
-        margin: 0 !important;
-        background: rgba(200,200,200, 0.6);
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100% !important;
-        height: 100%;
-    }
-
-    .modal-container {
-        text-align: center;
-        border-radius: 20px;
-        padding: 40px 100px;
-        min-width: 320px;
-        background: #ffffff;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .modal-button {
-        font-size: 16px;
-        padding: 8px 0;
-        margin-top: 20px;
-        max-width: 220px;
-    }
-
-    .modal-title {
-        font-family: 'helvetica_medium';
-        font-size: 26px;
-        font-weight: bold;
-    }
-
-    .modal-text {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px;
-        line-height: 24px;
-    }
-
-    .modal-close {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        background: url(../img/closer.png) no-repeat;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background-size: 20px;
-        background-position: right;
-    }
-
     @media screen and(max-width: 960px){
         max-width: 500px;
         margin: auto;
@@ -76,18 +21,6 @@
         height: auto;
         right: 0;
         width: 90%;
-    }
-
-    @media screen and(max-width: 550px) {
-        .modal-title-mb {
-            margin-bottom: 35px !important;
-        }
-        .modal-button {
-            margin-top: 35px !important;
-        }
-        .modal-container {
-            padding: 20px 35px 0 !important;
-        }
     }
     p{
         font-size: 15px;
