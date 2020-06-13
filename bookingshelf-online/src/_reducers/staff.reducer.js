@@ -156,8 +156,6 @@ export function staff(state = initialState, action) {
         case staffConstants.GET_INFO_SUCCESS:
             let ownerCompany = {
                 ...action.info,
-                bookingPage: '000' + action.info.companyId,
-                companyName: action.info.companyName
             }
 
             let isOwnerCompanyAdded = state.subcompanies.find(item => item.companyId === action.info.companyId)
