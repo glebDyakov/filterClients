@@ -154,9 +154,28 @@ export function staff(state = initialState, action) {
                 isLoadingServices: false
             };
         case staffConstants.GET_INFO_SUCCESS:
+            let bookingPage
+            switch (String(action.info.companyId).length) {
+                case 1:
+                    bookingPage = '0000'+ action.info.companyId;
+                    break;
+                case 2:
+                    bookingPage = '000'+ action.info.companyId;
+                    break;
+                case 3:
+                    bookingPage = '00'+ action.info.companyId;
+                    break;
+                case 4:
+                    bookingPage = '0'+ action.info.companyId;
+                    break;
+                case 5:
+                    bookingPage = action.info.companyId;
+                    break;
+                default:
+            }
             let ownerCompany = {
                 ...action.info,
-                bookingPage: '000' + action.info.companyId,
+                bookingPage: bookingPage,
                 companyName: action.info.companyName
             }
 
