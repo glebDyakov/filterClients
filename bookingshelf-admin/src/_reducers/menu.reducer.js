@@ -64,12 +64,6 @@ export function menu(state = initialState, action) {
                     "name":"Настройки компании",
                 },
                 {
-                    "id":"material_menu_id",
-                    "url":"/material",
-                    "icon":"10.svg",
-                    "name":"Учет материалов",
-                },
-                {
                     "id":"payments_menu_id",
                     "url":"/payments",
                     "icon":"payment.svg",

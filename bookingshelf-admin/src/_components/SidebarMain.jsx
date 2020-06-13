@@ -196,12 +196,6 @@ class SidebarMain extends React.Component {
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
         const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
-        if (authentication.user.menu && (authentication.user.menu.length === 9)) {
-            authentication.user.menu.push({
-                id: "material_menu_id",
-                translationKey: "menuitem.material"
-            })
-        }
         let packetEnd, packetEndText;
         if (invoicePacket) {
             packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1
