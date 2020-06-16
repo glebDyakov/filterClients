@@ -214,11 +214,11 @@ class AddAppointment extends React.Component {
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
         }
 
-        if ((JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services))) {
-            this.setState({
-                services: [newProps.services]
-            })
-        }
+        // if ((JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services))) {
+        //     this.setState({
+        //         services: [newProps.services]
+        //     })
+        // }
         // if ( (JSON.stringify(this.props.appointmentEdited) !==  JSON.stringify(newProps.appointmentEdited) ||
         //     JSON.stringify(this.props.clickedTime) !==  JSON.stringify(newProps.clickedTime))) {
         //     this.setState({
