@@ -725,7 +725,7 @@ class AddAppointment extends React.Component {
 
             if (this.props.services.services) {
                 filteredServiceList.forEach(filteredService => {
-                    const activeGroup = this.props.services.services.find(item => item.services.some(service => (service.serviceId === filteredService.serviceId)));
+                    const activeGroup = this.props.services.services.find(item => item.services && item.services.some(service => (service.serviceId === filteredService.serviceId)));
                     const groupIndex = servicesWithGroups.findIndex(item => item.serviceGroupId === activeGroup.serviceGroupId);
                     if (groupIndex > -1) {
                         servicesWithGroups[groupIndex].services.push(filteredService)
