@@ -1479,7 +1479,8 @@ class AddAppointment extends React.Component {
     }
     getAppointments(appointment) {
         const { appointmentsFromProps, reservedTimeFromProps, staff } = this.props;
-        const { staffs, staffId, visitFreeMinutes } = this.state;
+        const { staffs, staffId } = this.state;
+        const visitFreeMinutes = this.getVisitFreeMinutes(appointment)
         const newAppointments = []
         let appointmentMessage = '';
         appointment.forEach((item, i) => {
