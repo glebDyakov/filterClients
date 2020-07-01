@@ -180,14 +180,16 @@ class ReservedTime extends React.Component {
             const minutesArray = []
 
 
-            for(let i=0; i<=23; i++) {
-                if (i > findTime.split(':')[0]) {
-                    hoursArray.push(i);
+            if (findTime) {
+                for (let i = 0; i <= 23; i++) {
+                    if (i > findTime.split(':')[0]) {
+                        hoursArray.push(i);
 
-                }
-                for(let j=0; j<= 45; j+=15) {
-                    if (i === selectedHour && selectedMinute >= j) {
-                        minutesArray.push(j);
+                    }
+                    for (let j = 0; j <= 45; j += 15) {
+                        if (i === selectedHour && selectedMinute >= j) {
+                            minutesArray.push(j);
+                        }
                     }
                 }
             }
