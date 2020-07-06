@@ -217,11 +217,11 @@ class AddAppointment extends React.Component {
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
         }
 
-        if ((JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
-            this.setState({
-                services: [newProps.services]
-            })
-        }
+        // if ((JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services))) {
+        //     this.setState({
+        //         services: [newProps.services]
+        //     })
+        // }
         // if ( (JSON.stringify(this.props.appointmentEdited) !==  JSON.stringify(newProps.appointmentEdited) ||
         //     JSON.stringify(this.props.clickedTime) !==  JSON.stringify(newProps.clickedTime))) {
         //     this.setState({
@@ -736,7 +736,7 @@ class AddAppointment extends React.Component {
 
             if (this.props.services.services) {
                 filteredServiceList.forEach(filteredService => {
-                    const activeGroup = this.props.services.services.find(item => item.services.some(service => (service.serviceId === filteredService.serviceId)));
+                    const activeGroup = this.props.services.services.find(item => item.services && item.services.some(service => (service.serviceId === filteredService.serviceId)));
                     const groupIndex = servicesWithGroups.findIndex(item => item.serviceGroupId === activeGroup.serviceGroupId);
                     if (groupIndex > -1) {
                         servicesWithGroups[groupIndex].services.push(filteredService)
@@ -1609,8 +1609,9 @@ class AddAppointment extends React.Component {
     }
 
     getAppointments(appointment) {
-        const {appointmentsFromProps, reservedTimeFromProps, staff} = this.props;
-        const {staffs, staffId, visitFreeMinutes} = this.state;
+        const { appointmentsFromProps, reservedTimeFromProps, staff } = this.props;
+        const { staffs, staffId } = this.state;
+        const visitFreeMinutes = this.getVisitFreeMinutes(appointment)
         const newAppointments = []
         let appointmentMessage = '';
         appointment.forEach((item, i) => {
