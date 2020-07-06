@@ -145,14 +145,9 @@ class HeaderMain extends React.PureComponent {
                 $('.header-client-detail').modal('show')
                 this.handleUpdateClient(option.clientId)
             }} className="search-wrapper">
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                    <span>{option[visibleKeys[0]]}</span>
-                    <span>{option[visibleKeys[1]]}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                    <span>{option[visibleKeys[2]]}</span>
-                    <span>{option[visibleKeys[3]]}</span>
-                </div>
+                    <span className="name">{option[visibleKeys[0]]} {option[visibleKeys[1]]}</span>
+                    <span className="phone">{option[visibleKeys[2]]}</span>
+                    <span className="email">{option[visibleKeys[3]]}</span>
             </div>
         );
     }
@@ -208,9 +203,9 @@ class HeaderMain extends React.PureComponent {
                                 <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>
                             </div>}
 
-                            <div style={{ marginLeft: '34px' }} className="col search-col">
+                            <div className="col search-col">
                                 <div className="search-header search col-12">
-                                    <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
+                                    <input type="search" placeholder="Поиск по имени, номеру тел, Email"
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
                                     <button className="search-icon" type="submit"/>
                                 </div>
@@ -231,24 +226,24 @@ class HeaderMain extends React.PureComponent {
                                 <ul className="dropdown-menu">
                                     {(authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? company.subcompanies.map((subcompany, i) => {
                                         return (
-                                            <div onClick={() => {
+                                            <div className="choise-firm-button" onClick={() => {
                                                 this.props.dispatch(companyActions.switchSubcompany(subcompany))
                                             }}>
                                                 {subcompany.defaultAddress === 1 && subcompany.companyAddress1.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
+                                                    <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {subcompany.defaultAddress === 2 && subcompany.companyAddress2.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
+                                                    <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {subcompany.defaultAddress === 3 && subcompany.companyAddress3.length> 0 &&
                                                 <li>
-                                                    <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
+                                                    <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
                                                     </p>
                                                 </li>
                                                 }
@@ -258,19 +253,19 @@ class HeaderMain extends React.PureComponent {
                                             <React.Fragment>
                                                 {company && company.settings && company.settings.defaultAddress === 1 && company.settings.companyAddress1.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress1}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {company && company.settings && company.settings.defaultAddress === 2 && company.settings.companyAddress2.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress2}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {company && company.settings && company.settings.defaultAddress === 3 && company.settings.companyAddress3.length>0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress3}</span>
                                                     </p>
                                                 </li>
                                                 }
@@ -288,30 +283,30 @@ class HeaderMain extends React.PureComponent {
                                         }
                                     }} className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
                                          role="menu" aria-haspopup="true" aria-expanded="true">
-                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span></p>
+                                        <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span><span className="change-biz">Выбрать филиал</span></p>
                                     </div>
 
                                     <ul className="dropdown-menu">
                                         {(authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? company.subcompanies.map((subcompany, i) => {
                                             return (
-                                               <div onClick={() => {
+                                               <div className="choise-firm-button" onClick={() => {
                                                        this.props.dispatch(companyActions.switchSubcompany(subcompany))
                                                }}>
                                                    {subcompany.defaultAddress === 1 && subcompany.companyAddress1.length > 0 &&
                                                    <li>
-                                                       <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
+                                                       <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress1}</span>
                                                        </p>
                                                    </li>
                                                    }
                                                    {subcompany.defaultAddress === 2 && subcompany.companyAddress2.length > 0 &&
                                                    <li>
-                                                       <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
+                                                       <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress2}</span>
                                                        </p>
                                                    </li>
                                                    }
                                                    {subcompany.defaultAddress === 3 && subcompany.companyAddress3.length> 0 &&
                                                    <li>
-                                                       <p className="firm-name">{subcompany.companyName}<span>{subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
+                                                       <p className="firm-name">{subcompany.companyName},&nbsp; <span> {subcompany.city ? (subcompany.city + ', ') : ''}{subcompany.companyAddress3}</span>
                                                        </p>
                                                    </li>
                                                    }
@@ -321,19 +316,19 @@ class HeaderMain extends React.PureComponent {
                                             <React.Fragment>
                                                 {company && company.settings && company.settings.defaultAddress === 1 && company.settings.companyAddress1.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress1}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress1}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {company && company.settings && company.settings.defaultAddress === 2 && company.settings.companyAddress2.length > 0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress2}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress2}</span>
                                                     </p>
                                                 </li>
                                                 }
                                                 {company && company.settings && company.settings.defaultAddress === 3 && company.settings.companyAddress3.length>0 &&
                                                 <li>
-                                                    <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{company && company.settings && company.settings.companyAddress3}</span>
+                                                    <p className="firm-name">{company && company.settings && company.settings.companyName},&nbsp; <span> {company && company.settings && company.settings.companyAddress3}</span>
                                                     </p>
                                                 </li>
                                                 }
@@ -347,7 +342,8 @@ class HeaderMain extends React.PureComponent {
                                 </div>
                             </div>
                             <div className="col right_elements">
-                                <span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>
+                                {/*<span className="time_show" id="doc_time">{moment().format('HH:mm')}</span>*/}
+
                                 <div style={{ position: "relative" }}>
                                     <span className="notification" onClick={() => {
                                         $('#__replain_widget').addClass('__replain_widget_show')
@@ -357,18 +353,20 @@ class HeaderMain extends React.PureComponent {
                                         });
                                     }}/>
                                 </div>
-                                <a className="setting" onClick={this.openModal}/>
-                                <a className="firm-name" onClick={this.openModal}>
-                                    {authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}
-                                    <p style={{ fontSize: '11px' }}>{staffType}</p>
-                                </a>
                                 <div className="img-container" data-toggle="modal" data-target=".modal_photo">
                                     <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64!==''?("data:image/png;base64,"+activeStaff.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
 
                                 </div>
-                                <span className="log_in">
-                                    <LogoutPage/>
-                                </span>
+
+                                <a className="firm-name" onClick={this.openModal}>
+                                    {authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}
+                                    <p style={{ fontSize: '11px' }}>{staffType}</p>
+                                </a>
+                                <a className="setting" onClick={this.openModal}/>
+
+                                {/*<span className="log_in">*/}
+                                {/*    <LogoutPage/>*/}
+                                {/*</span>*/}
                             </div>
                         </div>
 

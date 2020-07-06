@@ -36,6 +36,7 @@ class BaseCell extends React.Component {
             isPresent: this.getIsPresent(currentCellTime),
             ...filledCell
         };
+
     }
 
     shouldComponentUpdate(newProps, newState) {
@@ -215,12 +216,15 @@ class BaseCell extends React.Component {
             + (clDate ? ' closedDateTick' : '');
         const content = (
             <React.Fragment>
-                <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
+                <span className={(time.split(':')[1] === "00" && notExpired) ? 'fade-time':'fade-time' }>{time}</span>
                 {isPresent && <span className="present-time-line" />}
             </React.Fragment>
         );
 
+
+
         if (notExpired) {
+
             return <CellWhite
                 time={time}
                 staffKey={staffKey}

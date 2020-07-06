@@ -3,36 +3,39 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import TabScrollLeftMenu from './TabScrollLeftMenu';
 
-import { DndProvider } from 'react-dnd';
+import {DndProvider} from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
 import DragVertController from "./DragVertController";
 import BaseCell from "./BaseCell";
+import {getCurrentCellTime} from "../../_helpers";
 
-class TabScroll extends React.Component{
+class TabScroll extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             numbers: []
         }
         this.getHours24 = this.getHours24.bind(this);
+        this.getIsPresent = this.getIsPresent.bind(this);
     }
+
     componentDidMount() {
         if (this.props.timetable && this.props.timetable.length) {
             this.getHours24(this.props.timetable);
         }
     }
 
-    componentWillReceiveProps(newProps){
+    componentWillReceiveProps(newProps) {
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
         if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
             this.getHours24(newProps.timetable);
         }
     }
 
-    getHours24 (timetable){
-        const { booktimeStep } = this.props.company.settings
-        const step  = booktimeStep / 60;
-        const numbers =[];
+    getHours24(timetable) {
+        const {booktimeStep} = this.props.company.settings;
+        const step = booktimeStep / 60;
+        const numbers = [];
 
         let minTime = 0
         let maxTime = 0
@@ -62,14 +65,23 @@ class TabScroll extends React.Component{
             }
         }
 
-        this.setState({ numbers });
+        this.setState({numbers});
     }
 
-    render(){
-        const { company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell } = this.props;
-        const { numbers } = this.state;
-        const { booktimeStep } = company.settings
+    getIsPresent(currentCellTime) {
+        const { booktimeStep } = this.props.company.settings;
         const step  = booktimeStep / 60;
+        return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
+    }
+
+
+
+    render() {
+        const {company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays} = this.props;
+        const {numbers} = this.state;
+        const {booktimeStep} = company.settings
+        const step = booktimeStep / 60;
+
         let listClass = 'list-15'
         switch (step) {
             case 5:
@@ -82,11 +94,12 @@ class TabScroll extends React.Component{
             default:
         }
 
-        return(
+
+        return (
             <div className="tabs-scroll">
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) =>
-                        <div key={`number-${key}`} className={"tab-content-list " + listClass} >
+                        <div key={`number-${key}`} className={"tab-content-list " + listClass + (this.getIsPresent(selectedDays, 0, time) ? ' present-line-block' : '')}>
                             <TabScrollLeftMenu time={time}/>
                             {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
                                 <BaseCell
@@ -110,7 +123,7 @@ class TabScroll extends React.Component{
                         </div>
                     )}
                 </DndProvider>
-                <DragVertController />
+                <DragVertController/>
             </div>
         );
     }

@@ -43,7 +43,7 @@ export function menu(state = initialState, action) {
                   "id":"email_menu_id",
                   "url":"/email_sms",
                   "icon":"7.svg",
-                  "name":"Email и SMS",
+                  "name":"Email",
               },
               {
                   "id":"analytics_menu_id",
@@ -55,7 +55,7 @@ export function menu(state = initialState, action) {
                   "id":"booking_menu_id",
                   "url":"/online_booking",
                   "icon":"9.svg",
-                  "name":"Онлайн-запись"
+                  "name":"Записи"
               },
                 {
                     "id":"company_menu_id",
@@ -67,7 +67,7 @@ export function menu(state = initialState, action) {
                     "id":"payments_menu_id",
                     "url":"/payments",
                     "icon":"payment.svg",
-                    "name":"Оплата",
+                    "name":"Оплатить",
                 }]
             };
       case menuConstants.RUN_MENU_SOCKET:

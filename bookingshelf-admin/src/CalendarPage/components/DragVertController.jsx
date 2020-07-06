@@ -29,7 +29,7 @@ class DragVertController extends React.Component {
 
         const { booktimeStep } = company.settings
         const step  = booktimeStep / 60;
-
+        const cellHeight = 38;
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
         if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
@@ -37,7 +37,7 @@ class DragVertController extends React.Component {
             currentTarget.style.bottom = -(res + 3) + "px";
 
             const [firstTime] = serviceTimeNode.innerHTML.split('-')
-            const resultSecondTime = Math.ceil((res + 10) / 20);
+            const resultSecondTime = Math.ceil((res + 10) / cellHeight);
             const firstTimeMoment = moment(firstTime, 'HH:mm')
 
             for (let i = 0; i < resultSecondTime; i++) {
@@ -50,9 +50,11 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
+        const cellHeight = 38;
+
         const { appointments, staff, company, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
-        const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / 20)
+        const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / cellHeight)
 
         const { booktimeStep } = company.settings
         const step  = booktimeStep / 60;

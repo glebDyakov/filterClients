@@ -253,11 +253,14 @@ class SidebarMain extends React.Component {
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
-                                <div className="img-container" style={{width: "15%"}}>
+                                <div className="img-container">
                                     <img
                                         src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                         className="img"/></div>
-                                <div style={{width: "40%"}}>
+                                <div>
+                                    <p style={{float: "none"}}>
+                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                    </p>
                                     <p className="service_name"
                                        style={{
                                            // width: "65%",
@@ -269,11 +272,8 @@ class SidebarMain extends React.Component {
                                         <strong>{extraServiceText}</strong>
                                         {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                     </p><br/>
-                                    <p style={{float: "none"}}>
-                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
-                                    </p>
                                 </div>
-                                <div style={{width: "40%", wordBreak: 'break-word'}}>
+                                <div style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
@@ -320,7 +320,7 @@ class SidebarMain extends React.Component {
                                 <div className="img-container" style={{width: "15%"}}>
                                     <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                          className="img"/></div>
-                                <div style={{width: "40%"}}>
+                                <div>
                                     <p className="service_name"
                                        style={{
                                            // width: "65%",
@@ -335,7 +335,7 @@ class SidebarMain extends React.Component {
                                     <span
                                         className="deleted" style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
                                 </div>
-                                <div style={{width: "40%", wordBreak: 'break-word'}}>
+                                <div style={{ wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p></React.Fragment> : 'Без клиента'}<br/>
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
@@ -394,6 +394,7 @@ class SidebarMain extends React.Component {
                             {/*    <a className="notification">Уведомления</a>*/}
                             {/*    <a className="setting" data-toggle="modal" data-target=".modal_user_setting" onClick={()=>this.onOpen()}>Настройки</a>*/}
                             {/*</div>*/}
+
                         </div>
                     </li>
 
@@ -418,7 +419,7 @@ class SidebarMain extends React.Component {
                                 ((count && count.appointments && count.appointments.count>0) ||
                                 (count && count.canceled && count.canceled.count>0) ||
                                 (count && count.moved && count.moved.count>0))
-                                && <span className="menu-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span>}
+                                && <span className="sidebar-notification-wrapper"><span className="sidebar-notification" onClick={(event)=>this.openAppointments(event)} data-toggle="modal" data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count)+parseInt(count && count.canceled && count.canceled.count)+parseInt(count && count.moved && count.moved.count)}</span></span>}
 
                                 {item.id === 'email_menu_id' && (
                                   <div className="sidebar-notification-wrapper" onClick={() => this.toggleDropdown('isNotificationDropdown')}>
@@ -426,7 +427,7 @@ class SidebarMain extends React.Component {
                                       { (notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
                                         || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
                                       && <React.Fragment>
-                                          <span className="sidebar-notification"/>
+                                          <span className="sidebar-notification red-notification">!</span>
                                           {isNotificationDropdown && <ul className="sidebar-notification-dropdown">
                                               {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
                                               <li>Баланс SMS ниже {(localStorage.getItem('notifyCount') || 200)}</li>
@@ -492,7 +493,7 @@ class SidebarMain extends React.Component {
                             </div>
 
 
-                            <div className="modal-inner pl-4 pr-4 count-modal modal-not-approved">
+                            <div className="modal-inner count-modal modal-not-approved">
                                 <div className="button-field">
                                     <button type="button" className={"float-left button small-button approve-tab " + (openedTab === 'new' ? '' : 'disabled')}
                                             onClick={() => this.setState({openedTab: 'new'})}>Новые записи <span className="counter">
@@ -533,20 +534,18 @@ class SidebarMain extends React.Component {
                                             return (condition &&
                                                 <li className="opacity0">
                                                     <div className="service_item">
-                                                        <div className="img-container" style={{width: "15%"}}>
+                                                        <div className="img-container">
                                                             <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                  className="img"/></div>
-                                                        <div style={{width: "50%"}}>
+                                                        <div>
                                                             <p className="service_name" style={{
-                                                                width: "65%",
-                                                                marginRight: "5%",
                                                                 wordWrap: "break-word"
                                                             }}>{appointment.serviceName}<br/>
                                                                 <span
                                                                     className="deleted" style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
                                                             </p>
                                                         </div>
-                                                        <div style={{width: "40%",  wordBreak: 'break-word'}}>
+                                                        <div style={{ wordBreak: 'break-word'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
                                                             {appointment.carBrand && <p><strong style={{ textDecoration: 'underline' }}>Марка авто: </strong> {appointment.carBrand}</p>}

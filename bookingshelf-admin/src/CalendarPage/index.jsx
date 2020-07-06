@@ -448,6 +448,9 @@ class Index extends PureComponent {
                             selectType={this.selectType}
                         />
                     </div>
+                    <div className="add-button">
+
+                    </div>
                     <div className="days-container">
                         <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
                              <div className="calendar-list">
@@ -474,6 +477,7 @@ class Index extends PureComponent {
                                         changeTime={this.changeTime}
                                         changeTimeFromCell={this.changeTimeFromCell}
                                         moveVisit={this.moveVisit}
+                                        selectedDays={selectedDays}
                                     />)
                                  }
                             </div>

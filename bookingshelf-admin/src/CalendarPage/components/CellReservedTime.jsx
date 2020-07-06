@@ -7,7 +7,6 @@ const CellReservedTime = (props) => {
     const { cell: reservedTime, workingStaffElement, dispatch, company } = props;
     const { booktimeStep } = company.settings
     const step  = booktimeStep / 60;
-
     const textAreaHeight = (parseInt(((moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x') / 60000 / step) - 1) * 20))
 
     return (
