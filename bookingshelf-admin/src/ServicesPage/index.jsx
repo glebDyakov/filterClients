@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {servicesActions, staffActions} from '../_actions';
+import {servicesActions, staffActions, materialActions} from '../_actions';
 
 import '../../public/scss/services.scss'
 import {AddGroup, AddService, CreatedService} from "../_components/modals";
@@ -93,6 +93,7 @@ class Index extends Component {
     queryInitData() {
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
+        this.props.dispatch(materialActions.getProducts())
     }
 
     componentWillReceiveProps(newProps) {

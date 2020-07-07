@@ -2,6 +2,7 @@ export * from './alert.actions';
 export * from './appointment.actions';
 export * from './user.actions';
 export * from './company.actions';
+export * from './material.actions';
 export * from './staff.actions';
 export * from './client.actions';
 export * from './services.actions';

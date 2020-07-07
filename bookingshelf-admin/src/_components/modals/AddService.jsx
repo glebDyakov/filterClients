@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
+import InputCounter from "../InputCounter";
 
 class AddService extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            service: props.group_working && props.editServiceItem ? props.group_working:{
+            service: props.group_working && props.editServiceItem ? {...props.group_working, "serviceProducts": props.group_working.serviceProducts ? props.group_working.serviceProducts:[{
+                    "amount": '',
+                    "productId": ''
+                }]}:{
                 "name":"",
                 "details":"",
                 "priceFrom":'',
@@ -18,7 +22,12 @@ class AddService extends React.Component {
                 "specialDescription":"",
                 "currency":"BYN",
                 "onlineBooking":true,
-                "staffs":[]
+                "usingMaterials": false,
+                "staffs":[],
+                "serviceProducts": [{
+                    "amount": '',
+                    "productId": ''
+                }]
             },
             editServiceItem: props.editServiceItem,
             staffs: props.staffs && props.staffs,
@@ -32,10 +41,13 @@ class AddService extends React.Component {
         this.handleStaffChange = this.handleStaffChange.bind(this);
         this.handleChangePrice = this.handleChangePrice.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
+        this.toggleChangeMaterials = this.toggleChangeMaterials.bind(this);
         this.updateService = this.updateService.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.addService = this.addService.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.removeMaterial = this.removeMaterial.bind(this);
+        this.handleChangeProduct = this.handleChangeProduct.bind(this);
 
     }
 
@@ -156,6 +168,68 @@ class AddService extends React.Component {
                                     {/*       value={service.specialPrice===0?'':service.specialPrice}*/}
 
                                     {/*/>*/}
+
+
+                                    {/*Кнопка на материалы*/}
+
+                                    <div className="row col-sm-12">
+                                        <div className="check-box">
+                                            <label>
+                                                <p className="title mt-2  mb-2"> Учет материалов (опционально)</p>
+                                                <input className="form-check-input" type="checkbox"
+                                                       checked={service.usingMaterials}
+                                                       onChange={this.toggleChangeMaterials}/>
+                                                <span className="check"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {this.state.service.usingMaterials &&
+                                        <React.Fragment>
+                                            <p>Поиск материалов и услуг</p>
+                                            {service && service.serviceProducts && service.serviceProducts.map((item, index) =>
+
+                                                <div className="row" style={{position: "relative"}}>
+                                                    <div className="col-xl-6 input_limited_wrapper_description">
+                                                        <p></p>
+                                                        <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}
+                                                                value={service.serviceProducts[index].productId}>
+                                                            <option value="">Выберите материал</option>
+                                                            {this.props.material.products.map(product => <option value={product.productId}>{product.productName}</option>)}
+                                                        </select>
+
+
+
+                                                    </div>
+                                                    <div className="col-xl-6">
+                                                        <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}
+                                                            name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
+                                                    </div>
+                                                    {index !== 0 && <button className="close"  style={{position:"absolute", right: "-60px", top: "8px", zIndex: "99"}} onClick={()=>this.removeMaterial(index)}>x</button>}
+                                                </div>
+
+
+
+
+                                        )}
+                                        <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2"
+                                       onClick={() => {
+                                           const updatedService = { ...service};
+                                           if (! updatedService.serviceProducts) {
+                                               updatedService.serviceProducts = [{
+                                                   "amount": '',
+                                                   "productId": ''
+                                               }]
+                                           } else {
+                                           updatedService.serviceProducts.push({
+                                               "amount": '',
+                                               "productId": ''
+                                           });
+                                           }
+                                           this.setState({ service: updatedService })
+                                       }}>Добавить +</p>
+                                        </React.Fragment>}
+
+
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <div className="check-box">
@@ -169,6 +243,9 @@ class AddService extends React.Component {
                                             </div>
                                         </div>
                                     </div>
+
+
+
                                     <div className="clearfix"/>
                                     {services && services.status === 200 &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
@@ -277,6 +354,17 @@ class AddService extends React.Component {
         this.setState({service:{...service, [name]: name==='specialPrice' && value==='' ? 0 : value}});
     }
 
+
+
+    handleChangeProduct(e, index) {
+        const { name, value } = e.target;
+        const { service } = this.state;
+        service.serviceProducts[index][name] = value
+
+
+        this.setState({ service });
+    }
+
     handleDurationChange(e) {
         const { name, value } = e.target;
         const { staffs, service } = this.state;
@@ -309,6 +397,22 @@ class AddService extends React.Component {
         const { service } = this.state;
 
         this.setState({service:{...service, onlineBooking: !service.onlineBooking}});
+    }
+
+    toggleChangeMaterials () {
+        const { service } = this.state;
+
+        this.setState({service:{ ...service, usingMaterials: !service.usingMaterials}});
+
+    }
+
+    removeMaterial(index){
+        const {service} = this.state;
+        const removedMaterialList = { ...service};
+        removedMaterialList.serviceProducts.splice(index, 1);
+        debugger
+        this.setState({service: removedMaterialList});
+
     }
 
     updateService(){
@@ -391,9 +495,9 @@ class AddService extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, company } = state;
+    const { alert, services, company, material } = state;
     return {
-        alert, services, company
+        alert, services, company, material
     };
 }
 
