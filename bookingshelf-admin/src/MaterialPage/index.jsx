@@ -281,7 +281,7 @@ class Index extends Component {
         if(tab==='brands'){document.title = "Выходные дни | Онлайн-запись"}
         if(tab==='categories'){document.title = "Категории | Онлайн-запись"}
         if(tab==='products'){document.title = "Товары| Онлайн-запись"}
-        if(tab==='units'){document.title = "Еденицы измерения | Онлайн-запись"}
+        // if(tab==='units'){document.title = "Еденицы измерения | Онлайн-запись"}
         if(tab==='storeHouses'){document.title = "Склады | Онлайн-запись"}
 
         history.pushState(null, '', '/material/'+tab);
@@ -552,9 +552,9 @@ class Index extends Component {
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='moving'?' active show':'')} data-toggle="tab" href="#tab5" onClick={()=>this.setTab('moving')}>Движение товаров</a>
                             </li>
-                            <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='units'?' active show':'')} data-toggle="tab" href="#tab6" onClick={()=>this.setTab('units')}>Еденицы измерения</a>
-                            </li>
+                            {/*<li className="nav-item">*/}
+                            {/*    <a className={"nav-link"+(activeTab==='units'?' active show':'')} data-toggle="tab" href="#tab6" onClick={()=>this.setTab('units')}>Еденицы измерения</a>*/}
+                            {/*</li>*/}
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='storeHouses'?' active show':'')} data-toggle="tab" href="#tab7" onClick={()=>this.setTab('storeHouses')}>Склады</a>
                             </li>
@@ -931,64 +931,64 @@ class Index extends Component {
                             {/*</div>*/}
                         </div>
 
-                        <div className={"tab-pane"+(activeTab==='units'?' active':'')}  id="tab6">
-                            <div className="material-categories">
-                                {
-                                    (this.state.defaultUnitsList && this.state.defaultUnitsList!=="" &&
+                        {/*<div className={"tab-pane"+(activeTab==='units'?' active':'')}  id="tab6">*/}
+                        {/*    <div className="material-categories">*/}
+                        {/*        {*/}
+                        {/*            (this.state.defaultUnitsList && this.state.defaultUnitsList!=="" &&*/}
 
-                                        <div className="row align-items-center content clients mb-2" style={{margin: "0 -7px", width: "calc(100% + 7px)"}}>
-                                            <div className="search col-7">
-                                                <input type="search" placeholder="Введите единицу измерения" style={{width: "175%"}}
-                                                       aria-label="Search" ref={input => this.unitSearch = input} onChange={() =>
-                                                    this.handleSearch('defaultUnitsList', 'units', ['unitName'], 'unitSearch')}/>
-                                                <button className="search-icon" type="submit"/>
-                                            </div>
-                                        </div>
-                                    )
-                                }
+                        {/*                <div className="row align-items-center content clients mb-2" style={{margin: "0 -7px", width: "calc(100% + 7px)"}}>*/}
+                        {/*                    <div className="search col-7">*/}
+                        {/*                        <input type="search" placeholder="Введите единицу измерения" style={{width: "175%"}}*/}
+                        {/*                               aria-label="Search" ref={input => this.unitSearch = input} onChange={() =>*/}
+                        {/*                            this.handleSearch('defaultUnitsList', 'units', ['unitName'], 'unitSearch')}/>*/}
+                        {/*                        <button className="search-icon" type="submit"/>*/}
+                        {/*                    </div>*/}
+                        {/*                </div>*/}
+                        {/*            )*/}
+                        {/*        }*/}
 
-                                {this.state.units.length ?
-                                    this.state.units.map(unit => (
-                                            <div className="tab-content-list mb-2" style={{position: "relative"}}>
-                                                <div style={{position: "relative"}}>
-                                                    <a onClick={()=>this.openClientStats(unit)}>
-                                                        <p>{unit.unitName}</p>
-                                                    </a>
-                                                </div>
+                        {/*        {this.state.units.length ?*/}
+                        {/*            this.state.units.map(unit => (*/}
+                        {/*                    <div className="tab-content-list mb-2" style={{position: "relative"}}>*/}
+                        {/*                        <div style={{position: "relative"}}>*/}
+                        {/*                            <a onClick={()=>this.openClientStats(unit)}>*/}
+                        {/*                                <p>{unit.unitName}</p>*/}
+                        {/*                            </a>*/}
+                        {/*                        </div>*/}
 
-                                                <div className="delete clientEditWrapper">
-                                                    <a className="clientEdit" onClick={() => this.toggleUnit(unit)}/>
-                                                </div>
-                                                <div className="delete dropdown">
-                                                    <div className="clientEyeDel" onClick={()=>this.toggleUnit(unit)}></div>
-                                                    <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                    </a>
-                                                    <div className="dropdown-menu delete-menu p-3">
-                                                        <button type="button" className="button delete-tab" onClick={()=>this.deleteUnit(unit.unitId)}>Удалить</button>
+                        {/*                        <div className="delete clientEditWrapper">*/}
+                        {/*                            <a className="clientEdit" onClick={() => this.toggleUnit(unit)}/>*/}
+                        {/*                        </div>*/}
+                        {/*                        <div className="delete dropdown">*/}
+                        {/*                            <div className="clientEyeDel" onClick={()=>this.toggleUnit(unit)}></div>*/}
+                        {/*                            <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
+                        {/*                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>*/}
+                        {/*                            </a>*/}
+                        {/*                            <div className="dropdown-menu delete-menu p-3">*/}
+                        {/*                                <button type="button" className="button delete-tab" onClick={()=>this.deleteUnit(unit.unitId)}>Удалить</button>*/}
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    ) : (
-                                        <EmptyContent
-                                            img="shopping"
-                                            title="Нет едениц измерения"
-                                            text="Создайте новую еденицу измерения и свяжите его с товарами"
-                                            buttonText="Новая еденица измерения"
-                                            buttonClick={() => this.toggleUnit()}
-                                        />
-                                    )}
-                            </div>
-                            <a className="add"/>
-                            <div className="hide buttons-container">
-                                <div className="p-4">
-                                    <button type="button" className="button new-holiday" onClick={() => this.toggleUnit()}>Новые еденицы измерения</button>
-                                </div>
-                                <div className="arrow"></div>
-                            </div>
-                        </div>
+                        {/*                            </div>*/}
+                        {/*                        </div>*/}
+                        {/*                    </div>*/}
+                        {/*                )*/}
+                        {/*            ) : (*/}
+                        {/*                <EmptyContent*/}
+                        {/*                    img="shopping"*/}
+                        {/*                    title="Нет едениц измерения"*/}
+                        {/*                    text="Создайте новую еденицу измерения и свяжите его с товарами"*/}
+                        {/*                    buttonText="Новая еденица измерения"*/}
+                        {/*                    buttonClick={() => this.toggleUnit()}*/}
+                        {/*                />*/}
+                        {/*            )}*/}
+                        {/*    </div>*/}
+                        {/*    <a className="add"/>*/}
+                        {/*    <div className="hide buttons-container">*/}
+                        {/*        <div className="p-4">*/}
+                        {/*            <button type="button" className="button new-holiday" onClick={() => this.toggleUnit()}>Новые еденицы измерения</button>*/}
+                        {/*        </div>*/}
+                        {/*        <div className="arrow"></div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
 
                         <div className={"tab-pane"+(activeTab==='storeHouses'?' active':'')}  id="tab7">
                             <div className="material-categories">
