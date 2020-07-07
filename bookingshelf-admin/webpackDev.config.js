@@ -63,31 +63,31 @@ module.exports = {
                 CONTEXT: JSON.stringify(process.env.CONTEXT)
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            mangle: true,
-            sourcemap: false,
-            debug: false,
-            minimize: true,
-            compress: {
-                warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-                properties: true,
-                booleans: true,
-                drop_console: true,
-
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     output: {
+        //         comments: false
+        //     },
+        //     mangle: true,
+        //     sourcemap: false,
+        //     debug: false,
+        //     minimize: true,
+        //     compress: {
+        //         warnings: false,
+        //         screw_ie8: true,
+        //         conditionals: true,
+        //         unused: true,
+        //         comparisons: true,
+        //         sequences: true,
+        //         dead_code: true,
+        //         evaluate: true,
+        //         if_return: true,
+        //         join_vars: true,
+        //         properties: true,
+        //         booleans: true,
+        //         drop_console: true,
+        //
+        //     }
+        // }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CompressionPlugin({
             filename: "[path].gz[query]",
@@ -106,11 +106,10 @@ module.exports = {
     },
     externals: {
         config: JSON.stringify({
-            apiUrl: 'https://staging.online-zapis.com/rest/v1',
-            warehouseApiUrl: 'https://staging.online-zapis.com/warehouse/rest/v1',
-            apiSocket: 'wss://staging.online-zapis.com/websocket',
-            apiUrlv2: 'https://staging.online-zapis.com/rest/v2',
-            baseUrl: 'https://staging.online-zapis.com'
+            apiUrl: '/rest/v1',
+            warehouseApiUrl: '/warehouse/rest/v1',
+            apiSocket: '/websocket',
+            apiUrlv2: '/rest/v2'
         })
     }
 }

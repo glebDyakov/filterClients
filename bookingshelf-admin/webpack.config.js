@@ -106,11 +106,10 @@ module.exports = {
     },
     externals: {
         config: JSON.stringify({
-            apiUrl: 'https://online-zapis.com/rest/v1',
-            warehouseApiUrl: 'https://online-zapis.com/warehouse/rest/v1',
-            apiSocket: 'wss://online-zapis.com/websocket',
-            apiUrlv2: 'https://online-zapis.com/rest/v2',
-            baseUrl: 'https://online-zapis.com',
+            apiUrl: '/rest/v1',
+            warehouseApiUrl: '/warehouse/rest/v1',
+            apiSocket: '/websocket',
+            apiUrlv2: '/rest/v2'
         })
     }
 }
