@@ -253,28 +253,25 @@ class SidebarMain extends React.Component {
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
-                                <div className="img-container">
-                                    <img
-                                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        className="img"/></div>
-                                <div>
-                                    <p style={{float: "none"}}>
-                                        <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
-                                    </p>
-                                    <p className="service_name"
-                                       style={{
-                                           // width: "65%",
-                                           // marginRight: "5%",
-                                           // wordWrap: "break-word"
-                                       }}
-                                    ><strong>{appointment.serviceName}</strong>
-                                        <br />
-                                        <strong>{extraServiceText}</strong>
-                                        {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
-                                    </p><br/>
+                                <div className="left-block">
+                                    <div className="img-container">
+                                        <img
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            className="img"/></div>
+                                    <div>
+                                        <p style={{float: "none"}}>
+                                            <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                        </p>
+                                        <p className="service_name"
+                                        >{appointment.serviceName}
+                                            <br />
+                                            {extraServiceText}
+                                            {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                        </p><br/>
+                                    </div>
                                 </div>
                                 <div style={{wordBreak: 'break-word'}}>
-                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
+                                    {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : ''}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
                                     {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
@@ -284,7 +281,7 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#3E90FF",  width: '111px' }}>
+                                    <p style={{color: "#50A5F1"}}>
                                         Просмотреть запись
                                     </p>
 
@@ -346,7 +343,7 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#3E90FF", width: '111px' }}>
+                                    <p style={{color: "#50A5F1" }}>
                                         Просмотреть запись
                                     </p>
 
