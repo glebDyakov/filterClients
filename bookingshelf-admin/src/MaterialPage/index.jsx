@@ -50,24 +50,24 @@ class Index extends Component {
         }
 
         if(props.match.params.activeTab &&
-            props.match.params.activeTab!=='provider' &&
+            props.match.params.activeTab!=='suppliers' &&
             props.match.params.activeTab!=='products' &&
             props.match.params.activeTab!=='brands' &&
             props.match.params.activeTab!=='moving' &&
             props.match.params.activeTab!=='categories' &&
             props.match.params.activeTab!=='units' &&
-            props.match.params.activeTab!=='storeHouses'
+            props.match.params.activeTab!=='store-houses'
         ){
             props.history.push('/nopage')
         }
 
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-        if(props.match.params.activeTab==='provider') {document.title = "Поставщики | Онлайн-запись";}
+        if(props.match.params.activeTab==='suppliers') {document.title = "Поставщики | Онлайн-запись";}
         if(props.match.params.activeTab==='brands'){document.title = "Выходные дни | Онлайн-запись"}
         if(props.match.params.activeTab==='categories'){document.title = "Категории | Онлайн-запись"}
         if(props.match.params.activeTab==='moving'){document.title = "Движение товаров | Онлайн-запись"}
         if(props.match.params.activeTab==='units'){document.title = "Еденицы измерения | Онлайн-запись"}
-        if(props.match.params.activeTab==='storeHouses'){document.title = "Склады | Онлайн-запись"}
+        if(props.match.params.activeTab==='store-houses'){document.title = "Склады | Онлайн-запись"}
         if(!props.match.params.activeTab || props.match.params.activeTab==='products'){document.title = "Товары | Онлайн-запись"}
 
 
@@ -100,6 +100,9 @@ class Index extends Component {
             defaultSuppliersList: props.material.suppliers,
             units: props.material.units,
             defaultUnitsList: props.material.units,
+            storeHouses: props.material.storeHouses,
+            defaultStoreHousesList: props.material.storeHouses,
+
 
             storeHouseProducts: props.material.storeHouseProducts,
             defaultStoreHouseProductsList: props.material.storeHouseProducts,
@@ -277,12 +280,12 @@ class Index extends Component {
         })
 
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-        if(tab==='provider') {document.title = "Поставщики | Онлайн-запись";}
+        if(tab==='suppliers') {document.title = "Поставщики | Онлайн-запись";}
         if(tab==='brands'){document.title = "Выходные дни | Онлайн-запись"}
         if(tab==='categories'){document.title = "Категории | Онлайн-запись"}
         if(tab==='products'){document.title = "Товары| Онлайн-запись"}
-        // if(tab==='units'){document.title = "Еденицы измерения | Онлайн-запись"}
-        if(tab==='storeHouses'){document.title = "Склады | Онлайн-запись"}
+        if(tab==='units'){document.title = "Еденицы измерения | Онлайн-запись"}
+        if(tab==='store-houses'){document.title = "Склады | Онлайн-запись"}
 
         history.pushState(null, '', '/material/'+tab);
 
@@ -372,7 +375,6 @@ class Index extends Component {
 
 
         const { products, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
-        debugger
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const daysAreSelected = selectedDays.length > 0;
@@ -472,8 +474,8 @@ class Index extends Component {
                 {
                     movingArrray.map(movement => {
                             const activeProduct = products && products.find((item) => item.productId === movement.productId);
-                        // debugger
-                            return (
+                            const activeStorehouse = storeHouses && storeHouses.find((item) => item.storehouseId === movement.storehouseId);
+                        return (
                                 <div className="tab-content-list mb-2" style={{ position: "relative", textAlign: "center" }}>
                                     <div style={{ position: "relative", width: "80px" }}>
                                         <p style={{ width: "100%", paddingLeft: "10px" }}>{movement.storehouseProductId ? <span style={{color:"#44FF00 ", fontSize: "2em"}}> + </span> : <span style={{color:"#FF0000 ", fontSize: "2em"}}> - </span>}</p>
@@ -484,9 +486,10 @@ class Index extends Component {
                                         {/*</a>*/}
                                     </div>
                                     <div style={{ position: "relative" }}>
-
                                             <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>
-
+                                    </div>
+                                    <div style={{ position: "relative" }}>
+                                            <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>{activeStorehouse && activeStorehouse.storehouseName}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Код продукта: </span>{activeProduct && activeProduct.productCode}</p>
@@ -546,7 +549,7 @@ class Index extends Component {
                             </li>
                             {access(-1) &&
                             <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='provider'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('provider')}>Поставщики</a>
+                                <a className={"nav-link"+(activeTab==='suppliers'?' active show':'')} data-toggle="tab" href="#tab4" onClick={()=>this.setTab('suppliers')}>Поставщики</a>
                             </li>
                             }
                             <li className="nav-item">
@@ -556,7 +559,7 @@ class Index extends Component {
                             {/*    <a className={"nav-link"+(activeTab==='units'?' active show':'')} data-toggle="tab" href="#tab6" onClick={()=>this.setTab('units')}>Еденицы измерения</a>*/}
                             {/*</li>*/}
                             <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='storeHouses'?' active show':'')} data-toggle="tab" href="#tab7" onClick={()=>this.setTab('storeHouses')}>Склады</a>
+                                <a className={"nav-link"+(activeTab==='store-houses'?' active show':'')} data-toggle="tab" href="#tab7" onClick={()=>this.setTab('store-houses')}>Склады</a>
                             </li>
                         </ul>
                     </div>
@@ -768,7 +771,7 @@ class Index extends Component {
                             </div>
                         </div>
                         {access(-1) && !staff.error &&
-                        <div className={"tab-pane access-tab"+(activeTab==='provider'?' active':'')} id="tab4">
+                        <div className={"tab-pane access-tab"+(activeTab==='suppliers'?' active':'')} id="tab4">
                             <div className="access">
                                 {
                                     (this.state.defaultSuppliersList && this.state.defaultSuppliersList!=="" &&
@@ -887,6 +890,9 @@ class Index extends Component {
                                     <p>Описание</p>
                                 </div>
                                 <div style={{position: "relative"}}>
+                                    <p>Склад</p>
+                                </div>
+                                <div style={{position: "relative"}}>
                                     <p>Код товара</p>
                                 </div>
                                 <div style={{position: "relative"}}>
@@ -990,7 +996,7 @@ class Index extends Component {
                         {/*    </div>*/}
                         {/*</div>*/}
 
-                        <div className={"tab-pane"+(activeTab==='storeHouses'?' active':'')}  id="tab7">
+                        <div className={"tab-pane"+(activeTab==='store-houses'?' active':'')}  id="tab7">
                             <div className="material-categories">
                                 {
                                     (this.state.defaultStoreHousesList && this.state.defaultStoreHousesList!=="" &&
@@ -1034,7 +1040,7 @@ class Index extends Component {
                                     ) : (
                                         <EmptyContent
                                             img="shopping"
-                                            title="Нет задных складов"
+                                            title="Нет заданых складов"
                                             text="Создайте новый склад"
                                             buttonText="Новый склад"
                                             buttonClick={() => this.toggleStoreHouse()}

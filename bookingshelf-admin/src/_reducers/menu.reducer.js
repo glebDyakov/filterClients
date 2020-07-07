@@ -54,7 +54,7 @@ export function menu(state = initialState, action) {
                 {
                     "id":"material_menu_id",
                     "url":"/material",
-                    "icon":"10.svg",
+                    "icon":"20.svg",
                     "name":"Учет материалов",
                 },
               {

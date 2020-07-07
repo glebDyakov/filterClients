@@ -111,7 +111,7 @@ class AddUnit extends React.Component {
                                 <div className="form-group mr-3 ml-3">
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Название еденицы измерения" placeholder="Например: литры" value={client.unitName}
+                                            <InputCounter title="Название единицы измерения" placeholder="Например: литры" value={client.unitName}
                                                           name="unitName" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>

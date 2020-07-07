@@ -217,7 +217,7 @@ class AddProduct extends React.Component {
                                     <div className="col-sm-6">
                                         <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
                                                       name="productCode" handleChange={this.handleChange} maxLength={128} />
-                                        <p>Еденица измерения</p>
+                                        <p>Единица измерения</p>
                                         {/*<select className="custom-select" name="booktimeStep" onChange={this.handleStepChange}*/}
                                         {/*        value={client.categoryId}>*/}
                                         {/*    <option value="">Еденицы</option>*/}
@@ -228,7 +228,7 @@ class AddProduct extends React.Component {
 
                                         <select className="custom-select" name="unitId" onChange={this.handleChange}
                                                 value={client.unitId}>
-                                            <option value="">Выберите еденицу измерения</option>
+                                            <option value="">Выберите единицу измерения</option>
                                             {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
                                         </select>
 
