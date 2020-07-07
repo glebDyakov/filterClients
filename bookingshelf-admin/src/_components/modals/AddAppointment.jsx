@@ -1403,6 +1403,29 @@ class AddAppointment extends React.Component {
                                                         }}>Сохранить
                                                     </button>
                                                 </div>
+                                                <div className="mobileButton">
+                                                    <button
+                                                        style={{minWidth: '48%'}}
+                                                        className={'button text-center button-absolute'}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
+                                                                this.setState({appointmentMessage: 'Необходимо выбрать услугу'})
+                                                            } else {
+                                                                if (edit_appointment) {
+                                                                    this.editAppointment()
+                                                                } else {
+                                                                    this.addAppointment()
+                                                                }
+                                                                if (appointmentMessage) {
+                                                                    this.setState({appointmentMessage: null})
+                                                                }
+                                                            }
+                                                        }}>
+                                                        {edit_appointment ? 'Сохранить' : 'Сохранить'}
+                                                    </button>
+                                                </div>
+
                                             </div>
                                             }
 
@@ -1418,28 +1441,6 @@ class AddAppointment extends React.Component {
                                     <div style={{margin: '6px 15px', padding: '4px 12px', width: '100%'}}
                                          className="mobile-visible alert alert-danger">{appointmentMessage}</div>
                                     }
-                                    <div className="mobileButton">
-                                        <button
-                                            style={{minWidth: '48%'}}
-                                            className={'button text-center button-absolute'}
-                                            type="button"
-                                            onClick={() => {
-                                                if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
-                                                    this.setState({appointmentMessage: 'Необходимо выбрать услугу'})
-                                                } else {
-                                                    if (edit_appointment) {
-                                                        this.editAppointment()
-                                                    } else {
-                                                        this.addAppointment()
-                                                    }
-                                                    if (appointmentMessage) {
-                                                        this.setState({appointmentMessage: null})
-                                                    }
-                                                }
-                                            }}>
-                                            {edit_appointment ? 'Сохранить' : 'Сохранить'}
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
 

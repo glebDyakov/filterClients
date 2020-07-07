@@ -173,3 +173,4 @@ function deleteClient(id) {
 
     return fetch(`${config.apiUrl}/clients/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
+

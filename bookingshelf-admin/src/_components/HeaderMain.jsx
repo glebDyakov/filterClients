@@ -8,7 +8,7 @@ import LogoutPage from "../LogoutPage";
 import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
 import {UserSettings, UserPhoto, ClientDetails, NewClient} from "./modals";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
-import {clientService} from "../_services";
+import {clientService, managersService} from "../_services";
 import {isValidNumber} from "libphonenumber-js";
 import {isValidEmailAddress} from "../_helpers/validators";
 
@@ -201,7 +201,7 @@ class HeaderMain extends React.PureComponent {
 
                             <div className="col-1 mob-menu b">
                                 <div>
-                                    <img src={`${process.env.CONTEXT}public/img/burger_mob.svg`} alt=""/>
+                                    <img src={`${process.env.CONTEXT}public/img/hamburger.svg`} alt="burger-img"/>
                                 </div>
                             </div>
 
@@ -215,8 +215,11 @@ class HeaderMain extends React.PureComponent {
                             </div>}
 
                             <div className="col search-col">
-                                <div className="search-header search col-12">
-                                    <input type="search" placeholder="Поиск по имени, номеру тел, Email"
+                                <div className="search-header search col-9 col-md-12">
+                                    <input className="search-input" type="search" placeholder="Поиск по имени, номеру тел, Email"
+                                           aria-label="Search" value={search} onChange={this.handleSearch}/>
+
+                                    <input className="mob-search-input" type="search" placeholder="Поиск"
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
                                     <button className="search-icon" type="submit"/>
                                 </div>
@@ -396,17 +399,7 @@ class HeaderMain extends React.PureComponent {
                             </div>
                         </div>
 
-                        <div className="modal-dialog fade">
-                            <div className="modal right-sidebar">
-                                <div className="modal-header">
-                                    <h4 className="modal-title">Настройки</h4>
-                                    <button type="button" className="close" data-dismiss="modal" />
-                                </div>
-                                <div className="modal-body">
-
-                                </div>
-                            </div>
-                        </div>
+                        <settingsSidebar/>
 
                         <UserSettings onClose={this.onClose}/>
                         <ClientDetails

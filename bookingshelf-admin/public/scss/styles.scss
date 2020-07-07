@@ -30,6 +30,7 @@
 
   @media (max-width: $mob-width) {
     margin-left: 36px;
+    height: 30px !important;
     flex: 0 0 88%;
   }
 }
@@ -297,7 +298,6 @@ ul {
 
 .container_wrapper {
   width: 100%;
-  margin: auto;
   display: block;
   position: relative;
   height: 100%;
@@ -337,7 +337,7 @@ button,
     }
     @media (max-width: $laptop-width) {
       font-size: $font-reg;
-      min-height: 35px;
+      min-height: 25px;
       height: 35px;
       padding: 10px 15px;
     }
@@ -1185,9 +1185,9 @@ input {
   height: 100%;
   padding: 0;
   @media screen and(max-width: $mob-width) {
-    -ms-flex: 0 0 50%;
-    flex: 0 0 50%;
-    max-width: 50%;
+    -ms-flex: 0 0 60%;
+    flex: 0 0 60%;
+    max-width: 60%;
   }
 
   .dropdown-menu {
@@ -1270,6 +1270,7 @@ input {
 
       @media screen and(max-width: $mob-width) {
         border-right: 0;
+        padding: 0 10px 0 10px;
       }
 
       .img-container {
@@ -1401,33 +1402,23 @@ input {
   cursor: pointer;
   opacity: 1 !important;
   position: absolute;
-  height: 30px;
-  font-size: 12px;
-  padding: 0 10px;
-  top: 0;
+  top: -15px;
+  background: #50A5F1;
+  border-radius: 30px;
   bottom: 0;
+  font-size: 10px;
   margin: auto;
-  right: -10px;
-  border-radius: 0;
-  background: #FF0006;
-  line-height: 30px;
+  padding: 0 6px 1px 6px;
+  width: 18px;
+  height: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
   z-index: 99999;
   text-align: center;
-  box-shadow: 0 0 4px #666;
-
-  &::before {
-    position: absolute;
-    background: #FF0006;
-    height: 8px;
-    width: 8px;
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: -4px;
-    z-index: 50;
-    transform: rotate(45deg);
-    margin: auto;
-  }
 
   @media screen and(max-width: $tablet-width) { /*--изменения--*/
     right: 10px;
@@ -1437,10 +1428,7 @@ input {
 .header-notification {
   .menu-notification {
     right: unset;
-    left: 54px;
-    height: 25px;
-    line-height: 25px;
-    padding: 0 8px;
+    left: 38px;
     color: white;
     @media screen and(min-width: $tablet-width) { /*--изменения--*/
       display: none;
@@ -1450,24 +1438,27 @@ input {
 
 /*--end sidebar--*/
 
-
 .content-wrapper {
   padding: 83px 0 0 222px;
   position: relative;
   margin-top: 0;
   height: 100%;
   transition: all ease-in-out 0.3s;
-
+  overflow-x: hidden;
   @media screen {
 
     @media (max-width: $laptop-width) {
       padding-left: 179px;
     }
     @media (max-width: $tablet-width) {
-      padding: 7px 0 0 0;
+      padding: 57px 0 0 0;
     }
     @media (max-width: $mob-width) {
-      padding-top: 7px;
+      padding-top: 57px;
+
+      .container-fluid {
+        padding: 0;
+      }
       .calendar & {
         padding-top: 0;
       }
@@ -1545,6 +1536,7 @@ input {
     img {
       display: block;
       width: 100%;
+      filter: contrast(0.2);
     }
   }
 
@@ -1559,7 +1551,7 @@ input {
     padding: 8px 18px 8px 36px;
 
     position: fixed;
-    left: 13px;
+    left: 15px;
     width: auto;
     right: 15px;
     top: 0;
@@ -1591,8 +1583,11 @@ input {
         }
       }
       @media (max-width: $mob-width) {
+        left: 0;
+        right: 0;
         &.retreats {
-          height: 45px;
+          height: 50px;
+          padding: 0 12px 0 0;
         }
         .col {
           width: 100%;
@@ -2075,6 +2070,10 @@ input {
     display: block;
   }
 
+  @media screen and(max-width: $mob-width) {
+    width: 148px;
+  }
+
   li {
 
     &.nav-item {
@@ -2199,12 +2198,25 @@ input {
       background: #F3F3F9;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
 
+      @media screen and(max-width: $mob-width) {
+        height: 32px !important;
+        background: none !important;
+        line-height: 30px !important;
+        box-shadow: none !important;
+      }
+
       .SelectedWeekExample {
         padding: 0 0 4px 0;
         width: 345px;
 
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
+
+        @media screen {
+          @media (max-width: $mob-width) {
+            left: -17px;
+          }
+        }
 
         .DayPicker-Day--hoverRange {
           background: url("../img/icons/blue_elipse.svg") no-repeat center !important;
@@ -2220,10 +2232,17 @@ input {
         margin: 0 !important;
         font-size: 13px;
         color: #495057;
+
+        @media screen and(max-width: $mob-width) {
+          line-height: 30px !important;
+        }
       }
 
       @media screen and(max-width: $laptop-width) {
         height: 40px;
+      }
+      @media screen and(max-width: $mob-width) {
+        height: 36px;
       }
 
       .button-cal {
@@ -2273,11 +2292,23 @@ input {
         background-size: 9px;
         width: 33px;
         height: 35px;
+
+      }
+
+      @media screen and(max-width: $mob-width) {
+        position: absolute;
+        right: 0;
+        background-color: rgba(0,0,0,0);
+        display: flex !important;
       }
     }
 
     .arrow-left {
       transform: rotate(180deg);
+      @media screen and(max-width: $mob-width) {
+        left: 0;
+        display: flex !important;
+      }
     }
   }
 }
@@ -2291,7 +2322,8 @@ input {
 
   width: 288px;
 
-  input {
+  .search-input,
+  .mob-search-input {
     background: #F3F3F9;
     border-radius: 30px;
 
@@ -2310,6 +2342,23 @@ input {
     @media screen and(max-width: $laptop-width) {
       font-size: 13px;
       padding-left: 25px;
+    }
+  }
+
+  .mob-search-input {
+    display: none;
+  }
+
+  @media screen {
+    @media (max-width: $mob-width) {
+      .search-input {
+        display: none;
+      }
+      .mob-search-input {
+        text-align: center;
+        display: unset;
+        margin-left: 15px;
+      }
     }
   }
 
@@ -2788,10 +2837,6 @@ margin: 0;
 
       @media screen {
         @media (max-width: $laptop-width) {
-          width: 20px;
-          height: 20px;
-          min-width: 20px;
-          background-size: 70%;
         }
       }
     }
@@ -3235,16 +3280,16 @@ select {
 }
 
 .notification-mob {
-  background-image: url(../img/icons/support_mob.svg);
+  background-image: url(../img/icons/bold-setting.svg);
   background-position: left center;
   background-repeat: no-repeat;
-  background-size: 18px;
+  background-size: 22px;
   width: 20px;
   height: 20px;
   margin-right: 6px;
   margin-top: 6px;
   float: right;
-
+  animation: rotate 5s infinite linear;
   &:hover {
     opacity: 0.7;
     cursor: pointer;

@@ -4,6 +4,25 @@
   display: none;
 }
 
+.col-tab:nth-child(2) {
+  .present-time-line::before {
+    content: attr(data-time);
+    position: absolute;
+    left: -27px;
+    bottom: 0;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #fff;
+    padding: 4px 5px 2px 5px;
+    background: #F46A6A;
+    border: 2px solid #F46A6A;
+    box-sizing: border-box;
+    border-radius: 15px;
+  }
+}
+
 .calendar {
   .typeahead-wrapper input {
     height: 35px !important;
@@ -37,12 +56,12 @@
     margin-bottom: 7px;
 
     @media screen and(max-width: $tablet-width) {
-      height: 50px;
+      height: 87px;
     }
 
     @media screen and(max-width: $mob-width) {
       padding-bottom: 40px;
-      height: 90px;
+      height: 87px;
     }
 
   }
@@ -55,9 +74,9 @@
 
     &.tab-day-week {
       @media screen and(max-width: $mob-width) {
-        -ms-flex: 0 0 50%;
-        flex: 0 0 50%;
-        max-width: 50%;
+        -ms-flex: 0 0 40%;
+        flex: 0 0 40%;
+        max-width: 40%;
       }
 
       .nav-tabs {
@@ -101,6 +120,9 @@
     height: 100%;
     padding: 0;
 
+
+
+
     .select-date {
       height: 100%;
       width: 100%;
@@ -112,7 +134,7 @@
       bottom: 0;
       width: 100%;
       max-width: 100%;
-      border-top: 1px solid rgba(172, 172, 172, 0.2);
+      border-top: 7px solid rgba(172, 172, 172, 0.2);
     }
 
     .select-inner {
@@ -197,6 +219,7 @@
           @media screen and(max-width: $tablet-width) {
             width: calc(100% - 80px);
           }
+
 
           &:hover {
             opacity: 0.6 !important;
@@ -320,9 +343,16 @@
   .days-container {
     -webkit-overflow-scrolling: touch;
     overflow: auto;
+    
     width: 100%;
     position: relative;
     z-index: 0;
+
+    @media screen {
+      @media (max-width: $mob-width) {
+        padding-left: 4px;
+      }
+    }
 
 
     .table-inner_20 {
@@ -337,7 +367,7 @@
 
     position: relative;
     //overflow: auto;
-    padding-top: 45px;
+    padding-top: 37px;
 
     .tab-content-list {
       position: relative;
@@ -357,7 +387,6 @@
       .present-cell {
         position: relative;
       }
-
 
 
       .present-cell:nth-child(2) {
@@ -381,9 +410,9 @@
           display: block;
         }
 
-        //&:not(.expired):hover .fade-time {
-        //  display: block !important;
-        //}
+        &:not(.expired):hover .fade-time {
+          display: block !important;
+        }
 
         .col-note {
           cursor: cell;
@@ -408,7 +437,7 @@
         position: relative;
         overflow: visible;
         padding: 0 0 !important;
-        min-width: 161px;
+        min-width: 235px;
 
         &.day-active {
           border-top: 2px solid #ed1b24;
@@ -516,12 +545,17 @@
           }
 
           .fade-time {
-            font-size: 10px;
             display: none;
             float: right;
             width: 100%;
             justify-content: right;
             padding-right: 10px;
+
+            font-weight: 300;
+            font-size: 13px;
+            line-height: 18px;
+            color: #495057;
+            margin-left: 7px;
           }
         }
 
@@ -553,8 +587,13 @@
 
         .visible-fade-time {
           float: right;
-          font-size: 10px;
           width: 100%;
+          font-weight: 300;
+          font-size: 13px;
+          line-height: 18px;
+          /* identical to box height */
+          color: #495057;
+          margin-left: 7px;
 
         }
 
@@ -602,7 +641,7 @@
       overflow: hidden;
       z-index: -1;
       min-width: 100%;
-      height: 40px;
+      height: 32px;
       top: 0;
 
       .tab-content-list {
@@ -676,11 +715,6 @@
       top: 42px;
       min-width: 100%;
       z-index: 0;
-      overflow: hidden;
-
-      &:hover {
-        overflow-y: scroll;
-      }
 
       @media screen and(max-width: $mob-width) {
         height: calc(100% - 160px);
@@ -1468,7 +1502,6 @@
       //overflow: auto;
 
 
-
       .fixed-tab {
 
         p {
@@ -1491,7 +1524,6 @@
 
   #days {
     .calendar-list {
-
 
 
       .fixed-tab {
@@ -1558,7 +1590,6 @@
 }
 
 
-
 .header-client-detail, .client-detail {
   .close {
     margin: 13px 5px 0 0 !important;
@@ -1613,6 +1644,8 @@
 
 .addApointmentEachBlock {
 
+
+
   .row {
     justify-content: space-between;
     margin: 10px 0;
@@ -1641,7 +1674,12 @@
     }
   }
 
-
+  @media screen {
+    @media (max-width: $tablet-width) {
+      padding-right: 30px !important;
+      padding-left: 15px !important;
+    }
+  }
   .appointment-start,
   .appointment-service,
   .appointment-timing,
@@ -1736,14 +1774,15 @@
           padding: 20px 15px;
 
 
-
           .search {
             input {
               font-size: 13px !important;
               line-height: 18px !important;
               color: #495057 !important;
             }
+
             width: 97%;
+
             .search-icon {
               right: 0;
               left: unset;
@@ -1780,6 +1819,7 @@
             text-align: right;
             width: 50%;
             color: #50A5F1 !important;
+
             * {
               font-size: 13px !important;
               line-height: 18px !important;
@@ -1813,6 +1853,7 @@
     .dropdown-toggle {
       .img-container {
         margin: 0;
+
         .staff-name {
           font-size: 13px;
           line-height: 18px;
@@ -1834,6 +1875,7 @@
       li {
         box-sizing: border-box;
         border-bottom: 1px solid #eeeff1;
+
         a {
           padding: 12px 10px;
 
@@ -1849,6 +1891,7 @@
               font-size: 16px;
               line-height: 24px;
               color: #495057;
+
               &:nth-child(2) {
                 font-size: 10px !important;
                 line-height: 15px !important;
@@ -1861,6 +1904,12 @@
 
           }
         }
+      }
+    }
+
+    @media screen {
+      @media (max-width: $mob-width) {
+        padding-left: 0;
       }
     }
   }
@@ -1928,6 +1977,7 @@
               text-align: right;
               width: 30%;
               color: #50A5F1 !important;
+
               * {
                 font-size: 13px !important;
                 line-height: 18px !important;
@@ -2160,6 +2210,7 @@
 
   .calendar_modal_buttons {
     margin-top: 20px;
+
     button {
       background: #50A5F1;
       opacity: 0.7;
@@ -2275,6 +2326,29 @@
     color: #2A3042;
     width: 242px;
 
+  }
+
+  .mobileButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .button {
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #50A5F1;
+      opacity: 0.35;
+      border-radius: 30px;
+      font-size: 16px;
+      line-height: 22px;
+      color: #FFFFFF;
+      padding: 10px 64px;
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 
   .typeahead-wrapper {

@@ -216,8 +216,8 @@ class BaseCell extends React.Component {
             + (clDate ? ' closedDateTick' : '');
         const content = (
             <React.Fragment>
-                <span className={(time.split(':')[1] === "00" && notExpired) ? 'fade-time':'fade-time' }>{time}</span>
-                {isPresent && <span className="present-time-line" />}
+                <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
+                {isPresent && <span data-time={time} className="present-time-line" />}
             </React.Fragment>
         );
 
