@@ -346,39 +346,41 @@
         }
 
     }
-}
-.tab-content-list{
-    .clientEyeDel{
-        display: none !important;
-        position: absolute;
-        background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
-        background-size: contain;
-        height: 18px;
-        width: 18px !important;
-        right: 5px;
-        cursor: pointer;
-        padding: 0 !important;
-        right: 40px;
-        margin-top: 2px;
-    }
-    @media screen and(max-width: 720px) {
-        .abbreviation{
-            margin: 8px 0;
-        }
-        .delete{
-            height: 16px!important;
-        }
+    .tab-content-list{
         .clientEyeDel{
-            margin-top: 0;
-            display: block !important;
+            display: none !important;
+            position: absolute;
+            background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+            background-size: contain;
+            height: 18px;
+            width: 18px !important;
+            right: 5px;
+            cursor: pointer;
+            padding: 0 !important;
+            right: 40px;
+            margin-top: 2px;
+        }
+        @media screen and(max-width: 720px) {
+            .abbreviation{
+                margin: 8px 0;
+            }
+            .delete{
+                height: 16px!important;
+            }
+            .clientEyeDel{
+                margin-top: 0;
+                display: block !important;
+            }
         }
     }
-}
-.client-info{
-    word-break: break-word;
-    .search-block{
-        width: 95%;
-        padding: 0 0 5px;
-        margin-bottom: 15px !important;
+
+    .client-info{
+        word-break: break-word;
+        .search-block{
+            width: 95%;
+            padding: 0 0 5px;
+            margin-bottom: 15px !important;
+        }
     }
+
 }
