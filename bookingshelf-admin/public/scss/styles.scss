@@ -1549,7 +1549,7 @@ input {
   }
 
   .no-scroll {
-    margin: 0 0 0 224px;
+    margin: 0 16px 0 224px;
     transition: all ease-in-out 0.3s;
     z-index: 2;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
@@ -1567,7 +1567,7 @@ input {
     @media screen {
 
       @media (max-width: $laptop-width) {
-        margin: 0 0 0 182px;
+        margin: 0 10px 0 180px;
         &.collapsed-header {
           margin-left: 75px;
         }
