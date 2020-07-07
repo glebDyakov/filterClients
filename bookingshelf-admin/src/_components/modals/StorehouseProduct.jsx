@@ -126,6 +126,12 @@ class StorehouseProduct extends React.Component {
                                                 <option value="">Выберите поставщика</option>
                                                 {suppliers.map(supplier =><option value={supplier.supplierId}>{supplier.supplierName}</option>)}
                                             </select>
+                                            <p>Склад</p>
+                                            <select className="custom-select" name="storehouseId" onChange={this.handleChange}
+                                                    value={client.storehouseId}>
+                                                <option value="">Выберите название склада</option>
+                                                {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}
+                                            </select>
                                         </div>
                                     </div>
 
@@ -137,8 +143,12 @@ class StorehouseProduct extends React.Component {
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
 
-                                    <button className={(!(client.countProduct && client.retailPrice && client.specialPrice && client.supplierPrice && client.supplierId) ? 'disabledField': '')+' button'}
-                                            disabled={!(client.countProduct && client.retailPrice && client.specialPrice && client.supplierPrice && client.supplierId)}
+                                    <button className={(!(client.countProduct && client.retailPrice && client.specialPrice
+                                        && client.supplierPrice && client.supplierId && client.storehouseId) ? 'disabledField': '')+' button'}
+
+                                            disabled={!(client.countProduct && client.retailPrice && client.specialPrice && client.supplierPrice
+                                                && client.supplierId && client.storehouseId)}
+
                                             type="button"
                                             style={{ display: 'block' }}
                                             onClick={()=>
@@ -161,7 +171,7 @@ class StorehouseProduct extends React.Component {
     storehouseProduct(client){
         const product = {
             productId: this.props.client_working,
-            storehouseId: 1,
+            storehouseId: client.storehouseId,
             amount: parseInt(client.countProduct),
             deliveryDateMillis: moment().format('x'),
 

@@ -205,7 +205,6 @@ class Index extends Component {
         }
 
         if (JSON.stringify(this.props.material.products) !== JSON.stringify(newProps.material.products)) {
-            debugger
             this.setState({
                 products: newProps.material.products,
                 defaultProductsList: newProps.material.products,
@@ -213,7 +212,6 @@ class Index extends Component {
 
         }
         if (JSON.stringify(this.props.material.categories) !== JSON.stringify(newProps.material.categories)) {
-            debugger
             this.setState({
                 categories: newProps.material.categories,
                 defaultCategoriesList: newProps.material.categories,
@@ -590,15 +588,6 @@ class Index extends Component {
                                         <p>Категория</p>
                                     </div>
                                     <div style={{position: "relative"}}>
-                                        <p>Цена роз.</p>
-                                    </div>
-                                    <div style={{position: "relative"}}>
-                                        <p>Цена спец.</p>
-                                    </div>
-                                    <div style={{position: "relative"}}>
-                                        <p>Цена пост.</p>
-                                    </div>
-                                    <div style={{position: "relative"}}>
                                         <p>Остаток</p>
                                     </div>
 
@@ -625,15 +614,6 @@ class Index extends Component {
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p>{activeCategory && activeCategory.categoryName}</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p>0</p>
@@ -1320,7 +1300,6 @@ class Index extends Component {
         const { products } = this.props.material;
         const {defaultStoreHouseProductsList: defaultListPlus, defaultExpenditureProductsList:  defaultListMinus} = this.state;
 
-        debugger
         const searchListPlus = defaultListPlus.filter((item)=>{
             const activeProduct = products && products.find((product) => item.productId === product.productId);
             return fields.some((field) =>
@@ -1404,6 +1383,7 @@ class Index extends Component {
         let id = type ? movement.storehouseProductId : movement.storehouseProductExpenditureId;
         console.log("type", type);
         dispatch(materialActions.deleteMovement(id, type));
+
     }
 
     updateTimetable (){

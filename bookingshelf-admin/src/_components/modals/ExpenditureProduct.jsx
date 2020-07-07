@@ -125,13 +125,22 @@ class ExpenditureProduct extends React.Component {
                                         </div>
                                     </div>
                                     <p>Причина списания</p>
-                                    <select className="custom-select" name="reasonId" onChange={this.handleChange}
-                                            // value={client.categoryId}
+                                    <select className="custom-select" name="target" onChange={this.handleChange}
+                                            value={client.target}
                                     >
-                                        <option value="">Товар поврежден</option>
-                                        <option value="">Изменения наличия</option>
-                                        <option value="">Утеря</option>
-                                        <option value="">Другое</option>
+                                        <option>Выберите причину</option>
+                                        <option value="I">Внутренняя ошибка</option>
+                                        <option value="D">Товар поврежден</option>
+                                        <option value="C">Изменения наличия</option>
+                                        <option value="L">Утеря</option>
+                                        <option value="O">Другое</option>
+                                    </select>
+
+                                    <p>Склад</p>
+                                    <select className="custom-select" name="storehouseId" onChange={this.handleChange}
+                                            value={client.storehouseId}>
+                                        <option value="">Выберите название склада</option>
+                                        {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}
                                     </select>
 
                                     {material && material.adding &&
@@ -142,12 +151,12 @@ class ExpenditureProduct extends React.Component {
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
 
-                                    <button className={(!client.countProduct ? 'disabledField': '')+' button'}
-                                            disabled={!client.countProduct}
+                                    <button className={(!(client.countProduct && client.target && client.storehouseId) ? 'disabledField': '')+' button'}
+                                            disabled={!(client.countProduct && client.target && client.storehouseId)}
                                             style={{ display: 'block' }}
                                             type="button"
                                             // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
-                                            onClick={()=> this.expenditureProduct(client)}
+                                            onClick={(client.countProduct && client.target && client.storehouseId) && (() => this.expenditureProduct(client))}
 
                                     >Сохранить
                                     </button>
@@ -166,9 +175,9 @@ class ExpenditureProduct extends React.Component {
             productId: this.props.client_working,
 
             amount: parseInt(client.countProduct),
-            target: 'I',
+            target: client.target,
             expenditureDateMillis: moment().format('x'),
-            storehouseId: 1
+            storehouseId: client.storehouseId
         }
         this.props.dispatch(materialActions.expenditureProduct(product))
     };

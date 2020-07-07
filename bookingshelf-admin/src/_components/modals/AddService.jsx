@@ -410,7 +410,6 @@ class AddService extends React.Component {
         const {service} = this.state;
         const removedMaterialList = { ...service};
         removedMaterialList.serviceProducts.splice(index, 1);
-        debugger
         this.setState({service: removedMaterialList});
 
     }
