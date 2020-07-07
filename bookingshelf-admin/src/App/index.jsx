@@ -10,6 +10,7 @@ import {
     notificationActions, servicesActions,
     socketActions, userActions
 } from '../_actions';
+import { hostname } from '../_helpers/handle-response'
 import { PrivateRoute, PublicRoute } from '../_components';
 import 'moment-duration-format';
 import 'moment/locale/ru';
@@ -150,7 +151,7 @@ class Index extends React.Component {
 
 
         const options = {
-            url: `${config.apiSocket}/${socketStaffId}/`,
+            url: `wss://${hostname}${config.apiSocket}/${socketStaffId}/`,
             pingTimeout: 15000,
             pongTimeout: 10000,
             reconnectTimeout: 2000,

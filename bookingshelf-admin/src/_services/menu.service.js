@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const menuService = {
     getAll
@@ -17,5 +17,5 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/menu`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/menu`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

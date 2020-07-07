@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 import {alertActions} from "../_actions";
 
 export const staffService = {
@@ -34,7 +34,7 @@ function add(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/staffs`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/staffs`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
@@ -53,7 +53,7 @@ function addUSerByEmail(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/staffs/email`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/staffs/email`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
             .then(staff => {
                 return staff;
@@ -72,7 +72,7 @@ function addWorkingHours(timing, id) {
         body: timing
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}/timetables`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/staffs/${id}/timetables`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(timing => {
             return timing;
@@ -91,7 +91,7 @@ function updateWorkingHours(timing, id) {
         body: timing
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}/timetables`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/staffs/${id}/timetables`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(timing => {
             return timing;
@@ -110,7 +110,7 @@ function update(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrlv2}/staffs`, requestOptions)
+    return fetch(`${origin}${config.apiUrlv2}/staffs`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
 }
 
@@ -127,7 +127,7 @@ function updateAccess(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/permissions`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/permissions`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(access => {
             return access;
@@ -146,7 +146,7 @@ function get() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getFeedback(currentPage) {
@@ -160,7 +160,7 @@ function getFeedback(currentPage) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/feedback?pageNum=${currentPage}&pageSize=5`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/feedback?pageNum=${currentPage}&pageSize=5`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getClosedDates() {
@@ -174,7 +174,7 @@ function getClosedDates() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/closeddates`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/closeddates`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 
@@ -189,7 +189,7 @@ function getTimetable(from, to) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/timetables?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/timetables?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getTimetableByStaff(staff, from, to) {
@@ -203,7 +203,7 @@ function getTimetableByStaff(staff, from, to) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${staff.staffId}/availabletimes?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/${staff.staffId}/availabletimes?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getTimetableStaffs(from, to) {
@@ -217,7 +217,7 @@ function getTimetableStaffs(from, to) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/availabletimes?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/availabletimes?dateFrom=${from}&dateTo=${to}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function addClosedDates(params) {
@@ -232,7 +232,7 @@ function addClosedDates(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/closeddates`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/closeddates`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(closedDates => {
             return closedDates;
@@ -250,7 +250,7 @@ function deleteClosedDates(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/closeddates/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/closeddates/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteWorkingHours(id, start, end, staffTimetableId) {
@@ -264,7 +264,7 @@ function deleteWorkingHours(id, start, end, staffTimetableId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}/timetables${staffTimetableId ? `/${staffTimetableId}`: ''}?dateFrom=${start}&dateTo=${end}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/${id}/timetables${staffTimetableId ? `/${staffTimetableId}`: ''}?dateFrom=${start}&dateTo=${end}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteStaff(id) {
@@ -278,7 +278,7 @@ function deleteStaff(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/staffs/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/staffs/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getAccess() {
@@ -292,5 +292,5 @@ function getAccess() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/permissions`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/permissions`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

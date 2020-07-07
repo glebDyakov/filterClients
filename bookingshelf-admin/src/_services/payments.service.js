@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 import moment from 'moment';
 
 
@@ -23,7 +23,7 @@ function getInvoiceList() {
     let dataFrom = moment().subtract(1,'year').format('x');
     let dataTo = moment().add(1,'year').format('x');
 
-    return fetch(`${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/invoices?dateFrom=${dataFrom}&dateTo=${dataTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getInvoice(invoiceId) {
@@ -37,7 +37,7 @@ function getInvoice(invoiceId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/invoices/${invoiceId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/invoices/${invoiceId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getPackets() {
@@ -51,7 +51,7 @@ function getPackets() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/packets`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrlv2}/packets`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 function makePayment(invoiceId) {
     const requestOptions = {
@@ -64,7 +64,7 @@ function makePayment(invoiceId) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/invoices/${invoiceId}/payments`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/invoices/${invoiceId}/payments`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 function addInvoice(invoice) {
@@ -79,6 +79,6 @@ function addInvoice(invoice) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/invoices`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/invoices`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }

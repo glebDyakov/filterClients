@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 import moment from 'moment';
 
 export const analiticsService = {
@@ -21,7 +21,7 @@ function getStaff() {
             headers: authHeader()
         };
 
-        return fetch(`${config.baseUrl}/staffs/115/image?v=15555020690000`, requestOptions).then((data) => handleResponse(data, requestOptions));
+        return fetch(`${origin}/staffs/115/image?v=15555020690000`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 function getRecordsAndClientsCount(daySelected,dayLast) {
     const requestOptions = {
@@ -33,7 +33,7 @@ function getRecordsAndClientsCount(daySelected,dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics/staffs?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/analytics/staffs?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getStaffsAnalytic(staffId, daySelected, dayLast) {
@@ -46,7 +46,7 @@ function getStaffsAnalytic(staffId, daySelected, dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics/time/staffs/${staffId}?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/analytics/time/staffs/${staffId}?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 function getStaffsAnalyticForAll(daySelected, dayLast) {
     const requestOptions = {
@@ -58,7 +58,7 @@ function getStaffsAnalyticForAll(daySelected, dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/analytics/time?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/analytics/time?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getFinancialAnalyticChart(daySelected, dayLast) {
@@ -71,5 +71,5 @@ function getFinancialAnalyticChart(daySelected, dayLast) {
         },
         headers: authHeader()
     };
-    return fetch(`${config.apiUrl}/financial/analytics?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/financial/analytics?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
