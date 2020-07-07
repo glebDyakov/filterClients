@@ -41,17 +41,15 @@ class AddProvider extends React.Component {
                 "street": '',
             }
         }
-        const [year, month, day] = client.birthDate
-            ? client.birthDate.slice(0, 10).split('-')
-            : ['' , '' , '']
+        const newClient = {...client};
+
+            if(client && !client.contactPersons){
+                newClient.contactPersons = [];
+            }
         this.state={
             client: {
-                ...client,
-                birthDate: client.birthDate ? moment(client.birthDate).format('DD.MM.YYYY') : null
+                ...newClient,
             },
-            year,
-            month,
-            day,
             edit: props.edit,
             clients: props.client
         };
@@ -63,6 +61,7 @@ class AddProvider extends React.Component {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.removeContact = this.removeContact.bind(this);
     }
 
     componentDidMount() {
@@ -81,7 +80,13 @@ class AddProvider extends React.Component {
         }
 
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-            this.setState({clients:newProps.client});
+            if(newProps.client && !newProps.client.contactPersons){
+                const newClient = {...newProps.client};
+                newClient.contactPersons = [];
+                this.setState({clients:newClient});
+            }else {
+                this.setState({ clients: newProps.client });
+            }
         }
     }
 
@@ -233,7 +238,7 @@ class AddProvider extends React.Component {
                                 {client.contactPersons && client.contactPersons.map((contactPerson, index) =>
                                     <React.Fragment>
                                         {(client.contactPersons.length > 1) && <p>Контакт {index + 1}</p>}
-                                        <div className="row">
+                                        <div className="row" style={{position: "relative"}}>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Имя" placeholder="" value={contactPerson.firstName}
                                                               name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
@@ -281,7 +286,9 @@ class AddProvider extends React.Component {
                                                               extraClassName={'' + (!isValidEmailAddress(client.contactPersons[index].email) && client.contactPersons[index].email!=='' ? ' redBorder' : '')}
                                                               handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
                                             </div>
+                                            {1 && <button className="close"  style={{position:"absolute", right: "-37px", top: "-37px", zIndex: "99"}} onClick={()=>this.removeContact(index)}>x</button>}
                                         </div>
+
                                     </React.Fragment>
                                 )}
                                 <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2"
@@ -332,6 +339,13 @@ class AddProvider extends React.Component {
             </Modal>
         )
     }
+    removeContact(index){
+        const {client} = this.state;
+        const removedContactList = { ...client};
+        removedContactList.contactPersons.splice(index, 1);
+        this.setState({client: removedContactList});
+
+    }
 
     handleBirthdayChange({ target: { name, value } }) {
         this.setState({ [name]: value })
@@ -370,15 +384,25 @@ class AddProvider extends React.Component {
         const { addClient } = this.props;
         const { client } = this.state;
 
-        this.props.dispatch(materialActions.toggleSupplier(client, true))
+        const finalClient = this.getFinalClient(client)
+
+        this.props.dispatch(materialActions.toggleSupplier(finalClient, true))
     };
 
     addClient(){
         const { addClient } = this.props;
         const { client } = this.state;
 
-        this.props.dispatch(materialActions.toggleSupplier(client))
+        const finalClient = this.getFinalClient(client)
+        this.props.dispatch(materialActions.toggleSupplier(finalClient))
     };
+
+    getFinalClient(client) {
+        client.contactPersons = client.contactPersons.filter(contactPerson => (
+            Object.values(contactPerson).some(value => value)
+        ))
+        return client
+    }
 
     closeModal () {
         const {onClose} = this.props;

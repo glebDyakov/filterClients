@@ -1,5 +1,6 @@
 @import "styles-group";
 .material {
+  padding-bottom: 50px;
   .mob-title{
     display: none;
     @media screen and(max-width: 720px) {
@@ -141,7 +142,7 @@
           font-weight: bold;
           line-height: normal;
           //padding-left: 20px;
-          width: 100%;
+          width: 80%;
           text-align: center;
           @media screen and(max-width: 720px) {
             text-align: left;
