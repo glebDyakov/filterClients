@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import config from 'config';
+import { origin } from '../_helpers/handle-response'
 
 import '../../public/scss/log_in.scss'
 
@@ -243,7 +243,7 @@ class Index extends React.Component {
                                     <input type="checkbox" onChange={()=>this.setState({ agreed: !agreed, invalidFields: { ...invalidFields, agreed: agreed }})} name="agreed" onBlur={this.handleBlur} checked={agreed}/>
                                     <span className={(invalidFields.agreed ? 'redBorder' : '')}/>
                                     Регистрируясь, вы принимаете условия <a
-                                  href={`${config.baseUrl}/licence_agreement`}
+                                  href={`${origin}/licence_agreement`}
                                   target="_blank"
                                     style={{width: "initial", height: "initial", border: "none", marginLeft: "34px"}}
                                     onClick={()=>this.setState({openModal:true})}>публичного договора</a>

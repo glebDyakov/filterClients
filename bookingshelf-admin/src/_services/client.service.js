@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 import FileSaver from 'file-saver';
 import moment from "moment";
 
@@ -28,7 +28,7 @@ function addClient(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/clients`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/clients`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(client => {
             return client;
@@ -48,7 +48,7 @@ function updateClient(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/clients`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/clients`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(client => {
             return client;
@@ -67,7 +67,7 @@ function getClient() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/clients`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function uploadFile(uploadFile) {
@@ -82,7 +82,7 @@ function uploadFile(uploadFile) {
         body: uploadFile
     };
 
-    return fetch(`${config.apiUrl}/clients/upload`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/clients/upload`, requestOptions)
 }
 
 function downloadFile() {
@@ -96,7 +96,7 @@ function downloadFile() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/download`, requestOptions).then(function(response) {
+    return fetch(`${origin}${config.apiUrl}/clients/download`, requestOptions).then(function(response) {
         return response.blob();
     }).then(function(blob) {
         FileSaver.saveAs(blob, 'clients.csv');
@@ -114,7 +114,7 @@ function getClientWithInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/appointments/clients?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getClientV2(pageNum, searchValue, blacklisted, pageSize = 10) {
@@ -128,7 +128,7 @@ function getClientV2(pageNum, searchValue, blacklisted, pageSize = 10) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=${pageSize}${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrlv2}/clients?pageNum=${pageNum}&pageSize=${pageSize}${blacklisted ? '&blacklisted=true' : ''}${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getActiveClientAppointments(clientId, pageNum) {
@@ -142,8 +142,8 @@ function getActiveClientAppointments(clientId, pageNum) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
-    // return fetch(`${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    // return fetch(`${origin}${config.apiUrlv2}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=5&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getActiveClient(clientId) {
@@ -157,7 +157,7 @@ function getActiveClient(clientId) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/clients/${clientId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/clients/${clientId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function deleteClient(id) {
@@ -171,6 +171,11 @@ function deleteClient(id) {
         headers: authHeader()
     };
 
+<<<<<<< HEAD
     return fetch(`${config.apiUrl}/clients/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
+=======
+    return fetch(`${origin}${config.apiUrl}/clients/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+>>>>>>> f192468245725581ab47bfe56ae90460a8d888f6

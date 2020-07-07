@@ -262,7 +262,7 @@ class IndexPage extends PureComponent {
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
         const data = selectedServices.map((selectedService) => {
-            const item = {...group, duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
+            const item = {...group, notice: '', duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
                 appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')}
             resultTime += this.getDurationForCurrentStaff(selectedService) * 1000;
             return item;

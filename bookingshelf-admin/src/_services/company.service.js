@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 import moment from "moment";
 
 export const companyService = {
@@ -29,7 +29,7 @@ function add(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/company`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/company`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(company => {
             return company;
@@ -48,7 +48,7 @@ function addSubcompany(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/subcompanies`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/subcompanies`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -64,7 +64,7 @@ function updateSubcompany(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -79,7 +79,7 @@ function switchSubcompany(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/subcompanies/${params.companyId}/switch`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/subcompanies/${params.companyId}/switch`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -95,7 +95,7 @@ function updateBookingInfo(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/onlinebooking`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/onlinebooking`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(company => {
             return company;
@@ -114,7 +114,7 @@ function get() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/company`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/company`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getSubcompanies() {
@@ -128,7 +128,7 @@ function getSubcompanies() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/subcompanies`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/subcompanies`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getBookingInfo() {
@@ -142,7 +142,7 @@ function getBookingInfo() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/onlinebooking`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/onlinebooking`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getNewAppointments() {
@@ -156,5 +156,5 @@ function getNewAppointments() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(7, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/appointments/count/false?dateFrom=${moment().startOf('day').format('x')}&dateTo=${moment().add(7, 'month').endOf('month').format('x')}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
