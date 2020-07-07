@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse  } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const userService = {
     login,
@@ -25,7 +25,7 @@ function login(login, password) {
         body: JSON.stringify({ login, password })
     };
 
-    return fetch(`${config.apiUrl}/login`,  requestOptions)
+    return fetch(`${origin}${config.apiUrl}/login`,  requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -45,7 +45,7 @@ function checkLogin() {
     };
     const companyId = localStorage.getItem('companyId') ? localStorage.getItem('companyId') : null
 
-    return fetch(`${config.apiUrl}/login/check${companyId ? `?companyId=${companyId}` : ''}`,  requestOptions)
+    return fetch(`${origin}${config.apiUrl}/login/check${companyId ? `?companyId=${companyId}` : ''}`,  requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -63,7 +63,7 @@ function activate(activationCode) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/activation/company/${activationCode}`,  requestOptions)
+    return fetch(`${origin}${config.apiUrl}/activation/company/${activationCode}`,  requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -81,7 +81,7 @@ function activateStaff(activationCode) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${config.apiUrl}/activation/staff/${activationCode}`,  requestOptions)
+    return fetch(`${origin}${config.apiUrl}/activation/staff/${activationCode}`,  requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -105,7 +105,7 @@ function logout() {
         headers: {'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.apiUrl}/logout`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/logout`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 
 }
@@ -116,7 +116,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/users`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getById(id) {
@@ -125,7 +125,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function register(user) {
@@ -138,7 +138,7 @@ function register(user) {
     };
 
 
-    return fetch(`${config.apiUrl}/signup`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(user => {
+    return fetch(`${origin}${config.apiUrl}/signup`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(user => {
         // login successful if there's a jwt token in the response
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         // localStorage.setItem('user', JSON.stringify(user));
@@ -154,7 +154,7 @@ function forgotPass(email) {
         body: JSON.stringify(email)
     };
 
-    return fetch(`${config.apiUrl}/resetpassword`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(email => {
+    return fetch(`${origin}${config.apiUrl}/resetpassword`, requestOptions).then((data) => handleResponse(data, requestOptions)).then(email => {
         return email;
     });;
 }
@@ -166,7 +166,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then((data) => handleResponse(data, requestOptions));;
+    return fetch(`${origin}${config.apiUrl}/users/${user.id}`, requestOptions).then((data) => handleResponse(data, requestOptions));;
 }
 
 function updateProfile(user) {
@@ -181,7 +181,7 @@ function updateProfile(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/profile`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/profile`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -191,5 +191,5 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/users/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

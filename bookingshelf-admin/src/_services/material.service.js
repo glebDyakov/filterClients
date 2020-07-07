@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const materialService = {
     toggleCategory,
@@ -40,7 +40,7 @@ function toggleCategory(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/categories${edit ? `/${params.categoryId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/categories${edit ? `/${params.categoryId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -56,7 +56,7 @@ function getCategories() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/categories`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/categories`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -71,7 +71,7 @@ function deleteCategory(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/categories/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/categories/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function toggleBrand(params, edit) {
@@ -86,7 +86,7 @@ function toggleBrand(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/brands${edit ? `/${params.brandId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/brands${edit ? `/${params.brandId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -102,7 +102,7 @@ function getBrands() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/brands`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/brands`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -117,7 +117,7 @@ function deleteBrand(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/brands/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/brands/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function toggleSupplier(params, edit) {
@@ -132,7 +132,7 @@ function toggleSupplier(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/suppliers${edit ? `/${params.supplierId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/suppliers${edit ? `/${params.supplierId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -148,7 +148,7 @@ function getSuppliers() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/suppliers`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/suppliers`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -163,7 +163,7 @@ function deleteSupplier(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/suppliers/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/suppliers/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function toggleProduct(params, edit) {
@@ -179,7 +179,7 @@ function toggleProduct(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/products${edit ? `/${params.productId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/products${edit ? `/${params.productId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -195,7 +195,7 @@ function getProducts() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/products`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/products`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -210,7 +210,7 @@ function deleteProduct(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/products/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/products/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function toggleUnit(params, edit) {
@@ -225,7 +225,7 @@ function toggleUnit(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/units${edit ? `/${params.unitId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/units${edit ? `/${params.unitId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -241,7 +241,7 @@ function getUnits() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/units`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/units`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -256,7 +256,7 @@ function deleteUnit(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/units/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/units/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function toggleStoreHouse(params, edit) {
@@ -271,7 +271,7 @@ function toggleStoreHouse(params, edit) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouses${edit ? `/${params.storehouseId}` : ''}`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouses${edit ? `/${params.storehouseId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -287,7 +287,7 @@ function getStoreHouses() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouses`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouses`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -302,7 +302,7 @@ function deleteStoreHouse(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouses/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouses/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function expenditureProduct(params) {
@@ -318,7 +318,7 @@ function expenditureProduct(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -335,7 +335,7 @@ function storehouseProduct(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -351,7 +351,7 @@ function getStoreHouseProducts() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -367,7 +367,7 @@ function getExpenditureProducts() {
         headers: authHeader()
     };
 
-    return fetch(`${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -382,9 +382,9 @@ function deleteMovement(id, type) {
         headers: authHeader()
     };
     if(type) {
-        return fetch(`${config.warehouseApiUrl}/storehouseproducts/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+        return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
     } else {
-        return fetch(`${config.warehouseApiUrl}/storehouseproductexpenditures/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+        return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
     }
 
 }
