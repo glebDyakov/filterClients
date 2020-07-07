@@ -51,6 +51,12 @@ export function menu(state = initialState, action) {
                   "icon":"8.svg",
                   "name":"Аналитика",
               },
+                {
+                    "id":"material_menu_id",
+                    "url":"/material",
+                    "icon":"10.svg",
+                    "name":"Учет материалов",
+                },
               {
                   "id":"booking_menu_id",
                   "url":"/online_booking",
@@ -62,12 +68,6 @@ export function menu(state = initialState, action) {
                     "url":"/settings",
                     "icon":"10.svg",
                     "name":"Настройки компании",
-                },
-                {
-                    "id":"material_menu_id",
-                    "url":"/material",
-                    "icon":"10.svg",
-                    "name":"Учет материалов",
                 },
                 {
                     "id":"payments_menu_id",

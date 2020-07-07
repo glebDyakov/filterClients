@@ -91,7 +91,8 @@ class Index extends Component {
             newStaff: false,
 
             products: props.material.products,
-            defaultProductsList: props.material.categories,categories: props.material.products,
+            defaultProductsList: props.material.categories,
+            categories: props.material.categories,
             defaultCategoriesList: props.material.categories,
             brands: props.material.brands,
             defaultBrandsList: props.material.brands,
@@ -373,6 +374,7 @@ class Index extends Component {
 
 
         const { products, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
+        debugger
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const daysAreSelected = selectedDays.length > 0;
@@ -480,28 +482,28 @@ class Index extends Component {
                                     </div>
                                     <div style={{ position: "relative" }}>
                                         {/*<a onClick={() => this.toggleInfoProduct(activeProduct)}>*/}
-                                            <p style={{ width: "100%" }}>{activeProduct && activeProduct.productName}</p>
+                                            <p style={{ width: "100%" }}><span className="mob-title">Название: </span>{activeProduct && activeProduct.productName}</p>
                                         {/*</a>*/}
                                     </div>
                                     <div style={{ position: "relative" }}>
 
-                                            <p style={{ width: "100%" }}>{activeProduct && activeProduct.description}</p>
+                                            <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>
 
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p>{activeProduct && activeProduct.productCode}</p>
+                                        <p><span className="mob-title">Код продукта: </span>{activeProduct && activeProduct.productCode}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p>{movement && movement.target}</p>
+                                        <p><span className="mob-title">Вид: </span>{movement && movement.target}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p>{movement && movement.retailPrice}</p>
+                                        <p><span className="mob-title">Роз. цена: </span>{movement && movement.retailPrice}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p>0</p>
+                                        <p><span className="mob-title">Ед. измерения: </span>0</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p>0</p>
+                                        <p><span className="mob-title">Остаток: </span> 0</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
                                         <a className="clientEdit" onClick={() => this.toggleProduct(activeProduct)}/>
@@ -579,7 +581,7 @@ class Index extends Component {
                                     )
                                 }
 
-                                <div className="tab-content-list mb-2" style={{position: "relative", height: "50px"}}>
+                                <div className="tab-content-list mb-2 title" style={{position: "relative", height: "50px"}}>
                                     <div style={{position: "relative"}}>
                                             <p>Наименование</p>
                                     </div>
@@ -617,17 +619,14 @@ class Index extends Component {
                                                     <div style={{position: "relative"}} className="material-products-details">
                                                         {/*<a onClick={()=>this.openClientStats(product)}>*/}
                                                         <a onClick={() => this.toggleInfoProduct(product)}>
-                                                            <p>{product.productName}</p>
+                                                            <p><span className="mob-title">Наименование: </span>{product.productName}</p>
                                                         </a>
                                                     </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p>{product.productCode}</p>
+                                                        <p><span className="mob-title">Код товара: </span>{product.productCode}</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p>{activeCategory && activeCategory.categoryName}</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
+                                                        <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p>0</p>
@@ -637,6 +636,9 @@ class Index extends Component {
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p>0</p>
+                                                    </div>
+                                                    <div style={{position: "relative"}}>
+                                                        <p><span className="mob-title">Остаток: </span>0</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
                                                         <a className="clientEdit" onClick={() => this.toggleProduct(product)}/>
@@ -802,30 +804,50 @@ class Index extends Component {
                                     )
                                 }
                                 <div className="material-categories">
+                                    <div className="tab-content-list mb-2 title" style={{position: "relative", height: "40px", textAlign: "center"}}>
+                                        <div style={{position: "relative"}}>
+                                            <p>Поставщик</p>
+                                        </div>
+                                        <div style={{position: "relative"}}>
+                                            <p>Описание</p>
+                                        </div>
+                                        <div style={{position: "relative"}}>
+                                            <p>Веб-сайт</p>
+                                        </div>
+                                        <div style={{position: "relative"}}>
+                                            <p>Город</p>
+                                        </div>
+
+                                        <div className="delete clientEditWrapper"></div>
+                                        <div className="delete dropdown">
+
+                                            <div className="dropdown-menu delete-menu"></div>
+                                        </div>
+                                    </div>
+
                                     {this.state.suppliers.length ?
                                         this.state.suppliers.map(supplier => (
                                             <div className="tab-content-list mb-2" style={{position: "relative"}}>
                                                 <div style={{position: "relative"}}>
                                                     <a onClick={()=>this.openClientStats(supplier)}>
-                                                        <p>{supplier.supplierName}</p>
+                                                        <p><span className="mob-title">Поставщик: </span>{supplier.supplierName}</p>
                                                     </a>
                                                 </div>
                                                 <div style={{position: "relative"}}>
-                                                        <p>{supplier.description}</p>
+                                                        <p><span className="mob-title">Описание: </span>{supplier.description}</p>
                                                 </div>
                                                 <div style={{position: "relative"}}>
-                                                        <p>{supplier.webSite}</p>
+                                                        <p><span className="mob-title">Веб-сайт: </span>{supplier.webSite}</p>
                                                 </div>
                                                 <div style={{position: "relative"}}>
-                                                        <p>{supplier.city}</p>
+                                                        <p><span className="mob-title">Город: </span>{supplier.city}</p>
                                                 </div>
 
                                                 <div className="delete clientEditWrapper">
                                                     <a className="clientEdit" onClick={() => this.toggleProvider(supplier)}/>
                                                 </div>
                                                 <div className="delete dropdown">
-                                                    <div className="clientEyeDel" onClick={()=>this.toggleProvider(supplier)}></div>
-                                                    <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                     </a>
                                                     <div className="dropdown-menu delete-menu p-3">
@@ -874,7 +896,7 @@ class Index extends Component {
 
                             {1 ? (
                                 <React.Fragment>
-                            <div className="tab-content-list mb-2" style={{position: "relative", height: "40px", textAlign: "center"}}>
+                            <div className="tab-content-list mb-2 title" style={{position: "relative", height: "40px", textAlign: "center"}}>
                                 <div style={{width:"80px"}}>
 
                                 </div>
@@ -1308,7 +1330,7 @@ class Index extends Component {
             [key]: searchServicesList
         });
 
-        if(this.search.value===''){
+        if(this[searchKey].value===''){
             this.setState({
                 search: true,
                 [key]: defaultList
