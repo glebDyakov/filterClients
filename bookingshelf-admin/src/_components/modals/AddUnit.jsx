@@ -101,8 +101,8 @@ class AddUnit extends React.Component {
                         <div>
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    {!edit ? <h4 className="modal-title">Новая еденица измерения</h4>
-                                        : <h4 className="modal-title">Редактирование еденицы измерения</h4>
+                                    {!edit ? <h4 className="modal-title">Новая единица измерения</h4>
+                                        : <h4 className="modal-title">Редактирование единицы измерения</h4>
                                     }
                                     <button type="button" className="close" onClick={this.closeModal} />
                                     {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}

@@ -618,15 +618,6 @@ class Index extends Component {
                                                         <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p>0</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
-                                                        <p>0</p>
-                                                    </div>
-                                                    <div style={{position: "relative"}}>
                                                         <p><span className="mob-title">Остаток: </span>0</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
