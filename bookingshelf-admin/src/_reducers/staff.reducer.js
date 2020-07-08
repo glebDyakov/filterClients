@@ -326,6 +326,10 @@ export function staff(state = initialState, action) {
                         "permissionCode": 8
                     },
                     {
+                        "name": 'Учет материалов',
+                        "permissionCode": 13
+                    },
+                    {
                         "name": 'Онлайн запись',
                         "permissionCode": 9
                     },
