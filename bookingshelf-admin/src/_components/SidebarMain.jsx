@@ -414,6 +414,7 @@ class SidebarMain extends React.Component {
                                 <span>{item.id === 'staff_menu_id' ? (
                                     (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'
                                 ) : item.name}</span>
+                                {keyStore===6 && <span className="menu_beta">Beta</span>}
                                 {keyStore===0 &&
                                 ((count && count.appointments && count.appointments.count>0) ||
                                 (count && count.canceled && count.canceled.count>0) ||
