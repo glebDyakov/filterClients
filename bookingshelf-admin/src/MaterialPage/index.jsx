@@ -467,35 +467,38 @@ class Index extends Component {
             })
         });
 
-        const movingArrray = this.state.storeHouseProducts.concat(this.state.expenditureProducts);
-        movingArrray.map(item => {
+        const movingArrray = this.state.storeHouseProducts
+            .concat(this.state.expenditureProducts)
+            .sort((b, a) =>
+                (a.expenditureDateMillis? a.expenditureDateMillis: a.deliveryDateMillis) - (b.expenditureDateMillis? b.expenditureDateMillis: b.deliveryDateMillis)
+            );
+
+        movingArrray.forEach(item => {
+
             if (item.target) {
                 switch (item.target) {
                     case 'INTERNAL':
                         item.target = 'Внутренняя ошибка';
-                        return item;
                         break;
                     case 'DAMAGED':
                         item.target = 'Товар поврежден';
-                        return item;
                         break;
                     case 'CHANGING':
                         item.target = 'Изменения наличия';
-                        return item;
                         break;
                     case 'LOST':
                         item.target = 'Утеря';
-                        return item;
                         break;
                     case 'OTHER':
                         item.target = 'Другое';
-                        return item;
                         break;
                     default:
+                        item.target = '';
 
                 }
             }
         })
+
 
         const movingList = (
             <React.Fragment>
