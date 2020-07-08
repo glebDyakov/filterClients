@@ -274,7 +274,7 @@ function expenditureProduct(params) {
                 exProd => {
                     dispatch(success(exProd))
                     setTimeout(()=>dispatch(successTime(exProd)), 500);
-                    // dispatch(materialActions.getUnits());
+                    dispatch(materialActions.getExpenditureProducts());
                 },
             );
     };
@@ -367,7 +367,7 @@ function storehouseProduct(params) {
                 product => {
                     dispatch(success(product))
                     setTimeout(()=>dispatch(successTime(product)), 500);
-                    // dispatch(materialActions.getStoreHouses());
+                    dispatch(materialActions.getStoreHouseProducts());
                 },
             );
     };

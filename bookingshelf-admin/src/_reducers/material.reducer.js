@@ -10,7 +10,15 @@ const initialState = {
     storeHouseProducts:[],
     expenditureProducts: [],
     adding: false,
-    status: 209
+    status: 209,
+    isLoadingProducts: true,
+    isLoadingCategories: true,
+    isLoadingBrands: true,
+    isLoadingSuppliers: true,
+    isLoadingMoving1: true,
+    isLoadingMoving2: true,
+    isLoadingStoreHouses: true,
+
 }
 export function material(state= initialState, action) {
     switch (action.type) {
@@ -24,7 +32,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_PRODUCT_SUCCESS:
             return {
                 ...state,
-                products: action.products
+                products: action.products,
+                isLoadingProducts: false
             };
         case materialConstants.TOGGLE_PRODUCT:
             return {
@@ -41,7 +50,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_CATEGORIES_SUCCESS:
             return {
                 ...state,
-                categories: action.categories
+                categories: action.categories,
+                isLoadingCategories: false
             };
         case materialConstants.TOGGLE_CATEGORY:
             return {
@@ -58,7 +68,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_BRANDS_SUCCESS:
             return {
                 ...state,
-                brands: action.brands
+                brands: action.brands,
+                isLoadingBrands: false
             };
 
         case materialConstants.TOGGLE_BRAND:
@@ -77,7 +88,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_SUPPLIERS_SUCCESS:
             return {
                 ...state,
-                suppliers: action.suppliers
+                suppliers: action.suppliers,
+                isLoadingSuppliers: false
             };
         case materialConstants.TOGGLE_SUPPLIER:
             return {
@@ -94,7 +106,7 @@ export function material(state= initialState, action) {
         case materialConstants.GET_UNITS_SUCCESS:
             return {
                 ...state,
-                units: action.units
+                units: action.units,
             };
         case materialConstants.TOGGLE_UNIT:
             return {
@@ -111,7 +123,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_STORE_HOUSES_SUCCESS:
             return {
                 ...state,
-                storeHouses: action.storeHouses
+                storeHouses: action.storeHouses,
+                isLoadingStoreHouses: false
             };
 
         case materialConstants.TOGGLE_STORE_HOUSE:
@@ -130,7 +143,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_STORE_HOUSES_PRODUCTS_SUCCESS:
             return {
                 ...state,
-                storeHouseProducts: action.storeHouseProducts
+                storeHouseProducts: action.storeHouseProducts,
+                isLoadingMoving1: false
             };
         case materialConstants.STORE_HOUSE_PRODUCT:
             return {
@@ -147,7 +161,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_EXPENDITURE_PRODUCTS_SUCCESS:
             return {
                 ...state,
-                expenditureProducts: action.expenditureProducts
+                expenditureProducts: action.expenditureProducts,
+                isLoadingMoving2: false
             };
 
 
@@ -161,6 +176,42 @@ export function material(state= initialState, action) {
                 ...state,
                 adding: false,
                 status: 200
+            };
+
+        case materialConstants.GET_PRODUCT:
+            return {
+                ...state,
+                isLoadingProducts: true
+            };
+        case materialConstants.GET_CATEGORIES:
+            return {
+                ...state,
+                isLoadingCategories: true
+            };
+        case materialConstants.GET_BRANDS:
+            return {
+                ...state,
+                isLoadingBrands: true
+            };
+        case materialConstants.GET_SUPPLIERS:
+            return {
+                ...state,
+                isLoadingSuppliers: true
+            };
+        case materialConstants.GET_STORE_HOUSE_PRODUCTS:
+            return {
+                ...state,
+                isLoadingMoving1: true
+            };
+        case materialConstants.GET_EXPENDITURE_PRODUCTS:
+            return {
+                ...state,
+                isLoadingMoving2: true
+            };
+        case materialConstants.GET_STORE_HOUSES:
+            return {
+                ...state,
+                isLoadingStoreHouses: true
             };
 
         default:
