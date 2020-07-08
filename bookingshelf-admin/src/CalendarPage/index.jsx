@@ -242,6 +242,11 @@ class Index extends PureComponent {
             e.preventDefault();
             e.stopPropagation();
             $('.buttons-container').fadeIn(400);
+            $('.add').addClass('rotate');
+            setTimeout(() => {
+                $('.add').removeClass('rotate');
+            },5000)
+
         });
 
         if (prevState.typeSelected !== this.state.typeSelected) {

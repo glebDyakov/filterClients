@@ -1560,7 +1560,7 @@ input {
     @media screen {
 
       @media (max-width: $laptop-width) {
-        margin: 0 10px 0 250px;
+        margin: 0 0 0 250px;
         &.collapsed-header {
           margin-left: 70px;
         }
@@ -3412,25 +3412,46 @@ select {
 }
 
 .add-button, .add {
-  display: none;
   position: fixed;
   bottom: 30px;
   right: 30px;
   width: 50px;
   height: 50px;
   background-color: #2A3042;
-  background-image: url(../img/add_white.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 26px !important;
   border-radius: 50%;
   z-index: 1;
   padding: 0;
   cursor: pointer;
+  transition: 200ms;
 
-  &:hover {
-    opacity: 0.8;
+  &::before {
+    width: 2px;
+    height: 26px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: '';
+    transform: translate(-50%, -50%);
   }
+  &::after {
+    width: 26px;
+    height: 2px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: '';
+    transform: translate(-50%, -50%);
+  }
+
+  &.rotate {
+    transition: 200ms;
+    transform: rotate(45deg);
+  }
+
 
   @media screen {
     @media (max-width: $large-width) {
@@ -4781,7 +4802,7 @@ textarea {
 
 .rc-time-picker-panel {
   margin-top: 56px;
-
+  transform: translate3d(0px, 56px, 0px);
   * {
     ::-webkit-scrollbar {
       width: 2px;

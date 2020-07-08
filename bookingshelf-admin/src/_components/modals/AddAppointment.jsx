@@ -932,8 +932,9 @@ class AddAppointment extends React.Component {
 
                                                 <p style={{paddingBottom: '18px'}}
                                                    className="title">Запись <span>{index + 1}</span></p>
-                                                {minutes.length !== 0 && (index === 0) &&
                                                 <div className="row">
+                                                    {minutes.length !== 0 && (index === 0) &&
+
                                                     <div className="appointment-start">
                                                         <p>Начало</p>
                                                         <TimePicker
@@ -948,6 +949,7 @@ class AddAppointment extends React.Component {
                                                             onChange={(appointmentTimeMillis) => this.setTime(appointmentTimeMillis, minutes, index)}
                                                         />
                                                     </div>
+                                                    }
 
                                                     <div className="appointment-service">
                                                         <p className={!servicesDisabling && 'disabledField'}>Услуга</p>
@@ -1010,7 +1012,6 @@ class AddAppointment extends React.Component {
                                                     </div>
 
                                                 </div>
-                                                }
                                                 {index !== 0 && <button className="close"
                                                                         onClick={() => this.removeService(index)}>x</button>}
                                                 <div className="row">
