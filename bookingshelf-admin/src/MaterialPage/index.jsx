@@ -468,6 +468,34 @@ class Index extends Component {
         });
 
         const movingArrray = this.state.storeHouseProducts.concat(this.state.expenditureProducts);
+        movingArrray.map(item => {
+            if (item.target) {
+                switch (item.target) {
+                    case 'INTERNAL':
+                        item.target = 'Внутренняя ошибка';
+                        return item;
+                        break;
+                    case 'DAMAGED':
+                        item.target = 'Товар поврежден';
+                        return item;
+                        break;
+                    case 'CHANGING':
+                        item.target = 'Изменения наличия';
+                        return item;
+                        break;
+                    case 'LOST':
+                        item.target = 'Утеря';
+                        return item;
+                        break;
+                    case 'OTHER':
+                        item.target = 'Другое';
+                        return item;
+                        break;
+                    default:
+
+                }
+            }
+        })
 
         const movingList = (
             <React.Fragment>
@@ -492,13 +520,13 @@ class Index extends Component {
                                             <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>{activeStorehouse && activeStorehouse.storehouseName}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Код продукта: </span>{activeProduct && activeProduct.productCode}</p>
+                                        <p><span className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Вид: </span>{movement && movement.target}</p>
+                                        <p><span className="mob-title">Причина списания: </span>{movement && movement.target}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Роз. цена: </span>{movement && movement.retailPrice}</p>
+                                        <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Ед. измерения: </span>0</p>
@@ -534,12 +562,12 @@ class Index extends Component {
 
         return (
             <div className="staff material"  ref={node => { this.node = node; }}>
-                {staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {/*{staff.isLoadingStaffInit && <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}*/}
                 <div className="row retreats content-inner page_staff">
                     <div className="flex-content col-xl-12">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <a className={"nav-link"+(activeTab==='products'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.updateTimetable(); this.setTab('products')}}>Товары</a>
+                                <a className={"nav-link"+(activeTab==='products'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.setTab('products')}}>Товары</a>
                             </li>
                             <li className="nav-item">
                                 <a className={"nav-link"+(activeTab==='categories'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('categories')}>Категории</a>
@@ -638,7 +666,7 @@ class Index extends Component {
                                                 </div>
                                             )
                                         }
-                                    ) : (
+                                    ) : ( !this.props.material.isLoadingProducts &&
                                 <EmptyContent
                                     img="2box"
                                     title="Нет товаров"
@@ -654,6 +682,7 @@ class Index extends Component {
                                 </div>
                                 <div className="arrow"></div>
                             </div>
+                            {this.props.material.isLoadingProducts && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         </div>
                         <div className={"tab-pane staff-list-tab"+(activeTab==='categories'?' active':'')} id="tab2">
                             <div className="material-categories">
@@ -694,7 +723,7 @@ class Index extends Component {
                                             </div>
                                         </div>
                                         )
-                                    ) : (
+                                    ) : ( !this.props.material.isLoadingCategories &&
                                         <EmptyContent
                                             img="box"
                                             title="Нет категорий"
@@ -712,6 +741,7 @@ class Index extends Component {
                                 </div>
                                 <div className="arrow"></div>
                             </div>
+                            {this.props.material.isLoadingCategories && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         </div>
                         <div className={"tab-pane"+(activeTab==='brands'?' active':'')}  id="tab3">
                             <div className="material-categories">
@@ -752,7 +782,7 @@ class Index extends Component {
                                                 </div>
                                             </div>
                                         )
-                                    ) : (
+                                    ) : ( !this.props.material.isLoadingBrands &&
                                         <EmptyContent
                                             img="shopping"
                                             title="Нет брендов"
@@ -769,6 +799,7 @@ class Index extends Component {
                                 </div>
                                 <div className="arrow"></div>
                             </div>
+                            {this.props.material.isLoadingBrands && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         </div>
                         {access(-1) && !staff.error &&
                         <div className={"tab-pane access-tab"+(activeTab==='suppliers'?' active':'')} id="tab4">
@@ -840,7 +871,7 @@ class Index extends Component {
                                                 </div>
                                             </div>
                                             )
-                                        ) : (
+                                        ) : ( !this.props.material.isLoadingSuppliers &&
                                             <EmptyContent
                                                 img="car"
                                                 title="Нет поставщиков"
@@ -858,6 +889,7 @@ class Index extends Component {
                                     <div className="arrow"></div>
                                 </div>
                             </div>
+                            {this.props.material.isLoadingSuppliers && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         </div>
                         }
 
@@ -896,7 +928,7 @@ class Index extends Component {
                                     <p>Код товара</p>
                                 </div>
                                 <div style={{position: "relative"}}>
-                                    <p>Вид</p>
+                                    <p>Причина списания</p>
                                 </div>
                                 <div style={{position: "relative"}}>
                                     <p>Цена розн.</p>
@@ -918,7 +950,7 @@ class Index extends Component {
                                 </React.Fragment>
 
                             ):
-                            (<div>
+                            (!this.props.material.isLoadingMoving1 && !this.props.material.isLoadingMoving2 && <div>
                                 <EmptyContent
                                     img="2box"
                                     title="Нет товаров"
@@ -935,6 +967,7 @@ class Index extends Component {
                             {/*    </div>*/}
                             {/*    <div className="arrow"></div>*/}
                             {/*</div>*/}
+                            {this.props.material.isLoadingMoving1 && this.props.material.isLoadingMoving2 && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                         </div>
 
                         {/*<div className={"tab-pane"+(activeTab==='units'?' active':'')}  id="tab6">*/}
@@ -1037,7 +1070,7 @@ class Index extends Component {
                                                 </div>
                                             )
                                         }
-                                    ) : (
+                                    ) : (!this.props.material.isLoadingStoreHouses &&
                                         <EmptyContent
                                             img="shopping"
                                             title="Нет заданых складов"
@@ -1046,6 +1079,7 @@ class Index extends Component {
                                             buttonClick={() => this.toggleStoreHouse()}
                                         />
                                     )}
+                                {this.props.material.isLoadingStoreHouses && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                             </div>
                             <a className="add"/>
                             <div className="hide buttons-container">
@@ -1056,8 +1090,8 @@ class Index extends Component {
                             </div>
                         </div>
 
-                        {staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                        {staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}
+                        {/*{staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}*/}
+                        {/*{staff.error  && <div className="errorStaff"><h2 style={{textAlign: "center", marginTop: "50px"}}>Извините, что-то пошло не так</h2></div>}*/}
                     </div>
                 </div>
                 <FeedbackStaff />
