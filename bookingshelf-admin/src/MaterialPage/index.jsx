@@ -467,35 +467,38 @@ class Index extends Component {
             })
         });
 
-        const movingArrray = this.state.storeHouseProducts.concat(this.state.expenditureProducts);
-        movingArrray.map(item => {
+        const movingArrray = this.state.storeHouseProducts
+            .concat(this.state.expenditureProducts)
+            .sort((b, a) =>
+                (a.expenditureDateMillis? a.expenditureDateMillis: a.deliveryDateMillis) - (b.expenditureDateMillis? b.expenditureDateMillis: b.deliveryDateMillis)
+            );
+
+        movingArrray.forEach(item => {
+
             if (item.target) {
                 switch (item.target) {
                     case 'INTERNAL':
                         item.target = 'Внутренняя ошибка';
-                        return item;
                         break;
                     case 'DAMAGED':
                         item.target = 'Товар поврежден';
-                        return item;
                         break;
                     case 'CHANGING':
                         item.target = 'Изменения наличия';
-                        return item;
                         break;
                     case 'LOST':
                         item.target = 'Утеря';
-                        return item;
                         break;
                     case 'OTHER':
                         item.target = 'Другое';
-                        return item;
                         break;
                     default:
+                        item.target = '';
 
                 }
             }
         })
+
 
         const movingList = (
             <React.Fragment>
@@ -503,6 +506,7 @@ class Index extends Component {
                     movingArrray.map(movement => {
                             const activeProduct = products && products.find((item) => item.productId === movement.productId);
                             const activeStorehouse = storeHouses && storeHouses.find((item) => item.storehouseId === movement.storehouseId);
+                            const activeUnit = activeProduct && units.find(unit => unit.unitId === activeProduct.unitId)
                         return (
                                 <div className="tab-content-list mb-2" style={{ position: "relative", textAlign: "center" }}>
                                     <div style={{ position: "relative", width: "80px" }}>
@@ -529,7 +533,7 @@ class Index extends Component {
                                         <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Ед. измерения: </span>0</p>
+                                        <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Остаток: </span> 0</p>
