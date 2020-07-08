@@ -990,7 +990,7 @@ class AddAppointment extends React.Component {
                                                                         <div className="search">
                                                                             <input type="search"
                                                                                    placeholder="Введите название услуги"
-                                                                                   style={{width: "185%"}}
+                                                                                   style={{width: "185%", border: 'none'}}
                                                                                    aria-label="Search"
                                                                                    value={servicesSearch}
                                                                                    onChange={this.handleServicesSearch}/>

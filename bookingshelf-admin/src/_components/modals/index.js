@@ -12,3 +12,7 @@ export * from './ClientDetails';
 export * from './NewStaffByMail';
 export * from './AppointmentFromSocket';
 export * from './SettingsSidebar';
+export * from './SettingsSidebar';
+export * from './SettingsSidebar';
+export * from './SettingsSidebar';
+export * from './SettingsSidebar';

@@ -8,7 +8,7 @@
   .present-time-line::before {
     content: attr(data-time);
     position: absolute;
-    left: -27px;
+    left: -47px;
     bottom: 0;
     font-weight: 300;
     font-size: 13px;
@@ -20,6 +20,15 @@
     border: 2px solid #F46A6A;
     box-sizing: border-box;
     border-radius: 15px;
+  }
+  .present-time-line::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    bottom: 0;
+    width: 15px;
+    height: 2px;
+    background: #F46A6A;
   }
 }
 
@@ -699,12 +708,12 @@
     }
 
     .present-time-line {
-      width: 110%;
+      width: 100%;
       height: 2px;
       position: absolute;
       background: #F46A6A;
       z-index: 9001;
-      bottom: 5px;
+      bottom: 0;
     }
 
     .tabs-scroll {
@@ -1649,7 +1658,7 @@
   .row {
     justify-content: space-between;
     margin: 10px 0;
-    align-items: flex-start;
+    align-items: flex-end;
 
     * {
       ::-webkit-scrollbar {
@@ -1742,7 +1751,9 @@
   .appointment-service {
     width: 539px;
     cursor: pointer;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     .dropdown-menu {
 
 
@@ -1833,6 +1844,10 @@
 
     .select-button {
       margin: 0;
+    }
+    .select-color {
+      height: 36px;
+
     }
   }
 
@@ -1928,6 +1943,7 @@
 
   .appointment-price {
     width: 85px;
+    margin-left: 10px;
 
     input {
       width: 72px;
@@ -1944,6 +1960,17 @@
 
   .appointment-note {
     width: 426px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    .company_fields {
+      height: 36px;
+      margin-top: 10px;
+      .name_company_wrapper {
+        margin: 0;
+      }
+    }
 
     textarea {
       background-color: #F3F3F9;
