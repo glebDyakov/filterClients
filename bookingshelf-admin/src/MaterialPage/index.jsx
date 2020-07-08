@@ -506,6 +506,7 @@ class Index extends Component {
                     movingArrray.map(movement => {
                             const activeProduct = products && products.find((item) => item.productId === movement.productId);
                             const activeStorehouse = storeHouses && storeHouses.find((item) => item.storehouseId === movement.storehouseId);
+                            const activeUnit = activeProduct && units.find(unit => unit.unitId === activeProduct.unitId)
                         return (
                                 <div className="tab-content-list mb-2" style={{ position: "relative", textAlign: "center" }}>
                                     <div style={{ position: "relative", width: "80px" }}>
@@ -532,7 +533,7 @@ class Index extends Component {
                                         <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Ед. измерения: </span>0</p>
+                                        <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Остаток: </span> 0</p>
