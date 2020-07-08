@@ -52,7 +52,7 @@ export function menu(state = initialState, action) {
                   "name":"Аналитика",
               },
                 {
-                    "id":"material_menu_id",
+                    "id":"warehouse_menu_id",
                     "url":"/material",
                     "icon":"20.svg",
                     "name":"Учет материалов",
