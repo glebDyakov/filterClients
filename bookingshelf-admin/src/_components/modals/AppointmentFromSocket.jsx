@@ -64,7 +64,7 @@ class AppointmentFromSocket extends React.Component {
     }
 
     render() {
-        const {socket, appointmentSocketMessage, staff, client} = this.props;
+        const {socket, appointmentSocketMessage, company, staff, client} = this.props;
         if (!socket.appointmentSocketMessage) {
             return null
         }
@@ -87,19 +87,19 @@ class AppointmentFromSocket extends React.Component {
             case "APPOINTMENT_CREATED":
                 staffName = payload && payload.staffName
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = payload && payload.online ? 'ОНЛАЙН-ЗАПИСЬ' : ' ЗАПИСЬ В ЖУРНАЛ';
+                socketTitle = payload && payload.online ? 'Онлайн-запись' : 'Запись в журнал';
                 socketFooterText = "Просмотреть запись"
                 break;
             case "APPOINTMENT_DELETED":
                 staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff.lastName ? activeStaff.lastName : ''}`
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
+                socketTitle = `Отменено ${payload.canceledOnline ? 'клиентом' : 'сотрудником'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;
             case "APPOINTMENT_MOVED":
                 staffName = payload && payload.staffName
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
+                socketTitle = 'Запись перенесена'
                 socketFooterText = "Просмотреть запись"
                 break;
             default:
@@ -149,12 +149,11 @@ class AppointmentFromSocket extends React.Component {
                             if (socketFooterText === 'Просмотреть запись') {
                                 this.goToPageCalendar(payload, payload.staffId, wsMessageType)
                             }
-                        }} style={{
-                            color: "#3E90FF",
-                            fontWeight: "600",
-                            margin: "10px 0 0 0",
+                        }}
+                           className="service_go"
+                           style={{
                             cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')
-                        }}>{socketFooterText}</p>
+                        }}>{socketFooterText} → </p>
 
                     </div>
                 </div>

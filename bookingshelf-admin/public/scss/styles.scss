@@ -5654,6 +5654,10 @@ textarea {
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
 
+  p{
+    font-weight: 100;
+  }
+
   @media screen and(max-width: 960px) {
     left: 10px;
   }
@@ -5674,7 +5678,7 @@ textarea {
     min-width: 0;
     height: 20px;
     min-height: 35px;
-    width: 10px !important;
+    width: 13px !important;
 
     span {
       font-size: 2rem;
@@ -5686,8 +5690,9 @@ textarea {
 
     p {
 
+      font-family: "Open Sans", "sans-serif";
       margin: 0 0 5px 0;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 16px;
       line-height: 22px;
       color: #fff;
@@ -5719,7 +5724,14 @@ textarea {
 
     .service_name {
       margin: 0 0 10px 0;
+      font-weight: 100;
     }
+
+  }
+  .service_go{
+    color: #50A5F1;
+    font-weight: 400;
+    margin: 10px 0 0 0;
   }
 }
 

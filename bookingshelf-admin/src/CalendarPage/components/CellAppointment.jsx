@@ -104,7 +104,7 @@ const CellAppointment = (props) => {
             extraServiceText = `и ещё 5+ услуг`;
     }
     const serviceDetails = services && services.servicesList && (services.servicesList.find(service => service.serviceId === appointment.serviceId) || {}).details
-    const minTextAreaHeight = ((currentAppointments.length - 1) ? cellHeight * (currentAppointments.length - 1) : 2);
+    const minTextAreaHeight = ((currentAppointments.length - 1) ? cellHeight * (currentAppointments.length - 1) : 0);
 
     const staffList = appointments && appointments.filter(item => item.appointments && item.appointments.some(localAppointment => localAppointment.appointmentId === appointment.appointmentId));
 
@@ -159,7 +159,7 @@ const CellAppointment = (props) => {
                     : (appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'))
             }
         >
-            <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : ""}`}
+            <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : ""} ${appointment.duration === 900 ? ' notes-title-bordered' : ''}`}
                onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 <span className="notes-buttons-container">
                     {appointment.clientNotCome && <Popover props={{
@@ -408,11 +408,11 @@ const CellAppointment = (props) => {
             cursor: 'ns-resize',
             height: '8px',
             position: 'absolute',
-            bottom: -(resultTextAreaHeight - 5) + 'px',
+            bottom: -(resultTextAreaHeight - 2) + 'px',
             width: '100%',
             zIndex: 9990
         }}>
-            {!!resultTextAreaHeight && <span className="drag-vert"/>}
+            <span className="drag-vert"/>
         </p>
     );
 

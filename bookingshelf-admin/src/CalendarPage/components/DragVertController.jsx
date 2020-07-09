@@ -34,7 +34,7 @@ class DragVertController extends React.Component {
         const res = offsetHeight + e.pageY - changingPos;
         if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
             node.style.height = res + "px";
-            currentTarget.style.bottom = -(res + 3) + "px";
+            currentTarget.style.bottom = -(res - 2) + "px";
 
             const [firstTime] = serviceTimeNode.innerHTML.split('-')
             const resultSecondTime = Math.ceil((res + 10) / cellHeight);
