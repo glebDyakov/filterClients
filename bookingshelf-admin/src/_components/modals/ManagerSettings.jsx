@@ -37,7 +37,6 @@ class ManagerSettings extends React.Component {
         this.sendMessage=this.sendMessage.bind(this);
         this.setterPhone=this.setterPhone.bind(this);
         this.handleChange=this.handleChange.bind(this);
-        // this.getManagers=this.getManagers.bind(this);
         this.closeModal = this.closeModal.bind(this);
 
 
@@ -46,26 +45,20 @@ class ManagerSettings extends React.Component {
         if (this.props.authentication.loginChecked) {
             this.queryInitData()
         }
-        // initializeJs();
     }
 
     queryInitData() {
         this.props.dispatch(calendarActions.getManagers());
-
     }
 
     componentWillReceiveProps(newProps) {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
             this.queryInitData()
         }
-        // if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-        //     this.setState({ openedModal: newProps.client && newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
-        // }
     }
 
     setterPhone(phone){
         const { message } = this.state
-        debugger
         this.setState({ message: { ...message, senderPhone: phone.replace(/[()\- ]/g, '') } })
     }
 
@@ -79,7 +72,6 @@ class ManagerSettings extends React.Component {
             "phone2": "+375298170913"
         }
         this.props.dispatch(calendarActions.addManager(JSON.stringify(manager)));
-
     }
 
     sendMessage(){
@@ -122,42 +114,20 @@ class ManagerSettings extends React.Component {
                         <div className="screen white"></div>
                         <p>Темная</p>
                         <div className="screen black"></div>
-                        {/*<div className="row" style={{margin: 0}}>*/}
-                        {/*    <div style={{paddingTop: '4px', display: 'flex', padding: 0}} className="col-sm-12 mt-2">*/}
-                        {/*        <span className="add-helpers-text">Авто-тема</span>*/}
-                        {/*        /!*<Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>*!/*/}
-
-                        {/*        <span style={{width: 'auto', margin: '0'}} className="justify-content-end check-box">*/}
-                        {/*                                <label>*/}
-                        {/*                                    <input className="form-check-input" type="checkbox"*/}
-                        {/*                                           // checked={isAddCostaff}*/}
-                        {/*                                           // onChange={() => this.setState({isAddCostaff: !this.state.isAddCostaff})}*/}
-                        {/*                                    />*/}
-                        {/*                                    <span style={{margin: '0 0 0 20px'}} className="check"/>*/}
-                        {/*                                </label>*/}
-                        {/*                            </span>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
                     </div>
                     <div className="manager-block">
                         <h5>Ваш менеджер</h5>
                         <div className="contact">
-                            <div style={{position: "relative"}}>
-                                {/*<a onClick={()=>this.openClientStats(client_user)}>*/}
                                     <span className="abbreviation">
-                                {/* {client_user.firstName.substr(0, 1)}*/}
                                     </span>
                                     <p className="manager-name">
-                                        {/*{client_user.firstName} {client_user.lastName}*/} {((managers[0].firstName ? managers[0].firstName : '') + ' ' + (managers[0].lastName ?  managers[0].lastName : ''))}
+                                        {((managers[0] && managers[0].firstName) ? managers[0].firstName : 'Имя') + ' ' + ((managers[0] && managers[0].lastName) ?  managers[0].lastName : 'Фамилия')}
                                     </p>
                                     <p className="manager-questions">Ответит на ваши вопросы</p>
-                                {/*</a>*/}
-                            </div>
                         </div>
-                        <div className="phone contact-details"><span className="phone_logo"></span><p>{managers && managers[0].phone1}</p></div>
-                        <div className="phone contact-details"><span className="phone_logo"></span><p>{managers && managers[0].phone2}</p></div>
-                        <div className="email contact-details"><span className="email_logo"></span><p>{managers && managers[0].email}</p></div>
-                        {/*<div className="skype contact-details"><span className="skype_logo"></span><p>Skype: ttkstk</p></div>*/}
+                        {managers[0] && managers[0].phone1 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone1 ? managers[0].phone1 : ''}</p></div>}
+                        {managers[0] && managers[0].phone2 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone2 ? managers[0].phone2 : ''}</p></div>}
+                        {managers[0] && managers[0].email && <div className="email contact-details"><span className="email_logo"></span><p>{managers[0].email ? managers[0].email : ''}</p></div>}
                     </div>
                     <div className="send-leader">
                         <h5>Написать руководству</h5>

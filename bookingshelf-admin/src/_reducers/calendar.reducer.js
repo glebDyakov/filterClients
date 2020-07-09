@@ -7,7 +7,7 @@ const initialState = {
     isLoadingModalCanceled: false,
     appointmentsCount: [],
     appointmentsCanceled: [],
-    managers: [{}]
+    managers: []
 };
 
 export function calendar(state = initialState, action) {
