@@ -206,7 +206,7 @@ class Index extends PureComponent {
 
     navigateToRedLine() {
         setTimeout(() => {
-            const activeElem = document.getElementsByClassName("present-time-line")[0];
+            const activeElem = document.getElementsByClassName("present-time-line-shadow")[0];
             if (activeElem) {
                 activeElem.scrollIntoView();
             } else {

@@ -34,6 +34,7 @@ class BaseCell extends React.Component {
         const currentCellTime = getCurrentCellTime(props.selectedDays, props.selectedDaysKey, props.time);
         this.state = {
             isPresent: this.getIsPresent(currentCellTime),
+            isPresentShadow: this.getIsPresentShadow(currentCellTime),
             ...filledCell
         };
 
@@ -65,6 +66,12 @@ class BaseCell extends React.Component {
         const { booktimeStep } = this.props.company.settings;
         const step  = booktimeStep / 60;
         return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
+    }
+
+    getIsPresentShadow(currentCellTime) {
+        const { booktimeStep } = this.props.company.settings;
+        const step  = booktimeStep / 60;
+        return currentCellTime <= moment().subtract(1 , 'hour').format("x") && currentCellTime >= moment().subtract(1, 'hour').subtract(step, "minutes").format("x")
     }
 
     onUpdateWorkingStaff(props) {
@@ -182,7 +189,7 @@ class BaseCell extends React.Component {
         } = this.props;
 
 
-        const { cellType, cell, isPresent } = this.state;
+        const { cellType, cell, isPresent, isPresentShadow } = this.state;
 
         if (cellType === cellTypes.CELL_APPOINTMENT) {
             return (
@@ -218,6 +225,7 @@ class BaseCell extends React.Component {
             <React.Fragment>
                 <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
                 {isPresent && <span data-time={time} className="present-time-line" />}
+                {isPresentShadow && <span data-time={time} className="present-time-line-shadow" />}
             </React.Fragment>
         );
 
