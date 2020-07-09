@@ -658,6 +658,9 @@
     }
 
     .fixed-tab {
+      &:first-child{
+        background-color: #f5f5f6;
+      }
       position: sticky;
       position: -webkit-sticky;
       overflow: hidden;
@@ -726,7 +729,7 @@
       height: 2px;
       position: absolute;
       background: #F46A6A;
-      z-index: 10;
+      z-index: 9001;
       bottom: 0;
     }
     .present-time-line-shadow{
@@ -778,7 +781,7 @@
                 left: auto;
                 bottom: auto;
                 top: 10px;
-                z-index: 20;
+                z-index: 9999;
 
                 &::before {
                   left: 0;
@@ -799,7 +802,7 @@
           max-width: 100% !important;
           min-width: 100% !important;
           position: absolute;
-          z-index: 20;
+          z-index: 1;
           top: 0;
           display: block;
           cursor: auto;
