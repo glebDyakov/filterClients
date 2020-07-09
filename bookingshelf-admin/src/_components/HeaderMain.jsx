@@ -11,6 +11,7 @@ import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import {clientService, managersService} from "../_services";
 import {isValidNumber} from "libphonenumber-js";
 import {isValidEmailAddress} from "../_helpers/validators";
+import ManagerSettings from "./modals/ManagerSettings";
 
 
 class HeaderMain extends React.PureComponent {
@@ -28,7 +29,8 @@ class HeaderMain extends React.PureComponent {
                     options: [],
                 },
             },
-            isNotificationDropdown: false
+            isNotificationDropdown: false,
+            openManager: false
         };
 
         this.openModal = this.openModal.bind(this);
@@ -42,6 +44,8 @@ class HeaderMain extends React.PureComponent {
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
         this.handleSearchOutsideClick = this.handleSearchOutsideClick.bind(this);
+        this.closeModalManager = this.closeModalManager.bind(this);
+        this.openModalManager = this.openModalManager.bind(this);
     }
 
     componentDidMount() {
@@ -391,7 +395,7 @@ class HeaderMain extends React.PureComponent {
                                     {authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}
                                     <p style={{fontSize: '11px'}}>{staffType}</p>
                                 </a>
-                                <a className="setting" onClick={this.openModal}/>
+                                <a className="setting" onClick={this.openModalManager}/>
 
                                 {/*<span className="log_in">*/}
                                 {/*    <LogoutPage/>*/}
@@ -422,8 +426,21 @@ class HeaderMain extends React.PureComponent {
                         <UserPhoto/>
                     </div>
                 </div>
+                { this.state.openManager &&
+                <ManagerSettings
+                    onClose={this.closeModalManager}
+                />}
+
             </div>
         );
+    }
+    closeModalManager(){
+        this.setState({...this.state, openManager: false});
+
+    }
+    openModalManager(){
+        this.setState({...this.state, openManager: true});
+
     }
 
     updateClient(client, blacklisted) {

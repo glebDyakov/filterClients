@@ -6,7 +6,8 @@ const initialState = {
     isLoadingModalCount: false,
     isLoadingModalCanceled: false,
     appointmentsCount: [],
-    appointmentsCanceled: []
+    appointmentsCanceled: [],
+    managers: [{}]
 };
 
 export function calendar(state = initialState, action) {
@@ -640,6 +641,12 @@ export function calendar(state = initialState, action) {
             return {
                 ...state,
                 isLoadingReservedTime: false
+            };
+
+        case calendarConstants.GET_MANAGERS_SUCCESS:
+            return {
+                ...state,
+                managers: action.managers
             };
         default:
             return state

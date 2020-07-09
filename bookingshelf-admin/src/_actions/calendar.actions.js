@@ -27,7 +27,12 @@ export const calendarActions = {
     updateAppointment,
     updateAppointmentCheckbox,
     updateAppointmentFinish,
-    deleteAppointmentsNewSocket
+    deleteAppointmentsNewSocket,
+    addManager,
+    sendMessage,
+    getManagers,
+
+
 };
 
 function addAppointment(params, serviceId, staffId, clientId, time1, time2, coStaffs) {
@@ -394,4 +399,89 @@ function approveMovedAppointment(params) {
                 },
             )
     };
+}
+function addManager(manager) {
+    return dispatch => {
+        dispatch(request(true));
+
+        calendarService.addManager(manager)
+            .then(
+                manager => {
+                    dispatch(success(manager));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+    function request(manager) { return { type: calendarConstants.ADD_MANAGER_REQUEST, manager } }
+    function success(manager, staffId) { return { type: calendarConstants.ADD__MANAGER__SUCCESS, manager } }
+    // function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.ADD__MANAGER__FAILURE, error } }
+}
+
+function getManagers() {
+    return dispatch => {
+        dispatch(request());
+        calendarService.getManagers()
+            .then(
+                managers => dispatch(success(managers)),
+                () => dispatch(failure())
+            );
+    };
+    function request() { return { type: calendarConstants.GET_MANAGERS} }
+    function success(managers) { return { type: calendarConstants.GET_MANAGERS_SUCCESS, managers } }
+    function failure() { return { type: calendarConstants.GET_MANAGERS_FAILURE } }
+}
+function addManager(manager) {
+    return dispatch => {
+        dispatch(request(true));
+
+        calendarService.addManager(manager)
+            .then(
+                manager => {
+                    dispatch(success(manager));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+    function request(manager) { return { type: calendarConstants.ADD_MANAGER_REQUEST, manager } }
+    function success(manager, staffId) { return { type: calendarConstants.ADD__MANAGER__SUCCESS, manager } }
+    // function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.ADD__MANAGER__FAILURE, error } }
+}
+function sendMessage(message) {
+    return dispatch => {
+        dispatch(request(true));
+
+        calendarService.sendMessage(message)
+            .then(
+                message => {
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+    function request(manager) { return { type: calendarConstants.ADD_MANAGER_REQUEST, manager } }
+    function success(manager, staffId) { return { type: calendarConstants.ADD__MANAGER__SUCCESS, manager } }
+    // function successTime(id) { return { type: calendarConstants.ADD_APPOINTMENT_SUCCESS_TIME, id } }
+    function failure(error) { return { type: calendarConstants.ADD__MANAGER__FAILURE, error } }
+}
+
+function getManagers() {
+    return dispatch => {
+        dispatch(request());
+        calendarService.getManagers()
+            .then(
+                managers => dispatch(success(managers)),
+                () => dispatch(failure())
+            );
+    };
+    function request() { return { type: calendarConstants.GET_MANAGERS} }
+    function success(managers) { return { type: calendarConstants.GET_MANAGERS_SUCCESS, managers } }
+    function failure() { return { type: calendarConstants.GET_MANAGERS_FAILURE } }
 }
