@@ -62,7 +62,10 @@ class AppointmentFromSocket extends React.Component {
     }
 
     render() {
-        const {socket, appointmentSocketMessage, staff, client} = this.props;
+        const {socket, appointmentSocketMessage, staff, client, company} = this.props;
+
+        const companyTypeId = company.settings && company.settings.companyTypeId;
+
         if (!socket.appointmentSocketMessage) {
             return null
         }
@@ -125,12 +128,12 @@ class AppointmentFromSocket extends React.Component {
                                 {clientName}
                               </p>
                             : <p>Без клиента</p>}
-                        {payload && payload.carBrand
+                        {companyTypeId === 2 &&  payload && payload.carBrand
                             && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong>
                                 {payload.carBrand}
                             </p>
                             }
-                        {payload && payload.carNumber
+                        {companyTypeId === 2 && payload && payload.carNumber
                             && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong>
                                 {payload.carNumber}
                             </p>
@@ -157,8 +160,8 @@ class AppointmentFromSocket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { staff, client, socket, authentication } = state;
-    return { staff, client, socket, authentication };
+    const { staff, client, socket, authentication, company } = state;
+    return { staff, client, socket, authentication, company};
 }
 
 
