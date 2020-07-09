@@ -23,6 +23,7 @@
   }
   .present-time-line-shadow::before{
     background: transparent;
+    display: none;
     border: none;
   }
 
@@ -359,9 +360,13 @@
     -webkit-overflow-scrolling: touch;
     overflow: auto;
 
+    height: calc(100vh - 150px);
     width: 100%;
     position: relative;
     z-index: 0;
+    .tab-pane {
+      height: 100%;
+    }
 
     @media screen {
       @media (max-width: $mob-width) {
@@ -378,11 +383,9 @@
 
 
   .calendar-list {
-
-
+    height: 100%;
     position: relative;
-    //overflow: auto;
-    padding-top: 37px;
+    overflow: auto;
 
     .tab-content-list {
       position: relative;
@@ -655,12 +658,13 @@
     }
 
     .fixed-tab {
-      position: absolute;
+      position: sticky;
       overflow: hidden;
-      z-index: -1;
+      z-index: 99999;
       min-width: 100%;
       height: 32px;
       top: 0;
+      width: max-content;
 
       .tab-content-list {
         .cell.hours {
@@ -731,9 +735,7 @@
 
     .tabs-scroll {
       display: inline-block;
-      height: 76vh;
-      position: sticky;
-      position: -webkit-sticky;
+      position: absolute;
       top: 42px;
       min-width: 100%;
       z-index: 0;
@@ -817,7 +819,7 @@
               height: 18px;
               cursor: pointer;
               position: absolute;
-              left: 0;
+              right: -5px;
               top: 0;
               bottom: 0;
               margin: auto;
@@ -972,10 +974,10 @@
                   //margin: 0;
                   position: absolute;
                   right: 5px;
-                  top: 10px;
+                  top: 5px;
                   min-width: 0;
                   height: 15px;
-                  width: 20px !important;
+                  width: 15px !important;
 
                   span {
                     font-size: 2rem;
@@ -1158,6 +1160,7 @@
             position: relative;
             display: flex;
             width: 100%;
+            height: 29px;
 
             justify-content: space-between;
             align-items: center;

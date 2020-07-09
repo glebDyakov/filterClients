@@ -80,6 +80,8 @@ const CellAppointment = (props) => {
         }))
     }
 
+    const companyTypeId = company.settings && company.settings.companyTypeId;
+
     const {booktimeStep} = company.settings;
     const cellHeight = 30;
     const step = booktimeStep / 60;
@@ -159,9 +161,6 @@ const CellAppointment = (props) => {
         >
             <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : ""}`}
                onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
-                <span id={`${appointment.appointmentId}-service-time`} className="service_time">
-                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
-                                                                        </span>
                 <span className="notes-buttons-container">
                     {appointment.clientNotCome && <Popover props={{
                         className: "client-not-come",
@@ -210,6 +209,10 @@ const CellAppointment = (props) => {
                     <Popover props={{className: "super-visit", title: "Мультивизит"}}/>}
                </span>
 
+                <span id={`${appointment.appointmentId}-service-time`} className="service_time">
+                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                                                                        </span>
+
             </p>
             <p onMouseDown={(e) => e.preventDefault()} id={textAreaId} className={`notes-container ${appointment.color.toLowerCase() + "-color"}`}
                style={{
@@ -251,12 +254,12 @@ const CellAppointment = (props) => {
                     }}
                        className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
-                    {appointment.carBrand
+                    {companyTypeId === 2 && appointment.carBrand
                     && <p><strong>Марка авто: </strong>
                         {appointment.carBrand}
                     </p>
                     }
-                    {appointment.carNumber
+                    {companyTypeId === 2 && appointment.carNumber
                     && <p><strong>Гос. номер: </strong>
                         {appointment.carNumber}
                     </p>

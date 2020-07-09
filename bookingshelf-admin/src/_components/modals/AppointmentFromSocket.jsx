@@ -68,7 +68,7 @@ class AppointmentFromSocket extends React.Component {
         if (!socket.appointmentSocketMessage) {
             return null
         }
-
+        const companyTypeId = company.settings && company.settings.companyTypeId;
         const {payload: payloadFromProps, wsMessageType} = this.props.socket.appointmentSocketMessage;
 
         const payload = Array.isArray(payloadFromProps) ? payloadFromProps[0] : payloadFromProps
@@ -130,12 +130,12 @@ class AppointmentFromSocket extends React.Component {
                         {clientName
                             ? <p>Клиент: {clientName}</p>
                             : <p>Без клиента</p>}
-                        {payload && payload.carBrand
+                        {companyTypeId === 2 && payload && payload.carBrand
                         && <p style={{textDecoration: 'underline'}}>Марка авто:
                             {payload.carBrand}
                         </p>
                         }
-                        {payload && payload.carNumber
+                        {companyTypeId === 2 && payload && payload.carNumber
                         && <p style={{textDecoration: 'underline'}}>Гос. номер:
                             {payload.carNumber}
                         </p>
@@ -167,8 +167,8 @@ class AppointmentFromSocket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const {staff, client, socket, authentication} = state;
-    return {staff, client, socket, authentication};
+    const {staff, client, socket, authentication, company} = state;
+    return {staff, client, socket, authentication, company};
 }
 
 
