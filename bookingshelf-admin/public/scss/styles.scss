@@ -1857,8 +1857,8 @@ input {
     span {
       cursor: pointer;
       display: block;
-      width: 21px;
-      height: 21px;
+      width: 25px;
+      height: 25px;
 
       &:hover {
         opacity: 0.7;
@@ -1957,8 +1957,8 @@ input {
       background-size: 100% auto;
       margin-left: 0;
       display: block;
-      width: 22px;
-      height: 22px;
+      width: 25px;
+      height: 25px;
       cursor: pointer;
       @media screen and(max-width: $laptop-width) {
         width: 16px;

@@ -39,6 +39,7 @@ const CellAppointment = (props) => {
         updateAppointmentForDeleting
     } = props;
 
+
     let totalDuration = appointment.duration;
     let appointmentServices = [];
     let totalCount = 0;
@@ -55,6 +56,7 @@ const CellAppointment = (props) => {
         serviceName: appointment.serviceName,
         serviceId: appointment.serviceId
     });
+
 
     if (appointment.hasCoAppointments) {
         appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
@@ -155,7 +157,7 @@ const CellAppointment = (props) => {
                     : (appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'))
             }
         >
-            <p className="notes-title"
+            <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : ""}`}
                onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 <span id={`${appointment.appointmentId}-service-time`} className="service_time">
                     {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
@@ -229,7 +231,7 @@ const CellAppointment = (props) => {
             {!isStartMovingVisit && <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
                 <div className="cell msg-inner">
                     <p>
-                        <p className="new-text">Запись {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                        <p className="new-text">Запись&nbsp;<p className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p></p>
                         <button type="button" onClick={() => {
                             dispatch(appointmentActions.toggleSelectedNote(null));
                             dispatch(appointmentActions.toggleStartMovingVisit(false))
@@ -283,7 +285,7 @@ const CellAppointment = (props) => {
                                            }}
                                            type="checkbox"/>
                                     <span style={{width: '18px', height: '18px', margin: '-3px 0 0 13px'}}
-                                          className="check"/>
+                                          className="check-box-circle"/>
                                 </label>
                             }
                         </div>
@@ -319,7 +321,17 @@ const CellAppointment = (props) => {
                         </p>
                     })
                     }
+
+                    <p className="all-price">Итого:&nbsp;<span className="price">{totalPrice}&nbsp;BYN</span></p>
+
                     <hr className="block-line"/>
+
+                    <span className="img-container">
+                                         {/*<img className="rounded-circle"*/}
+                                         {/*     src={staff.includes(workingStaffElement.id).imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
+                                         {/*     alt=""/>*/}
+                                     </span>
+                    <p>{workingStaffElement.firstName + " " + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>
 
                     <p style={{
                         fontWeight: 'bold',
