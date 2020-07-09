@@ -5,7 +5,7 @@
 }
 
 .col-tab:nth-child(2) {
-  .present-time-line::before {
+  .present-time-line::before, .present-time-line-shadow::before {
     content: attr(data-time);
     position: absolute;
     left: -47px;
@@ -21,8 +21,12 @@
     box-sizing: border-box;
     border-radius: 15px;
   }
+  .present-time-line-shadow::before{
+    background: transparent;
+    border: none;
+  }
 
-  .present-time-line::after {
+  .present-time-line::after, .present-time-line-shadow::after {
     content: '';
     position: absolute;
     left: -12px;
@@ -30,6 +34,9 @@
     width: 15px;
     height: 2px;
     background: #F46A6A;
+  }
+  .present-time-line-shadow::after{
+    background: transparent;
   }
 }
 
@@ -438,6 +445,7 @@
 
 
       .cell {
+        height: 26px;
         margin-right: 5px;
         border-radius: 4px;
         min-height: 18px;
@@ -706,7 +714,7 @@
 
     }
 
-    .present-time-line {
+    .present-time-line, .present-time-line-shadow  {
       width: 100%;
       height: 2px;
       position: absolute;
@@ -714,6 +722,10 @@
       z-index: 9001;
       bottom: 0;
     }
+    .present-time-line-shadow{
+      background: transparent;
+    }
+
 
     .tabs-scroll {
       display: inline-block;
