@@ -118,7 +118,7 @@ class UserSettings extends React.Component {
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
-                            <form className="form-group mr-3 ml-3"  name="form">
+                            <form className="form-group form-user-setting mr-3 ml-3"  name="form">
                                 <div className="row">
                                     <div style={{ position: 'relative' }} className="calendar col-xl-12">
                                         <p>Имя</p>

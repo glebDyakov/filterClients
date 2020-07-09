@@ -2331,7 +2331,7 @@ input {
     border-radius: 30px;
 
     border: none;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 18px;
     color: #555B6D;
     padding: 10px 30px 10px 24px;
@@ -2343,7 +2343,7 @@ input {
     }
 
     @media screen and(max-width: $laptop-width) {
-      font-size: 13px;
+      font-size: 10px;
       padding-left: 25px;
     }
   }
@@ -5490,6 +5490,16 @@ textarea {
 @media screen and (max-width: 960px) {
   .modal---modal-overlay---3D5Nr, .feedback-staff, .client-detail, .header-client-detail, .delete-notes-modal, .move-visit-modal, .add-black-list-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal {
     margin: 0;
+  }
+}
+
+.modal_user_setting {
+  .modal-content {
+    .form-user-setting {
+      max-height: 615px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
   }
 }
 
