@@ -21,6 +21,7 @@
     box-sizing: border-box;
     border-radius: 15px;
   }
+
   .present-time-line::after {
     content: '';
     position: absolute;
@@ -128,8 +129,6 @@
   .calendar {
     height: 100%;
     padding: 0;
-
-
 
 
     .select-date {
@@ -352,7 +351,7 @@
   .days-container {
     -webkit-overflow-scrolling: touch;
     overflow: auto;
-    
+
     width: 100%;
     position: relative;
     z-index: 0;
@@ -1652,8 +1651,32 @@
 }
 
 .addApointmentEachBlock {
+  .removeService-button {
+    position: relative;
 
+    &::before {
+      width: 15px;
+      height: 1px;
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #2A3042;
+      transform: translate(-50%, -50%) rotate(45deg);
 
+    }
+
+    &::after {
+      width: 1px;
+      height: 15px;
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #2A3042;
+      transform: translate(-50%, 40%) rotate(45deg);
+    }
+  }
 
   .row {
     justify-content: space-between;
@@ -1689,6 +1712,19 @@
       padding-left: 15px !important;
     }
   }
+
+  .second-service-container {
+    width: 539px;
+    display: flex;
+    justify-content: space-between;
+    .appointment-price {
+      margin-left: 0;
+    }
+    .appointment-discont {
+      width: 426px;
+    }
+  }
+
   .appointment-start,
   .appointment-service,
   .appointment-timing,
@@ -1754,6 +1790,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+
     .dropdown-menu {
 
 
@@ -1845,6 +1882,7 @@
     .select-button {
       margin: 0;
     }
+
     .select-color {
       height: 36px;
 
@@ -1930,13 +1968,16 @@
   }
 
   .appointment-discont {
-    width: 105px;
 
     input {
       width: 39px;
       padding: 0;
       text-align: center;
       font-size: 13px !important;
+      height: 36px !important;
+      background: #F3F3F9 !important;
+      border-radius: 2px !important;
+      border: none !important;
 
     }
   }
@@ -1954,6 +1995,11 @@
       line-height: 18px;
       color: #2A3042;
 
+      height: 36px !important;
+      background: #F3F3F9 !important;
+      border-radius: 2px !important;
+      border: none !important;
+
 
     }
   }
@@ -1967,6 +2013,7 @@
     .company_fields {
       height: 36px;
       margin-top: 10px;
+
       .name_company_wrapper {
         margin: 0;
       }
@@ -2279,12 +2326,67 @@
   }
 }
 
-.addApointmentEachBlock {
-  position: relative;
+.appointments-container {
+  margin: 0 15px 0 0;
   box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
   border-radius: 5px;
   padding: 25px 25px 10px 30px;
   background: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 735px;
+
+  .appointments-line {
+    margin: 25px 0;
+    background: #2A3042;
+    opacity: 0.1;
+  }
+
+  .block-style2 {
+    margin: 20px;
+
+    .add-helpers-container {
+      .form-check-input[type="checkbox"] {
+        display: none;
+
+        + .check-box-circle {
+          border-radius: 50%;
+          background: rgba(0,0,0,0) !important;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          transition: 200ms !important;
+          box-sizing: border-box;
+          border: 1px solid rgba(128, 128, 128, 0.3);
+
+        }
+
+        &:checked {
+
+          + .check-box-circle {
+            transition: 200ms;
+            background: #FFFFFF;
+            border: 4px solid #50A5F1;
+            box-sizing: border-box;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.addApointmentEachBlock {
+  position: relative;
+
   max-width: 734px;
 
 
@@ -2319,7 +2421,8 @@
 }
 
 .addServiceButton {
-  padding: 25px 30px;
+  margin: 20px 0;
+
   display: inline-block;
 
   p {
@@ -2372,6 +2475,7 @@
       line-height: 22px;
       color: #FFFFFF;
       padding: 10px 64px;
+
       &:hover {
         opacity: 1;
       }
@@ -2393,11 +2497,68 @@
       padding: 9px 10px !important;
 
     }
+
+    .rbt-input-hint {
+      display: none !important;
+    }
+
+    .rbt {
+
+      .rbt-menu {
+        padding: 0;
+        border: none;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+        li {
+          .dropdown-item {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eeeff1;
+
+            div {
+              display: flex;
+              flex-direction: column;
+
+              div {
+                display: flex;
+                flex-direction: column;
+
+                span {
+                  font-size: 10px;
+                  line-height: 14px;
+                  color: #555B6D;
+
+                  &:not(:last-child) {
+                    margin-bottom: 5px;
+                  }
+                }
+
+
+                &:nth-child(1) {
+                  flex-direction: row;
+                  justify-content: flex-start !important;
+
+                  span {
+                    font-weight: 600;
+                    font-size: 10px;
+                    line-height: 14px;
+                    color: #555B6D;
+
+                    &::after {
+                      content: '\a0'; // whitespace
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 .mobileButton {
-  display: none;
+  display: none !important;
   width: 100%;
   padding: 0 15px;
   @media screen and(max-width: $tablet-width) {
