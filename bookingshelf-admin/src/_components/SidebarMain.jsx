@@ -276,8 +276,8 @@ class SidebarMain extends React.Component {
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/></React.Fragment> : 'Без клиента'}
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
-                                    {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
-                                    {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
+                                    {companyTypeId === 2 && appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
+                                    {companyTypeId === 2 && appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -338,8 +338,8 @@ class SidebarMain extends React.Component {
                                 <div style={{width: "40%", wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}`: '')}</p></React.Fragment> : 'Без клиента'}<br/>
                                     {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
-                                    {appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
-                                    {appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
+                                    {companyTypeId === 2 && appointment.carBrand && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong> {appointment.carBrand}</p>}
+                                    {companyTypeId === 2 && appointment.carNumber && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong> {appointment.carNumber}</p>}
                                     <p className="service_time" style={{textTransform: 'capitalize'}}
                                         // style={{width: "30%", textAlign: "left"}}
                                     >
@@ -550,8 +550,8 @@ class SidebarMain extends React.Component {
                                                         <div style={{width: "40%",  wordBreak: 'break-word'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p><strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p><br/> </React.Fragment> : 'Без клиента'}
                                                             {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone }</p>}
-                                                            {appointment.carBrand && <p><strong style={{ textDecoration: 'underline' }}>Марка авто: </strong> {appointment.carBrand}</p>}
-                                                            {appointment.carNumber && <p><strong style={{ textDecoration: 'underline' }}>Гос. номер: </strong> {appointment.carNumber}</p>}
+                                                            {companyTypeId === 2 && appointment.carBrand && <p><strong style={{ textDecoration: 'underline' }}>Марка авто: </strong> {appointment.carBrand}</p>}
+                                                            {companyTypeId === 2 && appointment.carNumber && <p><strong style={{ textDecoration: 'underline' }}>Гос. номер: </strong> {appointment.carNumber}</p>}
                                                             <p className="service_time" style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
                                                             >

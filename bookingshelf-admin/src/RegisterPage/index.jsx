@@ -147,7 +147,7 @@ class Index extends React.Component {
                     <div className="sign_up">
                         <div>
                             <form name="form" onSubmit={this.handleSubmit}>
-                                <p>Зарегистрируйтесь и получите бесплатный пробный период 30 дней</p>
+                                <p>Зарегистрируйтесь и получите бесплатный пробный период 14 дней</p>
                                 <span>Название компании</span>
                                 <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')} onBlur={this.handleBlur}  name="companyName" value={user.companyName} onChange={this.handleChange} />
 
