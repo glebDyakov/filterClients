@@ -218,7 +218,7 @@ class BaseCell extends React.Component {
         let clDate = closedDates && closedDates.some((st) =>
             parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
             parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));
-        const wrapperClassName = 'cell col-tab'
+        const wrapperClassName = 'cell cell-height col-tab'
             + (notExpired ? '' : ' expired')
             + (clDate ? ' closedDateTick' : '');
         const content = (
