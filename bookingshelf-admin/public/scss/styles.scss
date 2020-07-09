@@ -2814,11 +2814,11 @@ margin: 0;
   label {
     margin-bottom: 1rem;
     cursor: pointer;
-    padding-left: 64px;
+    padding-left: 65px;
     position: relative;
     @media screen {
       @media (max-width: $laptop-width) {
-        padding-left: 30px;
+        padding-left: 65px;
       }
     }
   }
