@@ -94,7 +94,6 @@
       font-style: normal;
       font-size: 16px;
       line-height: 22px;
-      //margin-bottom: 20px;
     }
     p{
       font-weight: 100;
@@ -107,17 +106,12 @@
       background-position-x: -10px;
       background-position-y: -10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
-      //margin-bottom: 20px;
-      //border: 1px solid #e9ecef;
-      //border-radius: 0.5rem;
-      //border-radius: 0.5rem;
     }
     .white{
-      background-image: url("../img/white_theme.png");
+      background-image: url("../img/white_theme.svg");
     }
     .black{
-      //background-color: #222736;
-      background-image: url("../img/black_theme.png");
+      background-image: url("../img/black_theme.svg");
     }
   }
   .manager-block{
@@ -150,7 +144,10 @@
         left: 0;
         width: 40px;
         height: 40px;
-      }
+        background-image: url("../img/Andrei.jpg");
+        background-size: contain;
+        background-position-y: -1px;
+    }
       p{
         margin-left: 55px;
         font-family: "Open Sans", "sans-serif";

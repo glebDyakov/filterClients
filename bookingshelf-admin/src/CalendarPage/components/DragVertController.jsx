@@ -29,7 +29,7 @@ class DragVertController extends React.Component {
 
         const { booktimeStep } = company.settings
         const step  = booktimeStep / 60;
-        const cellHeight = 31;
+        const cellHeight = 30;
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
         if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
@@ -50,7 +50,7 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
-        const cellHeight = 31;
+        const cellHeight = 30;
 
         const { appointments, staff, company, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
