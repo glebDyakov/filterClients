@@ -41,11 +41,7 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        if(!access(9) && props.match.params.activeTab==='permissions'){
-            props.history.push('/denied')
-        }
-
-        if(!access(10)){
+        if(!access(13)){
             props.history.push('/denied')
         }
 
