@@ -84,7 +84,7 @@ const CellAppointment = (props) => {
     const companyTypeId = company.settings && company.settings.companyTypeId;
 
     const {booktimeStep} = company.settings;
-    const cellHeight = 30;
+    const cellHeight = 31;
     const step = booktimeStep / 60;
     const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * cellHeight;
 
