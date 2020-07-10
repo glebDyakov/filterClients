@@ -238,13 +238,6 @@ class Index extends PureComponent {
         $('.notes').css({'cursor': 'default'});
         $('textarea').css({'cursor': 'default'});
 
-        $('.add').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-                $('.buttons-container').fadeIn(400);
-                $('.buttons-container').classList.addClass('rotate');
-
-        });
 
         if (prevState.typeSelected !== this.state.typeSelected) {
             this.setWorkingStaff()

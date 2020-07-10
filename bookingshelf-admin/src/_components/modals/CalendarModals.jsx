@@ -24,7 +24,8 @@ class CalendarModals extends Component {
             appointmentEdited: null,
             reserved: false,
             minutesReservedtime:[],
-            staffId: null
+            staffId: null,
+            handleOpen: false
 
         }
         this.updateClient = this.updateClient.bind(this);
@@ -38,6 +39,7 @@ class CalendarModals extends Component {
         this.newAppointment = this.newAppointment.bind(this);
         this.newReservedTime = this.newReservedTime.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
+        this.handleOpenModal = this.handleOpenModal.bind(this);
     }
     updateClient(client){
         this.props.updateClient(client);
@@ -56,6 +58,13 @@ class CalendarModals extends Component {
             this.setState({ editClient: false, client_working: null, isModalShouldPassClient, newClientModal: true});
         }
     }
+
+    handleOpenModal(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({handleOpen: !this.state.handleOpen});
+    }
+
     newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
         this.props.newAppointment(appointment, serviceId, staffId, clientId, coStaffs);
     }
@@ -110,9 +119,9 @@ class CalendarModals extends Component {
 
         return(<React.Fragment>
                     {type==='day' && workingStaff.timetable && workingStaff.timetable[0] &&
-                    <a className="add" href="#"/>}
-                    <div className="hide buttons-container">
-                        <div className="p-4">
+                    <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>}
+                    <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
+                        <div className="buttons">
                             <button type="button"
                                     onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers)}
                                     className="button">Визит
