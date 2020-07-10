@@ -334,6 +334,10 @@ export function staff(state = initialState, action) {
                         "permissionCode": 9
                     },
                     {
+                        "name": 'Филиалы',
+                        "permissionCode": 14
+                    },
+                    {
                         "name": 'Оплата',
                         "permissionCode": 11
                     }
