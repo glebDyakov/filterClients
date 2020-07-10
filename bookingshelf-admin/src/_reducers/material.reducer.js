@@ -32,7 +32,8 @@ export function material(state= initialState, action) {
         case materialConstants.GET_PRODUCT_SUCCESS:
             return {
                 ...state,
-                products: action.products,
+                products: action.products.content,
+                finalTotalProductsPages: action.products.totalPages,
                 isLoadingProducts: false
             };
         case materialConstants.TOGGLE_PRODUCT:
