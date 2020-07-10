@@ -905,6 +905,10 @@ class AddAppointment extends React.Component {
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
         const cl = clientChecked
 
+        const appointmentsAllPrice = appointment.reduce((prev, current) => {
+            return prev + current.price
+        }, 0) || 0;
+
         let servicesDisabling = services[0].servicesList && services[0].servicesList.some((service) => {
             const durationForCurrentStaff = this.getDurationForCurrentStaff(service);
             return parseInt(durationForCurrentStaff) / 60 <= parseInt(timeArrange)
@@ -1417,6 +1421,11 @@ class AddAppointment extends React.Component {
                                                 }
 
                                                 <hr className="gray-line"/>
+
+                                                <p className="appointments-all-price">
+                                                    Общая сумма: {appointmentsAllPrice} BYN
+                                                </p>
+
                                                 <div className="calendar_modal_buttons text-center">
                                                     <button
                                                         style={{minWidth: '48%', margin: '0'}}

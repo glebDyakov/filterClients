@@ -15,13 +15,14 @@
     line-height: 18px;
     text-align: center;
     color: #fff;
-    padding: 4px 5px 2px 5px;
+    padding: 2px 3px 2px 2px;
     background: #F46A6A;
     border: 2px solid #F46A6A;
     box-sizing: border-box;
     border-radius: 15px;
   }
-  .present-time-line-shadow::before{
+
+  .present-time-line-shadow::before {
     background: transparent;
     display: none;
     border: none;
@@ -30,13 +31,14 @@
   .present-time-line::after, .present-time-line-shadow::after {
     content: '';
     position: absolute;
-    left: -12px;
+    left: -20px;
     bottom: 0;
-    width: 15px;
+    width: 20px;
     height: 2px;
     background: #F46A6A;
   }
-  .present-time-line-shadow::after{
+
+  .present-time-line-shadow::after {
     background: transparent;
   }
 }
@@ -364,6 +366,7 @@
     width: 100%;
     position: relative;
     z-index: 0;
+
     .tab-pane {
       height: 100%;
     }
@@ -460,6 +463,7 @@
         &-height {
           height: 26px;
         }
+
         &.day-active {
           border-top: 2px solid #ed1b24;
           border-top-left-radius: 0;
@@ -508,7 +512,7 @@
 
         &.hours {
           border-radius: 0 5px 5px 0;
-          padding: 7px 4px 7px 5px !important;
+          padding: 4px 4px 3px 5px !important;
           text-align: center;
           z-index: 5;
 
@@ -658,9 +662,10 @@
     }
 
     .fixed-tab {
-      &:first-child{
+      &:first-child {
         background-color: #f5f5f6;
       }
+
       position: sticky;
       position: -webkit-sticky;
       overflow: hidden;
@@ -724,7 +729,7 @@
 
     }
 
-    .present-time-line, .present-time-line-shadow  {
+    .present-time-line, .present-time-line-shadow {
       width: 100%;
       height: 2px;
       position: absolute;
@@ -732,7 +737,8 @@
       z-index: 9001;
       bottom: 0;
     }
-    .present-time-line-shadow{
+
+    .present-time-line-shadow {
       background: transparent;
     }
 
@@ -815,7 +821,7 @@
 
             + .check-box-circle {
               border-radius: 50%;
-              background: rgba(0,0,0,0) !important;
+              background: rgba(0, 0, 0, 0) !important;
               display: flex;
               justify-content: space-between;
               align-items: center;
@@ -854,7 +860,7 @@
               position: absolute;
               left: 0 !important;
               right: 0;
-              top: 34px !important;
+              top: 27px !important;
               cursor: initial;
               background: none;
               width: auto;
@@ -919,6 +925,32 @@
                 .msg-inner-button-wrapper-2 {
                   border-radius: 0;
                   background-color: #50A5F1;
+                  position: relative;
+                  &::before {
+                    background: #FBFBFB;
+                    opacity: 0.25;
+                    border-radius: 5px;
+                    height: 36px;
+                    width: 1px;
+                    position: absolute;
+                    left: 0px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    content: '';
+                  }
+
+                  &::after {
+                    background: #FBFBFB;
+                    opacity: 0.25;
+                    border-radius: 5px;
+                    height: 36px;
+                    position: absolute;
+                    width: 1px;
+                    right: 0px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    content: '';
+                  }
                 }
 
                 .msg-inner-button-wrapper-3 {
@@ -969,16 +1001,16 @@
                 }
 
 
-
                 .close {
                   margin: 0 5px 0 0 !important;
-                  background: url(../img/icons/cancel.svg) no-repeat center;
+                  background: url(../img/icons/cancel_white.svg) no-repeat center;
                   background-size: contain;
                   padding: 0;
                   //margin: 0;
                   position: absolute;
                   right: 5px;
-                  top: 5px;
+                  top: 13px;
+                  transform: translateY(-50%);
                   min-width: 0;
                   height: 15px;
                   width: 15px !important;
@@ -1013,7 +1045,7 @@
                     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
                     border-radius: 5px 5px 0px 0px;
                     padding-left: 10px;
-                    height: 33px;
+                    height: 26px;
                     line-height: 33px;
                     border: none;
                     color: #fff;
@@ -1066,6 +1098,7 @@
                     color: #495057;
                     margin: 15px 0 12px 0;
                     display: flex;
+
                     .price {
                       width: unset;
                       font-weight: 400;
@@ -1074,6 +1107,8 @@
                       color: #495057;
                     }
                   }
+
+
 
                   &.new-button {
                     border: none;
@@ -1088,6 +1123,51 @@
                     line-height: 19px;
                   }
 
+                }
+
+                .staff-block-title {
+                  font-weight: 600;
+                  font-size: 13px;
+                  margin-bottom: 10px;
+                  color: #495057;
+
+                }
+
+                .staff-block {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  width: 100%;
+
+                  .name-staff {
+                    font-size: 13px;
+                    color: #50A5F1;
+                    margin-left: 10px;
+
+                  }
+
+                  .img-container {
+                    width: 36px;
+                    height: 36px;
+                    img {
+                      width: 36px;
+                      height: 36px;
+                      max-height: unset;
+
+                    }
+                  }
+                }
+
+                .visit-note {
+                  display: flex;
+                  font-size: 13px;
+                  color: #495057;
+                  margin: 15px 0 5px 0;
+                  .bold-text {
+                    font-weight: 600;
+                    font-size: 13px;
+                    color: #495057;
+                  }
                 }
 
                 .new-text + .client-name-book {
@@ -1577,7 +1657,7 @@
           &.selected {
             .msg-client-info {
               left: 0 !important;
-              top: 33px !important;
+              top: 27px !important;
               transform: translateY(-100%);
               bottom: auto !important;
 
@@ -1653,47 +1733,69 @@
   .start-modal {
 
     .modal-content {
-      width: 200px;
+      width: fit-content;
+      max-width: fit-content;
       margin: auto;
+      border-radius: 10px;
 
       .modal-header {
-        padding: 5px 0;
-        height: 40px;
+        padding: 20px 112px 20px 20px;
+        background-color: #fff;
+        box-shadow: none;
+        border: none;
 
         h4 {
-          line-height: 28px;
+          font-size: 24px !important;
+          color: #495057;
         }
 
-        .close {
-          height: 15px;
-          margin: 10px 0 0 0;
-        }
-
-        .modal-title {
-          font-size: 14px;
-        }
       }
 
-      button {
-        min-width: 0;
-        width: 45%;
-        float: left;
-        height: auto;
+      .modal-body {
         padding: 0;
-        min-height: 25px;
+        background: #F8F8FB;
 
-        &.gray-button {
-          float: right;
+        .form-group {
+          margin: 40px 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          button {
+            font-size: 16px;
+            line-height: 22px;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 10px 65px;
+            background: #50A5F1;
+            border-radius: 30px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+            &.gray-button {
+              margin: 10px 0 0 0;
+              background: none;
+              font-size: 16px;
+              line-height: 22px;
+              text-align: center;
+              color: #F46A6A;
+            }
+          }
         }
       }
+
+      .close {
+
+      }
+
+
     }
   }
 
-  .move-visit-modal {
-    .modal-content {
-      width: 275px !important;
-    }
-  }
 }
 
 
@@ -1816,9 +1918,11 @@
     width: 539px;
     display: flex;
     justify-content: space-between;
+
     .appointment-price {
       margin-left: 0;
     }
+
     .appointment-discont {
       width: 426px;
     }
@@ -1997,6 +2101,8 @@
       margin-top: 7px;
       padding: 9px 13px;
     }
+
+
   }
 
   .appointment-staff {
@@ -2122,6 +2228,57 @@
       background-color: #F3F3F9;
       padding: 9px 10px;
 
+    }
+  }
+
+
+}
+
+@media screen {
+  @media (max-width: $mob-width) {
+
+
+    .appointments-container {
+      overflow: unset !important;
+      max-height: unset !important;
+      padding: 15px 10px !important;
+
+      .addApointmentEachBlock {
+        padding: 0 !important;
+
+        .appointment-start,
+        .appointment-service,
+        .appointment-timing,
+        .appointment-staff,
+        .appointment-discont,
+        .appointment-price,
+        .appointment-note {
+          margin-bottom: 20px;
+        }
+
+        .appointment-timing {
+          width: 100%;
+
+          select {
+            width: 100%;
+          }
+        }
+
+        .appointment-service {
+          width: 100%;
+        }
+
+        .appointment-price {
+          width: 50%;
+          margin-left: 0;
+        }
+
+        .second-service-container {
+          .appointment-discont {
+            width: 50%;
+          }
+        }
+      }
     }
   }
 }
@@ -2450,7 +2607,7 @@
 
         + .check-box-circle {
           border-radius: 50%;
-          background: rgba(0,0,0,0) !important;
+          background: rgba(0, 0, 0, 0) !important;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -2557,6 +2714,14 @@
 
   }
 
+  .appointments-all-price {
+    font-size: 16px;
+    line-height: 22px;
+    color: #2A3042;
+    margin-top: 19px;
+    text-align: center;
+  }
+
   .mobileButton {
     display: flex;
     justify-content: center;
@@ -2573,10 +2738,14 @@
       font-size: 16px;
       line-height: 22px;
       color: #FFFFFF;
-      padding: 10px 64px;
+      height: 42px;
+      width: 213px;
+      transition: 200ms;
 
       &:hover {
         opacity: 1;
+        transition: 200ms;
+
       }
     }
   }
@@ -2652,6 +2821,12 @@
           }
         }
       }
+    }
+  }
+
+  @media screen {
+    @media (max-width: $mob-width) {
+      margin-top: 7px;
     }
   }
 }

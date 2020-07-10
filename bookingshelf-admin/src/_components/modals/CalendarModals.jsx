@@ -115,11 +115,11 @@ class CalendarModals extends Component {
                         <div className="p-4">
                             <button type="button"
                                     onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers)}
-                                    className="button">Новая запись
+                                    className="button">Визит
                             </button>
                             <button type="button"
                                     onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null)}
-                                    className="button">Зарезервированное время
+                                    className="button">Резерв времени
                             </button>
                         </div>
                         <div className="arrow"/>

@@ -57,6 +57,7 @@ const CellAppointment = (props) => {
         serviceId: appointment.serviceId
     });
 
+    const activeStaff = staff && staff.find(item => workingStaffElement.staffId === item.staffId);
 
     if (appointment.hasCoAppointments) {
         appointments.forEach(staffAppointment => staffAppointment.appointments.forEach(currentAppointment => {
@@ -210,7 +211,7 @@ const CellAppointment = (props) => {
                </span>
 
                 <span id={`${appointment.appointmentId}-service-time`} className="service_time">
-                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
+                    {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}
                                                                         </span>
 
             </p>
@@ -222,7 +223,7 @@ const CellAppointment = (props) => {
                }}>
                                             <span className="notes-container-message">
                                                     <span
-                                                        className="client-name">{appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : ''}</span>
+                                                        className="client-name">{appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента'}</span>
                                                     <ul>
                                                         <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
                                                     </ul>
@@ -234,7 +235,7 @@ const CellAppointment = (props) => {
             {!isStartMovingVisit && <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
                 <div className="cell msg-inner">
                     <p>
-                        <p className="new-text">Запись&nbsp;<p className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')} - {moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p></p>
+                        <p className="new-text">Запись&nbsp;<p className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p></p>
                         <button type="button" onClick={() => {
                             dispatch(appointmentActions.toggleSelectedNote(null));
                             dispatch(appointmentActions.toggleStartMovingVisit(false))
@@ -242,17 +243,20 @@ const CellAppointment = (props) => {
                     </p>
 
 
-                    {appointment.clientId &&
                     <p style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
                        className="client-name-book">
                         <span className="client-title">Клиент:</span>
-                    </p>}
+                    </p>
+
+                    {!appointment.clientId &&
+                    <p className="name">Без клиента</p>}
+
                     {appointment.clientId &&
                     <p data-target=".client-detail" onClick={(e) => {
                         $('.client-detail').modal('show')
                         handleUpdateClient(appointment.clientId)
                     }}
-                       className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p>}
+                       className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : 'Без клиента')}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
                     {companyTypeId === 2 && appointment.carBrand
                     && <p><strong>Марка авто: </strong>
@@ -329,18 +333,19 @@ const CellAppointment = (props) => {
 
                     <hr className="block-line"/>
 
-                    <span className="img-container">
-                                         {/*<img className="rounded-circle"*/}
-                                         {/*     src={staff.includes(workingStaffElement.id).imageBase64 ? "data:image/png;base64," + workingStaffElement.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
-                                         {/*     alt=""/>*/}
-                                     </span>
-                    <p>{workingStaffElement.firstName + " " + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>
 
-                    <p style={{
-                        fontWeight: 'bold',
-                        color: '#000'
-                    }}>{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
-                    {appointment.description && <p>Заметка: {appointment.description}</p>}
+                    <p className="staff-block-title">Мастер</p>
+
+                    <div className="staff-block">
+                         <span className="img-container">
+                                         <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                              className="rounded-circle" alt="staff image"/>
+                                     </span>
+
+                        <p className="name-staff">{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
+                    </div>
+
+                    {appointment.description && <p className="visit-note"><p className="bold-text">Заметка:</p>&nbsp;{appointment.description}</p>}
                     {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                         <div className="msg-inner-buttons">
                             <div
