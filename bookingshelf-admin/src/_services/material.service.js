@@ -183,7 +183,7 @@ function toggleProduct(params, edit) {
         .then((data) => handleResponse(data, requestOptions));
 }
 
-function getProducts() {
+function getProducts(pageNum) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -195,7 +195,7 @@ function getProducts() {
         headers: authHeader()
     };
 
-    return fetch(`${origin}${config.warehouseApiUrl}/products`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/products?pageNum=${pageNum}&pageSize=10`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 

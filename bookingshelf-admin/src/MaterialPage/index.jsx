@@ -142,6 +142,7 @@ class Index extends Component {
         this.handleAllFeedbackClick = this.handleAllFeedbackClick.bind(this);
         this.addStaffEmail = this.addStaffEmail.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
+        this.handlePageClick = this.handlePageClick.bind(this);
         this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
         this.handleResetClick = this.handleResetClick.bind(this);
         this.setTab = this.setTab.bind(this);
@@ -290,7 +291,7 @@ class Index extends Component {
     handlePageClick(data) {
         const { selected } = data;
         const currentPage = selected + 1;
-        this.props.dispatch(staffActions.getFeedback(currentPage));
+        this.props.dispatch(materialActions.getProducts(currentPage));
     };
 
     handleDrogEnd(dragDropItems) {
@@ -370,7 +371,7 @@ class Index extends Component {
             unit_working,  unitOpen, storeHouse_working, storeHouseOpen} = this.state;
 
 
-        const { products, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
+        const { products, finalTotalProductsPages, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const daysAreSelected = selectedDays.length > 0;
@@ -631,7 +632,8 @@ class Index extends Component {
                                     </div>
                                 </div>
                                 {this.state.products.length ?
-                                    this.state.products.map(product => {
+                                    <React.Fragment>
+                                        {this.state.products.map(product => {
                                         const activeCategory = categories && categories.find((item) => item.categoryId === product.categoryId);
 
                                         return (
@@ -666,7 +668,13 @@ class Index extends Component {
                                                 </div>
                                             )
                                         }
-                                    ) : ( !this.props.material.isLoadingProducts &&
+                                    )}
+                                    <Paginator
+                                        finalTotalPages={finalTotalProductsPages}
+                                        onPageChange={this.handlePageClick}
+                                    />
+                                    </React.Fragment>
+                                    : ( !this.props.material.isLoadingProducts &&
                                 <EmptyContent
                                     img="2box"
                                     title="Нет товаров"
