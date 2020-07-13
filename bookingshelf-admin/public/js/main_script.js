@@ -67,6 +67,25 @@ function initializeJs() {
         }, 200);
     });
 
+    $('body').click(function (e) {
+        if ($(window).width() < 961) {
+            if (e.target.className !=='sidebar-notification') {
+                $('.sidebar').slideUp(200);
+            }
+        }
+    });
+    $('.sidebar .mob-menu-closer').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('.sidebar').slideUp(200);
+    });
+
+    // $('.sidebar').click(function (e) {
+    //     e.stopPropagation();
+    // });
+    $('.setting_mob .setting').click(function () {
+        $('.modal_user_setting').modal('show');
+    });
 
     // $('.holiday-list .delete-tab').click(function () {
     //     $(this).parents('.holiday-list').toggleClass('hide', 300);

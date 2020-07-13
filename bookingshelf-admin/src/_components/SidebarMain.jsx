@@ -27,7 +27,7 @@ class SidebarMain extends React.Component {
             userSettings: false,
             isOpenDropdownButtons: false,
             openManager: false,
-            openUserSettings: false
+            openUserSettings: true
 
         };
 
@@ -157,6 +157,18 @@ class SidebarMain extends React.Component {
             document.removeEventListener('click', this.handleDropdownButtons, false);
         }
 
+    }
+
+    openModalUserSettings() {
+        // const {onOpen} = this.props;
+        //
+        // return onOpen();
+
+        $('.modal_user_setting').modal('show');
+    }
+
+    onCloseUserSettings() {
+        $('.modal_user_setting').modal('hide');
     }
 
     handleDropdownButtons() {
@@ -419,9 +431,6 @@ class SidebarMain extends React.Component {
         return (
             <React.Fragment>
                 <HeaderMain/>
-                {this.state.openUserSettings &&
-                <UserSettings />
-                }
                 <AppointmentFromSocket/>
 
                 <ul ref={this.setWrapperRef} className={"sidebar " + (collapse && ' sidebar_collapse')}>
@@ -445,7 +454,7 @@ class SidebarMain extends React.Component {
                                      src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + authentication.user.profile.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}
                                      alt=""/>
                             </div>
-                            <p onClick={() => this.handleOpenUserSettings()} className="firm-name"
+                            <p onClick={() => this.openModalUserSettings()} className="firm-name"
                                style={{float: "left", fontWeight: 600}}>
                                 {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
                                 <p style={{fontSize: '14px', fontWeight: 300}}>{staffType}</p>
@@ -727,9 +736,6 @@ class SidebarMain extends React.Component {
                 <ManagerSettings
                     onClose={this.handleOpenManagerMenu}
                 />}
-
-
-
             </React.Fragment>
 
 
