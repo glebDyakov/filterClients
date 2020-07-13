@@ -232,7 +232,7 @@ function createServiceProducts(params) {
         .then((data) => handleResponse(data, requestOptions));
 }
 
-function getServiceProducts() {
+function getServiceProducts(searchValue) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -243,7 +243,7 @@ function getServiceProducts() {
         headers: authHeader()
     };
 
-    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function updateServiceProduct(params, serviceProductId) {
