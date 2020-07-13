@@ -74,8 +74,6 @@ class TabScroll extends React.Component {
         return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
     }
 
-
-
     render() {
         const {company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays} = this.props;
         const {numbers} = this.state;
@@ -98,29 +96,35 @@ class TabScroll extends React.Component {
         return (
             <div className="tabs-scroll">
                 <DndProvider backend={Backend}>
-                    {numbers && numbers.map((time, key) =>
-                        <div key={`number-${key}`} className={"tab-content-list " + listClass + (this.getIsPresent(selectedDays, 0, time) ? ' present-line-block' : '')}>
-                            <TabScrollLeftMenu time={time}/>
-                            {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
-                                <BaseCell
-                                    checkForCostaffs={checkForCostaffs}
-                                    getCellTime={getCellTime}
-                                    key={`working-staff-${staffKey}`}
-                                    numberKey={key}
-                                    staffKey={staffKey}
-                                    changeTime={changeTime}
-                                    changeTimeFromCell={changeTimeFromCell}
-                                    handleUpdateClient={handleUpdateClient}
-                                    numbers={numbers}
-                                    services={services}
-                                    workingStaffElement={workingStaffElement}
-                                    updateAppointmentForDeleting={updateAppointmentForDeleting}
-                                    selectedDaysKey={type === 'day' ? 0 : staffKey}
-                                    time={time}
-                                    moveVisit={moveVisit}
-                                />
-                            )}
-                        </div>
+                    {numbers && numbers.map((time, key) => {
+                        const currentCellTime = getCurrentCellTime(selectedDays, 0, time);
+                        const isPresent = this.getIsPresent(currentCellTime);
+
+                        return (
+                            <div key={`number-${key}`} className={"tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
+                                {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
+                                <TabScrollLeftMenu time={time}/>
+                                {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
+                                    <BaseCell
+                                        checkForCostaffs={checkForCostaffs}
+                                        getCellTime={getCellTime}
+                                        key={`working-staff-${staffKey}`}
+                                        numberKey={key}
+                                        staffKey={staffKey}
+                                        changeTime={changeTime}
+                                        changeTimeFromCell={changeTimeFromCell}
+                                        handleUpdateClient={handleUpdateClient}
+                                        numbers={numbers}
+                                        services={services}
+                                        workingStaffElement={workingStaffElement}
+                                        updateAppointmentForDeleting={updateAppointmentForDeleting}
+                                        selectedDaysKey={type === 'day' ? 0 : staffKey}
+                                        time={time}
+                                        moveVisit={moveVisit}
+                                    />
+                                )}
+                            </div>
+                        )}
                     )}
                 </DndProvider>
                 <DragVertController/>
