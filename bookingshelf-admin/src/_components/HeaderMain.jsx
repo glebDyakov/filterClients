@@ -30,7 +30,8 @@ class HeaderMain extends React.PureComponent {
                 },
             },
             isNotificationDropdown: false,
-            openManager: false
+            openManager: false,
+            openUserSettings: false
         };
 
         this.openModal = this.openModal.bind(this);
@@ -46,6 +47,8 @@ class HeaderMain extends React.PureComponent {
         this.handleSearchOutsideClick = this.handleSearchOutsideClick.bind(this);
         this.closeModalManager = this.closeModalManager.bind(this);
         this.openModalManager = this.openModalManager.bind(this);
+        this.handleOutsideSettingsModalClick = this.handleOutsideSettingsModalClick.bind(this);
+        this.handleOpenSettingsUserModal = this.handleOpenSettingsUserModal.bind(this);
     }
 
     componentDidMount() {
@@ -82,6 +85,19 @@ class HeaderMain extends React.PureComponent {
         } else {
             document.removeEventListener('click', this.handleSearchOutsideClick, false);
         }
+        if (this.state.openUserSettings) {
+            document.addEventListener('click', this.handleOutsideSettingsModalClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideSettingsModalClick, false);
+        }
+    }
+
+    handleOpenSettingsUserModal() {
+        this.setState({openUserSettings: true});
+    }
+
+    handleOutsideSettingsModalClick() {
+        this.setState({openUserSettings: false})
     }
 
     handleSearchOutsideClick() {
@@ -386,14 +402,21 @@ class HeaderMain extends React.PureComponent {
                                     }}/>
                                 </div>
                                 <div className="img-container" data-toggle="modal" data-target=".modal_photo">
-                                    <img
-                                        src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}/>
-
+                                    <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}/>
                                 </div>
 
-                                <a className="firm-name" onClick={this.openModal}>
+                                <a className={"firm-name user-dropdown" + (this.state.openUserSettings ? " opened" : '')} onClick={this.handleOpenSettingsUserModal}>
                                     {authentication && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName ? authentication.user.profile.lastName : ''}
                                     <p style={{fontSize: '11px'}}>{staffType}</p>
+                                    {this.state.openUserSettings &&
+                                    <div className="user-settings-dropdown">
+                                        <ul>
+                                            <li onClick={this.openModal}>Настройки профиля</li>
+                                            <li><LogoutPage/></li>
+                                        </ul>
+                                    </div>
+                                    }
+
                                 </a>
                                 <a className="setting" onClick={this.openModalManager}/>
 
@@ -404,6 +427,8 @@ class HeaderMain extends React.PureComponent {
                         </div>
 
                         <settingsSidebar/>
+
+
 
                         <UserSettings onClose={this.onClose}/>
                         <ClientDetails

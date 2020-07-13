@@ -1559,6 +1559,10 @@
               line-height: 1.5;
               overflow-y: hidden;
 
+              font-size: 13px;
+              line-height: 18px;
+              color: #495057;
+
               .client-name {
                 font-weight: 600;
                 font-size: 13px;
@@ -1919,6 +1923,10 @@
     @media (max-width: $tablet-width) {
       padding-right: 30px !important;
       padding-left: 15px !important;
+
+      .row {
+        margin: 0 !important;
+      }
     }
   }
 
@@ -2253,6 +2261,15 @@
 
       .addApointmentEachBlock {
         padding: 0 !important;
+
+        .title {
+          @media screen {
+            @media (max-width: $mob-width) {
+              margin-bottom: 0;
+              padding-bottom: 15px !important;
+            }
+          }
+        }
 
         .appointment-start,
         .appointment-service,
