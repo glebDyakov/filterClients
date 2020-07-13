@@ -5,6 +5,7 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import InputCounter from "../InputCounter";
 import {servicesActions, materialActions} from '../../_actions';
+import moment from "./AddAppointment";
 
 class AddService extends React.Component {
     constructor(props) {
@@ -39,7 +40,8 @@ class AddService extends React.Component {
             allStaffs: props.staffs && props.staffs,
             group: props.group && props.group,
             services: props.services && props.services,
-            deletedProductsList: []
+            deletedProductsList: [],
+            materialsSearch: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -55,6 +57,8 @@ class AddService extends React.Component {
         this.removeMaterial = this.removeMaterial.bind(this);
         this.handleChangeProduct = this.handleChangeProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
+        this.handleMaterialsSearch = this.handleMaterialsSearch.bind(this);
+        this.handleChooseProduct = this.handleChooseProduct.bind(this);
 
     }
 
@@ -73,6 +77,7 @@ class AddService extends React.Component {
         this.setState({ staffs });
         if(this.state.editServiceItem){
             this.props.dispatch(servicesActions.getServiceProducts());
+            this.props.dispatch(materialActions.getUnits());
         }
 
     }
@@ -104,7 +109,7 @@ class AddService extends React.Component {
     }
 
     render() {
-        const {service, editServiceItem, colors, message, staffs, group, allStaffs, services}=this.state;
+        const {service, editServiceItem, colors, message, staffs, group, allStaffs, services, materialsSearch}=this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
 
@@ -135,7 +140,9 @@ class AddService extends React.Component {
                                         <li><a><span
                                             className={group.color.toLowerCase() + " " + 'color-circle ml-0'}/><span
                                             className={group.color.toLowerCase()}><span
-                                            className="items-color"><span>{group.name}</span></span></span></a>
+                                            className="items-color"><span>
+                                            {group.name}
+                                            </span></span></span></a>
                                         </li>
                                     </div>
                                     }
@@ -207,33 +214,99 @@ class AddService extends React.Component {
                                     {this.state.service.usingMaterials &&
                                         <React.Fragment>
                                             <p>Поиск материалов и услуг</p>
-                                            {service && service.serviceProducts && service.serviceProducts.map((item, index) =>
 
-                                                <div className="row" style={{position: "relative"}}>
-                                                    <div className="col-xl-6 input_limited_wrapper_description">
-                                                        <p></p>
-                                                        <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}
-                                                                value={service.serviceProducts[index].productId}>
-                                                            <option value="">Выберите материал</option>
+                                            {/*start*/}
+                                            {service && service.serviceProducts && service.serviceProducts.map((item, index) =>{
+                                                const activeProduct = this.props.material.products.find(currentProduct => item.productId === currentProduct.productId)
+                                                const activeUnit = activeProduct && this.props.material.units.find(currentUnit => activeProduct.unitId === currentUnit.unitId);
+                                            return <div className="select-color dropdown mb-3 border-color">
+
+                                                {
+                                                    // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
+                                                    service && service.serviceProducts &&
+                                                        <a onClick={() => this.setState({ materialsSearch: '' })}
+                                                           className={
+                                                            // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
+                                                               'select-button dropdown-toggle select-material'}
+                                                           data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '') + (activeUnit ? `, ${activeUnit.unitName}` : '' )) :"Выберите необходимый материал") }
+                                                            <span
+                                                                className="color-circle"/><span
+                                                                className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
+                                                        </a>}
+
+                                                <ul className="dropdown-menu">
+                                                    <li className="dropdown-item">
+                                                        <div className="row align-items-center content clients" style={{margin: "0 -15px", padding: '0 8px', height: '52px', width: "calc(100% + 30px)"}}>
+                                                            <div className="search col-7">
+                                                                <input type="search" placeholder="Введите название товара" style={{width: "185%"}}
+                                                                       aria-label="Search"
+                                                                       value={materialsSearch} onChange={this.handleMaterialsSearch}
+                                                                />
+                                                                <button className="search-icon" type="submit"/>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li className="services_list_wrapper">
+
+                                                        <ul>
+                                                            {/*{this.getServiceList(index)}*/}
+
+
                                                             {this.props.material.products.filter(product => service.serviceProducts
                                                                 .filter((elem, elemIndex) => elemIndex !== index)
-                                                                .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => <option value={product.productId}>{product.productName}</option>)}
-                                                        </select>
+                                                                .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => {
+
+                                                            return(<li className="dropdown-item">
+                                                                <a onClick={() => this.handleChooseProduct(product, index)}>
+
+                                                                                {product && product.productName }
+
+                                                                </a>
+                                                            </li>)
+                                                            })}
 
 
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                                <div className="arrow-dropdown"><i></i></div>
 
-                                                    </div>
-                                                    <div className="col-xl-6">
-                                                        <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}
-                                                            name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
-                                                    </div>
-                                                    {index !== 0 && <button className="close"  style={{position:"absolute", right: "-60px", top: "8px", zIndex: "99"}} onClick={()=>this.removeMaterial(index)}>x</button>}
+                                                <div className="select-material">
+                                                    <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}
+                                                                   name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
                                                 </div>
+                                                {index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
+                                            </div>})}
+
+
+                                            {/*end*/}
+                                        {/*    {service && service.serviceProducts && service.serviceProducts.map((item, index) =>*/}
+
+                                        {/*        <div className="row" style={{position: "relative"}}>*/}
+                                        {/*            <div className="col-xl-6 input_limited_wrapper_description">*/}
+                                        {/*                <p></p>*/}
+                                        {/*                <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}*/}
+                                        {/*                        value={service.serviceProducts[index].productId}>*/}
+                                        {/*                    <option value="">Выберите материал</option>*/}
+                                        {/*                    {this.props.material.products.filter(product => service.serviceProducts*/}
+                                        {/*                        .filter((elem, elemIndex) => elemIndex !== index)*/}
+                                        {/*                        .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => <option value={product.productId}>{product.productName}</option>)}*/}
+                                        {/*                </select>*/}
+
+
+
+                                        {/*            </div>*/}
+                                        {/*            <div className="col-xl-6">*/}
+                                        {/*                <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}*/}
+                                        {/*                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />*/}
+                                        {/*            </div>*/}
+                                        {/*            {index !== 0 && <button className="close"  style={{position:"absolute", right: "-60px", top: "8px", zIndex: "99"}} onClick={()=>this.removeMaterial(index)}>x</button>}*/}
+                                        {/*        </div>*/}
 
 
 
 
-                                        )}
+                                        {/*)}*/}
                                         <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2"
                                        onClick={() => {
                                            const updatedService = { ...service};
@@ -369,6 +442,20 @@ class AddService extends React.Component {
         )
     }
 
+    handleMaterialsSearch({target: { value }}){
+        this.setState({
+            materialsSearch: value,
+        });
+
+        if (value.length >= 3) {
+            this.props.dispatch(materialActions.getProducts(1, value));
+        }
+        if (value.length === 0) {
+            this.props.dispatch(materialActions.getProducts(1, value));
+        }
+    }
+
+
     deleteProduct(elem){
 
         const deletedList = this.state.deletedProductsList;
@@ -398,6 +485,17 @@ class AddService extends React.Component {
 
         // this.deletedProductsList()
         this.setState({ service, deletedProductsList });
+    }
+
+    handleChooseProduct(product, index){
+        const { service, deletedProductsList } = this.state;
+        const updatedValue = parseInt(product.productId);
+        service.serviceProducts[index].productId = updatedValue;
+        const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
+        deletedProductsList.splice(deletedIndex, 1);
+
+        this.setState({ service, deletedProductsList });
+
     }
 
     handleDurationChange(e) {

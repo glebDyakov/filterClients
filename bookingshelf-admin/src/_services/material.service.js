@@ -183,7 +183,7 @@ function toggleProduct(params, edit) {
         .then((data) => handleResponse(data, requestOptions));
 }
 
-function getProducts(pageNum) {
+function getProducts(pageNum, searchValue) {
     const requestOptions = {
         method: 'GET',
         crossDomain: true,
@@ -195,7 +195,7 @@ function getProducts(pageNum) {
         headers: authHeader()
     };
 
-    return fetch(`${origin}${config.warehouseApiUrl}/products?pageNum=${pageNum}&pageSize=10`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/products?pageNum=${pageNum}&pageSize=10${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 

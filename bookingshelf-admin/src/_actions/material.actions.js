@@ -192,10 +192,10 @@ function toggleProduct(params, edit) {
     function successTime(product) { return { type: materialConstants.MATERIAL_SUCCESS_TIME, product } }
 }
 
-function getProducts(pageNum = 1) {
+function getProducts(pageNum = 1, searchValue) {
     return dispatch => {
         dispatch(request())
-        materialService.getProducts(pageNum)
+        materialService.getProducts(pageNum, searchValue)
             .then(
                 products => dispatch(success(products)),
             );

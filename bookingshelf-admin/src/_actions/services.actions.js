@@ -258,10 +258,10 @@ function createServiceProducts(params) {
     function failure(error) { return { type: servicesConstants.CREATE_SERVICE_PRODUCTS_FAILURE, error } }
 }
 
-function getServiceProducts() {
+function getServiceProducts(searchValue) {
     return dispatch => {
         dispatch(request());
-        servicesService.getServiceProducts()
+        servicesService.getServiceProducts(searchValue)
             .then(
                 serviceProducts => dispatch(success(serviceProducts)),
                 err => dispatch(failure(err))
