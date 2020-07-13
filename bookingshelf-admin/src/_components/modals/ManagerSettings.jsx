@@ -30,7 +30,8 @@ class ManagerSettings extends React.Component {
                 senderName: '',
                 senderPhone: '',
                 text: ''
-            }
+            },
+            messageIsSentModalOpen: false
         };
 
         this.addManager = this.addManager.bind(this);
@@ -40,6 +41,7 @@ class ManagerSettings extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.handleMessageIsSentModal = this.handleMessageIsSentModal.bind(this);
 
     }
 
@@ -51,6 +53,19 @@ class ManagerSettings extends React.Component {
 
     }
 
+
+    handleMessageIsSentModal() {
+        if (this.state.messageIsSentModalOpen) {
+            this.setState({messageIsSentModalOpen: false});
+        } else {
+            this.setState({messageIsSentModalOpen: true});
+            setTimeout(() => {
+                this.setState({messageIsSentModalOpen: false});
+            }, 2000);
+
+            this.setState({message: {senderEmail: '', senderName: '', senderPhone: '', text: ''}});
+        }
+    }
 
 
     queryInitData() {
@@ -84,6 +99,8 @@ class ManagerSettings extends React.Component {
         const {message} = this.state;
         message.senderPhone = message.senderPhone.startsWith('+') ? message.senderPhone : `+${message.senderPhone}`;
         this.props.dispatch(calendarActions.sendMessage(message));
+
+        this.handleMessageIsSentModal();
     }
 
     handleChange(e) {
@@ -150,10 +167,10 @@ class ManagerSettings extends React.Component {
                         {/*{managers[0] && managers[0].phone1 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone1 ? managers[0].phone1 : ''}</p></div>}*/}
                         {/*{managers[0] && managers[0].phone2 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone2 ? managers[0].phone2 : ''}</p></div>}*/}
                         {/*{managers[0] && managers[0].email && <div className="email contact-details"><span className="email_logo"></span><p>{managers[0].email ? managers[0].email : ''}</p></div>}*/}
-                        <div className="phone contact-details"><span className="phone_logo"></span><p>+375 24 112 4444</p>
+                        <div className="phone contact-details"><span className="phone_logo"></span><a href="tel:+375 24 112 4444">+375 24 112 4444</a>
                         </div>
                         <div className="email contact-details"><span className="email_logo"></span>
-                            <p>Andrey.skr@online-zapis.com</p></div>
+                            <a href="mailto:Andrey.skr@online-zapis.com">Andrey.skr@online-zapis.com</a></div>
                     </div>
                     <div className="send-leader">
                         <h5>Написать руководству</h5>
@@ -212,6 +229,21 @@ class ManagerSettings extends React.Component {
                         onClick={this.sendMessage}>Отправить
                     </button>
                 </div>
+
+                {this.state.messageIsSentModalOpen &&
+                <div className="message-is-sent-wrapper">
+                    <div className="message-is-sent-modal">
+                        <button onClick={this.handleMessageIsSentModal} className="close"></button>
+                        <div className="modal-body">
+                            <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
+                            <p className="body-text">
+                                Сообщение отправлено
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                }
+
             </div>
 
 

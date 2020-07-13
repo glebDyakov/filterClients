@@ -439,16 +439,16 @@
       position: relative;
       margin-bottom: 5px;
 
-      &:nth-child(4n)::before {
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        height: 1px;
-        right: 0;
-        background: #495057;
-        border-radius: 5px;
-        content: '';
-      }
+      //&:nth-child(4n)::before {
+      //  position: absolute;
+      //  bottom: -3px;
+      //  left: 0;
+      //  height: 1px;
+      //  right: 0;
+      //  background: #495057;
+      //  border-radius: 5px;
+      //  content: '';
+      //}
 
       .present-cell {
         position: relative;
@@ -689,6 +689,17 @@
       &.list-5 {
         &:nth-child(12n) {
 
+          &::before {
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            height: 1px;
+            right: 0;
+            background: #495057;
+            border-radius: 5px;
+            content: '';
+          }
+
           &.loading {
             border-bottom: 1px solid transparent;
           }
@@ -697,9 +708,33 @@
 
       &.list-10 {
         &:nth-child(6n) {
-
+          &::before {
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            height: 1px;
+            right: 0;
+            background: #495057;
+            border-radius: 5px;
+            content: '';
+          }
           &.loading {
             border-bottom: 1px solid transparent;
+          }
+        }
+      }
+
+      &.list-15 {
+        &:nth-child(4n) {
+          &::before {
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            height: 1px;
+            right: 0;
+            background: #495057;
+            border-radius: 5px;
+            content: '';
           }
         }
       }
@@ -1594,6 +1629,10 @@
               line-height: 1.5;
               overflow-y: hidden;
 
+              font-size: 13px;
+              line-height: 18px;
+              color: #495057;
+
               .client-name {
                 font-weight: 600;
                 font-size: 13px;
@@ -1954,6 +1993,10 @@
     @media (max-width: $tablet-width) {
       padding-right: 30px !important;
       padding-left: 15px !important;
+
+      .row {
+        margin: 0 !important;
+      }
     }
   }
 
@@ -2288,6 +2331,15 @@
 
       .addApointmentEachBlock {
         padding: 0 !important;
+
+        .title {
+          @media screen {
+            @media (max-width: $mob-width) {
+              margin-bottom: 0;
+              padding-bottom: 15px !important;
+            }
+          }
+        }
 
         .appointment-start,
         .appointment-service,
