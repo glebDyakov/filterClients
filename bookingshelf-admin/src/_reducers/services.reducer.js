@@ -40,6 +40,11 @@ export function services(state= {}, action) {
                 ...state,
                 isLoading: false
             }
+        case servicesConstants.GET_SERVICE_PRODUCTS_REQUEST:
+            return {
+                ...state,
+                status: 208
+            }
         case servicesConstants.GET_SERVICES_SUCCESS:
             return {
                 ...state,
@@ -164,6 +169,12 @@ export function services(state= {}, action) {
             return {
                 ...state,
                 services: servicesGroupsDeleted
+            };
+        case servicesConstants.GET_SERVICE_PRODUCTS_SUCCESS:
+
+            return {
+                ...state,
+                serviceProducts: action.serviceProducts
             };
         default:
             return state
