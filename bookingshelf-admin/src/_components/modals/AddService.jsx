@@ -4,15 +4,20 @@ import PropTypes from 'prop-types';
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import InputCounter from "../InputCounter";
+import {servicesActions, materialActions} from '../../_actions';
 
 class AddService extends React.Component {
     constructor(props) {
         super(props);
+        const serviceProducts = (props.services.serviceProducts || []).filter(item => item.serviceId === props.group_working.serviceId)
         this.state={
-            service: props.group_working && props.editServiceItem ? {...props.group_working, "serviceProducts": props.group_working.serviceProducts ? props.group_working.serviceProducts:[{
+            service: (props.group_working && props.editServiceItem)
+                ? {
+                ...props.group_working, usingMaterials: !!serviceProducts.length, "serviceProducts": serviceProducts.length ? serviceProducts: [{
                     "amount": '',
                     "productId": ''
-                }]}:{
+                }]
+            } : {
                 "name":"",
                 "details":"",
                 "priceFrom":'',
@@ -33,7 +38,8 @@ class AddService extends React.Component {
             staffs: props.staffs && props.staffs,
             allStaffs: props.staffs && props.staffs,
             group: props.group && props.group,
-            services: props.services && props.services
+            services: props.services && props.services,
+            deletedProductsList: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -48,6 +54,7 @@ class AddService extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.removeMaterial = this.removeMaterial.bind(this);
         this.handleChangeProduct = this.handleChangeProduct.bind(this);
+        this.deleteProduct = this.deleteProduct.bind(this);
 
     }
 
@@ -64,11 +71,24 @@ class AddService extends React.Component {
             }
         })
         this.setState({ staffs });
+        if(this.state.editServiceItem){
+            this.props.dispatch(servicesActions.getServiceProducts());
+        }
+
     }
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({services:newProps.services});
+        }
+        if ( JSON.stringify(this.props.services.serviceProducts) !==  JSON.stringify(newProps.services.serviceProducts)) {
+            const serviceProducts = newProps.services.serviceProducts.filter(item => item.serviceId === this.state.service.serviceId)
+
+            this.setState({service: {...this.state.service, usingMaterials: !!serviceProducts.length, serviceProducts: serviceProducts.length ? serviceProducts : [{
+                        "amount": '',
+                        "productId": ''
+                    }]
+            }});
         }
     }
 
@@ -86,6 +106,7 @@ class AddService extends React.Component {
     render() {
         const {service, editServiceItem, colors, message, staffs, group, allStaffs, services}=this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
 
         const optionList = this.getOptionList()
 
@@ -194,7 +215,9 @@ class AddService extends React.Component {
                                                         <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}
                                                                 value={service.serviceProducts[index].productId}>
                                                             <option value="">Выберите материал</option>
-                                                            {this.props.material.products.map(product => <option value={product.productId}>{product.productName}</option>)}
+                                                            {this.props.material.products.filter(product => service.serviceProducts
+                                                                .filter((elem, elemIndex) => elemIndex !== index)
+                                                                .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => <option value={product.productId}>{product.productName}</option>)}
                                                         </select>
 
 
@@ -346,6 +369,13 @@ class AddService extends React.Component {
         )
     }
 
+    deleteProduct(elem){
+
+        const deletedList = this.state.deletedProductsList;
+        deletedList.push(elem);
+        this.setState({deletedProductsList: deletedList })
+    }
+
     handleChange(e) {
         const { name, value } = e.target;
         const { service } = this.state;
@@ -358,11 +388,16 @@ class AddService extends React.Component {
 
     handleChangeProduct(e, index) {
         const { name, value } = e.target;
-        const { service } = this.state;
-        service.serviceProducts[index][name] = value
+        const { service, deletedProductsList } = this.state;
+        const updatedValue = parseInt(value);
+        service.serviceProducts[index][name] = updatedValue
+        if (name === 'productId') {
+            const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
+            deletedProductsList.splice(deletedIndex, 1)
+        }
 
-
-        this.setState({ service });
+        // this.deletedProductsList()
+        this.setState({ service, deletedProductsList });
     }
 
     handleDurationChange(e) {
@@ -409,14 +444,17 @@ class AddService extends React.Component {
     removeMaterial(index){
         const {service} = this.state;
         const removedMaterialList = { ...service};
+        this.deleteProduct(removedMaterialList.serviceProducts[index]);
         removedMaterialList.serviceProducts.splice(index, 1);
         this.setState({service: removedMaterialList});
+
+
 
     }
 
     updateService(){
         const { updateService } = this.props;
-        const { service, staffs } = this.state;
+        const { service, staffs, deletedProductsList } = this.state;
         service.staffs && service.staffs.forEach((item, key) => {
             const activeStaff = staffs.find(localStaff => localStaff.staffId === item.staffId)
             if (activeStaff) {
@@ -424,7 +462,7 @@ class AddService extends React.Component {
             }
         })
 
-        return updateService(service);
+        return updateService(service, deletedProductsList);
     };
 
     addService(){
