@@ -62,6 +62,7 @@ class AddProvider extends React.Component {
         this.addClient = this.addClient.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.removeContact = this.removeContact.bind(this);
+        this.fixNumber = this.fixNumber.bind(this);
     }
 
     componentDidMount() {
@@ -385,8 +386,9 @@ class AddProvider extends React.Component {
         const { client } = this.state;
 
         const finalClient = this.getFinalClient(client)
+        const finalClientCorrect = this.fixNumber(finalClient);
 
-        this.props.dispatch(materialActions.toggleSupplier(finalClient, true))
+        this.props.dispatch(materialActions.toggleSupplier(finalClientCorrect, true))
     };
 
     addClient(){
@@ -394,8 +396,19 @@ class AddProvider extends React.Component {
         const { client } = this.state;
 
         const finalClient = this.getFinalClient(client)
-        this.props.dispatch(materialActions.toggleSupplier(finalClient))
+
+        const finalClientCorrect = this.fixNumber(finalClient);
+        this.props.dispatch(materialActions.toggleSupplier(finalClientCorrect))
     };
+
+    fixNumber(finalClient){
+
+        finalClient.contactPersons.forEach(item => {
+            item.phone1 = item.phone1.startsWith('+') ? item.phone1 : `+${item.phone1}`;
+            item.phone2 = item.phone2.startsWith('+') ? item.phone2 : `+${item.phone2}`;
+        });
+        return finalClient;
+    }
 
     getFinalClient(client) {
         client.contactPersons = client.contactPersons.filter(contactPerson => (
