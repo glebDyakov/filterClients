@@ -2505,9 +2505,42 @@
 
   .client-info {
     position: relative;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border: none;
+    padding: 0;
+    * {
+      text-overflow: ellipsis;
+    }
+
+
+    ::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #2A3042;
+        border-radius: 4px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #b30000;
+      }
 
     .clients-list {
       word-break: break-word;
+      overflow: hidden;
+      padding: 15px 0;
+
+
 
       .client {
         position: relative;
@@ -2531,11 +2564,20 @@
       strong {
         text-align: center;
         display: block;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        color: #2A3042;
       }
 
       .gray-text {
-        text-align: center;
         display: block;
+        font-weight: 300;
+        font-size: 13px;
+        line-height: 18px;
+        text-align: center;
+        color: #2A3042;
+        opacity: 0.5;
       }
     }
 
@@ -2543,9 +2585,48 @@
       max-height: 300px;
       overflow-y: auto;
       overflow-x: hidden;
+
+      strong {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 23px;
+        color: #2A3042;
+      }
     }
 
     .visit-info {
+      &:last-child {
+        border: none !important;
+      }
+      .timing {
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+      }
+
+      .visit-detail {
+        span {
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 23px;
+          display: block;
+          color: #2A3042;
+          text-overflow: ellipsis;
+        }
+
+        .visit-price {
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 23px;
+          color: #50A5F1;
+          margin-top: 5px;
+          display: block;
+        }
+
+
+      }
 
       .gray-bg {
         background-color: #ebebec;
@@ -2564,11 +2645,11 @@
         }
 
         span {
-          font-size: 12px;
+          font-weight: 400;
+          font-size: 13px;
+          line-height: 23px;
           display: block;
-          text-align: center;
-          color: rgba(65, 76, 88, 0.47);
-          line-height: normal;
+          color: #2A3042;
         }
       }
 

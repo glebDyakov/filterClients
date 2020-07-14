@@ -1303,7 +1303,7 @@ class AddAppointment extends React.Component {
                                                     {visits &&
                                                     <div style={{paddingTop: '34px'}}
                                                          className="client-info content-pages-bg">
-                                                        <div className="clients-list pt-4 pl-4 pr-4">
+                                                        <div className="clients-list">
                                                             {/*<div className="client">*/}
                                                             {/*    <span*/}
                                                             {/*        className="abbreviation">{cl.firstName ? cl.firstName.substr(0, 1) : ''}</span>*/}
@@ -1351,19 +1351,19 @@ class AddAppointment extends React.Component {
                                                                                 paddingTop: '4px',
                                                                                 cursor: 'pointer',
                                                                                 borderBottom: '10px solid rgb(245, 245, 246)'
-                                                                            }} className="visit-info row pl-4 pr-4 mb-2"
+                                                                            }} className="visit-info row pl-4 pr-4 mb-2 d-flex justify-content-between"
                                                                                  onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
                                                                             >
                                                                                 <div style={{
                                                                                     display: 'flex',
                                                                                     alignItems: 'center'
-                                                                                }} className="col-9">
+                                                                                }} className="col-8">
                                                                                     <p className="visit-detail">
                                                                                     <span
                                                                                         style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
                                                                                         <span><strong>Исполнитель: </strong>{appointment.staffName}</span>
-                                                                                        <strong
-                                                                                            style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
+                                                                                        <span
+                                                                                            style={{fontSize: '13px'}}>{appointment.serviceName}</span>
                                                                                         {(activeService && activeService.details) ?
                                                                                             <span>{activeService.details}</span> : ''}
                                                                                         {appointment.description ? <span
@@ -1371,16 +1371,19 @@ class AddAppointment extends React.Component {
                                                                                         {appointment.clientNotCome ? <span
                                                                                             style={{fontSize: '14px'}}
                                                                                             className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                                                        <span
+                                                                                            className="visit-price">Цена:&nbsp;{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</span>
+
                                                                                     </p>
                                                                                 </div>
 
                                                                                 <div
                                                                                     style={{padding: 0, textAlign: 'right'}}
-                                                                                    className="col-2">
+                                                                                    className="col-3 d-flex flex-column justify-content-center align-items-center">
                                                                                     {
                                                                                         activeAppointmentStaff && activeAppointmentStaff.staffId &&
                                                                                         <div style={{position: 'static'}}
-                                                                                             className="img-container">
+                                                                                             className="img-container text-center">
                                                                                             <img className="rounded-circle"
                                                                                                  src={activeAppointmentStaff.imageBase64 ? "data:image/png;base64," + activeAppointmentStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                                                  alt=""/>
@@ -1389,12 +1392,10 @@ class AddAppointment extends React.Component {
                                                                                     }
 
                                                                                     <span
-                                                                                        className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                                                        className="timing text-center my-2">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
 
                                                                                     <br/>
 
-                                                                                    <strong
-                                                                                        style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
                                                                                 </div>
                                                                             </div>
                                                                         )

@@ -2260,12 +2260,6 @@ input {
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
 
-        @media screen {
-          @media (max-width: $mob-width) {
-            left: -17px;
-          }
-        }
-
         .DayPicker-Day--hoverRange {
           background: url("../img/icons/blue_elipse.svg") no-repeat center !important;
           background-color: #fff;
@@ -4800,6 +4794,8 @@ textarea {
   max-height: fit-content;
 
   ul {
+    margin: 0;
+
     li {
       cursor: pointer;
       padding: 15px 21px;
@@ -5424,80 +5420,57 @@ textarea {
 }
 
 .page404 {
+  position: fixed;
+  z-index: 5000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 100%;
   background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .title {
-    display: block;
-    clear: both;
-    text-align: center;
-    font-size: 45px;
-    font-weight: bold;
-    letter-spacing: 0;
-    font-family: 'helvetica_medium';
-    margin-bottom: 100px;
-    line-height: 55px;
-    margin: auto;
-  }
+  .container {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-  .button {
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 3px 16px 2px rgba(175, 167, 167, 0.56);
-    background-color: #ff1e00;
-    border: solid 1px rgba(116, 119, 129, 0.18);
-    font-size: 17px;
-    font-weight: bold;
-    letter-spacing: -0.2px;
-    color: #ffffff;
-    width: 100%;
-    max-width: 320px;
-    text-align: center;
-    cursor: pointer;
-    text-align-last: center;
-    transition: .4s;
-    display: block;
-    margin: 0 auto 40px;
-    padding: 20px 0;
-    text-transform: uppercase;
-  }
-
-  .button:hover {
-    opacity: 0.7;
-  }
-
-  .red_center_text {
-    color: #ff1e00;
-    font-weight: bold;
-    font-size: 15rem;
-    font-family: 'helvetica_medium';
-    font-style: italic;
-    display: block;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 1350px) {
-    .red_center_text {
-      font-size: 10rem;
-    }
-  }
-  @media screen and (max-width: 550px) {
-    .red_center_text {
-      font-size: 8rem;
+    .error_code {
+      font-weight: 600;
+      font-size: 88px;
+      line-height: 120px;
+      color: #2A3042;
+      letter-spacing: 10px;
     }
 
-  }
-  @media screen and (max-width: 1650px) {
-    .rate .title, .title {
-      font-size: 32px;
-      line-height: normal;
+    .error_text {
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 33px;
+      color: #495057;
+    }
+
+    .button {
+      margin-top: 30px;
+      background: #50A5F1;
+      border-radius: 30px;
+      padding: 10px 31px;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    .error_image {
+      margin-top: 62px;
     }
   }
 
-  .button:hover {
-    opacity: 0.7;
-    text-decoration: none;
-  }
 }
 
 

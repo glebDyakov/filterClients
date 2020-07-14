@@ -19,7 +19,7 @@ export function menu(state = initialState, action) {
                   "id":"calendar_menu_id",
                   "url":"/calendar",
                   "icon":"1.svg",
-                  "name":"Онлайн-запись",
+                  "name":"Журнал записи",
               },
               {
                   "id":"clients_menu_id",
@@ -55,7 +55,7 @@ export function menu(state = initialState, action) {
                   "id":"booking_menu_id",
                   "url":"/online_booking",
                   "icon":"9.svg",
-                  "name":"Записи"
+                  "name":"Онлайн-запись"
               },
                 {
                     "id":"company_menu_id",
