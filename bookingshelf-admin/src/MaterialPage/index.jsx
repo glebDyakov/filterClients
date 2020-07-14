@@ -1052,7 +1052,7 @@ class Index extends Component {
                                         </div>
                                     )
                                 }
-                                {this.state.storeHouses && this.state.storeHouses.length ?
+                                {(this.state.storeHouses && this.state.storeHouses.length)?
                                     this.state.storeHouses.map(storeHouse => {
                                         return(
                                                 <div className="tab-content-list mb-2" style={{position: "relative"}}>
@@ -1062,18 +1062,20 @@ class Index extends Component {
                                                         </a>
                                                     </div>
 
-                                                    <div className="delete clientEditWrapper">
-                                                        <a className="clientEdit" onClick={() => this.toggleStoreHouse(storeHouse)}/>
-                                                    </div>
+                                                    {/*<div className="delete clientEditWrapper">*/}
+                                                    {/*    <a className="clientEdit" onClick={() => this.toggleStoreHouse(storeHouse)}/>*/}
+                                                    {/*</div>*/}
                                                     <div className="delete dropdown">
-                                                        <div className="clientEyeDel" onClick={()=>this.toggleStoreHouse(storeHouse)}></div>
-                                                        <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                        </a>
-                                                        <div className="dropdown-menu delete-menu p-3">
-                                                            <button type="button" className="button delete-tab" onClick={()=>this.deleteStoreHouse(storeHouse.storehouseId)}>Удалить</button>
+                                                        {/*<div className="clientEyeDel" onClick={()=>this.toggleStoreHouse(storeHouse)}></div>*/}
+                                                        {/*<a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
+                                                        {/*    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>*/}
+                                                        {/*</a>*/}
+                                                        {/*<div className="dropdown-menu delete-menu p-3">*/}
+                                                        {/*    <button type="button" className="button delete-tab" onClick={()=>this.deleteStoreHouse(storeHouse.storehouseId)}>Удалить</button>*/}
 
-                                                        </div>
+                                                        {/*</div>*/}
+                                                        <a className="clientEdit" onClick={() => this.toggleStoreHouse(storeHouse)}/>
+
                                                     </div>
                                                 </div>
                                             )
@@ -1081,21 +1083,22 @@ class Index extends Component {
                                     ) : (!this.props.material.isLoadingStoreHouses &&
                                         <EmptyContent
                                             img="shopping"
-                                            title="Нет заданых складов"
-                                            text="Создайте новый склад"
-                                            buttonText="Новый склад"
-                                            buttonClick={() => this.toggleStoreHouse()}
+                                            title="Нет заданных складов"
+                                            // text="Создайте новый склад"
+                                            // buttonText="Новый склад"
+                                            // buttonClick={() => this.toggleStoreHouse()}
+                                            hideButton={true}
                                         />
                                     )}
                                 {this.props.material.isLoadingStoreHouses && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                             </div>
-                            <a className="add"/>
-                            <div className="hide buttons-container">
-                                <div className="p-4">
-                                    <button type="button" className="button new-holiday" onClick={() => this.toggleStoreHouse()}>Новый склад</button>
-                                </div>
-                                <div className="arrow"></div>
-                            </div>
+                            {/*<a className="add"/>*/}
+                            {/*<div className="hide buttons-container">*/}
+                            {/*    <div className="p-4">*/}
+                            {/*        <button type="button" className="button new-holiday" onClick={() => this.toggleStoreHouse()}>Новый склад</button>*/}
+                            {/*    </div>*/}
+                            {/*    <div className="arrow"></div>*/}
+                            {/*</div>*/}
                         </div>
 
                         {/*{staff.isLoadingStaff && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}*/}

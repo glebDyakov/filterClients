@@ -255,6 +255,11 @@
       }
     }
   }
+  .tab-content .access-tab#tab4 .access{
+    @media screen and(max-width: $mob-width) {
+      min-width: 0;
+    }
+  }
 
 }
 
