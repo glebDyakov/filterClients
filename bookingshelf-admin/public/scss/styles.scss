@@ -991,7 +991,7 @@ input {
       height: 49px;
       max-height: 49px;
       position: absolute;
-      top: 0;
+      top: -60px;
       right: 0;
       min-height: 0;
       transition: width ease 0.5s;
@@ -1049,6 +1049,15 @@ input {
         align-items: center;
         justify-content: space-between;
         margin: 30px 0 0 0;
+        position: relative;
+
+        &::before {
+          content: url("../img/line.svg");
+          position: absolute;
+          top: -83px;
+          left: -96px;
+          z-index: -1;
+        }
 
         hr {
           border: none;
@@ -1132,7 +1141,7 @@ input {
         align-items: center;
         height: 20px;
         float: right;
-        margin: 6px 0 0 0;
+        margin: 13px 0 0 0;
         background-image: url(../img/icons/exit_icon.svg);
         background-repeat: no-repeat;
         background-size: 20px 20px;
@@ -2388,7 +2397,7 @@ input {
         display: none;
       }
       .mob-search-input {
-        text-align: center;
+        text-align: left;
         display: unset;
         margin-left: 15px;
       }
@@ -2405,7 +2414,7 @@ input {
         display: none;
       }
       .mob-search-input {
-        text-align: center;
+        text-align: left;
         display: unset;
         margin-left: 15px;
       }
@@ -2422,7 +2431,7 @@ input {
         display: none;
       }
       .mob-search-input {
-        text-align: center;
+        text-align: left;
         display: unset;
         margin-left: 15px;
       }
@@ -2439,7 +2448,7 @@ input {
         display: none;
       }
       .mob-search-input {
-        text-align: center;
+        text-align: left;
         display: unset;
         margin-left: 15px;
       }
@@ -2456,7 +2465,7 @@ input {
         display: none;
       }
       .mob-search-input {
-        text-align: center;
+        text-align: left;
         display: unset;
         margin-left: 15px;
       }
@@ -3224,6 +3233,7 @@ select {
     position: relative;
     background-color: #F8F8FB;
     padding: 10px 0;
+
     .dropdown-selected-button.opened {
       &::before {
         transform: translateY(-50%) rotate(180deg) !important;
@@ -3244,6 +3254,7 @@ select {
       padding: 0;
       max-width: unset;
       min-width: unset;
+
       &::before {
         content: url("../img/icons/arrow.svg");
         position: absolute;
@@ -3316,7 +3327,6 @@ select {
     justify-content: space-around;
 
 
-
     .approve-tab {
       border-radius: 0;
       background: none;
@@ -3369,6 +3379,7 @@ select {
       border: none;
       background: #FFFFFF;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+
       .service_item {
         width: 100%;
         display: flex;
@@ -3420,6 +3431,7 @@ select {
 
             .left-block {
               width: 100%;
+
               .img-container {
                 img {
                   margin: 0 !important;
@@ -3492,7 +3504,7 @@ select {
   width: 20px;
   height: 20px;
   margin-right: 6px;
-  margin-top: 6px;
+  margin-top: 12px;
   float: right;
   animation: rotate 5s infinite linear;
 
