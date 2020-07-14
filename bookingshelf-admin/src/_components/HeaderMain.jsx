@@ -239,7 +239,7 @@ class HeaderMain extends React.PureComponent {
                                     <input className="search-input" type="search" placeholder="Поиск по имени, номеру тел, Email"
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
 
-                                    <input className="mob-search-input" type="search" placeholder="Поиск"
+                                    <input className="mob-search-input" type="search" placeholder="Поиск по имени, номеру тел, Email"
                                            aria-label="Search" value={search} onChange={this.handleSearch}/>
                                     <button className="search-icon" type="submit"/>
                                 </div>

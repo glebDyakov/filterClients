@@ -224,7 +224,7 @@ class BaseCell extends React.Component {
         const content = (
             <React.Fragment>
                 <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
-                {isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line" />}
+                {/*{isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line" />}*/}
                 {isPresentShadow && <span data-time={time} className="present-time-line-shadow" />}
             </React.Fragment>
         );

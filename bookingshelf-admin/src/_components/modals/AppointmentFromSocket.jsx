@@ -108,7 +108,7 @@ class AppointmentFromSocket extends React.Component {
         return (
             <div className="appointment-socket-modal">
                 <div className="service_item">
-                    <div className="img-container" style={{width: "20%"}}>
+                    <div className="img-container">
                         <img
                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                             className="img"/>
@@ -117,7 +117,7 @@ class AppointmentFromSocket extends React.Component {
                         </p>
                     </div>
 
-                    <div style={{width: "75%"}}>
+                    <div>
                         <div className="appointment-socket-modal-title" style={{position: "relative"}}>
                             <p>{socketTitle}</p>
                             <button className="close" onClick={this.closeAppointmentFromSocket}/>

@@ -1541,16 +1541,22 @@ input {
 
           li {
             .firm-name {
-              font-weight: 600;
-              font-size: 13px;
-              line-height: 18px;
               text-align: center;
               padding: 15px;
               display: flex;
               flex-direction: column;
 
+              font-weight: 600;
+              font-size: 13px;
+              line-height: 18px;
+              color: #555B6D;
+
               span {
                 font-weight: 400;
+                font-size: 13px;
+                line-height: 18px;
+                color: #555B6D;
+
               }
 
               @media screen and (max-width: $tablet-width) {
@@ -2398,8 +2404,9 @@ input {
       }
       .mob-search-input {
         text-align: left;
-        display: unset;
-        margin-left: 15px;
+        display: unset !important;
+        font-size: 9px;
+        margin-left: 0 !important;
       }
     }
   }
@@ -2408,69 +2415,6 @@ input {
     display: none;
   }
 
-  @media screen {
-    @media (max-width: $mob-width) {
-      .search-input {
-        display: none;
-      }
-      .mob-search-input {
-        text-align: left;
-        display: unset;
-        margin-left: 15px;
-      }
-    }
-  }
-
-  .mob-search-input {
-    display: none;
-  }
-
-  @media screen {
-    @media (max-width: $mob-width) {
-      .search-input {
-        display: none;
-      }
-      .mob-search-input {
-        text-align: left;
-        display: unset;
-        margin-left: 15px;
-      }
-    }
-  }
-
-  .mob-search-input {
-    display: none;
-  }
-
-  @media screen {
-    @media (max-width: $mob-width) {
-      .search-input {
-        display: none;
-      }
-      .mob-search-input {
-        text-align: left;
-        display: unset;
-        margin-left: 15px;
-      }
-    }
-  }
-
-  .mob-search-input {
-    display: none;
-  }
-
-  @media screen {
-    @media (max-width: $mob-width) {
-      .search-input {
-        display: none;
-      }
-      .mob-search-input {
-        text-align: left;
-        display: unset;
-        margin-left: 15px;
-      }
-    }
-  }
 
   .search-icon {
     display: block;
@@ -3127,6 +3071,7 @@ select {
 
     .modal-title {
       font-size: 24px;
+      text-align: left;
       @media screen and(max-width: $tablet-width) {
         font-size: 18px;
       }
@@ -3337,10 +3282,6 @@ select {
       min-width: 104px;
       font-size: 16px;
 
-      &:first-child {
-        margin-left: 15px;
-      }
-
       &:last-child {
         margin-left: 0;
       }
@@ -3348,6 +3289,7 @@ select {
       &.disabled {
         border: none;
         color: #2A3042;
+        margin: 0;
       }
     }
 
@@ -3418,7 +3360,12 @@ select {
         }
 
         div:nth-child(2) {
-          margin: 0 50px 0 15px;
+          margin: 0 40px 0 14px;
+
+          @media screen and (max-width: $mob-width) {
+            margin: 0 40px 0 14px;
+
+          }
         }
 
         @media screen {
@@ -3458,7 +3405,7 @@ select {
   height: 90vh;
 
   .not-approved-list {
-
+    padding-bottom: 61px;
     height: calc(100% - 102px);
     @media (max-width: $laptop-width) {
       height: calc(100% - 110px);
@@ -5821,6 +5768,13 @@ textarea {
 @media screen and (max-width: 960px) {
   .modal---modal-overlay---3D5Nr, .feedback-staff, .client-detail, .header-client-detail, .delete-notes-modal, .move-visit-modal, .add-black-list-modal, .make-payment-modal, .start-moving-modal, .delete-reserve-modal {
     margin: 0;
+  }
+}
+
+.modal_counts {
+  .modal-content {
+    max-width: 761px !important;
+    width: 761px !important;
   }
 }
 

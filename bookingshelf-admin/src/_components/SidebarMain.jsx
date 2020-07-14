@@ -371,7 +371,7 @@ class SidebarMain extends React.Component {
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
                                 <div className="left-block">
-                                    <div className="img-container" style={{width: "15%"}}>
+                                    <div className="img-container">
                                         <img
                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                             className="img"/></div>
@@ -703,7 +703,7 @@ class SidebarMain extends React.Component {
                                     <div className="down-button">
                                         <button className="button approveAll"
                                                 onClick={() => this.approveAllAppointment(true, true)}>Отметить всё как
-                                            просмотрено
+                                            прочитано
                                         </button>
                                     </div>
                                 </React.Fragment>
@@ -722,7 +722,7 @@ class SidebarMain extends React.Component {
                                                 onClick={() => {
                                                     this.approveMovedAppointment()
 
-                                                }}>Отметить всё как просмотрено
+                                                }}>Отметить всё как прочитано
                                         </button>
                                     </div>
                                 </React.Fragment>
