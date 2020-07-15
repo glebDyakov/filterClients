@@ -220,7 +220,7 @@ class Index extends Component {
     }
 
     render() {
-        const { staff, company } = this.props;
+        const { staff, company, authentication } = this.props;
         const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
@@ -555,7 +555,8 @@ class Index extends Component {
                                 </div>
                                 {
                                     staff.accessList && staff.accessList.map((itemList, index) =>
-                                        <div className="tab-content-list" key={itemList.permissionCode}>
+                                    {
+                                    return (authentication.user.subCompany ? itemList.permissionCode !== 14 : true) && (<div className="tab-content-list" key={itemList.permissionCode}>
                                             <div>
                                                 {this.getItemListName(itemList)}
                                             </div>
@@ -583,6 +584,7 @@ class Index extends Component {
                                                 }
                                             )}
                                         </div>
+                                    )}
                                     )
                                 }
                             </div>
