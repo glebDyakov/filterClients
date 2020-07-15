@@ -12,12 +12,12 @@ const Paginator = (props) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
             <ReactPaginate
-                previousLabel={'⟨'}
-                nextLabel={'⟩'}
+                previousLabel={'Пред'}
+                nextLabel={'След'}
                 breakLabel={'...'}
                 pageCount={finalTotalPages}
                 marginPagesDisplayed={2}
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={3}
                 onPageChange={onPageChange}
                 subContainerClassName={'pages pagination'}
                 breakClassName={'page-item'}

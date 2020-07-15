@@ -31,12 +31,13 @@ class Index extends React.Component {
             authentication: props.authentication,
             submitted: false,
             agreed: false,
-            openModal: false
+            openModal: false,
+            isOpenAuthModal: false,
         };
 
         if (params.state && params.state.param2 && params.state.param3) {
             this.state = {
-                isOpenAuthModal: true,
+
                 user: {
                     email: params.state.param1,
                     companyName: params.state.param2,
@@ -49,11 +50,17 @@ class Index extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.closeAuthModalHandler = this.closeAuthModalHandler.bind(this);
     }
 
     componentDidMount() {
         document.title = "Регистрация в системе Онлайн-запись";
 
+    }
+
+
+    closeAuthModalHandler() {
+            this.setState({isOpenAuthModal: false});
     }
 
     componentWillReceiveProps(newProps) {
@@ -62,9 +69,11 @@ class Index extends React.Component {
             this.setState({...this.state, authentication: newProps.authentication})
 
             if(newProps.authentication && newProps.authentication.status && newProps.authentication.status === 'register.company' && (!newProps.authentication.error || newProps.authentication.error === -1)) {
-                this.setState({openModal: true});
+                this.setState({isOpenAuthModal: true});
+                document.addEventListener('click', this.closeAuthModalHandler, false)
                 setTimeout(() => {
-                    this.setState({openModal: false});
+                    this.setState({isOpenAuthModal: false});
+                    document.removeEventListener('click', this.closeAuthModalHandler, false)
 
                 }, 2000)
             }
@@ -118,6 +127,10 @@ class Index extends React.Component {
         this.setState(newState)
     }
 
+    handlerCloseModal() {
+
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         this.setState({submitted: true});
@@ -135,10 +148,12 @@ class Index extends React.Component {
     render() {
         const {user, emailIsValid, agreed, authentication, invalidFields} = this.state;
 
-        const modal = this.state.openModal &&
+        const modal = this.state.isOpenAuthModal &&
             (<div className="message-is-sent-wrapper">
                 <div className="message-is-sent-modal">
-                    <button className="close"></button>
+                    <button onClick={()=> {
+                        this.setState({isOpenAuthModal: false})
+                    }} className="close"></button>
                     <div className="modal-body">
                         <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`}
                              alt="message is sent image"/>
