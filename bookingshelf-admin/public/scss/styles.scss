@@ -784,7 +784,7 @@ input {
     a {
       > span {
         font-size: 16px;
-
+        color: #A6B0CF;
       }
     }
   }
@@ -882,6 +882,8 @@ input {
 
         span {
           opacity: 1;
+          color: #fff;
+
 
         }
 
@@ -923,7 +925,8 @@ input {
       opacity: 0.5;
       display: block;
       transition: all ease-in-out 0.3s;
-      color: #A6B0CF;
+      color: #fff;
+
     }
 
     &.active {
@@ -934,7 +937,7 @@ input {
 
       a {
         span {
-          color: #A6B0CF;
+          color: #fff;
           opacity: 1;
         }
       }

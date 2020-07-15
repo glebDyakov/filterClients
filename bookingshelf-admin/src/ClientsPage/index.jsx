@@ -304,10 +304,13 @@ class Index extends Component {
 
                                         <div className="list-button-wrapper">
                                             {client_user.blacklisted && <a className="client-in-blacklist">
-                                                <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`} alt=""/>
+                                                <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
+                                                     alt=""/>
                                             </a>}
-                                            <a className="clientEdit"
-                                               onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>
+
+                                            {!client_user.blacklisted && <a className="clientEdit"
+                                                                            onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
+
                                             <div className="delete dropdown">
                                                 <div className="clientEyeDel"
                                                      onClick={() => this.openClientStats(client_user)}></div>

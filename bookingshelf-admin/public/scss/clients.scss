@@ -4,6 +4,8 @@
   background: #FFFFFF;
   box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
 
+  margin-bottom: 95px;
+
   .clients {
     margin-bottom: 0;
     padding: 0;
@@ -283,6 +285,7 @@
 
   .client-in-blacklist {
     width: auto;
+    margin-right: 10px;
   }
 
   .final-clients {
@@ -332,15 +335,16 @@
       border-radius: 0;
 
       &:first-of-type {
-        justify-content: center;
+        justify-content: flex-start !important;
+        padding-left: 50px;
       }
     }
 
 
     .cell_name-client {
       a {
-        justify-content: center !important;
-
+        justify-content: flex-start !important;
+        padding-left: 50px;
         p {
           font-weight: normal;
           font-size: 13px;
@@ -530,7 +534,7 @@
     .form-group {
       border-top: 14px solid #F8F8FB;
       padding: 0 30px;
-      max-height: 650px;
+      max-height: 70vh;
       overflow-y: auto;
       overflow-x: hidden;
 
