@@ -6,6 +6,10 @@
 
   margin-bottom: 95px;
 
+  .notes-delete-modal {
+
+  }
+
   .clients {
     margin-bottom: 0;
     padding: 0;
@@ -165,19 +169,22 @@
       width: 288px;
 
       input {
-        background: #F3F3F9;
-        border-radius: 30px;
-        height: 100%;
+        border-radius: 0;
         border: none;
-        font-size: 11px;
+        height: 100%;
+        border-bottom: 1px solid #eaeaec;
+        font-size: 13px;
         line-height: 18px;
-        color: #555B6D;
-        padding: 10px 30px 10px 37px;
+        color: #495057;
+        padding: 10px 30px 10px 0px;
         margin: 0;
       }
 
       button {
         margin: 0;
+        right: 0;
+        left: unset;
+        background-color: #fff;
       }
     }
 
@@ -317,6 +324,11 @@
     position: relative;
     border-bottom: 1px solid #EFF2F7;
 
+    div {
+      overflow: unset !important;
+
+    }
+
     &:first-of-type {
       border-top: 1px solid #EFF2F7;
 
@@ -376,7 +388,7 @@
     &:first-of-type {
       position: sticky !important;
       top: 0 !important;
-      z-index: 2 !important;
+      z-index: 1 !important;
     }
 
 

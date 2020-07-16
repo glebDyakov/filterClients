@@ -761,6 +761,10 @@ input {
   transition: all ease-in-out 0.3s;
   z-index: 3;
 
+  .sidebar-notification-wrapper {
+    opacity: 1;
+  }
+
   @media screen {
 
     @media (max-width: $laptop-width) {
@@ -1467,7 +1471,7 @@ input {
   margin-top: 0;
   height: 100%;
   transition: all ease-in-out 0.3s;
-  overflow-x: hidden;
+  overflow: hidden;
   @media screen {
 
     @media (max-width: $laptop-width) {

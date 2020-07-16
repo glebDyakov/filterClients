@@ -5,7 +5,6 @@ import {clientActions} from '../_actions';
 
 import '../../public/scss/clients.scss'
 import moment, {now} from 'moment';
-
 import {ClientDetails, NewClient, AddBlackList} from "../_components/modals";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
@@ -35,6 +34,7 @@ class Index extends Component {
             openedModal: false,
             blackListModal: false,
             infoClient: 0,
+            clientForDel: 0,
             handleOpen: false
 
         };
@@ -272,66 +272,70 @@ class Index extends Component {
                                     condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
 
                                 }
-                                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                    <div className="tab-content-list" key={i} style={{position: "relative"}}>
-                                        <div className="cell_name-client" style={{position: "relative"}}>
-                                            <a onClick={() => this.openClientStats(client_user)}>
-                                                <p> {client_user.firstName} {client_user.lastName}</p>
+                            return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                                <div className="tab-content-list" key={i}
+                                     style={{position: "relative"}}>
+                                    <div className="cell_name-client" style={{position: "relative"}}>
+                                        <a onClick={() => this.openClientStats(client_user)}>
+                                            <p> {client_user.firstName} {client_user.lastName}</p>
+                                        </a>
+                                    </div>
+                                    <div className="cell_client-email">
+                                        {client_user.phone}
+                                        <br/>
+                                        {client_user.email}
+                                    </div>
+                                    <div className="cell_client-country">
+                                        {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ", ") + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ", ") + client_user.province)}
+                                    </div>
+
+                                    <div className="cell_client-last-visit">
+
+                                    </div>
+
+                                    <div className="cell_client-discount">
+                                        {client_user.discountPercent}%
+                                    </div>
+
+                                    <div
+                                        className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 5) ? " red-date" : '')}>
+                                        {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
+                                    </div>
+
+
+                                    <div className="list-button-wrapper">
+                                        {client_user.blacklisted && <a className="client-in-blacklist">
+                                            <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
+                                                 alt=""/>
+                                        </a>}
+
+                                        {!client_user.blacklisted && <a className="clientEdit"
+                                                                        onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
+
+                                        <div className="delete dropdown">
+                                            <div className="clientEyeDel"
+                                                 onClick={() => this.openClientStats(client_user)}></div>
+                                            <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">
+                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                             </a>
-                                        </div>
-                                        <div className="cell_client-email">
-                                            {client_user.phone}
-                                            <br/>
-                                            {client_user.email}
-                                        </div>
-                                        <div className="cell_client-country">
-                                            {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ", ") + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ", ") + client_user.province)}
-                                        </div>
-
-                                        <div className="cell_client-last-visit">
-
-                                        </div>
-
-                                        <div className="cell_client-discount">
-                                            {client_user.discountPercent}%
-                                        </div>
-
-                                        <div
-                                            className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 5) ? " red-date" : '')}>
-                                            {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
-                                        </div>
 
 
-                                        <div className="list-button-wrapper">
-                                            {client_user.blacklisted && <a className="client-in-blacklist">
-                                                <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
-                                                     alt=""/>
-                                            </a>}
 
-                                            {!client_user.blacklisted && <a className="clientEdit"
-                                                                            onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
-
-                                            <div className="delete dropdown">
-                                                <div className="clientEyeDel"
-                                                     onClick={() => this.openClientStats(client_user)}></div>
-                                                <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
-                                                   aria-haspopup="true" aria-expanded="false">
-                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                </a>
-                                                <div className="dropdown-menu delete-menu p-3">
-                                                    {activeTab === 'clients' &&
-                                                    <button type="button" className="button delete-tab"
-                                                            onClick={() => this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                                    {activeTab === 'blacklist' &&
-                                                    <button type="button" className="button delete-tab" onClick={() => {
-                                                        delete client_user.appointments;
-                                                        this.updateClient({...client_user, blacklisted: false}, true)
-                                                    }}>Удалить</button>}
-                                                </div>
+                                            <div className="dropdown-menu delete-menu p-3">
+                                                {activeTab === 'clients' &&
+                                                <button type="button" className="button delete-tab"
+                                                        onClick={() => this.deleteClient(client_user.clientId)}>Удалить</button>}
+                                                {activeTab === 'blacklist' &&
+                                                <button type="button" className="button delete-tab" onClick={() => {
+                                                    delete client_user.appointments;
+                                                    this.updateClient({...client_user, blacklisted: false}, true)
+                                                }}>Удалить</button>}
                                             </div>
                                         </div>
                                     </div>
-                                )
+                                </div>
+                            );
                             }
                         )}
                     </div>
