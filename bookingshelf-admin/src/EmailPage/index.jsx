@@ -12,6 +12,7 @@ import draftToHtml from 'draftjs-to-html';
 import { convertToRaw, EditorState } from 'draft-js';
 import Hint from "../_components/Hint";
 import Paginator from "../_components/Paginator";
+import InputCounter from "../_components/InputCounter";
 
 class Index extends Component {
     constructor(props) {
@@ -99,6 +100,7 @@ class Index extends Component {
         this.onEditorStateChange = this.onEditorStateChange.bind(this)
         this.onContentStateChange = this.onContentStateChange.bind(this)
         this.handleOutsideClick = this.handleOutsideClick.bind(this);
+        this.handleSetTitle = this.handleSetTitle.bind(this);
 
 
     }
@@ -207,7 +209,13 @@ class Index extends Component {
             }
         })
         this.props.dispatch(notificationActions.setSMS(JSON.stringify(data)));
+    }
 
+    handleSetTitle(e){
+        const { name, value } = e.target;
+        const { email } = this.state;
+
+        this.setState({ email: {...email, [name]: value }});
     }
 
     handleChangeSMStoggle (type) {
@@ -775,6 +783,12 @@ class Index extends Component {
                                         {/*    </ul>*/}
                                         {/*    <div className="arrow-dropdown"><i></i></div>*/}
                                         {/*</div>*/}
+                                        <InputCounter value={email.title}
+                                                      title="Заголовок сообщения"
+                                                      placeholder="Тема"
+                                                      name="title" handleChange={this.handleSetTitle} maxLength={64}
+
+                                        />
                                         <p className="mb-3">Текст Email</p>
                                         <Editor
                                             editorState={editorState}
