@@ -260,6 +260,14 @@ function deleteUnit(id) {
 }
 
 function toggleStoreHouse(params, edit) {
+    debugger
+    if(typeof params === "string"){
+        const paramsNew = {
+            storehouseName:  params
+        }
+        params = paramsNew;
+    }
+
     const requestOptions = {
         method: edit ? 'PUT' : 'POST',
         body: JSON.stringify(params),

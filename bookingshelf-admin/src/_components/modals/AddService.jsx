@@ -218,7 +218,7 @@ class AddService extends React.Component {
                                             <p>Поиск материалов и услуг</p>
 
                                             {/*start*/}
-                                            {service && service.serviceProducts && service.serviceProducts.map((item, index) =>{
+                                            {service && service.serviceProducts && service.serviceProducts.sort((a, b) => a.serviceProductId - b.serviceProductId).map((item, index) =>{
                                                 const activeProduct = this.props.material.products.find(currentProduct => item.productId === currentProduct.productId)
                                                 const activeUnit = activeProduct && this.props.material.units.find(currentUnit => activeProduct.unitId === currentUnit.unitId);
                                             return <div className="select-color dropdown mb-3 border-color">
@@ -278,7 +278,7 @@ class AddService extends React.Component {
                                                 <div className="select-material">
                                                     <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
                                                                    title={`Норма списания, ${activeUnit ? (activeUnit.unitName) : ''}`}
-                                                                   name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
+                                                                   name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
                                                 </div>
                                                 {/*{index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
                                                 {this.state.service.serviceProducts.length !== 1 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
@@ -599,8 +599,9 @@ class AddService extends React.Component {
         const { addService } = this.props;
         const { service, staffs } = this.state;
 
-        const updatedService = {  ...this.state.service,  serviceProducts: [] }
+        const updatedService = {  ...this.state.service }
         if(!this.state.service.usingMaterials){
+            updatedService.serviceProducts = [];
             this.setState({service: updatedService });
         }
 
