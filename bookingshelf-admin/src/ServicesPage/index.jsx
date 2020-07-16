@@ -187,6 +187,8 @@ class Index extends Component {
         const isLoading = staff.isLoading || services.isLoading;
         const dragDropGroupsItems = [];
 
+
+
         services.services && services.services.forEach((item, keyGroup) => {
             const dragDropServicesItems = []
             collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
@@ -279,6 +281,7 @@ class Index extends Component {
                 )
             })
         })
+
 
         return (
             <div className="services">
@@ -457,7 +460,7 @@ class Index extends Component {
             // dispatch(servicesActions.createServiceProducts(productToPost));
             productToPut.forEach((item,i) => {
                 setTimeout(() => {
-                    dispatch(servicesActions.updateServiceProduct(JSON.stringify(item), item.serviceProductId));
+                    // dispatch(servicesActions.updateServiceProduct(JSON.stringify(item), item.serviceProductId));
                 }, i * 100)
             })
         }
@@ -465,7 +468,7 @@ class Index extends Component {
         deletedProductsList.forEach(item => {
             setTimeout(() => {
                 if (item.serviceProductId) {
-                    dispatch(servicesActions.deleteServiceProduct(item.serviceProductId));
+                    // dispatch(servicesActions.deleteServiceProduct(item.serviceProductId));
                 }
             })
         })
