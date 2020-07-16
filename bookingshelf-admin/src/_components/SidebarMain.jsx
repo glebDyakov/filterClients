@@ -405,7 +405,7 @@ class SidebarMain extends React.Component {
                         authentication.user.menu.map((localItem, i)=>{
                             return(
                             localItem.id===item.id &&
-                        <li style={i === 0 ? { marginTop: '30px'} : {}} className={path === item.url ? 'active' : ''}
+                        <li style={item.id === 'calendar_menu_id' ? { marginTop: '30px'} : {}} className={path === item.url ? 'active' : ''}
                             key={keyStore}>
                             <a onClick={(e) => this.handleClick(item.url, e)}>
                                 <img
