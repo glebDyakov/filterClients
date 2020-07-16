@@ -28,6 +28,7 @@ class NewClient extends React.Component {
                 "country": "",
                 "city": "",
                 "province": "",
+                "birthDate": "",
                 "acceptNewsletter": true
             }
         }
@@ -375,6 +376,7 @@ class NewClient extends React.Component {
     addClient(){
         const {addClient, isModalShouldPassClient} = this.props;
         const {client, day, month, year } = this.state;
+
         let birthDate;
         if (day || month || year) {
             birthDate =`${year}-${month}-${day}`;
