@@ -309,9 +309,9 @@ function getStoreHouses(companyName) {
             .then(
                 storeHouses => {
                     dispatch(success(storeHouses))
-                    if (storeHouses.length === 0){
-                        dispatch(materialActions.toggleStoreHouse(companyName));
-                    }
+                    // if (storeHouses.length === 0){
+                    //     dispatch(materialActions.toggleStoreHouse(companyName));
+                    // }
 
                 },
             );

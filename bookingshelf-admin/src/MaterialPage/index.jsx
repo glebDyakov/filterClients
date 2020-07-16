@@ -176,6 +176,7 @@ class Index extends Component {
         this.props.dispatch(materialActions.getCategories());
         this.props.dispatch(materialActions.getBrands());
         this.props.dispatch(materialActions.getSuppliers());
+        this.props.dispatch(materialActions.getStoreHouses());
         this.props.dispatch(materialActions.getUnits());
         this.props.dispatch(materialActions.getStoreHouseProducts());
         this.props.dispatch(materialActions.getExpenditureProducts());
@@ -188,11 +189,11 @@ class Index extends Component {
 
         if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
             const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
-            if (JSON.stringify(this.props.company.settings) !== JSON.stringify(newProps.company.settings)){
-                if (newProps.company.settings && newProps.company.settings.companyName) {
-                    this.props.dispatch(materialActions.getStoreHouses(newProps.company.settings.companyName));
-                }
-            }
+            // if (JSON.stringify(this.props.company.settings) !== JSON.stringify(newProps.company.settings)){
+            //     if (newProps.company.settings && newProps.company.settings.companyName) {
+            //         this.props.dispatch(materialActions.getStoreHouses(newProps.company.settings.companyName));
+            //     }
+            // }
             if(newProps.match.params.activeTab==='staff'){document.title = (companyTypeId === 2 || companyTypeId === 3) ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
         }
 
