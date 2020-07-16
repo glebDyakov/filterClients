@@ -467,7 +467,6 @@ class AddService extends React.Component {
 
         const deletedList = this.state.deletedProductsList;
         deletedList.push(elem);
-        debugger
         this.setState({deletedProductsList: deletedList })
     }
 
@@ -514,8 +513,6 @@ class AddService extends React.Component {
 
         const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
         deletedProductsList.splice(deletedIndex, 1);
-        debugger
-
         this.setState({ service, deletedProductsList });
 
     }
