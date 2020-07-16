@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '../_helpers';
+import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const servicesService = {
     add,
@@ -13,7 +13,11 @@ export const servicesService = {
     updateServices,
     addService,
     updateService,
-    deleteService
+    deleteService,
+    createServiceProducts,
+    getServiceProducts,
+    updateServiceProduct,
+    deleteServiceProduct
 };
 
 function get() {
@@ -27,7 +31,7 @@ function get() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/servicegroups`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getServices() {
@@ -41,7 +45,7 @@ function getServices() {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function add(params) {
@@ -56,7 +60,7 @@ function add(params) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/servicegroups`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
@@ -77,7 +81,7 @@ function update(params) {
         body: JSON.stringify(serv)
     };
 
-    return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/servicegroups`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
@@ -96,7 +100,7 @@ function updateServiceGroups(params) {
         body: JSON.stringify(params)
     };
 
-    return fetch(`${config.apiUrl}/servicegroups`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/servicegroups`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
 }
 
@@ -112,7 +116,7 @@ function updateServices(params) {
         body: JSON.stringify(params)
     };
 
-    return fetch(`${config.apiUrl}/services`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/services`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
 }
 
@@ -128,7 +132,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getService(idGroup, idService) {
@@ -142,7 +146,7 @@ function getService(idGroup, idService) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function getServiceList(idGroup) {
@@ -156,7 +160,7 @@ function getServiceList(idGroup) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
 function addService(params, idGroup) {
@@ -168,10 +172,10 @@ function addService(params, idGroup) {
             withCredentials: true
         },
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: params
+        body: JSON.stringify(params)
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
@@ -191,7 +195,7 @@ function updateService(params, idGroup) {
         body: params
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
         .then((data) => handleResponse(data, requestOptions))
         .then(staff => {
             return staff;
@@ -209,5 +213,66 @@ function deleteService(idGroup, idService) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+    return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+
+function createServiceProducts(params) {
+    const requestOptions = {
+        method: 'POST',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions));
+}
+
+function getServiceProducts(searchValue) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+
+function updateServiceProduct(params, serviceProductId) {
+
+    const requestOptions = {
+        method: 'PUT',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: params
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts/${serviceProductId}/`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions));
+}
+
+function deleteServiceProduct(serviceProductId) {
+    const requestOptions = {
+        method: 'DELETE',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts/${serviceProductId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

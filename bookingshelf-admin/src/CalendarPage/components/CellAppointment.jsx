@@ -64,6 +64,8 @@ const CellAppointment = (props) => {
         }))
     }
 
+    const companyTypeId = company.settings && company.settings.companyTypeId;
+
     const { booktimeStep } = company.settings
     const step  = booktimeStep / 60;
     const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * 20;
@@ -197,12 +199,12 @@ const CellAppointment = (props) => {
                     </p>}
                     {appointment.clientId && <p className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
-                    {appointment.carBrand
+                    {companyTypeId === 2 && appointment.carBrand
                     && <p><strong>Марка авто: </strong>
                         {appointment.carBrand}
                     </p>
                     }
-                    {appointment.carNumber
+                    {companyTypeId === 2 && appointment.carNumber
                     && <p><strong>Гос. номер: </strong>
                         {appointment.carNumber}
                     </p>

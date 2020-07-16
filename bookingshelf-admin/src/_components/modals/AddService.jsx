@@ -3,12 +3,24 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
+import InputCounter from "../InputCounter";
+import {servicesActions, materialActions} from '../../_actions';
+import moment from "./AddAppointment";
 
 class AddService extends React.Component {
     constructor(props) {
         super(props);
+        const serviceProducts = (props.services.serviceProducts || []).filter(item => item.serviceId === props.group_working.serviceId)
         this.state={
-            service: props.group_working && props.editServiceItem ? props.group_working:{
+            service: (props.group_working && props.editServiceItem)
+                ? {
+                // ...props.group_working, usingMaterials: !!serviceProducts.length, "serviceProducts": serviceProducts.length ? serviceProducts: [{
+                ...props.group_working, usingMaterials: !!(props.group_working.serviceProducts && props.group_working.serviceProducts.length),
+                    serviceProducts: (props.group_working.serviceProducts && props.group_working.serviceProducts.length) ? props.group_working.serviceProducts : [{
+                        "amount": '',
+                        "productId": ''
+                    }]
+            } : {
                 "name":"",
                 "details":"",
                 "priceFrom":'',
@@ -18,13 +30,20 @@ class AddService extends React.Component {
                 "specialDescription":"",
                 "currency":"BYN",
                 "onlineBooking":true,
-                "staffs":[]
+                "usingMaterials": false,
+                "staffs":[],
+                "serviceProducts": [{
+                    "amount": '',
+                    "productId": ''
+                }]
             },
             editServiceItem: props.editServiceItem,
             staffs: props.staffs && props.staffs,
             allStaffs: props.staffs && props.staffs,
             group: props.group && props.group,
-            services: props.services && props.services
+            services: props.services && props.services,
+            deletedProductsList: [],
+            materialsSearch: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,10 +51,16 @@ class AddService extends React.Component {
         this.handleStaffChange = this.handleStaffChange.bind(this);
         this.handleChangePrice = this.handleChangePrice.bind(this);
         this.toggleChange = this.toggleChange.bind(this);
+        this.toggleChangeMaterials = this.toggleChangeMaterials.bind(this);
         this.updateService = this.updateService.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.addService = this.addService.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.removeMaterial = this.removeMaterial.bind(this);
+        this.handleChangeProduct = this.handleChangeProduct.bind(this);
+        this.deleteProduct = this.deleteProduct.bind(this);
+        this.handleMaterialsSearch = this.handleMaterialsSearch.bind(this);
+        this.handleChooseProduct = this.handleChooseProduct.bind(this);
 
     }
 
@@ -52,11 +77,25 @@ class AddService extends React.Component {
             }
         })
         this.setState({ staffs });
+        if(this.state.editServiceItem){
+            // this.props.dispatch(servicesActions.getServiceProducts());
+            this.props.dispatch(materialActions.getUnits());
+        }
+
     }
 
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({services:newProps.services});
+        }
+        if ( JSON.stringify(this.props.services.serviceProducts) !==  JSON.stringify(newProps.services.serviceProducts)) {
+            const serviceProducts = newProps.services.serviceProducts.filter(item => item.serviceId === this.state.service.serviceId)
+
+            this.setState({service: {...this.state.service, usingMaterials: !!serviceProducts.length, serviceProducts: serviceProducts.length ? serviceProducts : [{
+                        "amount": '',
+                        "productId": ''
+                    }]
+            }});
         }
     }
 
@@ -72,8 +111,9 @@ class AddService extends React.Component {
     }
 
     render() {
-        const {service, editServiceItem, colors, message, staffs, group, allStaffs, services}=this.state;
+        const {service, editServiceItem, colors, message, staffs, group, allStaffs, services, materialsSearch}=this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
 
         const optionList = this.getOptionList()
 
@@ -102,7 +142,9 @@ class AddService extends React.Component {
                                         <li><a><span
                                             className={group.color.toLowerCase() + " " + 'color-circle ml-0'}/><span
                                             className={group.color.toLowerCase()}><span
-                                            className="items-color"><span>{group.name}</span></span></span></a>
+                                            className="items-color"><span>
+                                            {group.name}
+                                            </span></span></span></a>
                                         </li>
                                     </div>
                                     }
@@ -156,6 +198,140 @@ class AddService extends React.Component {
                                     {/*       value={service.specialPrice===0?'':service.specialPrice}*/}
 
                                     {/*/>*/}
+
+
+                                    {/*Кнопка на материалы*/}
+
+                                    <div className="row col-sm-12">
+                                        <div className="check-box">
+                                            <label>
+                                                <p className="title mt-2  mb-2"> Учет материалов (опционально)</p>
+                                                <input className="form-check-input" type="checkbox"
+                                                       checked={service.usingMaterials}
+                                                       onChange={this.toggleChangeMaterials}/>
+                                                <span className="check"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {this.state.service.usingMaterials &&
+                                        <React.Fragment>
+                                            <p>Поиск материалов и услуг</p>
+
+                                            {/*start*/}
+                                            {service && service.serviceProducts && service.serviceProducts.sort((a, b) => a.serviceProductId - b.serviceProductId).map((item, index) =>{
+                                                const activeProduct = this.props.material.products.find(currentProduct => item.productId === currentProduct.productId)
+                                                const activeUnit = activeProduct && this.props.material.units.find(currentUnit => activeProduct.unitId === currentUnit.unitId);
+                                            return <div className="select-color dropdown mb-3 border-color">
+
+                                                {
+                                                    // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
+                                                    service && service.serviceProducts &&
+                                                        <a onClick={() => this.setState({ materialsSearch: '' })}
+                                                           className={
+                                                            // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
+                                                               'select-button dropdown-toggle select-material'}
+                                                           data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '')
+                                                            // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
+                                                        ) :"Выберите необходимый материал") }
+                                                            <span
+                                                                className="color-circle"/><span
+                                                                className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
+                                                        </a>}
+
+                                                <ul className="dropdown-menu">
+                                                    <li className="dropdown-item">
+                                                        <div className="row align-items-center content clients" style={{margin: "0 -15px", padding: '0 8px', height: '52px', width: "calc(100% + 30px)"}}>
+                                                            <div className="search col-7">
+                                                                <input type="search" placeholder="Введите название товара" style={{width: "185%"}}
+                                                                       aria-label="Search"
+                                                                       value={materialsSearch} onChange={this.handleMaterialsSearch}
+                                                                />
+                                                                <button className="search-icon" type="submit"/>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li className="services_list_wrapper">
+
+                                                        <ul>
+                                                            {/*{this.getServiceList(index)}*/}
+
+
+                                                            {this.props.material.products.filter(product => service.serviceProducts
+                                                                .filter((elem, elemIndex) => elemIndex !== index)
+                                                                .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => {
+
+                                                            return(<li className="dropdown-item">
+                                                                <a onClick={() => this.handleChooseProduct(product, index)}>
+
+                                                                                {product && product.productName }
+
+                                                                </a>
+                                                            </li>)
+                                                            })}
+
+
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                                <div className="arrow-dropdown"><i></i></div>
+
+                                                <div className="select-material">
+                                                    <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
+                                                                   title={`Норма списания, ${activeUnit ? (activeUnit.unitName) : ''}`}
+                                                                   name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
+                                                </div>
+                                                {/*{index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
+                                                {this.state.service.serviceProducts.length !== 1 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
+                                            </div>})}
+
+
+                                            {/*end*/}
+                                        {/*    {service && service.serviceProducts && service.serviceProducts.map((item, index) =>*/}
+
+                                        {/*        <div className="row" style={{position: "relative"}}>*/}
+                                        {/*            <div className="col-xl-6 input_limited_wrapper_description">*/}
+                                        {/*                <p></p>*/}
+                                        {/*                <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}*/}
+                                        {/*                        value={service.serviceProducts[index].productId}>*/}
+                                        {/*                    <option value="">Выберите материал</option>*/}
+                                        {/*                    {this.props.material.products.filter(product => service.serviceProducts*/}
+                                        {/*                        .filter((elem, elemIndex) => elemIndex !== index)*/}
+                                        {/*                        .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => <option value={product.productId}>{product.productName}</option>)}*/}
+                                        {/*                </select>*/}
+
+
+
+                                        {/*            </div>*/}
+                                        {/*            <div className="col-xl-6">*/}
+                                        {/*                <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}*/}
+                                        {/*                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />*/}
+                                        {/*            </div>*/}
+                                        {/*            {index !== 0 && <button className="close"  style={{position:"absolute", right: "-60px", top: "8px", zIndex: "99"}} onClick={()=>this.removeMaterial(index)}>x</button>}*/}
+                                        {/*        </div>*/}
+
+
+
+
+                                        {/*)}*/}
+                                        <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2"
+                                       onClick={() => {
+                                           const updatedService = { ...service};
+                                           if (! updatedService.serviceProducts) {
+                                               updatedService.serviceProducts = [{
+                                                   "amount": '',
+                                                   "productId": ''
+                                               }]
+                                           } else {
+                                           updatedService.serviceProducts.push({
+                                               "amount": '',
+                                               "productId": ''
+                                           });
+                                           }
+                                           this.setState({ service: updatedService })
+                                       }}>Добавить +</p>
+                                        </React.Fragment>}
+
+
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <div className="check-box">
@@ -169,6 +345,9 @@ class AddService extends React.Component {
                                             </div>
                                         </div>
                                     </div>
+
+
+
                                     <div className="clearfix"/>
                                     {services && services.status === 200 &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
@@ -243,7 +422,8 @@ class AddService extends React.Component {
                                 }
                                 <div className="buttons col-12">
                                     <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
-                                    <button className={"button"} type="button"
+                                    <button className={"button" + (!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount)))) ? ' disabledField' : '')} type="button"
+                                            disabled={!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount))))}
                                             onClick={() => {
                                                 if (services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))) {
                                                     this.setState({ message: 'Необходимо заполнить название услуги и цену' });
@@ -269,12 +449,72 @@ class AddService extends React.Component {
         )
     }
 
+    handleMaterialsSearch({target: { value }}){
+        this.setState({
+            materialsSearch: value,
+        });
+
+        if (value.length >= 3) {
+            this.props.dispatch(materialActions.getProducts(1, value));
+        }
+        if (value.length === 0) {
+            this.props.dispatch(materialActions.getProducts(1, value));
+        }
+    }
+
+
+    deleteProduct(elem){
+
+        const deletedList = this.state.deletedProductsList;
+        deletedList.push(elem);
+        this.setState({deletedProductsList: deletedList })
+    }
+
     handleChange(e) {
         const { name, value } = e.target;
         const { service } = this.state;
 
 
         this.setState({service:{...service, [name]: name==='specialPrice' && value==='' ? 0 : value}});
+    }
+
+
+
+    handleChangeProduct(e, index) {
+        const { name, value } = e.target;
+        const { service, deletedProductsList } = this.state;
+
+        service.serviceProducts[index][name] = value;
+
+
+
+        if (name === 'productId') {
+            const deletedIndex = deletedProductsList.findIndex(item => item.productId === parseInt(value))
+            deletedProductsList.splice(deletedIndex, 1)
+        }
+
+        // this.deletedProductsList()
+        this.setState({ service, deletedProductsList });
+    }
+
+    handleChooseProduct(product, index){
+        const { service, deletedProductsList } = this.state;
+        const updatedValue = parseInt(product.productId);
+        service.serviceProducts[index].productId = updatedValue;
+
+
+
+        const oldValue = deletedProductsList.find(item => item.productName === product.productName);
+        if(oldValue) {
+            const oldValueEmptyAmount = { ...oldValue, amount: '' };
+            service.serviceProducts.splice(index, 1, oldValueEmptyAmount);
+        }
+
+
+        const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
+        deletedProductsList.splice(deletedIndex, 1);
+        this.setState({ service, deletedProductsList });
+
     }
 
     handleDurationChange(e) {
@@ -311,31 +551,69 @@ class AddService extends React.Component {
         this.setState({service:{...service, onlineBooking: !service.onlineBooking}});
     }
 
+    toggleChangeMaterials () {
+        const { service } = this.state;
+
+        this.setState({service:{ ...service, usingMaterials: !service.usingMaterials}});
+
+    }
+
+    removeMaterial(index){
+        const {service} = this.state;
+        const removedMaterialList = { ...service};
+        this.deleteProduct(removedMaterialList.serviceProducts[index]);
+        removedMaterialList.serviceProducts.splice(index, 1);
+        this.setState({service: removedMaterialList});
+
+
+
+    }
+
     updateService(){
         const { updateService } = this.props;
-        const { service, staffs } = this.state;
-        service.staffs && service.staffs.forEach((item, key) => {
+
+        const updatedService = {  ...this.state.service}
+        if(!this.state.service.usingMaterials){
+            updatedService.serviceProducts = [];
+            this.setState({service: updatedService });
+        }
+
+        const { staffs, deletedProductsList } = this.state;
+
+
+
+        updatedService.staffs && updatedService.staffs.forEach((item, key) => {
             const activeStaff = staffs.find(localStaff => localStaff.staffId === item.staffId)
             if (activeStaff) {
-                service.staffs[key].serviceDuration = activeStaff.serviceDuration
+                updatedService.staffs[key].serviceDuration = activeStaff.serviceDuration
             }
         })
 
-        return updateService(service);
+
+
+
+        return updateService(updatedService, deletedProductsList);
     };
 
     addService(){
         const { addService } = this.props;
         const { service, staffs } = this.state;
-        service.staffs && service.staffs.forEach((item, key) => {
+
+        const updatedService = {  ...this.state.service }
+        if(!this.state.service.usingMaterials){
+            updatedService.serviceProducts = [];
+            this.setState({service: updatedService });
+        }
+
+        updatedService.staffs && updatedService.staffs.forEach((item, key) => {
             const activeStaff = staffs.find(localStaff => localStaff.staffId === item.staffId)
             if (activeStaff) {
-                service.staffs[key].serviceDuration = activeStaff.serviceDuration
+                updatedService.staffs[key].serviceDuration = activeStaff.serviceDuration
             }
         })
 
 
-        return addService(service);
+        return addService(updatedService);
     };
 
 
@@ -391,9 +669,9 @@ class AddService extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, services, company } = state;
+    const { alert, services, company, material } = state;
     return {
-        alert, services, company
+        alert, services, company, material
     };
 }
 

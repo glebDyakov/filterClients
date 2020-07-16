@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import {servicesActions, staffActions} from '../_actions';
+import {servicesActions, staffActions, materialActions} from '../_actions';
 
 import '../../public/scss/services.scss'
 import {AddGroup, AddService, CreatedService} from "../_components/modals";
@@ -88,11 +88,13 @@ class Index extends Component {
 
         document.title = "Услуги | Онлайн-запись";
         initializeJs();
+
     }
 
     queryInitData() {
         this.props.dispatch(servicesActions.get());
         this.props.dispatch(staffActions.get());
+        this.props.dispatch(materialActions.getProducts())
     }
 
     componentWillReceiveProps(newProps) {
@@ -108,6 +110,11 @@ class Index extends Component {
         }
         if ( JSON.stringify(this.props.services) !==  JSON.stringify(newProps.services)) {
             this.setState({ services: newProps.services, defaultServicesList:  newProps.services })
+        }
+        if ( JSON.stringify(this.props.services.services) !==  JSON.stringify(newProps.services.services)) {
+            setTimeout(() => {
+                this.forceUpdate()
+            }, 400)
         }
 
     }
@@ -179,6 +186,8 @@ class Index extends Component {
         const { services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search  } = this.state;
         const isLoading = staff.isLoading || services.isLoading;
         const dragDropGroupsItems = [];
+
+
 
         services.services && services.services.forEach((item, keyGroup) => {
             const dragDropServicesItems = []
@@ -272,6 +281,7 @@ class Index extends Component {
                 )
             })
         })
+
 
         return (
             <div className="services">
@@ -422,9 +432,47 @@ class Index extends Component {
         selectedProperties.includes(idGroup) && dispatch(servicesActions.getServiceList(idGroup));
     };
 
-    updateService(service){
+    updateService(service, deletedProductsList){
         const { dispatch } = this.props;
-        const { idGroupEditable } = this.state;
+        const { idGroupEditable  } = this.state;
+
+        const finalServiceProducts = service.serviceProducts.filter(item => deletedProductsList.every(serviceProductForDeleting => serviceProductForDeleting.productId !== item.productId ))
+        if(service && service.usingMaterials){
+            const productToPost = []
+            const productToPut = []
+            finalServiceProducts.forEach(item => {
+                const serviceProducts = {
+                    amount: 0,
+                    productId: 0,
+                    serviceId: 0,
+                };
+                serviceProducts.amount = parseInt(item.amount);
+                serviceProducts.productId = parseInt(item.productId);
+                serviceProducts.serviceId = service.serviceId;
+                if (item.serviceProductId) {
+                    serviceProducts.serviceProductId = item.serviceProductId;
+                    productToPut.push(serviceProducts)
+                } else {
+                    productToPost.push(serviceProducts)
+                }
+            })
+
+            // dispatch(servicesActions.createServiceProducts(productToPost));
+            productToPut.forEach((item,i) => {
+                setTimeout(() => {
+                    // dispatch(servicesActions.updateServiceProduct(JSON.stringify(item), item.serviceProductId));
+                }, i * 100)
+            })
+        }
+
+        deletedProductsList.forEach(item => {
+            setTimeout(() => {
+                if (item.serviceProductId) {
+                    // dispatch(servicesActions.deleteServiceProduct(item.serviceProductId));
+                }
+            })
+        })
+
 
         dispatch(servicesActions.updateService(JSON.stringify(service), idGroupEditable.serviceGroupId));
     };
@@ -433,7 +481,7 @@ class Index extends Component {
         const { dispatch } = this.props;
         const { idGroupEditable } = this.state;
 
-        dispatch(servicesActions.addService(JSON.stringify(service), idGroupEditable.serviceGroupId));
+        dispatch(servicesActions.addService(service, idGroupEditable.serviceGroupId));
     };
 
     deleteServiceGroup (id){

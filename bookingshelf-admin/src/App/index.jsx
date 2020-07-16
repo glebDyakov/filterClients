@@ -10,6 +10,7 @@ import {
     notificationActions, servicesActions,
     socketActions, userActions
 } from '../_actions';
+import { hostname } from '../_helpers/handle-response'
 import { PrivateRoute, PublicRoute } from '../_components';
 import 'moment-duration-format';
 import 'moment/locale/ru';
@@ -24,6 +25,7 @@ const CalendarPage = React.lazy(() => import("../CalendarPage"));
 
 const OnlinePage = React.lazy(() => import("../OnlinePage"));
 const StaffPage = React.lazy(() => import("../StaffPage"));
+const MaterialPage = React.lazy(() => import("../MaterialPage"));
 const EmailPage = React.lazy(() => import("../EmailPage"));
 const NoPage = React.lazy(() => import("../NoPage"));
 
@@ -150,7 +152,7 @@ class Index extends React.Component {
 
 
         const options = {
-            url: `${config.apiSocket}/${socketStaffId}/`,
+            url: `wss://${hostname}${config.apiSocket}/${socketStaffId}/`,
             pingTimeout: 15000,
             pongTimeout: 10000,
             reconnectTimeout: 2000,
@@ -268,6 +270,7 @@ class Index extends React.Component {
                              {!paymentsOnly  && <PrivateRoute exact path="/" component={MainIndex} wrapped refresh={false} />}
                              {!paymentsOnly  && <PrivateRoute exact path="/settings" component={MainIndexPage} wrapped refresh={false} />}
                              {!paymentsOnly  && <PrivateRoute exact path="/staff/:activeTab?" component={StaffPage} wrapped refresh={false}  />}
+                             {!paymentsOnly  && <PrivateRoute exact path="/material/:activeTab?" component={MaterialPage} wrapped refresh={false}  />}
                              {!paymentsOnly  && <PrivateRoute exact path="/clients" component={ClientsPage} wrapped refresh={false}  />}
                              {!paymentsOnly  && access(0) && <PrivateRoute exact path="/services" component={ServicesPage} wrapped />}
                              {!paymentsOnly  && <PrivateRoute exact path="/calendar/:selectedType?/:staffNum?/:dateFrom?/:dateTo?" component={CalendarPage} wrapped />}

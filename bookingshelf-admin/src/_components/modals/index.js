@@ -1,4 +1,8 @@
 export * from './AddWorkTime';
+export * from './AddProduct';
+export * from './AddCategory';
+export * from './AddBrand';
+export * from './AddProvider';
 export * from './AddBlackList';
 export * from './NewStaff';
 export * from './EditStaff';
@@ -11,3 +15,8 @@ export * from './CreatedService';
 export * from './ClientDetails';
 export * from './NewStaffByMail';
 export * from './AppointmentFromSocket';
+export * from './AddUnit';
+export * from './InfoProduct';
+export * from './ExpenditureProduct';
+export * from './StorehouseProduct';
+export * from './AddStoreHouse';
