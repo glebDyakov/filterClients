@@ -177,7 +177,6 @@ class Index extends Component {
         this.props.dispatch(materialActions.getBrands());
         this.props.dispatch(materialActions.getSuppliers());
         this.props.dispatch(materialActions.getUnits());
-        this.props.dispatch(materialActions.getStoreHouses());
         this.props.dispatch(materialActions.getStoreHouseProducts());
         this.props.dispatch(materialActions.getExpenditureProducts());
     }
@@ -189,6 +188,11 @@ class Index extends Component {
 
         if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
             const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
+            if (JSON.stringify(this.props.company.settings) !== JSON.stringify(newProps.company.settings)){
+                if (newProps.company.settings && newProps.company.settings.companyName) {
+                    this.props.dispatch(materialActions.getStoreHouses(newProps.company.settings.companyName));
+                }
+            }
             if(newProps.match.params.activeTab==='staff'){document.title = (companyTypeId === 2 || companyTypeId === 3) ? "Рабочие места | Онлайн-запись" : "Сотрудники | Онлайн-запись"}
         }
 
@@ -369,6 +373,8 @@ class Index extends Component {
             emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date,
             editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff,
             unit_working,  unitOpen, storeHouse_working, storeHouseOpen} = this.state;
+        const qw = []
+        debugger
 
 
         const { products, finalTotalProductsPages, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
@@ -535,7 +541,7 @@ class Index extends Component {
                                         <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Остаток: </span> 0</p>
+                                        <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
                                         <a className="clientEdit" onClick={() => this.toggleProduct(activeProduct)}/>
@@ -653,7 +659,7 @@ class Index extends Component {
                                                         <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p><span className="mob-title">Остаток: </span>0</p>
+                                                        <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
                                                         <a className="clientEdit" onClick={() => this.toggleProduct(product)}/>

@@ -302,12 +302,18 @@ function toggleStoreHouse(params, edit) {
     function successTime(storeHouse) { return { type: materialConstants.MATERIAL_SUCCESS_TIME, storeHouse } }
 }
 
-function getStoreHouses() {
+function getStoreHouses(companyName) {
     return dispatch => {
         dispatch(request())
         materialService.getStoreHouses()
             .then(
-                storeHouses => dispatch(success(storeHouses)),
+                storeHouses => {
+                    dispatch(success(storeHouses))
+                    if (storeHouses.length === 0){
+                        dispatch(materialActions.toggleStoreHouse(companyName));
+                    }
+
+                },
             );
     };
 

@@ -285,7 +285,7 @@ class InfoProduct extends React.Component {
 
                                 <br/>
                                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} lassName="col-sm-12">
-                                    <p style={{}}><span style={{fontSize: "3em"}}> 0 </span>Остаток на складе</p>
+                                    <p style={{}}><span style={{fontSize: "3em"}}> {client.currentAmount}</span> Остаток на складе</p>
                                     <p style={{color: "#22FF00", cursor: "pointer"}} onClick={()=>this.toggleStorehouseProduct(client.productId)}>+ Пополнить</p>
                                     <p style={{color: "#FF0000", cursor: "pointer"}} onClick={()=>this.toggleExProd(client.productId)}>- Списать</p>
                                 </div>
