@@ -40,7 +40,9 @@ function getServices() {
     return dispatch => {
         servicesService.getServices()
             .then(
-                servicesList => dispatch(success(servicesList)),
+                servicesList => {
+                    dispatch(success(servicesList))
+                },
             );
     };
 

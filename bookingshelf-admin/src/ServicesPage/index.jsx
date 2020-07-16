@@ -454,7 +454,7 @@ class Index extends Component {
                 }
             })
 
-            dispatch(servicesActions.createServiceProducts(productToPost));
+            // dispatch(servicesActions.createServiceProducts(productToPost));
             productToPut.forEach((item,i) => {
                 setTimeout(() => {
                     dispatch(servicesActions.updateServiceProduct(JSON.stringify(item), item.serviceProductId));

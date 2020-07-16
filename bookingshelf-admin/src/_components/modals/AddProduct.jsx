@@ -216,7 +216,7 @@ class AddProduct extends React.Component {
                                     </div>
                                     <div className="col-sm-6">
                                         <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
-                                                      name="productCode" handleChange={this.handleChange} maxLength={128} />
+                                                      name="productCode" handleChange={this.handleChange} maxLength={7} />
                                         <p>Единица измерения</p>
                                         {/*<select className="custom-select" name="booktimeStep" onChange={this.handleStepChange}*/}
                                         {/*        value={client.categoryId}>*/}

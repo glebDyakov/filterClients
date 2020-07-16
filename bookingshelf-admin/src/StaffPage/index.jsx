@@ -556,7 +556,7 @@ class Index extends Component {
                                 {
                                     staff.accessList && staff.accessList.map((itemList, index) =>
                                     {
-                                    return (authentication.user.subCompany ? itemList.permissionCode !== 14 : true) && (<div className="tab-content-list" key={itemList.permissionCode}>
+                                    return (<div className="tab-content-list" key={itemList.permissionCode}>
                                             <div>
                                                 {this.getItemListName(itemList)}
                                             </div>
