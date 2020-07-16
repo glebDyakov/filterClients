@@ -374,8 +374,7 @@ class Index extends Component {
             emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date,
             editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff,
             unit_working,  unitOpen, storeHouse_working, storeHouseOpen} = this.state;
-        const qw = []
-        debugger
+
 
 
         const { products, finalTotalProductsPages, categories, brands, suppliers, units, storeHouses, storeHouseProducts, expenditureProducts } = material;
