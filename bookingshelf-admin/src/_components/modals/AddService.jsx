@@ -14,10 +14,12 @@ class AddService extends React.Component {
         this.state={
             service: (props.group_working && props.editServiceItem)
                 ? {
-                ...props.group_working, usingMaterials: !!serviceProducts.length, "serviceProducts": serviceProducts.length ? serviceProducts: [{
-                    "amount": '',
-                    "productId": ''
-                }]
+                // ...props.group_working, usingMaterials: !!serviceProducts.length, "serviceProducts": serviceProducts.length ? serviceProducts: [{
+                ...props.group_working, usingMaterials: !!(props.group_working.serviceProducts && props.group_working.serviceProducts.length),
+                    serviceProducts: (props.group_working.serviceProducts && props.group_working.serviceProducts.length) ? props.group_working.serviceProducts : [{
+                        "amount": '',
+                        "productId": ''
+                    }]
             } : {
                 "name":"",
                 "details":"",
@@ -76,7 +78,7 @@ class AddService extends React.Component {
         })
         this.setState({ staffs });
         if(this.state.editServiceItem){
-            this.props.dispatch(servicesActions.getServiceProducts());
+            // this.props.dispatch(servicesActions.getServiceProducts());
             this.props.dispatch(materialActions.getUnits());
         }
 
@@ -228,7 +230,9 @@ class AddService extends React.Component {
                                                            className={
                                                             // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
                                                                'select-button dropdown-toggle select-material'}
-                                                           data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '') + (activeUnit ? `, ${activeUnit.unitName}` : '' )) :"Выберите необходимый материал") }
+                                                           data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '')
+                                                            // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
+                                                        ) :"Выберите необходимый материал") }
                                                             <span
                                                                 className="color-circle"/><span
                                                                 className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
@@ -272,7 +276,8 @@ class AddService extends React.Component {
                                                 <div className="arrow-dropdown"><i></i></div>
 
                                                 <div className="select-material">
-                                                    <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}
+                                                    <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
+                                                                   title={`Норма списания, ${activeUnit ? (activeUnit.unitName) : ''}`}
                                                                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
                                                 </div>
                                                 {/*{index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
@@ -417,7 +422,8 @@ class AddService extends React.Component {
                                 }
                                 <div className="buttons col-12">
                                     <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
-                                    <button className={"button"} type="button"
+                                    <button className={"button" + (!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount)))) ? ' disabledField' : '')} type="button"
+                                            disabled={!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount))))}
                                             onClick={() => {
                                                 if (services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))) {
                                                     this.setState({ message: 'Необходимо заполнить название услуги и цену' });
@@ -461,6 +467,7 @@ class AddService extends React.Component {
 
         const deletedList = this.state.deletedProductsList;
         deletedList.push(elem);
+        debugger
         this.setState({deletedProductsList: deletedList })
     }
 
@@ -495,8 +502,19 @@ class AddService extends React.Component {
         const { service, deletedProductsList } = this.state;
         const updatedValue = parseInt(product.productId);
         service.serviceProducts[index].productId = updatedValue;
+
+
+
+        const oldValue = deletedProductsList.find(item => item.productName === product.productName);
+        if(oldValue) {
+            const oldValueEmptyAmount = { ...oldValue, amount: '' };
+            service.serviceProducts.splice(index, 1, oldValueEmptyAmount);
+        }
+
+
         const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
         deletedProductsList.splice(deletedIndex, 1);
+        debugger
 
         this.setState({ service, deletedProductsList });
 
@@ -562,7 +580,6 @@ class AddService extends React.Component {
             updatedService.serviceProducts = [];
             this.setState({service: updatedService });
         }
-        // updatedService.serviceProducts.findIndex()
 
         const { staffs, deletedProductsList } = this.state;
 
