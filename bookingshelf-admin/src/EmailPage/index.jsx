@@ -808,7 +808,7 @@ class Index extends Component {
                                         }
                                         <button type="button"
                                                 className={"button float-right mob-hiden "
-                                                +((email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
+                                                +((email.title === '' || email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.title && email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
                                         </button>
                                     </div>
                                     <div className="block-style2 container ">
@@ -847,7 +847,7 @@ class Index extends Component {
                                         }
                                         <button type="submit"
                                                 className={"button float-right mob-fade "
-                                                +((email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
+                                                +((email.title === '' || email.description==='' || (!email.toClients && !email.toStaffs)) && ' disabledField')} data-toggle="modal" data-target={email.title && email.description!=='' && (email.toClients || email.toStaffs) && '.start-modal'}>Сформировать рассылку
                                         </button>
                                     </div>
                                     <span className="clearfix"></span>
