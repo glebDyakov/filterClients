@@ -275,7 +275,8 @@ class AddService extends React.Component {
                                                     <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}
                                                                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />
                                                 </div>
-                                                {index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
+                                                {/*{index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
+                                                {this.state.service.serviceProducts.length !== 1 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
                                             </div>})}
 
 
@@ -476,10 +477,13 @@ class AddService extends React.Component {
     handleChangeProduct(e, index) {
         const { name, value } = e.target;
         const { service, deletedProductsList } = this.state;
-        const updatedValue = parseInt(value);
-        service.serviceProducts[index][name] = updatedValue
+
+        service.serviceProducts[index][name] = value;
+
+
+
         if (name === 'productId') {
-            const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
+            const deletedIndex = deletedProductsList.findIndex(item => item.productId === parseInt(value))
             deletedProductsList.splice(deletedIndex, 1)
         }
 
@@ -552,29 +556,49 @@ class AddService extends React.Component {
 
     updateService(){
         const { updateService } = this.props;
-        const { service, staffs, deletedProductsList } = this.state;
-        service.staffs && service.staffs.forEach((item, key) => {
+
+        const updatedService = {  ...this.state.service}
+        if(!this.state.service.usingMaterials){
+            updatedService.serviceProducts = [];
+            this.setState({service: updatedService });
+        }
+        // updatedService.serviceProducts.findIndex()
+
+        const { staffs, deletedProductsList } = this.state;
+
+
+
+        updatedService.staffs && updatedService.staffs.forEach((item, key) => {
             const activeStaff = staffs.find(localStaff => localStaff.staffId === item.staffId)
             if (activeStaff) {
-                service.staffs[key].serviceDuration = activeStaff.serviceDuration
+                updatedService.staffs[key].serviceDuration = activeStaff.serviceDuration
             }
         })
 
-        return updateService(service, deletedProductsList);
+
+
+
+        return updateService(updatedService, deletedProductsList);
     };
 
     addService(){
         const { addService } = this.props;
         const { service, staffs } = this.state;
-        service.staffs && service.staffs.forEach((item, key) => {
+
+        const updatedService = {  ...this.state.service,  serviceProducts: [] }
+        if(!this.state.service.usingMaterials){
+            this.setState({service: updatedService });
+        }
+
+        updatedService.staffs && updatedService.staffs.forEach((item, key) => {
             const activeStaff = staffs.find(localStaff => localStaff.staffId === item.staffId)
             if (activeStaff) {
-                service.staffs[key].serviceDuration = activeStaff.serviceDuration
+                updatedService.staffs[key].serviceDuration = activeStaff.serviceDuration
             }
         })
 
 
-        return addService(service);
+        return addService(updatedService);
     };
 
 

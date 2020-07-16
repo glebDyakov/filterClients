@@ -490,11 +490,13 @@ class Index extends Component {
                         item.target = 'Другое';
                         break;
                     default:
-                        item.target = '';
+                        // item.target = '';
 
                 }
             }
         })
+
+
 
 
         const movingList = (
@@ -523,10 +525,10 @@ class Index extends Component {
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
+                                    <div style={{ position: "relative" }} className={(movement && movement.target)? "": "movement-target-empty"}>
                                         <p><span className="mob-title">Причина списания: </span>{movement && movement.target}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
+                                    <div style={{ position: "relative" }} className={(movement && movement.retailPrice)? "": "retail-price-empty"}>
                                         <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
@@ -919,7 +921,7 @@ class Index extends Component {
 
                             {1 ? (
                                 <React.Fragment>
-                            <div className="tab-content-list mb-2 title" style={{position: "relative", height: "40px", textAlign: "center"}}>
+                            <div className="tab-content-list mb-2 title" style={{position: "relative", }}>
                                 <div style={{width:"80px"}}>
 
                                 </div>
