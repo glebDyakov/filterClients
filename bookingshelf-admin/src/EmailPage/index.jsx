@@ -783,13 +783,13 @@ class Index extends Component {
                                         {/*    </ul>*/}
                                         {/*    <div className="arrow-dropdown"><i></i></div>*/}
                                         {/*</div>*/}
-                                        <p className="mb-3">Текст Email</p>
                                         <InputCounter value={email.title}
                                                       title="Заголовок сообщения"
-                                                      placeholder="Тема" value={email.title}
-                                                      name="title" handleChange={this.handleSetTitle} maxLength={20}
+                                                      placeholder="Тема"
+                                                      name="title" handleChange={this.handleSetTitle} maxLength={64}
 
                                         />
+                                        <p className="mb-3">Текст Email</p>
                                         <Editor
                                             editorState={editorState}
                                             toolbarClassName="toolbarClassName"
