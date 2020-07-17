@@ -171,7 +171,7 @@ const CellAppointment = (props) => {
                     : (appointment.appointmentId + "_" + workingStaffElement.staffId + "_" + appointment.duration + "_" + appointment.appointmentTimeMillis + "_" + moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'))
             }
         >
-            <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : ""} ${appointment.duration === 900 ? ' notes-title-bordered' : ''}`}
+            <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : (appointment.clientConfirmed ? " client-confirmed-background" : '')} ${appointment.duration === 900 ? ' notes-title-bordered' : ''}`}
                onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 <span className="notes-buttons-container">
                     {appointment.clientNotCome && <Popover props={{
@@ -258,7 +258,7 @@ const CellAppointment = (props) => {
 
                     <div className="dropdown-client-container">
                         <p onClick={isOpenDropdownSelectClientStatus ? handleCloseSelectDropdown : handleOpenSelectDropdown}
-                           className={"dropdown-selected-item" + (isOpenDropdownSelectClientStatus ? " opened" : '') + (appointment.clientNotCome ? " clientNotCome" : ' default')}>{(appointment.clientNotCome ? "Клиент не пришел" : 'Ожидание клиента')}</p>
+                           className={"dropdown-selected-item" + (isOpenDropdownSelectClientStatus ? " opened" : '') + (appointment.clientNotCome ? " clientNotCome" : (appointment.clientConfirmed ? " clientConfirmed" : " default"))}>{(appointment.clientNotCome ? "Клиент не пришел" : (appointment.clientConfirmed ? "Клиент подтвержден" : 'Ожидание клиента'))}</p>
 
                         {isOpenDropdownSelectClientStatus &&
                         <div className="dropdown-selected">
@@ -270,7 +270,6 @@ const CellAppointment = (props) => {
                                     return {
                                         ...item,
                                         clientNotCome: false,
-                                        clientConfirmed: true
 
                                     }
                                 });
@@ -284,15 +283,15 @@ const CellAppointment = (props) => {
                             }
 
 
-                            {appointment.clientConfirmed === "default" || appointment.clientConfirmed === "false" &&
+                            {appointment.clientConfirmed === false &&
                             <p className="dropdown-item" onClick={() => {
-                                setSelectedItem("");
+                                setSelectedItem("clientConfirm");
                                 const newClientNotCome = false;
                                 const params = currentAppointments.map(item => {
                                     return {
                                         ...item,
                                         clientNotCome: newClientNotCome,
-                                        clientConfirmed: false
+                                        clientConfirmed: true
                                     }
                                 })
                                 dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));

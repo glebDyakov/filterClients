@@ -987,7 +987,7 @@
                       background: #F1B44C;
                     }
 
-                    &.clientAccept {
+                    &.clientConfirmed {
                       background: #009088;
                     }
 
@@ -1408,6 +1408,10 @@
 
             &.client-not-come-background {
               background-color: #F46A6A !important;
+            }
+
+            &.client-confirmed-background {
+              background: #009088 !important;
             }
 
             &-bordered {
