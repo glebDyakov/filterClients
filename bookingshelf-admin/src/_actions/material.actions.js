@@ -266,15 +266,16 @@ function deleteUnit(id) {
     function failure(error) { return { type: materialConstants.DELETE_UNIT_FAILURE, error } }
 }
 
-function expenditureProduct(params) {
+function expenditureProduct(params, edit) {
     return dispatch => {
         dispatch(request())
-        materialService.expenditureProduct(params)
+        materialService.expenditureProduct(params, edit)
             .then(
                 exProd => {
                     dispatch(success(exProd))
                     setTimeout(()=>dispatch(successTime(exProd)), 500);
                     dispatch(materialActions.getExpenditureProducts());
+                    dispatch(materialActions.getProducts());
                 },
             );
     };
@@ -365,15 +366,16 @@ function getExpenditureProducts() {
 
 
 
-function storehouseProduct(params) {
+function storehouseProduct(params, edit) {
     return dispatch => {
         dispatch(request())
-        materialService.storehouseProduct(params)
+        materialService.storehouseProduct(params, edit)
             .then(
                 product => {
                     dispatch(success(product))
                     setTimeout(()=>dispatch(successTime(product)), 500);
                     dispatch(materialActions.getStoreHouseProducts());
+                    dispatch(materialActions.getProducts());
                 },
             );
     };
