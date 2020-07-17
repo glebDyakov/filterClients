@@ -35,8 +35,8 @@ class Index extends Component {
             blackListModal: false,
             infoClient: 0,
             clientForDel: 0,
-            handleOpen: false
-
+            handleOpen: false,
+            isOpenDropdownMenu: false,
         };
 
         this.uploadFile = React.createRef();
@@ -60,6 +60,7 @@ class Index extends Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
     }
 
     handleOpenModal(e) {
@@ -68,6 +69,13 @@ class Index extends Component {
         this.setState({handleOpen: !this.state.handleOpen});
     }
 
+    handleOpenDropdownMenu() {
+        if (this.state.isOpenDropdownMenu) {
+            this.setState({isOpenDropdownMenu: false});
+        } else {
+            this.setState({isOpenDropdownMenu: true});
+        }
+    }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
@@ -80,6 +88,7 @@ class Index extends Component {
     handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.setState({handleOpen: false});
+            this.setState({isOpenDropdownMenu: false});
         }
     }
 
@@ -196,9 +205,15 @@ class Index extends Component {
         const isLoading = client ? client.isLoading : false;
 
 
-        const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client
+        const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client;
 
-        const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages
+        const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages;
+
+        // sort((a, b) => {
+        //     if (moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') >= 0) {
+        //         return moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') - moment(b.birthDate).year(2000).diff(moment().year(2000), 'days');
+        //     }
+        // })
 
 
         return (
@@ -207,9 +222,9 @@ class Index extends Component {
                 <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
 
-                <div style={{position: 'relative', paddingTop: '72px'}}>
-                    <div style={{position: 'absolute', zIndex: 1}}
-                         className="row align-items-center justify-content-between content clients mb-2">
+                <div style={{position: 'relative'}} className="clients-page-container">
+                    <div style={{position: 'absolute', zIndex: 2}}
+                         className="row content clients">
                         {/*<StaffChoice*/}
                         {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
                         {/*    typeSelected={typeSelected}*/}
@@ -234,8 +249,28 @@ class Index extends Component {
                                data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>Черный список</a>
                         </div>
 
+                        <div className={"header-tabs-mob" + (this.state.isOpenDropdownMenu ? " opened" : '')}>
+                            <p onClick={this.handleOpenDropdownMenu}
+                               className="dropdown-button">{activeTab === 'clients' ? "Клиенты" : "Черный список"}</p>
 
-                        <div className="col-2 d-flex justify-content-end">
+                            {this.state.isOpenDropdownMenu && (
+                                <div ref={this.setWrapperRef} className="dropdown-buttons">
+                                    <a className={"nav-link" + (activeTab === 'clients' ? ' active show' : '')}
+                                       data-toggle="tab" href="#tab1" onClick={() => {
+                                        this.setTab('clients');
+                                        this.handleOpenDropdownMenu();
+                                    }}>Клиенты</a>
+                                    <a className={"nav-link" + (activeTab === 'blacklist' ? ' active show' : '')}
+                                       data-toggle="tab" href="#tab2" onClick={() => {
+                                        this.setTab('blacklist');
+                                        this.handleOpenDropdownMenu();
+                                    }}>Черный список</a>
+                                </div>
+                            )}
+                        </div>
+
+
+                        <div className="col-2 d-flex justify-content-end export-container">
                             {/*{access(5) &&*/}
                             {/*<div className="export">*/}
                             {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
@@ -266,76 +301,74 @@ class Index extends Component {
                         </div>
 
                         {finalClients && finalClients.map((client_user, i) => {
+                                console.log(finalClients);
                                 let condition = true;
                                 if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 
                                     condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
 
                                 }
-                            return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                <div className="tab-content-list" key={i}
-                                     style={{position: "relative"}}>
-                                    <div className="cell_name-client" style={{position: "relative"}}>
-                                        <a onClick={() => this.openClientStats(client_user)}>
-                                            <p> {client_user.firstName} {client_user.lastName}</p>
-                                        </a>
-                                    </div>
-                                    <div className="cell_client-email">
-                                        {client_user.phone}
-                                        <br/>
-                                        {client_user.email}
-                                    </div>
-                                    <div className="cell_client-country">
-                                        {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ", ") + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ", ") + client_user.province)}
-                                    </div>
-
-                                    <div className="cell_client-last-visit">
-
-                                    </div>
-
-                                    <div className="cell_client-discount">
-                                        {client_user.discountPercent}%
-                                    </div>
-
-                                    <div
-                                        className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 5) ? " red-date" : '')}>
-                                        {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
-                                    </div>
-
-
-                                    <div className="list-button-wrapper">
-                                        {client_user.blacklisted && <a className="client-in-blacklist">
-                                            <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
-                                                 alt=""/>
-                                        </a>}
-
-                                        {!client_user.blacklisted && <a className="clientEdit"
-                                                                        onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
-
-                                        <div className="delete dropdown">
-                                            <div className="clientEyeDel"
-                                                 onClick={() => this.openClientStats(client_user)}></div>
-                                            <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
-                                               aria-haspopup="true" aria-expanded="false">
-                                                <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                                    <div className="tab-content-list" key={i}
+                                         style={{position: "relative"}}>
+                                        <div className="cell_name-client" style={{position: "relative"}}>
+                                            <a onClick={() => this.openClientStats(client_user)}>
+                                                <p> {client_user.firstName} {client_user.lastName}</p>
                                             </a>
+                                        </div>
+                                        <div className="cell_client-email">
+                                            {client_user.phone}
+                                            <br/>
+                                            {client_user.email}
+                                        </div>
+                                        <div className="cell_client-country">
+                                            {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ", ") + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ", ") + client_user.province)}
+                                        </div>
+
+                                        <div className="cell_client-last-visit">
+
+                                        </div>
+
+                                        <div className="cell_client-discount">
+                                            {client_user.discountPercent}%
+                                        </div>
+
+                                        <div
+                                            className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 5) ? " red-date" : '')}>
+                                            {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
+                                        </div>
 
 
+                                        <div className="list-button-wrapper">
+                                            {client_user.blacklisted && <a className="client-in-blacklist">
+                                                <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
+                                                     alt=""/>
+                                            </a>}
 
-                                            <div className="dropdown-menu delete-menu p-3">
-                                                {activeTab === 'clients' &&
-                                                <button type="button" className="button delete-tab"
-                                                        onClick={() => this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                                {activeTab === 'blacklist' &&
-                                                <button type="button" className="button delete-tab" onClick={() => {
-                                                    delete client_user.appointments;
-                                                    this.updateClient({...client_user, blacklisted: false}, true)
-                                                }}>Удалить</button>}
+                                            {!client_user.blacklisted && <a className="clientEdit"
+                                                                            onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
+
+                                            <div className="delete dropdown">
+                                                <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
+                                                   aria-haspopup="true" aria-expanded="false">
+                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
+                                                </a>
+
+
+                                                <div className="dropdown-menu delete-menu p-3">
+                                                    {activeTab === 'clients' &&
+                                                    <button type="button" className="button delete-tab"
+                                                            onClick={() => this.deleteClient(client_user.clientId)}>Удалить</button>}
+                                                    {activeTab === 'blacklist' &&
+                                                    <button type="button" className="button delete-tab" onClick={() => {
+                                                        delete client_user.appointments;
+                                                        this.updateClient({...client_user, blacklisted: false}, true)
+                                                    }}>Удалить</button>}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
+                                );
                             }
                         )}
                     </div>

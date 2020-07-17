@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
 import {appointmentActions, calendarActions} from "../../_actions";
@@ -39,6 +39,17 @@ const CellAppointment = (props) => {
         updateAppointmentForDeleting
     } = props;
 
+    const [isOpenDropdownSelectClientStatus, setOpenDropdown] = useState();
+    const [dropdownSelectedItem, setSelectedItem] = useState(appointment.clientConfirmed);
+
+
+    const handleOpenSelectDropdown = () => {
+        setOpenDropdown(true);
+    };
+
+    const handleCloseSelectDropdown = () => {
+        setOpenDropdown(false);
+    };
 
     let totalDuration = appointment.duration;
     let appointmentServices = [];
@@ -215,7 +226,8 @@ const CellAppointment = (props) => {
                                                                         </span>
 
             </p>
-            <p onMouseDown={(e) => e.preventDefault()} id={textAreaId} className={`notes-container ${appointment.color.toLowerCase() + "-color"}`}
+            <p onMouseDown={(e) => e.preventDefault()} id={textAreaId}
+               className={`notes-container ${appointment.color.toLowerCase() + "-color"}`}
                style={{
                    minHeight: minTextAreaHeight + "px",
                    maxHeight: maxTextAreaHeight + "px",
@@ -235,12 +247,81 @@ const CellAppointment = (props) => {
             {!isStartMovingVisit && <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
                 <div className="cell msg-inner">
                     <p>
-                        <p className="new-text">Запись&nbsp;<p className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p></p>
+                        <p className="new-text">Запись&nbsp;<p
+                            className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
+                        </p>
                         <button type="button" onClick={() => {
                             dispatch(appointmentActions.toggleSelectedNote(null));
                             dispatch(appointmentActions.toggleStartMovingVisit(false))
                         }} className="close"/>
                     </p>
+
+                    <div className="dropdown-client-container">
+                        <p onClick={isOpenDropdownSelectClientStatus ? handleCloseSelectDropdown : handleOpenSelectDropdown}
+                           className={"dropdown-selected-item" + (isOpenDropdownSelectClientStatus ? " opened" : '') + (appointment.clientNotCome ? " clientNotCome" : ' default')}>{(appointment.clientNotCome ? "Клиент не пришел" : 'Ожидание клиента')}</p>
+
+                        {isOpenDropdownSelectClientStatus &&
+                        <div className="dropdown-selected">
+
+                            {appointment.clientNotCome &&
+                            <p className="dropdown-item" onClick={() => {
+                                setSelectedItem(true);
+                                const params = currentAppointments.map(item => {
+                                    return {
+                                        ...item,
+                                        clientNotCome: false,
+                                        clientConfirmed: true
+
+                                    }
+                                });
+                                dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+
+                                handleCloseSelectDropdown();
+                            }
+                            }>
+                                Ожидание клиента
+                            </p>
+                            }
+
+
+                            {appointment.clientConfirmed === "default" || appointment.clientConfirmed === "false" &&
+                            <p className="dropdown-item" onClick={() => {
+                                setSelectedItem("");
+                                const newClientNotCome = false;
+                                const params = currentAppointments.map(item => {
+                                    return {
+                                        ...item,
+                                        clientNotCome: newClientNotCome,
+                                        clientConfirmed: false
+                                    }
+                                })
+                                dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+                                handleCloseSelectDropdown();
+                            }
+                            }>
+                                Клиент подтвердил
+                            </p>}
+
+                            {appointment.clientNotCome !== true &&
+                            <p className="dropdown-item" onClick={() => {
+                                setSelectedItem("clientNotCome");
+                                const newClientNotCome = true;
+                                const params = currentAppointments.map(item => {
+                                    return {
+                                        ...item,
+                                        clientNotCome: newClientNotCome,
+                                        clientConfirmed: "false"
+                                    }
+                                })
+                                dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+                                handleCloseSelectDropdown();
+
+                            }}>
+                                Клиент не пришел
+                            </p>}
+                        </div>
+                        }
+                    </div>
 
 
                     <p style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
@@ -338,14 +419,16 @@ const CellAppointment = (props) => {
 
                     <div className="staff-block">
                          <span className="img-container">
-                                         <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                              className="rounded-circle" alt="staff image"/>
+                                         <img
+                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                             className="rounded-circle" alt="staff image"/>
                                      </span>
 
                         <p className="name-staff">{workingStaffElement.firstName} {workingStaffElement.lastName ? workingStaffElement.lastName : ''}</p>
                     </div>
 
-                    {appointment.description && <p className="visit-note"><p className="bold-text">Заметка:</p>&nbsp;{appointment.description}</p>}
+                    {appointment.description &&
+                    <p className="visit-note"><p className="bold-text">Заметка:</p>&nbsp;{appointment.description}</p>}
                     {currentTime >= parseInt(moment().subtract(1, 'week').format("x")) && (
                         <div className="msg-inner-buttons">
                             <div

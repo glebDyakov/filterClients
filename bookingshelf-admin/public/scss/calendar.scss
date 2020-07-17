@@ -944,6 +944,87 @@
 
               .msg-inner {
 
+                .dropdown-client-container {
+                  &:hover {
+                    opacity: 1 !important;
+                  }
+                  width: 100%;
+
+                  .dropdown-selected-item.opened {
+                    &::before {
+                      transform: translateY(-50%) rotate(180deg) !important;
+                      transition: 200ms;
+                    }
+                  }
+
+                  .dropdown-selected-item {
+                    font-weight: normal;
+                    font-size: 13px;
+                    line-height: 18px;
+                    left: 0;
+                    right: 0;
+                    top: 26px;
+                    color: #FFFFFF;
+                    position: absolute;
+                    padding: 7px 10px;
+                    width: 100%;
+                    border-radius: 0;
+
+                    &::before {
+                      position: absolute;
+                      content: url("../img/icons/white_arrow.svg");
+                      right: 10px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      transition: 200ms;
+                    }
+
+                    &:hover {
+                      opacity: 1 !important;
+                    }
+
+                    &.default {
+                      background: #F1B44C;
+                    }
+
+                    &.clientAccept {
+                      background: #009088;
+                    }
+
+                    &.clientNotCome {
+                      background: #F46A6A;
+                    }
+                  }
+
+                  .dropdown-selected {
+                    border: 1px solid #eeeff1;
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    left: 0;
+                    top: 57px;
+                    border-radius: 0;
+                    &:hover {
+                      opacity: 1 !important;
+                    }
+
+
+                    .dropdown-item {
+                      font-weight: normal;
+                      font-size: 13px;
+                      line-height: 18px;
+                      color: #495057;
+                      padding: 15px 10px;
+                      &:not(:last-child) {
+                        border-bottom: 1px solid #eeeff1;
+                        box-sizing: border-box;
+                      }
+
+                    }
+                  }
+                }
+
 
                 .client-not-come {
                   font-size: 13px;
@@ -956,7 +1037,7 @@
 
                 background: #fff;
                 display: block;
-                padding: 10px !important;
+                padding: 26px 10px 10px 10px !important;
                 max-width: none !important;
                 width: 215px;
                 box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.08);
@@ -1883,7 +1964,6 @@
 
 .header-client-detail, .client-detail {
   .close {
-    margin: 13px 5px 0 0 !important;
     //height: 15px!important;
   }
 
