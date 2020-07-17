@@ -207,8 +207,8 @@ class ExpenditureProduct extends React.Component {
                                     <p className="alert-danger p-1 rounded pl-3 mb-2">Недостаточно товаров на складе</p>
                                     }
 
-                                    <button className={((!(client.amount && client.target && client.storehouseId) && invalidCount)? 'disabledField': '')+' button'}
-                                            disabled={!(client.amount && client.target && client.storehouseId) && invalidCount}
+                                    <button className={((!(client.amount && client.target && client.storehouseId && !invalidCount))? 'disabledField': '')+' button'}
+                                            disabled={!(client.amount && client.target && client.storehouseId && !invalidCount)}
                                             style={{ display: 'block' }}
                                             type="button"
                                             // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
