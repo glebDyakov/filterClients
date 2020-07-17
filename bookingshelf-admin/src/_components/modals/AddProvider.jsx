@@ -63,6 +63,7 @@ class AddProvider extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.removeContact = this.removeContact.bind(this);
         this.fixNumber = this.fixNumber.bind(this);
+        this.fixNumber2 = this.fixNumber2.bind(this);
     }
 
     componentDidMount() {
@@ -242,11 +243,11 @@ class AddProvider extends React.Component {
                                         <div className="row" style={{position: "relative"}}>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Имя" placeholder="" value={contactPerson.firstName}
-                                                              name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
+                                                              name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                             </div>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Фамилия" placeholder="" value={contactPerson.lastName}
-                                                              name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
+                                                              name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                             </div>
                                             <div className="col-sm-6">
                                                 <p>Номер телефона 1</p>
@@ -316,16 +317,47 @@ class AddProvider extends React.Component {
                                 <button style={{ display: 'block', marginLeft: 'auto' }}
                                         type="button"
 
-                                        className={(!( client.supplierName && client.webSite && client.description
+                                        className={(!(
+                                            (client.contactPersons.every(contact =>
+                                            {
+                                                if(Object.values(contact).some(item => item)){
+                                                    return (isValidEmailAddress(contact.email)
+                                                        && (isValidNumber(this.fixNumber2(contact.phone1)))
+                                                        && (isValidNumber(this.fixNumber2(contact.phone2)))
+                                                        && (contact.firstName)
+                                                        && (contact.lastName)
+                                                    )}else{
+                                                        return true;
+                                                    }
+                                                }
+                                            )) &&
+
+                                            client.supplierName && client.webSite && client.description
                                             && client.countryCode && client.street && client.city
                                             && client.office && client.zipCode ) ? 'disabledField': '')+' button'}
 
-                                        disabled={!(client.supplierName && client.webSite && client.description
+                                        disabled={!(
+                                            (client.contactPersons.every(contact =>
+                                                {
+                                                    if(Object.values(contact).some(item => item)){
+                                                        return (isValidEmailAddress(contact.email)
+                                                            && (isValidNumber(this.fixNumber2(contact.phone1)))
+                                                            && (isValidNumber(this.fixNumber2(contact.phone2)))
+                                                            && (contact.firstName)
+                                                            && (contact.lastName)
+                                                        )}else{
+                                                        return true;
+                                                    }
+                                                }
+                                            )) &&
+
+                                            client.supplierName && client.webSite && client.description
                                             && client.countryCode && client.street && client.city
                                             && client.office && client.zipCode)}
 
 
-                                        onClick={(client.supplierName && client.webSite && client.description
+                                        onClick={
+                                            (client.supplierName && client.webSite && client.description
                                             && client.countryCode && client.street && client.city
                                             && client.office && client.zipCode)
                                             && (edit ? this.updateClient : this.addClient)}
@@ -408,6 +440,10 @@ class AddProvider extends React.Component {
             item.phone2 = item.phone2.startsWith('+') ? item.phone2 : `+${item.phone2}`;
         });
         return finalClient;
+    }
+    fixNumber2(number){
+            number = number.startsWith('+') ? number : `+${number}`;
+        return number;
     }
 
     getFinalClient(client) {

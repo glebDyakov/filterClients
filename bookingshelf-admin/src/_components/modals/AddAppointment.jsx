@@ -1497,10 +1497,10 @@ class AddAppointment extends React.Component {
                     item.appointmentTimeMillis = startTime;
                 }
             }
-            if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
-                appointmentMessage = 'Невозможно добавить ещё одну услугу';
-                return;
-            }
+            // if (!shouldAdd && (i === appointment.length - 1) && i !== 0) {
+            //     appointmentMessage = 'Невозможно добавить ещё одну услугу';
+            //     return;
+            // }
             newAppointments.push(item);
 
         });

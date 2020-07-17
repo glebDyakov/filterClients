@@ -11,7 +11,16 @@ import '../../public/scss/staff.scss'
 import '../../public/scss/material.scss'
 
 import moment from "moment";
-import { AddProduct, AddCategory, AddProvider, AddBrand, AddUnit, InfoProduct, AddStoreHouse } from "../_components/modals";
+import {
+    AddProduct,
+    AddCategory,
+    AddProvider,
+    AddBrand,
+    AddUnit,
+    InfoProduct,
+    AddStoreHouse,
+    ExpenditureProduct, StorehouseProduct
+} from "../_components/modals";
 
 import 'react-day-picker/lib/style.css';
 import DayPicker, { DateUtils } from 'react-day-picker';
@@ -24,6 +33,7 @@ import DragDrop from "../_components/DragDrop";
 import Paginator from "../_components/Paginator";
 import FeedbackStaff from "../_components/modals/FeedbackStaff";
 import EmptyContent from "./EmptyContent";
+import Modal from "@trendmicro/react-modal";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -156,6 +166,11 @@ class Index extends Component {
         this.deleteMovement = this.deleteMovement.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleSearchMoving = this.handleSearchMoving.bind(this);
+
+        this.toggleExProd = this.toggleExProd.bind(this);
+        this.onCloseExProd = this.onCloseExProd.bind(this);
+        this.toggleStorehouseProduct = this.toggleStorehouseProduct.bind(this);
+        this.onCloseStorehouseProduct = this.onCloseStorehouseProduct.bind(this);
     }
 
     componentDidMount() {
@@ -211,9 +226,15 @@ class Index extends Component {
         }
 
         if (JSON.stringify(this.props.material.products) !== JSON.stringify(newProps.material.products)) {
+            let info_product_working = {}
+            if (this.state.info_product_working) {
+                info_product_working = newProps.material.products.find(item => item.productId === this.state.info_product_working.productId)
+
+            }
             this.setState({
                 products: newProps.material.products,
                 defaultProductsList: newProps.material.products,
+                info_product_working
             })
 
         }
@@ -222,6 +243,7 @@ class Index extends Component {
                 categories: newProps.material.categories,
                 defaultCategoriesList: newProps.material.categories,
             })
+
 
         }
         if (JSON.stringify(this.props.material.brands) !== JSON.stringify(newProps.material.brands)) {
@@ -266,7 +288,6 @@ class Index extends Component {
                 expenditureProducts: newProps.material.expenditureProducts,
                 defaultExpenditureProductsList: newProps.material.expenditureProducts,
             })
-
         }
 
     }
@@ -373,7 +394,7 @@ class Index extends Component {
         const { product_working, info_product_working, category_working, supplier_working, brand_working, productOpen, infoProductOpen, providerOpen, categoryOpen, brandOpen,
             emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date,
             editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff,
-            unit_working,  unitOpen, storeHouse_working, storeHouseOpen} = this.state;
+            unit_working,  unitOpen, storeHouse_working, storeHouseOpen, exProdOpen, storehouseProductOpen, ex_product_working, storehouseProduct_working} = this.state;
 
 
 
@@ -481,19 +502,19 @@ class Index extends Component {
             if (item.target) {
                 switch (item.target) {
                     case 'INTERNAL':
-                        item.target = 'Внутренняя ошибка';
+                        item.targetTranslated = 'Внутренняя ошибка';
                         break;
                     case 'DAMAGED':
-                        item.target = 'Товар поврежден';
+                        item.targetTranslated = 'Товар поврежден';
                         break;
                     case 'CHANGING':
-                        item.target = 'Изменения наличия';
+                        item.targetTranslated = 'Изменения наличия';
                         break;
                     case 'LOST':
-                        item.target = 'Утеря';
+                        item.targetTranslated = 'Утеря';
                         break;
                     case 'OTHER':
-                        item.target = 'Другое';
+                        item.targetTranslated = 'Другое';
                         break;
                     default:
                         // item.target = '';
@@ -531,8 +552,8 @@ class Index extends Component {
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}</p>
                                     </div>
-                                    <div style={{ position: "relative" }} className={(movement && movement.target)? "": "movement-target-empty"}>
-                                        <p><span className="mob-title">Причина списания: </span>{movement && movement.target}</p>
+                                    <div style={{ position: "relative" }} className={(movement && movement.targetTranslated)? "": "movement-target-empty"}>
+                                        <p><span className="mob-title">Причина списания: </span>{movement && movement.targetTranslated}</p>
                                     </div>
                                     <div style={{ position: "relative" }} className={(movement && movement.retailPrice)? "": "retail-price-empty"}>
                                         <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}</p>
@@ -544,7 +565,7 @@ class Index extends Component {
                                         <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
-                                        <a className="clientEdit" onClick={() => this.toggleProduct(activeProduct)}/>
+                                        <a className="clientEdit" onClick={() => (movement.storehouseProductId) ? this.toggleStorehouseProduct(movement) : this.toggleExProd(movement) }/>
                                     </div>
                                     <div className="delete dropdown">
                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
@@ -1189,9 +1210,42 @@ class Index extends Component {
                     onClose={this.onCloseStoreHouse}
                 />
                 }
+                {exProdOpen &&
+                <ExpenditureProduct
+                    edit={!!ex_product_working}
+                    client_working={ex_product_working}
+                    onClose={this.onCloseExProd}
+                />
+                }
+                {storehouseProductOpen &&
+                <StorehouseProduct
+                    edit={!!storehouseProduct_working}
+                    client_working={storehouseProduct_working}
+                    onClose={this.onCloseStorehouseProduct}
+                    suppliers={suppliers}
+                />
+                }
+
             </div>
         );
     }
+
+    toggleExProd(ex_product_working) {
+        this.setState({ ex_product_working, exProdOpen: true });
+    }
+
+    onCloseExProd() {
+        this.setState({ exProdOpen: false })
+    }
+
+    toggleStorehouseProduct(storehouseProduct_working) {
+        this.setState({ storehouseProduct_working, storehouseProductOpen: true });
+    }
+
+    onCloseStorehouseProduct() {
+        this.setState({ storehouseProductOpen: false })
+    }
+
 
     handleChangeEmail(e) {
         const { value } = e.target;
