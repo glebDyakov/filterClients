@@ -25,6 +25,26 @@ class ExpenditureProduct extends React.Component {
                 "unitName": ""
             }
         }
+        switch (client.target) {
+            case 'INTERNAL':
+                client.target = 'I';
+                break;
+            case 'DAMAGED':
+                client.target = 'D';
+                break;
+            case 'CHANGING':
+                client.target = 'C';
+                break;
+            case 'LOST':
+                client.target = 'L';
+                break;
+            case 'OTHER':
+                client.target = 'O';
+                break;
+            default:
+            // item.target = '';
+
+        }
         const [year, month, day] = client.birthDate
             ? client.birthDate.slice(0, 10).split('-')
             : ['' , '' , '']
@@ -66,6 +86,31 @@ class ExpenditureProduct extends React.Component {
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
             this.setState({clients:newProps.client});
         }
+
+        if ( JSON.stringify(this.props.client_working) !==  JSON.stringify(newProps.client_working)) {
+            const {client_working} = newProps;
+            switch (client_working.target) {
+                case 'INTERNAL':
+                    client_working.target = 'I';
+                    break;
+                case 'DAMAGED':
+                    client_working.target = 'D';
+                    break;
+                case 'CHANGING':
+                    client_working.target = 'C';
+                    break;
+                case 'LOST':
+                    client_working.target = 'L';
+                    break;
+                case 'OTHER':
+                    client_working.target = 'O';
+                    break;
+                default:
+                // item.target = '';
+
+            }
+            this.setState({client:client_working});
+        }
     }
 
     getDayOptionList() {
@@ -94,6 +139,14 @@ class ExpenditureProduct extends React.Component {
         const { company, client_working, material } = this.props;
         const { day, month, year, client, edit, alert, clients }=this.state;
 
+        const activeProduct = material.products && material.products.find((item) => item.productId === client.productId);
+
+
+        let invalidCount =  activeProduct && (activeProduct.currentAmount - (client.amount? client.amount: 0)
+            + (client_working && client_working.amount ? client_working.amount: 0)) < 0;
+
+
+
         return (
             <div>
                 <Modal style={{ zIndex: 99999}} size="xs" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -114,14 +167,14 @@ class ExpenditureProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <p>Текущее количество единиц: <strong> 0 </strong></p>
+                                            <p>Текущее количество единиц: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
                                         </div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Единиц на списание" value={client.countProduct}
-                                                          name="countProduct" handleChange={this.handleChange} maxLength={128} />
+                                            <InputCounter title="Единиц на списание" value={client.amount}
+                                                          name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
                                     <p>Причина списания</p>
@@ -150,13 +203,16 @@ class ExpenditureProduct extends React.Component {
                                     {material && material.status === 200 &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
+                                    {invalidCount &&
+                                    <p className="alert-danger p-1 rounded pl-3 mb-2">Недостаточно товаров на складе</p>
+                                    }
 
-                                    <button className={(!(client.countProduct && client.target && client.storehouseId) ? 'disabledField': '')+' button'}
-                                            disabled={!(client.countProduct && client.target && client.storehouseId)}
+                                    <button className={((!(client.amount && client.target && client.storehouseId && !invalidCount))? 'disabledField': '')+' button'}
+                                            disabled={!(client.amount && client.target && client.storehouseId && !invalidCount)}
                                             style={{ display: 'block' }}
                                             type="button"
                                             // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
-                                            onClick={(client.countProduct && client.target && client.storehouseId) && (() => this.expenditureProduct(client))}
+                                            onClick={(client.amount && client.target && client.storehouseId) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
 
                                     >Сохранить
                                     </button>
@@ -170,16 +226,22 @@ class ExpenditureProduct extends React.Component {
         )
     }
 
-    expenditureProduct(client){
-        const product = {
-            productId: this.props.client_working,
-
-            amount: parseInt(client.countProduct),
-            target: client.target,
+    expenditureProduct(client, edit){
+        const product = {...client,
             expenditureDateMillis: moment().format('x'),
-            storehouseId: client.storehouseId
-        }
-        this.props.dispatch(materialActions.expenditureProduct(product))
+            storehouseId: client.storehouseId,
+            amount: parseInt(client.amount),
+        };
+
+        // const updatedProduct = {}
+        // Object.keys(product).forEach(key => {
+        //     updatedProduct[key] = parseInt(product[key]);
+        // })
+
+        this.props.dispatch(materialActions.expenditureProduct(product, edit))
+
+
+
     };
 
     handleBirthdayChange({ target: { name, value } }) {

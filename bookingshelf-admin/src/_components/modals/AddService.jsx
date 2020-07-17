@@ -422,8 +422,8 @@ class AddService extends React.Component {
                                 }
                                 <div className="buttons col-12">
                                     <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
-                                    <button className={"button" + (!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount)))) ? ' disabledField' : '')} type="button"
-                                            disabled={!(service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount))))}
+                                    <button className={"button" + (!(!service.usingMaterials || ((service.serviceProducts.length) && (service.serviceProducts.every(item => (item.productId && item.amount))))) ? ' disabledField' : '')} type="button"
+                                            disabled={!(!service.usingMaterials || (service.serviceProducts.length && (service.serviceProducts.every(item => (item.productId && item.amount)))))}
                                             onClick={() => {
                                                 if (services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))) {
                                                     this.setState({ message: 'Необходимо заполнить название услуги и цену' });

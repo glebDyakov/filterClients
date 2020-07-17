@@ -312,10 +312,10 @@ function deleteStoreHouse(id) {
     return fetch(`${origin}${config.warehouseApiUrl}/storehouses/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
-function expenditureProduct(params) {
+function expenditureProduct(params, edit) {
 
     const requestOptions = {
-        method: 'POST',
+        method: edit? 'PUT': 'POST',
         body: JSON.stringify(params),
         crossDomain: true,
         credentials: 'include',
@@ -325,14 +325,13 @@ function expenditureProduct(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures${edit ? `/${params.storehouseProductExpenditureId}`:''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 
-function storehouseProduct(params) {
-
+function storehouseProduct(params, edit) {
     const requestOptions = {
-        method: 'POST',
+        method: edit? 'PUT': 'POST',
         body: JSON.stringify(params),
         crossDomain: true,
         credentials: 'include',
@@ -342,7 +341,7 @@ function storehouseProduct(params) {
         headers: {...authHeader(), 'Content-Type': 'application/json'}
     };
 
-    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
+    return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts${edit ? `/${params.storehouseProductId}` : ''}`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 

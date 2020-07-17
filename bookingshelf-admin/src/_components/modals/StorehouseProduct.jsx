@@ -74,6 +74,8 @@ class StorehouseProduct extends React.Component {
         const { company, client_working, material,suppliers } = this.props;
         const { day, month, year, client, edit, alert, clients }=this.state;
 
+        const activeProduct = material.products && material.products.find((item) => item.productId === client.productId);
+
         return (
             <div>
                 <Modal style={{ zIndex: 99999}} size="xs" onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -94,14 +96,14 @@ class StorehouseProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <p>Текущее количество единиц: <strong> 0 </strong></p>
+                                            <p>Текущее количество единиц: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
                                         </div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Единиц на пополнение" value={client.countProduct}
-                                                          name="countProduct" handleChange={this.handleChange} maxLength={128} />
+                                            <InputCounter title="Единиц на пополнение" value={client.amount}
+                                                          name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
 
@@ -143,17 +145,17 @@ class StorehouseProduct extends React.Component {
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
 
-                                    <button className={(!(client.countProduct && client.retailPrice && client.specialPrice
+                                    <button className={(!(client.amount && client.retailPrice && client.specialPrice
                                         && client.supplierPrice && client.supplierId && client.storehouseId) ? 'disabledField': '')+' button'}
 
-                                            disabled={!(client.countProduct && client.retailPrice && client.specialPrice && client.supplierPrice
+                                            disabled={!(client.amount && client.retailPrice && client.specialPrice && client.supplierPrice
                                                 && client.supplierId && client.storehouseId)}
 
                                             type="button"
                                             style={{ display: 'block' }}
                                             onClick={()=>
                                             {
-                                                this.storehouseProduct(client)
+                                                this.storehouseProduct(client, !!client.storehouseProductId)
                                             }}
 
                                     >Сохранить
@@ -168,20 +170,17 @@ class StorehouseProduct extends React.Component {
         )
     }
 
-    storehouseProduct(client){
-        const product = {
-            productId: this.props.client_working,
-            storehouseId: client.storehouseId,
-            amount: parseInt(client.countProduct),
+    storehouseProduct(client, edit){
+        const product = {...client,
             deliveryDateMillis: moment().format('x'),
-
-            retailPrice: client.retailPrice,
-            specialPrice: client.specialPrice,
-            supplierId: client.supplierId,
-            supplierPrice: client.supplierPrice
-
         }
-        this.props.dispatch(materialActions.storehouseProduct(product))
+
+        const updatedProduct = {}
+        Object.keys(product).forEach(key => {
+            updatedProduct[key] = parseInt(product[key]);
+        })
+
+        this.props.dispatch(materialActions.storehouseProduct(updatedProduct, edit))
     };
 
     handleBirthdayChange({ target: { name, value } }) {

@@ -92,6 +92,9 @@ class InfoProduct extends React.Component {
         if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
             this.setState({clients:newProps.client});
         }
+        if ( JSON.stringify(this.props.client_working) !==  JSON.stringify(newProps.client_working)) {
+            this.setState({client: newProps.client_working});
+        }
     }
 
     getDayOptionList() {
@@ -286,8 +289,8 @@ class InfoProduct extends React.Component {
                                 <br/>
                                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} lassName="col-sm-12">
                                     <p style={{}}><span style={{fontSize: "3em"}}> {client.currentAmount}</span> Остаток на складе</p>
-                                    <p style={{color: "#22FF00", cursor: "pointer"}} onClick={()=>this.toggleStorehouseProduct(client.productId)}>+ Пополнить</p>
-                                    <p style={{color: "#FF0000", cursor: "pointer"}} onClick={()=>this.toggleExProd(client.productId)}>- Списать</p>
+                                    <p style={{color: "#22FF00", cursor: "pointer"}} onClick={()=>this.toggleStorehouseProduct(client)}>+ Пополнить</p>
+                                    <p style={{color: "#FF0000", cursor: "pointer"}} onClick={()=>this.toggleExProd(client)}>- Списать</p>
                                 </div>
 
                                 {/*<button style={{ display: 'block', marginLeft: 'auto' }}*/}
