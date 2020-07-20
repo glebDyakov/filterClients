@@ -348,36 +348,36 @@ const CellAppointment = (props) => {
                         {appointment.carNumber}
                     </p>
                     }
-                    {appointment.clientId && <p style={{height: '30px'}}>
-                        <div style={{height: '28px'}}
-                             className="cell check-box calendar-client-checkbox client-not-come">
-                            Клиент не пришел
+                {/*    {appointment.clientId && <p style={{height: '30px'}}>*/}
+                {/*    <div style={{height: '28px'}}*/}
+                {/*         className="cell check-box calendar-client-checkbox client-not-come">*/}
+                {/*        Клиент не пришел*/}
 
-                            {isClientNotComeLoading ?
-                                <div style={{margin: '0 0 0 auto', left: '15px'}} className="cell loader"><img
-                                    style={{width: '40px'}} src={`${process.env.CONTEXT}public/img/spinner.gif`}
-                                    alt=""/></div>
-                                :
-                                <label>
-                                    <input className="form-check-input" checked={appointment.clientNotCome}
-                                           onChange={() => {
-                                               const newClientNotCome = !currentAppointments[0].clientNotCome
-                                               const params = currentAppointments.map(item => {
-                                                   return {
-                                                       ...item,
-                                                       clientNotCome: newClientNotCome
-                                                   }
-                                               })
-                                               dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId))
-                                           }}
-                                           type="checkbox"/>
-                                    <span style={{width: '18px', height: '18px', margin: '-3px 0 0 13px'}}
-                                          className="check-box-circle"/>
-                                </label>
-                            }
-                        </div>
+                {/*        {isClientNotComeLoading ?*/}
+                {/*            <div style={{margin: '0 0 0 auto', left: '15px'}} className="cell loader"><img*/}
+                {/*                style={{width: '40px'}} src={`${process.env.CONTEXT}public/img/spinner.gif`}*/}
+                {/*                alt=""/></div>*/}
+                {/*            :*/}
+                {/*            <label>*/}
+                {/*                <input className="form-check-input" checked={appointment.clientNotCome}*/}
+                {/*                       onChange={() => {*/}
+                {/*                           const newClientNotCome = !currentAppointments[0].clientNotCome*/}
+                {/*                           const params = currentAppointments.map(item => {*/}
+                {/*                               return {*/}
+                {/*                                   ...item,*/}
+                {/*                                   clientNotCome: newClientNotCome*/}
+                {/*                               }*/}
+                {/*                           })*/}
+                {/*                           dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId))*/}
+                {/*                       }}*/}
+                {/*                       type="checkbox"/>*/}
+                {/*                <span style={{width: '18px', height: '18px', margin: '-3px 0 0 13px'}}*/}
+                {/*                      className="check-box-circle"/>*/}
+                {/*            </label>*/}
+                {/*        }*/}
+                {/*    </div>*/}
 
-                    </p>}
+                {/*</p>}*/}
 
                     {appointment.clientId && <hr className="block-line"/>}
 
