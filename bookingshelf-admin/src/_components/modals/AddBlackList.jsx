@@ -6,6 +6,7 @@ import Modal from '@trendmicro/react-modal';
 import {access} from "../../_helpers/access";
 import ReactPaginate from "react-paginate";
 import {clientActions} from "../../_actions";
+import Paginator from "../Paginator";
 
 class AddBlackList extends React.Component {
     constructor(props) {
@@ -152,26 +153,12 @@ class AddBlackList extends React.Component {
                                                 {(this.search && this.search.value.length > 0) && !clients.client &&
                                                 <span>Поиск результатов не дал</span>}
                                                 {clients.totalPages > 1 &&
-                                                <ReactPaginate
-                                                    previousLabel={'⟨'}
-                                                    nextLabel={'⟩'}
-                                                    breakLabel={'...'}
-                                                    pageCount={clients.totalPages}
-                                                    marginPagesDisplayed={2}
-                                                    pageRangeDisplayed={5}
-                                                    onPageChange={this.handlePageClick}
-                                                    subContainerClassName={'pages pagination'}
-                                                    breakClassName={'page-item'}
-                                                    breakLinkClassName={'page-link'}
-                                                    containerClassName={'pagination'}
-                                                    pageClassName={'page-item'}
-                                                    pageLinkClassName={'page-link'}
-                                                    previousClassName={'page-item'}
-                                                    previousLinkClassName={'page-link'}
-                                                    nextClassName={'page-item'}
-                                                    nextLinkClassName={'page-link'}
-                                                    activeClassName={'active'}
-                                                />
+                                                    <Paginator
+
+
+                                                        finalTotalPages={clients.totalPages ? clients.totalPages : 0}
+                                                        onPageChange={this.handlePageClick}
+                                                    />
                                                 }
                                             </div>
                                         </div>

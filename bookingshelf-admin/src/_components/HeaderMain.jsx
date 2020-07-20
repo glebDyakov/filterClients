@@ -12,6 +12,7 @@ import {clientService, managersService} from "../_services";
 import {isValidNumber} from "libphonenumber-js";
 import {isValidEmailAddress} from "../_helpers/validators";
 import ManagerSettings from "./modals/ManagerSettings";
+import { access } from "../_helpers/access";
 
 
 class HeaderMain extends React.PureComponent {
@@ -251,15 +252,12 @@ class HeaderMain extends React.PureComponent {
 
                             <div className="mob-info dropdown">
                                 <a onClick={() => {
-                                    if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
-                                        this.props.dispatch(companyActions.getSubcompanies());
-                                    }
-                                }} href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                   aria-expanded="false">
+                                    this.props.dispatch(companyActions.getSubcompanies());
+                                }} href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img alt="" src={`${process.env.CONTEXT}public/img/icons/information.svg`}/>
                                 </a>
                                 <ul className="dropdown-menu">
-                                    {(authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? company.subcompanies.map((subcompany, i) => {
+                                    {true ? company.subcompanies.map((subcompany, i) => {
                                         return (
                                             <div className="choise-firm-button" onClick={() => {
                                                 this.props.dispatch(companyActions.switchSubcompany(subcompany))
@@ -319,9 +317,7 @@ class HeaderMain extends React.PureComponent {
                             <div className="col firm-chosen">
                                 <div className="dropdown">
                                     <div onClick={() => {
-                                        if (this.props.authentication.user.profile && (this.props.authentication.user.profile.roleId === 4)) {
-                                            this.props.dispatch(companyActions.getSubcompanies());
-                                        }
+                                        this.props.dispatch(companyActions.getSubcompanies());
                                     }} className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
                                          role="menu" aria-haspopup="true" aria-expanded="true">
                                         <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings["companyAddress" + company.settings.defaultAddress]}</span><span
@@ -329,7 +325,7 @@ class HeaderMain extends React.PureComponent {
                                     </div>
 
                                     <ul className="dropdown-menu">
-                                        {(authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId === 4) ? company.subcompanies.map((subcompany, i) => {
+                                        {true ? company.subcompanies.map((subcompany, i) => {
                                             return (
                                                 <div className="choise-firm-button" onClick={() => {
                                                     this.props.dispatch(companyActions.switchSubcompany(subcompany))

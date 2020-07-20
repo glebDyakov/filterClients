@@ -484,6 +484,7 @@ class SidebarMain extends React.Component {
                                 return (
                                     localItem.id === item.id &&
                                     <li className={path === item.url ? 'active' : ''}
+                                        style={item.id === 'calendar_menu_id' ? { marginTop: '30px'} : {}}
                                         key={keyStore}>
                                         <a onClick={(e) => this.handleClick(item.url, e)}>
                                             <img

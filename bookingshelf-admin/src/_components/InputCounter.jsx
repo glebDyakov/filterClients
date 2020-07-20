@@ -1,11 +1,12 @@
 import React from "react";
 
-const InputCounter = ({ title, extraWrapperClassName, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength, withCounter = true }) => (
+const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength, withCounter }) => (
     <div className={extraWrapperClassName}  style={{position: 'relative'}}>
         <p>{title}</p>
         <input
+            disabled={disabled}
             style={{paddingRight: '57px'}}
-            className={extraClassName}
+            className={extraClassName + (disabled ? ' disabledField' : '')}
             type={type}
             placeholder={placeholder}
             value={value}

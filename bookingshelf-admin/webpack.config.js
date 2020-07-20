@@ -107,6 +107,7 @@ module.exports = {
     externals: {
         config: JSON.stringify({
             apiUrl: '/rest/v1',
+            warehouseApiUrl: '/warehouse/rest/v1',
             apiSocket: '/websocket',
             apiUrlv2: '/rest/v2'
         })

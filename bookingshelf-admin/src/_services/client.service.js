@@ -170,5 +170,6 @@ function deleteClient(id) {
         },
         headers: authHeader()
     };
+
     return fetch(`${origin}${config.apiUrl}/clients/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

@@ -760,6 +760,7 @@ input {
   align-items: stretch;
   transition: all ease-in-out 0.3s;
   z-index: 3;
+  padding-bottom: 30px;
 
   .sidebar-notification-wrapper {
     opacity: 1;
@@ -6052,3 +6053,10 @@ textarea {
     transform: rotate(360deg);
   }
 }
+.menu_beta {
+    position: relative;
+    top: -3px;
+    left: 2px;
+    font-size: 11px;
+}
+

@@ -14,7 +14,11 @@ export const servicesActions = {
     addService,
     updateService,
     deleteService,
-    getServices
+    getServices,
+    createServiceProducts,
+    getServiceProducts,
+    updateServiceProduct,
+    deleteServiceProduct
 };
 
 function get() {
@@ -36,7 +40,9 @@ function getServices() {
     return dispatch => {
         servicesService.getServices()
             .then(
-                servicesList => dispatch(success(servicesList)),
+                servicesList => {
+                    dispatch(success(servicesList))
+                },
             );
     };
 
@@ -176,6 +182,7 @@ function addService(params, serviceId) {
             .then(
                 servicesFromGroup => {
                     dispatch(success(servicesFromGroup, serviceId));
+                    dispatch(createServiceProducts(params.serviceProducts.map(item => ({...item, serviceId: servicesFromGroup.serviceId }))))
                     setTimeout(()=>dispatch(successTime(0)), 500);
 
                 },
@@ -227,4 +234,81 @@ function deleteService(serviceGroupId, serviceId) {
 
     function success(serviceId, serviceGroupId) { return { type: servicesConstants.DELETE_SERVICE_SUCCESS, serviceId, serviceGroupId } }
     function failure(error) { return { type: servicesConstants.DELETE_SERVICE_FAILURE, error } }
+}
+
+function createServiceProducts(params) {
+    return dispatch => {
+        dispatch(request());
+
+        servicesService.createServiceProducts(params)
+            .then(
+                serviceProducts => {
+                    dispatch(success(serviceProducts));
+                    // setTimeout(()=>dispatch(successTime(0)), 500);
+
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request() { return { type: servicesConstants.CREATE_SERVICE_PRODUCTS_REQUEST } }
+    // function successTime(id) { return { type: servicesConstants.SERVICE_SUCCESS_TIME, id } }
+    function success(serviceProducts) { return { type: servicesConstants.CREATE_SERVICE_PRODUCTS_SUCCESS, serviceProducts } }
+    function failure(error) { return { type: servicesConstants.CREATE_SERVICE_PRODUCTS_FAILURE, error } }
+}
+
+function getServiceProducts(searchValue) {
+    return dispatch => {
+        dispatch(request());
+        servicesService.getServiceProducts(searchValue)
+            .then(
+                serviceProducts => dispatch(success(serviceProducts)),
+                err => dispatch(failure(err))
+            );
+    };
+
+    function request() { return { type: servicesConstants.GET_SERVICE_PRODUCTS_REQUEST } }
+    function success(serviceProducts) { return { type: servicesConstants.GET_SERVICE_PRODUCTS_SUCCESS, serviceProducts } }
+    function failure(err) { return { type: servicesConstants.GET_SERVICE_PRODUCTS_FAILURE, err } }
+}
+
+function updateServiceProduct(params, serviceProductId) {
+    return dispatch => {
+        dispatch(request());
+
+        servicesService.updateServiceProduct(params, serviceProductId)
+            .then(
+                serviceProduct => {
+
+                    dispatch(success(serviceProduct));
+                    // setTimeout(()=>dispatch(successTime(0)), 500);
+
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request(id) { return { type: servicesConstants.UPDATE_SERVICE_PRODUCT_REQUEST, id } }
+    // function successTime(id) { return { type: servicesConstants.GROUP_SUCCESS_TIME, id } }
+    function success(serviceProduct) { return { type: servicesConstants.UPDATE_SERVICE_PRODUCT_SUCCESS, serviceProduct } }
+    function failure(error) { return { type: servicesConstants.UPDATE_SERVICE_PRODUCT_FAILURE, error } }
+}
+
+function deleteServiceProduct(serviceProductId) {
+    return dispatch => {
+        servicesService.deleteServiceProduct(serviceProductId)
+            .then(
+                serviceProductId => dispatch(success(serviceProductId)),
+                error => dispatch(failure(id, error.toString()))
+            );
+    };
+
+    function success(serviceProductId) { return { type: servicesConstants.DELETE_SERVICE_PRODUCT_SUCCESS, serviceProductId } }
+    function failure(error) { return { type: servicesConstants.DELETE_SERVICE_PRODUCT_FAILURE, error } }
 }

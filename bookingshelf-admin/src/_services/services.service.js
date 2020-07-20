@@ -13,7 +13,11 @@ export const servicesService = {
     updateServices,
     addService,
     updateService,
-    deleteService
+    deleteService,
+    createServiceProducts,
+    getServiceProducts,
+    updateServiceProduct,
+    deleteServiceProduct
 };
 
 function get() {
@@ -168,7 +172,7 @@ function addService(params, idGroup) {
             withCredentials: true
         },
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: params
+        body: JSON.stringify(params)
     };
 
     return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services`, requestOptions)
@@ -210,4 +214,65 @@ function deleteService(idGroup, idService) {
     };
 
     return fetch(`${origin}${config.apiUrl}/servicegroups/${idGroup}/services/${idService}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+
+function createServiceProducts(params) {
+    const requestOptions = {
+        method: 'POST',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions));
+}
+
+function getServiceProducts(searchValue) {
+    const requestOptions = {
+        method: 'GET',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts${searchValue ? `&searchValue=${searchValue}` : ''}`, requestOptions).then((data) => handleResponse(data, requestOptions));
+}
+
+function updateServiceProduct(params, serviceProductId) {
+
+    const requestOptions = {
+        method: 'PUT',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: params
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts/${serviceProductId}/`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions));
+}
+
+function deleteServiceProduct(serviceProductId) {
+    const requestOptions = {
+        method: 'DELETE',
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: authHeader()
+    };
+
+    return fetch(`${origin}${config.warehouseApiUrl}/serviceproducts/${serviceProductId}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }

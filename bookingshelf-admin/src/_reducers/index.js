@@ -6,6 +6,7 @@ import { cell } from './cell.reducer';
 import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { company } from './company.reducer';
+import { material } from './material.reducer';
 import { staff } from './staff.reducer';
 import { socket } from './socket.reducer';
 import { client } from './client.reducer';
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   appointment,
   users,
   company,
+  material,
   cell,
   staff,
   socket,

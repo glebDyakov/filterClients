@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {origin} from '../_helpers/handle-response'
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { origin } from '../_helpers/handle-response'
 
 import '../../public/scss/log_in.scss'
 
@@ -50,6 +50,7 @@ class Index extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.closeAuthModalHandler = this.closeAuthModalHandler.bind(this);
     }
 
@@ -64,7 +65,8 @@ class Index extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication)) {
+        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
+            const {authentication} = newProps;
 
             this.setState({...this.state, authentication: newProps.authentication})
 
@@ -83,6 +85,10 @@ class Index extends React.Component {
                     this.setState({...this.state, authentication: []});
                 }, 3000)
             }
+
+        if (authentication && authentication.status && authentication.status === 'register.company' && (!authentication.error || authentication.error===-1)) {
+            this.setState({ opened: true })
+        }
         }
     }
 
@@ -143,6 +149,10 @@ class Index extends React.Component {
             dispatch(userActions.register(body));
         }
 
+    }
+
+    handleClose() {
+        this.setState({ opened: false })
     }
 
     render() {

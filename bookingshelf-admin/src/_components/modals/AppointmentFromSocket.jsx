@@ -64,7 +64,10 @@ class AppointmentFromSocket extends React.Component {
     }
 
     render() {
-        const {socket, appointmentSocketMessage, company, staff, client} = this.props;
+        const {socket, appointmentSocketMessage, staff, client, company} = this.props;
+
+        const companyTypeId = company.settings && company.settings.companyTypeId;
+
         if (!socket.appointmentSocketMessage) {
             return null
         }
@@ -130,17 +133,17 @@ class AppointmentFromSocket extends React.Component {
                         {clientName
                             ? <p>Клиент: {clientName}</p>
                             : <p>Без клиента</p>}
-                        {companyTypeId === 2 && payload && payload.carBrand
-                        && <p style={{textDecoration: 'underline'}}>Марка авто:
-                            {payload.carBrand}
-                        </p>
-                        }
+                        {companyTypeId === 2 &&  payload && payload.carBrand
+                            && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong>
+                                {payload.carBrand}
+                            </p>
+                            }
                         {companyTypeId === 2 && payload && payload.carNumber
-                        && <p style={{textDecoration: 'underline'}}>Гос. номер:
-                            {payload.carNumber}
-                        </p>
-                        }
-                        {activeClient && activeClient.phone && <p>Телефон: {activeClient.phone}</p>}
+                            && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong>
+                                {payload.carNumber}
+                            </p>
+                            }
+                        {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
                             <span style={{textTransform: 'capitalize'}}>Время: </span>
                             {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
@@ -166,8 +169,8 @@ class AppointmentFromSocket extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const {staff, client, socket, authentication, company} = state;
-    return {staff, client, socket, authentication, company};
+    const { staff, client, socket, authentication, company } = state;
+    return { staff, client, socket, authentication, company};
 }
 
 
