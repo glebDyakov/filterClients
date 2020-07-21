@@ -9,7 +9,9 @@ const initialState = {
     },
     financialAnalyticChart: {
         dateArrayChart: [],
-        recordsArrayChart: []
+        recordsArrayChart: [],
+        cashPaymentChart: [],
+        cardPaymentChart: []
     },
     staffsAnalyticChart: {
         dateArrayChart: [],
@@ -252,7 +254,8 @@ export function analitics(state = initialState, action) {
                 isLoadingSecond: false
             };
         case analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_SUCCESS:
-            let dateArrayChart = [], recordsArrayChart = [], dateNormal = '';
+            let dateArrayChart = [], recordsArrayChart = [], cashPaymentChart = [],
+              cardPaymentChart = [], dateNormal = '';
 
             let length = Object.keys(action.count).length;
 
@@ -260,6 +263,8 @@ export function analitics(state = initialState, action) {
                 dateNormal = moment(Object.keys(action.count)[i]).format("D MMM");
                 dateArrayChart.push(dateNormal);
                 recordsArrayChart.push(action.count[Object.keys(action.count)[i]].amount);
+                cashPaymentChart.push(action.count[Object.keys(action.count)[i]].cashPayment);
+                cardPaymentChart.push(action.count[Object.keys(action.count)[i]].cardPayment);
             }
 
             return{
@@ -267,7 +272,9 @@ export function analitics(state = initialState, action) {
                 isLoadingSecond: false,
                 financialAnalyticChart:{
                     dateArrayChart,
-                    recordsArrayChart
+                    recordsArrayChart,
+                    cashPaymentChart,
+                    cardPaymentChart
                 }
             };
         case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:
