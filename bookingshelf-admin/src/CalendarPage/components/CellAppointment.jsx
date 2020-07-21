@@ -237,7 +237,7 @@ const CellAppointment = (props) => {
                         <div className="form-button">
                             <div style={{ position: 'relative' }} className="check-box">
                                 <label>
-                                    Безнапличный расчет
+                                    Безналичный расчет
                                     {0
                                       ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
                                       : <React.Fragment>
