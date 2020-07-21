@@ -233,6 +233,91 @@ const CellAppointment = (props) => {
                             }
                         </div>
                     </p>}
+                    <p className="cash-choice">
+                        <div className="form-button">
+                            <div style={{ position: 'relative' }} className="check-box">
+                                <label>
+                                    Безнапличный расчет
+                                    {0
+                                      ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                      : <React.Fragment>
+                                          <input className="form-check-input" type="checkbox"
+                                                 checked={!appointment.cashPayment}
+                                                 onChange={()=> {
+                                                     const cashPayment = !currentAppointments[0].cashPayment
+                                                     const params = currentAppointments.map(item => {
+                                                         return {
+                                                             ...item,
+                                                             cashPayment: cashPayment
+                                                         }
+                                                     })
+                                                     dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                                 }}
+                                            // onChange={() => this.setBookingCode('left', true)}
+                                          />
+                                          <span className="check"/>
+                                      </React.Fragment>
+                                    }
+                                </label>
+                            </div>
+                            <div style={{ position: 'relative' }} className="check-box">
+                                <label>
+                                    Наличный расчет
+                                    {0
+                                      ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                      : <React.Fragment>
+                                          <input className="form-check-input" type="checkbox"
+                                                 checked={appointment.cashPayment}
+                                                 onChange={()=> {
+                                                     const cashPayment = !currentAppointments[0].cashPayment
+                                                     const params = currentAppointments.map(item => {
+                                                         return {
+                                                             ...item,
+                                                             cashPayment: cashPayment
+                                                         }
+                                                     })
+                                                     dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                                 }}
+                                                 // checked={!booking.bookingCode.includes('left')} onChange={() => this.setBookingCode('right', true)}
+                                          />
+                                          <span className="check"/>
+                                      </React.Fragment>
+                                    }
+                                </label>
+                            </div>
+                        </div>
+                    </p>
+
+
+
+                    {/*<div className="check-box calendar-client-checkbox red-text">*/}
+                    {/*    <p className="title mb-3">Интервал онлайн-записи</p>*/}
+                    {/*    <div style={{ position: 'relative' }} className="check-box">*/}
+                    {/*        <label>*/}
+                    {/*            {0*/}
+                    {/*              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>*/}
+                    {/*              : <React.Fragment>*/}
+                    {/*                  <input className="form-check-input" type="checkbox" checked={!1} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>*/}
+                    {/*                  <span className="check"/>*/}
+                    {/*              </React.Fragment>*/}
+                    {/*            }*/}
+                    {/*            15 минут*/}
+                    {/*        </label>*/}
+                    {/*    </div>*/}
+                    {/*    <div style={{ position: 'relative' }} className="check-box">*/}
+                    {/*        <label>*/}
+                    {/*            {0*/}
+                    {/*              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>*/}
+                    {/*              : <React.Fragment>*/}
+                    {/*                  <input className="form-check-input" type="checkbox" checked={1} onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}/>*/}
+                    {/*                  <span className="check"/>*/}
+                    {/*              </React.Fragment>*/}
+                    {/*            }*/}
+                    {/*            Равен времени услуги*/}
+                    {/*        </label>*/}
+                    {/*    </div>*/}
+
+                    {/*</div>*/}
 
 
                     <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг' : 'Услуга'}</p>

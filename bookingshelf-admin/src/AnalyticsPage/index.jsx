@@ -480,6 +480,8 @@ class Index extends Component{
 
         const dateFinancialChart = this.props.analitics.financialAnalyticChart.dateArrayChart;
         const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
+        const cashFinancialChart = this.props.analitics.financialAnalyticChart.cashPaymentChart;
+        const cardFinancialChart = this.props.analitics.financialAnalyticChart.cardPaymentChart;
 
         const {analitics, staff} = this.props;
         const chartOptions = {
@@ -525,9 +527,22 @@ class Index extends Component{
             labels: dateFinancialChart,
             datasets: [
                 {
+                    label: 'Стоимость визитов',
                     ...chartOptions,
-                    data: recordsFinancialChart
-                }
+                    data: recordsFinancialChart,
+                },
+                {
+                    ...chartOptions,
+                    label: 'Сумма наличными',
+                    // backgroundColor: 'red',
+                    // borderColor: 'red',
+                    data: cashFinancialChart,
+                },
+                {
+                    ...chartOptions,
+                    label: 'Сумма безначиличными',
+                    data: cardFinancialChart,
+                },
             ]
         };
 
