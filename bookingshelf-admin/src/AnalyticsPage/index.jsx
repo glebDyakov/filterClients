@@ -544,7 +544,7 @@ class Index extends Component{
                 },
                 {
                     ...chartOptions,
-                    label: 'Сумма безначиличными',
+                    label: 'Сумма безналичными',
                     backgroundColor: '#607375',
                     borderColor: '#607375',
                     pointBorderColor: '#607375',
