@@ -138,7 +138,7 @@ function editAppointment(params) {
     function failure(error) { return { type: calendarConstants.EDIT_APPOINTMENT_FAILURE, error } }
 }
 
-function editAppointment2(params, id) {
+function editAppointment2(params, id,) {
     return dispatch => {
         dispatch(request());
         calendarService.editAppointment2(params, id)

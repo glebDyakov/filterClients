@@ -768,89 +768,89 @@
     }
 
   }
+  .tab-content-list {
+    position: relative;
 
-}
+    @media screen and (max-width: $mob-width) {
+      justify-content: flex-start !important;
+      .cell_client-email {
+        width: 50%;
 
-
-.tab-content-list {
-  position: relative;
-
-  @media screen and (max-width: $mob-width) {
-    justify-content: flex-start !important;
-    .cell_client-email {
-      width: 50%;
-
-    }
-  }
-
-  .red-date {
-    color: #F46A6A !important;
-  }
-
-  .list-button-wrapper {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: auto;
-
-    .delete-icon {
-
+      }
     }
 
-    .dropdown-menu {
-      z-index: 50;
+    .red-date {
+      color: #F46A6A !important;
     }
-  }
 
-  .clientEditWrapper {
-    right: 30px !important;
-    top: -12px !important;
-  }
+    .list-button-wrapper {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: auto;
 
-  .clientEdit {
-    margin: 0 5px;
-    width: 30px;
-    height: 30px;
-    background-image: url(../img/pen_new.svg);
-    background-repeat: no-repeat;
-    padding: 0;
-    background-position: center;
-    background-size: 15px;
+      .delete-icon {
 
-    &:hover {
-      opacity: 0.7;
-      cursor: pointer;
+      }
+
+      .dropdown-menu {
+        z-index: 50;
+      }
     }
-  }
 
-  .clientEyeDel {
-    display: none !important;
-    position: absolute;
-    background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
-    background-size: contain;
-    height: 18px;
-    width: 18px !important;
-    right: 5px;
-    cursor: pointer;
-    padding: 0 !important;
-    right: 40px;
-    margin-top: 2px;
-  }
+    .clientEditWrapper {
+      right: 30px !important;
+      top: -12px !important;
+    }
 
-  @media screen and(max-width: 720px) {
-    .abbreviation {
-      margin: 8px 0;
+    .clientEdit {
+      margin: 0 5px;
+      width: 30px;
+      height: 30px;
+      background-image: url(../img/pen_new.svg);
+      background-repeat: no-repeat;
+      padding: 0;
+      background-position: center;
+      background-size: 15px;
+
+      &:hover {
+        opacity: 0.7;
+        cursor: pointer;
+      }
     }
-    .delete {
-      height: 16px !important;
-    }
+
     .clientEyeDel {
-      margin-top: 0;
-      display: block !important;
+      display: none !important;
+      position: absolute;
+      background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+      background-size: contain;
+      height: 18px;
+      width: 18px !important;
+      right: 5px;
+      cursor: pointer;
+      padding: 0 !important;
+      right: 40px;
+      margin-top: 2px;
+    }
+
+    @media screen and(max-width: 720px) {
+      .abbreviation {
+        margin: 8px 0;
+      }
+      .delete {
+        height: 16px !important;
+      }
+      .clientEyeDel {
+        margin-top: 0;
+        display: block !important;
+      }
     }
   }
 }
+
+
+
 
 .client-info {
   word-break: break-word;

@@ -3218,6 +3218,10 @@ select {
   border: none;
   width: auto;
   height: auto;
+
+  p {
+    font-weight: 300;
+  }
   @media screen {
     @media (max-width: $tablet-width) {
       width: 100%;
@@ -3271,7 +3275,7 @@ select {
 
       &::before {
         content: '';
-        width: 20px;
+        width: 30px;
         height: 2px;
         border-radius: 5px;
         background: #2A3042;
@@ -3285,7 +3289,7 @@ select {
       &::after {
         content: '';
         width: 2px;
-        height: 20px;
+        height: 30px;
         border-radius: 5px;
         background: #2A3042;
         position: absolute;

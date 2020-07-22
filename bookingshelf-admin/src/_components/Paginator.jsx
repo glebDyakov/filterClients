@@ -10,7 +10,7 @@ const Paginator = (props) => {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center'}}>
+        <div style={{ display: 'flex', justifyContent: 'center'}} className="paginator-container">
             <ReactPaginate
                 previousLabel={'Пред'}
                 nextLabel={'След'}

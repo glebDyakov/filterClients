@@ -82,6 +82,11 @@ class Index extends Component {
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.activeTab !== prevState.activeTab) {
+            this.setState({isOpenDropdownMenu: false});
+        }
+    }
 
     setWrapperRef(node) {
         this.wrapperRef = node;

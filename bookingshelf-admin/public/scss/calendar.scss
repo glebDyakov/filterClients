@@ -1886,6 +1886,31 @@
   }
 
 }
+.cash-choice{
+    div{
+        width: 100% !important;
+        &:hover{
+            opacity: 1 !important;
+        }
+    }
+    .form-button{
+        flex-direction: column;
+        padding-top: 10px;
+    }
+    span.check{
+        width: 20px!important;
+        height: 20px;
+        right: 0;
+        left: initial!important;
+    }
+    label{
+        width: 100%;
+        padding: 0!important;
+    }
+    span.check-box-circle{
+      margin-right: 6px !important;
+    }
+}
 
 #days {
   .calendar-list {

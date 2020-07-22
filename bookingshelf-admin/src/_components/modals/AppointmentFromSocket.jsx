@@ -66,7 +66,6 @@ class AppointmentFromSocket extends React.Component {
     render() {
         const {socket, appointmentSocketMessage, staff, client, company} = this.props;
 
-        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         if (!socket.appointmentSocketMessage) {
             return null
