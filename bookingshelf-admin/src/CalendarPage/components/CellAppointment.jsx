@@ -348,6 +348,60 @@ const CellAppointment = (props) => {
                         {appointment.carNumber}
                     </p>
                     }
+
+                    <div className="cash-choice">
+                            <div style={{ position: 'relative' }} className="check-box">
+                                <label>
+                                    Безналичный расчет
+                                    {0
+                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                        : <React.Fragment>
+                                            <input className="form-check-input" type="checkbox"
+                                                   checked={!appointment.cashPayment}
+                                                   onChange={()=> {
+                                                       const cashPayment = !currentAppointments[0].cashPayment
+                                                       const params = currentAppointments.map(item => {
+                                                           return {
+                                                               ...item,
+                                                               cashPayment: cashPayment
+                                                           }
+                                                       })
+                                                       dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                                   }}
+                                                // onChange={() => this.setBookingCode('left', true)}
+                                            />
+                                            <span className="check-box-circle"/>
+                                        </React.Fragment>
+                                    }
+                                </label>
+                            </div>
+                            <div style={{ position: 'relative' }} className="check-box">
+                                <label>
+                                    Наличный расчет
+                                    {0
+                                        ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+                                        : <React.Fragment>
+                                            <input className="form-check-input" type="checkbox"
+                                                   checked={appointment.cashPayment}
+                                                   onChange={()=> {
+                                                       const cashPayment = !currentAppointments[0].cashPayment
+                                                       const params = currentAppointments.map(item => {
+                                                           return {
+                                                               ...item,
+                                                               cashPayment: cashPayment
+                                                           }
+                                                       })
+                                                       dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId ))
+                                                   }}
+                                                // checked={!booking.bookingCode.includes('left')} onChange={() => this.setBookingCode('right', true)}
+                                            />
+                                            <span className="check-box-circle"/>
+                                        </React.Fragment>
+                                    }
+                                </label>
+                            </div>
+                    </div>
+
                 {/*    {appointment.clientId && <p style={{height: '30px'}}>*/}
                 {/*    <div style={{height: '28px'}}*/}
                 {/*         className="cell check-box calendar-client-checkbox client-not-come">*/}
