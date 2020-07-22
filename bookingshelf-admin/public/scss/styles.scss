@@ -3732,6 +3732,10 @@ select {
     .time-element {
       position: relative;
 
+      .rc-time-picker {
+        width: 50% !important;
+      }
+
       .remove-time {
         position: absolute;
         top: 50%;
