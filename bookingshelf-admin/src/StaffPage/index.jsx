@@ -829,6 +829,7 @@ class Index extends Component {
                 this.setState({...this.state, edit: false, staff_working: {}, newStaff: true});
             }
         }
+
     }
 
     handleClosedDate(e) {
