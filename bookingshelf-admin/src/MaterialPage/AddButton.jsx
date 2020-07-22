@@ -13,6 +13,21 @@ class AddButton extends Component {
     };
     this.showButtons = this.showButtons.bind(this)
     this.hideButtons = this.hideButtons.bind(this)
+    this.handleOutsideAddClick = this.handleOutsideAddClick.bind(this)
+  }
+
+  componentDidUpdate(nextProps, nextState, nextContext) {
+
+
+    if (this.state.showButtons) {
+      document.addEventListener('click', this.handleOutsideAddClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideAddClick, false);
+    }
+
+  }
+  handleOutsideAddClick() {
+    this.setState({ showButtons: false })
   }
 
   showButtons() {

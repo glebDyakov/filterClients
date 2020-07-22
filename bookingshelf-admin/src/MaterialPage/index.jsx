@@ -282,6 +282,7 @@ class Index extends Component {
         this.setState({ isOpenDropdownMenu: false })
     }
 
+
     setTab(tab){
         this.setState({
             activeTab: tab,
@@ -573,13 +574,13 @@ class Index extends Component {
                                     (this.state.defaultProductsList && this.state.defaultProductsList!=="" &&
 
                                         <div className="row align-items-center content clients mb-2 search-container">
-                                            <div className="search col-6 col-lg-4">
+                                            <div className="search col-8 col-lg-4">
                                                 <input type="search" placeholder="Поиск товаров"
                                                        aria-label="Search" ref={input => this.productSearch = input} onChange={() =>
                                                     this.handleSearch('defaultProductsList', 'products', ['productName', 'description'], 'productSearch')}/>
                                                 <button className="search-icon" type="submit"/>
                                             </div>
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-4 col-lg-8">
                                                 {navTabs}
                                             </div>
                                         </div>
@@ -674,7 +675,7 @@ class Index extends Component {
                         <div className={"tab-pane staff-list-tab"+(activeTab==='categories'?' active':'')} id="tab2">
                             <div className="material-categories">
                                 {
-                                    (this.state.defaultCategoriesList && this.state.defaultCategoriesList!=="" &&
+                                    (this.state.categories && this.state.defaultCategoriesList!=="" &&
 
                                         <div className="row align-items-center content clients mb-2" >
                                             <div className="search col-6 col-lg-4">
@@ -760,7 +761,8 @@ class Index extends Component {
                                         </div>
                                     )
                                 }
-                                <div className="title-and-main-info">
+                                 <div className="title-and-main-info">
+                                     {!!this.state.brands.length &&
                                     <div className="tab-content-list mb-2 title position-sticky">
                                         <div >
                                             <p>Название бренда</p>
@@ -770,7 +772,7 @@ class Index extends Component {
 
                                             <div className="dropdown-menu delete-menu"></div>
                                         </div>
-                                    </div>
+                                    </div>}
 
                                 {this.state.brands.length ?
                                     this.state.brands.map(brand => (
@@ -834,6 +836,7 @@ class Index extends Component {
                                 }
                                 <div className="material-categories">
                                     <div className="title-and-main-info">
+                                        {!!this.state.suppliers.length &&
                                     <div className="tab-content-list mb-2 title title-supplier position-sticky">
                                         <div >
                                             <p>Поставщик</p>
@@ -853,7 +856,7 @@ class Index extends Component {
 
                                             <div className="dropdown-menu delete-menu"></div>
                                         </div>
-                                    </div>
+                                    </div>}
 
                                     {this.state.suppliers.length ?
                                         this.state.suppliers.map(supplier => (
@@ -926,9 +929,10 @@ class Index extends Component {
                                     </div>
 
                             }
-                            {1 ? (
+                            {movingArrray.length ? (
                                 <React.Fragment>
                             <div className="title-and-main-info">
+                                {!!(movingArrray.length) &&
                                 <div className="tab-content-list mb-2 title title-moving position-sticky">
                                     <div className="empty-block">
 
@@ -966,7 +970,7 @@ class Index extends Component {
 
                                         <div className="dropdown-menu delete-menu"></div>
                                     </div>
-                                </div>
+                                </div>}
                                 {movingList}
                             </div>
                                 </React.Fragment>
@@ -1070,6 +1074,7 @@ class Index extends Component {
                                         </div>
                                     )
                                 }<div className="title-and-main-info">
+                                {!!this.state.storeHouses.length &&
                                 <div className="tab-content-list mb-2 title position-sticky">
                                 <div >
                                     <p>Название склада</p>
@@ -1079,7 +1084,7 @@ class Index extends Component {
 
                                     <div className="dropdown-menu delete-menu"></div>
                                 </div>
-                                </div>
+                                </div>}
                                 {(this.state.storeHouses && this.state.storeHouses.length)?
                                     this.state.storeHouses.map(storeHouse => {
                                         return(

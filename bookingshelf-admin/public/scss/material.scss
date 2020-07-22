@@ -85,24 +85,40 @@
   .search-container{
     //margin: 0 -7px;
     //width: calc(100% + 7px);
+    @media(max-width: $tablet-width){
+      height: 40px;
+      padding: 0 10px;
+    }
+    .dropdown-button{
+      @media(max-width: $tablet-width){
+        margin-bottom: 0;
+      }
+    }
   }
   .search{
-    background-color: #f3f3f9 !important;
-    border: none !important;
-    border-radius: 30px;
+
+    background-color: transparent !important;
+    border-bottom: 1px solid #eaeaec !important;
+    width: 288px;
+    padding: 0;
+    @media(max-width: $tablet-width){
+      height: 30px;
+    }
+
     input{
-      background: #F3F3F9;
-      border-radius: 30px;
-      border: none;
+      background: transparent;
+      border: none ;
       font-size: 11px;
       line-height: 18px;
       color: #555B6D;
-      padding: 10px 30px 10px 24px;
+      padding: 10px 35px 10px 5px;
       height: 18px;
       margin: 0;
     }
   .search-icon{
-    left: 1rem  !important;
+    left: auto;
+    right: 1rem  !important;
+    background-color: transparent;
   }
   }
   .header-tabs{
@@ -120,8 +136,14 @@
       width: calc(100% - 26px);
       text-align: right;
       margin-right: 26px;
+      @media screen and(max-width: $tablet-width) {
+        width: calc(100% - 16px);
+        margin-right: 16px;
+      }
 
       .dropdown-button{
+        font-weight: 300;
+        font-size: 13px;
         cursor: pointer;
         &::before {
           position: absolute;
@@ -129,6 +151,9 @@
           transform: translateY(-50%);
           right: -10px;
           content: url("../img/icons/arrow.svg");
+          @media screen and(max-width: $tablet-width) {
+            top: calc(50% + 2px);
+          }
         }
       }
       &.opened{
@@ -268,7 +293,7 @@
   }
   .empty-content {
     &-img {
-      margin: 225px auto 0;
+      margin: 20vh auto 0;
       display: block;
     }
     &-title {
