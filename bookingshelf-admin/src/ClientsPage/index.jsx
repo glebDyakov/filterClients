@@ -61,6 +61,8 @@ class Index extends Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
+        this.isLeapYear = this.isLeapYear.bind(this);
+        this.calcDiff = this.calcDiff.bind(this);
     }
 
     handleOpenModal(e) {
@@ -191,6 +193,17 @@ class Index extends Component {
         this.openBlackListModal()
     }
 
+    isLeapYear(year) {
+        return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
+    }
+
+    calcDiff(date) {
+        const diff = moment(date).year(2000).diff(moment().year(2000), 'days');
+        if (diff < 0) {
+            return (this.isLeapYear(moment().year()) ? 366 : 365) + diff;
+        } else return diff;
+    }
+
     handleSearch() {
         if (this.search.value.length >= 3) {
             this.updateClients();
@@ -300,8 +313,7 @@ class Index extends Component {
                             <div className="column-header">День Рождения</div>
                         </div>
 
-                        {finalClients && finalClients.map((client_user, i) => {
-                                console.log(finalClients);
+                        {finalClients && finalClients.sort((a, b) => this.calcDiff(a.birthDate) - this.calcDiff(b.birthDate)).map((client_user, i) => {
                                 let condition = true;
                                 if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 
@@ -334,7 +346,7 @@ class Index extends Component {
                                         </div>
 
                                         <div
-                                            className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 5) ? " red-date" : '')}>
+                                            className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 3) ? " red-date" : '')}>
                                             {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
                                         </div>
 
