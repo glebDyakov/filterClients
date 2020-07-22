@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
 import moment from 'moment'
-import config from 'config'
 import ReactPhoneInput from "react-phone-input-2";
 import {isValidNumber} from "libphonenumber-js";
+import {origin} from "../../_helpers/handle-response";
 
 
 class TabFive extends PureComponent {
@@ -153,7 +153,7 @@ class TabFive extends PureComponent {
                     )}
                     <p>Комментарии</p>
                     <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
-                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${config.baseUrl}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
+                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${origin}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
                   </React.Fragment>
                 )}
                 <input

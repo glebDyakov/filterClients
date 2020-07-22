@@ -132,6 +132,17 @@ class Index extends React.Component {
         this.setState({ opened: false })
     }
 
+    getLicenceOrigin() {
+        if (origin.includes('admin')) {
+            const start = origin.indexOf('admin');
+            const end = start + 6;
+            const result = origin.substr(0, start) + origin.substr(end, origin.length - 1)
+            return result
+        }
+
+        return origin;
+    }
+
     render() {
         const { user, emailIsValid, agreed, opened, authentication, invalidFields,  } = this.state;
 
@@ -253,7 +264,7 @@ class Index extends React.Component {
                                     <input type="checkbox" onChange={()=>this.setState({ agreed: !agreed, invalidFields: { ...invalidFields, agreed: agreed }})} name="agreed" onBlur={this.handleBlur} checked={agreed}/>
                                     <span className={(invalidFields.agreed ? 'redBorder' : '')}/>
                                     Регистрируясь, вы принимаете условия <a
-                                  href={`${origin}/licence_agreement`}
+                                  href={`${this.getLicenceOrigin()}/licence_agreement`}
                                   target="_blank"
                                     style={{width: "initial", height: "initial", border: "none", marginLeft: "34px"}}
                                     onClick={()=>this.setState({openModal:true})}>публичного договора</a>

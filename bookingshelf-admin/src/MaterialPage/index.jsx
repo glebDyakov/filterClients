@@ -538,20 +538,20 @@ class Index extends Component {
                                     <div style={{ position: "relative", width: "80px" }}>
                                         <p style={{ width: "100%", paddingLeft: "10px" }}>{movement.storehouseProductId ? <span style={{color:"#44FF00 ", fontSize: "2em"}}> + </span> : <span style={{color:"#FF0000 ", fontSize: "2em"}}> - </span>}</p>
                                     </div>
+                                  <div style={{ position: "relative" }}>
+                                    <p><span className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}</p>
+                                  </div>
                                     <div style={{ position: "relative" }}>
                                         {/*<a onClick={() => this.toggleInfoProduct(activeProduct)}>*/}
                                             <p style={{ width: "100%" }}><span className="mob-title">Название: </span>{activeProduct && activeProduct.productName}</p>
                                         {/*</a>*/}
                                     </div>
-                                    <div style={{ position: "relative" }}>
-                                            <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>
-                                    </div>
-                                    <div style={{ position: "relative" }}>
-                                            <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>{activeStorehouse && activeStorehouse.storehouseName}</p>
-                                    </div>
-                                    <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}</p>
-                                    </div>
+                                    {/*<div style={{ position: "relative" }}>*/}
+                                    {/*        <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>*/}
+                                    {/*</div>*/}
+                                    {/*<div style={{ position: "relative" }}>*/}
+                                    {/*        <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>{activeStorehouse && activeStorehouse.storehouseName}</p>*/}
+                                    {/*</div>*/}
                                     <div style={{ position: "relative" }} className={(movement && movement.targetTranslated)? "": "movement-target-empty"}>
                                         <p><span className="mob-title">Причина списания: </span>{movement && movement.targetTranslated}</p>
                                     </div>
@@ -562,7 +562,13 @@ class Index extends Component {
                                         <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
                                     <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
+                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM')}</p>
+                                    </div>
+                                    <div style={{ position: "relative" }}>
+                                        <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>
+                                    </div>
+                                    <div style={{ position: "relative" }}>
+                                      <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
                                         <a className="clientEdit" onClick={() => (movement.storehouseProductId) ? this.toggleStorehouseProduct(movement) : this.toggleExProd(movement) }/>
@@ -953,17 +959,14 @@ class Index extends Component {
 
                                 </div>
                                 <div style={{position: "relative"}}>
+                                  <p>Код товара</p>
+                                </div>
+                                <div style={{position: "relative"}}>
                                     <p>Наименование</p>
                                 </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Описание</p>
-                                </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Склад</p>
-                                </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Код товара</p>
-                                </div>
+                                {/*<div style={{position: "relative"}}>*/}
+                                {/*    <p>Склад</p>*/}
+                                {/*</div>*/}
                                 <div style={{position: "relative"}}>
                                     <p>Причина списания</p>
                                 </div>
@@ -972,6 +975,12 @@ class Index extends Component {
                                 </div>
                                 <div style={{position: "relative"}}>
                                     <p>Единицы измерения</p>
+                                </div>
+                                <div style={{position: "relative"}}>
+                                    <p>Дата</p>
+                                </div>
+                                <div style={{position: "relative"}}>
+                                    <p>Время</p>
                                 </div>
                                 <div style={{position: "relative"}}>
                                     <p>Остаток</p>
