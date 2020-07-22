@@ -185,7 +185,6 @@ class NewStaff extends React.Component {
                                     :
                                     <div className="modal-header">
                                         <h5 className="modal-title">Редактирование {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</h5>
-                                        < span> {staff.firstName} {staff.lastName ? staff.lastName : ''}</span>
                                         <button type="button" className="close" onClick={this.closeModal}
                                                 aria-label="Close">
                                             <span aria-hidden="true"/>
@@ -195,7 +194,7 @@ class NewStaff extends React.Component {
                                 <div className="modal-body">
                                     <div className="container-fluid">
                                         <div className="retreats">
-                                            <h2 className="add-staff-title">Добавление сотрудника</h2>
+                                            <h2 className="add-staff-title">{edit ? "Редактирование сотрудника" : "Добавление сотрудника"}</h2>
 
                                             <div className="row">
                                                 <div className="col-md-4">
@@ -419,7 +418,7 @@ class NewStaff extends React.Component {
                                                         </div>
                                                     </div>
                                                     <div className="col-md-6">
-                                                        <p style={{marginTop: '12px', textAlign: 'center'}}>Начало
+                                                        <p className="start-work" style={{marginTop: '12px', textAlign: 'center'}}>Начало
                                                             работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
                                                     </div>
 
@@ -496,6 +495,27 @@ class NewStaff extends React.Component {
                                                             }
                                                         </div>
 
+                                                    </div>
+
+                                                    <p className="start-work-mob" style={{marginTop: '12px', textAlign: 'center'}}>Начало
+                                                        работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
+
+                                                    <div className="buttons buttons-mob new-staff-buttons">
+                                                        <button className='small-button' type="button"
+                                                                onClick={() => {
+                                                                    if (!staff.firstName || (staff.email && !isValidEmailAddress(staff.email)) || staffs.adding) {
+                                                                        this.setState({message: 'Необходимо заполнить имя сотрудника'});
+                                                                    } else {
+                                                                        this.setState({message: ''});
+                                                                        if (edit) {
+                                                                            this.updateStaff()
+                                                                        } else {
+                                                                            this.addStaff()
+                                                                        }
+                                                                    }
+                                                                }}
+                                                        >Сохранить
+                                                        </button>
                                                     </div>
 
 

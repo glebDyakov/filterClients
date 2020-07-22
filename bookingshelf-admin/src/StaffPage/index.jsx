@@ -92,7 +92,8 @@ class Index extends Component {
             addWorkTime: false,
             newStaffByMail: false,
             newStaff: false,
-            handleOpen: false
+            handleOpen: false,
+            isOpenHeaderDropdown: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -132,6 +133,7 @@ class Index extends Component {
         this.closeDropdownMenu = this.closeDropdownMenu.bind(this);
         this.isLeapYear = this.isLeapYear.bind(this);
         this.calcDiff = this.calcDiff.bind(this);
+        this.handleOpenHeaderDropdown = this.handleOpenHeaderDropdown.bind(this);
     }
 
     componentDidMount() {
@@ -151,6 +153,10 @@ class Index extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleOpenHeaderDropdown() {
+        this.setState({isOpenHeaderDropdown: !this.state.isOpenHeaderDropdown});
     }
 
     handleClickOutside(event) {
@@ -427,6 +433,77 @@ class Index extends Component {
                             handleWeekClick={this.handleWeekClick}
                         />}
                     </div>
+
+                    <div className="mobile-header-dropdown-container">
+                        <p onClick={this.handleOpenHeaderDropdown} className={"mobile-selected-tab" + (this.state.isOpenHeaderDropdown ? " opened" : '')}>{(activeTab === 'workinghours' ? "Рабочие часы"
+                            : (activeTab === "staff" ? "Сотрудники"
+                                : (activeTab === "holidays" ? "Выходные дни"
+                                    : (activeTab === 'permissions' ? "Доступ"
+                                        : (activeTab === "feedback" ? "Отзывы" : '')))))}</p>
+
+                        {this.state.isOpenHeaderDropdown &&
+                        <ul className="nav nav-tabs-mobile-dropdown">
+                            <li className="nav-item">
+                                <a className={"nav-link" + (activeTab === 'workinghours' ? ' active show' : '')}
+                                   data-toggle="tab" href="#tab1" onClick={() => {
+                                    this.updateTimetable();
+                                    this.setTab('workinghours');
+                                    this.handleOpenHeaderDropdown();
+                                }}>Рабочие часы</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={"nav-link" + (activeTab === 'staff' ? ' active show' : '')}
+                                   data-toggle="tab" href="#tab2"
+                                   onClick={() => {
+                                       this.setTab('staff');
+                                       this.handleOpenHeaderDropdown();
+
+                                   }}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={"nav-link" + (activeTab === 'holidays' ? ' active show' : '')}
+                                   data-toggle="tab" href="#tab3" onClick={() => {
+                                    this.setTab('holidays')
+                                    this.handleOpenHeaderDropdown();
+
+                                }}>Выходные
+                                    дни</a>
+                            </li>
+                            {access(-1) &&
+                            <li className="nav-item">
+                                <a className={"nav-link" + (activeTab === 'permissions' ? ' active show' : '')}
+                                   data-toggle="tab" href="#tab4" onClick={() => {
+                                    this.setTab('permissions')
+                                    this.handleOpenHeaderDropdown();
+
+                                }}>Доступ</a>
+                            </li>
+                            }
+                            <li className="nav-item">
+                                <a className={"nav-link" + (activeTab === 'feedback' ? ' active show' : '')}
+                                   data-toggle="tab" href="#tab5" onClick={() => {
+                                    this.setTab('feedback');
+                                    this.handleOpenHeaderDropdown();
+
+                                }}>Отзывы</a>
+                            </li>
+                        </ul>}
+                    </div>
+
+                    {activeTab === 'workinghours' &&
+                    <div className="mobile-datePicker">
+                        <DatePicker
+                            type={'week'}
+                            //selectedDay={selectedDay}
+                            selectedDays={selectedDays}
+                            showPrevWeek={this.showPrevWeek}
+                            showNextWeek={this.showNextWeek}
+                            handleDayChange={this.handleDayChange}
+                            handleDayClick={this.handleDayClick}
+                            handleWeekClick={this.handleWeekClick}
+                        />
+                    </div>
+                    }
                 </div>
                 <div className="retreats">
                     <div style={{overflowX: 'visible'}} className="tab-content">
@@ -539,51 +616,58 @@ class Index extends Component {
                         </div>
                         <div className={"tab-pane" + (activeTab === 'holidays' ? ' active' : '')} id="tab3">
                             <div className="holiday-tab">
-                                <div className="add-holiday p-4 mb-3">
-                                    <p className="title_block">Новые выходные дни</p>
-                                    <div className="form-group row">
-                                        <div className="col-sm-6">
-                                            <p>Начало/Конец</p>
-                                            <div className="button-calendar button-calendar-inline">
-                                                <input type="button" data-range="true"
-                                                       value={(from && from !== 0 ? moment(from).format('DD.MM.YYYY') : '') + (to ? " - " + moment(to).format('DD.MM.YYYY') : '')}
-                                                       data-multiple-dates-separator=" - " name="date"
-                                                       ref={(input) => this.startClosedDate = input}/>
-                                            </div>
-                                            <DayPicker
-                                                className="Range"
-                                                fromMonth={from}
-                                                selectedDays={selectedDaysClosed}
-                                                disabledDays={[disabledDays, {before: moment().utc().toDate()}]}
-                                                modifiers={modifiersClosed}
-                                                onDayClick={this.handleDayClick}
-                                                onDayMouseEnter={this.handleDayMouseEnter}
-                                                localeUtils={MomentLocaleUtils}
-                                                locale={'ru'}
-                                            />
-
+                                <div className="addHoliday-wrapper">
+                                    <div className="add-holiday modal-content">
+                                        <div className="modal-header">
+                                            <p className="modal-title">Настройка выходных дней</p>
+                                            <button className="close close-modal-add-holiday-js"></button>
                                         </div>
-                                        <div className="description col-sm-6">
-                                            <p>Описание</p>
-                                            <textarea className="form-control" rows="3" name="description"
-                                                      value={closedDates.description} onChange={this.handleClosedDate}/>
+
+                                        <div className="modal-body">
+                                            <div className="form-group row">
+                                                <div className="col-sm-6">
+                                                    <p>Начало/Конец</p>
+                                                    <div className="button-calendar button-calendar-inline">
+                                                        <input type="button" data-range="true"
+                                                               value={(from && from !== 0 ? moment(from).format('DD.MM.YYYY') : '') + (to ? " - " + moment(to).format('DD.MM.YYYY') : '')}
+                                                               data-multiple-dates-separator=" - " name="date"
+                                                               ref={(input) => this.startClosedDate = input}/>
+                                                    </div>
+                                                    <DayPicker
+                                                        className="SelectedWeekExample"
+                                                        fromMonth={from}
+                                                        selectedDays={selectedDaysClosed}
+                                                        disabledDays={[disabledDays, {before: moment().utc().toDate()}]}
+                                                        modifiers={modifiersClosed}
+                                                        onDayClick={this.handleDayClick}
+                                                        onDayMouseEnter={this.handleDayMouseEnter}
+                                                        localeUtils={MomentLocaleUtils}
+                                                        locale={'ru'}
+                                                    />
+
+                                                </div>
+                                                <div className="description col-sm-6">
+                                                    <p>Описание</p>
+                                                    <textarea className="form-control" rows="3" name="description"
+                                                              value={closedDates.description} placeholder="Например: дополнительный выходной в честь дня рождения организации" onChange={this.handleClosedDate}/>
+                                                </div>
+
+                                            </div>
+
                                             <div className="float-right mt-3">
                                                 <div className="buttons">
-                                                    <button className="small-button cancel-button close-holiday"
-                                                            type="button" data-dismiss="modal">Отменить
-                                                    </button>
                                                     <button
-                                                        className={((!from || !closedDates.description) ? 'disabledField' : 'close-holiday') + ' small-button'}
+                                                        className={((!from || !closedDates.description) ? 'disabledField' : 'close-holiday')}
                                                         type="button"
                                                         onClick={from && closedDates.description && this.addClosedDate}
                                                         data-dismiss="modal"
-                                                    >Добавить
+                                                    >Сохранить
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+
                                 </div>
                                 {
                                     staff.closedDates && staff.closedDates.sort((a, b) => this.calcDiff(a.startDateMillis) - this.calcDiff(b.startDateMillis)).map((item, key) =>
@@ -679,10 +763,7 @@ class Index extends Component {
 
                         <div className={"tab-pane" + (activeTab === 'feedback' ? ' active' : '')} id="tab5">
                             <div className="holiday-tab">
-                                <div className="add-holiday p-4 mb-3">
-                                    <p className="title_block">Отзывы</p>
 
-                                </div>
                                 {
                                     staff.feedback && staff.feedback.sort((a, b) => (b.averageStaffRating || 0) - (a.averageStaffRating || 0)).map((feedbackStaff, key) => {
                                             const activeStaff = staff.staff && staff.staff.find(item => item.staffId === feedbackStaff.staffId)
