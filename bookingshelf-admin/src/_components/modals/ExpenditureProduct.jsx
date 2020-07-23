@@ -140,6 +140,7 @@ class ExpenditureProduct extends React.Component {
         const { day, month, year, client, edit, alert, clients }=this.state;
 
         const activeProduct = material.products && material.products.find((item) => item.productId === client.productId);
+        const activeUnit = material.units && material.units.find((item) => item.unitId === client.unitId);
 
 
         let invalidCount =  activeProduct && (activeProduct.currentAmount - (client.amount? client.amount: 0)
@@ -167,7 +168,9 @@ class ExpenditureProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <p>Текущее количество единиц: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
+                                            <p><strong>{activeProduct && activeProduct.productName}</strong></p>
+                                            <p>Номинальный объем: <strong>{activeProduct && activeProduct.nominalAmount} {activeUnit && activeUnit.unitName}</strong></p>
+                                            <p>Остаток на складе: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
                                         </div>
                                     </div>
 
