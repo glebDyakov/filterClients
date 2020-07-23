@@ -26,6 +26,9 @@ class ExpenditureProduct extends React.Component {
             }
         }
         switch (client.target) {
+            case 'SALE':
+                client.target = 'S';
+                break;
             case 'INTERNAL':
                 client.target = 'I';
                 break;
@@ -90,6 +93,9 @@ class ExpenditureProduct extends React.Component {
         if ( JSON.stringify(this.props.client_working) !==  JSON.stringify(newProps.client_working)) {
             const {client_working} = newProps;
             switch (client_working.target) {
+                case 'SALE':
+                    client_working.target = 'S';
+                    break;
                 case 'INTERNAL':
                     client_working.target = 'I';
                     break;
@@ -176,7 +182,7 @@ class ExpenditureProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Единиц на списание" value={client.amount}
+                                            <InputCounter title={`Количество товара на списание, ${activeUnit && activeUnit.unitName}`} value={client.amount}
                                                           name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
@@ -185,7 +191,8 @@ class ExpenditureProduct extends React.Component {
                                             value={client.target}
                                     >
                                         <option>Выберите причину</option>
-                                        <option value="I">Внутренняя ошибка</option>
+                                        <option value="S">Продажа</option>
+                                        <option value="I">Внутреннее списание</option>
                                         <option value="D">Товар поврежден</option>
                                         <option value="C">Изменения наличия</option>
                                         <option value="L">Утеря</option>
