@@ -501,8 +501,11 @@ class Index extends Component {
 
             if (item.target) {
                 switch (item.target) {
+                    case 'SALE':
+                        item.targetTranslated = 'Продажа';
+                        break;
                     case 'INTERNAL':
-                        item.targetTranslated = 'Внутренняя ошибка';
+                        item.targetTranslated = 'Внутреннее списание';
                         break;
                     case 'DAMAGED':
                         item.targetTranslated = 'Товар поврежден';
@@ -561,13 +564,13 @@ class Index extends Component {
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM')}</p>
+                                    <div >
+                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM HH:mm')}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>
-                                    </div>
-                                    <div style={{ position: "relative" }}>
+                                    {/*<div >*/}
+                                    {/*    <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>*/}
+                                    {/*</div>*/}
+                                    <div >
                                       <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
@@ -986,10 +989,10 @@ class Index extends Component {
                                 <div style={{position: "relative"}}>
                                     <p>Дата</p>
                                 </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Время</p>
-                                </div>
-                                <div style={{position: "relative"}}>
+                                {/*<div >*/}
+                                {/*    <p>Время</p>*/}
+                                {/*</div>*/}
+                                <div >
                                     <p>Остаток</p>
                                 </div>
 
