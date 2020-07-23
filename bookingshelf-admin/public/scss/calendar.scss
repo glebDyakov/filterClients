@@ -1414,7 +1414,7 @@
 
             background: #2A2F42;
             box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
-            border-radius: 5px 5px 0px 0px;
+            border-radius: 5px 5px 0px 0px !important;
 
             &.client-not-come-background {
               background-color: #F46A6A !important;
@@ -1466,6 +1466,8 @@
             .new-client-icon,
             .client-not-come,
             .no-client-icon,
+            .cash-payment,
+            .no-cash-payment,
             .super-visit,
             .pen,
             .men,
@@ -1511,6 +1513,14 @@
 
             .pen {
               background-image: url(../img/icons/15.svg);
+            }
+
+            .cash-payment {
+              background-image: url(../img/icons/cash-payment.svg);
+            }
+
+            .no-cash-payment {
+              background-image: url(../img/icons/no-cash-payment.svg);
             }
 
             .super-visit {
@@ -1934,11 +1944,11 @@
 .add-black-list-modal,
 .move-visit-modal,
 .delete-reserve-modal,
-.start-modal {
+.start-modal,
+.action-modal {
 
   .modal-content {
     width: fit-content;
-    max-width: fit-content;
     margin: auto;
     border-radius: 10px;
 

@@ -11,6 +11,8 @@ import StaffChoice from '../CalendarPage/components/StaffChoice'
 import {servicesActions} from "../_actions/services.actions";
 import Paginator from "../_components/Paginator";
 import {staffActions} from "../_actions/staff.actions";
+import ActionModal from "../_components/modals/ActionModal";
+import UserInfo from "./UserInfo";
 
 class Index extends Component {
     constructor(props) {
@@ -63,6 +65,7 @@ class Index extends Component {
         this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
         this.isLeapYear = this.isLeapYear.bind(this);
         this.calcDiff = this.calcDiff.bind(this);
+
     }
 
     handleOpenModal(e) {
@@ -79,9 +82,12 @@ class Index extends Component {
         }
     }
 
+
+
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.activeTab !== prevState.activeTab) {
             this.setState({isOpenDropdownMenu: false});
@@ -241,7 +247,7 @@ class Index extends Component {
 
 
                 <div style={{position: 'relative'}} className="clients-page-container">
-                    <div style={{position: 'absolute', zIndex: 2}}
+                    <div style={{position: 'absolute', zIndex: 1}}
                          className="row content clients">
                         {/*<StaffChoice*/}
                         {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
@@ -326,65 +332,14 @@ class Index extends Component {
 
                                 }
                                 return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                    <div className="tab-content-list" key={i}
-                                         style={{position: "relative"}}>
-                                        <div className="cell_name-client" style={{position: "relative"}}>
-                                            <a onClick={() => this.openClientStats(client_user)}>
-                                                <p> {client_user.firstName} {client_user.lastName}</p>
-                                            </a>
-                                        </div>
-                                        <div className="cell_client-email">
-                                            {client_user.phone}
-                                            <br/>
-                                            {client_user.email}
-                                        </div>
-                                        <div className="cell_client-country">
-                                            {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ", ") + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ", ") + client_user.province)}
-                                        </div>
-
-                                        <div className="cell_client-last-visit">
-
-                                        </div>
-
-                                        <div className="cell_client-discount">
-                                            {client_user.discountPercent}%
-                                        </div>
-
-                                        <div
-                                            className={"cell_client-birthDate" + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 3) ? " red-date" : '')}>
-                                            {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
-                                        </div>
-
-
-                                        <div className="list-button-wrapper">
-                                            {client_user.blacklisted && <a className="client-in-blacklist">
-                                                <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
-                                                     alt=""/>
-                                            </a>}
-
-                                            {!client_user.blacklisted && <a className="clientEdit"
-                                                                            onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>}
-
-                                            <div className="delete dropdown">
-                                                <a className="delete-icon menu-delete-icon" data-toggle="dropdown"
-                                                   aria-haspopup="true" aria-expanded="false">
-                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                                </a>
-
-
-                                                <div className="dropdown-menu delete-menu p-3">
-                                                    {activeTab === 'clients' &&
-                                                    <button type="button" className="button delete-tab"
-                                                            onClick={() => this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                                    {activeTab === 'blacklist' &&
-                                                    <button type="button" className="button delete-tab" onClick={() => {
-                                                        delete client_user.appointments;
-                                                        this.updateClient({...client_user, blacklisted: false}, true)
-                                                    }}>Удалить</button>}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <UserInfo
+                                    client_user={client_user}
+                                    activeTab={activeTab}
+                                    i={i}
+                                    dispatch={this.props.dispatch}
+                                    handleClick={this.handleClick}
+                                    updateClient={this.updateClient}
+                                    />
                                 );
                             }
                         )}
@@ -473,6 +428,9 @@ class Index extends Component {
                     // editClient={this.handleEditClient}
                     editClient={this.handleClick}
                 />
+
+
+
             </div>
         );
     }
@@ -546,11 +504,7 @@ class Index extends Component {
         dispatch(clientActions.addClient(JSON.stringify(client)));
     };
 
-    deleteClient(id) {
-        const {dispatch} = this.props;
 
-        dispatch(clientActions.deleteClient(id));
-    }
 
     downloadFile() {
         const {dispatch} = this.props;

@@ -342,8 +342,7 @@ class Index extends Component {
                         {
                             (defaultServicesList.services && defaultServicesList !== "" &&
                                 // (1 &&
-                                <div className="row align-items-center content clients mb-2"
-                                     style={{margin: "0 -7px", width: "calc(100% + 14px)"}}>
+                                <div className="row align-items-center content clients mb-2">
                                     <div className="search col-7">
                                         <input type="search" placeholder="Введите название услуги"
                                                style={{width: "175%"}}

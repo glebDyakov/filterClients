@@ -613,6 +613,14 @@
     }
 
   }
+
+  .list-button-wrapper {
+    position: absolute;
+    right: 15px;
+    top: 30%;
+    width: 65px;
+
+  }
 }
 
 .new-client-modal {
@@ -768,6 +776,9 @@
     }
 
   }
+
+
+
   .tab-content-list {
     position: relative;
 
@@ -783,21 +794,7 @@
       color: #F46A6A !important;
     }
 
-    .list-button-wrapper {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
 
-      .delete-icon {
-
-      }
-
-      .dropdown-menu {
-        z-index: 50;
-      }
-    }
 
     .clientEditWrapper {
       right: 30px !important;

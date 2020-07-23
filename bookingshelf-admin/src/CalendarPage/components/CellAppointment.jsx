@@ -194,6 +194,18 @@ const CellAppointment = (props) => {
                     {!appointment.online && <Popover props={{className: "pen", title: "Запись через журнал"}}/>}
 
 
+
+
+                    {appointment.hasCoAppointments &&
+                    <Popover props={{className: "super-visit", title: "Мультивизит"}}/>}
+
+
+                    {appointment.cashPayment ? (
+                        <Popover props={{className: "cash-payment", title: "Оплата наличными", minWidth: '55px'}}/>
+                    ) : (
+                        <Popover props={{className: "no-cash-payment", title: "Оплата картой", minWidth: '55px'}}/>
+                    )}
+
                     {!appointment.coappointment && (
                         <React.Fragment>
                             <Popover props={{
@@ -216,9 +228,6 @@ const CellAppointment = (props) => {
 
                         </React.Fragment>
                     )}
-
-                    {appointment.hasCoAppointments &&
-                    <Popover props={{className: "super-visit", title: "Мультивизит"}}/>}
                </span>
 
                 <span id={`${appointment.appointmentId}-service-time`} className="service_time">
