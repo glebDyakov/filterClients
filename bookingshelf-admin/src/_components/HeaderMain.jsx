@@ -408,7 +408,7 @@ class HeaderMain extends React.PureComponent {
                                     <div className="user-settings-dropdown">
                                         <ul>
                                             <li onClick={this.openModal}>Настройки профиля</li>
-                                            <li><LogoutPage/></li>
+                                            <LogoutPage/>
                                         </ul>
                                     </div>
                                     }

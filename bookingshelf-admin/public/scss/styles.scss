@@ -5188,17 +5188,17 @@ textarea {
       color: #555B6D;
       box-sizing: border-box;
       border-bottom: 1px solid #eeeff1;
+    }
 
-      &:last-child {
-        a {
-          font-size: 13px;
-          line-height: 18px;
-          text-align: center;
-          color: #F46A6A;
-        }
+    a {
+      font-size: 13px;
+      line-height: 18px;
+      text-align: center;
+      color: #F46A6A !important;
+      padding: 15px 21px;
+      display: block;
+      cursor: pointer;
 
-        border: none;
-      }
     }
   }
 }
