@@ -342,10 +342,9 @@ class Index extends Component {
                         {
                             (defaultServicesList.services && defaultServicesList !== "" &&
                                 // (1 &&
-                                <div className="row align-items-center content clients mb-2">
-                                    <div className="search col-7">
-                                        <input type="search" placeholder="Введите название услуги"
-                                               style={{width: "175%"}}
+                                <div className="row align-items-center search-header-container content clients mb-2">
+                                    <div className="search">
+                                        <input className="search-input" type="search" placeholder="Введите название услуги"
                                                aria-label="Search" ref={input => this.search = input}
                                                onChange={this.handleSearch}/>
                                         <button className="search-icon" type="submit"/>

@@ -324,7 +324,9 @@ class Index extends Component {
                             <div className="column-header">День Рождения</div>
                         </div>
 
-                        {finalClients && finalClients.sort((a, b) => this.calcDiff(a.birthDate) - this.calcDiff(b.birthDate)).map((client_user, i) => {
+                        {finalClients && finalClients.sort((a, b) => {
+                                    return this.calcDiff(a.birthDate) - this.calcDiff(b.birthDate);
+                        }).map((client_user, i) => {
                                 let condition = true;
                                 if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 

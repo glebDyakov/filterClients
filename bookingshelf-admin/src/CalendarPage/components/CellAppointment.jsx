@@ -174,12 +174,6 @@ const CellAppointment = (props) => {
             <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : (appointment.clientConfirmed ? " client-confirmed-background" : '')} ${appointment.duration === 900 ? ' notes-title-bordered' : ''}`}
                onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
                 <span className="notes-buttons-container">
-                    {appointment.clientNotCome && <Popover props={{
-                        className: "client-not-come",
-                        title: "Клиент не пришел",
-                        minWidth: '61px'
-                    }}/>}
-
                     {appointment.online && <Popover props={{className: "globus", title: "Онлайн-запись"}}/>}
 
                     {!!appointment.discountPercent && <Popover props={{
@@ -272,14 +266,14 @@ const CellAppointment = (props) => {
                         {isOpenDropdownSelectClientStatus &&
                         <div className="dropdown-selected">
 
-                            {appointment.clientNotCome &&
+                            {(appointment.clientNotCome || appointment.clientConfirmed) &&
                             <p className="dropdown-item" onClick={() => {
                                 setSelectedItem(true);
                                 const params = currentAppointments.map(item => {
                                     return {
                                         ...item,
                                         clientNotCome: false,
-
+                                        clientConfirmed: false
                                     }
                                 });
                                 dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));

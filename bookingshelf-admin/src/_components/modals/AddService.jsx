@@ -115,6 +115,8 @@ class AddService extends React.Component {
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
 
+        console.log()
+
         const optionList = this.getOptionList()
 
         return (
@@ -233,20 +235,23 @@ class AddService extends React.Component {
                                     </div>
                                     {this.state.service.usingMaterials &&
                                         <React.Fragment>
-                                            <p>Поиск материалов и услуг</p>
 
                                             {/*start*/}
                                             {service && service.serviceProducts && service.serviceProducts.sort((a, b) => a.serviceProductId - b.serviceProductId).map((item, index) =>{
                                                 const activeProduct = this.props.material.products.find(currentProduct => item.productId === currentProduct.productId)
                                                 const activeUnit = activeProduct && this.props.material.units.find(currentUnit => activeProduct.unitId === currentUnit.unitId);
-                                            return <div className="select-color dropdown mb-3 border-color">
+                                            return <div className="select-color row using-materials-dropdown dropdown mb-3 border-color">
 
-                                                {
-                                                    // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
-                                                    service && service.serviceProducts &&
+                                                <div className="col-md-8">
+                                                    <p>Поиск материалов и услуг</p>
+
+                                                    {
+                                                        // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
+                                                        service && service.serviceProducts &&
+
                                                         <a onClick={() => this.setState({ materialsSearch: '' })}
                                                            className={
-                                                            // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
+                                                               // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
                                                                'select-button dropdown-toggle select-material'}
                                                            data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '')
                                                             // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
@@ -256,44 +261,48 @@ class AddService extends React.Component {
                                                                 className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
                                                         </a>}
 
-                                                <ul className="dropdown-menu">
-                                                    <li className="dropdown-item">
-                                                        <div className="row align-items-center content clients" style={{margin: "0 -15px", padding: '0 8px', height: '52px', width: "calc(100% + 30px)"}}>
-                                                            <div className="search col-7">
-                                                                <input type="search" placeholder="Введите название товара" style={{width: "185%"}}
-                                                                       aria-label="Search"
-                                                                       value={materialsSearch} onChange={this.handleMaterialsSearch}
-                                                                />
-                                                                <button className="search-icon" type="submit"/>
+                                                    <ul className="dropdown-menu">
+                                                        <li className="search-item">
+                                                            <div className="align-items-center clients">
+                                                                <div className="search">
+                                                                    <input type="search" placeholder="Введите название товара"
+                                                                           aria-label="Search"
+                                                                           value={materialsSearch} onChange={this.handleMaterialsSearch}
+                                                                    />
+                                                                    <button className="search-icon" type="submit"/>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                    <li className="services_list_wrapper">
+                                                        </li>
+                                                        <li className="services_list_wrapper">
 
-                                                        <ul>
-                                                            {/*{this.getServiceList(index)}*/}
-
-
-                                                            {this.props.material.products.filter(product => service.serviceProducts
-                                                                .filter((elem, elemIndex) => elemIndex !== index)
-                                                                .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => {
-
-                                                            return(<li className="dropdown-item">
-                                                                <a onClick={() => this.handleChooseProduct(product, index)}>
-
-                                                                                {product && product.productName }
-
-                                                                </a>
-                                                            </li>)
-                                                            })}
+                                                            <ul>
+                                                                {/*{this.getServiceList(index)}*/}
 
 
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                                <div className="arrow-dropdown"><i></i></div>
+                                                                {this.props.material.products.filter(product => service.serviceProducts
+                                                                    .filter((elem, elemIndex) => elemIndex !== index)
+                                                                    .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => {
 
-                                                <div className="select-material">
+                                                                    return(<li onClick={() => this.handleChooseProduct(product, index)} className="dropdown-item">
+                                                                        <a className="product-name">
+                                                                            {product && product.productName }
+                                                                        </a>
+
+                                                                        <p className="product-info">
+                                                                            <span className="product-amount">На складе: {product && product.currentAmount}</span>
+                                                                            <span className="product-id">№: {product && product.productId}</span>
+                                                                        </p>
+                                                                    </li>)
+                                                                })}
+
+
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="arrow-dropdown"><i></i></div>
+                                                </div>
+
+                                                <div className="select-material col-md-4">
                                                     <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
                                                                    title={`Норма списания, ${activeUnit ? (activeUnit.unitName) : ''}`}
                                                                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
@@ -302,36 +311,8 @@ class AddService extends React.Component {
                                                 {this.state.service.serviceProducts.length !== 1 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}
                                             </div>})}
 
-
-                                            {/*end*/}
-                                        {/*    {service && service.serviceProducts && service.serviceProducts.map((item, index) =>*/}
-
-                                        {/*        <div className="row" style={{position: "relative"}}>*/}
-                                        {/*            <div className="col-xl-6 input_limited_wrapper_description">*/}
-                                        {/*                <p></p>*/}
-                                        {/*                <select className="custom-select" name="productId" onChange={(e) => this.handleChangeProduct(e, index)}*/}
-                                        {/*                        value={service.serviceProducts[index].productId}>*/}
-                                        {/*                    <option value="">Выберите материал</option>*/}
-                                        {/*                    {this.props.material.products.filter(product => service.serviceProducts*/}
-                                        {/*                        .filter((elem, elemIndex) => elemIndex !== index)*/}
-                                        {/*                        .every(serviceProduct => product.productId !== serviceProduct.productId)).map(product => <option value={product.productId}>{product.productName}</option>)}*/}
-                                        {/*                </select>*/}
-
-
-
-                                        {/*            </div>*/}
-                                        {/*            <div className="col-xl-6">*/}
-                                        {/*                <InputCounter  placeholder="Например, 100 мл" value={service.serviceProducts[index].amount}*/}
-                                        {/*                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={128} />*/}
-                                        {/*            </div>*/}
-                                        {/*            {index !== 0 && <button className="close"  style={{position:"absolute", right: "-60px", top: "8px", zIndex: "99"}} onClick={()=>this.removeMaterial(index)}>x</button>}*/}
-                                        {/*        </div>*/}
-
-
-
-
                                         {/*)}*/}
-                                        <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2"
+                                        <p style={{ cursor: 'pointer', textDecoration: 'underline' }} className="mb-2 add-material"
                                        onClick={() => {
                                            const updatedService = { ...service};
                                            if (! updatedService.serviceProducts) {
