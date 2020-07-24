@@ -521,11 +521,11 @@ class Index extends Component {
                                         <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
                                     <div >
-                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM')}</p>
+                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM HH:mm')}</p>
                                     </div>
-                                    <div >
-                                        <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>
-                                    </div>
+                                    {/*<div >*/}
+                                    {/*    <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>*/}
+                                    {/*</div>*/}
                                     <div >
                                       <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
@@ -958,9 +958,9 @@ class Index extends Component {
                                 <div >
                                     <p>Дата</p>
                                 </div>
-                                <div >
-                                    <p>Время</p>
-                                </div>
+                                {/*<div >*/}
+                                {/*    <p>Время</p>*/}
+                                {/*</div>*/}
                                 <div >
                                     <p>Остаток</p>
                                 </div>

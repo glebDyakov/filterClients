@@ -684,7 +684,7 @@
     .in-storehouse{
       span{
         font-size: 50px;
-        line-height: 68px;
+        line-height: 50px;
       }
     }
   }
@@ -862,4 +862,26 @@
 
 .material-adding{
   width: 57px;
+}
+select {
+  &.custom-select[name="categoryId"], &.custom-select[name="brandId"], &.custom-select[name="unitId"],
+  &.custom-select[name="unitId"], &.custom-select[name="supplierId"], &.custom-select[name="storehouseId"],
+  &.custom-select[name="target"] {
+    background: #F3F3F9 url("../img/icons/arrow2.svg") no-repeat 97%;
+    background-size: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}
+select {
+  &.custom-select[name="categoryId"], &.custom-select[name="brandId"], &.custom-select[name="unitId"],
+  &.custom-select[name="unitId"], &.custom-select[name="supplierId"], &.custom-select[name="storehouseId"],
+  &.custom-select[name="target"] {
+    background: #F3F3F9 url("../img/icons/arrow2.svg") no-repeat 97%;
+    background-size: 14px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
 }

@@ -21,17 +21,8 @@
     //}
 }
 .chose_button{
-    justify-content: space-between;
     flex-wrap: wrap;
     display: flex;
-
-    @media screen {
-        @media (max-width: 1200px){
-            display: block;
-            overflow: auto;
-            white-space: nowrap;
-        }
-    }
 
     .button-color{
         width: 19%;
@@ -165,7 +156,6 @@
         }
         @media screen {
             @media (max-width: $laptop-width){
-                justify-content: space-between;
 
                 button{
                     min-height: 35px;
@@ -589,4 +579,398 @@ strong{
 .circle-picker {
     width: inherit !important;
     justify-content: center !important;
+}
+.online-zapis-page{
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+    .content-pages-bg{
+        border-radius: 5px;
+        box-shadow: 0 10px 20px rgba(18, 38, 63, 0.0313726);
+    }
+    .col-xl-4{
+        @media  (max-width: $tablet-width){
+            order: 2;
+            margin-bottom: 7px;
+        }
+    }
+    .col-xl-8{
+        @media  (max-width: $tablet-width){
+            order: -1;
+            margin-bottom: 7px;
+        }
+    }
+    .p-zapis{
+        padding: 20px 18px;
+    }
+    .title{
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 33px;
+        @media  (max-width: $tablet-width){
+            font-size: 16px;
+            line-height: 22px;
+        }
+    }
+    .your-page{
+        font-size: 16px !important;
+        @media (max-width: $mob-width) {
+            padding: 20px 30px;
+        }
+
+        .booking-page{
+            font-size: 14px;
+            line-height: 22px;
+            padding: 15px 10px;
+            position: relative;
+            height: 52px;
+            border: 2px solid #F6F6F6;
+            &:after{
+                position: absolute;
+                content: '';
+                background: url("../img/link1.svg") no-repeat;
+                width: 22px;
+                height: 22px;
+                background-size: cover;
+                right: 10px;
+
+            }
+            a{
+                text-decoration: none;
+                color: #50A5F1;
+            }
+        }
+    }
+    .extra-messages{
+
+        @media (max-width: $mob-width) {
+            padding: 20px 30px;
+        }
+
+        .title{
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 16px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        p.text{
+            font-size: 16px;
+            margin-bottom: 30px;
+            @media (max-width: $tablet-width){
+                font-size: 13px;
+                line-height: 18px;
+            }
+        }
+        p.limit-time{
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 22px;
+        }
+        .button-save{
+            margin-top: 15px;
+        }
+    }
+
+    .start-window{
+
+        @media (max-width: $mob-width) {
+            padding: 20px 30px;
+        }
+
+        padding-bottom: 5px;
+        .title{
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 20px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+
+    }
+
+    .online-interval{
+        padding-bottom: 5px;
+
+        @media (max-width: $mob-width) {
+            padding: 20px 30px;
+        }
+        .title{
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 20px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+
+    }
+    .journal-interval{
+
+        @media (max-width: $mob-width) {
+            padding: 20px 30px;
+        }
+        .title{
+            font-size: 18px;
+            line-height: 25px;
+            margin-bottom: 20px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        select.custom-select{
+            padding: 9px 10px;
+            height: 36px;
+            width: 100px;
+            margin-bottom: 20px;
+            background: #F3F3F9 url("../img/icons/arrow2.svg") no-repeat 90%;
+            background-size: 14px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+        }
+        .button-save{
+            margin-bottom: 3px;
+        }
+    }
+
+    .button-save{
+        display: block;
+
+        background: #50A5F1;
+        opacity: 0.7;
+        border-radius: 30px;
+        padding: 10px 64px;
+        border: none;
+        transition: 400ms;
+        width: 213px;
+        height: 42px;
+        margin: 0 auto;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    .check-box label{
+        font-weight: 300;
+        padding-left: 28px;
+        margin-bottom: 15px;
+    }
+    .form-check-input[type="checkbox"] {
+        display: none;
+
+        + .check-box-circle {
+            position: absolute;
+            left: 0;
+
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0) !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            right: -5px;
+            top: 0;
+            margin-right: 10px;
+            bottom: 0;
+            transition: 200ms !important;
+            box-sizing: border-box;
+            border: 1px solid rgba(128, 128, 128, 0.3);
+
+        }
+
+        &:checked {
+
+            + .check-box-circle {
+                transition: 200ms;
+                background: #FFFFFF;
+                border: 4px solid #50A5F1;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+
+    //------Основной_таб_начало
+    .main-tab{
+        padding: 25px 60px 25px 20px;
+        @media  (max-width: $laptop-width){
+            padding: 25px 30px;
+        }
+        @media  (max-width: $tablet-width){
+            margin: 0 auto 7px;
+        }
+
+        hr{
+            margin: 20px 0;
+        }
+        .sub-title{
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 25px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        .text{
+            font-size: 16px;
+            line-height: 25px;
+            @media (max-width: $tablet-width){
+                font-size: 13px;
+                line-height: 18px;
+            }
+        }
+        .form-button .buttons{
+            margin: 20px 0 40px;
+            display: flex;
+            button{
+                margin: 0 24px 26px 0!important;
+                position: relative;
+                &.active::after{
+                    position: absolute;
+                    content: '';
+                    background: url("../img/icons/selected-button.svg");
+                    width: 13px;
+                    height: 13px;
+                    background-size: cover;
+                    top: 32%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+        .sub-title.m-20{
+            margin-bottom: 20px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        .chose_button .button-color{
+            height: 0;
+            width: 140px;
+            padding-top: 40px;
+            border-radius: 30px;
+            margin-right: 24px;
+            margin-bottom: 26px;
+            justify-content: flex-start;
+            @media  (max-width: $tablet-width){
+                margin-right: 10px;
+                width: 59px;
+                height: 50px;
+            }
+            span{
+                height: 40px;
+                border-radius: 30px;
+                @media  (max-width: $tablet-width){
+                    height: 50px;
+                    border-radius: 5px;
+                }
+
+            }
+            &.active::after{
+                position: absolute;
+                content: '';
+                background: url("../img/icons/selected-button.svg");
+                width: 13px;
+                height: 13px;
+                background-size: cover;
+                top: 32%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        .sub-title.position-button{
+            margin: 4px 0 20px;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        div.position-button{
+            margin: 0;
+            div{
+                margin-right: 40px;
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        .sub-title.text-example{
+            margin: 13px 0 20px 0;
+            text-align: left;
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+                text-align: left;
+            }
+
+        }
+        .exemple-buton{
+            //width: 140px;
+            //height: 40px;
+            //border-radius: 30px;
+            font-size: 13px;
+            line-height: 18px;
+            margin-top: 0;
+        }
+
+    }
+    .code-buttons{
+        align-items: baseline;
+        margin: 0;
+        p.sub-title{
+            margin-right: 30px;
+            @media  (max-width: $mob-width){
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            @media (max-width: $tablet-width){
+                font-size: 16px;
+                line-height: 22px;
+            }
+        }
+        .check-box{
+            margin-right: 30px;
+            label{
+                margin-bottom: 0;
+                @media  (max-width: $mob-width){
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+    textarea{
+        padding: 12px 14px;
+        height: 82px;
+        font-size: 13px;
+        line-height: 18px;
+        margin: 20px 0 15px;
+        background: #FFFFFF;
+        border: 2px solid #F6F6F6;
+        box-sizing: border-box;
+        box-shadow: 0 10px 20px rgba(18, 38, 63, 0.0313726);
+        border-radius: 6px;
+        @media  (max-width: $tablet-width){
+            height: 123px;
+        }
+        @media  (max-width: $mob-width){
+            height: 164px;
+        }
+    }
+    p.copy-code{
+        cursor: pointer;
+        font-size: 13px;
+        line-height: 20px;
+        color: #50A5F1;
+    }
+    //------Основной_таб_конец
 }
