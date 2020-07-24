@@ -36,9 +36,8 @@ class ServiceGroupInfo extends Component {
 
                     <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
                         <div
-                            className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3"}
+                            className={item.color.toLowerCase() + "ButtonEdit " + "btn btn-warning text-light float-left mr-3" + (collapse.indexOf(item.serviceGroupId) === -1 ? " opened" : '')}
                             onClick={() => onCollapse(item.serviceGroupId)}>
-                            {collapse.indexOf(item.serviceGroupId) === -1 ? '-' : '+'}
                         </div>
                         <p className="title_block mt-1">{item.name} {item.description.length === 0 ? "" : ("(" + item.description + ")")}</p>
                     </div>

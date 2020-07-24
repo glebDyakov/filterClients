@@ -53,7 +53,7 @@ class ServiceInfo extends Component {
                     <span
                         className="services_items_time">{moment.duration(parseInt(item2.duration), "seconds").format("h[ ч] m[ мин]")}</span>
                     <a className="edit_service" onClick={(e) => newService(item2, item, e, this)}/>
-                    <a className="delete-icon ml-2" id="menu-delete6633" onClick={this.openDeleteModal}>
+                    <a className="delete-icon ml-3" id="menu-delete6633" onClick={this.openDeleteModal}>
                         <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                     </a>
                 </div>
@@ -61,7 +61,7 @@ class ServiceInfo extends Component {
 
                 {this.state.isOpenDeleteModal &&
                 <ActionModal
-                    title= "Удалить услугу?"
+                    title="Удалить услугу?"
                     closeHandler={this.closeDeleteModal}
                     buttons={[{
                         handler: deleteService,
