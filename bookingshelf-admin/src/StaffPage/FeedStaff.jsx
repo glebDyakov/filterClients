@@ -40,12 +40,12 @@ class FeedStaff extends Component {
                             <div style={{
                                 alignItems: 'center',
                                 justifyContent: 'space-between'
-                            }} className="row">
-                                <div style={{
+                            }} className="row flex-md-row flex-md-nowrap">
+                                <div className="justify-content-start flex-column flex-md-row" style={{
                                     display: 'flex',
                                     width: isMobile ? '100%' : 'calc(100% - 200px)'
                                 }}>
-                                    <div className="d-flex align-items-center justify-content-center">
+                                    <div className="d-flex align-items-center">
                                         <img style={{
                                             display: 'block',
                                             height: '24px',
@@ -71,7 +71,7 @@ class FeedStaff extends Component {
                                         display: 'flex',
                                         alignItems: 'center'
                                     }}>
-                                        <div className="user-name-container">
+                                        <div className="user-name-container flex-column flex-md-row">
                                             <strong
                                                 className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
                                             <p className="user-description">{activeStaff.description}</p>
@@ -82,13 +82,14 @@ class FeedStaff extends Component {
                                     this.handleAllFeedbackClick(activeStaff)
                                 }} className={"button desktop-visible" + (this.state.isOpenReview? " red-text" : '')}>{this.state.isOpenReview ? "Скрыть" : "Все отзывы"}
                                 </button>
+
+                                <button type="button" onClick={() => {
+                                    this.handleAllFeedbackClick(activeStaff)
+                                }} className={"button mobile-visible desktop-visible" + (this.state.isOpenReview? " red-text" : '')}>{this.state.isOpenReview ? "Скрыть" : "Все отзывы"}
+                                </button>
                             </div>
 
-                            <p style={{textDecoration: 'underline', textAlign: 'center'}}
-                               onClick={() => {
-                                   // this.handleAllFeedbackClick(activeStaff)
-                               }} className="mobile-visible">{this.state.isOpenReview ? "Скрыть" : "Все отзывы"}
-                            </p>
+
                         </React.Fragment>
                     )}
 

@@ -3730,6 +3730,7 @@ select {
         }
 
         .button {
+          height: 42px;
           margin-top: 10px;
           background: #50A5F1;
           border-radius: 30px;
@@ -4293,6 +4294,10 @@ select {
     background-color: #F4F4F7;
     width: 1132px;
 
+    @media screen and (max-width: $mob-width) {
+      width: 100%;
+    }
+
     .modal-header {
       .modal-title {
         display: flex;
@@ -4386,6 +4391,10 @@ select {
               .check {
                 left: unset;
                 right: -70px;
+
+                @media screen and (max-width: $mob-width){
+                  right: 0;
+                }
               }
             }
           }
@@ -6365,9 +6374,6 @@ textarea {
   z-index: 15 !important;
 }
 
-.modal---modal-content---3pwnC {
-  max-height: 85vh;
-}
 
 .modal---modal-overlay---3D5Nr, .delete-notes-modal, .add-black-list-modal, .move-visit-modal, .start-moving-modal, .delete-reserve-modal {
   //margin-right: -125px;

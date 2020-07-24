@@ -118,7 +118,7 @@
     flex-direction: row;
     border-radius: 0;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 
     @media screen and (max-width: $mob-width) {
       display: flex !important;
@@ -165,7 +165,7 @@
       background: #FFFFFF;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       border-radius: 2px;
-      z-index: 1;
+      z-index: 2;
 
       .nav-item {
         margin: 0;
@@ -312,8 +312,27 @@
     .tabs-container {
       .tab-content-list {
 
+        @media screen and (max-width: $mob-width){
+          display: flex;
+          flex-direction: column;
+          height: auto !important;
+
+          div {
+            width: 100% !important;
+            justify-content: flex-end !important;
+          }
+        }
+
         .client-name {
-          width: 27% !important;
+          width: 27%;
+
+          @media screen and (width: $mob-width){
+            width: 100% !important;
+
+            p {
+              text-align: right !important;
+            }
+          }
         }
 
         &.header-content-list {
@@ -321,11 +340,20 @@
           top: 0;
           z-index: 1 !important;
           height: 48px !important;
+
+
+          @media screen and (max-width: $mob-width){
+            display: none !important;
+          }
+
         }
 
         div {
+
+
           &:first-of-type {
             width: unset;
+
           }
         }
 
@@ -339,6 +367,11 @@
         .rounded-circle {
           width: 24px;
           height: 24px;
+
+          @media screen and (width: $mob-width){
+            width: 50px !important;
+            height: 50px !important;
+          }
         }
 
         .tab-content-header-item {
@@ -961,6 +994,10 @@
 
           color: #50A5F1;
 
+          @media screen and (max-width: $mob-width) {
+            padding-left: 54px;
+          }
+
         }
       }
 
@@ -999,6 +1036,10 @@
             color: #495057;
             width: 30%;
             text-align: left;
+
+            @media screen and (max-width: $mob-width) {
+              width: 84% !important;
+            }
           }
 
           .user-description {
@@ -1008,7 +1049,9 @@
             color: #495057;
             width: 70%;
             text-align: left;
-
+            @media screen and (max-width: $mob-width) {
+              width: 84% !important;
+            }
           }
         }
 
@@ -1101,6 +1144,8 @@
         position: sticky;
         top: 0;
         z-index: 1;
+
+
 
         .tab-content-header-item {
           font-weight: 600;
@@ -1313,7 +1358,14 @@
     color: #495057;
     padding: 0 !important;
     margin-left: 23px;
+    @media screen and (max-width: $mob-width) {
+      white-space: pre-wrap !important;
+      margin-left: 5px !important;
+
+    }
   }
+
+
 }
 
 .staff-day-picker {

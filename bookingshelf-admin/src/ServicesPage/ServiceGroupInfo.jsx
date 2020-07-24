@@ -28,7 +28,7 @@ class ServiceGroupInfo extends Component {
         const {onCollapse, services, item, keyGroup, dragHandleProps, collapse, handleClick, _delete, dragDropServicesItems, handleServicesDrogEnd, newService} = this.props;
 
         return (
-            <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3' : ''}` + ' service_one collapsible'}
+            <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3' : ''}` + ' service_one collapsible' + (collapse.indexOf(item.serviceGroupId) === -1 ? " opened" : '')}
                  key={keyGroup}>
 
                 <div className="service-content">

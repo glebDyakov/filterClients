@@ -284,6 +284,11 @@ class Index extends Component {
                                                placeholder="Введите название услуги"
                                                aria-label="Search" ref={input => this.search = input}
                                                onChange={this.handleSearch}/>
+
+                                        <input className="mob-search-input" type="search"
+                                               placeholder="Введите название услуги"
+                                               aria-label="Search" ref={input => this.search = input}
+                                               onChange={this.handleSearch}/>
                                         <button className="search-icon" type="submit"/>
                                     </div>
                                 </div>

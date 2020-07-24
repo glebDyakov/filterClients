@@ -32,18 +32,18 @@ class HolidayInfo extends Component {
         return (
             <div className="row holiday-list" key={key}>
                 <div className="col">
-                                        <span>
-                                            <strong>Начало</strong>
-                                            {moment(item.startDateMillis).format('L')}
-                                        </span>
                     <span>
-                                            <strong>Количество дней</strong>
+                        <strong>Начало</strong>
+                        {moment(item.startDateMillis).format('L')}
+                    </span>
+                    <span>
+                        <strong>Количество дней</strong>
                         {Math.round((item.endDateMillis - item.startDateMillis) / (1000 * 60 * 60 * 24)) + 1}
-                                        </span>
+                    </span>
                     <span>
-                                            <strong>Описание</strong>
+                        <strong>Описание</strong>
                         {item.description}
-                                        </span>
+                     </span>
                 </div>
                 <div className="dropdown delete-tab-holiday">
                     <a className="delete-icon" onClick={this.openDeleteModal}>
@@ -75,7 +75,6 @@ class HolidayInfo extends Component {
         );
     }
 }
-
 
 
 export default HolidayInfo;

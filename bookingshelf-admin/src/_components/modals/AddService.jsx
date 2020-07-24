@@ -5,7 +5,6 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import InputCounter from "../InputCounter";
 import {servicesActions, materialActions} from '../../_actions';
-import moment from "./AddAppointment";
 
 class AddService extends React.Component {
     constructor(props) {
@@ -115,20 +114,18 @@ class AddService extends React.Component {
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
 
-        console.log()
-
         const optionList = this.getOptionList()
 
         return (
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
                 <div className="new-service-modal">
                 {service &&
-                <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
+                <div className="modal-dialog modal-dialog-lg">
                     <div className="modal-content">
                         <div className="modal-header">
                             {editServiceItem ? <h4 className="modal-title">Редактирование услуги</h4>
-                                    : <h4 className="modal-title">Новая услуга: {group &&
-                                <div className="select-color border-color">
+                                    : <h4 className="modal-title">Новая услуга{group &&
+                                <div className="select-color d-none d-md-flex border-color">
                                     <li><a><span
                                         className={group.color.toLowerCase() + " " + 'color-circle ml-0'}/><span
                                         className={group.color.toLowerCase()}><span
@@ -347,7 +344,7 @@ class AddService extends React.Component {
 
 
 
-                                <div className="col-lg-4 right-container">
+                                <div className="col-12 col-lg-4 right-container">
                                     <div className="block-style2 container">
                                         <div className="header-container">
                                             <div className="row">
@@ -416,7 +413,7 @@ class AddService extends React.Component {
                                 {message &&
                                 <div style={{ padding: '4px 12px', margin: '16px', width: 'calc(100% - 42px)' }} className="alert alert-danger">{message}</div>
                                 }
-                                <div className="buttons col-12 d-flex justify-content-between align-items-center">
+                                <div className="buttons col-12 flex-column flex-md-row d-flex justify-content-between align-items-center">
 
                                     <div className="check-box">
                                         <label>

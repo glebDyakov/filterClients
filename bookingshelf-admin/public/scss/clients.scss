@@ -421,6 +421,10 @@
     position: relative;
     border-bottom: 1px solid #EFF2F7;
 
+    @media screen and (max-width: $mob-width){
+      justify-content: flex-start !important;
+    }
+
     div {
       overflow: unset !important;
 
