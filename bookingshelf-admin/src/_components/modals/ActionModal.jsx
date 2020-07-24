@@ -42,10 +42,13 @@ class ActionModal extends Component {
                         <span className="modal-body">
                             <span className="form-group">
                                 {buttons && buttons.length > 0 && buttons.map(item => {
-                                    const {handler, params, innerText, className} = item;
+                                    const {handler, params, innerText, className, additionalHandler} = item;
                                     return (
                                         <button type="button" className={className} onClick={() => {
                                             handler((params ? params : null));
+                                            if (additionalHandler) {
+                                                additionalHandler();
+                                            }
                                         }}>{innerText}</button>
                                     )
                                 })}

@@ -4596,22 +4596,28 @@ select {
 
 .questions_dropdown {
   position: absolute;
-  width: 200px;
   top: 21px;
-  text-align: center;
-  left: 50%;
-  transform: translateX(-50%);
+  max-width: 400px !important;
+  min-width: 70px !important;
+  text-align: center !important;
+  left: 0 !important;
+  white-space: pre-wrap !important;
+  //transform: translateX(-50%);
   z-index: 1000;
-  padding: 6px;
   margin: 0.125rem 0 0;
-  font-size: 12px;
-  color: #212529;
   list-style: none;
-  background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-  white-space: pre-wrap;
+  font-weight: normal;
+  font-size: 13px;
+  /* identical to box height */
+
+  padding: 10px 5px !important;
+  color: #2A3042 !important;
+
+
+  background: #FFFFFF;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
 }
 
 .small-button-round {
@@ -6692,6 +6698,14 @@ textarea {
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
+
+  .img-container {
+    width: 30%;
+  }
+
+  .appointment-socket-modal-body {
+    width: 70%;
+  }
 
   p {
     font-weight: 100;

@@ -24,6 +24,8 @@ import Paginator from "../_components/Paginator";
 import FeedbackStaff from "../_components/modals/FeedbackStaff";
 import FeedStaff from "./FeedStaff";
 import ActionModal from "../_components/modals/ActionModal";
+import StaffInfo from "./StaffInfo";
+import HolidayInfo from "./HolidayInfo";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -332,53 +334,16 @@ class Index extends Component {
                 staffId: staff_user.staffId,
                 id: `staff-user-${i}`,
                 getContent: (dragHandleProps) => (
-                    <div {...dragHandleProps} className="tab-content-list" key={i}>
-                        {/*{staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
-                        <div className="client-name">
-                            <a style={{paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab'}} key={i}>
-                                                <span className="img-container">
-                                                    <img className="rounded-circle"
-                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                         alt=""/>
-                                                </span>
-                                <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
-                            </a>
-                            {isGroup && <p className="staff-group">Группа напарников {groupIndex + 1}</p>}
-                        </div>
-                        <div>
-                            {staff_user.phone}
-                        </div>
-                        <div>
-                            {staff_user.email}
-                        </div>
-                        <div>
-                            <span>
-                                {this.renderSwitch(staff_user.roleId)}
-                            </span>
-                        </div>
-                        <div className="delete dropdown">
-                            <a className="clientEdit" onClick={() => this.handleClick(staff_user.staffId, false)}/>
-                            {staff_user.roleId !== 4 &&
-
-                            <a className="delete-icon menu-delete-icon"
-                               data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">
-                                <img
-                                    src={`${process.env.CONTEXT}public/img/delete_new.svg`}
-                                    alt=""/>
-                            </a>
-                            }
-
-                            {staff_user.roleId !== 4 &&
-                            <div className="dropdown-menu delete-menu p-3">
-                                <button type="button"
-                                        className="button delete-tab"
-                                        onClick={() => this.deleteStaff(staff_user.staffId)}>Удалить
-                                </button>
-                            </div>
-                            }
-                        </div>
-                    </div>
+                    <StaffInfo
+                    dragHandleProps={dragHandleProps}
+                    i={i}
+                    isGroup={isGroup}
+                    staff_user={staff_user}
+                    groupIndex={groupIndex}
+                    handleClick={this.handleClick}
+                    deleteStaff={this.deleteStaff}
+                    renderSwitch={this.renderSwitch}
+                    />
                 )
             })
         });
@@ -672,34 +637,11 @@ class Index extends Component {
                                 </div>
                                 {
                                     staff.closedDates && staff.closedDates.sort((a, b) => this.calcDiff(a.startDateMillis) - this.calcDiff(b.startDateMillis)).map((item, key) =>
-                                        <div className="row holiday-list" key={key}>
-                                            <div className="col">
-                                        <span>
-                                            <strong>Начало</strong>
-                                            {moment(item.startDateMillis).format('L')}
-                                        </span>
-                                                <span>
-                                            <strong>Количество дней</strong>
-                                                    {Math.round((item.endDateMillis - item.startDateMillis) / (1000 * 60 * 60 * 24)) + 1}
-                                        </span>
-                                                <span>
-                                            <strong>Описание</strong>
-                                                    {item.description}
-                                        </span>
-                                            </div>
-                                            <div className="dropdown delete-tab-holiday">
-                                                <a className="delete-icon" data-toggle="dropdown" aria-haspopup="true"
-                                                   aria-expanded="false">
-                                                    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`}
-                                                         alt=""/>
-                                                </a>
-                                                <div className="dropdown-menu delete-menu p-3">
-                                                    <button type="button" className="button delete-tab"
-                                                            onClick={() => this.deleteClosedDate(item.companyClosedDateId)}>Удалить
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <HolidayInfo
+                                        item={item}
+                                        key={key}
+                                        deleteClosedDate={this.deleteClosedDate}
+                                        />
                                     )
                                 }
                             </div>

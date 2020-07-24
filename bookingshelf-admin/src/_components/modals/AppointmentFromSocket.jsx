@@ -119,7 +119,7 @@ class AppointmentFromSocket extends React.Component {
                         </p>
                     </div>
 
-                    <div>
+                    <div className="appointment-socket-modal-body">
                         <div className="appointment-socket-modal-title" style={{position: "relative"}}>
                             <p>{socketTitle}</p>
                             <button className="close" onClick={this.closeAppointmentFromSocket}/>
