@@ -4299,8 +4299,8 @@ select {
         align-items: center;
         .color-circle {
           margin: 0 10px 0 15px !important;
-          border-radius: 0;
-          width: 4px;
+          border-radius: 50%;
+          width: 18px;
           height: 18px;
         }
 

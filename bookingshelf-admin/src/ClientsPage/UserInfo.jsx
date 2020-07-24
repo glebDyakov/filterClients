@@ -51,14 +51,14 @@ class UserInfo extends Component {
     }
 
     render() {
-        const {client_user, activeTab, i, deleteClient, handleClick} = this.props;
+        const {client_user, activeTab, i, deleteClient, handleClick, openClientsStats} = this.props;
         console.log(this.state)
 
         return (
             <div className="tab-content-list" key={i}
                  style={{position: "relative"}}>
                 <div className="cell_name-client" style={{position: "relative"}}>
-                    <a onClick={() => this.openClientStats(client_user)}>
+                    <a onClick={() => openClientsStats(client_user)}>
                         <p> {client_user.firstName} {client_user.lastName}</p>
                     </a>
                 </div>

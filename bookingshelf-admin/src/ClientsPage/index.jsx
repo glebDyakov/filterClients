@@ -49,6 +49,7 @@ class Index extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.openClientStats = this.openClientStats.bind(this);
         this.onClose = this.onClose.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
@@ -341,6 +342,8 @@ class Index extends Component {
                                     dispatch={this.props.dispatch}
                                     handleClick={this.handleClick}
                                     updateClient={this.updateClient}
+                                    openClientsStats={this.openClientStats}
+
                                     />
                                 );
                             }

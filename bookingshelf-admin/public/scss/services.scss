@@ -508,12 +508,37 @@
   .search-header-container {
     padding: 15px 50px !important;
     .search {
-      .search-input {
-        width: 288px;
-        height: 38px;
-        padding-left: 37px;
+      margin-left: 0;
+      position: relative;
+      height: 38px;
+      max-height: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 288px;
+
+      input {
+        background: none;
+        border-radius: 0;
+        border: none;
+        height: 100%;
+        border-bottom: 1px solid #eaeaec;
+        font-size: 13px;
+        line-height: 18px;
+        color: #495057;
+        padding: 10px 30px 10px 0px;
+        margin: 0;
+      }
+
+      button {
+        margin: 0;
+        right: 0;
+        left: unset;
+        background-color: #fff;
       }
     }
+
   }
 
 
@@ -621,6 +646,7 @@
             background-size: 16px;
           }
         }
+
 
       }
 
