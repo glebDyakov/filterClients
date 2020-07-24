@@ -36,10 +36,8 @@ class ServiceInfo extends Component {
                                             <span
                                                 className={"item-list-circle " + item.color.toLowerCase() + "ButtonEdit"}></span>
                                         </span>
-</span>
-                    <span
-                        className="item-detail">{item2.details.length !== 0 && "(" + item2.details + ")"}
                                     </span>
+                    <span className="item-detail">{item2.details.length !== 0 && "(" + item2.details + ")"}</span>
                     <span className="hide-item">
                                             <span
                                                 className="price">{item2.priceFrom} {item2.priceFrom !== item2.priceTo && " - " + item2.priceTo} {item2.currency}</span>
