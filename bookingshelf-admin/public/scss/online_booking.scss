@@ -584,6 +584,10 @@ strong{
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100%;
+    p {
+        color: #495057;
+        font-weight: 300;
+    }
     .content-pages-bg{
         border-radius: 5px;
         box-shadow: 0 10px 20px rgba(18, 38, 63, 0.0313726);
@@ -605,12 +609,15 @@ strong{
     }
     .title{
         font-size: 24px;
-        font-weight: 600;
+        font-weight: 400;
         line-height: 33px;
         @media  (max-width: $tablet-width){
             font-size: 16px;
             line-height: 22px;
         }
+    }
+    .sub-title{
+        font-weight: 400;
     }
     .your-page{
         font-size: 16px !important;
@@ -813,7 +820,6 @@ strong{
             margin: 20px 0;
         }
         .sub-title{
-            font-weight: 600;
             font-size: 18px;
             line-height: 25px;
             @media (max-width: $tablet-width){
