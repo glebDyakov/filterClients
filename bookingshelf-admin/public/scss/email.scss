@@ -11,6 +11,10 @@
     width: 504px;
     height: 370px;
 
+    @media screen and (max-width: $mob-width) {
+      width: 100%;
+    }
+
     overflow: visible;
 
     .rdw-editor-main {
@@ -100,7 +104,7 @@
 
     color: #495057;
 
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       font-size: 13px;
       max-width: 70%;
       margin-bottom: 20px;
@@ -112,7 +116,7 @@
     font-size: 16px;
     line-height: 22px;
     /* identical to box height */
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       font-size: 13px;
     }
     color: #495057;
@@ -133,7 +137,7 @@
     bottom: -38px;
     top: unset;
 
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       top: 50%;
       transform: translateY(-50%);
       left: 110%;
@@ -337,8 +341,14 @@
     margin-top: 7px;
     background: #FFFFFF;
     /* Drop Shadow */
+    max-height: calc(100% - 80px);
+
     position: relative;
 
+    @media screen and (max-width: $mob-width) {
+      max-height: calc(100% - 55px);
+      overflow: auto;
+    }
 
     .settings-container {
       margin: 0;
@@ -558,15 +568,12 @@
     justify-content: space-between;
 
     .tab-pane {
-      overflow-y: auto;
-      overflow-x: hidden;
-      max-height: calc(100% - 80px);
 
     }
 
     .tab-content {
       padding: 25px 18px;
-
+      max-height: calc(100% - 60px);
     }
 
     border-radius: 0;
@@ -719,6 +726,7 @@
 
     .sticky-item {
       position: sticky;
+      position: -webkit-sticky;
       top: 0;
       z-index: 1;
 
@@ -791,6 +799,10 @@
 
   .block-style1 {
     width: 67%;
+
+    @media screen and (max-width: $mob-width) {
+      width: 100%;
+    }
   }
 
   .block-style2 {

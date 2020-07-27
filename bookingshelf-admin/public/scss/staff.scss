@@ -337,6 +337,7 @@
 
         &.header-content-list {
           position: sticky !important;
+          position: -webkit-sticky !important;
           top: 0;
           z-index: 1 !important;
           height: 48px !important;
@@ -1142,6 +1143,8 @@
       .header-content-list {
         height: 46px;
         position: sticky;
+        position: -webkit-sticky !important;
+
         top: 0;
         z-index: 1;
 

@@ -11,7 +11,8 @@
 
 
 .tab-content {
-  overflow: visible;
+  overflow: auto;
+  max-height: calc(100% - 60px);
 
   .payments-license-block {
     padding: 10px 0;

@@ -896,6 +896,9 @@ class Index extends Component {
                                      id="sms_tab1">
                                     <div className="block-style1">
 
+                                        <p className="letter-title">Email рассылка</p>
+
+
                                         <div className="settings-container email row">
                                            <div className="col-md-6 p-0">
                                                <InputCounter value={email.title}
