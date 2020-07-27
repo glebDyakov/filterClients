@@ -624,6 +624,13 @@ strong{
         @media (max-width: $mob-width) {
             padding: 20px 30px;
         }
+        .text{
+            font-size: 16px !important;
+            margin-bottom: 20px;
+            @media (max-width: $mob-width) {
+                font-size: 13px;
+            }
+        }
 
         .booking-page{
             font-size: 14px;
@@ -632,7 +639,8 @@ strong{
             position: relative;
             height: 52px;
             border: 2px solid #F6F6F6;
-            &:after{
+            span{
+                cursor: pointer;
                 position: absolute;
                 content: '';
                 background: url("../img/link1.svg") no-repeat;
@@ -663,14 +671,19 @@ strong{
                 line-height: 22px;
             }
         }
-        p.text{
-            font-size: 16px;
-            margin-bottom: 30px;
-            @media (max-width: $tablet-width){
-                font-size: 13px;
-                line-height: 18px;
-            }
+        textarea{
+            padding: 5px 14px;
+            height: 50px;
+            font-size: 13px;
+            line-height: 18px;
+            margin: 0px 0 30px;
+            background: #FFFFFF;
+            border: 2px solid #F6F6F6;
+            box-sizing: border-box;
+            box-shadow: 0 10px 20px rgba(18,38,63,0.0313726);
+            border-radius: 6px;
         }
+
         p.limit-time{
             margin-bottom: 30px;
             font-size: 16px;
@@ -980,4 +993,7 @@ strong{
         color: #50A5F1;
     }
     //------Основной_таб_конец
+    .message-is-sent-modal .close{
+        z-index: 1;
+    }
 }
