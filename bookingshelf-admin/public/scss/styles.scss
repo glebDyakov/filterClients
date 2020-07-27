@@ -562,6 +562,92 @@ input {
   color: red;
 }
 
+.settings-page-container {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .button-without-bg {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    /* identical to box height */
+
+background: none;
+    border: none;
+    padding: 0;
+    color: #50A5F1;
+  }
+
+
+  .buttons-container-setting {
+    width: fit-content;
+    .button {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      /* identical to box height */
+
+
+      color: #FFFFFF;
+      background: #50A5F1;
+      opacity: 0.35;
+      border-radius: 30px;
+      padding: 10px 64px;
+      height: 42px;
+      transition: 200ms linear;
+      border: none;
+
+      &:hover {
+        opacity: 1;
+        transition: 200ms linear;
+      }
+    }
+
+  }
+
+  .form-control {
+    border: none;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+
+    color: #495057;
+  }
+
+  input:not([type=radio]), .custom-select, .form-input, textarea {
+    background: #F3F3F9;
+    border-radius: 2px;
+    height: 36px;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    width: 100%;
+    /* identical to box height */
+    padding: 9px 10px;
+    border: none;
+
+
+    color: #495057;
+  }
+
+  p {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    /* identical to box height */
+
+
+    color: #495057;
+    margin-bottom: 7px !important;
+  }
+}
+
 .company_fields {
   .input-text2, input {
     height: 100%;
@@ -573,6 +659,7 @@ input {
     .company_input {
       border: none !important;
     }
+
   }
 
   .company_counter {
@@ -1585,6 +1672,7 @@ input {
 
 
           .check-box-container {
+
 
             label {
               padding: 0 0 0 25px;
@@ -4302,6 +4390,7 @@ select {
       .modal-title {
         display: flex;
         align-items: center;
+
         .color-circle {
           margin: 0 10px 0 15px !important;
           border-radius: 50%;
@@ -4331,9 +4420,11 @@ select {
     .modal-body {
       .buttons {
         padding: 35px 50px 19px;
+
         .check-box {
           display: flex;
           align-items: center;
+
           label {
             padding-left: 70px !important;
             font-weight: normal;
@@ -4346,6 +4437,7 @@ select {
 
           }
         }
+
         .button {
           height: 42px;
           background: #50A5F1;
@@ -4372,6 +4464,7 @@ select {
         .custom-select {
           width: 100%;
         }
+
         width: 734px;
 
         background: #FFFFFF;
@@ -4385,14 +4478,16 @@ select {
           .title {
             margin: 0;
           }
+
           .check-box {
             label {
               padding: 0;
+
               .check {
                 left: unset;
                 right: -70px;
 
-                @media screen and (max-width: $mob-width){
+                @media screen and (max-width: $mob-width) {
                   right: 0;
                 }
               }
@@ -4418,6 +4513,7 @@ select {
 
         box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
         border-radius: 5px;
+
         .block-style2 {
           border: none;
         }
@@ -4425,34 +4521,37 @@ select {
         .custom-select {
           margin: 0;
         }
+
         padding: 0;
         width: 383px;
-       .header-container {
 
-         .search {
-           input {
+        .header-container {
+
+          .search {
+            input {
               height: 38px;
-             background: #F3F3F9;
-             border-radius: 30px;
-             padding: 10px 10px 10px 37px;
-           }
+              background: #F3F3F9;
+              border-radius: 30px;
+              padding: 10px 10px 10px 37px;
+            }
 
-           .search-icon {
-             left: 2rem;
-           }
-         }
+            .search-icon {
+              left: 2rem;
+            }
+          }
 
-         padding: 20px;
-         .title {
-           margin-bottom: 20px;
-           font-weight: 600;
-           font-size: 18px;
-           line-height: 23px;
-           /* or 128% */
+          padding: 20px;
 
-           color: #2A3042;
-         }
-       }
+          .title {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 23px;
+            /* or 128% */
+
+            color: #2A3042;
+          }
+        }
 
         ul {
           padding: 10px 0;
@@ -4516,7 +4615,7 @@ select {
   }
 }
 
-.paginator-wrapper {
+.paginator-wrapper, .paginator-container {
   position: absolute;
   bottom: -83px;
   left: 50%;
