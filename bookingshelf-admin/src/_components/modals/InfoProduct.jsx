@@ -201,23 +201,20 @@ class InfoProduct extends React.Component {
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
                                                       name="productName" handleChange={this.handleChange} maxLength={128} disabled={true}/>
                                         <div className="row">
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-4">
                                                 <p>Единица измерения</p>
-                                                {/*<select className="custom-select" name="booktimeStep" onChange={this.handleStepChange}*/}
-                                                {/*        value={client.categoryId}>*/}
-                                                {/*    <option value="">Еденицы</option>*/}
-                                                {/*    <option value={300}>5 мин</option>*/}
-                                                {/*    <option value={600}>10 мин</option>*/}
-                                                {/*    <option value={900}>15 мин</option>*/}
-                                                {/*</select>*/}
-
                                                 <select className="custom-select" name="unitId" onChange={this.handleChange}
                                                         value={client.unitId} disabled={true}>
                                                     <option value="">Выберите единицу измерения</option>
                                                     {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
                                                 </select>
                                             </div>
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-4">
+                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} disabled={true} />
+
+                                            </div>
+                                            <div className="col-sm-4">
                                                 <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
                                                               name="productCode" handleChange={this.handleChange} maxLength={7} disabled={true}/>
                                             </div>

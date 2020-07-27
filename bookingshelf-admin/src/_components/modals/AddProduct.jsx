@@ -189,17 +189,22 @@ class AddProduct extends React.Component {
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
                                                       name="productName" handleChange={this.handleChange} maxLength={128} />
                                         <div className="row">
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-4">
                                                 <p>Единица измерения</p>
                                                 <select className="custom-select" name="unitId" onChange={this.handleChange}
-                                                        value={client.unitId}>
+                                                        value={client.unitId} >
                                                     <option value="">Выберите единицу измерения</option>
                                                     {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
                                                 </select>
                                             </div>
-                                            <div className="col-sm-6">
+                                            <div className="col-sm-4">
+                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} />
+
+                                            </div>
+                                            <div className="col-sm-4">
                                                 <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
-                                                              name="productCode" handleChange={this.handleChange} maxLength={7}/>
+                                                              name="productCode" handleChange={this.handleChange} maxLength={7} />
                                             </div>
                                         </div>
                                         </div>
@@ -286,10 +291,10 @@ class AddProduct extends React.Component {
                                 <p className="alert-success p-1 rounded pl-3 mb-2 button">Сохранено</p>
                                 }
 
-                                <button className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount ) ? 'disabledField': '')+' button button-save'}
-                                        disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount)}
+                                <button className={(!( client.productName && client.categoryId && client.brandId && client.nominalAmount && client.productCode && client.unitId && client.description && client.minAmount ) ? 'disabledField': '')+' button button-save'}
+                                        disabled={!(client.productName && client.categoryId && client.brandId && client.nominalAmount && client.productCode && client.unitId && client.description && client.minAmount)}
                                         type="button"
-                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}
+                                        onClick={client.productName && client.categoryId && client.brandId && client.nominalAmount && client.productCode && client.unitId && client.description && client.minAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}
                                 >Сохранить
                                 </button>
                             </div>

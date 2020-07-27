@@ -598,6 +598,9 @@ class Index extends Component {
                                         <div >
                                             <p>Категория</p>
                                         </div>
+                                        <div>
+                                          <p>Номинальный объем</p>
+                                        </div>
                                         <div >
                                             <p>Остаток</p>
                                         </div>
@@ -613,6 +616,7 @@ class Index extends Component {
                                             <div className="tab-mapped-list">
                                             {this.state.products.map(product => {
                                             const activeCategory = categories && categories.find((item) => item.categoryId === product.categoryId);
+                                            const activeUnit = units && units.find((item) => item.unitId === product.unitId);
 
                                             return (
                                                     <div className="tab-content-list mb-2" >
@@ -627,6 +631,9 @@ class Index extends Component {
                                                         </div>
                                                         <div >
                                                             <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
+                                                        </div>
+                                                        <div>
+                                                          <p><span className="mob-title">Номинальный объем: </span>{product && product.nominalAmount} {activeUnit && activeUnit.unitName}</p>
                                                         </div>
                                                         <div >
                                                             <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>

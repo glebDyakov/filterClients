@@ -584,6 +584,10 @@ strong{
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100%;
+    p {
+        color: #495057;
+        font-weight: 300;
+    }
     .content-pages-bg{
         border-radius: 5px;
         box-shadow: 0 10px 20px rgba(18, 38, 63, 0.0313726);
@@ -605,17 +609,27 @@ strong{
     }
     .title{
         font-size: 24px;
-        font-weight: 600;
+        font-weight: 400;
         line-height: 33px;
         @media  (max-width: $tablet-width){
             font-size: 16px;
             line-height: 22px;
         }
     }
+    .sub-title{
+        font-weight: 400;
+    }
     .your-page{
         font-size: 16px !important;
         @media (max-width: $mob-width) {
             padding: 20px 30px;
+        }
+        .text{
+            font-size: 16px !important;
+            margin-bottom: 20px;
+            @media (max-width: $mob-width) {
+                font-size: 13px;
+            }
         }
 
         .booking-page{
@@ -625,7 +639,8 @@ strong{
             position: relative;
             height: 52px;
             border: 2px solid #F6F6F6;
-            &:after{
+            span{
+                cursor: pointer;
                 position: absolute;
                 content: '';
                 background: url("../img/link1.svg") no-repeat;
@@ -656,14 +671,19 @@ strong{
                 line-height: 22px;
             }
         }
-        p.text{
-            font-size: 16px;
-            margin-bottom: 30px;
-            @media (max-width: $tablet-width){
-                font-size: 13px;
-                line-height: 18px;
-            }
+        textarea{
+            padding: 5px 14px;
+            height: 50px;
+            font-size: 13px;
+            line-height: 18px;
+            margin: 0px 0 30px;
+            background: #FFFFFF;
+            border: 2px solid #F6F6F6;
+            box-sizing: border-box;
+            box-shadow: 0 10px 20px rgba(18,38,63,0.0313726);
+            border-radius: 6px;
         }
+
         p.limit-time{
             margin-bottom: 30px;
             font-size: 16px;
@@ -813,7 +833,6 @@ strong{
             margin: 20px 0;
         }
         .sub-title{
-            font-weight: 600;
             font-size: 18px;
             line-height: 25px;
             @media (max-width: $tablet-width){
@@ -974,4 +993,7 @@ strong{
         color: #50A5F1;
     }
     //------Основной_таб_конец
+    .message-is-sent-modal .close{
+        z-index: 1;
+    }
 }

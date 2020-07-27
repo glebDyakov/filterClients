@@ -23,7 +23,8 @@ class Index extends Component {
             selectedDay: moment().utc().toDate(),
             urlButton: false,
             appointmentMessage: '',
-            status: ''
+            status: '',
+            messageCopyModalOpen: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -37,6 +38,7 @@ class Index extends Component {
         this.setBookingCode = this.setBookingCode.bind(this);
         this.copyToClipboard = this.copyToClipboard.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
+        this.handleMessageCopyModal = this.handleMessageCopyModal.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -196,12 +198,18 @@ class Index extends Component {
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement), updatePosition));
     }
 
-    copyToClipboard () {
-        this.textArea.select();
-        document.execCommand('copy');
+    copyToClipboard (e, key) {
+        //this[key].select();
+
+        var textField = document.createElement('textarea')
+        textField.innerText = this[key].textContent
+        document.body.appendChild(textField)
+        textField.select()
+        document.execCommand('copy')
+        textField.remove()
 
         e.target.focus();
-        this.setState({ copySuccess: 'Copied!' });
+        this.setState({ copySuccess: 'Copied!', messageCopyModalOpen: true });
     };
 
     render() {
@@ -234,7 +242,7 @@ class Index extends Component {
                         <div className="col-xl-4 block-h p-0">
                             <div className=" content-pages-bg mb-0 h-auto p-zapis your-page">
                                 <p className="title mb-3">Ваша страница</p>
-                                <p className=" mb-3">Перейдите по ссылке для того что бы открыть
+                                <p className="text">Перейдите по ссылке для того что бы открыть
                                     вашу персональную страницу онлайн записи. Вы увидете полную страницу
                                     всех ваших онлайн бронирований. Также можете перейти по ссылке: через
                                     свою электронную почту или с помощью кнопки онлайн-бронирования на
@@ -243,8 +251,11 @@ class Index extends Component {
                                     <a
                                         target="_blank"
                                        href={"https://online-zapis.com/online/" + booking.bookingPage}
-                                       className="">{"online-zapis.com/online/" + booking.bookingPage}
+                                       className=""
+                                        ref={(text) => this.textLink = text}
+                                    >{"online-zapis.com/online/" + booking.bookingPage}
                                     </a>
+                                    <span onClick={(e) => this.copyToClipboard(e, 'textLink')}/>
                                 </div>
                                 <div className="clearfix" />
 
@@ -252,19 +263,24 @@ class Index extends Component {
                             <div className=" content-pages-bg mb-0 p-zapis h-auto extra-messages">
                                 <p className="title">
                                     Дополнительное сообщение в онлайн-записи
-                                    {/*<Hint customLeft="-1px" hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />*/}
+                                    <Hint customLeft="-1px" hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
                                 </p>
-                                {/*<textarea className="mb-3" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>*/}
-                                <p className="text">{appointmentMessage}</p>
+                                <textarea className="text" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
+                                {/*<p className="text">{appointmentMessage}</p>*/}
 
 
 
-                                <p className="title limit-time">Ограничить время онлайн-записи</p>
+                                <p className="title limit-time">
+                                    Ограничить время онлайн-записи
+                                    &nbsp;
+                                    <Hint customLeft="-4px" hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
+
+                                </p>
                                 <div className="check-box">
                                     <label>
                                         <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
                                         <span className="check"/>
-                                    </label>&nbsp;
+                                    </label>
                                 </div>
                                 {isOnlineZapisChecked && <div className="online-page-picker online-zapis-date-picker mb-3">
                                     <DatePicker
@@ -544,15 +560,33 @@ class Index extends Component {
                                 "<a type=\"button\" onclick=\"displayFrame()\" id='bb' class='url' code='" + booking.bookingPage + "' style='visibility: hidden'>Онлайн запись</a>\n" +
                                 "<script type=\"text/javascript\" src=\"https://online-zapis.com/bb/frame.js\"></script>"}/>
                                 }
-                                <p onClick={this.copyToClipboard} className="copy-code">Скопировать код</p>
+                                <p onClick={(e) => this.copyToClipboard(e, 'textArea')} className="copy-code">Скопировать код</p>
                             </div>
                         </div>
                     </div>
+                    {this.state.messageCopyModalOpen &&
+                    <div className="message-is-sent-wrapper">
+                        <div className="message-is-sent-modal">
+                            <button onClick={this.handleMessageCopyModal} className="close"></button>
+                            <div className="modal-body">
+                                <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
+                                <p className="body-text">
+                                    Скопировано!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 </div>
                 }
+
+
             </div>
 
         );
+    }
+    handleMessageCopyModal(){
+        this.setState({messageCopyModalOpen: false})
     }
 
     handleDayClick(day){
