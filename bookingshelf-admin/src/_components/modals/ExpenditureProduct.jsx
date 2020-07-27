@@ -54,6 +54,7 @@ class ExpenditureProduct extends React.Component {
         this.state={
             client: {
                 ...client,
+                nominalCheck: 'amount'
             },
             year,
             month,
@@ -186,14 +187,13 @@ class ExpenditureProduct extends React.Component {
                                                           name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
-                                  <p>Списать в: </p>
+                                  <p>Списать в </p>
                                   <select className="custom-select" name="nominalCheck"
                                           onChange={this.handleChange}
                                           value={client.nominalCheck}
                                   >
-                                    <option value="">Выберите тип списания</option>
-                                    <option value="amount">Единицах</option>
-                                    <option value="nominal">Номинальных единицах</option>
+                                    <option value="amount">Целых единицах</option>
+                                    <option value="nominal">Единицах номинального объема</option>
                                   </select>
 
                                     <p>Причина списания</p>
