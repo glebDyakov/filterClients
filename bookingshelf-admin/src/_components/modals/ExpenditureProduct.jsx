@@ -186,11 +186,21 @@ class ExpenditureProduct extends React.Component {
                                                           name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
+                                  <p>Списать в: </p>
+                                  <select className="custom-select" name="nominalCheck"
+                                          onChange={this.handleChange}
+                                          value={client.nominalCheck}
+                                  >
+                                    <option value="">Выберите тип списания</option>
+                                    <option value="amount">Единицах</option>
+                                    <option value="nominal">Номинальных единицах</option>
+                                  </select>
+
                                     <p>Причина списания</p>
                                     <select className="custom-select" name="target" onChange={this.handleChange}
                                             value={client.target}
                                     >
-                                        <option>Выберите причину</option>
+                                        <option value="">Выберите причину</option>
                                         <option value="S">Продажа</option>
                                         <option value="I">Внутреннее списание</option>
                                         <option value="D">Товар поврежден</option>
@@ -217,12 +227,12 @@ class ExpenditureProduct extends React.Component {
                                     <p className="alert-danger p-1 rounded pl-3 mb-2">Недостаточно товаров на складе</p>
                                     }
 
-                                    <button className={((!(client.amount && client.target && client.storehouseId && !invalidCount))? 'disabledField': '')+' button'}
-                                            disabled={!(client.amount && client.target && client.storehouseId && !invalidCount)}
+                                    <button className={((!(client.amount && client.target && client.storehouseId && client.nominalCheck && !invalidCount))? 'disabledField': '')+' button'}
+                                            disabled={!(client.amount && client.target && client.storehouseId && client.nominalCheck && !invalidCount)}
                                             style={{ display: 'block' }}
                                             type="button"
                                             // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
-                                            onClick={(client.amount && client.target && client.storehouseId) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
+                                            onClick={(client.amount && client.target && client.storehouseId && client.nominalCheck) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
 
                                     >Сохранить
                                     </button>
@@ -237,11 +247,19 @@ class ExpenditureProduct extends React.Component {
     }
 
     expenditureProduct(client, edit){
-        const product = {...client,
+
+        let product = {...client,
             expenditureDateMillis: moment().format('x'),
             storehouseId: client.storehouseId,
-            amount: parseInt(client.amount),
+
+
         };
+        if(client.nominalCheck === 'amount'){
+          product.amount = parseInt(client.amount);
+        }else{
+          product.nominalAmount = parseInt(client.amount);
+          product.amount = 0;
+        }
 
         // const updatedProduct = {}
         // Object.keys(product).forEach(key => {
