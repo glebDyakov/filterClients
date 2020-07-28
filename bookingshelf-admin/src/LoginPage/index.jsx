@@ -85,7 +85,7 @@ class Index extends React.Component {
 
         return (
             <div>
-                <div className="sign_up_container content-pages-bg">
+                <div className="sign_up_container sign_in_container content-pages-bg">
                     <div className="logo_sign_in">
                         <div>
                             <h2 className="logo-title">Добро пожаловать!</h2>
