@@ -218,9 +218,9 @@ class AddService extends React.Component {
                                             <p>Поиск материалов и услуг</p>
 
                                             {/*start*/}
-                                            {service && service.serviceProducts && service.serviceProducts.sort((a, b) => a.serviceProductId - b.serviceProductId).map((item, index) =>{
-                                                const activeProduct = this.props.material.products.find(currentProduct => item.productId === currentProduct.productId)
-                                                const activeUnit = activeProduct && this.props.material.units.find(currentUnit => activeProduct.unitId === currentUnit.unitId);
+                                            {service && service.serviceProducts && service.serviceProducts
+                                              .sort((a, b) => a.serviceProductId - b.serviceProductId)
+                                              .map((item, index) =>{
                                             return <div className="select-color dropdown mb-3 border-color">
 
                                                 {
@@ -230,7 +230,7 @@ class AddService extends React.Component {
                                                            className={
                                                             // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
                                                                'select-button dropdown-toggle select-material'}
-                                                           data-toggle={"dropdown"}>{((item.productId) ? ((activeProduct ? activeProduct.productCode : '') + (activeProduct ? `, ${activeProduct.productName}` : '')
+                                                           data-toggle={"dropdown"}>{((item.productId) ? ((item.productCode ? item.productCode : '') + (item.productName ? `, ${item.productName}` : '')
                                                             // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
                                                         ) :"Выберите необходимый материал") }
                                                             <span
@@ -277,7 +277,7 @@ class AddService extends React.Component {
 
                                                 <div className="select-material">
                                                     <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
-                                                                   title={`Норма списания, ${activeUnit ? (activeUnit.unitName) : ''}`}
+                                                                   title={`Норма списания, ${item.unitName ? (item.unitName) : ''}`}
                                                                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
                                                 </div>
                                                 {/*{index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
@@ -501,8 +501,11 @@ class AddService extends React.Component {
         const { service, deletedProductsList } = this.state;
         const updatedValue = parseInt(product.productId);
         service.serviceProducts[index].productId = updatedValue;
-
-
+        service.serviceProducts[index].productName = product.productName;
+        service.serviceProducts[index].productCode = product.productCode;
+        service.serviceProducts[index].unitId = product.unitId;
+        const activeUnit = this.props.material.units.find(currentUnit => product.unitId === currentUnit.unitId);
+        service.serviceProducts[index].unitName = activeUnit.unitName
 
         const oldValue = deletedProductsList.find(item => item.productName === product.productName);
         if(oldValue) {
