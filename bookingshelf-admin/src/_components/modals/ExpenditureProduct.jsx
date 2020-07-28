@@ -26,6 +26,9 @@ class ExpenditureProduct extends React.Component {
             }
         }
         switch (client.target) {
+            case 'SALE':
+                client.target = 'S';
+                break;
             case 'INTERNAL':
                 client.target = 'I';
                 break;
@@ -51,6 +54,7 @@ class ExpenditureProduct extends React.Component {
         this.state={
             client: {
                 ...client,
+                nominalCheck: 'amount'
             },
             year,
             month,
@@ -90,6 +94,9 @@ class ExpenditureProduct extends React.Component {
         if ( JSON.stringify(this.props.client_working) !==  JSON.stringify(newProps.client_working)) {
             const {client_working} = newProps;
             switch (client_working.target) {
+                case 'SALE':
+                    client_working.target = 'S';
+                    break;
                 case 'INTERNAL':
                     client_working.target = 'I';
                     break;
@@ -140,10 +147,17 @@ class ExpenditureProduct extends React.Component {
         const { day, month, year, client, edit, alert, clients }=this.state;
 
         const activeProduct = material.products && material.products.find((item) => item.productId === client.productId);
+        const activeUnit = material.units && material.units.find((item) => item.unitId === activeProduct.unitId);
 
 
-        let invalidCount =  activeProduct && (activeProduct.currentAmount - (client.amount? client.amount: 0)
-            + (client_working && client_working.amount ? client_working.amount: 0)) < 0;
+        let invalidCount
+        if (client.nominalCheck === 'amount') {
+          invalidCount = activeProduct && (activeProduct.currentAmount - (client.amount ? client.amount : 0)
+            + (client_working && client_working.amount ? client_working.amount : 0)) < 0;
+        } else {
+          invalidCount = activeProduct && (activeProduct.currentNominalAmount - (client.amount ? client.amount : 0)
+            + (client_working && client_working.nominalAmount ? client_working.nominalAmount : 0)) < 0;
+        }
 
 
 
@@ -167,21 +181,33 @@ class ExpenditureProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <p>Текущее количество единиц: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
+                                            <p><strong>{activeProduct && activeProduct.productName}</strong></p>
+                                            <p>Номинальный объем: <strong>{activeProduct && activeProduct.nominalAmount} {activeUnit && activeUnit.unitName}</strong></p>
+                                            <p>Остаток на складе: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
                                         </div>
                                     </div>
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Единиц на списание" value={client.amount}
-                                                          name="amount" handleChange={this.handleChange} maxLength={128} />
+                                          <InputCounter title={`Количество товара на списание${((client.nominalCheck === 'nominal') && activeUnit) ? `, ${activeUnit.unitName}` : ''}`} value={client.amount}
+                                                        name="amount" handleChange={this.handleChange} maxLength={128} />
                                         </div>
                                     </div>
+                                  <p>Списать в </p>
+                                  <select className="custom-select" name="nominalCheck"
+                                          onChange={this.handleChange}
+                                          value={client.nominalCheck}
+                                  >
+                                    <option value="amount">Целых единицах</option>
+                                    <option value="nominal">Единицах номинального объема</option>
+                                  </select>
+
                                     <p>Причина списания</p>
                                     <select className="custom-select" name="target" onChange={this.handleChange}
                                             value={client.target}
                                     >
-                                        <option>Выберите причину</option>
+                                        <option value="">Выберите причину</option>
+                                        <option value="S">Продажа</option>
                                         <option value="I">Внутренняя ошибка</option>
                                         <option value="D">Товар поврежден</option>
                                         <option value="C">Изменения наличия</option>
@@ -189,12 +215,12 @@ class ExpenditureProduct extends React.Component {
                                         <option value="O">Другое</option>
                                     </select>
 
-                                    <p>Склад</p>
-                                    <select className="custom-select" name="storehouseId" onChange={this.handleChange}
-                                            value={client.storehouseId}>
-                                        <option value="">Выберите название склада</option>
-                                        {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}
-                                    </select>
+                                    {/*<p>Склад</p>*/}
+                                    {/*<select className="custom-select" name="storehouseId" onChange={this.handleChange}*/}
+                                    {/*        value={client.storehouseId}>*/}
+                                    {/*    <option value="">Выберите название склада</option>*/}
+                                    {/*    {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}*/}
+                                    {/*</select>*/}
 
                                     {material && material.adding &&
                                     <img style={{width: "57px"}}
@@ -207,12 +233,11 @@ class ExpenditureProduct extends React.Component {
                                     <p className="alert-danger p-1 rounded pl-3 mb-2">Недостаточно товаров на складе</p>
                                     }
 
-                                    <button className={((!(client.amount && client.target && client.storehouseId && !invalidCount))? 'disabledField': '')+' button'}
-                                            disabled={!(client.amount && client.target && client.storehouseId && !invalidCount)}
-                                            style={{ display: 'block' }}
+                                    <button className={((!(client.amount && client.target && !invalidCount))? 'disabledField': '')+' button button-save'}
+                                            disabled={!(client.amount && client.target &&  !invalidCount)}
                                             type="button"
                                             // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
-                                            onClick={(client.amount && client.target && client.storehouseId) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
+                                            onClick={(client.amount && client.target) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
 
                                     >Сохранить
                                     </button>
@@ -227,11 +252,18 @@ class ExpenditureProduct extends React.Component {
     }
 
     expenditureProduct(client, edit){
-        const product = {...client,
+        const { material } = this.props;
+        let product = {
+            ...client,
             expenditureDateMillis: moment().format('x'),
-            storehouseId: client.storehouseId,
-            amount: parseInt(client.amount),
+            storehouseId: material.storeHouses[0].storehouseId,
         };
+        if (client.nominalCheck === 'amount'){
+            product.amount = parseInt(client.amount);
+        } else {
+            product.nominalAmount = parseInt(client.amount);
+            product.amount = 0;
+        }
 
         // const updatedProduct = {}
         // Object.keys(product).forEach(key => {

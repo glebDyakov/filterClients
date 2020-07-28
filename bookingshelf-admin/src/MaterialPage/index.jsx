@@ -501,8 +501,11 @@ class Index extends Component {
 
             if (item.target) {
                 switch (item.target) {
+                    case 'SALE':
+                        item.targetTranslated = 'Продажа';
+                        break;
                     case 'INTERNAL':
-                        item.targetTranslated = 'Внутренняя ошибка';
+                        item.targetTranslated = 'Внутреннее списание';
                         break;
                     case 'DAMAGED':
                         item.targetTranslated = 'Товар поврежден';
@@ -519,7 +522,7 @@ class Index extends Component {
                     default:
                         // item.target = '';
 
-                }
+              }
             }
         })
 
@@ -561,14 +564,14 @@ class Index extends Component {
                                     <div style={{ position: "relative" }}>
                                         <p><span className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM')}</p>
+                                    <div >
+                                        <p><span className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('DD.MM HH:mm')}</p>
                                     </div>
-                                    <div style={{ position: "relative" }}>
-                                        <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>
-                                    </div>
-                                    <div style={{ position: "relative" }}>
-                                      <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
+                                    {/*<div >*/}
+                                    {/*    <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>*/}
+                                    {/*</div>*/}
+                                    <div >
+                                      <p><span className="mob-title">Остаток, единиц: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
                                         <a className="clientEdit" onClick={() => (movement.storehouseProductId) ? this.toggleStorehouseProduct(movement) : this.toggleExProd(movement) }/>
@@ -656,8 +659,11 @@ class Index extends Component {
                                     <div style={{position: "relative"}}>
                                         <p>Категория</p>
                                     </div>
+                                    <div>
+                                        <p>Номинальный объем</p>
+                                    </div>
                                     <div style={{position: "relative"}}>
-                                        <p>Остаток</p>
+                                        <p>Остаток, единиц</p>
                                     </div>
 
                                     <div className="delete clientEditWrapper"></div>
@@ -670,14 +676,16 @@ class Index extends Component {
                                     <React.Fragment>
                                         {this.state.products.map(product => {
                                         const activeCategory = categories && categories.find((item) => item.categoryId === product.categoryId);
+                                        const activeUnit = units && units.find((item) => item.unitId === product.unitId);
 
                                         return (
                                                 <div className="tab-content-list mb-2" style={{position: "relative"}}>
-                                                    <div style={{position: "relative"}} className="material-products-details">
+                                                    <div style={{position: "relative"}} className="material-products-details" onClick={() => this.toggleInfoProduct(product)}>
                                                         {/*<a onClick={()=>this.openClientStats(product)}>*/}
-                                                        <a onClick={() => this.toggleInfoProduct(product)}>
+                                                        <a>
                                                             <p><span className="mob-title">Наименование: </span>{product.productName}</p>
                                                         </a>
+                                                        <div className="clientEye" style={{position: "absolute"}} />
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p><span className="mob-title">Код товара: </span>{product.productCode}</p>
@@ -685,13 +693,19 @@ class Index extends Component {
                                                     <div style={{position: "relative"}}>
                                                         <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
                                                     </div>
+                                                    <div>
+                                                        <p><span className="mob-title">Номинальный объем: </span>{product && product.nominalAmount} {activeUnit && activeUnit.unitName}</p>
+                                                    </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>
+                                                        <p><span className="mob-title">Остаток, единиц: </span>{product.currentAmount}</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
+                                                        <div className="clientEyeDel" onClick={()=>this.toggleInfoProduct(product)} />
+
                                                         <a className="clientEdit" onClick={() => this.toggleProduct(product)}/>
                                                     </div>
                                                     <div className="delete dropdown">
+
                                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                         </a>
@@ -979,11 +993,11 @@ class Index extends Component {
                                 <div style={{position: "relative"}}>
                                     <p>Дата</p>
                                 </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Время</p>
-                                </div>
-                                <div style={{position: "relative"}}>
-                                    <p>Остаток</p>
+                                {/*<div >*/}
+                                {/*    <p>Время</p>*/}
+                                {/*</div>*/}
+                                <div >
+                                    <p>Остаток, единиц</p>
                                 </div>
 
                                 <div className="delete clientEditWrapper"></div>
