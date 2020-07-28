@@ -680,9 +680,9 @@ class Index extends Component {
 
                                         return (
                                                 <div className="tab-content-list mb-2" style={{position: "relative"}}>
-                                                    <div style={{position: "relative"}} className="material-products-details">
+                                                    <div style={{position: "relative"}} className="material-products-details" onClick={() => this.toggleInfoProduct(product)}>
                                                         {/*<a onClick={()=>this.openClientStats(product)}>*/}
-                                                        <a onClick={() => this.toggleInfoProduct(product)}>
+                                                        <a>
                                                             <p><span className="mob-title">Наименование: </span>{product.productName}</p>
                                                         </a>
                                                         <div className="clientEye" style={{position: "absolute"}} />
