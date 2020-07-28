@@ -458,26 +458,29 @@ class Index extends Component {
         movingArrray.forEach(item => {
 
             if (item.target) {
-                switch (item.target) {
-                    case 'INTERNAL':
-                        item.targetTranslated = 'Внутренняя ошибка';
-                        break;
-                    case 'DAMAGED':
-                        item.targetTranslated = 'Товар поврежден';
-                        break;
-                    case 'CHANGING':
-                        item.targetTranslated = 'Изменения наличия';
-                        break;
-                    case 'LOST':
-                        item.targetTranslated = 'Утеря';
-                        break;
-                    case 'OTHER':
-                        item.targetTranslated = 'Другое';
-                        break;
-                    default:
-                        // item.target = '';
+              switch (item.target) {
+                case 'SALE':
+                  item.targetTranslated = 'Продажа';
+                  break;
+                case 'INTERNAL':
+                  item.targetTranslated = 'Внутреннее списание';
+                  break;
+                case 'DAMAGED':
+                  item.targetTranslated = 'Товар поврежден';
+                  break;
+                case 'CHANGING':
+                  item.targetTranslated = 'Изменения наличия';
+                  break;
+                case 'LOST':
+                  item.targetTranslated = 'Утеря';
+                  break;
+                case 'OTHER':
+                  item.targetTranslated = 'Другое';
+                  break;
+                default:
+                // item.target = '';
 
-                }
+              }
             }
         })
 
