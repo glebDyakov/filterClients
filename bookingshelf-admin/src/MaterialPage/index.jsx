@@ -571,7 +571,7 @@ class Index extends Component {
                                     {/*    <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>*/}
                                     {/*</div>*/}
                                     <div >
-                                      <p><span className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}</p>
+                                      <p><span className="mob-title">Остаток, единиц: </span>{activeProduct && activeProduct.currentAmount}</p>
                                     </div>
                                     <div className="delete clientEditWrapper">
                                         <a className="clientEdit" onClick={() => (movement.storehouseProductId) ? this.toggleStorehouseProduct(movement) : this.toggleExProd(movement) }/>
@@ -663,7 +663,7 @@ class Index extends Component {
                                         <p>Номинальный объем</p>
                                     </div>
                                     <div style={{position: "relative"}}>
-                                        <p>Остаток</p>
+                                        <p>Остаток, единиц</p>
                                     </div>
 
                                     <div className="delete clientEditWrapper"></div>
@@ -697,7 +697,7 @@ class Index extends Component {
                                                         <p><span className="mob-title">Номинальный объем: </span>{product && product.nominalAmount} {activeUnit && activeUnit.unitName}</p>
                                                     </div>
                                                     <div style={{position: "relative"}}>
-                                                        <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>
+                                                        <p><span className="mob-title">Остаток, единиц: </span>{product.currentAmount}</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
                                                         <div className="clientEyeDel" onClick={()=>this.toggleInfoProduct(product)} />
@@ -997,7 +997,7 @@ class Index extends Component {
                                 {/*    <p>Время</p>*/}
                                 {/*</div>*/}
                                 <div >
-                                    <p>Остаток</p>
+                                    <p>Остаток, единиц</p>
                                 </div>
 
                                 <div className="delete clientEditWrapper"></div>
