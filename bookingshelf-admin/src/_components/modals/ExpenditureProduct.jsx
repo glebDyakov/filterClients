@@ -150,8 +150,14 @@ class ExpenditureProduct extends React.Component {
         const activeUnit = material.units && material.units.find((item) => item.unitId === activeProduct.unitId);
 
 
-        let invalidCount =  activeProduct && (activeProduct.currentAmount - (client.amount? client.amount: 0)
-            + (client_working && client_working.amount ? client_working.amount: 0)) < 0;
+        let invalidCount
+        if (client.nominalCheck === 'amount') {
+          invalidCount = activeProduct && (activeProduct.currentAmount - (client.amount ? client.amount : 0)
+            + (client_working && client_working.amount ? client_working.amount : 0)) < 0;
+        } else {
+          invalidCount = activeProduct && (activeProduct.currentNominalAmount - (client.amount ? client.amount : 0)
+            + (client_working && client_working.nominalAmount ? client_working.nominalAmount : 0)) < 0;
+        }
 
 
 
