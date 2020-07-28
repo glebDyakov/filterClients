@@ -80,6 +80,24 @@
       display: block;
     }
   }
+  #tab1 {
+    .clientEyeDel{
+      display: none !important;
+      position: absolute;
+      background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+      background-size: contain;
+      height: 18px;
+      width: 18px !important;
+      cursor: pointer;
+      padding: 0 !important;
+      right: 40px;
+      top: 17px;
+      @media screen and(max-width: $mob-width) {
+          margin-top: 0;
+          display: block !important;
+      }
+    }
+  }
   #tab1, #tab4, #tab5 {
     //.material-products {
     .tab-content-list {

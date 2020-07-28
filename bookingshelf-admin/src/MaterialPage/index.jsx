@@ -522,7 +522,7 @@ class Index extends Component {
                     default:
                         // item.target = '';
 
-                }
+              }
             }
         })
 
@@ -685,6 +685,7 @@ class Index extends Component {
                                                         <a onClick={() => this.toggleInfoProduct(product)}>
                                                             <p><span className="mob-title">Наименование: </span>{product.productName}</p>
                                                         </a>
+                                                        <div className="clientEye" style={{position: "absolute"}} />
                                                     </div>
                                                     <div style={{position: "relative"}}>
                                                         <p><span className="mob-title">Код товара: </span>{product.productCode}</p>
@@ -699,9 +700,12 @@ class Index extends Component {
                                                         <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>
                                                     </div>
                                                     <div className="delete clientEditWrapper">
+                                                        <div className="clientEyeDel" onClick={()=>this.toggleInfoProduct(product)} />
+
                                                         <a className="clientEdit" onClick={() => this.toggleProduct(product)}/>
                                                     </div>
                                                     <div className="delete dropdown">
+
                                                         <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
                                                         </a>

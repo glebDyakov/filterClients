@@ -131,12 +131,13 @@ class StorehouseProduct extends React.Component {
                                                 <option value="">Выберите поставщика</option>
                                                 {suppliers.map(supplier =><option value={supplier.supplierId}>{supplier.supplierName}</option>)}
                                             </select>
-                                            <p>Склад</p>
-                                            <select className="custom-select" name="storehouseId" onChange={this.handleChange}
-                                                    value={client.storehouseId}>
-                                                <option value="">Выберите название склада</option>
-                                                {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}
-                                            </select>
+
+                                            {/*<p>Склад</p>*/}
+                                            {/*<select className="custom-select" name="storehouseId" onChange={this.handleChange}*/}
+                                            {/*        value={client.storehouseId}>*/}
+                                            {/*    <option value="">Выберите название склада</option>*/}
+                                            {/*    {material.storeHouses.map(storeHouse => <option value={storeHouse.storehouseId}>{storeHouse.storehouseName}</option>)}*/}
+                                            {/*</select>*/}
                                         </div>
                                     </div>
 
@@ -149,10 +150,10 @@ class StorehouseProduct extends React.Component {
                                     }
 
                                     <button className={(!(client.amount && client.retailPrice && client.specialPrice
-                                        && client.supplierPrice && client.supplierId && client.storehouseId) ? 'disabledField': '')+' button'}
+                                        && client.supplierPrice && client.supplierId) ? 'disabledField': '')+' button button-save'}
 
                                             disabled={!(client.amount && client.retailPrice && client.specialPrice && client.supplierPrice
-                                                && client.supplierId && client.storehouseId)}
+                                                && client.supplierId)}
 
                                             type="button"
                                             style={{ display: 'block' }}
@@ -174,8 +175,11 @@ class StorehouseProduct extends React.Component {
     }
 
     storehouseProduct(client, edit){
-        const product = {...client,
+        const { material } = this.props
+        const product = {
+            ...client,
             deliveryDateMillis: moment().format('x'),
+            storehouseId: material.storeHouses[0].storehouseId
         }
 
         const updatedProduct = {}
