@@ -222,12 +222,12 @@ class AddProduct extends React.Component {
                                                 <p>Единица измерения</p>
                                                 <select className="custom-select" name="unitId" onChange={this.handleChange}
                                                         value={client.unitId}>
-                                                    <option value="">Выберите единицу измерения</option>
+                                                    <option value="">Выберите единицу</option>
                                                     {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
                                                 </select>
                                             </div>
                                             <div className="col-sm-6">
-                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                                <InputCounter title="Номинал. объем" placeholder="Объем" value={String(client.nominalAmount ? client.nominalAmount : '')}
                                                               name="nominalAmount" handleChange={this.handleChange} maxLength={9} />
                                             </div>
                                         </div>
