@@ -562,6 +562,36 @@ input {
 }
 
 .settings-page-container {
+
+  .flag-dropdown {
+    display: none;
+  }
+
+  .about-company-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 33px;
+    /* identical to box height */
+
+    margin-bottom: 20px;
+    color: #495057;
+  }
+
+
+
+  .company_fields {
+    background: #FFFFFF;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border: none;
+    border-radius: 0!important;
+
+    &:not(:first-child) {
+      margin-top: 10px;
+
+    }
+  }
+
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -581,6 +611,7 @@ background: none;
 
   .buttons-container-setting {
     width: fit-content;
+    margin-top: 35px;
     .button {
       font-weight: normal;
       font-size: 16px;
@@ -648,12 +679,20 @@ background: none;
 }
 
 .company_fields {
+
   .input-text2, input {
     height: 100%;
   }
 
   .name_company_wrapper {
     border: none !important;
+
+    &.bank {
+      .company_counter {
+        top: unset;
+        bottom: -35px;
+      }
+    }
 
     .company_input {
       border: none !important;
