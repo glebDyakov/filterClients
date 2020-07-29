@@ -106,7 +106,7 @@ class StorehouseProduct extends React.Component {
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <InputCounter title={`Количество товара на пополнение, единиц`} value={String(client.amount ? client.amount : '')}
-                                                          name="amount" handleChange={this.handleChange} maxLength={128} />
+                                                          name="amount" handleChange={this.handleChange} maxLength={9} />
                                         </div>
                                     </div>
 
