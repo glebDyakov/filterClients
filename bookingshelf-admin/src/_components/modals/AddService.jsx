@@ -226,7 +226,10 @@ class AddService extends React.Component {
                                                 {
                                                     // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
                                                     service && service.serviceProducts &&
-                                                        <a onClick={() => this.setState({ materialsSearch: '' })}
+                                                        <a onClick={() => {
+                                                          this.props.dispatch(materialActions.getProducts())
+                                                          this.setState({ materialsSearch: '' })
+                                                        }}
                                                            className={
                                                             // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
                                                                'select-button dropdown-toggle select-material'}

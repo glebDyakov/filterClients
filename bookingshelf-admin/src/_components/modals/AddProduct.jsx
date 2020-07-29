@@ -189,7 +189,7 @@ class AddProduct extends React.Component {
                                 <div className="row">
                                     <div className="col-sm-6">
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
-                                                      name="productName" handleChange={this.handleChange} maxLength={128} />
+                                                      name="productName" handleChange={this.handleChange} maxLength={256} />
                                         <p>Категория</p>
                                         <select className="custom-select" name="categoryId" onChange={this.handleChange}
                                                 value={client.categoryId}>
@@ -233,7 +233,7 @@ class AddProduct extends React.Component {
                                         </div>
 
                                         <InputCounter title="Описание" placeholder="Описание" value={client.description}
-                                                      name="description" handleChange={this.handleChange} maxLength={128} />
+                                                      name="description" handleChange={this.handleChange} maxLength={256} />
                                         <div className="check-box">
                                             <label>
                                                 <input className="form-check-input"
@@ -269,8 +269,8 @@ class AddProduct extends React.Component {
                                     {/*    </select>*/}
                                     {/*</div>*/}
                                     <div className="col-sm-6">
-                                        <InputCounter title="Минимальное количество" placeholder="Введите количество" value={client.minAmount} name="minAmount"
-                                                      handleChange={this.handleChange} maxLength={128} />
+                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={String(client.minAmount ? client.minAmount : '')} name="minAmount"
+                                                      handleChange={this.handleChange} maxLength={9} />
                                     </div>
                                 </div>
                                 {material && material.adding &&
@@ -289,10 +289,10 @@ class AddProduct extends React.Component {
                                 {/*>Сохранить*/}
                                 {/*</button>*/}
                                 <button style={{ display: 'block', marginLeft: 'auto' }}
-                                        className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount ) ? 'disabledField': '')+' button'}
-                                        disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount)}
+                                        className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount) ? 'disabledField': '')+' button'}
+                                        disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount)}
                                         type="button"
-                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.description && client.minAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}
+                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}
                                 >Сохранить
                                 </button>
                             </div>
@@ -337,6 +337,9 @@ class AddProduct extends React.Component {
         // body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
         //
         //  return updateClient({ ...body, birthDate });
+        if (!client.description) {
+            delete client.description
+        }
         this.props.dispatch(materialActions.toggleProduct(client, true))
     };
 
@@ -353,6 +356,9 @@ class AddProduct extends React.Component {
         }
         const body = JSON.parse(JSON.stringify(client));
         body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+        if (!client.description) {
+            delete client.description
+        }
 
         this.props.dispatch(materialActions.toggleProduct(client))
     };
