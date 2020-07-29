@@ -70,6 +70,18 @@ class AddAppointment extends React.Component {
                     options: [],
                     isValid: () => true
                 },
+                carBrand: {
+                    label: 'Марка авто',
+                    selectedKey: 'carBrand',
+                    options: [],
+                    isValid: () => true
+                },
+                carNumber: {
+                    label: 'Гос. номер',
+                    selectedKey: 'carNumber',
+                    options: [],
+                    isValid: () => true
+                },
                 clientEmail: {
                     label: 'Email',
                     selectedKey: 'email',
@@ -367,11 +379,11 @@ class AddAppointment extends React.Component {
     handleTypeaheadSelect(key, value) {
         let updatedState = {};
         if (value.length) {
-            updatedState = { clientFirstName: value[0].firstName, clientPhone: value[0].phone, clientLastName: value[0].lastName, clientEmail: value[0].email }
+            updatedState = { clientFirstName: value[0].firstName, clientPhone: value[0].phone, clientLastName: value[0].lastName, carBrand: value[0].carBrand, carNumber: value[0].carNumber, clientEmail: value[0].email }
             this.checkUser(value[0])
         } else {
             this.removeCheckedUser(key);
-            const checkingProps = { clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null }
+            const checkingProps = { clientFirstName: null, clientPhone: null, clientLastName: null,  carBrand: null,  carNumber: null, clientEmail: null }
             Object.entries(checkingProps).forEach(([objKey , objValue]) => {
                 if (objKey !== key) {
                     updatedState[objKey] = objValue
@@ -853,8 +865,10 @@ class AddAppointment extends React.Component {
     }
 
     renderMenuItemChildren(option, props) {
+        const { company } = this.props;
+        const companyTypeId = company.settings && company.settings.companyTypeId;
         const { labelKey } = props;
-        let visibleKeys = ['firstName', 'lastName', 'phone', 'email'];
+        let visibleKeys = ['firstName', 'lastName', 'phone', 'email', 'carBrand', 'carNumber'];
 
         return (
             <div key={option.clientId}>
@@ -866,6 +880,10 @@ class AddAppointment extends React.Component {
                     <span style={labelKey === visibleKeys[2] ? {} : { color: 'grey' } }>{option[visibleKeys[2]]}</span>
                     <span style={labelKey === visibleKeys[3] ? {} : { color: 'grey' } }>{option[visibleKeys[3]]}</span>
                 </div>
+                {companyTypeId === 2 && <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                    <span style={labelKey === visibleKeys[4] ? {} : { color: 'grey' } }>{option[visibleKeys[4]]}</span>
+                    <span style={labelKey === visibleKeys[5] ? {} : { color: 'grey' } }>{option[visibleKeys[5]]}</span>
+                </div>}
             </div>
         );
     }
@@ -877,6 +895,8 @@ class AddAppointment extends React.Component {
             servicesSearch, coStaffs, selectedTypeahead, isAddCostaff, availableCoStaffs, typeAheadOptions,
             isLoadingTypeahead
         } = this.state;
+
+        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         const activeStaffCurrent = staffFromProps && staffFromProps.find(staffItem => staffItem.staffId === staffCurrent.staffId);
         const cl = clientChecked
@@ -890,7 +910,6 @@ class AddAppointment extends React.Component {
 
         return (
             <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
-
                 <div className="new_appointment">
                     <div className="">
                         <div className="modal-content">
@@ -1150,7 +1169,14 @@ class AddAppointment extends React.Component {
                                                                 )
                                                             )}
 
-                                                            {Object.entries({ clientLastName: typeAheadOptions.clientLastName, clientEmail: typeAheadOptions.clientEmail }).map(([key, value]) => (
+                                                            {Object.entries({ clientLastName: typeAheadOptions.clientLastName,  carBrand: typeAheadOptions.carBrand, carNumber: typeAheadOptions.carNumber, clientEmail: typeAheadOptions.clientEmail })
+                                                              .filter(([key]) => {
+                                                                  if (companyTypeId !== 2 && (key ==='carBrand' || key === 'carNumber')) {
+                                                                      return false;
+                                                                  }
+                                                                  return true;
+                                                              })
+                                                              .map(([key, value]) => (
                                                                 <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
                                                                     <p style={key === 'clientLastName' ? { marginTop: '14px'}: {}}>{value.label}</p>
                                                                     <AsyncTypeahead
@@ -1353,7 +1379,7 @@ class AddAppointment extends React.Component {
     }
 
     removeCheckedUser(skippedKey){
-        const checkingProps = { clientChecked: null, clientFirstName: null, clientPhone: null, clientLastName: null, clientEmail: null, selectedTypeahead: [] }
+        const checkingProps = { clientChecked: null, clientFirstName: null, clientPhone: null, clientLastName: null, carBrand: null, carNumber: null, clientEmail: null, selectedTypeahead: [] }
         const updatedState = {}
         Object.entries(checkingProps).forEach(([objKey , objValue]) => {
             if (objKey !== skippedKey) {
@@ -1375,7 +1401,7 @@ class AddAppointment extends React.Component {
     }
 
     addAppointment (){
-        const {appointment, clientFirstName, clientPhone, clientLastName, clientEmail, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
+        const {appointment, clientFirstName, clientPhone, clientLastName, carBrand, carNumber, clientEmail, staffCurrent, serviceCurrent, availableCoStaffs, clientChecked, coStaffs, isAddCostaff }=this.state
         const { addAppointment }=this.props;
 
         let clientProps = {}
@@ -1384,6 +1410,8 @@ class AddAppointment extends React.Component {
                 clientFirstName,
                 clientPhone: (clientPhone && `+${clientPhone.replace(/[+()\- ]/g, '')}`),
                 clientLastName,
+                carBrand,
+                carNumber,
                 clientEmail
             }
         }
