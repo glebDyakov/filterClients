@@ -546,7 +546,7 @@ class Index extends Component {
                                   </div>
                                     <div style={{ position: "relative" }}>
                                         {/*<a onClick={() => this.toggleInfoProduct(activeProduct)}>*/}
-                                            <p style={{ width: "100%" }}><span className="mob-title">Название: </span>{activeProduct && activeProduct.productName}</p>
+                                            <p style={{ width: "100%", maxWidth: '80%' }}><span className="mob-title">Название: </span>{activeProduct && activeProduct.productName}</p>
                                         {/*</a>*/}
                                     </div>
                                     {/*<div style={{ position: "relative" }}>*/}

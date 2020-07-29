@@ -189,8 +189,8 @@ class ExpenditureProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                          <InputCounter title={`Количество товара на списание${((client.nominalCheck === 'nominal') && activeUnit) ? `, ${activeUnit.unitName}` : ''}`} value={client.amount}
-                                                        name="amount" handleChange={this.handleChange} maxLength={128} />
+                                          <InputCounter title={`Количество товара на списание${((client.nominalCheck === 'nominal') && activeUnit) ? `, ${activeUnit.unitName}` : ''}`} value={String(client.amount ? client.amount : '')}
+                                                        name="amount" handleChange={this.handleChange} maxLength={9} />
                                         </div>
                                     </div>
                                   <p>Списать в </p>
