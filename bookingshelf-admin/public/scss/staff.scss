@@ -487,6 +487,23 @@
 
   }
 
+  .container-user-name-mob,
+  .star-ratings-container-mob {
+    display: none;
+  }
+
+  @media screen and (max-width: $mob-width) {
+    .container-user-name,
+    .star-ratings-container {
+      display: none !important;
+    }
+
+    .container-user-name-mob,
+    .star-ratings-container-mob {
+      display: flex;
+    }
+  }
+
   .new-staff-dropdownStyle {
     position: absolute;
     bottom: 0px;

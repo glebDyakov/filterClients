@@ -63,9 +63,17 @@ class FeedStaff extends Component {
                                                 starSpacing="5px"
                                             />
                                         </div>
+
+                                        <div className="container-user-name-mob">
+                                            <div className="user-name-container flex-column flex-md-row">
+                                                <strong
+                                                    className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                                                <p className="user-description">{activeStaff.description}</p>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div style={{
+                                    <div className="container-user-name" style={{
                                         width: isMobile ? '100%' : '60%',
                                         marginLeft: '24px',
                                         display: 'flex',
@@ -76,6 +84,16 @@ class FeedStaff extends Component {
                                                 className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
                                             <p className="user-description">{activeStaff.description}</p>
                                         </div>
+                                    </div>
+
+                                    <div className="star-ratings-container-mob" style={{width: '130px'}}>
+                                        <StarRatings
+                                            rating={feedbackStaff.averageStaffRating || 0}
+                                            starHoverColor={'#50A5F1'}
+                                            starRatedColor={'#50A5F1'}
+                                            starDimension="18px"
+                                            starSpacing="5px"
+                                        />
                                     </div>
                                 </div>
                                 <button type="button" onClick={() => {
