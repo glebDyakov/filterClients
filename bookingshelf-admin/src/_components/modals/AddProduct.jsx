@@ -337,6 +337,9 @@ class AddProduct extends React.Component {
         // body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
         //
         //  return updateClient({ ...body, birthDate });
+        if (!client.description) {
+            delete client.description
+        }
         this.props.dispatch(materialActions.toggleProduct(client, true))
     };
 
@@ -353,6 +356,9 @@ class AddProduct extends React.Component {
         }
         const body = JSON.parse(JSON.stringify(client));
         body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+        if (!client.description) {
+            delete client.description
+        }
 
         this.props.dispatch(materialActions.toggleProduct(client))
     };
