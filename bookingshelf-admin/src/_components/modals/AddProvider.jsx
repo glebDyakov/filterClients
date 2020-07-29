@@ -194,7 +194,7 @@ class AddProvider extends React.Component {
                                 <div className="row">
                                     <div className="col-sm-6">
                                         <InputCounter title="Наименование" placeholder='Например: ООО "Поставка Бест"' value={client.supplierName}
-                                                      name="supplierName" handleChange={this.handleChange} maxLength={128} />
+                                                      name="supplierName" handleChange={this.handleChange} maxLength={64} />
 
                                         <InputCounter title="Веб-сайт" placeholder="www.website.com" value={client.webSite}
                                                       name="webSite" handleChange={this.handleChange} maxLength={128} />
@@ -217,20 +217,20 @@ class AddProvider extends React.Component {
                                             <option value='RUS'>Россия</option>
                                         </select>
                                         <InputCounter title="Улица" placeholder="Введите улицу" value={client.street}
-                                                      name="street" handleChange={this.handleChange} maxLength={128} />
+                                                      name="street" handleChange={this.handleChange} maxLength={64} />
                                     </div>
                                     <div className="col-sm-6">
                                         <InputCounter title="Город" placeholder="Введите город" value={client.city} name="city"
-                                                      handleChange={this.handleChange} maxLength={128} />
+                                                      handleChange={this.handleChange} maxLength={32} />
 
                                         <div className="row">
                                             <div className="col-sm-6">
                                                 <InputCounter title="Здание, офис" placeholder="Дом 205" value={client.office}
-                                                              name="office" handleChange={this.handleChange} maxLength={128} />
+                                                              name="office" handleChange={this.handleChange} maxLength={32} />
                                             </div>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Почтовый код" placeholder="Введите код" value={client.zipCode}
-                                                              name="zipCode" handleChange={this.handleChange} maxLength={128} />
+                                                              name="zipCode" handleChange={this.handleChange} maxLength={12} />
                                             </div>
                                         </div>
                                     </div>
@@ -286,7 +286,7 @@ class AddProvider extends React.Component {
                                                                   emailIsValid: isValidEmailAddress(client.contactPersons[index].email)
                                                               })}
                                                               extraClassName={'' + (!isValidEmailAddress(client.contactPersons[index].email) && client.contactPersons[index].email!=='' ? ' redBorder' : '')}
-                                                              handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
+                                                              handleChange={(e) => this.handleContactChange(e, index)} maxLength={64} />
                                             </div>
                                             {1 && <button className="close"  style={{position:"absolute", right: "-37px", top: "-37px", zIndex: "99"}} onClick={()=>this.removeContact(index)}>x</button>}
                                         </div>
