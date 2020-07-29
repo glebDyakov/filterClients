@@ -2,6 +2,21 @@
 .material {
   padding-bottom: 50px;
 
+  .content {
+    padding: 0 10px !important;
+
+    background: #FFFFFF;
+    /* Drop Shadow */
+
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border: none;
+    border-radius: 0 !important;
+  }
+
+  .material-products {
+    position: relative;
+  }
+  
   .title {
     position: relative;
     min-height: 50px !important;
@@ -73,9 +88,9 @@
   }
   .title-and-main-info{
     overflow: auto;
-    max-height: calc(90vh - 200px);
+    max-height: calc(90vh - 160px);
     @media screen and(max-width: $mob-width) {
-      max-height: calc(90vh - 170px);
+      max-height: calc(90vh - 160px);
     }
   }
   .position-sticky{
@@ -314,7 +329,6 @@
   }
   #tab1{
     height: 100%;
-    max-height: 65vh;
   }
   #tab1, #tab4, #tab5 {
     //.material-products {
@@ -502,27 +516,7 @@
       height: 26px;
     }
   }
-  .paginator-container{
-    position: fixed;
-    left: calc(50% + 125px);
-    transform: translateX(-50%);
-    bottom: 25px;
-    @media screen and(max-width: $tablet-width) {
-      left: 50%;
-    }
-    .pagination {
-      border-radius: 4px;
-        .page-item.active .page-link{
-        z-index: 1;
-        color: #fff;
-        background-color: #50A5F1;
-        border-color: #50A5F1;
-      }
-      .page-link{
-        border: none;
-      }
-    }
-  }
+
   .buttons-container{
     button {
       background: #2A3042;

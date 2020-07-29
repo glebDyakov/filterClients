@@ -224,30 +224,27 @@
         /* identical to box height, or 125% */
 
         text-align: right;
-
-        color: #34C38F;
+        color: #495057;
 
         .small {
           margin-top: 10px;
         }
 
-        &.no-color {
-          color: #495057;
-        }
-
-        &.red {
-          color: #F46A6A;
-        }
       }
 
+
+      .container-title {
+        width: 100%;
+
+      }
 
       strong,
       .dropdown {
         float: left;
         display: block;
         font-size: 24px;
-        font-weight: bold;
         width: 55%;
+        font-weight: bold;
         line-height: normal;
         @media screen {
           @media(max-width: $laptop-width) {
@@ -424,7 +421,7 @@
       .sum-container {
         display: flex;
 
-        @media screen and (max-width: 758px) {
+        @media screen and (max-width: $laptop-width) {
           flex-direction: column;
 
           .sum-payments,

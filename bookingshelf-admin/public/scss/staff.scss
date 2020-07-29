@@ -23,6 +23,17 @@
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
     .left-container {
       .client-name {
+        p {
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 18px;
+          /* identical to box height */
+
+
+          color: #495057;
+        }
+
         a {
           display: flex;
           flex-direction: row;
@@ -490,6 +501,7 @@
   .container-user-name-mob,
   .star-ratings-container-mob {
     display: none;
+    margin: 5px 0;
   }
 
   @media screen and (max-width: $mob-width) {
@@ -1101,7 +1113,8 @@
           color: #50A5F1;
 
           @media screen and (max-width: $mob-width) {
-            padding-left: 54px;
+            padding-left: 0;
+            text-align: left;
           }
 
         }
@@ -1119,6 +1132,10 @@
         margin: 0;
         align-items: center;
 
+        .holiday-row-container {
+          padding: 0 10px;
+        }
+
         &:not(:last-child):not(.active) {
           margin-bottom: 7px !important;
         }
@@ -1135,6 +1152,11 @@
           align-items: center;
           justify-content: space-between;
 
+          @media screen and (max-width: $mob-width) {
+            justify-content: center;
+            align-items: flex-start;
+          }
+
           .user-name {
             font-weight: 600;
             font-size: 16px;
@@ -1144,7 +1166,8 @@
             text-align: left;
 
             @media screen and (max-width: $mob-width) {
-              width: 84% !important;
+              width: fit-content;
+              margin: 0;
             }
           }
 

@@ -40,7 +40,7 @@ class FeedStaff extends Component {
                             <div style={{
                                 alignItems: 'center',
                                 justifyContent: 'space-between'
-                            }} className="row flex-md-row flex-md-nowrap">
+                            }} className="row holiday-row-container flex-md-row flex-md-nowrap">
                                 <div className="justify-content-start flex-column flex-md-row" style={{
                                     display: 'flex',
                                     width: isMobile ? '100%' : 'calc(100% - 200px)'
@@ -49,7 +49,7 @@ class FeedStaff extends Component {
                                         <img style={{
                                             display: 'block',
                                             height: '24px',
-                                            margin: '0 15px'
+                                            margin: '0 15px 0 0'
                                         }} className="rounded-circle user-star-image"
                                              src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                              alt=""
@@ -68,7 +68,6 @@ class FeedStaff extends Component {
                                             <div className="user-name-container flex-column flex-md-row">
                                                 <strong
                                                     className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
-                                                <p className="user-description">{activeStaff.description}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -91,9 +90,15 @@ class FeedStaff extends Component {
                                             rating={feedbackStaff.averageStaffRating || 0}
                                             starHoverColor={'#50A5F1'}
                                             starRatedColor={'#50A5F1'}
-                                            starDimension="18px"
-                                            starSpacing="5px"
+                                            starDimension="12px"
+                                            starSpacing="3px"
                                         />
+                                    </div>
+
+                                    <div className="container-user-name-mob">
+                                        <div className="user-name-container flex-column flex-md-row">
+                                            <p className="user-description">{activeStaff.description}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="button" onClick={() => {
