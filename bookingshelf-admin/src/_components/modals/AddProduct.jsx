@@ -228,7 +228,7 @@ class AddProduct extends React.Component {
                                             </div>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Номинал. объем" placeholder="Объем" value={String(client.nominalAmount ? client.nominalAmount : '')}
-                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} />
+                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={19} />
                                             </div>
                                         </div>
 
@@ -269,7 +269,7 @@ class AddProduct extends React.Component {
                                     {/*    </select>*/}
                                     {/*</div>*/}
                                     <div className="col-sm-6">
-                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={client.minAmount} name="minAmount"
+                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={String(client.minAmount ? client.minAmount : '')} name="minAmount"
                                                       handleChange={this.handleChange} maxLength={128} />
                                     </div>
                                 </div>

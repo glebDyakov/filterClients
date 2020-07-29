@@ -281,7 +281,7 @@ class InfoProduct extends React.Component {
                                     {/*    </select>*/}
                                     {/*</div>*/}
                                     <div className="col-sm-6">
-                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={client.minAmount} name="minAmount"
+                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={String(client.minAmount ? client.minAmount : '')} name="minAmount"
                                                       handleChange={this.handleChange} maxLength={128} disabled={true}/>
                                     </div>
                                 </div>
