@@ -149,10 +149,10 @@ class StorehouseProduct extends React.Component {
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
 
-                                    <button className={(!(client.amount && client.retailPrice && client.specialPrice
+                                    <button className={(!(client.amount && client.retailPrice
                                         && client.supplierPrice && client.supplierId) ? 'disabledField': '')+' button button-save'}
 
-                                            disabled={!(client.amount && client.retailPrice && client.specialPrice && client.supplierPrice
+                                            disabled={!(client.amount && client.retailPrice && client.supplierPrice
                                                 && client.supplierId)}
 
                                             type="button"

@@ -201,7 +201,7 @@ class InfoProduct extends React.Component {
                                 <div className="row">
                                     <div className="col-sm-6">
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
-                                                      name="productName" handleChange={this.handleChange} maxLength={128} disabled={true}/>
+                                                      name="productName" handleChange={this.handleChange} maxLength={256} disabled={true}/>
                                         <p>Категория</p>
                                         <select className="custom-select" name="categoryId" onChange={this.handleChange}
                                                 value={client.categoryId} disabled={true}>
@@ -245,7 +245,7 @@ class InfoProduct extends React.Component {
                                         </div>
 
                                         <InputCounter title="Описание" placeholder="Описание" value={client.description}
-                                                      name="description" handleChange={this.handleChange} maxLength={128} disabled={true}/>
+                                                      name="description" handleChange={this.handleChange} maxLength={256} disabled={true}/>
                                         <div className="check-box">
                                             <label>
                                                 <input className="form-check-input"
@@ -281,7 +281,7 @@ class InfoProduct extends React.Component {
                                     {/*    </select>*/}
                                     {/*</div>*/}
                                     <div className="col-sm-6">
-                                        <InputCounter title="Минимальное количество" placeholder="Введите количество" value={client.minAmount} name="minAmount"
+                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={client.minAmount} name="minAmount"
                                                       handleChange={this.handleChange} maxLength={128} disabled={true}/>
                                     </div>
                                 </div>
