@@ -29,7 +29,7 @@ class DragVertController extends React.Component {
 
         const { booktimeStep } = company.settings
         const step  = booktimeStep / 60;
-        const cellHeight = 31;
+        const cellHeight = 25;
         // 'res' = начальная высота div'a + кол-во пикселов смещения
         const res = offsetHeight + e.pageY - changingPos;
         if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
