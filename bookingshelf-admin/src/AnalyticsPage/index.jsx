@@ -497,17 +497,17 @@ class Index extends Component {
             fill: false,
             lineTension: 0,
             backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'rgba(75,192,192,1)',
+            borderColor: '#50A5F1',
             borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
             borderJoinStyle: 'miter',
-            pointBorderColor: 'rgba(75,192,192,1)',
-            pointBackgroundColor: 'rgba(75,192,192,1)',
+            pointBorderColor: '#50A5F1',
+            pointBackgroundColor: '#50A5F1',
             pointBorderWidth: 1,
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBackgroundColor: '#50A5F1',
+            pointHoverBorderColor: '#50A5F1',
             pointHoverBorderWidth: 2,
             pointRadius: 3,
             pointHitRadius: 10,
@@ -543,23 +543,23 @@ class Index extends Component {
                 {
                     ...chartOptions,
                     label: 'Сумма наличными',
-                    backgroundColor: '#1E6871',
-                    borderColor: '#1E6871',
-                    pointBorderColor: '#1E6871',
-                    pointBackgroundColor: '#1E6871',
-                    pointHoverBackgroundColor: '#1E6871',
-                    pointHoverBorderColor: '#1E6871',
+                    backgroundColor: '#833FC6',
+                    borderColor: '#833FC6',
+                    pointBorderColor: '#833FC6',
+                    pointBackgroundColor: '#833FC6',
+                    pointHoverBackgroundColor: '#833FC6',
+                    pointHoverBorderColor: '#833FC6',
                     data: cashFinancialChart,
                 },
                 {
                     ...chartOptions,
                     label: 'Сумма безналичными',
-                    backgroundColor: '#607375',
-                    borderColor: '#607375',
-                    pointBorderColor: '#607375',
-                    pointBackgroundColor: '#607375',
-                    pointHoverBackgroundColor: '#607375',
-                    pointHoverBorderColor: '#607375',
+                    backgroundColor: '#F1B44C',
+                    borderColor: '#F1B44C',
+                    pointBorderColor: '#F1B44C',
+                    pointBackgroundColor: '#F1B44C',
+                    pointHoverBackgroundColor: '#F1B44C',
+                    pointHoverBorderColor: '#F1B44C',
                     data: cardFinancialChart,
                 },
             ]
@@ -588,8 +588,7 @@ class Index extends Component {
         return (
             <div className="retreats analytics_container">
 
-                <div className="timeContainer"
-                     style={dropdownFirst ? {borderRadius: "10px 10px 10px 0px"} : {borderRadius: "10px"}}>
+                <div className="timeContainer">
                     <div className="calendar-switch">
                         <div className="choisen"
                              onClick={() => this.setState({dropdownFirst: !dropdownFirst})}>{chosenPeriod === 1 ? "Сегодня" : chosenPeriod === 2 ? "Вчера" : chosenPeriod === 3 ? "Неделя" : ""}</div>
@@ -954,13 +953,25 @@ class Index extends Component {
                         <span style={{width: 'auto'}} className="title-list">Финансовая аналитика</span>
                         <Hint hintMessage="Сумма стоимости визитов в журнале записи"/>
 
-                        CARD                        &nbsp;
+                        <div className="sum-container">
+                            <div className="sum-payments">
+                                <span className="green-marker"></span>
+                                <p className="sum-text">Сумма: &nbsp;</p>
+                                <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b)} BYN</p>
+                            </div>
+                            <div className="cash-payments">
+                                <span className="purple-marker"></span>
+                                <p className="cash-text">Наличный расчет: &nbsp;</p>
+                                <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b)} BYN</p>
+                            </div>
+                            <div className="card-payments">
+                                <span className="orange-marker"></span>
+                                <p className="card-text">Безналичный расчет: &nbsp;</p>
+                                <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b)} BYN</p>
+                            </div>
 
-                        {analitics.financialAnalyticChart.cardPaymentChart.length > 0 && analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b)}
-                        &nbsp;
-                        CASH                        &nbsp;
+                        </div>
 
-                        {analitics.financialAnalyticChart.cashPaymentChart.length > 0 && analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b)}
                     </div>
                     <div className="chart-inner">
                         <div id="container-chart" className="chart" style={{position: "relative"}}>

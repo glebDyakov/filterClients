@@ -637,8 +637,10 @@ class Index extends Component {
                                                 onClick={() => this.AddingInvoiceStaff()}>Оплатить
                                         </button>
                                         {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                            Цены в национальной валюте указаны для ознакомления. Оплата производится по
-                                            курсу в рос. рублях
+                                            <p className="description">
+                                                (Цены в национальной валюте указаны для ознакомления. Оплата производится по
+                                                курсу в рос. рублях)
+                                            </p>
                                         </div>
                                         }
                                     </div>
@@ -700,8 +702,10 @@ class Index extends Component {
                                                     onClick={() => this.AddingInvoice()}>Оплатить
                                             </button>
                                             {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                Цены в национальной валюте указаны для ознакомления. Оплата производится
-                                                по курсу в рос. рублях
+                                                <p className="description">
+                                                    (Цены в национальной валюте указаны для ознакомления. Оплата производится
+                                                    по курсу в рос. рублях)
+                                                </p>
                                             </div>
                                             }
                                         </React.Fragment>

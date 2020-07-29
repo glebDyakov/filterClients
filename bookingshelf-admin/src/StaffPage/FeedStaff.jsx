@@ -54,7 +54,7 @@ class FeedStaff extends Component {
                                              src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                              alt=""
                                         />
-                                        <div style={{width: '130px'}}>
+                                        <div className="star-ratings-container" style={{width: '130px'}}>
                                             <StarRatings
                                                 rating={feedbackStaff.averageStaffRating || 0}
                                                 starHoverColor={'#50A5F1'}

@@ -242,6 +242,14 @@ class Index extends Component {
 
                                     </div>
 
+                                    <div className="buttons-container-setting">
+                                        {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                            if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
+                                                this.handleSubmit(e, subcompanies[0], 0)
+                                            }
+                                        }
+                                        }>Сохранить</button>}
+                                    </div>
 
                                 </div>
 
@@ -256,16 +264,6 @@ class Index extends Component {
                                     </div>
                                 </div>
 
-                                <div className="col-md-12">
-                                    <div className="buttons-container-setting">
-                                        {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
-                                            if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
-                                                this.handleSubmit(e, subcompanies[0], 0)
-                                            }
-                                        }
-                                        }>Сохранить</button>}
-                                    </div>
-                                </div>
                             </div>
 
                         </form>}

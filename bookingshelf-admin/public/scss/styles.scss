@@ -664,7 +664,8 @@ background: none;
   .company_counter {
     position: absolute;
     right: 16px;
-    top: 9px;
+    top: 50%;
+    transform: translateY(-50%);
     opacity: 0.7;
   }
 
@@ -679,6 +680,7 @@ background: none;
     padding: 0;
   }
 }
+
 
 .day-picker {
   display: flex;
