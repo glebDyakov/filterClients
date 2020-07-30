@@ -289,10 +289,10 @@ class AddProduct extends React.Component {
                                 {/*>Сохранить*/}
                                 {/*</button>*/}
                                 <button style={{ display: 'block', marginLeft: 'auto' }}
-                                        className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount) ? 'disabledField': '')+' button'}
-                                        disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount)}
+                                        className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0)) ? 'disabledField': '')+' button'}
+                                        disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0))}
                                         type="button"
-                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && client.nominalAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}
+                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0)&& (edit ? ()=>this.updateProduct(client) : this.addProduct)}
                                 >Сохранить
                                 </button>
                             </div>
