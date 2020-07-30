@@ -6690,6 +6690,20 @@ textarea {
       max-height: 615px;
       overflow-y: auto;
       overflow-x: hidden;
+      .check-box {
+        label {
+          padding-left: 70px !important;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          /* identical to box height */
+
+
+          color: #2A3042;
+
+        }
+      }
+
     }
   }
 }

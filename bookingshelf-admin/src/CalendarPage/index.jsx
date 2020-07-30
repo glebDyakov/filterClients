@@ -110,6 +110,7 @@ class Index extends PureComponent {
             newClientModal: false,
             scrollableAppointmentAction: true,
             appointmentMarkerActionCalled: false,
+            scrolledToRight: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -142,6 +143,8 @@ class Index extends PureComponent {
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.scrollHandler = this.scrollHandler.bind(this);
     }
 
     componentDidMount() {
@@ -368,6 +371,16 @@ class Index extends PureComponent {
         return !isOnAnotherVisit;
     }
 
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    scrollHandler() {
+        this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
+            this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 1000: 0;
+        });
+    }
+
 
     render() {
         const { authentication, company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
@@ -447,9 +460,14 @@ class Index extends PureComponent {
 
                     </div>
                     <div className="days-container">
+
+                        <button onClick={this.scrollHandler} className={"scroll-button" + (this.state.scrolledToRight ? " scrolled" : '')}></button>
+
                         <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                             <div className="calendar-list">
-                                <TabScrollHeader
+                             <div ref={this.setWrapperRef} className="calendar-list">
+
+
+                                 <TabScrollHeader
                                     selectedDays={selectedDays}
                                     timetable={workingStaff.timetable }
                                     timetableMessage={timetableMessage}
