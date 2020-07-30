@@ -1307,12 +1307,13 @@ input {
         }
 
         &::after {
-          content: '\41E\43D\43B\430\439\43D \437\430\43F\438\441\44C';
+          content: 'Online-zapis.com';
           color: #fff;
           position: absolute;
-          top: 23%;
-          width: 100px;
-          left: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 120px;
+          left: 41px;
           font-size: 13px;
           font-weight: 400;
         }

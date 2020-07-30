@@ -900,23 +900,24 @@ class Index extends Component {
 
 
                                         <div className="settings-container email row">
-                                           <div className="col-md-6 p-0">
-                                               <InputCounter value={email.title}
-                                                             title="Заголовок сообщения"
-                                                             placeholder="Введите заголовок сообщения"
-                                                             name="title" handleChange={this.handleSetTitle} maxLength={64}
+                                            <div className="col-md-6 p-0">
+                                                <InputCounter value={email.title}
+                                                              title="Заголовок сообщения"
+                                                              placeholder="Введите заголовок сообщения"
+                                                              name="title" handleChange={this.handleSetTitle}
+                                                              maxLength={64}
 
-                                               />
-                                               <p className="input-label">Текст Email</p>
-                                               <Editor
-                                                   editorState={editorState}
-                                                   toolbarClassName="toolbarClassName"
-                                                   wrapperClassName="wrapperClassName"
-                                                   editorClassName="editorClassName"
-                                                   onEditorStateChange={this.onEditorStateChange}
-                                                   onContentStateChange={this.onContentStateChange}
-                                               />
-                                           </div>
+                                                />
+                                                <p className="input-label">Текст Email</p>
+                                                <Editor
+                                                    editorState={editorState}
+                                                    toolbarClassName="toolbarClassName"
+                                                    wrapperClassName="wrapperClassName"
+                                                    editorClassName="editorClassName"
+                                                    onEditorStateChange={this.onEditorStateChange}
+                                                    onContentStateChange={this.onContentStateChange}
+                                                />
+                                            </div>
 
                                             <div className="col-md-6">
                                                 <div className="row">
@@ -985,15 +986,19 @@ class Index extends Component {
                                         <div className="row">
                                             <div className="col-6 col-md-3">
 
-                                                <p className="count-sms">Количество SMS: {notification.balance && notification.balance.smsAmount}</p>
+                                                <p className="count-sms">Количество
+                                                    SMS: {notification.balance && notification.balance.smsAmount}</p>
 
                                             </div>
                                             <div className="col-6 col-md-3">
-                                                <p className="count-email">Количество Email: {notification.balance && notification.balance.emailAmount}</p>
+                                                <p className="count-email">Количество
+                                                    Email: {notification.balance && notification.balance.emailAmount}</p>
                                             </div>
 
-                                            <div className="col-md-6 d-flex justify-content-center justify-content-md-end">
-                                                <Link to={'/payments'}><a className="link-to-payments">Пополнить баланс</a></Link>
+                                            <div
+                                                className="col-md-6 d-flex justify-content-center justify-content-md-end">
+                                                <Link to={'/payments'}><a className="link-to-payments">Пополнить
+                                                    баланс</a></Link>
                                             </div>
                                         </div>
 
@@ -1055,7 +1060,8 @@ class Index extends Component {
                                                             </span>
                                                     </span>}/>
                                                 </div>
-                                                <div style={{width: '16%'}} className="tab-content-header delete dropdown">
+                                                <div style={{width: '16%'}}
+                                                     className="tab-content-header delete dropdown">
                                                     Кол-во СМС
                                                 </div>
                                             </div>
@@ -1120,11 +1126,14 @@ class Index extends Component {
                                     <div style={{fontSize: '11px', color: 'red', marginBottom: '17px'}}>Недостаточное
                                         количество Email. Свяжитесь со службой поддержки Online-zapis</div>}
                                 </div>
-                                <button type="button"
-                                        className={"button" + (notification.balance && (receivers_email > notification.balance.emailAmount) && ' disabledField')}
-                                        onClick={() => receivers_email <= (notification.balance && notification.balance.emailAmount) && this.setEmail()}
-                                        data-dismiss="modal">Начать
-                                </button>
+                                <div
+                                    className="buttons d-flex flex-column justify-content-center align-items-center">
+                                    <button type="button"
+                                            className={"button" + (notification.balance && (receivers_email > notification.balance.emailAmount) && ' disabledField')}
+                                            onClick={() => receivers_email <= (notification.balance && notification.balance.emailAmount) && this.setEmail()}
+                                            data-dismiss="modal">Начать
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1154,11 +1163,16 @@ class Index extends Component {
                                     <div style={{fontSize: '11px', color: 'red', marginBottom: '17px'}}>Недостаточное
                                         количество sms. Свяжитесь со службой поддержки Online-zapis </div>}
                                 </div>
-                                <button type="button"
-                                        className={"button" + (notification.balance && (count_sms_all > notification.balance.smsAmount) && ' disabledField')}
-                                        onClick={() => count_sms_all <= (notification.balance && notification.balance.smsAmount) && this.setSMS()}
-                                        data-dismiss="modal">Начать
-                                </button>
+
+                                <div
+                                    className="buttons d-flex flex-column justify-content-center align-items-center">
+
+                                    <button type="button"
+                                            className={"button" + (notification.balance && (count_sms_all > notification.balance.smsAmount) && ' disabledField')}
+                                            onClick={() => count_sms_all <= (notification.balance && notification.balance.smsAmount) && this.setSMS()}
+                                            data-dismiss="modal">Начать
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
