@@ -242,7 +242,7 @@ class Index extends Component {
 
                                     </div>
 
-                                    <div className="buttons-container-setting">
+                                    <div className="buttons-container-setting d-none d-md-flex ">
                                         {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
                                             if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
                                                 this.handleSubmit(e, subcompanies[0], 0)
@@ -262,6 +262,15 @@ class Index extends Component {
                                         <span className="company_counter">{subcompanies[0].bankDetails.length}/1800</span>
 
                                     </div>
+                                </div>
+
+                                <div className="buttons-container-setting d-md-none mx-auto">
+                                    {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                        if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
+                                            this.handleSubmit(e, subcompanies[0], 0)
+                                        }
+                                    }
+                                    }>Сохранить</button>}
                                 </div>
 
                             </div>
@@ -342,7 +351,7 @@ class Index extends Component {
                                             <span className="company_counter">{subcompany.companyAddress1.length}/40</span>
                                         </div>
 
-                                        <div className="buttons-container-setting">
+                                        <div className="buttons-container-setting d-none d-md-flex">
 
                                             {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
                                                 if (saved !== i && (status !== 'saved.settings' || !submitted)) {
@@ -472,7 +481,16 @@ class Index extends Component {
                                             <p className="alert-success p-1 rounded pl-3 mb-2">Настройки сохранены</p>
                                         }
                                     </div>
+                                    <div className="buttons-container-setting d-md-none mx-auto">
 
+                                        {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                            if (saved !== i && (status !== 'saved.settings' || !submitted)) {
+                                                this.handleSubmit(e, subcompany, i)
+                                            }
+                                        }
+                                        }>Сохранить</button>}
+
+                                    </div>
 
                                 </div>
 

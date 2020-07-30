@@ -860,16 +860,22 @@ class Index extends Component {
                     <div className="analytics_list analytics_chart">
                         <div>
                             <span className="title-list">Записи</span>
-                            <select className="custom-select" onChange={(e) => this.setTypeDataOfChar(e)}>
-                                <option>Всего записей в журнал</option>
-                                <option>Всего онлайн записей</option>
-                                <option selected>Всего записей</option>
-                            </select>
-                            <select className="custom-select" onChange={(e) => this.setCharData(e)}>
-                                <option selected="">Неделя</option>
-                                <option>Месяц</option>
-                                {/*<option>Год</option>*/}
-                            </select>
+                            <div className="dropdowns-container d-flex flex-column">
+                                <div className="select-container">
+                                    <select className="custom-select" onChange={(e) => this.setTypeDataOfChar(e)}>
+                                        <option>Всего записей в журнал</option>
+                                        <option>Всего онлайн записей</option>
+                                        <option selected>Всего записей</option>
+                                    </select>
+                                </div>
+                                <div className="select-container">
+                                    <select className="custom-select" onChange={(e) => this.setCharData(e)}>
+                                        <option selected="">Неделя</option>
+                                        <option>Месяц</option>
+                                        {/*<option>Год</option>*/}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div className="chart-inner">
                             <div id="container-chart" className="chart" style={{position: "relative"}}>
@@ -890,23 +896,25 @@ class Index extends Component {
                     <div className="analytics_list analytics_chart">
                         <div>
                             <span className="title-list">Загруженность, %</span>
-                            <div className="dropdown">
-                                <div className="bth dropdown-toggle rounded-button select-menu"
-                                     data-toggle="dropdown" role="menu" aria-haspopup="true"
-                                     aria-expanded="false">
-                                    <p>{currentSelectedStaffChart.firstName + " " + currentSelectedStaffChart.lastName}</p>
-                                </div>
-                                <ul className="dropdown-menu">
-                                    <li onClick={() => this.setCurrentSelectedStaffChart(2)}>
-                                        <a>
-                                            <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>
-                                        </a>
-                                    </li>
-                                    {staff && staff.timetable && staff.timetable.map(staffEl => {
-                                            const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
-                                            return (
-                                                <li onClick={() => this.setCurrentSelectedStaffChart(staffEl)}>
-                                                    <a>
+
+                            <div className="dropdowns-container d-flex flex-column">
+                                <div className="dropdown">
+                                    <div className="bth dropdown-toggle rounded-button select-menu"
+                                         data-toggle="dropdown" role="menu" aria-haspopup="true"
+                                         aria-expanded="false">
+                                        <p>{currentSelectedStaffChart.firstName + " " + currentSelectedStaffChart.lastName}</p>
+                                    </div>
+                                    <ul className="dropdown-menu">
+                                        <li onClick={() => this.setCurrentSelectedStaffChart(2)}>
+                                            <a>
+                                                <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Доступные рабочие места' : 'Работающие сотрудники'}</p>
+                                            </a>
+                                        </li>
+                                        {staff && staff.timetable && staff.timetable.map(staffEl => {
+                                                const activeStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === staffEl.staffId);
+                                                return (
+                                                    <li onClick={() => this.setCurrentSelectedStaffChart(staffEl)}>
+                                                        <a>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
                                                          src={activeStaff && activeStaff.imageBase64
@@ -916,19 +924,22 @@ class Index extends Component {
                                                              : `${process.env.CONTEXT}public/img/image.png`}
                                                          alt=""/>
                                                 </span>
-                                                        <p>{staffEl.firstName + " " + staffEl.lastName}</p>
-                                                    </a>
-                                                </li>
-                                            )
-                                        }
-                                    )}
-                                </ul>
+                                                            <p>{staffEl.firstName + " " + staffEl.lastName}</p>
+                                                        </a>
+                                                    </li>
+                                                )
+                                            }
+                                        )}
+                                    </ul>
+                                </div>
+                                <div className="select-container">
+                                    <select className="custom-select" onChange={(e) => this.setCharDataStaff(e)}>
+                                        <option selected="">Неделя</option>
+                                        <option>Месяц</option>
+                                    </select>
+                                </div>
                             </div>
-                            <select className="custom-select" onChange={(e) => this.setCharDataStaff(e)}>
-                                <option selected="">Неделя</option>
-                                <option>Месяц</option>
-                                {/*<option>Год</option>*/}
-                            </select>
+
                         </div>
                         <div className="chart-inner">
                             <div id="container-chart2" className="chart" style={{position: "relative"}}>
@@ -949,9 +960,11 @@ class Index extends Component {
                 {/*// <!--end group-container-->*/}
 
                 <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
-                    <div style={{display: 'flex', justifyContent: 'flex-start'}}>
-                        <span style={{width: 'auto'}} className="title-list">Финансовая аналитика</span>
+                    <div className="fin-analytic-container" style={{display: 'flex', justifyContent: 'flex-start'}}>
+                        <span className="title-container">
+                            <span style={{width: 'auto'}} className="title-list">Финансовая аналитика</span>
                         <Hint hintMessage="Сумма стоимости визитов в журнале записи"/>
+                        </span>
 
                         <div className="sum-container">
                             <div className="sum-payments">

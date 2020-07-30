@@ -485,10 +485,32 @@ class Index extends Component {
 
                     <div className="tab-content">
                         <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
+
+                            <div className="d-flex flex-column-reverse flex-md-row align-items-start justify-content-between align-items-md-center mb-2">
+                                <div className="payments-license-block">
+                                    <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`}
+                                       download>Лицензионный договор</a>
+                                    <span data-toggle="modal" data-target=".accountant-modal-in">
+                                Для бухгалтерии
+                            </span>
+                                </div>
+
+                                {authentication.user && <div className="current-packet-container">
+                                    <div className="current-packet text-left text-md-right">Текущий пакет: {currentPacket}</div>
+                                    <div
+                                        className="current-packet-timing text-left text-md-right">{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' + moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
+                                </div>}
+                            </div>
                             <div className="payments-inner d-flex flex-column flex-lg-row">
-                                <div className="payments-list-block">
+
+
+
+                                <div className="payments-list-block mb-2 mb-md-0">
                                     <p className="title-payments">Пакеты системы</p>
                                     <div id="range-staff">
+                                        <p className="subtitle-payments mb-3 d-md-none">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+
+
                                         <ul className="range-labels">
                                             {options.map(option => (
                                                 <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
@@ -526,7 +548,7 @@ class Index extends Component {
                                     </div>
 
                                     <div className="radio-buttons">
-                                        <p className="subtitle-payments">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+                                        <p className="subtitle-payments d-none d-md-flex">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
 
                                         {(companyTypeId === 2) ? (
 
@@ -564,6 +586,8 @@ class Index extends Component {
                                     </div>
 
                                     <div id="range-month">
+                                        <p className="subtitle-payments mb-3 d-md-none">Срок действия лицензии</p>
+
                                         <ul className="range-labels">
                                             <li className={period === '1' ? "active selected" : ""}
                                                 onClick={() => this.setState({
@@ -598,11 +622,11 @@ class Index extends Component {
                                         </div>
 
                                     </div>
-                                    <p className="subtitle-payments">Срок действия лицензии</p>
+                                    <p className="subtitle-payments d-none d-md-flex">Срок действия лицензии</p>
 
                                 </div>
 
-                                <div className="payments-list-block2">
+                                <div className="payments-list-block2 mb-2 mb-md-0">
                                     <div className="payments-content">
                                         <p className="title-payments">К оплате</p>
                                         <div>
@@ -638,7 +662,8 @@ class Index extends Component {
                                         </button>
                                         {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                                             <p className="description">
-                                                (Цены в национальной валюте указаны для ознакомления. Оплата производится по
+                                                (Цены в национальной валюте указаны для ознакомления. Оплата
+                                                производится по
                                                 курсу в рос. рублях)
                                             </p>
                                         </div>
@@ -647,7 +672,7 @@ class Index extends Component {
 
                                 </div>
 
-                                <div className="payments-list-block3">
+                                <div className="payments-list-block3 mb-1 mb-md-0">
                                     <div className="payments-content buttons-change">
                                         <p className="title-payments">SMS ПАКЕТЫ</p>
 
@@ -703,7 +728,8 @@ class Index extends Component {
                                             </button>
                                             {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                                                 <p className="description">
-                                                    (Цены в национальной валюте указаны для ознакомления. Оплата производится
+                                                    (Цены в национальной валюте указаны для ознакомления. Оплата
+                                                    производится
                                                     по курсу в рос. рублях)
                                                 </p>
                                             </div>
@@ -720,14 +746,14 @@ class Index extends Component {
                                 <h2 className="acts-title">Счета</h2>
 
                                 <div className="invoice header-invoice">
-                                    <div className="inv-number"><p>Номер счета</p></div>
+                                    <div className="inv-number"><p className="d-none d-md-inline">Номер счета</p><p className="d-md-none"># счета</p></div>
                                     <div className="inv-date"><p>Дата</p></div>
                                     <div className="inv-date"><p>Сумма</p></div>
                                     <div className="inv-status"><p>Статус</p></div>
                                 </div>
 
                                 {list.length ? list.sort((a, b) => {
-                                    if(a.invoiceStatus === 'ISSUED') {
+                                    if (a.invoiceStatus === 'ISSUED') {
                                         return parseInt(b.createdDateMillis) - parseInt(a.createdDateMillis);
 
                                     } else {
@@ -791,19 +817,7 @@ class Index extends Component {
                                 }
                             </div>
 
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div className="payments-license-block">
-                                    <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>Лицензионный договор</a>
-                                    <span data-toggle="modal" data-target=".accountant-modal-in">
-                                Для бухгалтерии
-                            </span>
-                                </div>
 
-                                {authentication.user && <div className="current-packet-container">
-                                    <div className="current-packet">Текущий пакет: {currentPacket}</div>
-                                    <div className="current-packet-timing">{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' + moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
-                                </div>}
-                            </div>
                         </div>
 
 

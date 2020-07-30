@@ -308,6 +308,10 @@
           display: flex;
           align-items: center;
 
+          @media screen and (max-width: $mob-width) {
+            width: 42%;
+          }
+
           .numbers-container {
             margin-left: 12px;
 
@@ -347,6 +351,11 @@
           display: flex;
           flex-direction: column;
           margin-bottom: 5px;
+
+          @media screen and (max-width: $mob-width){
+            font-size: 40px;
+            line-height: 52px;
+          };
 
           .small {
             font-weight: normal;
@@ -392,11 +401,48 @@
       }
     }
 
+    .dropdowns-container {
+
+      p {
+        padding-left: 5px !important;
+      }
+
+      .select-container, div {
+
+        position: relative;
+        width: 180px;
+        select {
+          width: 100%;
+        }
+
+        &::after {
+          content: url("../img/icons/arrow.svg");
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 100%;
+        }
+      }
+    }
+
     &.analytics_chart {
       width: 49.5%;
       @media screen {
         @media(max-width: $tablet-width) {
           width: 100%;
+        }
+      }
+
+      .fin-analytic-container {
+        @media screen and (max-width: $mob-width) {
+          flex-direction: column;
+          align-items: flex-start !important;
+
+          .title-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+          }
         }
       }
 
@@ -561,6 +607,8 @@
             width: 100%;
             display: block;
             padding: 5px 0;
+            font-size: 16px;
+            line-height: 18px;
           }
         }
       }
@@ -740,8 +788,6 @@
 
       @media screen and(max-width: $mob-width) {
         .tablet-full {
-          padding-bottom: 50px;
-
           strong {
             width: 100%;
           }
@@ -753,10 +799,10 @@
               height: 35px;
               padding: 0;
               position: absolute;
-              left: 0;
-              right: 0;
+
+              right: -22px;
               margin: auto;
-              top: 40px;
+              top: 17px;
               min-width: 260px;
               text-align: center;
               display: flex;

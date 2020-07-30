@@ -218,6 +218,9 @@
         line-height: 22px;
         /* identical to box height */
 
+        @media screen and (max-width: $mob-width) {
+          font-size: 13px;
+        }
 
         /* text */
 
@@ -241,6 +244,14 @@
             text-align: right;
             color: #495057;
           }
+
+          @media screen and (max-width: $mob-width) {
+            font-size: 13px;
+            span {
+              font-size: 13px;
+
+            }
+          }
         }
       }
 
@@ -249,12 +260,19 @@
         font-size: 16px;
         margin: 0;
         font-weight: normal;
+
+        @media screen and (max-width: $mob-width) {
+          font-size: 13px !important;
+        }
       }
 
       span {
         font-weight: normal;
         font-size: 16px;
         line-height: 22px;
+        @media screen and (max-width: $mob-width) {
+          font-size: 13px !important;
+        }
 
         color: #495057;
 
@@ -320,6 +338,12 @@
     line-height: 33px;
     /* identical to box height */
 
+    @media screen and (max-width: $mob-width){
+      font-size: 16px;
+      margin-bottom: 20px;
+
+    }
+
 
     color: #495057;
     margin-bottom: 30px;
@@ -331,6 +355,9 @@
     line-height: 22px;
     text-align: left;
     /* identical to box height */
+    @media screen and (max-width: $mob-width){
+      font-size: 13px;
+    }
 
 
     /* text */
@@ -836,6 +863,10 @@
     color: #495057;
     padding: 18px 20px;
     margin-bottom: 0;
+
+    @media screen and (max-width: $mob-width) {
+      font-size: 16px;
+    }
   }
 
   .header-invoice {
@@ -852,6 +883,12 @@
         font-size: 16px !important;
         line-height: 22px !important;
         color: #495057 !important;
+
+
+        @media screen and (max-width: $mob-width) {
+          font-size: 13px !important;
+          line-height: 16px !important;
+        }
       }
     }
   }
@@ -875,6 +912,11 @@
         line-height: 22px;
         /* identical to box height */
         color: #495057;
+
+        @media screen and (max-width: $mob-width) {
+          font-size: 13px;
+          line-height: 16px;
+        }
       }
     ;
     }
