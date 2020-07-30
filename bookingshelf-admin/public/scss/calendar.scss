@@ -444,6 +444,10 @@
     @media screen {
       @media (max-width: $mob-width) {
         padding-left: 4px;
+
+        .scroll-button {
+          display: none;
+        }
       }
     }
 
