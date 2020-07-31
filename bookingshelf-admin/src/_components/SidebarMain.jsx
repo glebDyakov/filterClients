@@ -302,21 +302,25 @@ class SidebarMain extends React.Component {
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
                             <div className="service_item">
-                                <div className="left-block">
-                                    <div className="img-container">
+                                <div className="left-block d-none d-md-flex">
+                                    <div className="img-container d-none d-md-flex">
                                         <img
                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                             className="img"/></div>
                                     <div>
-                                        <p style={{float: "none"}}>
-                                            <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                        <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                            <div className="img-container d-md-none">
+                                                <img
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    className="img"/></div>
+                                            <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
                                         <p className="service_name"
                                         >{appointment.serviceName}
-                                            <br/>
+
                                             {extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
-                                        </p><br/>
+                                        </p>
                                     </div>
                                 </div>
                                 <div style={{wordBreak: 'break-word'}}>
@@ -337,10 +341,37 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#50A5F1"}}>
+                                    <p className="d-none d-md-flex" style={{color: "#50A5F1"}}>
                                         Просмотреть запись →
                                     </p>
 
+                                </div>
+
+                                <div className="left-block d-flex d-md-none flex-column">
+                                    <br/>
+                                    <div className="img-container d-none d-md-flex">
+                                        <img
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            className="img"/></div>
+                                    <div>
+                                        <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                            <div className="img-container d-md-none">
+                                                <img
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    className="img"/></div>
+                                            <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                        </p>
+                                        <p className="service_name"
+                                        >{appointment.serviceName}
+
+                                            {extraServiceText}
+                                            {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                        </p>
+                                    </div>
+                                    <br/>
+                                    <p style={{color: "#50A5F1"}}>
+                                        Просмотреть запись →
+                                    </p>
                                 </div>
                             </div>
                         </li>
@@ -369,38 +400,88 @@ class SidebarMain extends React.Component {
                     movedCount++;
                     resultMarkup = (
                         <li onClick={() => this.goToPageCalendar(appointment, appointmentInfo.staff.staffId)}>
+                            {/*<div className="service_item">*/}
+                            {/*    <div className="left-block">*/}
+                            {/*        <div className="img-container d-none d-md-flex">*/}
+                            {/*            <img*/}
+                            {/*                src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
+                            {/*                className="img"/></div>*/}
+                            {/*        <div>*/}
+                            {/*            <p style={{float: "none"}}>*/}
+                            {/*                <div className="img-container d-md-none">*/}
+                            {/*                    <img*/}
+                            {/*                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
+                            {/*                        className="img"/></div>*/}
+                            {/*                <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}*/}
+                            {/*            </p>*/}
+
+                            {/*            <p className="service_name"*/}
+                            {/*               style={{*/}
+                            {/*                   // width: "65%",*/}
+                            {/*                   // marginRight: "5%",*/}
+                            {/*                   // wordWrap: "break-word"*/}
+                            {/*               }}*/}
+                            {/*            ><strong>{appointment.serviceName}</strong> <br/>*/}
+                            {/*                <strong>{extraServiceText}</strong>*/}
+                            {/*                /!*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*!/*/}
+                            {/*            </p>*/}
+                            {/*            <span*/}
+                            {/*                className="deleted"*/}
+                            {/*                style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>*/}
+                            {/*            <br/>*/}
+                            {/*            <br/>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*    <div style={{wordBreak: 'break-word'}}>*/}
+                            {/*        {appointment.clientFirstName ? <React.Fragment><p>*/}
+                            {/*            <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}*/}
+                            {/*        </p></React.Fragment> : 'Без клиента'}<br/>*/}
+                            {/*        {appointment.clientPhone &&*/}
+                            {/*        <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}*/}
+                            {/*        {companyTypeId === 2 && appointment.carBrand &&*/}
+                            {/*        <p style={{textDecoration: 'underline'}}><strong>Марка*/}
+                            {/*            авто: </strong> {appointment.carBrand}</p>}*/}
+                            {/*        {companyTypeId === 2 && appointment.carNumber &&*/}
+                            {/*        <p style={{textDecoration: 'underline'}}><strong>Гос.*/}
+                            {/*            номер: </strong> {appointment.carNumber}</p>}*/}
+                            {/*        <p className="service_time" style={{textTransform: 'capitalize'}}*/}
+                            {/*            // style={{width: "30%", textAlign: "left"}}*/}
+                            {/*        >*/}
+                            {/*            <strong>Время: </strong>*/}
+                            {/*            {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}*/}
+                            {/*        </p>*/}
+                            {/*        <p style={{color: "#50A5F1"}}>*/}
+                            {/*            Просмотреть запись →*/}
+                            {/*        </p>*/}
+
+                            {/*    </div>*/}
+                            {/*</div>*/}
                             <div className="service_item">
-                                <div className="left-block">
-                                    <div className="img-container">
+                                <div className="left-block d-none d-md-flex">
+                                    <div className="img-container d-none d-md-flex">
                                         <img
                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                             className="img"/></div>
                                     <div>
-                                        <p style={{float: "none"}}>
-                                            <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                        <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                            <div className="img-container d-md-none">
+                                                <img
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    className="img"/></div>
+                                            <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
-
                                         <p className="service_name"
-                                           style={{
-                                               // width: "65%",
-                                               // marginRight: "5%",
-                                               // wordWrap: "break-word"
-                                           }}
-                                        ><strong>{appointment.serviceName}</strong> <br/>
-                                            <strong>{extraServiceText}</strong>
+                                        >{appointment.serviceName}
+
+                                            {extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p>
-                                        <span
-                                            className="deleted"
-                                            style={{color: "#3E90FF"}}>{appointment.movedOnline ? 'Перенесен клиентом' : 'Перенесен сотрудником'}</span>
-                                        <br/>
-                                        <br/>
                                     </div>
                                 </div>
                                 <div style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p>
                                         <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
-                                    </p></React.Fragment> : 'Без клиента'}<br/>
+                                    </p><br/></React.Fragment> : ''}
                                     {appointment.clientPhone &&
                                     <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {companyTypeId === 2 && appointment.carBrand &&
@@ -415,12 +496,41 @@ class SidebarMain extends React.Component {
                                         <strong>Время: </strong>
                                         {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                     </p>
-                                    <p style={{color: "#50A5F1"}}>
+                                    <p className="d-none d-md-flex" style={{color: "#50A5F1"}}>
                                         Просмотреть запись →
                                     </p>
 
                                 </div>
+
+                                <div className="left-block d-flex d-md-none flex-column">
+                                    <br/>
+                                    <div className="img-container d-none d-md-flex">
+                                        <img
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            className="img"/></div>
+                                    <div>
+                                        <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                            <div className="img-container d-md-none">
+                                                <img
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    className="img"/></div>
+                                            <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                                        </p>
+                                        <p className="service_name"
+                                        >{appointment.serviceName}
+
+                                            {extraServiceText}
+                                            {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
+                                        </p>
+                                    </div>
+                                    <br/>
+                                    <p style={{color: "#50A5F1"}}>
+                                        Просмотреть запись →
+                                    </p>
+                                </div>
                             </div>
+
+
                         </li>
                     )
                 }
@@ -484,7 +594,7 @@ class SidebarMain extends React.Component {
                                 return (
                                     localItem.id === item.id &&
                                     <li className={path === item.url ? 'active' : ''}
-                                        style={item.id === 'calendar_menu_id' ? { marginTop: '30px'} : {}}
+                                        style={item.id === 'calendar_menu_id' ? {marginTop: '30px'} : {}}
                                         key={keyStore}>
                                         <a onClick={(e) => this.handleClick(item.url, e)}>
                                             <img
@@ -662,7 +772,7 @@ class SidebarMain extends React.Component {
                                                 <li className="opacity0">
                                                     <div className="service_item">
                                                         <div className="left-block">
-                                                            <div className="img-container">
+                                                            <div className="img-container d-none d-md-flex">
                                                                 <img
                                                                     src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                     className="img"/></div>
@@ -677,17 +787,18 @@ class SidebarMain extends React.Component {
                                                             </div>
                                                         </div>
                                                         <div style={{wordBreak: 'break-word'}}>
-                                                            {appointment.clientFirstName ? <React.Fragment><p>
+                                                            {appointment.clientFirstName ? <React.Fragment><p> <div className="img-container d-md-none">
+                                                                <img
+                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                    className="img"/></div>
                                                                 <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                                             </p><br/> </React.Fragment> : 'Без клиента'}
-                                                            {appointment.clientPhone &&
-                                                            <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
-                                                            {companyTypeId === 2 && appointment.carBrand &&
-                                                            <p><strong style={{textDecoration: 'underline'}}>Марка
-                                                                авто: </strong> {appointment.carBrand}</p>}
-                                                            {companyTypeId === 2 && appointment.carNumber &&
-                                                            <p><strong style={{textDecoration: 'underline'}}>Гос.
-                                                                номер: </strong> {appointment.carNumber}</p>}
+
+                                                            {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
+
+                                                            {companyTypeId === 2 && appointment.carBrand && <p><strong style={{textDecoration: 'underline'}}>Марка авто: </strong> {appointment.carBrand}</p>}
+
+                                                            {companyTypeId === 2 && appointment.carNumber && <p><strong style={{textDecoration: 'underline'}}>Гос. номер: </strong> {appointment.carNumber}</p>}
                                                             <p className="service_time"
                                                                style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
@@ -697,6 +808,8 @@ class SidebarMain extends React.Component {
                                                             </p>
                                                         </div>
                                                     </div>
+
+
                                                 </li>
                                             )
                                         })}

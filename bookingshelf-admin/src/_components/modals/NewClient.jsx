@@ -206,7 +206,7 @@ class NewClient extends React.Component {
                                     {(companyTypeId === 2 || companyTypeId === 3) && <InputCounter title="Гос. номер" placeholder="" value={client.carNumber}
                                                                           name="carNumber" handleChange={this.handleChange} maxLength={128} />}
 
-                                    <InputCounter type="email" placeholder="Введите email(опционально)" value={client.email}
+                                    <InputCounter type="email" placeholder="Введите email (опционально)" value={client.email}
                                                   name="email" title="Email"
                                                   handleKeyUp={() => this.setState({
                                                       emailIsValid: isValidEmailAddress(client.email)

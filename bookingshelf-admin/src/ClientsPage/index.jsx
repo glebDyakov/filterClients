@@ -248,7 +248,7 @@ class Index extends Component {
 
 
                 <div style={{position: 'relative'}} className="clients-page-container">
-                    <div style={{position: 'absolute', zIndex: 1}}
+                    <div style={{position: 'absolute', zIndex: 2}}
                          className="row content clients">
                         {/*<StaffChoice*/}
                         {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
@@ -376,7 +376,7 @@ class Index extends Component {
                                                 data-toggle="modal"
                                                 onClick={this.addToBlackList}
                                             >
-                                                Добавить в blacklist
+                                                Добавить в черный список
                                             </button>
                                             }
                                         </span>)
@@ -405,7 +405,7 @@ class Index extends Component {
                                                                   data-target=".add-black-list-modal"
                                                                   data-toggle="modal"
                                                                   onClick={this.addToBlackList}>Добавить в
-                                blacklist</button>}
+                                черный список</button>}
                         </div>
                         <div className="arrow"/>
                     </div>

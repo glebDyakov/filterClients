@@ -29,7 +29,6 @@ class StaffInfo extends Component {
 
     render() {
         const {dragHandleProps, i, isGroup, staff_user, groupIndex, handleClick, deleteStaff, renderSwitch} = this.props;
-        console.log(this.state)
 
         return (
             <React.Fragment>

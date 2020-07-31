@@ -1,0 +1,131 @@
+//.calendar.dark-theme {
+//  * {
+//  }
+//
+//  .calendar-container {
+//    background: #2E3548 !important;
+//    color: #fff !important;
+//
+//  }
+//}
+
+.dark-theme {
+  &.sidebar {
+    .sidebar_list_collapse {
+      background: url("../img/dark-theme/sidebar-collapse-icon.svg") center no-repeat !important;
+      background-size: 100% auto;
+    }
+  }
+
+  &.no-scroll {
+
+    background: #262B3C !important;
+    * {
+      color: #fff !important;
+    }
+
+    .change-biz {
+      color: #50A5F1 !important;
+
+    }
+
+    .search-header {
+      background: #2A3042 !important;
+      .search-input {
+        background: #2A3042 !important;
+        color: #fff !important;
+
+        &::placeholder {
+          color: #fff;
+        }
+
+        &::-webkit-input-placeholder {
+          color: #fff;
+        }
+      }
+
+      .search-icon {
+        background-color: #2A3042 !important;
+        background: url("../img/dark-theme/search-input.svg") center no-repeat;
+        background-size: 100% auto;
+
+      }
+    }
+
+    .right_elements {
+      .setting {
+        background: url("../img/dark-theme/Setting.svg") center no-repeat;
+        background-size: 100% auto;
+      }
+
+      .firm-name.user-dropdown {
+        &::before {
+          content: url("../img/dark-theme/down-arrow.svg") !important;
+        }
+      }
+
+      .notification {
+        background: url("../img/dark-theme/Notification.svg") center no-repeat;
+        background-size: 100% auto;
+      }
+    }
+  }
+
+  &.calendar {
+    .calendar-container {
+      * {
+        color: #fff !important;
+      }
+
+      background: #2E3548;
+
+      .tab-day-week {
+        .nav-item {
+          &:hover {
+            background: none !important;
+            opacity: 1 !important;
+          }
+        }
+
+        .nav-link {
+          background: none !important;
+          &::after {
+            background: #fff !important;
+          }
+
+          cursor: pointer;
+
+        }
+      }
+
+      .select-date {
+        .arrow-left,
+        .arrow-right {
+          background: #2E3548 !important;
+        }
+
+        .arrow-left {
+          background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+          background-size: 100% auto;
+        }
+        .arrow-right {
+          background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+          background-size: 100% auto;
+        }
+
+        .button-calendar {
+          background: #222736 !important;
+        }
+
+        .SelectedWeekExample {
+          background: #2A3042 !important;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+

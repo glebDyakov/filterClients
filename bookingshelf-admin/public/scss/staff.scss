@@ -133,6 +133,12 @@
     }
   }
 
+  .css-1e7mt16-menu {
+    * {
+
+      background-color: #fff;
+    }
+  }
 
   .user-feeds {
     background: #FFFFFF;
@@ -1508,6 +1514,7 @@
   }
 }
 
+
 .staff-time-schedule {
   cursor: pointer;
 
@@ -1576,6 +1583,11 @@
     .start-work,
     .buttons {
       display: none !important;
+    }
+
+    .start-work-mob {
+      margin-bottom: 15px !important;
+      justify-content: center;
     }
 
     .start-work-mob,

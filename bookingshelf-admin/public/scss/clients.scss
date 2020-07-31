@@ -390,6 +390,8 @@
     }
   }
 
+
+
   .client-in-blacklist {
     width: auto;
     margin-right: 10px;
@@ -594,7 +596,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 82px;
+    padding: 40px;
     position: absolute;
     left: 0;
     right: 0;
@@ -608,15 +610,16 @@
       color: #2A3042;
 
       .button {
-        margin-left: 30px;
+        margin-left: 0;
         font-size: 16px;
         line-height: 22px;
+        height: 42px;
         /* identical to box height */
         background: #50A5F1;
         border-radius: 30px;
         border: none;
         color: #FFFFFF;
-        padding: 10px 64px;
+        padding: 0 23px !important;
       }
 
     }
@@ -778,7 +781,7 @@
 
         font-size: 13px;
         line-height: 18px;
-        color: #99999b;
+        color: #2A3042;
 
         padding: 9px 10px;
         border: none;
@@ -920,7 +923,12 @@
       overflow-y: auto;
       background: #F8F8FB;
       overflow-x: hidden;
-      max-height: calc(100% - 210px);
+      max-height: calc(100% - 40px);
+
+      @media screen and (max-height: $mob-width) {
+        max-height: calc(100% - 205px);
+      }
+
       &::-webkit-scrollbar {
         width: 2px;
       }
@@ -1018,4 +1026,194 @@
       }
     }
   }
+}
+
+.black-list-modal-wrapper {
+  max-width: 770px;
+
+  .modal-add-black-list {
+
+    .modal-content {
+      background: #F8F8FB;
+    }
+
+    .clients-list {
+      width: 70%;
+
+      .name_container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+
+        @media screen and (max-width: $mob-width) {
+          flex-direction: column;
+        }
+      }
+
+
+      span {
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        /* identical to box height */
+
+        color: #50A5F1;
+
+        &.email-user {
+          color: #495057;
+
+        }
+      }
+    }
+
+    .buttons {
+      width: 100%;
+      display: flex;
+      margin: 40px 0;
+      justify-content: center;
+      align-items: center;
+      .button {
+        background: #50A5F1;
+        border-radius: 30px;
+        border: 0;
+        height: 42px;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        /* identical to box height */
+
+        text-align: center;
+
+        color: #FFFFFF;
+        padding: 10px 68px;
+      }
+    }
+
+    .modal-body {
+      padding: 0;
+      margin-top: 15px;
+    }
+
+    .search {
+      margin: 25px 30px;
+    }
+
+    .add-checkbox {
+      position: relative;
+    }
+
+    .clients-container {
+
+
+
+      background: #FFFFFF;
+      /* Drop Shadow */
+
+      display: flex;
+      flex-direction: column;
+
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    }
+
+    .search-input {
+      padding: 10px 30px 10px 36px;
+      height: 36px;
+      display: flex !important;
+    }
+
+    .client-item {
+      padding: 25px 30px;
+      border-bottom: 1px solid #EAEAEC;
+      box-sizing: border-box;
+
+    }
+
+    ul {
+      border-top: 1px solid #eaeaec;
+      margin-bottom: 0;
+      max-height: 320px;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #2A3042;
+        border-radius: 4px;
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: #b30000;
+      }
+
+    }
+
+
+    .form-check-input[type="checkbox"] {
+      display: none;
+
+
+      + .check-box-plus {
+        border-radius: 50%;
+        background: #50A5F1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        position: absolute;
+        left: -20px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        transition: 200ms !important;
+        box-sizing: border-box;
+
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          height: 12px;
+          width: 2px;
+          background: #fff;
+          border-radius: 5px;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(90deg);
+          height: 12px;
+          width: 2px;
+          background: #fff;
+          border-radius: 5px;
+        }
+      }
+
+      &:checked {
+
+        + .check-box-plus {
+          transition: 200ms;
+          background: #F46A6A;;
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+  }
+
 }
