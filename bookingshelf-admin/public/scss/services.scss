@@ -4,6 +4,7 @@
   width: 100%;
   display: block;
 
+
   .services_wrapper {
     max-height: calc(100% - 74px);
     overflow-y: auto;
@@ -547,7 +548,7 @@
       .button-next {
         margin-top: 10px;
         background: #50A5F1;
-        opacity: 0.35;
+        opacity: 1;
         border-radius: 30px;
         transition: linear 200ms;
         font-weight: normal;
@@ -603,7 +604,7 @@
         border-bottom: 1px solid #eaeaec;
         font-size: 13px;
         line-height: 18px;
-        color: #495057;
+        color: #2A3042;
         padding: 10px 30px 10px 0px;
         margin: 0;
       }
@@ -621,21 +622,32 @@
 
 
   .no-holiday {
-    @include border-style();
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-direction: column;
     padding: 82px;
 
     span {
-      font-size: 20px;
+      font-size: 16px;
+      line-height: 18px;
+      color: #2A3042;
 
-      .button {
-        display: block;
-        margin: auto;
-        font-size: 15px;
-        height: auto;
-        width: auto;
+      .buttons {
+        padding: 15px 0;
+        .button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none;
+          background: #50A5F1;
+          border-radius: 30px;
+          height: 42px;
+          padding: 10px 68px;
+          font-size: 13px;
+          line-height: 18px;
+          color: #fff;
+        }
       }
 
     }

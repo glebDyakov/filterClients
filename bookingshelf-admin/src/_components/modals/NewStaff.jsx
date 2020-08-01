@@ -205,7 +205,8 @@ class NewStaff extends React.Component {
                                                                className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
                                                                maxLength="100"
                                                         />
-                                                        <span className="max-count-letters">{staff.firstName ? staff.firstName.length : 0}/100</span>
+                                                        <span
+                                                            className="max-count-letters">{staff.firstName ? staff.firstName.length : 0}/100</span>
                                                     </div>
                                                     <div style={{position: 'relative'}} className="mobile-visible">
                                                         <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 2' : 'Фамилия'}</p>
@@ -213,7 +214,8 @@ class NewStaff extends React.Component {
                                                                placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Введите название' : 'Введите фамилию'}
                                                                value={staff.lastName} name="lastName"
                                                                onChange={this.handleChange} maxLength="100"/>
-                                                        <span className="max-count-letters">{staff.lastName ? staff.lastName.length : 0}/100</span>
+                                                        <span
+                                                            className="max-count-letters">{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                     </div>
 
                                                     <p>Номер телефона</p>
@@ -243,7 +245,8 @@ class NewStaff extends React.Component {
                                                                placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Площадка 1' : "Введите фамилию"}
                                                                value={staff.lastName} name="lastName"
                                                                onChange={this.handleChange} maxLength="100"/>
-                                                        <span className="max-count-letters">{staff.lastName ? staff.lastName.length : 0}/100</span>
+                                                        <span
+                                                            className="max-count-letters">{staff.lastName ? staff.lastName.length : 0}/100</span>
                                                     </div>
                                                     <div className="desktop-visible">
                                                         {emailInput}
@@ -336,19 +339,11 @@ class NewStaff extends React.Component {
                                                             styles={colourStyles}
                                                         />
                                                     </div>
-                                                    <div>
-                                                        <p>Доступное время для онлайн-записи</p>
-                                                        <select className="custom-select" name="onlineBookingPercent"
-                                                                onChange={this.handleChange}
-                                                                value={staff.onlineBookingPercent}>
-                                                            <option value={25}>25%</option>
-                                                            <option value={50}>50%</option>
-                                                            <option value={75}>75%</option>
-                                                            <option value={100}>100%</option>
-                                                        </select>
-                                                    </div>
 
 
+                                                    <p className="start-work"
+                                                       style={{margin: '12px 0', textAlign: 'left'}}>Начало
+                                                        работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
 
                                                     <div className="buttons new-staff-buttons">
                                                         <button className={'small-button'} type="button"
@@ -370,9 +365,17 @@ class NewStaff extends React.Component {
                                                 </div>
                                                 <div className="col-md-8 p-0 d-flex flex-wrap">
 
-                                                    <div className="col-md-6">
-                                                        <p className="start-work" style={{marginTop: '12px', textAlign: 'center'}}>Начало
-                                                            работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
+
+                                                    <div className="col-md-6 time-to-online-visit">
+                                                        <p>Доступное время для онлайн-записи</p>
+                                                        <select className="custom-select" name="onlineBookingPercent"
+                                                                onChange={this.handleChange}
+                                                                value={staff.onlineBookingPercent}>
+                                                            <option value={25}>25%</option>
+                                                            <option value={50}>50%</option>
+                                                            <option value={75}>75%</option>
+                                                            <option value={100}>100%</option>
+                                                        </select>
                                                     </div>
 
                                                     <div className="col-md-12">
@@ -412,7 +415,8 @@ class NewStaff extends React.Component {
                                                             </div>
 
                                                             {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis &&
-                                                            <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                            <div
+                                                                className="staff-day-picker online-zapis-date-picker mb-3">
                                                                 <p className="staff-day-picker-title">Начало</p>
                                                                 <DatePicker
                                                                     // closedDates={staffAll.closedDates}
@@ -425,7 +429,8 @@ class NewStaff extends React.Component {
                                                             }
 
                                                             {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis &&
-                                                            <div className="staff-day-picker online-zapis-date-picker mb-3">
+                                                            <div
+                                                                className="staff-day-picker online-zapis-date-picker mb-3">
                                                                 <p className="staff-day-picker-title">Конец</p>
                                                                 <DatePicker
                                                                     // closedDates={staffAll.closedDates}
@@ -448,7 +453,8 @@ class NewStaff extends React.Component {
                                                             }
                                                         </div>
 
-                                                        <p className="start-work-mob" style={{marginTop: '12px', textAlign: 'center'}}>Начало
+                                                        <p className="start-work-mob"
+                                                           style={{marginTop: '12px', textAlign: 'center'}}>Начало
                                                             работы: {moment(staff.workStartMilis, 'x').startOf('day').format("D MMMM YYYY")}</p>
 
                                                         {staffs && staffs.status === 200 &&
@@ -468,10 +474,6 @@ class NewStaff extends React.Component {
                                                         }
 
                                                     </div>
-
-
-
-
 
 
                                                     <div className="buttons buttons-mob new-staff-buttons">

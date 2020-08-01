@@ -82,7 +82,7 @@ class ServiceGroupInfo extends Component {
                 />
 
                 {(collapse.indexOf(item.serviceGroupId) === -1 && (!item.services || item.services.length === 0)) &&
-                <div className="services_items">
+                <div className="services_items d-flex justify-content-center w-100">
                     <p>Нет услуг</p>
                 </div>
                 }

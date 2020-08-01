@@ -2,6 +2,7 @@
 
 .staff {
 
+
   .staffs.tab-content-list {
     @media screen and (max-width: $mob-width) {
       display: none !important;
@@ -97,6 +98,8 @@
       }
     }
   }
+
+
 
   .form-check-input[type="checkbox"] {
     display: none;
@@ -1407,7 +1410,12 @@
     }
   }
 
+
+
   .new-staff-modal {
+
+
+
     .modal-dialog {
       width: 100% !important;
       margin-left: 0 !important;
@@ -1536,6 +1544,14 @@
   }
 
 
+}
+
+.time-to-online-visit {
+  height: 0;
+
+  @media screen and (max-width: $mob-width) {
+    height: 90px !important;
+  }
 }
 
 .staff-day-picker {

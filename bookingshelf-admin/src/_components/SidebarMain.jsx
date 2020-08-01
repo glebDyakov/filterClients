@@ -713,6 +713,10 @@ class SidebarMain extends React.Component {
                                     <button onClick={this.handleDropdownButtons}
                                             className={"dropdown-selected-button" + (this.state.isOpenDropdownButtons ? " opened" : '')}>
                                         {openedTab === 'new' ? "Новые записи" : (openedTab === 'deleted' ? "Удаленные записи" : (openedTab === 'moved' ? "Перенесенные записи" : ''))}
+                                        <span
+                                            className="counter">
+                                        {count && count.appointments && count.canceled && count.moved && (count.appointments.count + count.moved.count + count.canceled.count)}
+                                    </span>
                                     </button>
                                     {this.state.isOpenDropdownButtons && (
                                         <div className="dropdown-buttons">

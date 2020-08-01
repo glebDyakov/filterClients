@@ -76,11 +76,7 @@ class Index extends Component {
     }
 
     handleOpenDropdownMenu() {
-        if (this.state.isOpenDropdownMenu) {
-            this.setState({isOpenDropdownMenu: false});
-        } else {
-            this.setState({isOpenDropdownMenu: true});
-        }
+            this.setState({isOpenDropdownMenu: !this.state.isOpenDropdownMenu});
     }
 
 
@@ -248,7 +244,7 @@ class Index extends Component {
 
 
                 <div style={{position: 'relative'}} className="clients-page-container">
-                    <div style={{position: 'absolute', zIndex: 2}}
+                    <div style={{zIndex: 2}}
                          className="row content clients">
                         {/*<StaffChoice*/}
                         {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
@@ -275,7 +271,9 @@ class Index extends Component {
                         </div>
 
                         <div className={"header-tabs-mob" + (this.state.isOpenDropdownMenu ? " opened" : '')}>
-                            <p onClick={this.handleOpenDropdownMenu}
+                            <p onClick={() => {
+                               this.handleOpenDropdownMenu();
+                            }}
                                className="dropdown-button">{activeTab === 'clients' ? "Клиенты" : "Черный список"}</p>
 
                             {this.state.isOpenDropdownMenu && (
@@ -399,7 +397,10 @@ class Index extends Component {
                     <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
                         <div className="buttons">
                             {activeTab === 'clients' &&
-                            <button type="button" className="button" onClick={(e) => this.handleClick(null, e)}>Новый
+                            <button type="button" className="button" onClick={(e) => {
+                                this.handleClick(null, e);
+                                this.handleOpenModal();
+                            }}>Новый
                                 клиент</button>}
                             {activeTab === 'blacklist' && <button type="button" className="button"
                                                                   data-target=".add-black-list-modal"

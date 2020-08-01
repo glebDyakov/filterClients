@@ -8,14 +8,6 @@
   box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
   padding: 0 0 0 0;
   margin-bottom: 95px;
-
-  .clients-page-container{
-    padding: 72px 0 0 0;
-    @media screen and (max-width: $mob-width) {
-      padding: 0 !important;
-    }
-  }
-
   .notes-delete-modal {
 
   }
@@ -189,6 +181,7 @@
         right: 0;
         background: #FFFFFF;
         box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+        z-index: 2;
 
         a {
           padding: 15px 21px;
@@ -398,10 +391,14 @@
   }
 
   .final-clients {
-    max-height: calc(100vh - 225px);
+    max-height: calc(100vh - 130px);
     overflow-y: auto;
+    margin-top: 7px;
+
     @media screen and(max-width: $tablet-width) {
-      padding-top: 50px;
+      max-height: calc(100vh - 130px);
+
+      margin-top: 7px;
     }
 
     .clientEyeDel {
@@ -438,6 +435,7 @@
     &:first-of-type {
       border-top: 1px solid #EFF2F7;
 
+      background-color: #fff;
     }
 
     .column-header {
@@ -596,6 +594,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-direction: column;
     padding: 40px;
     position: absolute;
     left: 0;
@@ -609,7 +608,14 @@
       line-height: 33px;
       color: #2A3042;
 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
+
       .button {
+        margin-top: 15px;
         margin-left: 0;
         font-size: 16px;
         line-height: 22px;
@@ -1132,6 +1138,7 @@
     ul {
       border-top: 1px solid #eaeaec;
       margin-bottom: 0;
+      overflow-x: hidden;
       max-height: 320px;
       overflow-y: auto;
       &::-webkit-scrollbar {
@@ -1216,4 +1223,10 @@
 
   }
 
+}
+
+.not-visits {
+  text-align: center;
+  font-size: 13px;
+  color: #2A3042;
 }

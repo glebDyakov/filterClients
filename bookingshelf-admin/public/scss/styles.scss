@@ -16,6 +16,73 @@
   }
 }
 
+.delimiter {
+  p, span {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 25px;
+    color: #495057;
+  }
+}
+
+
+.faq-tabs {
+  display: flex !important;
+
+  .nav-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    .nav-item {
+      .nav-link {
+        font-size: 13px !important;
+      }
+    }
+  }
+}
+
+.faq-page {
+  margin-top: 7px;
+
+
+
+
+  .content-pages-bg{
+    background: #FFFFFF;
+    border-radius: 0;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+
+
+
+    strong {
+      font-weight: 600;
+      font-size: 18px !important;
+      line-height: 25px;
+      /* identical to box height */
+      margin-bottom: 7px !important;
+
+      color: #495057;
+
+       @media screen and (max-width: $mob-width) {
+         &.sub-title {
+           margin-top: 15px;
+         }
+       }
+    }
+
+    span {
+      font-weight: 400;
+      font-size: 16px !important;
+      line-height: 20px;
+      /* identical to box height */
+      color: #2A3042;
+
+
+    }
+  }
+}
+
 .search-col {
   min-width: unset !important;
   @media (max-width: $mob-width) {
@@ -451,6 +518,14 @@ input {
     top: -8px;
     right: -7px;
 
+
+    @media screen and (max-width: $mob-width) {
+      top: -4px;
+      right: -3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .disabled {
@@ -1368,7 +1443,7 @@ input {
 
   li {
     background: #fff;
-    padding: 12px 10px;
+    padding: 8px 6px;
     margin-bottom: 1px;
 
     a {
@@ -3576,6 +3651,10 @@ select {
       max-width: unset;
       min-width: unset;
 
+      .counter {
+        right: -32px;
+      }
+
       &::before {
         content: url("../img/icons/arrow.svg");
         position: absolute;
@@ -3616,9 +3695,6 @@ select {
           color: #50A5F1;
         }
 
-        .counter {
-          display: none;
-        }
 
         &:last-child {
           border: none !important;
@@ -3903,7 +3979,7 @@ select {
 }
 
 .modal-dialog {
-  max-width: fit-content !important;
+  //max-width: fit-content !important;/**/
 }
 
 .sidebar-modal {
@@ -4477,7 +4553,7 @@ select {
         .button {
           height: 42px;
           background: #50A5F1;
-          opacity: 0.35;
+          opacity: 1;
           border-radius: 30px;
           padding: 10px 64px;
           font-weight: normal;
@@ -5775,7 +5851,6 @@ textarea {
     width: 100%;
     margin: 0;
     min-height: 100px;
-    min-width: 600px;
     align-items: center;
     justify-content: space-between;
     border-top: solid 0.8px rgba(172, 172, 172, 0.2);

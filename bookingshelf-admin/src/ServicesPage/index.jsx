@@ -325,9 +325,11 @@ class Index extends Component {
                         <div className="no-holiday">
                                     <span>
                                         Услуги не добавлены
-                                        <button type="button"
-                                                className="button mt-3 p-3"
-                                                onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
+                                        <span className="buttons">
+                                            <button type="button"
+                                                    className="button"
+                                                    onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
+                                        </span>
                                     </span>
                         </div>
                     }
