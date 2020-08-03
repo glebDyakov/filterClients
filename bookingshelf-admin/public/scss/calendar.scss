@@ -420,10 +420,9 @@
       height: 100%;
     }
 
-    @media screen {
-      @media (max-width: $mob-width) {
-        padding-left: 4px;
-      }
+    @media (max-width: $mob-width) {
+      padding-left: 4px;
+      height: auto;
     }
 
 
@@ -760,6 +759,11 @@
       top: 0;
       width: max-content;
 
+
+      @media screen and(max-width: $mob-width) {
+        position: absolute;
+      }
+
       .tab-content-list {
         .cell.hours {
           background: #fff url(../img/clockForCell.svg) no-repeat center;
@@ -824,6 +828,10 @@
 
       @media screen and(max-width: $mob-width) {
         height: calc(100% - 160px);
+        position: sticky;
+        position: -webkit-sticky;
+        overflow-y: scroll;
+        overflow-x: hidden;
       }
 
       .tab-content-list {
