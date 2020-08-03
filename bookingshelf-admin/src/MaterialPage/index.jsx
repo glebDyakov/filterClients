@@ -338,7 +338,7 @@ class Index extends Component {
 
               <div
 
-                   className="row clients">
+                   className="row align-items-center content clients mb-0 search-container">
 
                   <div className="header-tabs d-flex">
 
@@ -583,7 +583,7 @@ class Index extends Component {
                                                     this.handleSearch('defaultProductsList', 'products', ['productName', 'description'], 'productSearch')}/>
                                                 <button className="search-icon" type="submit"/>
                                             </div>
-                                            <div className="col-4 col-lg-8">
+                                            <div className="col-4 col-lg-8 p-0">
                                                 {navTabs}
                                             </div>
                                         </div>
@@ -693,7 +693,7 @@ class Index extends Component {
                                                        aria-label="Search" ref={input => this.categorySearch = input} onChange={() => this.handleSearch('defaultCategoriesList', 'categories', ['categoryName'], 'categorySearch')}/>
                                                 <button className="search-icon" type="submit"/>
                                             </div>
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-6 col-lg-8 p-0">
                                                 {navTabs}
                                             </div>
                                         </div>
@@ -765,7 +765,7 @@ class Index extends Component {
                                                 <button className="search-icon" type="submit"/>
                                             </div>
 
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-6 col-lg-8 p-0">
                                                 {navTabs}
                                             </div>
                                         </div>
@@ -838,7 +838,7 @@ class Index extends Component {
                                                 <button className="search-icon" type="submit"/>
                                             </div>
 
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-6 col-lg-8 p-0">
                                                 {navTabs}
                                             </div>
                                         </div>
@@ -933,7 +933,7 @@ class Index extends Component {
                                             <button className="search-icon" type="submit"/>
                                         </div>
 
-                                        <div className="col-6 col-lg-8">
+                                        <div className="col-6 col-lg-8 p-0">
                                             {navTabs}
                                         </div>
                                     </div>
@@ -1078,7 +1078,7 @@ class Index extends Component {
                                                 <button className="search-icon" type="submit"/>
                                             </div>
 
-                                            <div className="col-6 col-lg-8">
+                                            <div className="col-6 col-lg-8 p-0">
                                                 {navTabs}
                                             </div>
                                         </div>

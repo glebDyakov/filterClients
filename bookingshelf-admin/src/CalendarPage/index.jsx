@@ -11,7 +11,6 @@ import {
 
 import '../../public/scss/calendar.scss'
 
-
 import moment from 'moment';
 
 import {DatePicker} from "../_components/DatePicker";

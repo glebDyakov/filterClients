@@ -70,7 +70,7 @@
       /* identical to box height */
 
 
-      color: #A4A7AB;
+      color: #2A3042;
 
     }
 
@@ -111,6 +111,12 @@
     }
   }
 
+  .title-label {
+    @media screen and (max-width: $mob-width){
+      width: 70%;
+    }
+  }
+
   .check-box .title-label, .check-box .title-label span {
     font-weight: 600;
     font-size: 16px;
@@ -118,6 +124,7 @@
     /* identical to box height */
     @media screen and (max-width: $mob-width) {
       font-size: 13px;
+      line-height: 2;
     }
     color: #495057;
   }
@@ -463,7 +470,7 @@
       min-height: 150px;
 
       padding: 13px;
-      color: #A4A7AB;
+      color: #2A3042;
       font-weight: normal;
       font-size: 13px;
       line-height: 18px;
@@ -810,6 +817,15 @@
 
   .history_page {
     margin-top: 7px;
+
+.questions_dropdown {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%) !important;
+  right: 0;
+  left: unset !important;
+  z-index: 50;
+}
 
     .sticky-item {
       position: sticky;

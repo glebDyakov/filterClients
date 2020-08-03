@@ -5,7 +5,8 @@
         min-width: 311px;
     }
     .SelectedWeekExample {
-        padding: 0 9px !important;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 .online-zapis-date-picker {

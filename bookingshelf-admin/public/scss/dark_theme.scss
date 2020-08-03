@@ -10,18 +10,71 @@
 //}
 
 .dark-theme {
-  &.sidebar {
+
+
+
+  .content-wrapper {
+    background-color: #222736 !important;
+  }
+
+  .managers-settings {
+    background: #222736 !important;
+    /* Drop Shadow */
+
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+
+    p, h4, h5 {
+      color: #fff !important;
+    }
+
+    .flag-dropdown {
+      border: none !important;
+    }
+
+    input, textarea, .flag-dropdown {
+      background: #2A3042 !important;
+    }
+  }
+
+  .sidebar {
     .sidebar_list_collapse {
       background: url("../img/dark-theme/sidebar-collapse-icon.svg") center no-repeat !important;
       background-size: 100% auto;
     }
   }
 
-  &.no-scroll {
+  .no-scroll {
+
+
+    .user-settings-dropdown {
+      background-color: #3F4555 !important;
+
+      li, a {
+        background-color: #2A3042 !important;
+
+      }
+    }
+
+    .search-content-wrapper {
+      .search-wrapper {
+        background-color: #2A3042 !important;
+      }
+
+      background-color: #3F4555 !important;
+    }
+
 
     background: #262B3C !important;
     * {
       color: #fff !important;
+    }
+
+    .dropdown-menu {
+      background: #3F4555 !important;
+      li {
+        background: #2A3042 !important;
+      }
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
     }
 
     .change-biz {
@@ -71,13 +124,60 @@
     }
   }
 
-  &.calendar {
+  .calendar {
+
+    .tab-content-list {
+      div {
+        background-color: #2E3548;
+
+      }
+
+      &::before {
+        background: #A6B0CF;
+      }
+    }
+
+    .fixed-tab{
+      background: none !important;
+
+
+      .cell.hours {
+        background: #2E3548 none !important;
+
+      }
+    }
+
+    .cell {
+      * {
+        color: #fff !important;
+      }
+    }
+
+    .cell.cell-height {
+      background-color: #2E3548 !important;
+
+      &.expired {
+        background-color: #262B3C !important;
+
+      }
+
+    }
     .calendar-container {
       * {
         color: #fff !important;
       }
 
       background: #2E3548;
+
+      .dropdown-menu {
+      background: #3F4555 !important;
+       li {
+         background: #2A3042 !important;
+       }
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
+      }
+
+
 
       .tab-day-week {
         .nav-item {

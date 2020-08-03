@@ -743,8 +743,10 @@ class Index extends Component {
 
                                             <div className="col-md-6">
                                                 <div className="check-box">
+
                                                     <label className="title-label">
-                                                        <span>Опция подтверждения новых клиентов</span>
+                                                        <span>Опция подтверждения новых клиентов     <Hint
+                                                            hintMessage="Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение."/></span>
 
                                                         <input className="form-check-input"
                                                                checked={notifications && notifications.clientVerification}
@@ -752,8 +754,7 @@ class Index extends Component {
                                                                type="checkbox"/>
                                                         <span className="check"/>
                                                     </label>
-                                                    <Hint
-                                                        hintMessage="Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение."/>
+
 
                                                 </div>
 
@@ -1018,7 +1019,7 @@ class Index extends Component {
 
                                     </form>
                                 </div>
-                                <div style={{overflowX: 'auto', position: 'relative', zIndex: 0}}>
+                                <div style={{overflowX: 'auto', position: 'relative', zIndex: 1}}>
                                     <div style={{
                                         overflowX: 'hidden',
                                         display: 'inline-block',
