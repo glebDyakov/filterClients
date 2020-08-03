@@ -18,6 +18,9 @@ import 'moment/locale/ru';
 import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
+import "../../public/scss/dark_theme.scss";
+
+
 const MainIndexPage = React.lazy(() => import("../MainIndexPage"));
 const ClientsPage = React.lazy(() => import("../ClientsPage"));
 const ServicesPage = React.lazy(() => import("../ServicesPage"));

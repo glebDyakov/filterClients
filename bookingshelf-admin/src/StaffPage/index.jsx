@@ -288,6 +288,12 @@ class Index extends Component {
         }
     }
 
+    deleteStaff(id){
+        const { dispatch } = this.props;
+
+        dispatch(staffActions.deleteStaff(id));
+    }
+
     render() {
         const {staff, company} = this.props;
         const {emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff} = this.state;
@@ -965,12 +971,6 @@ class Index extends Component {
         const {dispatch} = this.props;
 
         dispatch(staffActions.deleteClosedDates(id));
-    }
-
-    deleteStaff(id) {
-        const {dispatch} = this.props;
-
-        dispatch(staffActions.deleteStaff(id));
     }
 
     updateTimetable() {

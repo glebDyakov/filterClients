@@ -94,7 +94,7 @@ class TabScroll extends React.Component {
 
 
         return (
-            <div className="tabs-scroll">
+            <div className="tabs-scroll" id="calendar-tabs-scroll">
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) => {
                         const currentCellTime = getCurrentCellTime(selectedDays, 0, time);

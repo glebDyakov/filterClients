@@ -5,7 +5,7 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import moment from "moment";
 import LogoutPage from "../LogoutPage";
-import {calendarActions, clientActions, companyActions, staffActions} from "../_actions";
+import {calendarActions, clientActions, companyActions, staffActions, userActions} from "../_actions";
 import {UserSettings, UserPhoto, ClientDetails, NewClient} from "./modals";
 import {AsyncTypeahead} from "react-bootstrap-typeahead";
 import {clientService, managersService} from "../_services";
@@ -53,6 +53,10 @@ class HeaderMain extends React.PureComponent {
     }
 
     componentDidMount() {
+        const {dispatch} = this.props;
+
+        dispatch(staffActions.get());
+
         $('.mob-menu').click(function (e) {
             e.preventDefault();
             e.stopPropagation();

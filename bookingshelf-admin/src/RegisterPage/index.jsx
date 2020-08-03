@@ -187,131 +187,137 @@ class Index extends React.Component {
                     </div>
                     <div className="sign_up">
                         <div>
-                            <form id="sign-up-form" name="form" onSubmit={this.handleSubmit}>
-                                <span>Название компании</span>
-                                <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')}
-                                       onBlur={this.handleBlur} name="companyName" value={user.companyName}
-                                       onChange={this.handleChange}/>
+                            <form id="sign-up-form" name="form" className="row" onSubmit={this.handleSubmit}>
 
-                                <span>Вид деятельности</span>
-                                <div className="custom-select-wrapper">
+                                <div className="col-md-6">
+                                    <span>Название компании</span>
+                                    <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')}
+                                           onBlur={this.handleBlur} name="companyName" value={user.companyName}
+                                           onChange={this.handleChange}/>
 
-                                    <select className="custom-select" name="companyTypeId" onChange={this.handleChange}
-                                            value={user.companyTypeId}>
-                                        <option value={1}>Салоны красоты, барбершопы, SPA</option>
-                                        <option value={2}>СТО, автомойки, шиномонтажи</option>
-                                        <option value={3}>Коворкинг</option>
-                                        <option value={4}>Медицинские центры</option>
-                                    </select>
+                                    <span>Cтрана</span>
+                                    <div className="custom-select-wrapper">
+                                        <select
+                                            className={"custom-select" + ((invalidFields.countryCode ? ' redBorder' : ''))}
+                                            onBlur={this.handleBlur} value={user.countryCode} name="countryCode"
+                                            onChange={this.handleChange}>
+                                            <option value=''></option>
+                                            <option value='BLR'>Беларусь</option>
+                                            <option value='UKR'>Украина</option>
+                                            <option value='RUS'>Россия</option>
+                                        </select>
+                                    </div>
+
+                                    <span>Телефон</span>
+                                    <ReactPhoneInput
+                                        defaultCountry={'by'}
+                                        country={'by'}
+                                        regions={['america', 'europe']}
+                                        placeholder=""
+                                        value={user.phone}
+                                        onChange={phone => {
+                                            this.setState({user: {...user, phone: phone.replace(/[() ]/g, '')}})
+                                        }}
+                                    />
+
+                                    <span>Пароль</span>
+                                    <input type="password" className={'' + (invalidFields.password ? ' redBorder' : '')}
+                                           onBlur={this.handleBlur} name="password" value={user.password}
+                                           onChange={this.handleChange}/>
+
                                 </div>
+                                <div className="col-md-6">
+                                    <span>Вид деятельности</span>
+                                    <div className="custom-select-wrapper">
 
-                                <span>Cтрана</span>
-                                <div className="custom-select-wrapper">
-                                    <select
-                                        className={"custom-select" + ((invalidFields.countryCode ? ' redBorder' : ''))}
-                                        onBlur={this.handleBlur} value={user.countryCode} name="countryCode"
-                                        onChange={this.handleChange}>
-                                        <option value=''></option>
-                                        <option value='BLR'>Беларусь</option>
-                                        <option value='UKR'>Украина</option>
-                                        <option value='RUS'>Россия</option>
-                                    </select>
+                                        <select className="custom-select" name="companyTypeId" onChange={this.handleChange}
+                                                value={user.companyTypeId}>
+                                            <option value={1}>Салоны красоты, барбершопы, SPA</option>
+                                            <option value={2}>СТО, автомойки, шиномонтажи</option>
+                                            <option value={3}>Коворкинг</option>
+                                            <option value={4}>Медицинские центры</option>
+                                        </select>
+                                    </div>
+
+                                    <span>Таймзона</span>
+                                    <div className="custom-select-wrapper">
+                                        {user.countryCode === '' &&
+                                        <select
+                                            className={"disabledField custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                                            onBlur={this.handleBlur} value={user.timezoneId}
+                                            name="timezoneId">
+                                        </select>
+                                        }
+                                        {user.countryCode === 'BLR' &&
+                                        <select
+                                            className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                                            onBlur={this.handleBlur} value={user.timezoneId}
+                                            name="timezoneId" onChange={this.handleChange}>
+                                            <option value=''>-</option>
+                                            <option value='Europe/Minsk'>Europe/Minsk</option>
+                                        </select>
+                                        }
+                                        {user.countryCode === 'UKR' &&
+                                        <select
+                                            className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                                            onBlur={this.handleBlur} value={user.timezoneId}
+                                            name="timezoneId" onChange={this.handleChange}>
+                                            <option value=''>-</option>
+                                            <option value='Europe/Kiev'>Europe/Kiev</option>
+                                        </select>
+                                        }
+                                        {user.countryCode === 'RUS' &&
+                                        <select
+                                            className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                                            onBlur={this.handleBlur} value={user.timezoneId}
+                                            name="timezoneId" onChange={this.handleChange}>
+                                            <option value=''>-</option>
+                                            <option value='Europe/Moscow'>Europe/Moscow</option>
+                                            <option value='Europe/Astrakhan'>Europe/Astrakhan</option>
+                                            <option value='Europe/Kaliningrad'>Europe/Kaliningrad'</option>
+                                            <option value='Europe/Kirov'>Europe/Kirov</option>
+                                            <option value='Europe/Samara'>Europe/Samara</option>
+                                            <option value='Europe/Saratov'>Europe/Saratov</option>
+                                            <option value='Europe/Simferopol'>Europe/Simferopol</option>
+                                            <option value='Europe/Ulyanovsk'>Europe/Ulyanovsk</option>
+                                            <option value='Europe/Volgograd'>Europe/Volgograd</option>
+                                            <option value='Asia/Anadyr'>Asia/Anadyr</option>
+                                            <option value='Asia/Barnaul'>Asia/Barnaul</option>
+                                            <option value='Asia/Chita'>Asia/Chita</option>
+                                            <option value='Asia/Irkutsk'>Asia/Irkutsk</option>
+                                            <option value='Asia/Kamchatka'>Asia/Kamchatka</option>
+                                            <option value='Asia/Khandyga'>Asia/Khandyga</option>
+                                            <option value='Asia/Krasnoyarsk'>Asia/Krasnoyarsk</option>
+                                            <option value='Asia/Magadan'>Asia/Magadan</option>
+                                            <option value='Asia/Novokuznetsk'>Asia/Novokuznetsk</option>
+                                            <option value='Asia/Novosibirsk'>Asia/Novosibirsk</option>
+                                            <option value='Asia/Omsk'>Asia/Omsk</option>
+                                            <option value='Asia/Sakhalin'>Asia/Sakhalin</option>
+                                            <option value='Asia/Srednekolymsk'>Asia/Srednekolymsk'</option>
+                                            <option value='Asia/Tomsk'>Asia/Tomsk</option>
+                                            <option value='Asia/Ust-Nera'>Asia/Ust-Nera</option>
+                                            <option value='Asia/Vladivostok'>Asia/Vladivostok</option>
+                                            <option value='Asia/Yakutsk'>Asia/Yakutsk</option>
+                                            <option value='Asia/Yekaterinburg'>Asia/Yekaterinburg</option>
+                                        </select>
+                                        }
+                                    </div>
+
+                                    <span>Введите email</span>
+                                    <input type="text" className={'' + (invalidFields.email ? ' redBorder' : '')}
+                                           onBlur={this.handleBlur} name="email" value={user.email}
+                                           onChange={this.handleChange}
+                                           onKeyUp={() => this.setState({
+                                               emailIsValid: isValidEmailAddress(user.email)
+                                           })}
+                                    />
+
+                                    <span>Подтвердите пароль</span>
+                                    <input type="password"
+                                           className={'' + (user.password && !user.password_repeated || (user.password_repeated && user.password !== user.password_repeated) ? ' redBorder' : '')}
+                                           name="password_repeated" value={user.password_repeated}
+                                           onChange={this.handleChange}/>
                                 </div>
-                                <span>Таймзона</span>
-                                <div className="custom-select-wrapper">
-                                    {user.countryCode === '' &&
-                                    <select
-                                        className={"disabledField custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
-                                        onBlur={this.handleBlur} value={user.timezoneId}
-                                        name="timezoneId">
-                                    </select>
-                                    }
-                                    {user.countryCode === 'BLR' &&
-                                    <select
-                                        className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
-                                        onBlur={this.handleBlur} value={user.timezoneId}
-                                        name="timezoneId" onChange={this.handleChange}>
-                                        <option value=''>-</option>
-                                        <option value='Europe/Minsk'>Europe/Minsk</option>
-                                    </select>
-                                    }
-                                    {user.countryCode === 'UKR' &&
-                                    <select
-                                        className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
-                                        onBlur={this.handleBlur} value={user.timezoneId}
-                                        name="timezoneId" onChange={this.handleChange}>
-                                        <option value=''>-</option>
-                                        <option value='Europe/Kiev'>Europe/Kiev</option>
-                                    </select>
-                                    }
-                                    {user.countryCode === 'RUS' &&
-                                    <select
-                                        className={"custom-select" + ((invalidFields.timezoneId ? ' redBorder' : ''))}
-                                        onBlur={this.handleBlur} value={user.timezoneId}
-                                        name="timezoneId" onChange={this.handleChange}>
-                                        <option value=''>-</option>
-                                        <option value='Europe/Moscow'>Europe/Moscow</option>
-                                        <option value='Europe/Astrakhan'>Europe/Astrakhan</option>
-                                        <option value='Europe/Kaliningrad'>Europe/Kaliningrad'</option>
-                                        <option value='Europe/Kirov'>Europe/Kirov</option>
-                                        <option value='Europe/Samara'>Europe/Samara</option>
-                                        <option value='Europe/Saratov'>Europe/Saratov</option>
-                                        <option value='Europe/Simferopol'>Europe/Simferopol</option>
-                                        <option value='Europe/Ulyanovsk'>Europe/Ulyanovsk</option>
-                                        <option value='Europe/Volgograd'>Europe/Volgograd</option>
-                                        <option value='Asia/Anadyr'>Asia/Anadyr</option>
-                                        <option value='Asia/Barnaul'>Asia/Barnaul</option>
-                                        <option value='Asia/Chita'>Asia/Chita</option>
-                                        <option value='Asia/Irkutsk'>Asia/Irkutsk</option>
-                                        <option value='Asia/Kamchatka'>Asia/Kamchatka</option>
-                                        <option value='Asia/Khandyga'>Asia/Khandyga</option>
-                                        <option value='Asia/Krasnoyarsk'>Asia/Krasnoyarsk</option>
-                                        <option value='Asia/Magadan'>Asia/Magadan</option>
-                                        <option value='Asia/Novokuznetsk'>Asia/Novokuznetsk</option>
-                                        <option value='Asia/Novosibirsk'>Asia/Novosibirsk</option>
-                                        <option value='Asia/Omsk'>Asia/Omsk</option>
-                                        <option value='Asia/Sakhalin'>Asia/Sakhalin</option>
-                                        <option value='Asia/Srednekolymsk'>Asia/Srednekolymsk'</option>
-                                        <option value='Asia/Tomsk'>Asia/Tomsk</option>
-                                        <option value='Asia/Ust-Nera'>Asia/Ust-Nera</option>
-                                        <option value='Asia/Vladivostok'>Asia/Vladivostok</option>
-                                        <option value='Asia/Yakutsk'>Asia/Yakutsk</option>
-                                        <option value='Asia/Yekaterinburg'>Asia/Yekaterinburg</option>
-                                    </select>
-                                    }
-                                </div>
-
-                                <span>Телефон</span>
-                                <ReactPhoneInput
-                                    defaultCountry={'by'}
-                                    country={'by'}
-                                    regions={['america', 'europe']}
-                                    placeholder=""
-                                    value={user.phone}
-                                    onChange={phone => {
-                                        this.setState({user: {...user, phone: phone.replace(/[() ]/g, '')}})
-                                    }}
-                                />
-
-                                <span>Введите email</span>
-                                <input type="text" className={'' + (invalidFields.email ? ' redBorder' : '')}
-                                       onBlur={this.handleBlur} name="email" value={user.email}
-                                       onChange={this.handleChange}
-                                       onKeyUp={() => this.setState({
-                                           emailIsValid: isValidEmailAddress(user.email)
-                                       })}
-                                />
-
-                                <span>Пароль</span>
-                                <input type="password" className={'' + (invalidFields.password ? ' redBorder' : '')}
-                                       onBlur={this.handleBlur} name="password" value={user.password}
-                                       onChange={this.handleChange}/>
-
-                                <span>Подтвердите пароль</span>
-                                <input type="password"
-                                       className={'' + (user.password && !user.password_repeated || (user.password_repeated && user.password !== user.password_repeated) ? ' redBorder' : '')}
-                                       name="password_repeated" value={user.password_repeated}
-                                       onChange={this.handleChange}/>
 
                             </form>
                         </div>

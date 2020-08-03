@@ -159,6 +159,7 @@ function forgotPass(email) {
     });;
 }
 
+
 function update(user) {
     const requestOptions = {
         method: 'PUT',

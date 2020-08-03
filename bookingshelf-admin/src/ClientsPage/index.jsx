@@ -76,11 +76,13 @@ class Index extends Component {
     }
 
     handleOpenDropdownMenu() {
-        if (this.state.isOpenDropdownMenu) {
-            this.setState({isOpenDropdownMenu: false});
-        } else {
-            this.setState({isOpenDropdownMenu: true});
-        }
+            // this.setState(state => {
+            //     console.log(state.isOpenDropdownMenu, !state.isOpenDropdownMenu)
+            //     return {isOpenDropdownMenu: !state.isOpenDropdownMenu};
+            // });
+
+        this.setState({isOpenDropdownMenu: !this.state.isOpenDropdownMenu})
+
     }
 
 
@@ -102,7 +104,6 @@ class Index extends Component {
     handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.setState({handleOpen: false});
-            this.setState({isOpenDropdownMenu: false});
         }
     }
 
@@ -248,7 +249,7 @@ class Index extends Component {
 
 
                 <div style={{position: 'relative'}} className="clients-page-container">
-                    <div style={{position: 'absolute', zIndex: 1}}
+                    <div style={{zIndex: 2}}
                          className="row content clients">
                         {/*<StaffChoice*/}
                         {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
@@ -279,7 +280,7 @@ class Index extends Component {
                                className="dropdown-button">{activeTab === 'clients' ? "Клиенты" : "Черный список"}</p>
 
                             {this.state.isOpenDropdownMenu && (
-                                <div ref={this.setWrapperRef} className="dropdown-buttons">
+                                <div className="dropdown-buttons">
                                     <a className={"nav-link" + (activeTab === 'clients' ? ' active show' : '')}
                                        data-toggle="tab" href="#tab1" onClick={() => {
                                         this.setTab('clients');
@@ -376,7 +377,7 @@ class Index extends Component {
                                                 data-toggle="modal"
                                                 onClick={this.addToBlackList}
                                             >
-                                                Добавить в blacklist
+                                                Добавить в черный список
                                             </button>
                                             }
                                         </span>)
@@ -399,13 +400,16 @@ class Index extends Component {
                     <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
                         <div className="buttons">
                             {activeTab === 'clients' &&
-                            <button type="button" className="button" onClick={(e) => this.handleClick(null, e)}>Новый
+                            <button type="button" className="button" onClick={(e) => {
+                                this.handleClick(null, e);
+                                this.handleOpenModal();
+                            }}>Новый
                                 клиент</button>}
                             {activeTab === 'blacklist' && <button type="button" className="button"
                                                                   data-target=".add-black-list-modal"
                                                                   data-toggle="modal"
                                                                   onClick={this.addToBlackList}>Добавить в
-                                blacklist</button>}
+                                черный список</button>}
                         </div>
                         <div className="arrow"/>
                     </div>

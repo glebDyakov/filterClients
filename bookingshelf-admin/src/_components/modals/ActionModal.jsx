@@ -14,6 +14,7 @@ class ActionModal extends Component {
 
     onClickOutside() {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            console.log(event.target)
             const {closeHandler} = this.props;
             closeHandler();
         }
@@ -34,7 +35,7 @@ class ActionModal extends Component {
         return (
             <span className="action-modal-wrapper">
                 <span className="action-modal">
-                    <span ref={this.setWrapperRef} className="modal-content">
+                    <span className="modal-content">
                         <span className="modal-header">
                             <h4 className="modal-title">{title}</h4>
                             <button onClick={closeHandler} type="button" className="close" data-dismiss="modal" />
@@ -45,6 +46,7 @@ class ActionModal extends Component {
                                     const {handler, params, innerText, className, additionalHandler, additionalParam} = item;
                                     return (
                                         <button type="button" className={className} onClick={() => {
+
                                             handler((params ? params : null), (additionalParam ? additionalParam : null));
                                             if (additionalHandler) {
                                                 additionalHandler();

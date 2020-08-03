@@ -146,7 +146,7 @@ class ClientDetails extends React.Component {
                                             <div className="visit-info row d-flex justify-content-between align-items-center"
                                                  onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
                                             >
-                                                <div className="col-9 col-sm-6">
+                                                <div className="col-9 col-sm-8">
                                                     <p className="visit-detail">
                                                         <span className="timing"><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
                                                         <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
@@ -164,11 +164,11 @@ class ClientDetails extends React.Component {
 
                                                 </div>
 
-                                                <div style={{ padding: 0, textAlign: 'center' }} className="col-2 d-flex flex-column justify-content-center align-items-center">
+                                                <div style={{ padding: 0, textAlign: 'center' }} className="col-3 d-flex flex-column justify-content-center align-items-center">
                                                     {
                                                         activeAppointmentStaff && activeAppointmentStaff.staffId &&
                                                         <div style={{ position: 'static' }} className="img-container">
-                                                            <img style={{ width: '34px', height: '34px' }} className="rounded-circle"
+                                                            <img style={{ width: '70px', height: '70px' }} className="rounded-circle"
                                                                  src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
                                                             {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
                                                         </div>
@@ -176,7 +176,6 @@ class ClientDetails extends React.Component {
 
                                                     <span className="gray-text duration">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
 
-                                                    <br />
 
                                                 </div>
 

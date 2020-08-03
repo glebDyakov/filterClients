@@ -504,28 +504,71 @@
   .start-modal {
 
     .modal-content {
-      width: 300px;
-      margin: auto;
 
       .modal-header {
-        padding: 5px 0;
+        padding: 20px 60px 20px 30px !important;
+        background: #FFFFFF;
+        /* Drop Shadow */
 
-        .modal-title {
-          font-size: 14px;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+        border-radius: 10px 10px 0px 0px;
+        border: none !important;
+      }
+
+      margin: auto;
+      ul {
+        li {
+          padding: 5px 15px;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          /* identical to box height */
+
+
+          color: #495057;
         }
       }
 
-      button {
-        min-width: 0;
-        width: 45%;
-        float: right;
-        height: auto;
-        padding: 0;
-        min-height: 25px;
+      .buttons {
+        button {
+          height: 42px;
 
-        &.gray-button {
-          float: right;
+          padding: 10px 64px;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 22px;
+          /* identical to box height */
+
+          color: #FFFFFF;
+          background: #50A5F1;
+          opacity: 0.35;
+          border-radius: 30px;
+          border: none;
+          transition: linear 200ms;
+
+          &:hover {
+            opacity: 1;
+            transition: ease-in-out 200ms;
+
+
+          }
+
+          &.gray-button {
+            height: 42px;
+            margin-top: 5px;
+            padding: 10px 64px;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 22px;
+            /* identical to box height */
+            opacity: 1;
+            color: #F46A6A;
+            background: none;
+            border-radius: 0;
+            border: none;
+          }
         }
+
       }
     }
   }
@@ -533,28 +576,72 @@
   .start-modal-sms {
 
     .modal-content {
-      width: 300px;
       margin: auto;
 
       .modal-header {
-        padding: 5px 0;
+        padding: 20px 60px 20px 30px !important;
+        background: #FFFFFF;
+        border: none !important;
+        /* Drop Shadow */
 
-        .modal-title {
-          font-size: 14px;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+        border-radius: 10px 10px 0px 0px;
+      }
+
+      ul {
+        li {
+          padding: 5px 15px;
+
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          /* identical to box height */
+
+
+          color: #495057;
         }
       }
 
-      button {
-        min-width: 0;
-        width: 45%;
-        float: right;
-        height: auto;
-        padding: 0;
-        min-height: 25px;
+      .buttons {
+        button {
+          height: 42px;
 
-        &.gray-button {
-          float: right;
+          padding: 10px 64px;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 22px;
+          /* identical to box height */
+
+          color: #FFFFFF;
+          background: #50A5F1;
+          opacity: 0.35;
+          border-radius: 30px;
+          border: none;
+          transition: linear 200ms;
+
+          &:hover {
+            opacity: 1;
+            transition: ease-in-out 200ms;
+
+
+          }
+
+          &.gray-button {
+            height: 42px;
+            margin-top: 5px;
+            padding: 10px 64px;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 22px;
+            /* identical to box height */
+            opacity: 1;
+            color: #F46A6A;
+            background: none;
+            border-radius: 0;
+            border: none;
+          }
         }
+
       }
     }
   }

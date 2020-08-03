@@ -72,10 +72,10 @@ class Index extends Component {
             this.props.dispatch(companyActions.getSubcompanies());
         }
 
-        const { user } = this.props.authentication
+        const {user} = this.props.authentication
         if (user && (user.forceActive
-          || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
-          || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+            || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+            || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
         )) {
         } else {
             this.setDefaultWorkersCount(this.props.staff.staff)
@@ -95,7 +95,7 @@ class Index extends Component {
             this.calculateRate(newProps.payments.packets)
         }
         if (newProps.payments.confirmationUrl && (this.props.payments.confirmationUrl !== newProps.payments.confirmationUrl)) {
-            this.setState({ invoiceSelected: false })
+            this.setState({invoiceSelected: false})
         }
         if (JSON.stringify(this.props.staff.staff) !== JSON.stringify(newProps.staff.staff)) {
             this.setDefaultWorkersCount(newProps.staff.staff)
@@ -103,18 +103,18 @@ class Index extends Component {
     }
 
     setDefaultWorkersCount(staff) {
-        const { company } = this.props
+        const {company} = this.props
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const count = staff ? staff.length : -1;
-        if ((companyTypeId === 2 )) {
-            this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
+        if ((companyTypeId === 2)) {
+            this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}})
             if (count <= 5) {
             } else {
                 this.rateChangeSpecialWorkersCount('to 30', count)
             }
         } else {
             if (count <= 10) {
-                this.setState({ staffCount: count, rate: { ...this.state.rate, workersCount: count } })
+                this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}})
             } else if (count > 10 && count <= 20) {
                 this.rateChangeSpecialWorkersCount('to 20', count)
             } else if (count > 20 && count <= 30) {
@@ -175,7 +175,7 @@ class Index extends Component {
             }
         }
         packetId = packets && packets
-            .filter(item=> item.packetType === 'USE_PACKET')
+            .filter(item => item.packetType === 'USE_PACKET')
             .find(item => item.staffAmount === staffAmount).packetId;
         let discountAmount
         switch (amount) {
@@ -202,7 +202,7 @@ class Index extends Component {
     }
 
     redirect(url) {
-       this.props.history.push(url);
+        this.props.history.push(url);
     }
 
     closeModalActs() {
@@ -238,13 +238,13 @@ class Index extends Component {
     calculateRate(packets = this.props.payments.packets) {
         const {workersCount, specialWorkersCount, period} = this.state.rate;
         const {countryCode} = this.state.country;
-        const { company } = this.props
+        const {company} = this.props
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
-        const price1to10 =  (packets && packets.find(item => item.packetId === parseInt(workersCount)) || {})
-        const priceTo20packet =  (packets && packets.find(item => item.packetId ===11) || {})
-        const priceTo30packet =  (packets && packets.find(item => item.packetId ===12) || {})
-        const priceFrom30packet =  (packets && packets.find(item => item.packetId ===13) || {})
+        const price1to10 = (packets && packets.find(item => item.packetId === parseInt(workersCount)) || {})
+        const priceTo20packet = (packets && packets.find(item => item.packetId === 11) || {})
+        const priceTo30packet = (packets && packets.find(item => item.packetId === 12) || {})
+        const priceFrom30packet = (packets && packets.find(item => item.packetId === 13) || {})
 
         let finalPrice = 0, finalPriceMonth = 0, finalPriceMonthDiscount = 0;
         let priceTo20 = 60, priceTo30 = 70, priceFrom30 = 80;
@@ -295,13 +295,13 @@ class Index extends Component {
                 break;
             case '2':
                 finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 5;
-                finalPriceMonth *= 5/6;
-                finalPriceMonthDiscount *= 5/6;
+                finalPriceMonth *= 5 / 6;
+                finalPriceMonthDiscount *= 5 / 6;
                 break;
             case '3':
                 finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9;
-                finalPriceMonth *= 9/12;
-                finalPriceMonthDiscount *= 9/12;
+                finalPriceMonth *= 9 / 12;
+                finalPriceMonthDiscount *= 9 / 12;
                 break;
         }
 
@@ -342,7 +342,7 @@ class Index extends Component {
     }
 
     repeatPayment(invoiceId) {
-        const { pendingInvoice } = this.props.payments
+        const {pendingInvoice} = this.props.payments
         this.props.dispatch(paymentsActions.getInvoice(invoiceId))
         if (pendingInvoice && pendingInvoice.invoiceStatus === 'ISSUED') {
             setTimeout(() => {
@@ -352,28 +352,28 @@ class Index extends Component {
     }
 
     render() {
-        const { authentication } = this.props;
-        const { chosenAct, finalPriceMonthDiscount, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list } = this.state;
+        const {authentication} = this.props;
+        const {chosenAct, finalPriceMonthDiscount, staffCount, finalPrice, finalPriceMonth, chosenInvoice, invoiceSelected, list} = this.state;
         const {workersCount, period, specialWorkersCount} = this.state.rate;
         const {countryCode} = this.state.country;
         const {packets, isLoading} = this.props.payments;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
         let activePacket
         if (packets && authentication.user && authentication.user.invoicePacket) {
-          activePacket =  packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
+            activePacket = packets.find(packet => packet.packetId === authentication.user.invoicePacket.packetId)
         }
 
-        const { pathname } = this.props.location;
+        const {pathname} = this.props.location;
         if (pathname === '/payments') {
             document.title = "Оплата | Онлайн-запись";
-        } else if (pathname === '/invoices' ) {
+        } else if (pathname === '/invoices') {
             document.title = "Счета | Онлайн-запись";
         }
         const currentPacket = activePacket ? activePacket.packetName : authentication.user && (authentication.user && authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбраного пакета')
-        const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id ==='payments_menu_id')
+        const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id === 'payments_menu_id')
         if (!paymentId && currentPacket === 'Нет выбраного пакета') {
             return (
-                <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
+                <div style={{color: '#0a1330', fontSize: '22px'}} className="payments-message">
                     Срок действия лицензии истек
                 </div>
             )
@@ -383,8 +383,11 @@ class Index extends Component {
 
         const pdfMarkup = <React.Fragment>
 
-            { chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
-                <button className="inv-date" style={{backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff', color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff': '#000'  }}
+            {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
+                <button className="inv-date" style={{
+                    backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
+                    color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff' : '#000'
+                }}
                         data-target=".make-payment-modal"
                         data-toggle="modal"
                         onClick={() => {
@@ -396,130 +399,141 @@ class Index extends Component {
                 </button>
             </div>}
             <div id="divIdToPrint">
-            <div className="account-info col-12">
-                <h3>Счёт {chosenInvoice.customId}</h3>
-                <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
-            </div>
-            <div className="customer-seller">
-                {authentication.user && <div className="col-md-6 col-12 customer">
-                    <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
-                    <p>Представитель: {authentication.user.profile ? authentication.user.profile.lastName : ''} {authentication.user.profile.firstName}</p>
-                    <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
-                </div>}
-
-                <div className="col-md-6 col-12 seller">
-                    <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>
-                    <p>Адрес: 220034, Беларусь, Минск, Марьевская 7а-1-6</p>
-                    <p>Тел +375 44 5655557</p>
+                <div className="account-info col-12">
+                    <h3>Счёт {chosenInvoice.customId}</h3>
+                    <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
                 </div>
-            </div>
+                <div className="customer-seller">
+                    {authentication.user && <div className="col-md-6 col-12 customer">
+                        <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
+                        <p>Представитель: {authentication.user.profile ? authentication.user.profile.lastName : ''} {authentication.user.profile.firstName}</p>
+                        <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
+                    </div>}
 
-            <div className="payments-type">
-                <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
-                { chosenInvoice.invoiceStatus !== 'PAID' && <p>
-                    <strong>Заплатить до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
-                </p>}
-                <p>
-                    Статус: <span style={{ fontWeight: chosenInvoice.invoiceStatus === 'PAID' ? 'bold' : 'normal' }}>{chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                  (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                    <div className="col-md-6 col-12 seller">
+                        <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>
+                        <p>Адрес: 220034, Беларусь, Минск, Марьевская 7а-1-6</p>
+                        <p>Тел +375 44 5655557</p>
+                    </div>
+                </div>
+
+                <div className="payments-type">
+                    <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
+                    {chosenInvoice.invoiceStatus !== 'PAID' && <p>
+                        <strong>Заплатить до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                    </p>}
+                    <p>
+                        Статус: <span
+                        style={{fontWeight: chosenInvoice.invoiceStatus === 'PAID' ? 'bold' : 'normal'}}>{chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                        (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
                     </span>
-                </p>
-            </div>
-
-            <div className="table">
-                <div className="table-header">
-                    <div className="table-description"><p>Описание</p></div>
-                    <div className="table-count"><p
-                        className="default">Количество {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p><p
-                        className="mob">Кол-во {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p></div>
-                    <div className="table-price"><p>Стоимость</p></div>
+                    </p>
                 </div>
-                {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
-                    let name = packets && packets.find(item => item.packetId === packet.packetId)
-                    return (
-                        <div className="table-row">
-                            <div className="table-description">
-                                <p>{name.packetName} {chosenPacket.packetType !== 'SMS_PACKET' ? '' : `, ${chosenPacket.smsAmount} sms`}</p></div>
-                            <div className="table-count"><p>{packet.amount}</p>
-                            </div>
-                            <div className="table-price">
-                                <p>{packet.sum} {packet.currency}</p></div>
+
+                <div className="table">
+                    <div className="table-header">
+                        <div className="table-description"><p>Описание</p></div>
+                        <div className="table-count"><p
+                            className="default">Количество {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
+                            <p
+                                className="mob">Кол-во {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
                         </div>
-                    );
-                })}
-            </div>
+                        <div className="table-price"><p>Стоимость</p></div>
+                    </div>
+                    {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
+                        let name = packets && packets.find(item => item.packetId === packet.packetId)
+                        return (
+                            <div className="table-row">
+                                <div className="table-description">
+                                    <p>{name.packetName} {chosenPacket.packetType !== 'SMS_PACKET' ? '' : `, ${chosenPacket.smsAmount} sms`}</p>
+                                </div>
+                                <div className="table-count"><p>{packet.amount}</p>
+                                </div>
+                                <div className="table-price">
+                                    <p>{packet.sum} {packet.currency}</p></div>
+                            </div>
+                        );
+                    })}
+                </div>
 
-            <div className="result-price">
-                <div>
-                    <p>Общая сумма</p>
+                <div className="result-price">
+                    <div>
+                        <p>Общая сумма</p>
+                    </div>
+                    <div>
+                        <p>{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
+                    </div>
                 </div>
-                <div>
-                    <p>{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
+                <div className="result-price">
+                    <div>
+                        <p>Без НДС</p>
+                    </div>
+                    <div>
+                        <p>0.00 {chosenInvoice.currency}</p>
+                    </div>
                 </div>
-            </div>
-            <div className="result-price">
-                <div>
-                    <p>Без НДС</p>
-                </div>
-                <div>
-                    <p>0.00 {chosenInvoice.currency}</p>
-                </div>
-            </div>
             </div>
         </React.Fragment>
 
-        const options = (companyTypeId === 2 ) ? [1, 2, 3, 4, 5] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const options = (companyTypeId === 2) ? [1, 2, 3, 4, 5] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         return (
             <React.Fragment>
-                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                {isLoading &&
+                <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                 {!isLoading && <div className="retreats">
-                    <div className="row">
-                        <div className="col-sm-6">
-                        <ul className="nav nav-tabs">
-                            <li className="nav-item" >
-                                <a className={"nav-link " + (pathname === '/payments' ? "active show" : "")} data-toggle="tab" href="#payments" onClick={() => this.redirect('/payments')}>Оплата</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className={"nav-link " + (pathname === '/invoices' ? "active show" : "")} data-toggle="tab" href="#acts" onClick={() => this.redirect('/invoices')}>Счета</a>
-                            </li>
 
-                        </ul>
-                        </div>
-                        {authentication.user && <div className="col-sm-6 mb-2">
-                            <div className="current-packet" style={{ fontWeight: 'bold', whiteSpace: 'nowrap'}}>Текущий пакет: {currentPacket}</div>
-                            <div className="current-packet" style={{ whiteSpace: 'nowrap'}}>{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' +moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
-                        </div>}
-                    </div>
 
                     <div className="tab-content">
                         <div className={"tab-pane " + (pathname === '/payments' ? "active" : "")} id="payments">
-                            <div className="payments-inner">
-                                <div className="payments-list-block">
-                                    <p className="title-payments">ПАКЕТЫ СИСТЕМЫ</p>
-                                    <p className="title-payments">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+
+                            <div className="d-flex flex-column-reverse flex-md-row align-items-start justify-content-between align-items-md-center mb-2">
+                                <div className="payments-license-block">
+                                    <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`}
+                                       download>Лицензионный договор</a>
+                                    <span data-toggle="modal" data-target=".accountant-modal-in">
+                                Для бухгалтерии
+                            </span>
+                                </div>
+
+                                {authentication.user && <div className="current-packet-container">
+                                    <div className="current-packet text-left text-md-right">Текущий пакет: {currentPacket}</div>
+                                    <div
+                                        className="current-packet-timing text-left text-md-right">{activePacket ? 'Пакет действителен до: ' + moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY') : ((moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пакет действителен до: ' + moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY') : (authentication.user.forceActive ? 'Пробный период продлён' : ''))}</div>
+                                </div>}
+                            </div>
+                            <div className="payments-inner d-flex flex-column flex-lg-row">
+
+
+
+                                <div className="payments-list-block mb-2 mb-md-0">
+                                    <p className="title-payments">Пакеты системы</p>
                                     <div id="range-staff">
+                                        <p className="subtitle-payments mb-3 d-md-none">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+
+
                                         <ul className="range-labels">
                                             {options.map(option => (
-                                              <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
-                                                  onClick={() => {
-                                                      if ((staffCount) <= option) {
-                                                          this.setState({
-                                                              rate: {
-                                                                  ...this.state.rate,
-                                                                  workersCount: option,
-                                                                  specialWorkersCount: ''
-                                                              }
-                                                          })
-                                                      }
-                                                  }}>{option}
-                                              </li>
+                                                <li className={(parseInt(workersCount) === option ? "active selected " : " ") + ((staffCount) <= option ? '' : 'disabledField')}
+                                                    onClick={() => {
+                                                        if ((staffCount) <= option) {
+                                                            this.setState({
+                                                                rate: {
+                                                                    ...this.state.rate,
+                                                                    workersCount: option,
+                                                                    specialWorkersCount: ''
+                                                                }
+                                                            })
+                                                        }
+                                                    }}>{option}
+                                                </li>
                                             ))}
                                         </ul>
 
                                         <div
                                             className={(specialWorkersCount !== '') ? "range range-hidden" : "range"}
                                             style={{position: "relative"}}>
-                                            <input type="range" min="1" max={(companyTypeId === 2 ) ? 5 : 10} value={workersCount}
+                                            <input type="range" min="1" max={(companyTypeId === 2) ? 5 : 10}
+                                                   value={workersCount}
                                                    onChange={(e) => {
                                                        if ((staffCount) <= e.target.value) {
                                                            this.rateChangeWorkersCount(e)
@@ -527,13 +541,16 @@ class Index extends Component {
                                                    }}/>
                                             <div
                                                 className={(specialWorkersCount !== '') ? "rateLine rateLineHidden" : "rateLine"}
-                                                style={{width: ((workersCount - 1) * ((companyTypeId === 2 ) ? 25 : 11)) + "%"}} />
+                                                style={{width: ((workersCount - 1) * ((companyTypeId === 2) ? 25 : 11)) + "%"}}/>
                                         </div>
 
 
                                     </div>
+
                                     <div className="radio-buttons">
-                                        {(companyTypeId === 2 ) ? (
+                                        <p className="subtitle-payments d-none d-md-flex">{(companyTypeId === 2 || companyTypeId === 3) ? 'Количество рабочих мест' : 'Количество сотрудников'}</p>
+
+                                        {(companyTypeId === 2) ? (
 
                                             <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
                                                 <input type="radio" className="radio" id="radio2"
@@ -541,19 +558,23 @@ class Index extends Component {
                                                        checked={specialWorkersCount === 'to 30'}/>
                                                 <label htmlFor="radio2">Больше 5</label>
                                             </div>
-                                        ) :(
+                                        ) : (
                                             <React.Fragment>
-                                                <div onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
+                                                <div
+                                                    onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                                                     <input type="radio" className="radio" id="radio"
                                                            name="staff-radio"
                                                            checked={specialWorkersCount === 'to 20'}/>
-                                                    <label className={(staffCount) <= 20 ? '' : 'disabledField'} htmlFor="radio">До 20</label>
+                                                    <label className={(staffCount) <= 20 ? '' : 'disabledField'}
+                                                           htmlFor="radio">До 20</label>
                                                 </div>
-                                                <div onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
+                                                <div
+                                                    onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                                                     <input type="radio" className="radio" id="radio2"
                                                            name="staff-radio"
                                                            checked={specialWorkersCount === 'to 30'}/>
-                                                    <label className={(staffCount) <= 30 ? '' : 'disabledField'} htmlFor="radio2">До 30</label>
+                                                    <label className={(staffCount) <= 30 ? '' : 'disabledField'}
+                                                           htmlFor="radio2">До 30</label>
                                                 </div>
                                                 <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                                                     <input type="radio" className="radio" id="radio3"
@@ -561,11 +582,12 @@ class Index extends Component {
                                                            checked={specialWorkersCount === 'from 30'}/>
                                                     <label htmlFor="radio3">Больше 30</label>
                                                 </div>
-                                        </React.Fragment>)}
+                                            </React.Fragment>)}
                                     </div>
 
-                                    <p className="title-payments">Срок действия лицензии</p>
                                     <div id="range-month">
+                                        <p className="subtitle-payments mb-3 d-md-none">Срок действия лицензии</p>
+
                                         <ul className="range-labels">
                                             <li className={period === '1' ? "active selected" : ""}
                                                 onClick={() => this.setState({
@@ -581,143 +603,135 @@ class Index extends Component {
                                                         ...this.state.rate,
                                                         period: "2"
                                                     }
-                                                })}>6 месяцев <span>+1 месяц бесплатно</span></li>
+                                                })}>6 месяцев <br/> (+1 месяц бесплатно)
+                                            </li>
                                             <li className={period === '3' ? "active selected" : ""}
                                                 onClick={() => this.setState({
                                                     rate: {
                                                         ...this.state.rate,
                                                         period: "3"
                                                     }
-                                                })}>12 месяцев <span>+3 месяца бесплатно</span></li>
+                                                })}>12 месяцев <br/> (+3 бесплатно)
+                                            </li>
                                         </ul>
 
                                         <div className="range" style={{position: "relative"}}>
                                             <input type="range" min="1" max="3" value={period}
                                                    onChange={(e) => this.rateChangePeriod(e)}/>
-                                            <div className="rateLine" style={{width: ((period - 1) * 50) + "%"}} />
+                                            <div className="rateLine" style={{width: ((period - 1) * 50) + "%"}}/>
                                         </div>
 
                                     </div>
+                                    <p className="subtitle-payments d-none d-md-flex">Срок действия лицензии</p>
+
                                 </div>
 
-                                <div className="payments-list-block2">
+                                <div className="payments-list-block2 mb-2 mb-md-0">
                                     <div className="payments-content">
                                         <p className="title-payments">К оплате</p>
                                         <div>
                                             <p>Срок действия лицензии: </p>
-                                            <span style={{ textAlign: 'right' }}>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
+                                            <span
+                                                style={{textAlign: 'right'}}>{period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}</span>
                                         </div>
                                         <div>
                                             <p>Стоимость в месяц{finalPriceMonthDiscount ? ' без скидки ' : ''}: </p>
-                                            <span style={{ textAlign: 'right' }}>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                            <span
+                                                style={{textAlign: 'right'}}>{finalPriceMonth} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                         </div>
 
                                         {finalPriceMonthDiscount ? (
                                             <div>
-                                                <p style={{ color: 'red' }}>Стоимость в месяц со скидкой: </p>
-                                                <span style={{ color: 'red', textAlign: 'right' }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
+                                                <p style={{color: 'red'}}>Стоимость в месяц со скидкой: </p>
+                                                <span style={{
+                                                    color: 'red',
+                                                    textAlign: 'right'
+                                                }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                             </div>
                                         ) : ''}
-                                        <hr/>
                                         <div>
                                             <p className="total-price">Итоговая стоимость:
                                                 <span>{finalPrice} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                             </p>
 
                                         </div>
-                                        <button className={"button " + (workersCount === -1 ? 'disabledField' : '')} type="button"
+                                        <button className={"button " + (workersCount === -1 ? 'disabledField' : '')}
+                                                type="button"
                                                 disabled={workersCount === -1}
                                                 onClick={() => this.AddingInvoiceStaff()}>Оплатить
                                         </button>
                                         {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                    Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
-                                            </div>
+                                            <p className="description">
+                                                (Цены в национальной валюте указаны для ознакомления. Оплата
+                                                производится по
+                                                курсу в рос. рублях)
+                                            </p>
+                                        </div>
                                         }
                                     </div>
 
                                 </div>
 
-                                <div className="payments-list-block">
+                                <div className="payments-list-block3 mb-1 mb-md-0">
                                     <div className="payments-content buttons-change">
                                         <p className="title-payments">SMS ПАКЕТЫ</p>
-                                        {/*<div>*/}
-                                        {/*    <label>*/}
-                                        {/*        <input type="radio" name="sms-price-radio"/>*/}
-                                        {/*        <span className="sms-price">Старт</span>*/}
-                                        {/*        <span>1000 <span>SMS</span> 17 руб</span>*/}
-                                        {/*    </label>*/}
-                                        {/*    <button className={(SMSCountChose === 1)?"button button-selected":"button"}*/}
-                                        {/*            type="button"*/}
-                                        {/*    onClick={()=>this.setState({SMSCountChose: 1})}>Выбрать</button>*/}
-                                        {/*</div>*/}
-                                        {/*<div>*/}
-                                        {/*    <label>*/}
-                                        {/*        <input checked type="radio" name="sms-price-radio"/>*/}
-                                        {/*        <span className="sms-price">Экспресс</span>*/}
-                                        {/*        <span>5000 <span>SMS</span> 75 руб</span>*/}
-                                        {/*    </label>*/}
-                                        {/*    <button className={(SMSCountChose === 2)?"button button-selected":"button"}*/}
-                                        {/*            type="button"*/}
-                                        {/*            onClick={()=>this.setState({SMSCountChose: 2})}>Выбрано*/}
-                                        {/*    </button>*/}
-                                        {/*</div>*/}
-                                        {/*<div>*/}
-                                        {/*    <label>*/}
-                                        {/*        <input type="radio" name="sms-price-radio"/>*/}
-                                        {/*        <span className="sms-price">Профессионал</span>*/}
-                                        {/*        <span>10000 <span>SMS</span> 140 руб</span>*/}
-                                        {/*    </label>*/}
-                                        {/*    <button className={(SMSCountChose === 3)?"button button-selected":"button"}*/}
-                                        {/*            type="button"*/}
-                                        {/*            onClick={()=>this.setState({SMSCountChose: 3})}>Выбрать</button>*/}
-                                        {/*</div>*/}
+
                                         {packets && packets.filter(packet => packet.packetType === 'SMS_PACKET')
                                             .sort((a, b) => a.smsAmount - b.smsAmount)
                                             .map(packet => {
                                                 return (
                                                     <div>
                                                         <label>
-                                                            <input type="radio" name="sms-price-radio"/>
+                                                            <input type="radio"
+                                                                   checked={this.state.chosenAct === packet}
+                                                                   onChange={() => {
+                                                                       this.setState({chosenAct: packet});
+                                                                   }} className="" name="sms-price-radio"/>
+
+                                                            <span className="check-box-circle"></span>
+
+                                                            <span className="packets-container">
+                                                                <span className="packet-name">{packet.packetName}: <span
+                                                                    className="sms-amount">{packet.smsAmount} SMS</span></span>
                                                             <span
-                                                                className="sms-price">{packet.packetName}</span>
-                                                            <span>{packet.smsAmount} <span>SMS</span> {packet.price} {packet.currency}</span>
+                                                                className="sms-price">{packet.price} {packet.currency}</span>
+                                                            </span>
                                                         </label>
-                                                        <button
-                                                            className={(this.state.chosenAct.packetId === packet.packetId) ? "button button-selected" : "button"}
-                                                            type="button"
-                                                            onClick={() => this.setState({chosenAct: packet})}>Выбрать
-                                                        </button>
+                                                        {/*<button*/}
+                                                        {/*    className={(this.state.chosenAct.packetId === packet.packetId) ? "button button-selected" : "button"}*/}
+                                                        {/*    type="button"*/}
+                                                        {/*    onClick={() => }>Выбрать*/}
+                                                        {/*</button>*/}
                                                     </div>
                                                 );
                                             })
 
                                         }
                                         {authentication && authentication.user && authentication.user.countryCode !== "BLR" && (
-                                            <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold'}}>
-                                                Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.
+                                            <div style={{color: '#d41316', fontSize: '16px', fontWeight: 'bold'}}>
+                                                Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов,
+                                                нажав на знак вопроса в правом верхнем углу.
                                             </div>)
                                         }
                                     </div>
 
-                                    <div className="payments-content">
-                                        {chosenAct.packetName && <p className="title-payments">К оплате</p>}
-                                        <div>
-                                            {chosenAct.packetName ?
-                                                <p>Пакет {chosenAct.packetName} {chosenAct.smsAmount} SMS</p> : <p className="payment-choose-packet">Выберите SMS пакет</p>}
-                                        </div>
-                                        <hr/>
+                                    <div className="payments-content total-price">
                                         {chosenAct.packetName &&
                                         <React.Fragment>
                                             <div>
                                                 <p className="total-price">Итоговая
-                                                    стоимость <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
+                                                    стоимость: <span>{chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}</span>
                                                 </p>
                                             </div>
                                             <button className="button" type="button"
                                                     onClick={() => this.AddingInvoice()}>Оплатить
                                             </button>
                                             {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                                                Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях
+                                                <p className="description">
+                                                    (Цены в национальной валюте указаны для ознакомления. Оплата
+                                                    производится
+                                                    по курсу в рос. рублях)
+                                                </p>
                                             </div>
                                             }
                                         </React.Fragment>
@@ -729,21 +743,37 @@ class Index extends Component {
                             </div>
 
                             <div id="acts">
-                                {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
+                                <h2 className="acts-title">Счета</h2>
+
+                                <div className="invoice header-invoice">
+                                    <div className="inv-number"><p className="d-none d-md-inline">Номер счета</p><p className="d-md-none"># счета</p></div>
+                                    <div className="inv-date"><p>Дата</p></div>
+                                    <div className="inv-date"><p>Сумма</p></div>
+                                    <div className="inv-status"><p>Статус</p></div>
+                                </div>
+
+                                {list.length ? list.sort((a, b) => {
+                                    if (a.invoiceStatus === 'ISSUED') {
+                                        return parseInt(b.createdDateMillis) - parseInt(a.createdDateMillis);
+
+                                    } else {
+
+                                    }
+                                }).map(invoice => {
                                     return (
                                         <div className="invoice" onClick={() => this.setState({
                                             chosenInvoice: invoice,
                                             invoiceSelected: true
                                         })}>
-                                            <div className="inv-number"><p>Счёт {invoice.customId}</p></div>
+                                            <div className="inv-number"><p>{invoice.customId}</p></div>
                                             <div className="inv-date">
                                                 <p>{moment(invoice.createdDateMillis).format('DD.MM.YYYY')}</p>
                                             </div>
                                             <div className="inv-date">
                                                 <p>{invoice.totalSum} {invoice.currency}</p></div>
-                                            <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}>
+                                            <div className="inv-status">
                                                 <p style={{
-                                                    color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000',
+                                                    color: invoice.invoiceStatus === 'ISSUED' ? '#50A5F1' : '#34C38F',
                                                 }}>
                                                     {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                                                         (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
@@ -752,7 +782,7 @@ class Index extends Component {
                                         </div>
                                     );
                                 }) : (
-                                    <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
+                                    <div style={{textAlign: 'center'}}>Нет счетов для отображения</div>
                                 )}
 
                                 {/*--------------------*/}
@@ -776,7 +806,8 @@ class Index extends Component {
 
                                             {pdfMarkup}
 
-                                            <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                                            <p className="download"
+                                               onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
                                         </div>
 
                                     </div>
@@ -786,73 +817,10 @@ class Index extends Component {
                                 }
                             </div>
 
+
                         </div>
 
-                        <div className={"tab-pane " + (pathname === '/invoices' ? "active" : "")} id="acts">
 
-
-                            {list.length ? list.sort((a, b) => parseInt(a.createdDateMillis) - parseInt(b.createdDateMillis)).map(invoice => {
-                                return (
-                                    <div className="invoice" onClick={() => this.setState({
-                                        chosenInvoice: invoice,
-                                        invoiceSelected: true
-                                    })}>
-                                        <div className="inv-number"><p>Счёт {invoice.customId}</p></div>
-                                        <div className="inv-date">
-                                            <p>{moment(invoice.createdDateMillis).format('DD.MM.YYYY')}</p>
-                                        </div>
-                                        <div className="inv-date">
-                                            <p>{invoice.totalSum} {invoice.currency}</p></div>
-                                        <div className="inv-date" style={{backgroundColor: invoice.invoiceStatus === 'ISSUED' ? '#0a1232': '#fff' }}>
-                                            <p style={{
-                                                color: invoice.invoiceStatus === 'ISSUED' ? '#fff': '#000',
-                                            }}>
-                                            {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                                                (invoice.invoiceStatus === 'PAID' ? 'Оплачено' : (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                                            </p>
-                                        </div>
-                                    </div>
-                                );
-                            }) : (
-                                <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
-                            )}
-
-                            {/*--------------------*/}
-
-
-                            {invoiceSelected &&
-                            // !!0 && list.map(invoice => {
-                            //  return(
-
-
-                            <div className="chosen-invoice">
-                                <div className="modal-header">
-                                    <h4 className="modal-title">Счёт</h4>
-                                    <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
-                                         className="close" style={{height: "50px"}}
-                                         onClick={() => this.closeModalActs()}
-                                    />
-                                </div>
-                                <div className="act-body-wrapper">
-                                    <div className="acts-body">
-
-                                        {pdfMarkup}
-
-                                        <p className="download" onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                                // );})
-                            }
-                        </div>
-                        <div className="payments-license-block">
-                            <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>Лицензионный договор</a>
-                            <span data-toggle="modal" data-target=".accountant-modal-in">
-                                Для бухгалтерии
-                            </span>
-                        </div>
                     </div>
 
                 </div>}
@@ -1034,22 +1002,22 @@ class Index extends Component {
                 {/*        </div>*/}
                 {/*    </div>*/}
                 {/*</div>*/}
-                <MakePayment />
+                <MakePayment/>
 
 
             </React.Fragment>
         );
     }
-    handleSearch(){
-        const {defaultList}= this.state;
 
-        const searchList = defaultList.filter((item)=>{
-            return  String(item.customId).toLowerCase().includes(String(this.search.value).toLowerCase())
+    handleSearch() {
+        const {defaultList} = this.state;
+
+        const searchList = defaultList.filter((item) => {
+            return String(item.customId).toLowerCase().includes(String(this.search.value).toLowerCase())
                 || String(moment(item.createdDateMillis).format('DD.MM.YYYY')).toLowerCase().includes(String(this.search.value).toLowerCase())
-            || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
-            || String(item.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                || String(item.totalSum + ' ' + item.currency).toLowerCase().includes(String(this.search.value).toLowerCase())
+                || String(item.invoiceStatus === 'ISSUED' ? 'Оплатить' :
                     (item.invoiceStatus === 'PAID' ? 'Оплачено' : (item.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))).toLowerCase().includes(String(this.search.value).toLowerCase())
-
 
 
         });
@@ -1060,7 +1028,7 @@ class Index extends Component {
             list: searchList
         });
 
-        if(this.search.value===''){
+        if (this.search.value === '') {
             this.setState({
                 search: true,
                 list: defaultList
@@ -1074,12 +1042,11 @@ class Index extends Component {
 }
 
 
-
 function mapStateToProps(state) {
-    const { company, payments, authentication, staff} = state;
+    const {company, payments, authentication, staff} = state;
     return {
         company, payments, authentication, staff
     };
 }
 
-export default (withRouter(connect(mapStateToProps,null)(Index)));
+export default (withRouter(connect(mapStateToProps, null)(Index)));

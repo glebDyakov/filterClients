@@ -16,7 +16,7 @@ import moment from "./AddAppointment";
 import Hint from "../Hint";
 import InputCounter from "../InputCounter";
 import {
-    calendarActions, clientActions, staffActions
+    calendarActions, clientActions, staffActions, userActions
 } from '../../_actions';
 import {isValidEmailAddress} from "../../_helpers/validators";
 
@@ -81,6 +81,12 @@ class ManagerSettings extends React.Component {
     setterPhone(phone) {
         const {message} = this.state
         this.setState({message: {...message, senderPhone: phone.replace(/[()\- ]/g, '')}})
+    }
+
+    handleChangeTheme(newTheme) {
+        const {dispatch} = this.props;
+
+        dispatch(userActions)
     }
 
     addManager() {

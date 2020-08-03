@@ -112,6 +112,7 @@ function activateStaff(id) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
+
 function updateProfile(userProfile) {
     return dispatch => {
         dispatch(request(0));
