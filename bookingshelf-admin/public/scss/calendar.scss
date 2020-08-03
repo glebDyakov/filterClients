@@ -409,7 +409,7 @@
   }
 
   .days-container {
-    -webkit-overflow-scrolling: touch;
+    //-webkit-overflow-scrolling: touch;
     overflow: auto;
 
     height: calc(100vh - 150px);
