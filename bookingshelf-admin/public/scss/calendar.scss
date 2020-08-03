@@ -409,7 +409,7 @@
   }
 
   .days-container {
-    //-webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
     overflow: auto;
 
     height: calc(100vh - 150px);
@@ -443,6 +443,7 @@
 
     @media (max-width: $mob-width) {
       padding-left: 4px;
+      height: 65vh;
 
       .scroll-button {
         display: none;
