@@ -441,14 +441,12 @@
       height: 100%;
     }
 
-    @media screen {
-      @media (max-width: $mob-width) {
-        padding-left: 4px;
-        height: auto;
+    @media (max-width: $mob-width) {
+      padding-left: 4px;
+      height: 100%;
 
-        .scroll-button {
-          display: none;
-        }
+      .scroll-button {
+        display: none;
       }
     }
 
