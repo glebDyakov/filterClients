@@ -261,7 +261,7 @@ class Index extends React.Component {
         }
         return (
             <Router history={history} >
-                <div>
+                <div className="dark-theme">
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <React.Fragment>
                             <SidebarMain/>

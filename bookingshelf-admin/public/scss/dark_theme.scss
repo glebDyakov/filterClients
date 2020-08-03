@@ -11,15 +11,203 @@
 
 .dark-theme {
 
+  .paginator-wrapper {
+    .pagination {
+      background: none;
+    .page-item .page-link {
+      color: #fff!important;
+      background-color: #2E3548;
+    }
 
+      .page-item.active {
+        a {
+          background: #50A5F1 !important;
+        }
+      }
+    }
+
+  }
+
+ .modal-content {
+   background-color: #222736 !important;
+
+ }
+
+  .SelectedWeekExample {
+    border: none !important;
+  }
 
   .content-wrapper {
     background-color: #222736 !important;
   }
 
+  .delimiter {
+    * {
+      color: #fff !important;
+    }
+  }
+
+  .faq-tabs, .faq-page {
+    border: none;
+    .content-pages-bg {
+      background: #2A3042 !important;
+      border: none !important;
+    }
+
+    .nav-link::before {
+      background-color: #fff !important;
+    }
+    background: #2A3042 !important;
+    * {
+      color: #fff !important;
+    }
+  }
+
+  .staff {
+    .holiday-list {
+      background: #2A3042 !important;
+      strong, p {
+        color: #fff !important;
+      }
+    }
+    .select-date {
+      * {
+        color: #fff !important;
+      }
+
+      .arrow-left,
+      .arrow-right {
+        background: #2E3548 !important;
+      }
+
+      .arrow-left {
+        background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+        background-size: 100% auto;
+      }
+      .arrow-right {
+        background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+        background-size: 100% auto;
+      }
+
+      .button-calendar {
+        background: #222736 !important;
+      }
+
+      .SelectedWeekExample {
+        background: #2A3042 !important;
+      }
+    }
+
+
+
+    .staff-list-tab {
+      .header-content-list {
+        p {
+          color: #fff !important;
+        }
+      }
+    }
+
+    .holiday-tab {
+      span {
+        color: #fff !important;
+      }
+    }
+
+    .user-feeds {
+      background: #2A3042 !important;
+      h2, span, p {
+        color: #fff !important;
+      }
+    }
+
+    .header-tabs-container {
+      background: #2A3042 !important;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
+      .nav-tabs {
+        .nav-link {
+          color: #fff !important;
+          &::before {
+            background-color: #fff !important;
+          }
+        }
+      }
+
+    }
+
+    .tab-content-list {
+      div {
+        background: #2A3042 !important;
+        color: #fff !important;
+      }
+      p, a, span {
+        color: #fff !important;
+      }
+    }
+  }
+
+  .clients-page {
+    background: #222736;
+    p {
+      color: #fff;
+    }
+
+    .no-holiday {
+      background: #2A3042 !important;
+      * {
+        color: #fff !important;
+      }
+    }
+
+    .header-tabs {
+      .nav-link {
+        color: #fff !important;
+        &::before {
+          background-color: #fff !important;
+        }
+      }
+    }
+
+    .search {
+      input {
+        background: none;
+        color: #fff;
+      }
+
+
+      .search-icon {
+        background: url("../img/dark-theme/search-input.svg") !important;
+        background-size: 100% !important;
+        background-repeat: no-repeat;
+      }
+    }
+
+    .content.clients {
+      background: #2A3042 !important;
+
+    }
+
+    .tab-content-list {
+      background: #2A3042 !important;
+      border-color: #3F4555 !important;
+      div {
+        background: #2A3042 !important;
+        color: #fff;
+      }
+
+    }
+
+  }
+
   .managers-settings {
     background: #222736 !important;
     /* Drop Shadow */
+    .close {
+      &::before, &::after {
+        background-color: #fff !important;
+      }
+    }
 
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
 
@@ -126,6 +314,11 @@
 
   .calendar {
 
+    .fon-for-red {
+      background-color: #2E3548 !important;
+
+    }
+
     .tab-content-list {
       div {
         background-color: #2E3548;
@@ -148,6 +341,10 @@
     }
 
     .cell {
+      .msg-inner {
+        background-color: #2E3548 !important;
+      }
+
       * {
         color: #fff !important;
       }
