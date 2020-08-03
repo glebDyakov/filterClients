@@ -323,7 +323,7 @@ class SidebarMain extends React.Component {
                                         </p>
                                     </div>
                                 </div>
-                                <div style={{wordBreak: 'break-word'}}>
+                                <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p>
                                         <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                     </p><br/></React.Fragment> : ''}
@@ -478,7 +478,7 @@ class SidebarMain extends React.Component {
                                         </p>
                                     </div>
                                 </div>
-                                <div style={{wordBreak: 'break-word'}}>
+                                <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p>
                                         <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                     </p><br/></React.Fragment> : ''}
@@ -710,36 +710,21 @@ class SidebarMain extends React.Component {
                                 </div>
 
                                 <div className="button-field-mob">
-                                    <button onClick={this.handleDropdownButtons}
-                                            className={"dropdown-selected-button" + (this.state.isOpenDropdownButtons ? " opened" : '')}>
-                                        {openedTab === 'new' ? "Новые записи" : (openedTab === 'deleted' ? "Удаленные записи" : (openedTab === 'moved' ? "Перенесенные записи" : ''))}
-                                        <span
-                                            className="counter">
-                                        {count && count.appointments && count.canceled && count.moved && (count.appointments.count + count.moved.count + count.canceled.count)}
-                                    </span>
-                                    </button>
-                                    {this.state.isOpenDropdownButtons && (
-                                        <div className="dropdown-buttons">
-                                            <button type="button"
-                                                    className={"approve-tab " + (openedTab === 'new' ? '' : 'disabled')}
-                                                    onClick={() => this.setState({openedTab: 'new'})}>Новые записи <span
-                                                className="counter">
+                                    <button type="button"
+                                            className={"float-left button small-button approve-tab " + (openedTab === 'new' ? '' : 'disabled')}
+                                            onClick={() => this.setState({openedTab: 'new'})}>Новые записи <span
+                                        className="counter">
                                         {count && count.appointments && count.appointments.count}
                                     </span></button>
-                                            <button type="button"
-                                                    className={"approve-tab " + (openedTab === 'deleted' ? '' : 'disabled')}
-                                                    onClick={() => this.setState({openedTab: 'deleted'})}>Удаленные
-                                                записи<span
-                                                    className="counter">{count && count.canceled && count.canceled.count}</span>
-                                            </button>
-                                            <button type="button"
-                                                    className={"approve-tab " + (openedTab === 'moved' ? '' : 'disabled')}
-                                                    onClick={() => this.setState({openedTab: 'moved'})}>Перемещенные
-                                                записи<span
-                                                    className="counter">{count && count.moved && count.moved.count}</span>
-                                            </button>
-                                        </div>
-                                    )}
+                                    <button type="button"
+                                            className={"float-left button small-button approve-tab " + (openedTab === 'deleted' ? '' : 'disabled')}
+                                            onClick={() => this.setState({openedTab: 'deleted'})}>Удаленные записи<span
+                                        className="counter">{count && count.canceled && count.canceled.count}</span>
+                                    </button>
+                                    <button type="button"
+                                            className={"float-left button small-button approve-tab " + (openedTab === 'moved' ? '' : 'disabled')}
+                                            onClick={() => this.setState({openedTab: 'moved'})}>Перемещенные записи<span
+                                        className="counter">{count && count.moved && count.moved.count}</span></button>
                                 </div>
 
                                 {openedTab === 'new' && <React.Fragment>
@@ -790,7 +775,7 @@ class SidebarMain extends React.Component {
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div style={{wordBreak: 'break-word'}}>
+                                                        <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p> <div className="img-container d-md-none">
                                                                 <img
                                                                     src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}

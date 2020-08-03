@@ -390,16 +390,22 @@
     margin-right: 10px;
   }
 
+  .paginator-wrapper {
+    bottom: 8px !important;
+  }
+
   .final-clients {
     max-height: calc(100vh - 130px);
     overflow-y: auto;
     margin-top: 7px;
 
     @media screen and(max-width: $tablet-width) {
-      max-height: calc(100vh - 130px);
+      max-height: calc(100vh - 160px);
 
       margin-top: 7px;
     }
+
+
 
     .clientEyeDel {
       top: 1px !important;
@@ -523,6 +529,10 @@
 
       top: 0 !important;
       z-index: 1 !important;
+
+      @media screen and (max-width: $mob-width) {
+        top: -5px !important;
+      }
     }
 
 
@@ -881,6 +891,12 @@
 .modal.client-detail {
   .modal-content {
     max-width: 502px;
+    width: 502px;
+
+    @media screen and (max-width: $mob-width) {
+      width: 100%;
+      max-width: 100%;
+    }
 
     hr {
       margin: 0 auto 15px;

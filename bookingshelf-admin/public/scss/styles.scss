@@ -3719,6 +3719,51 @@ select {
     }
   }
 
+  .button-field-mob {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+
+    .approve-tab {
+      border-radius: 0;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #50A5F1;
+      color: #50A5F1;
+      min-width: unset;
+      font-size: 11px;
+
+      &:last-child {
+        margin-left: 0;
+      }
+
+      &.disabled {
+        border: none;
+        color: #2A3042;
+        margin: 0;
+      }
+    }
+
+    &:nth-child(1) {
+      padding: 25px 15px;
+      @media screen {
+        @media (max-width: $tablet-width) {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          button {
+            margin: 8px auto !important;
+          }
+        }
+      }
+    }
+
+
+  }
+
+
   .button-field {
     display: flex;
     justify-content: space-around;

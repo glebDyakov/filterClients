@@ -76,7 +76,13 @@ class Index extends Component {
     }
 
     handleOpenDropdownMenu() {
-            this.setState({isOpenDropdownMenu: !this.state.isOpenDropdownMenu});
+            // this.setState(state => {
+            //     console.log(state.isOpenDropdownMenu, !state.isOpenDropdownMenu)
+            //     return {isOpenDropdownMenu: !state.isOpenDropdownMenu};
+            // });
+
+        this.setState({isOpenDropdownMenu: !this.state.isOpenDropdownMenu})
+
     }
 
 
@@ -98,7 +104,6 @@ class Index extends Component {
     handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.setState({handleOpen: false});
-            this.setState({isOpenDropdownMenu: false});
         }
     }
 
@@ -271,13 +276,11 @@ class Index extends Component {
                         </div>
 
                         <div className={"header-tabs-mob" + (this.state.isOpenDropdownMenu ? " opened" : '')}>
-                            <p onClick={() => {
-                               this.handleOpenDropdownMenu();
-                            }}
+                            <p onClick={this.handleOpenDropdownMenu}
                                className="dropdown-button">{activeTab === 'clients' ? "Клиенты" : "Черный список"}</p>
 
                             {this.state.isOpenDropdownMenu && (
-                                <div ref={this.setWrapperRef} className="dropdown-buttons">
+                                <div className="dropdown-buttons">
                                     <a className={"nav-link" + (activeTab === 'clients' ? ' active show' : '')}
                                        data-toggle="tab" href="#tab1" onClick={() => {
                                         this.setTab('clients');
