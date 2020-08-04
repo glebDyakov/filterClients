@@ -124,11 +124,6 @@ export function authentication(state = initialState, action) {
                 user: companyAllInfo,
                 status: 'saved.settings'
             };
-        case userConstants.CHANGE_THEME_SUCCESS:
-            return {
-                ...state,
-                user: action.user
-            };
         case userConstants.UPDATE_PROFILE_SUCCESS_TIME:
             $('.modal_user_setting').modal('hide')
 

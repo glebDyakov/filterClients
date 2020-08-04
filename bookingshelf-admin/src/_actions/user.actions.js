@@ -17,7 +17,6 @@ export const userActions = {
     activate,
     clearErrors,
     activateStaff,
-    updateTheme
 };
 
 function login(login, password) {
@@ -52,30 +51,6 @@ function login(login, password) {
     }
 }
 
-function updateTheme(user, isLightTheme) {
-    return dispatch => {
-        companyService.updateCompany({
-            ...user,
-            lightTheme: isLightTheme
-        })
-            .then(
-                result => {
-                    localStorage.setItem('isLightTheme', result.lightTheme);
-                    dispatch(success(result));
-                },
-                error => {
-
-                })
-    };
-
-    function success(user) {
-        return {type: userConstants.CHANGE_THEME_SUCCESS, payload: {user}}
-    }
-
-    function failture(error) {
-        return {type: userConstants.CHANGE_THEME_FAILTURE, payload: {error}}
-    }
-}
 
 function checkLogin(localStorageUser) {
     return dispatch => {

@@ -3298,7 +3298,7 @@ input {
 
     + .check {
       border-radius: 32px;
-      background: #CED4DA !important;
+      background: #CED4DA;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -3308,7 +3308,6 @@ input {
       text-align: center;
       vertical-align: middle;
       cursor: pointer;
-      background: none;
       position: absolute;
       left: 0;
       top: 0;
@@ -3319,7 +3318,7 @@ input {
       &::after {
         content: "Выкл";
         font-size: 10px;
-        line-height: 14px;
+        line-height: 16px;
         color: #FFFFFF;
         transition: 200ms;
 

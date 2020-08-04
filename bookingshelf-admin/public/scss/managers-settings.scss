@@ -128,10 +128,13 @@
 
     .white {
       background-image: url("../img/light_theme.jpg");
+      cursor: pointer;
+
     }
 
     .black {
       background-image: url("../img/dark_theme.jpg");
+      cursor: pointer;
     }
   }
 

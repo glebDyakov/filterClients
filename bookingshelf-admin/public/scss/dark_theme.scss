@@ -1,23 +1,128 @@
-//.calendar.dark-theme {
-//  * {
-//  }
-//
-//  .calendar-container {
-//    background: #2E3548 !important;
-//    color: #fff !important;
-//
-//  }
-//}
+@import "styles-group";
+
 
 .dark-theme {
+  background: #222736;
+  position: relative;
 
-  .paginator-wrapper {
+  .mobile-datePicker {
+    background-color: #2E3548 !important;
+
+  }
+
+  .mobile-selected-tab {
+    &::before {
+      content: url("../img/dark-theme/down-arrow.svg") !important;
+    }
+
+    color: #fff !important;
+
+  }
+
+  .mobile-header-dropdown-container {
+    background-color: #2E3548 !important;
+
+    .nav-tabs-mobile-dropdown {
+      background-color: #2E3548 !important;
+
+      .nav-item {
+        border-color: #3F4555 !important;
+
+        a {
+          color: #fff !important;
+        }
+
+      }
+    }
+
+  }
+
+  .form-check-input[type="checkbox"] {
+    + .check {
+      background: #222736 !important
+    }
+  }
+
+
+  .loader-client,
+  .loader-company,
+  .loader-service,
+  .loader-email,
+  .loader-staff,
+  .loader-online {
+    background-color: #222736 !important;
+  }
+
+  .container-fluid {
+    background: #222736;
+
+  }
+
+  * {
+    box-shadow: none !important;
+
+  }
+
+  &::before {
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    background: #222736;
+    z-index: -1;
+  }
+
+  .select-date {
+    * {
+      color: #fff !important;
+    }
+
+    .arrow-left,
+    .arrow-right {
+      background: #2E3548 !important;
+    }
+
+    .arrow-left {
+      background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+      background-size: 100% auto;
+    }
+
+    .arrow-right {
+      background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
+      background-size: 100% auto;
+    }
+
+    .button-calendar {
+      background: #222736 !important;
+
+      @media screen and (max-width: $mob-width) {
+        background: unset !important;
+
+      }
+
+    }
+
+    .SelectedWeekExample {
+      background: #2A3042 !important;
+    }
+  }
+
+
+  .container-wrapper {
+    background: #222736;
+
+  }
+
+  .paginator-wrapper, .paginator-container {
     .pagination {
       background: none;
-    .page-item .page-link {
-      color: #fff!important;
-      background-color: #2E3548;
-    }
+
+      .page-item .page-link {
+        color: #fff !important;
+        background-color: #2E3548;
+      }
 
       .page-item.active {
         a {
@@ -28,10 +133,10 @@
 
   }
 
- .modal-content {
-   background-color: #222736 !important;
+  .modal-content {
+    background-color: #222736 !important;
 
- }
+  }
 
   .SelectedWeekExample {
     border: none !important;
@@ -49,6 +154,7 @@
 
   .faq-tabs, .faq-page {
     border: none;
+
     .content-pages-bg {
       background: #2A3042 !important;
       border: none !important;
@@ -57,47 +163,24 @@
     .nav-link::before {
       background-color: #fff !important;
     }
+
     background: #2A3042 !important;
+
     * {
       color: #fff !important;
     }
   }
 
   .staff {
+    background: #222736;
+
     .holiday-list {
       background: #2A3042 !important;
+
       strong, p {
         color: #fff !important;
       }
     }
-    .select-date {
-      * {
-        color: #fff !important;
-      }
-
-      .arrow-left,
-      .arrow-right {
-        background: #2E3548 !important;
-      }
-
-      .arrow-left {
-        background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
-        background-size: 100% auto;
-      }
-      .arrow-right {
-        background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
-        background-size: 100% auto;
-      }
-
-      .button-calendar {
-        background: #222736 !important;
-      }
-
-      .SelectedWeekExample {
-        background: #2A3042 !important;
-      }
-    }
-
 
 
     .staff-list-tab {
@@ -116,6 +199,7 @@
 
     .user-feeds {
       background: #2A3042 !important;
+
       h2, span, p {
         color: #fff !important;
       }
@@ -128,6 +212,7 @@
       .nav-tabs {
         .nav-link {
           color: #fff !important;
+
           &::before {
             background-color: #fff !important;
           }
@@ -141,6 +226,7 @@
         background: #2A3042 !important;
         color: #fff !important;
       }
+
       p, a, span {
         color: #fff !important;
       }
@@ -149,12 +235,36 @@
 
   .clients-page {
     background: #222736;
+
     p {
       color: #fff;
     }
 
+    .header-tabs-mob {
+      .dropdown-button {
+        color: #fff !important;
+      }
+
+      .dropdown-buttons {
+        background: #383D4A;
+
+        .nav-link {
+          background: #222736;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #383D4A;
+          }
+        }
+
+        * {
+          color: #fff !important;
+        }
+      }
+    }
+
     .no-holiday {
       background: #2A3042 !important;
+
       * {
         color: #fff !important;
       }
@@ -163,6 +273,7 @@
     .header-tabs {
       .nav-link {
         color: #fff !important;
+
         &::before {
           background-color: #fff !important;
         }
@@ -177,9 +288,9 @@
 
 
       .search-icon {
-        background: url("../img/dark-theme/search-input.svg") !important;
         background-size: 100% !important;
         background-repeat: no-repeat;
+        background-color: unset !important;
       }
     }
 
@@ -191,6 +302,7 @@
     .tab-content-list {
       background: #2A3042 !important;
       border-color: #3F4555 !important;
+
       div {
         background: #2A3042 !important;
         color: #fff;
@@ -253,15 +365,18 @@
 
 
     background: #262B3C !important;
+
     * {
       color: #fff !important;
     }
 
     .dropdown-menu {
       background: #3F4555 !important;
+
       li {
         background: #2A3042 !important;
       }
+
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
     }
 
@@ -272,7 +387,8 @@
 
     .search-header {
       background: #2A3042 !important;
-      .search-input {
+
+      .search-input, .mob-search-input {
         background: #2A3042 !important;
         color: #fff !important;
 
@@ -314,6 +430,18 @@
 
   .calendar {
 
+    .calendar {
+      @media screen and (max-width: $mob-width) {
+        border-top: 7px solid #222736 !important;
+      }
+    }
+
+    .notes-buttons-container {
+      span {
+        color: #222736 !important;
+      }
+    }
+
     .fon-for-red {
       background-color: #2E3548 !important;
 
@@ -326,12 +454,26 @@
       }
 
       &::before {
-        background: #A6B0CF;
+        background: #656b7f;
       }
     }
 
-    .fixed-tab{
+    #weeks {
+      .fixed-tab {
+        .tab-content-list {
+          background: #222736;
+        }
+
+      }
+    }
+
+    .fixed-tab {
       background: none !important;
+
+      .tab-content-list-first {
+        background: #222736;
+
+      }
 
 
       .cell.hours {
@@ -359,6 +501,7 @@
       }
 
     }
+
     .calendar-container {
       * {
         color: #fff !important;
@@ -367,13 +510,14 @@
       background: #2E3548;
 
       .dropdown-menu {
-      background: #3F4555 !important;
-       li {
-         background: #2A3042 !important;
-       }
+        background: #3F4555 !important;
+
+        li {
+          background: #2A3042 !important;
+        }
+
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
       }
-
 
 
       .tab-day-week {
@@ -386,6 +530,7 @@
 
         .nav-link {
           background: none !important;
+
           &::after {
             background: #fff !important;
           }
@@ -395,28 +540,310 @@
         }
       }
 
-      .select-date {
-        .arrow-left,
-        .arrow-right {
-          background: #2E3548 !important;
+    }
+  }
+
+  .analytics_container {
+    .timeContainer {
+      background: #2A3042 !important;
+      /* Drop Shadow */
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
+      .calendar-switch {
+        background-color: unset !important;
+
+        * {
+          color: #fff;
         }
 
-        .arrow-left {
-          background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
-          background-size: 100% auto;
+        .dropdown {
+          background: #222736;
         }
-        .arrow-right {
-          background: url("../img/dark-theme/calendar-arrow.svg") center no-repeat !important;
-          background-size: 100% auto;
+      }
+
+    }
+
+    .analytics_chart {
+      select, p {
+        color: #fff !important;
+      }
+
+      background: #2A3042 !important;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
+      .title-list, .sum-container p {
+        color: #fff !important;
+      }
+    }
+
+    .list-group-statistics {
+      span {
+        color: #fff !important;
+      }
+
+    }
+
+
+    .group-container {
+      .analytics_list {
+        background: #2A3042 !important;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
+        .stat-counter {
+          > span {
+            color: #fff;
+          }
         }
 
-        .button-calendar {
-          background: #222736 !important;
+        .stat-number-small {
+          span {
+            color: #fff;
+          }
         }
 
-        .SelectedWeekExample {
+        .container-title, strong, .stat-counter, .stat-number-small, .stat-numbers p {
+          color: #fff !important;
+        }
+
+
+      }
+    }
+
+  }
+
+  .emailPage {
+    .header-tabs-container {
+      background: #2A3042;
+
+      .nav-link {
+        color: #fff !important;
+
+        &::before {
+          background-color: #fff !important;
+        }
+      }
+    }
+
+    .count-sms, .count-email {
+      color: #fff !important;
+    }
+
+    .letter-page {
+      background: #2A3042 !important;
+
+      label, p {
+        color: #fff !important;
+      }
+
+      textarea, input {
+        background: #222736 !important;
+        color: #fff !important;
+        border: none !important;
+      }
+
+    }
+
+    .history_page {
+      .tab-content-list {
+        > div {
           background: #2A3042 !important;
+          color: #fff;
         }
+
+
+      }
+    }
+
+    .auto_notification_page {
+      background: #2A3042;
+
+      select, input {
+        background: #222736 !important;
+        color: #fff;
+      }
+
+      .title_block, .title-label, label, .title-label span {
+        color: #fff;
+      }
+
+    }
+  }
+
+
+  .settings-page-container {
+    .company_fields {
+      background: #2A3042 !important;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
+      .form-control {
+        background: #2A3042;
+      }
+
+      * {
+        color: #fff !important;
+      }
+
+      .image_picker {
+        background: unset !important;
+
+        .existed-image {
+          background-color: #222736 !important;
+        }
+      }
+
+      input, textarea, select, input.form-control {
+        background: #222736 !important;
+      }
+    }
+  }
+
+  .services {
+    .search-header-container {
+      background: #2A3042 !important;
+      border: none;
+
+      .search {
+        .search-input, .mob-search-input {
+
+        }
+
+        .search-icon {
+          background-color: unset !important;
+        }
+      }
+    }
+
+
+    .services_wrapper {
+
+      .service_one {
+        background: #2A3042 !important;
+
+        .service-content {
+          p {
+            color: #fff;
+          }
+        }
+
+        .services_items {
+          border-top: 1px solid #3F4555 !important;
+          background: #2A3042 !important;
+
+          span {
+            color: #fff;
+          }
+        }
+      }
+
+    }
+  }
+
+  #payments {
+    .current-packet {
+      color: #fff;
+    }
+
+    .payments-inner {
+      .payments-list-block,
+      .payments-list-block2,
+      .payments-list-block3 {
+        background-color: #2A3042 !important;
+
+        .title-payments, p, li, label, span {
+          color: #fff;
+        }
+
+        li.active.selected {
+          color: #50A5F1 !important;
+        }
+
+        input {
+          background: none !important;
+        }
+      }
+    }
+
+    #acts {
+      background-color: #2A3042 !important;
+
+      .invoice {
+        border-color: #3F4555 !important;
+      }
+
+      .invoice.header-invoice {
+        background-color: #2A3042 !important;
+
+        p {
+          color: #fff !important;
+        }
+
+      }
+
+      p, h2 {
+        color: #fff;
+      }
+
+      .inv-number {
+        p {
+          color: #50A5F1 !important;
+        }
+      }
+    }
+  }
+
+  .material {
+    .content {
+      background-color: #2A3042 !important;
+
+    }
+
+    .tab-content-list {
+      div {
+        background-color: #2A3042 !important;
+
+        .productName {
+          color: #50A5F1;
+        }
+
+        p {
+          color: #fff;
+        }
+      }
+    }
+
+    .search-container {
+
+      .nav-link {
+        color: #fff;
+
+        &::before {
+          background-color: #fff !important;
+        }
+      }
+    }
+
+  }
+
+  .online-zapis-page {
+    .content-pages-bg {
+      background: #2A3042 !important;
+      border: none !important;
+
+      .title, .text, label, .sub-title {
+        color: #fff !important;
+      }
+
+      input, textarea, select {
+        background: #222736 !important;
+        border: none !important;
+      }
+
+      .chose_button .button-color {
+        border: none !important;
+      }
+
+      textarea, select {
+        color: #fff;
       }
     }
   }
