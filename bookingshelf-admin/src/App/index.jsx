@@ -71,6 +71,7 @@ class Index extends React.Component {
             isLoading: true,
             authentication: props.authentication,
             flagStaffId: true,
+            lightTheme: true
         }
 
         const { dispatch } = this.props;
@@ -118,6 +119,8 @@ class Index extends React.Component {
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
+
+
         if (this.state.paymentsOnly) {
             this.setState({paymentsOnly: false})
         }
@@ -254,14 +257,17 @@ class Index extends React.Component {
 
 
     render() {
+
         const { authentication, company, paymentsOnly } = this.state;
         {
            company && company.settings && authentication.menu && authentication.loggedIn &&
             moment.tz.setDefault(company.settings.timezoneId)
         }
+
+
         return (
             <Router history={history} >
-                <div>
+                <div className={company && company.settings && (company.settings.lightTheme ? '' : "dark-theme")}>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <React.Fragment>
                             <SidebarMain/>

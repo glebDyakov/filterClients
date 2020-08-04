@@ -16,7 +16,7 @@ import moment from "./AddAppointment";
 import Hint from "../Hint";
 import InputCounter from "../InputCounter";
 import {
-    calendarActions, clientActions, staffActions, userActions
+    calendarActions, clientActions, companyActions, staffActions, userActions
 } from '../../_actions';
 import {isValidEmailAddress} from "../../_helpers/validators";
 
@@ -42,15 +42,15 @@ class ManagerSettings extends React.Component {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.handleMessageIsSentModal = this.handleMessageIsSentModal.bind(this);
-
+        this.handleChangeTheme = this.handleChangeTheme.bind(this);
     }
+
 
     componentDidMount() {
         if (this.props.authentication.loginChecked) {
             this.queryInitData()
         }
         document.addEventListener('mousedown', this.handleClickOutside);
-
     }
 
 
@@ -85,8 +85,11 @@ class ManagerSettings extends React.Component {
 
     handleChangeTheme(newTheme) {
         const {dispatch} = this.props;
-
-        dispatch(userActions)
+        console.log(this.props.authentication.user)
+        this.props.dispatch(companyActions.updateCompanySettings({
+            ...this.props.company.settings,
+            lightTheme: newTheme
+        }, 'isFirstScreenLoading'));
     }
 
     addManager() {
@@ -155,9 +158,13 @@ class ManagerSettings extends React.Component {
                     <div className="theme-block">
                         <h5>Выберите тему:</h5>
                         <p>Белая</p>
-                        <div className="screen white"></div>
+                        <div onClick={() => {
+                            this.handleChangeTheme(true);
+                        }} className="screen white"></div>
                         <p>Темная</p>
-                        <div className="screen black"></div>
+                        <div onClick={() => {
+                            this.handleChangeTheme(false);
+                        }} className="screen black"></div>
                     </div>
                     <div className="manager-block">
                         <h5>Ваш менеджер</h5>
@@ -259,10 +266,10 @@ class ManagerSettings extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const {authentication, calendar} = state;
+    const {authentication, calendar, company} = state;
 
     return {
-        authentication, calendar
+        authentication, calendar, company
     };
 }
 

@@ -1,4 +1,4 @@
-import {clientConstants, userConstants} from '../_constants';
+import {clientConstants, companyConstants, userConstants} from '../_constants';
 import {userActions} from "../_actions/user.actions";
 import {access} from "../_helpers/access";
 
@@ -123,6 +123,11 @@ export function authentication(state = initialState, action) {
                 ...state,
                 user: companyAllInfo,
                 status: 'saved.settings'
+            };
+        case userConstants.CHANGE_THEME_SUCCESS:
+            return {
+                ...state,
+                user: action.user
             };
         case userConstants.UPDATE_PROFILE_SUCCESS_TIME:
             $('.modal_user_setting').modal('hide')
