@@ -6,6 +6,7 @@ export function users(state = {}, action) {
       return {
         loading: true
       };
+
     case userConstants.GETALL_SUCCESS:
       return {
         items: action.users

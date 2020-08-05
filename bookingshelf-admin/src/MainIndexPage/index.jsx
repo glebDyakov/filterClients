@@ -220,26 +220,20 @@ class Index extends Component {
         const { adding, authentication, submitted, isLoading, activeDay, saved, notification, status, company, isAvatarOpened, subcompanies } = this.state;
 
         return (
-            <div>
+            <div className="settings-page-container">
                 {isLoading && <div className="loader loader-company"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
 
                 {company && company.settings &&
                     <React.Fragment>
                         {subcompanies[0] && <form className="content retreats company_fields" name="form">
+                            <h2 className="about-company-title">
+                                О компании
+                            </h2>
                             <div className="row">
 
-                                <div className="col-sm-8">
-                                    <p>Банковские реквизиты</p>
-                                    <div style={{ height: '80px' }} className="name_company_wrapper form-control">
-                                        <textarea style={{ paddingRight: '55px' }} className="company_input" name="bankDetails" maxLength="1800"
-                                               value={subcompanies[0].bankDetails} onChange={(e) => this.handleChange(e, 0)}/>
-                                        <span className="company_counter">{subcompanies[0].bankDetails.length}/1800</span>
-
-                                    </div>
-                                </div>
-
                                 <div className="col-sm-4">
+
                                     <p>Заголовок компании</p>
                                     <div className="name_company_wrapper form-control">
                                         <input type="text" className="company_input" name="onlineCompanyHeader" maxLength="40"
@@ -247,8 +241,9 @@ class Index extends Component {
                                         <span className="company_counter">{subcompanies[0].onlineCompanyHeader.length}/40</span>
 
                                     </div>
-                                    <div style={{ justifyContent: 'flex-end' }} className="buttons-container-setting">
-                                        {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' small-button'} onClick={(e) => {
+
+                                    <div className="buttons-container-setting d-none d-md-flex ">
+                                        {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
                                             if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
                                                 this.handleSubmit(e, subcompanies[0], 0)
                                             }
@@ -258,62 +253,53 @@ class Index extends Component {
 
                                 </div>
 
+
+                                <div className="col-sm-8">
+                                    <p>Банковские реквизиты</p>
+                                    <div style={{ height: '80px' }} className="name_company_wrapper bank form-control">
+                                        <textarea style={{ paddingRight: '55px', height: '110px' }} placeholder="Введите реквизиты" className="company_input" name="bankDetails" maxLength="1800"
+                                               value={subcompanies[0].bankDetails} onChange={(e) => this.handleChange(e, 0)}/>
+                                        <span className="company_counter">{subcompanies[0].bankDetails.length}/1800</span>
+
+                                    </div>
+                                </div>
+
+                                <div className="buttons-container-setting d-md-none mx-auto">
+                                    {<button type="button"  className={((saved === 0 && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                        if (saved !== 0 && (status !== 'saved.settings' || !submitted)) {
+                                            this.handleSubmit(e, subcompanies[0], 0)
+                                        }
+                                    }
+                                    }>Сохранить</button>}
+                                </div>
+
                             </div>
 
                         </form>}
                         {subcompanies.map((subcompany, i) => (
                             <form className="content retreats company_fields" name="form">
-                                <h3 style={{ textAlign: 'center' }}>Филиал {i + 1}</h3>
+                                <h3>Филиал {i + 1}</h3>
+
                                 <div className="row">
-                                    <div className="col-sm-4">
+                                    <div className="col-md-4">
                                         <p>Название компании</p>
                                         <div className="name_company_wrapper form-control">
                                             <input type="text" className="company_input" placeholder="Например: Стоматология" name="companyName" maxLength="40"
                                                    value={subcompany.companyName} onChange={(e) => this.handleChange(e, i)}/>
                                             <span className="company_counter">{subcompany.companyName.length}/40</span>
                                         </div>
-
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress1" disabled={!subcompany.companyAddress1}  checked={subcompany.defaultAddress===1} onChange={(e) => this.handleChangeAddress(e, i)}/>
-                                            </div>
-
-                                            <input type="text" placeholder="" name="companyAddress1" className="company_input"
-                                                   value={subcompany.companyAddress1} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
-                                            <span className="company_counter">{subcompany.companyAddress1.length}/40</span>
-                                        </div>
-
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress2" disabled={!subcompany.companyAddress2} checked={subcompany.defaultAddress===2} onChange={(e) => this.handleChangeAddress(e, i)}/>
-                                            </div>
-
-                                            <input type="text" placeholder="" name="companyAddress2" className="company_input"
-                                                   value={subcompany.companyAddress2}  onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
-                                            <span className="company_counter">{subcompany.companyAddress2.length}/40</span>
-                                        </div>
-
-                                        <p>Адрес компании</p>
-                                        <div className="check-box-group2 form-control">
-                                            <div className="input-text2">
-                                                <input type="radio" aria-label="" name="defaultAddress3" disabled={!subcompany.companyAddress3} checked={subcompany.defaultAddress===3} onChange={(e) => this.handleChangeAddress(e, i)}/>
-                                            </div>
-
-                                            <input type="text" placeholder="" name="companyAddress3" className="company_input"
-                                                   value={subcompany.companyAddress3} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
-                                            <span className="company_counter">{subcompany.companyAddress3.length}/40</span>
-                                        </div>
-
-                                        <p className="mt-2">Город</p>
-                                        <div className="name_company_wrapper form-control">
-                                            <input type="text" className="company_input" placeholder="" name="city" maxLength="40"
-                                                   value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
-                                            <span className="company_counter">{subcompany.city.length}/40</span>
-                                        </div>
                                     </div>
-                                    <div className="col-sm-4">
+                                    <div className="col-md-4">
+                                        <p>Вид деятельности</p>
+                                        <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="companyTypeId"
+                                                value={subcompany && subcompany.companyTypeId}>
+                                            <option value={1}>Салоны красоты, барбершопы, SPA</option>
+                                            <option value={2}>СТО, автомойки, шиномонтажи</option>
+                                            <option value={3}>Коворкинг</option>
+                                            <option value={4}>Медицинские центры</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-md-4">
                                         <p>Email</p>
                                         <div className="name_company_wrapper form-control">
                                             <div className="input-text2">
@@ -321,9 +307,16 @@ class Index extends Component {
                                                        value={subcompany.companyEmail} onChange={(e) => this.handleChange(e, i)} maxLength="60"/>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <div className="row">
+                                    <div className="col-sm-4">
                                         <p className="phone_hint_wrapper">
-                                            <span>Номер телефона владельца </span>
-                                            {subcompany.defaultPhone===1 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
+                                            <p>Номер телефона владельца {subcompany.defaultPhone===1 && "(Будет указан в автоуведомлениях)"}</p>
+
                                         </p>
                                         <div style={{ border: 'none' }} className="name_company_wrapper form-control">
                                             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
@@ -335,7 +328,7 @@ class Index extends Component {
                                                     defaultCountry={'by'}
                                                     country={'by'}
                                                     regions={['america', 'europe']}
-                                                    placeholder=""
+                                                    placeholder="Введите номер телефона владельца"
                                                     value={subcompany.companyPhone1}
                                                     onChange={companyPhone1 => {
                                                         const newSubcompanies = subcompanies;
@@ -347,46 +340,69 @@ class Index extends Component {
                                             <span className="company_counter">{subcompany.companyPhone1.length - 2}/20</span>
                                         </div>
 
+                                        <p>Адрес компании</p>
+                                        <div className="check-box-group2 form-control">
+                                            {/*<div className="input-text2">*/}
+                                            {/*    <input type="radio" aria-label="" name="defaultAddress1" disabled={!subcompany.companyAddress1}  checked={subcompany.defaultAddress===1} onChange={(e) => this.handleChangeAddress(e, i)}/>*/}
+                                            {/*</div>*/}
 
-                                        <p className="phone_hint_wrapper">
-                                            <span>Номер телефона </span>
-                                            {subcompany.defaultPhone===2 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
-                                        </p>
-                                        <div style={{ border: 'none' }} className="name_company_wrapper form-control">
-                                            <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-                                                <div className="input-text2">
-                                                    <input type="radio" aria-label="" name="defaultPhone2" disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}  checked={subcompany.defaultPhone===2} onChange={(e) => this.handleChangePhone(e, i)}/>
-                                                </div>
-                                                <ReactPhoneInput
-                                                    defaultCountry={'by'}
-                                                    country={'by'}
-                                                    regions={['america', 'europe']}
-                                                    placeholder=""
-                                                    value={subcompany.companyPhone2}
-                                                    onChange={companyPhone2 => {
-                                                        const newSubcompanies = subcompanies;
-                                                        newSubcompanies[i].companyPhone2 = companyPhone2.replace(/[() ]/g, '')
-                                                        this.setState({ subcompanies: newSubcompanies });
-                                                    }}
-                                                />
-                                            </div>
-                                            <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
+                                            <input checked={true} type="text" placeholder="Введите адрес" name="companyAddress1" className="company_input"
+                                                   value={subcompany.companyAddress1} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>
+                                            <span className="company_counter">{subcompany.companyAddress1.length}/40</span>
                                         </div>
+
+                                        <div className="buttons-container-setting d-none d-md-flex">
+
+                                            {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                                if (saved !== i && (status !== 'saved.settings' || !submitted)) {
+                                                    this.handleSubmit(e, subcompany, i)
+                                                }
+                                            }
+                                            }>Сохранить</button>}
+
+                                        </div>
+
+                                        {/*<p>Адрес компании</p>*/}
+                                        {/*<div className="check-box-group2 form-control">*/}
+                                        {/*    <div className="input-text2">*/}
+                                        {/*        <input type="radio" aria-label="" name="defaultAddress2" disabled={!subcompany.companyAddress2} checked={subcompany.defaultAddress===2} onChange={(e) => this.handleChangeAddress(e, i)}/>*/}
+                                        {/*    </div>*/}
+
+                                        {/*    <input type="text" placeholder="" name="companyAddress2" className="company_input"*/}
+                                        {/*           value={subcompany.companyAddress2}  onChange={(e) => this.handleChange(e, i)} maxLength="40"/>*/}
+                                        {/*    <span className="company_counter">{subcompany.companyAddress2.length}/40</span>*/}
+                                        {/*</div>*/}
+
+                                        {/*<p>Адрес компании</p>*/}
+                                        {/*<div className="check-box-group2 form-control">*/}
+                                        {/*    <div className="input-text2">*/}
+                                        {/*        <input type="radio" aria-label="" name="defaultAddress3" disabled={!subcompany.companyAddress3} checked={subcompany.defaultAddress===3} onChange={(e) => this.handleChangeAddress(e, i)}/>*/}
+                                        {/*    </div>*/}
+
+                                        {/*    <input type="text" placeholder="" name="companyAddress3" className="company_input"*/}
+                                        {/*           value={subcompany.companyAddress3} onChange={(e) => this.handleChange(e, i)} maxLength="40"/>*/}
+                                        {/*    <span className="company_counter">{subcompany.companyAddress3.length}/40</span>*/}
+                                        {/*</div>*/}
+
+
+                                    </div>
+                                    <div className="col-sm-4">
+
                                         <p className="phone_hint_wrapper">
-                                            <span>Номер телефона </span>
-                                            {subcompany.defaultPhone===3 && <span className="phone_hint"> (Будет указан в автоуведомлениях)</span>}
+                                            <p>Номер телефона {subcompany.defaultPhone===3 && "(Будет указан в автоуведомлениях)"}</p>
+
                                         </p>
                                         <div style={{ border: 'none' }} className="name_company_wrapper form-control">
                                             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-                                                <div className="input-text2">
-                                                    <input type="radio" aria-label="" name="defaultPhone3" disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}  checked={subcompany.defaultPhone===3} onChange={(e) => this.handleChangePhone(e, i)}/>
-                                                </div>
+                                                {/*<div className="input-text2">*/}
+                                                {/*    <input type="radio" aria-label="" name="defaultPhone3" disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}  checked={subcompany.defaultPhone===3} onChange={(e) => this.handleChangePhone(e, i)}/>*/}
+                                                {/*</div>*/}
 
                                                 <ReactPhoneInput
                                                     defaultCountry={'by'}
                                                     country={'by'}
                                                     regions={['america', 'europe']}
-                                                    placeholder=""
+                                                    placeholder="Введите номер телефона"
                                                     value={subcompany.companyPhone3}
                                                     onChange={companyPhone3 => {
                                                         const newSubcompanies = subcompanies;
@@ -397,17 +413,45 @@ class Index extends Component {
                                             </div>
                                             <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                                         </div>
-                                        <p>Вид деятельности</p>
-                                        <select className="custom-select" onChange={(e) => this.handleNotificationChange(e, i)} name="companyTypeId"
-                                                value={subcompany && subcompany.companyTypeId}>
-                                            <option value={1}>Салоны красоты, барбершопы, SPA</option>
-                                            <option value={2}>СТО, автомойки, шиномонтажи</option>
-                                            <option value={3}>Коворкинг</option>
-                                            <option value={4}>Медицинские центры</option>
-                                        </select>
+
+                                        <p className="mt-2">Город</p>
+                                        <div className="name_company_wrapper form-control">
+                                            <input type="text" className="company_input" placeholder="Введите название города" name="city" maxLength="40"
+                                                   value={subcompany.city} onChange={(e) => this.handleChange(e, i)}/>
+                                            <span className="company_counter">{subcompany.city.length}/40</span>
+                                        </div>
+
+
+
                                     </div>
                                     <div className="col-sm-4">
-                                        <p>Фото компании</p>
+
+                                        <p className="phone_hint_wrapper">
+                                            <p>Номер телефона {subcompany.defaultPhone===2 && "(Будет указан в автоуведомлениях)"}</p>
+
+                                        </p>
+                                        <div style={{ border: 'none' }} className="name_company_wrapper form-control">
+                                            <div style={{ border: 'none' }} className="check-box-group2 input-text2">
+                                                {/*<div className="input-text2">*/}
+                                                {/*    <input type="radio" aria-label="" name="defaultPhone2" disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}  checked={subcompany.defaultPhone===2} onChange={(e) => this.handleChangePhone(e, i)}/>*/}
+                                                {/*</div>*/}
+                                                <ReactPhoneInput
+                                                    defaultCountry={'by'}
+                                                    country={'by'}
+                                                    regions={['america', 'europe']}
+                                                    placeholder="Введите номер телефона"
+                                                    value={subcompany.companyPhone2}
+                                                    onChange={companyPhone2 => {
+                                                        const newSubcompanies = subcompanies;
+                                                        newSubcompanies[i].companyPhone2 = companyPhone2.replace(/[() ]/g, '')
+                                                        this.setState({ subcompanies: newSubcompanies });
+                                                    }}
+                                                />
+                                            </div>
+                                            <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
+                                        </div>
+
+                                        <p className="text-center">Фото компании</p>
                                         <div className="upload_container">
                                             <div className="setting image_picker">
                                                 <div className="settings_wrap">
@@ -416,7 +460,7 @@ class Index extends Component {
 
                                                         <div className="image_preview">
                                                             <div className="existed-image">
-                                                                <img src={subcompany.imageBase64 && subcompany.imageBase64!==''?("data:image/png;base64,"+subcompany.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
+                                                                <img src={subcompany.imageBase64 && subcompany.imageBase64!==''?("data:image/png;base64,"+subcompany.imageBase64):`${process.env.CONTEXT}public/img/add_new.svg`}/>
 
                                                             </div>
                                                             {isAvatarOpened &&
@@ -436,24 +480,26 @@ class Index extends Component {
                                         {saved === i && status === 'saved.settings' &&
                                             <p className="alert-success p-1 rounded pl-3 mb-2">Настройки сохранены</p>
                                         }
-
-                                        <div className="buttons-container-setting">
-
-                                            {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' small-button'} onClick={(e) => {
-                                                if (saved !== i && (status !== 'saved.settings' || !submitted)) {
-                                                    this.handleSubmit(e, subcompany, i)
-                                                }
-                                            }
-                                            }>Сохранить</button>}
-
-                                        </div>
                                     </div>
+                                    <div className="buttons-container-setting d-md-none mx-auto">
+
+                                        {(adding && (i === subcompanies.length - 1)) ? null : <button type="button"  className={((saved === i && (status === 'saved.settings' || submitted)) && 'disabledField')+' button'} onClick={(e) => {
+                                            if (saved !== i && (status !== 'saved.settings' || !submitted)) {
+                                                this.handleSubmit(e, subcompany, i)
+                                            }
+                                        }
+                                        }>Сохранить</button>}
+
+                                    </div>
+
                                 </div>
+
+
                             </form>
                             )
                         )}
 
-                        <button style={{ display: 'block', margin: '0.5rem auto' }} type="button"  className={' small-button'} onClick={() => {
+                        <button style={{ display: 'block', margin: '0.5rem auto' }} type="button"  className={' button-without-bg'} onClick={() => {
                             if (!adding) {
                                 const newSubcompanies = subcompanies
                                 newSubcompanies.push({
@@ -463,6 +509,8 @@ class Index extends Component {
                                     companyAddress1: '',
                                     companyAddress2: '',
                                     companyAddress3: '',
+                                    defaultAddress: 1,
+                                    defaultPhone: 3,
                                     companyPhone1: company.settings.companyPhone1.slice(0, 4),
                                     companyPhone2: company.settings.companyPhone2.slice(0, 4),
                                     companyPhone3: company.settings.companyPhone3.slice(0, 4),
@@ -477,7 +525,7 @@ class Index extends Component {
                                 this.setState({ adding: false })
                             }
                         }}>
-                            {adding ? 'Сохранить новый филиал' : 'Добавить филиал'}
+                            {adding ? 'Сохранить филиал' : 'Добавить филиал +'}
                         </button>
                     </React.Fragment>
                 }

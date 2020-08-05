@@ -277,7 +277,6 @@ function deleteStaff(id) {
         },
         headers: authHeader()
     };
-
     return fetch(`${origin}${config.apiUrl}/staffs/${id}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 

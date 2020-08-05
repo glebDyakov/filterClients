@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import moment from "moment";
 import {calendarActions, socketActions} from "../../_actions";
 import {withRouter} from "react-router";
@@ -10,22 +10,21 @@ class AppointmentFromSocket extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-
-        };
+        this.state = {};
         this.goToPageCalendar = this.goToPageCalendar.bind(this)
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this)
 
     }
+
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.appointmentSocketMessageFlag) {
+        if (nextProps.appointmentSocketMessageFlag) {
             $(".modal-backdrop ").css("display", "none")
         }
     }
 
-    goToPageCalendar(appointment, appointmentStaffId, wsMessageType){
-        const { staffId, roleId } = this.props.authentication.user.profile
-        const { appointmentId, appointmentTimeMillis } = appointment
+    goToPageCalendar(appointment, appointmentStaffId, wsMessageType) {
+        const {staffId, roleId} = this.props.authentication.user.profile
+        const {appointmentId, appointmentTimeMillis} = appointment
 
         const url = "/page/" + appointmentStaffId + "/" + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY')
         this.props.history.push(url);
@@ -45,14 +44,17 @@ class AppointmentFromSocket extends React.Component {
 
             this.props.dispatch(calendarActions.approveAppointment(appointmentId, params));
         } else if (wsMessageType === 'APPOINTMENT_MOVED') {
-            this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify({ moved: false, approved: true })))
+            this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify({
+                moved: false,
+                approved: true
+            })))
         }
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
         this.closeAppointmentFromSocket()
     }
 
 
-    closeAppointmentFromSocket(){
+    closeAppointmentFromSocket() {
         $(".appointment-socket-modal ").addClass('appointment-socket-modal-go-away');
         setTimeout(() => {
             this.props.dispatch(socketActions.alertSocketMessage(null));
@@ -64,21 +66,22 @@ class AppointmentFromSocket extends React.Component {
     render() {
         const {socket, appointmentSocketMessage, staff, client, company} = this.props;
 
-        const companyTypeId = company.settings && company.settings.companyTypeId;
 
         if (!socket.appointmentSocketMessage) {
             return null
         }
-
-        const { payload: payloadFromProps, wsMessageType } = this.props.socket.appointmentSocketMessage;
+        const companyTypeId = company.settings && company.settings.companyTypeId;
+        const {payload: payloadFromProps, wsMessageType} = this.props.socket.appointmentSocketMessage;
 
         const payload = Array.isArray(payloadFromProps) ? payloadFromProps[0] : payloadFromProps
 
         const activeStaff = payload && payload.staffId && staff && staff.staff && staff.staff.find(item => {
-            return((item.staffId) === (payload.staffId));});
+            return ((item.staffId) === (payload.staffId));
+        });
 
         const activeClient = payload && payload.clientId && client && client.client && client.client.find(item => {
-            return((item.clientId) === (payload.clientId));});
+            return ((item.clientId) === (payload.clientId));
+        });
 
         let socketTitle, socketFooterText, clientName, staffName;
 
@@ -86,19 +89,19 @@ class AppointmentFromSocket extends React.Component {
             case "APPOINTMENT_CREATED":
                 staffName = payload && payload.staffName
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = payload && payload.online ? 'ОНЛАЙН-ЗАПИСЬ' : ' ЗАПИСЬ В ЖУРНАЛ';
+                socketTitle = payload && payload.online ? 'Онлайн-запись' : 'Запись в журнал';
                 socketFooterText = "Просмотреть запись"
                 break;
             case "APPOINTMENT_DELETED":
                 staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff.lastName ? activeStaff.lastName : ''}`
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = `ОТМЕНЕНО ${payload.canceledOnline ? 'КЛИЕНТОМ' : 'СОТРУДНИКОМ'}`
+                socketTitle = `Отменено ${payload.canceledOnline ? 'клиентом' : 'сотрудником'}`
                 socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником')
                 break;
             case "APPOINTMENT_MOVED":
                 staffName = payload && payload.staffName
                 clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : ''
-                socketTitle = 'ЗАПИСЬ ПЕРЕНЕСЕНА'
+                socketTitle = 'Запись перенесена'
                 socketFooterText = "Просмотреть запись"
                 break;
             default:
@@ -107,26 +110,27 @@ class AppointmentFromSocket extends React.Component {
         return (
             <div className="appointment-socket-modal">
                 <div className="service_item">
-                    <div className="img-container" style={{width: "30%"}}>
-                    <img src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                         className="img"/></div>
-
-                    <div style={{width: "65%"}}>
-                        <div className="appointment-socket-modal-title" style={{position:"relative"}}>
-                            <p>{socketTitle}</p>
-                            <button className="close" onClick={this.closeAppointmentFromSocket} />
-                        </div>
-                        <p className="service_name"><strong>
-                            {payload && payload.serviceName}
-                        </strong></p>
-                        <p style={{float: "none"}} ><strong>Мастер: </strong>
+                    <div className="img-container">
+                        <img
+                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                            className="img"/>
+                        <p style={{float: "none"}}>Мастер: <br/>
                             {staffName}
                         </p>
+                    </div>
+
+                    <div className="appointment-socket-modal-body">
+                        <div className="appointment-socket-modal-title" style={{position: "relative"}}>
+                            <p>{socketTitle}</p>
+                            <button className="close" onClick={this.closeAppointmentFromSocket}/>
+                        </div>
+                        <p className="service_name">
+                            {payload && payload.serviceName}
+                        </p>
+
 
                         {clientName
-                            ? <p><strong>Клиент: </strong>
-                                {clientName}
-                              </p>
+                            ? <p>Клиент: {clientName}</p>
                             : <p>Без клиента</p>}
                         {companyTypeId === 2 &&  payload && payload.carBrand
                             && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong>
@@ -140,14 +144,18 @@ class AppointmentFromSocket extends React.Component {
                             }
                         {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
                         <p className="service_time">
-                            <strong style={{textTransform: 'capitalize'}}>Время: </strong>
+                            <span style={{textTransform: 'capitalize'}}>Время: </span>
                             {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
                         </p>
                         <p onClick={() => {
                             if (socketFooterText === 'Просмотреть запись') {
                                 this.goToPageCalendar(payload, payload.staffId, wsMessageType)
                             }
-                        }} style={{color: "#3E90FF", cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')}}>{socketFooterText}</p>
+                        }}
+                           className="service_go"
+                           style={{
+                            cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default')
+                        }}>{socketFooterText} → </p>
 
                     </div>
                 </div>

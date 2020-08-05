@@ -73,7 +73,7 @@ export function menu(state = initialState, action) {
                     "id":"payments_menu_id",
                     "url":"/payments",
                     "icon":"payment.svg",
-                    "name":"Оплата",
+                    "name":"Оплатить",
                 }]
             };
       case menuConstants.RUN_MENU_SOCKET:

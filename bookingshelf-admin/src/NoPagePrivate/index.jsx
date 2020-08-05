@@ -10,11 +10,11 @@ class Index extends React.Component {
     render() {
         return (
             <div className="page404">
-                <div className="container" style={{marginRight: '5%'}}>
-                    <span className="red_center_text" style={{paddingTop: '15%'}}>404</span>
-                    <p className="title">Такой страницы не существует</p>
-                    <div className="clear"></div>
-                    <Link className="button mt-5" to="/calendar">перейти на главную</Link>
+                <div className="container">
+                    <span className="error_code">404</span>
+                    <p className="error_text">Страница не найдена</p>
+                    <Link className="button" to="/calendar">Перейти к журналу</Link>
+                    <img className="error_image" src="../../public/img/error_image.png" alt="404 error image"/>
                 </div>
             </div>
         );

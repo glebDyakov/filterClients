@@ -49,13 +49,15 @@ class MoveVisit extends React.Component {
                             <h4 className="modal-title">Перенести выбранный визит?</h4>
                             <button type="button" className="close" onClick={this.handleNo} data-dismiss="modal" />
                         </div>
-                        <div style={{ color: 'red', fontSize: '11px' }} className="mr-3 ml-3 mb-2">
-                            {isExtraText ? 'Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?' : ''}
-                        </div>
-                        <div className="form-group mr-3 ml-3">
-                            <button type="button" className="button" onClick={this.handleYes} data-dismiss="modal">Да</button>
-                            <button type="button" className="gray-button" onClick={this.handleNo} data-dismiss="modal">Нет</button>
-                        </div>
+                       <div className="modal-body">
+                           <div style={{ color: 'red', fontSize: '11px' }}>
+                               {isExtraText ? 'Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?' : ''}
+                           </div>
+                           <div className="form-group mr-3 ml-3">
+                               <button type="button" className="button" onClick={this.handleYes} data-dismiss="modal">Перенести</button>
+                               <button type="button" className="gray-button" onClick={this.handleNo} data-dismiss="modal">Отмена</button>
+                           </div>
+                       </div>
                     </div>
                 </div>
             </div>

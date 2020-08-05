@@ -16,7 +16,7 @@ $tablet-width: 960px;
 $large-width: 1820px;
 
 @mixin font-bold() {
-  font-family: 'helvetica_medium';
+  font-family: 'Open Sans', "sans-serif";
   font-size: 16px;
   font-weight: bold;
   letter-spacing: -0.1px;
@@ -29,7 +29,7 @@ $large-width: 1820px;
 }
 
 @mixin font-style-sidebar() {
-  font-family: Helvetica;
+  font-family: 'Open Sans', 'sans-serif';
   font-size: 16px;
   letter-spacing: -0.1px;
   color: $button-color;

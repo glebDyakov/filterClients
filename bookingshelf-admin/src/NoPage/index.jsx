@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -10,10 +11,10 @@ class Index extends React.Component {
         return (
             <div className="page404">
                 <div className="container">
-                    <span className="red_center_text">404</span>
-                    <p className="title">Такой страницы не существует</p>
-                    <a className="button" href="/calendar">перейти на главную</a>
-                    <div className="clear"></div>
+                    <span className="error_code">404</span>
+                    <p className="error_text">Страница не найдена</p>
+                    <a className="button" href="/calendar">Перейти к журналу</a>
+                    <img className="error_image" src={`${process.env.CONTEXT}public/img/error_image.png`} alt="404 error image"/>
                 </div>
             </div>
         );

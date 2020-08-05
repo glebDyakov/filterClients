@@ -183,7 +183,7 @@ class InfoProduct extends React.Component {
         const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
 
         return (
-            <Modal style={{ zIndex: 99999}} size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod modal-product-details">
                 <div className="">
                     {client  &&
                     <div>
@@ -193,15 +193,34 @@ class InfoProduct extends React.Component {
                                     : <h4 className="modal-title">Детали товара</h4>
                                 }
                                 <button type="button" className="close" onClick={this.closeModal} />
-                                {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
-                                {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <p className="title mb-2">Описание товара</p>
-                                <div className="row">
-                                    <div className="col-sm-6">
+                                <div className="row main-info">
+                                    <div className="col-sm-8">
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
-                                                      name="productName" handleChange={this.handleChange} maxLength={256} disabled={true}/>
+                                                      name="productName" handleChange={this.handleChange} maxLength={128} disabled={true}/>
+                                        <div className="row">
+                                            <div className="col-sm-4">
+                                                <p>Единица измерения</p>
+                                                <select className="custom-select" name="unitId" onChange={this.handleChange}
+                                                        value={client.unitId} disabled={true}>
+                                                    <option value="">Выберите единицу измерения</option>
+                                                    {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
+                                                </select>
+                                            </div>
+                                            <div className="col-sm-4">
+                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} disabled={true} />
+
+                                            </div>
+                                            <div className="col-sm-4">
+                                                <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
+                                                              name="productCode" handleChange={this.handleChange} maxLength={7} disabled={true}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-4">
                                         <p>Категория</p>
                                         <select className="custom-select" name="categoryId" onChange={this.handleChange}
                                                 value={client.categoryId} disabled={true}>
@@ -215,99 +234,54 @@ class InfoProduct extends React.Component {
                                             <option value="">Выберите бренд</option>
                                             {brands.map(brand => <option value={brand.brandId}>{brand.brandName}</option>)}
                                         </select>
-                                        <div className="check-box" >
-                                            <label>
-                                                <input className="form-check-input"
-                                                       checked={client.retailOn}
-                                                       onChange={()=>this.toggleChange('retailOn')}
-                                                       type="checkbox" disabled={true}/>
-                                                <span className="check" />
-                                                Включить продажу в розницу
-                                            </label>
-                                        </div>
                                     </div>
-                                    <div className="col-sm-6">
-                                        <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
-                                                      name="productCode" handleChange={this.handleChange} maxLength={128} disabled={true}/>
 
-                                        <div className="row">
-                                            <div className="col-sm-6"><p>Единица измерения</p>
-                                                <select className="custom-select" name="unitId" onChange={this.handleChange}
-                                                        value={client.unitId} disabled={true}>
-                                                    <option value="">Выберите единицу</option>
-                                                    {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
-                                                </select>
-                                            </div>
-                                            <div className="col-sm-6">
-                                                <InputCounter title="Номинал. объем" placeholder="Объем" value={String(client.nominalAmount ? client.nominalAmount : '')}
-                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} disabled={true}/>
-                                            </div>
-                                        </div>
+                                </div>
 
+                                <hr/>
+                                <div className="row min-amount-and-description">
+                                    <div className="col-sm-4">
+                                        <InputCounter title="Минимальное количество" placeholder="Введите количество" value={client.minAmount} name="minAmount"
+                                                      handleChange={this.handleChange} maxLength={9} disabled={true}/>
+                                    </div>
+                                    <div className="col-sm-8">
                                         <InputCounter title="Описание" placeholder="Описание" value={client.description}
-                                                      name="description" handleChange={this.handleChange} maxLength={256} disabled={true}/>
+                                                      name="description" handleChange={this.handleChange} maxLength={128} disabled={true}/>
+                                    </div>
+                                </div>
+
+                                <div className="row">
+                                    <div className="check-cox-block col-sm-4">
                                         <div className="check-box">
                                             <label>
                                                 <input className="form-check-input"
                                                        checked={client.checkOn}
                                                        onChange={()=>this.toggleChange('checkOn')}
-                                                       type="checkbox" disabled={true}/>
-                                                <span className="check" />
+                                                       type="checkbox"
+                                                       disabled={true}/>
+                                                <span className="check-box-circle" />
                                                 Включить контроль склада
                                             </label>
                                         </div>
+
+                                        <div className="check-box">
+                                            <label>
+                                                <input className="form-check-input"
+                                                       checked={client.retailOn}
+                                                       onChange={()=>this.toggleChange('retailOn')}
+                                                       type="checkbox"
+                                                       disabled={true}/>
+                                                <span className="check-box-circle" />
+                                                Включить продажу в розницу
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div  className="col-sm-8 info-product-buttons">
+                                        <p className="in-storehouse"><span> {client.currentAmount}</span>Остаток на складе</p>
+                                        <p className="plus" onClick={()=>this.toggleStorehouseProduct(client)}>+ Поступление</p>
+                                        <p className="minus" onClick={()=>this.toggleExProd(client)}>— Списание</p>
                                     </div>
                                 </div>
-
-                                <div className="row">
-                                    {/*<div className="col-sm-6">*/}
-                                    {/*    <div className="row">*/}
-                                    {/*        <div className="col-sm-6">*/}
-                                    {/*            <InputCounter title="Розничная цена" placeholder="Введите цену" value={client.retailPrice}*/}
-                                    {/*                          name="retailPrice" handleChange={this.handleChange} maxLength={128} disabled={true}/>*/}
-                                    {/*        </div>*/}
-                                    {/*        <div className="col-sm-6">*/}
-                                    {/*            <InputCounter title="Специальная цена" placeholder="Введите цену" value={client.specialPrice}*/}
-                                    {/*                          name="specialPrice" handleChange={this.handleChange} maxLength={128} disabled={true}/>*/}
-                                    {/*        </div>*/}
-                                    {/*    </div>*/}
-                                    {/*    <InputCounter title="Цена поставщика" placeholder="Введите цену" value={client.supplierPrice} name="supplierPrice"*/}
-                                    {/*                  handleChange={this.handleChange} maxLength={128} disabled={true}/>*/}
-                                    {/*    <p>Поставщик</p>*/}
-                                    {/*    <select className="custom-select" name="booktimeStep" onChange={this.handleStepChange}*/}
-                                    {/*            value={client.supplierId} disabled={true}>*/}
-                                    {/*        <option value="">Выберите поставщика</option>*/}
-                                    {/*        {suppliers.map(supplier =><option value={supplier.supplierId}>{supplier.supplierName}</option>)}*/}
-                                    {/*    </select>*/}
-                                    {/*</div>*/}
-                                    <div className="col-sm-6">
-                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={String(client.minAmount ? client.minAmount : '')} name="minAmount"
-                                                      handleChange={this.handleChange} maxLength={9} disabled={true}/>
-                                    </div>
-                                </div>
-
-                                <br/>
-                                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}} lassName="col-sm-12">
-                                    <p style={{}}><span style={{fontSize: "3em"}}> {client.currentAmount}</span> Остаток на складе</p>
-                                    <p style={{color: "#22FF00", cursor: "pointer"}} onClick={()=>this.toggleStorehouseProduct(client)}>+ Пополнить</p>
-                                    <p style={{color: "#FF0000", cursor: "pointer"}} onClick={()=>this.toggleExProd(client)}>- Списать</p>
-                                </div>
-
-                                {/*<button style={{ display: 'block', marginLeft: 'auto' }}*/}
-                                {/*    className={((clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)) ? 'disabledField': '')+' button'}*/}
-                                {/*        disabled={clients.adding || !client.firstName || ( (day || month || year) && !(day && month && year) ) || !isValidPhone || (client.email ? !isValidEmailAddress(client.email) : false)}*/}
-                                {/*        type="button"*/}
-                                {/*        onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addProduct)}*/}
-                                {/*>Сохранить*/}
-                                {/*</button>*/}
-
-                                {/*<button style={{ display: 'block', marginLeft: 'auto' }}*/}
-                                {/*        className={(!( client.productName && client.categoryId && client.brandId && client.description && client.minAmount ) ? 'disabledField': '')+' button'}*/}
-                                {/*        disabled={!(client.productName && client.categoryId && client.brandId && client.description && client.minAmount)}*/}
-                                {/*        type="button"*/}
-                                {/*        onClick={client.productName && client.categoryId && client.brandId && client.description && client.minAmount && (edit ? ()=>this.updateProduct(client) : this.addProduct)}*/}
-                                {/*>Сохранить*/}
-                                {/*</button>*/}
                             </div>
                         </div>
                     </div>
@@ -371,18 +345,6 @@ class InfoProduct extends React.Component {
     }
 
     updateProduct(client){
-
-        // const {client, day, month, year } = this.state;
-        // let birthDate;
-        // if (day || month || year) {
-        //     birthDate =`${year}-${month}-${day}`;
-        // }
-        // delete client.appointments;
-        //
-        // const body = JSON.parse(JSON.stringify(client));
-        // body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
-        //
-        //  return updateClient({ ...body, birthDate });
         this.props.dispatch(materialActions.toggleProduct(client, true))
     };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {userActions} from "../../_actions";
 import Avatar from "react-avatar-edit";
 
@@ -17,8 +17,8 @@ class UserPhoto extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if ( JSON.stringify(this.props.authentication) !==  JSON.stringify(newProps.authentication)) {
-            this.setState({ ...this.state, authentication: newProps.authentication })
+        if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication)) {
+            this.setState({...this.state, authentication: newProps.authentication})
         }
     }
 
@@ -27,16 +27,25 @@ class UserPhoto extends React.Component {
     }
 
     onCrop(preview) {
-        const {authentication}=this.state;
+        const {authentication} = this.state;
 
-        this.setState({...this.state,  authentication: {...authentication, user: {...authentication.user, profile: {...authentication.user.profile, imageBase64: preview.split(',')[1]}}}});
+        this.setState({
+            ...this.state,
+            authentication: {
+                ...authentication,
+                user: {
+                    ...authentication.user,
+                    profile: {...authentication.user.profile, imageBase64: preview.split(',')[1]}
+                }
+            }
+        });
     }
 
     handleSubmit(e) {
-        const {alert}=this.props
-        const { authentication } = this.state;
+        const {alert} = this.props;
+        const {authentication} = this.state;
 
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
         e.preventDefault();
 
@@ -46,8 +55,8 @@ class UserPhoto extends React.Component {
     }
 
     render() {
-        const { staff } = this.props
-        const {authentication}=this.state;
+        const {staff} = this.props
+        const {authentication} = this.state;
 
         const activeStaff = staff && staff.find(item =>
             ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
@@ -69,7 +78,8 @@ class UserPhoto extends React.Component {
                                             <label className="drop_target">
                                                 <div className="image_preview">
                                                     <div className="existed-image">
-                                                        <img src={activeStaff && activeStaff.imageBase64 && activeStaff.imageBase64!==''?("data:image/png;base64,"+activeStaff.imageBase64):`${process.env.CONTEXT}public/img/image.png`}/>
+                                                        <img
+                                                            src={activeStaff && activeStaff.imageBase64 && activeStaff.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}/>
 
                                                     </div>
                                                     <Avatar
@@ -85,7 +95,9 @@ class UserPhoto extends React.Component {
                                     </div>
                                 </div>
                                 <div className="buttons-container-setting">
-                                    <button type="button" className="small-button" onClick={this.handleSubmit} data-dismiss="modal">Сохранить</button>
+                                    <button type="button" className="small-button" onClick={this.handleSubmit}
+                                            data-dismiss="modal">Сохранить
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -97,11 +109,11 @@ class UserPhoto extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, authentication, staff } = state;
+    const {alert, authentication, staff} = state;
     return {
         alert, authentication, staff: staff.staff
     };
 }
 
 const connectedApp = connect(mapStateToProps)(UserPhoto);
-export { connectedApp as UserPhoto };
+export {connectedApp as UserPhoto};

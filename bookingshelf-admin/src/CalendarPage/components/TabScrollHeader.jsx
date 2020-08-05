@@ -50,11 +50,11 @@ class TabScrollHeader extends PureComponent {
 
                                     let clDate= closedDates && closedDates.some((st) =>
                                         parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
-                                        parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")))
+                                        parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")));
 
                                     return <div className={"cell" + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
                                     >
-                                        <p className="text-capitalize">{moment(item).locale("ru").format('dddd')}<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD/MM")}</span>
+                                        <p className="text-capitalize">{moment(item).locale("ru").format('dd')},&nbsp;<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD MMMM")}</span>
                                         </p>
                                     </div>
                                 }
