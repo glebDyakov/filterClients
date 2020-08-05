@@ -38,6 +38,7 @@
   }
 
   .modal-header {
+    display: block;
     padding: 0;
     position: relative;
 
@@ -94,9 +95,6 @@
   }
 
   .theme-block {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
     padding: 20px 0;
     border-bottom: 1px solid #e9ecef;
     border-top-left-radius: 0.3rem;
@@ -139,9 +137,6 @@
   }
 
   .manager-block {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
     padding: 15px 0;
     border-bottom: 1px solid #e9ecef;
     border-top-left-radius: 0.3rem;

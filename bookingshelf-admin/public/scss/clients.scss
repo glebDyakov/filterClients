@@ -400,7 +400,7 @@
     margin-top: 0;
 
     @media screen and(max-width: $tablet-width) {
-      max-height: calc(100vh - 160px);
+      max-height: calc(100% - 105px);
 
       margin-top: 7px;
     }
