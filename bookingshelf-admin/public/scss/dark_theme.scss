@@ -2,8 +2,255 @@
 
 
 .dark-theme {
-  background: #222736;
   position: relative;
+
+  .action-modal {
+    .modal-body {
+      background-color: #222736 !important;
+
+    }
+  }
+
+  .delete-notes-modal {
+    .modal-body {
+      background-color: #222736 !important;
+
+    }
+  }
+
+  .move-visit-modal {
+    .modal-body {
+      background-color: #222736 !important;
+
+    }
+  }
+
+  .modal-not-approved {
+    .button-field-mob {
+      background-color: unset !important;
+    }
+
+    button.disabled {
+      color: #fff !important;
+    }
+
+    .not-approved-list {
+      background-color: #222736 !important;
+      li {
+        background-color: #2A3042 !important;
+
+        .service_item {
+          background-color: #2A3042 !important;
+          p, strong, .service_name {
+            color: #fff;
+          }
+
+
+
+          .img-container {
+            background-color: unset !important;
+          }
+        }
+
+      }
+    }
+  }
+
+  .new_appointment {
+    .dropdown, .dropdown-toggle, .dropdown-toggle span {
+      background-color: #222736 !important;
+      color: #fff !important;
+    }
+  }
+
+  .new-service-modal {
+    * {
+      color: #fff !important;
+    }
+    .left-container, .right-container {
+      background-color: #2A3042 !important;
+    }
+
+    .left-container {
+      .dropdown {
+        background-color: unset !important;
+      }
+    }
+    .search-icon {
+      background-color: unset !important;
+    }
+
+    .right-container {
+      .search {
+        background-color: unset !important;
+        .search-icon {
+          background-color: unset !important;
+        }
+      }
+
+      .img-container {
+        background-color: unset !important;
+      }
+    }
+
+  }
+
+  .modal_add_group {
+    .modal-inner {
+      background-color: #2A3042 !important;
+      span {
+        color: #fff !important;
+      }
+    }
+  }
+
+  .reserved-time-modal {
+   .modal-body {
+     background-color: #2A3042 !important;
+   }
+  }
+
+  .modal-content {
+    .modal-header {
+      background-color: #2E3548 !important;
+      color: #fff;
+      border: none !important;
+
+      .modal-title {
+        color: #fff !important;
+
+      }
+
+      .close {
+        &::before, &::after {
+          background-color: #fff !important;
+        }
+      }
+    }
+
+
+    .img-container {
+      background-color: #222736 !important;
+
+
+      p {
+        color: #fff !important;
+      }
+    }
+
+    .dropdown-menu {
+      li {
+        border-color: #383D4A !important;
+      }
+
+      background-color: #222736 !important;
+
+      .content.clients {
+        background-color: #222736 !important;
+
+        .search-icon {
+          background-color: unset !important;
+        }
+      }
+
+      .services-title, .dropdown-item, .name-service {
+        background-color: #222736 !important;
+        color: #fff !important;
+        border-color: #383D4A !important;
+      }
+
+      * {
+        color: #fff;
+      }
+    }
+
+    .dropdown {
+      background-color: #222736 !important;
+    }
+
+    .company_fields {
+      background-color: #222736 !important;
+
+    }
+
+    .client-info {
+      box-shadow: none !important;
+      background-color: #222736 !important;
+
+      .clients-list {
+        strong, .gray-text {
+
+          color: #fff !important;
+        }
+
+
+      }
+      hr {
+        border-color: #383D4A !important;
+      }
+
+      .visit-info-wrapper {
+        .visit-info {
+          background-color: #2A3042 !important;
+
+          .img-container {
+            background-color: #2A3042 !important;
+
+          }
+
+          span:not(.price), strong {
+            color: #fff !important;
+          }
+
+        }
+      }
+    }
+
+    .form-group, .modal-body, .modal-inner {
+      background-color: #222736;
+
+      .clients-container {
+        background-color: #2A3042 !important;
+        .email-user {
+          color: #fff !important;
+        }
+
+        .search, .search-icon {
+          background-color: unset !important;
+        }
+      }
+
+
+
+
+      p, h2, span {
+        color: #fff;
+      }
+
+      .addServiceButton p {
+        color: #50A5F1 !important;
+      }
+
+
+      input, select, textarea, .select-button, .form-control {
+        background-color: #222736 !important;
+        color: #fff !important;
+
+        .img-container {
+          background: unset !important;
+        }
+      }
+
+
+      .appointments-container, .addApointmentClientBlock {
+        background-color: #2A3042 !important;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+
+
+      }
+    }
+
+  }
 
   .mobile-datePicker {
     background-color: #2E3548 !important;
@@ -58,12 +305,8 @@
 
   }
 
-  * {
-    box-shadow: none !important;
-
-  }
-
-  &::before {
+  .dark-theme-wrapper {
+    display: block !important;
     content: '';
     top: 0;
     bottom: 0;
@@ -345,7 +588,7 @@
 
   .no-scroll {
 
-
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
     .user-settings-dropdown {
       background-color: #3F4555 !important;
 
@@ -701,10 +944,11 @@
     .search-header-container {
       background: #2A3042 !important;
       border: none;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
 
       .search {
         .search-input, .mob-search-input {
-
+          color: #fff !important;
         }
 
         .search-icon {

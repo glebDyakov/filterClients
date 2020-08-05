@@ -917,7 +917,7 @@ class AddAppointment extends React.Component {
         const hasAddedServices = (staffCurrent && services[0] && services[0].servicesList && services[0].servicesList.some(serviceListItem => serviceListItem.staffs && serviceListItem.staffs.some(item => item.staffId === staffCurrent.staffId)))
 
         return (
-            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className="mod calendar_modal">
+            <Modal size="lg" onClose={this.closeModal} showCloseButton={false} className={"mod calendar_modal"}>
                 <div className="new_appointment">
                     <div>
                         <div className="modal-content">

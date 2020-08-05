@@ -3610,21 +3610,11 @@ select {
   height: 100%;
 
 
-  @media screen {
-    @media (max-width: $mob-width) {
-      padding: 0;
-      .button-field {
-        display: none !important;
-      }
-      .button-field-mob {
-        display: flex !important;
-      }
-    }
-  }
+
 
   .button-field-mob {
 
-    display: none;
+    display: none !important;
     position: relative;
     background-color: #F8F8FB;
     padding: 10px 0;
@@ -3702,6 +3692,18 @@ select {
     }
   }
 
+
+  @media screen {
+    @media (max-width: $mob-width) {
+      padding: 0;
+      .button-field {
+        display: none !important;
+      }
+      .button-field-mob {
+        display: flex !important;
+      }
+    }
+  }
   .down-button {
     .approveAll {
       width: 100%;

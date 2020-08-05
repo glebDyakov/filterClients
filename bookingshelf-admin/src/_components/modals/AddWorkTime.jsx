@@ -137,8 +137,10 @@ class AddWorkTime extends React.Component {
 
         const {countTimes, staff, repeat, date, editWorkingHours, editing_object, message, times, staffs}=this.state;
 
+        const {company} = this.props;
+
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod modal-dates">
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className={"mod modal-dates " + (company && company.settings && (company.settings.lightTheme ? '' : " dark-theme"))}>
                 <div className="modal_dates">
                     <div className="">
                         <div className="modal-content">
@@ -305,9 +307,9 @@ class AddWorkTime extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, staff } = state;
+    const { alert, staff, company } = state;
     return {
-        alert, staff
+        alert, staff, company
     };
 }
 

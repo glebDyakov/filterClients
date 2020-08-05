@@ -96,7 +96,7 @@ class ClientDetails extends React.Component {
 
             <div className={"modal fade " + (wrapper)}>
 
-                <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className={"modal-dialog modal-lg modal-dialog-centered"}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Информация о клиенте</h4>

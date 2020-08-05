@@ -87,13 +87,21 @@ class Index extends React.Component {
     }
 
     componentDidMount() {
-        let localStorageUser
+
+
+        let localStorageUser;
         try {
             localStorageUser = JSON.parse(localStorage.getItem('user'))
         } catch (e) {
 
         }
-        const user = this.props.authentication.user || localStorageUser
+        const user = this.props.authentication.user || localStorageUser;
+
+       if (user && user.lightTheme === false)$('body').addClass("dark-theme");
+        console.log(user && user.lightTheme === false)
+
+
+
         if (user && (this.props.authentication.loggedIn || this.props.company.switchedStaffId)) {
 
 
@@ -103,6 +111,15 @@ class Index extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+
+
+        const {company} = newProps;
+        if (company && company.settings && !company.settings.lightTheme) {
+            $('body').addClass("dark-theme")
+        } else {
+            $('body').removeClass("dark-theme")
+        };
+
         let localStorageUser
         try {
             localStorageUser = JSON.parse(localStorage.getItem('user'))
@@ -267,7 +284,8 @@ class Index extends React.Component {
 
         return (
             <Router history={history} >
-                <div className={company && company.settings && (company.settings.lightTheme ? '' : "dark-theme")}>
+                <div>
+                    <div className="dark-theme-wrapper d-none"></div>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
                         <React.Fragment>
                             <SidebarMain/>
