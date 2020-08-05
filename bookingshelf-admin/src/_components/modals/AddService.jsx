@@ -296,7 +296,6 @@ class AddService extends React.Component {
                                                         </li>
                                                     </ul>
                                                     <div className="arrow-dropdown"><i></i></div>
-                                                </div>
 
                                                 <div className="select-material col-md-4">
                                                     <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}

@@ -1266,35 +1266,34 @@ class AddAppointment extends React.Component {
                                                             )
                                                         )}
 
-                                                            {Object.entries({ clientLastName: typeAheadOptions.clientLastName,  carBrand: typeAheadOptions.carBrand, carNumber: typeAheadOptions.carNumber, clientEmail: typeAheadOptions.clientEmail })
-                                                              .filter(([key]) => {
-                                                                  if (companyTypeId !== 2 && (key ==='carBrand' || key === 'carNumber')) {
-                                                                      return false;
-                                                                  }
-                                                                  return true;
-                                                              })
-                                                              .map(([key, value]) => (
-                                                                <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
-                                                                    <p style={key === 'clientLastName' ? { marginTop: '14px'}: {}}>{value.label}</p>
-                                                                    <AsyncTypeahead
-                                                                        isLoading={isLoadingTypeahead}
-                                                                        onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
-                                                                        value={this.state[key]}
-                                                                        defaultInputValue={value.defaultValue}
-                                                                        id={key}
-                                                                        onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
-                                                                        onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
-                                                                        options={value.options}
-                                                                        labelKey={value.selectedKey}
-                                                                        minLength={3}
-                                                                        placeholder=""
-                                                                        onSearch={(value) => this.handleTypeaheadSearch(key, value)}
-                                                                        selected={selectedTypeahead}
-                                                                        renderMenuItemChildren={this.renderMenuItemChildren}
-                                                                    />
-                                                                </div>
-                                                            ))}
-                                                        </div>
+                                                        {Object.entries({ clientLastName: typeAheadOptions.clientLastName,  carBrand: typeAheadOptions.carBrand, carNumber: typeAheadOptions.carNumber, clientEmail: typeAheadOptions.clientEmail })
+                                                          .filter(([key]) => {
+                                                              if (companyTypeId !== 2 && (key ==='carBrand' || key === 'carNumber')) {
+                                                                  return false;
+                                                              }
+                                                              return true;
+                                                          })
+                                                          .map(([key, value]) => (
+                                                            <div key={key} className={"typeahead-wrapper" + (value.isValid(this.state[key]) ? '' : ' redBorderWrapper')}>
+                                                                <p style={key === 'clientLastName' ? { marginTop: '14px'}: {}}>{value.label}</p>
+                                                                <AsyncTypeahead
+                                                                    isLoading={isLoadingTypeahead}
+                                                                    onClick={() => this.handleTypeaheadSearch(key, this.state[key])}
+                                                                    value={this.state[key]}
+                                                                    defaultInputValue={value.defaultValue}
+                                                                    id={key}
+                                                                    onInputChange={(inputValue) => this.handleTypeaheadInputChange(key, inputValue)}
+                                                                    onChange={(selectValue) => this.handleTypeaheadSelect(key, selectValue)}
+                                                                    options={value.options}
+                                                                    labelKey={value.selectedKey}
+                                                                    minLength={3}
+                                                                    placeholder=""
+                                                                    onSearch={(value) => this.handleTypeaheadSearch(key, value)}
+                                                                    selected={selectedTypeahead}
+                                                                    renderMenuItemChildren={this.renderMenuItemChildren}
+                                                                />
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                 </div>
 

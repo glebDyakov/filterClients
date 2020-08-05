@@ -98,7 +98,6 @@ class StorehouseProduct extends React.Component {
                                             <p><strong>{activeProduct && activeProduct.productName}</strong></p>
                                             <p>Номинальный объем: <strong>{activeProduct && activeProduct.nominalAmount} {activeUnit && activeUnit.unitName}</strong></p>
                                             <p>Остаток на складе: <strong> {activeProduct && activeProduct.currentAmount} </strong></p>
-                                            <p className="current-amount">Текущее количество единиц: {activeProduct && activeProduct.currentAmount} </p>
                                         </div>
                                     </div>
 
