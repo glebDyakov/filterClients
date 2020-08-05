@@ -444,11 +444,11 @@
     @media (max-width: $mob-width) {
       padding-left: 4px;
 
-      .days-container-mobile {
+      &.days-container-mobile {
         height: 65vh;
       }
 
-      .days-container-desktop {
+      &.days-container-desktop {
         height: 81vh;
       }
 
