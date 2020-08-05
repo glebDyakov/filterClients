@@ -12,6 +12,7 @@ import {
 import '../../public/scss/calendar.scss'
 
 import moment from 'moment';
+import {isMobile} from "react-device-detect";
 
 import {DatePicker} from "../_components/DatePicker";
 
@@ -459,7 +460,7 @@ class Index extends PureComponent {
                     <div className="add-button">
 
                     </div>
-                    <div className="days-container">
+                    <div className={"days-container " + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
 
                         <button onClick={this.scrollHandler} className={"scroll-button" + (this.state.scrolledToRight ? " scrolled" : '')}></button>
 

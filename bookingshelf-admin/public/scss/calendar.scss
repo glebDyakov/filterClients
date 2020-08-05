@@ -443,7 +443,14 @@
 
     @media (max-width: $mob-width) {
       padding-left: 4px;
-      height: 81vh;
+
+      .days-container-mobile {
+        height: 65vh;
+      }
+
+      .days-container-desktop {
+        height: 81vh;
+      }
 
       .scroll-button {
         display: none;
