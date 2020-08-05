@@ -32,7 +32,7 @@ class MakePayment extends React.Component {
                             <h4 className="modal-title">Вы будете перенаправлены на окно оплаты</h4>
                             <button type="button" className="close" onClick={this.handleNo} data-dismiss="modal" />
                         </div>
-                        <div className="form-group mr-3 ml-3">
+                        <div className="modal-body">
                             {!exceptionMessage && (confirmationUrl
                                 ? <React.Fragment>
                                     <button type="button" className="button" onClick={this.handleYes} data-dismiss="modal">Перейти к оплате</button>

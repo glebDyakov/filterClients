@@ -147,7 +147,6 @@ class DatePicker extends PureComponent {
                             {selectedDaysText}
                         </span>
                         <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
-                            <i className="datepicker--pointer" />
                             <DayPicker
                                 selectedDays={selectedDays}
                                 onDayClick={(date) => this.handleLocalDayClick(date)}

@@ -1,22 +1,24 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import {clientActions} from '../_actions';
 
 import '../../public/scss/clients.scss'
-
+import moment, {now} from 'moment';
 import {ClientDetails, NewClient, AddBlackList} from "../_components/modals";
 import {access} from "../_helpers/access";
 import StaffChoice from '../CalendarPage/components/StaffChoice'
 import {servicesActions} from "../_actions/services.actions";
 import Paginator from "../_components/Paginator";
-import { staffActions } from "../_actions/staff.actions";
+import {staffActions} from "../_actions/staff.actions";
+import ActionModal from "../_components/modals/ActionModal";
+import UserInfo from "./UserInfo";
 
 class Index extends Component {
     constructor(props) {
         super(props);
 
-        if(!access(4)){
+        if (!access(4)) {
             props.history.push('/denied')
         }
         document.title = "Клиенты | Онлайн-запись";
@@ -29,12 +31,14 @@ class Index extends Component {
             selectedStaffList: [],
             typeSelected: 2,
             search: false,
-            defaultClientsList:  props.client,
+            defaultClientsList: props.client,
             activeTab: 'clients',
             openedModal: false,
             blackListModal: false,
-            infoClient: 0
-
+            infoClient: 0,
+            clientForDel: 0,
+            handleOpen: false,
+            isOpenDropdownMenu: false,
         };
 
         this.uploadFile = React.createRef();
@@ -45,6 +49,7 @@ class Index extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.updateClient = this.updateClient.bind(this);
         this.addClient = this.addClient.bind(this);
+        this.openClientStats = this.openClientStats.bind(this);
         this.onClose = this.onClose.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
@@ -55,13 +60,61 @@ class Index extends Component {
         this.handlePageClick = this.handlePageClick.bind(this);
         this.updateClients = this.updateClients.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
+        this.handleOpenModal = this.handleOpenModal.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
+        this.isLeapYear = this.isLeapYear.bind(this);
+        this.calcDiff = this.calcDiff.bind(this);
+
+    }
+
+    handleOpenModal(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({handleOpen: !this.state.handleOpen});
+    }
+
+    handleOpenDropdownMenu() {
+            // this.setState(state => {
+            //     console.log(state.isOpenDropdownMenu, !state.isOpenDropdownMenu)
+            //     return {isOpenDropdownMenu: !state.isOpenDropdownMenu};
+            // });
+
+        this.setState({isOpenDropdownMenu: !this.state.isOpenDropdownMenu})
+
+    }
+
+
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.activeTab !== prevState.activeTab) {
+            this.setState({isOpenDropdownMenu: false});
+        }
+    }
+
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    handleClickOutside(event) {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.setState({handleOpen: false});
+        }
     }
 
     componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+
         if (this.props.authentication.loginChecked) {
             this.queryInitData()
         }
         initializeJs();
+
     }
 
     queryInitData() {
@@ -75,21 +128,29 @@ class Index extends Component {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
             this.queryInitData()
         }
-        if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-            this.setState({ openedModal: newProps.client && newProps.client.status && newProps.client.status===209 ? false : this.state.openedModal, client: newProps.client, defaultClientsList:  newProps.client })
+        if (JSON.stringify(this.props.client) !== JSON.stringify(newProps.client)) {
+            this.setState({
+                openedModal: newProps.client && newProps.client.status && newProps.client.status === 209 ? false : this.state.openedModal,
+                client: newProps.client,
+                defaultClientsList: newProps.client
+            })
         }
+
+
     }
 
     setWorkingStaff(selectedStaffList, typeSelected) {
-        this.setState({ selectedStaffList, typeSelected });
+        this.setState({selectedStaffList, typeSelected});
     }
 
-    setTab(tab){
+    setTab(tab) {
         this.setState({
             activeTab: tab
         })
 
-        this.updateClients(1, tab);
+        this.updateClients(1, tab)
+
+
     }
 
     getData(result) {
@@ -99,7 +160,7 @@ class Index extends Component {
     onFileChange(e) {
         let uploadFile = e.target.files[0]
 
-        this.setState({ uploadFile })
+        this.setState({uploadFile})
         //
         // Papa.parse(csvData, {
         //     complete: this.getData
@@ -120,11 +181,12 @@ class Index extends Component {
         // this.props.dispatch(clientActions.uploadFile(this.state.uploadFile))
     }
 
-    onChangePage (pageOfItems) {
-        this.setState({ pageOfItems: pageOfItems });
+    onChangePage(pageOfItems) {
+        this.setState({pageOfItems: pageOfItems});
     };
+
     handlePageClick(data) {
-        const { selected } = data;
+        const {selected} = data;
         const currentPage = selected + 1;
         this.updateClients(currentPage);
     };
@@ -144,7 +206,18 @@ class Index extends Component {
         this.openBlackListModal()
     }
 
-    handleSearch () {
+    isLeapYear(year) {
+        return year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0);
+    }
+
+    calcDiff(date) {
+        const diff = moment(date).year(2000).diff(moment().year(2000), 'days');
+        if (diff < 0) {
+            return (this.isLeapYear(moment().year()) ? 366 : 365) + diff;
+        } else return diff;
+    }
+
+    handleSearch() {
         if (this.search.value.length >= 3) {
             this.updateClients();
         } else if (this.search.value.length === 0) {
@@ -153,45 +226,77 @@ class Index extends Component {
     }
 
     render() {
-        const { staff } = this.props;
-        const { client, client_working, edit, activeTab, blackListModal,  defaultClientsList, selectedStaffList, typeSelected, openedModal, infoClient } = this.state;
+        const {staff} = this.props;
+        const {client, client_working, edit, activeTab, blackListModal, defaultClientsList, selectedStaffList, typeSelected, openedModal, infoClient} = this.state;
         const isLoading = client ? client.isLoading : false;
 
-        const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client
 
-        const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages
+        const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client;
+
+        const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages;
+
+        // sort((a, b) => {
+        //     if (moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') >= 0) {
+        //         return moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') - moment(b.birthDate).year(2000).diff(moment().year(2000), 'days');
+        //     }
+        // })
+
 
         return (
             <div className="clients-page">
-                {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-                <div className="flex-content col-xl-12">
-                    <ul className="nav nav-tabs">
-                        <li className="nav-item">
-                            <a className={"nav-link"+(activeTab==='clients'?' active show':'')} data-toggle="tab" href="#tab1" onClick={()=>{this.setTab('clients')}}>Клиенты</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className={"nav-link"+(activeTab==='blacklist'?' active show':'')} data-toggle="tab" href="#tab2" onClick={()=>this.setTab('blacklist')}>Blacklist</a>
-                        </li>
-                    </ul>
-                </div>
+                {isLoading &&
+                <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
 
-                <div style={{ position: 'relative', height: 'calc(100% - 86px)' }}>
-                    <div style={{ position: 'absolute', zIndex: 1 }} className="row align-items-center content clients mb-2">
-                        <StaffChoice
-                            selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}
-                            typeSelected={typeSelected}
-                            staff={staff.staff}
-                            timetable={staff.staff}
-                            setWorkingStaff={this.setWorkingStaff}
-                            hideWorkingStaff={true}
-                        />
-                        <div className="search col-7">
-                            <input type="search" placeholder="Поиск по имени, номеру тел., имейлу"
+                <div style={{position: 'relative'}} className="clients-page-container">
+                    <div style={{zIndex: 2}}
+                         className="row content clients">
+                        {/*<StaffChoice*/}
+                        {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
+                        {/*    typeSelected={typeSelected}*/}
+                        {/*    staff={staff.staff}*/}
+                        {/*    timetable={staff.staff}*/}
+                        {/*    setWorkingStaff={this.setWorkingStaff}*/}
+                        {/*    hideWorkingStaff={true}*/}
+                        {/*/>*/}
+
+                        <div className="search">
+                            <input type="search" placeholder="Поиск клиента"
                                    aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
                             <button className="search-icon" type="submit"/>
                         </div>
-                        <div className="col-2 d-flex justify-content-end">
+
+                        <div className="header-tabs d-flex">
+                            <a className={"nav-link" + (activeTab === 'clients' ? ' active show' : '')}
+                               data-toggle="tab" href="#tab1" onClick={() => {
+                                this.setTab('clients')
+                            }}>Клиенты</a>
+                            <a className={"nav-link" + (activeTab === 'blacklist' ? ' active show' : '')}
+                               data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>Черный список</a>
+                        </div>
+
+                        <div className={"header-tabs-mob" + (this.state.isOpenDropdownMenu ? " opened" : '')}>
+                            <p onClick={this.handleOpenDropdownMenu}
+                               className="dropdown-button">{activeTab === 'clients' ? "Клиенты" : "Черный список"}</p>
+
+                            {this.state.isOpenDropdownMenu && (
+                                <div className="dropdown-buttons">
+                                    <a className={"nav-link" + (activeTab === 'clients' ? ' active show' : '')}
+                                       data-toggle="tab" href="#tab1" onClick={() => {
+                                        this.setTab('clients');
+                                        this.handleOpenDropdownMenu();
+                                    }}>Клиенты</a>
+                                    <a className={"nav-link" + (activeTab === 'blacklist' ? ' active show' : '')}
+                                       data-toggle="tab" href="#tab2" onClick={() => {
+                                        this.setTab('blacklist');
+                                        this.handleOpenDropdownMenu();
+                                    }}>Черный список</a>
+                                </div>
+                            )}
+                        </div>
+
+
+                        <div className="col-2 d-flex justify-content-end export-container">
                             {/*{access(5) &&*/}
                             {/*<div className="export">*/}
                             {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
@@ -202,8 +307,8 @@ class Index extends Component {
                             {access(5) &&
                             <div className="export">
 
-                                <button   onClick={this.downloadFile} type="button" className="button client-download"
-                                >Экспорт в CSV
+                                <button onClick={this.downloadFile} type="button" className="button client-download"
+                                >Скачать CSV
                                 </button>
                             </div>
                             }
@@ -212,80 +317,68 @@ class Index extends Component {
 
 
                     <div className="final-clients">
-                        {finalClients && finalClients.map((client_user, i) =>{
-                            let condition = true;
-                            if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
+                        <div className="tab-content-list" style={{position: "relative"}}>
+                            <div className="column-header">Имя клиента</div>
+                            <div className="column-header">Телефон/Email</div>
+                            <div className="column-header">Адрес</div>
+                            <div className="column-header">Последний визит</div>
+                            <div className="column-header">Скидка</div>
+                            <div className="column-header">День Рождения</div>
+                        </div>
 
-                                condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+                        {finalClients && finalClients.sort((a, b) => {
+                                    return this.calcDiff(a.birthDate) - this.calcDiff(b.birthDate);
+                        }).map((client_user, i) => {
+                                let condition = true;
+                                if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
 
+                                    condition = client_user.appointments.find(appointment => selectedStaffList.find(selectedStaff => appointment.staffId === selectedStaff.staffId));
+
+                                }
+                                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                                    <UserInfo
+                                    client_user={client_user}
+                                    activeTab={activeTab}
+                                    i={i}
+                                    dispatch={this.props.dispatch}
+                                    handleClick={this.handleClick}
+                                    updateClient={this.updateClient}
+                                    openClientsStats={this.openClientStats}
+
+                                    />
+                                );
                             }
-                            return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                                <div className="tab-content-list mb-2" key={i} style={{position: "relative"}}>
-                                    <div style={{position: "relative"}}>
-                                        <a onClick={()=>this.openClientStats(client_user)}>
-                                            <span className="abbreviation">{client_user.firstName.substr(0, 1)}</span>
-                                            <p> {client_user.firstName} {client_user.lastName}</p>
-                                        </a>
-                                        <div className="clientEye" style={{position: "absolute"}} onClick={()=>this.openClientStats(client_user)}></div>
-                                    </div>
-                                    <div className="clientEmail">
-                                        {client_user.email}
-                                    </div>
-                                    <div>
-                                        {client_user.phone}
-                                    </div>
-                                    <div>
-                                        {client_user.country&&(client_user.country)}{client_user.city&&((client_user.country && ", ")+client_user.city)}{client_user.province&&(((client_user.country || client_user.city) &&", ")+client_user.province)}
-                                    </div>
-                                    <div className="delete clientEditWrapper">
-                                        <a className="clientEdit" onClick={(e) => this.handleClick(client_user.clientId, e, this)}/>
-                                    </div>
-                                    <div className="delete dropdown">
-                                        <div className="clientEyeDel" onClick={()=>this.openClientStats(client_user)}></div>
-                                        <a className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-                                        </a>
-                                        <div className="dropdown-menu delete-menu p-3">
-                                            {activeTab === 'clients' && <button type="button" className="button delete-tab"  onClick={()=>this.deleteClient(client_user.clientId)}>Удалить</button>}
-                                            {activeTab === 'blacklist' && <button type="button" className="button delete-tab"  onClick={()=>{
-                                                delete client_user.appointments;
-                                                this.updateClient({...client_user, blacklisted: false}, true)
-                                            }}>Удалить</button>}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         )}
                     </div>
 
                     <div className="tab-content">
                         {
-                            (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length===0)) &&
+                            (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
                             <div className="no-holiday">
                                 {(this.search && this.search.value.length > 0)
                                     ? <span>Поиск результатов не дал</span>
                                     : (
                                         <span>
                                             {client.error ? client.error : 'Клиенты не добавлены'}
-                                            {activeTab==='clients' &&
-                                                <button
-                                                    type="button"
-                                                    className="button mt-3 p-3"
-                                                    onClick={(e)=>this.handleClick(null, e)}
-                                                >
-                                                    Добавить нового клиента
-                                                </button>
+                                            {activeTab === 'clients' &&
+                                            <button
+                                                type="button"
+                                                className="button mt-3 p-3"
+                                                onClick={(e) => this.handleClick(null, e)}
+                                            >
+                                                Добавить нового клиента
+                                            </button>
                                             }
-                                            {activeTab==='blacklist' &&
-                                                <button
-                                                    type="button"
-                                                    className="button mt-3 p-3"
-                                                    data-target=".add-black-list-modal"
-                                                    data-toggle="modal"
-                                                    onClick={this.addToBlackList}
-                                                >
-                                                    Добавить в blacklist
-                                                </button>
+                                            {activeTab === 'blacklist' &&
+                                            <button
+                                                type="button"
+                                                className="button mt-3 p-3"
+                                                data-target=".add-black-list-modal"
+                                                data-toggle="modal"
+                                                onClick={this.addToBlackList}
+                                            >
+                                                Добавить в черный список
+                                            </button>
                                             }
                                         </span>)
                                 }
@@ -295,121 +388,142 @@ class Index extends Component {
                     </div>
 
                     <div className="paginator-wrapper">
-                    <Paginator
-                        finalTotalPages={finalTotalPages}
-                        onPageChange={this.handlePageClick}
-                    />
+                        <Paginator
+                            finalTotalPages={finalTotalPages}
+                            onPageChange={this.handlePageClick}
+                        />
                     </div>
                 </div>
-                <a className="add"/>
-                <div className="hide buttons-container">
-                    <div className="p-4">
-                        {activeTab==='clients' && <button type="button" className="button"  onClick={(e)=>this.handleClick(null, e)}>Новый клиент</button>}
-                        {activeTab==='blacklist' && <button type="button" className="button"
-                                                            data-target=".add-black-list-modal"
-                                                            data-toggle="modal"
-                                                            onClick={this.addToBlackList}>Добавить в blacklist</button>}
+                <div ref={this.setWrapperRef}>
+                    <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#"
+                       onClick={this.handleOpenModal}/>
+                    <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
+                        <div className="buttons">
+                            {activeTab === 'clients' &&
+                            <button type="button" className="button" onClick={(e) => {
+                                this.handleClick(null, e);
+                                this.handleOpenModal();
+                            }}>Новый
+                                клиент</button>}
+                            {activeTab === 'blacklist' && <button type="button" className="button"
+                                                                  data-target=".add-black-list-modal"
+                                                                  data-toggle="modal"
+                                                                  onClick={this.addToBlackList}>Добавить в
+                                черный список</button>}
+                        </div>
+                        <div className="arrow"/>
                     </div>
-                    <div className="arrow"/>
                 </div>
                 {openedModal &&
-                    <NewClient
-                        client_working={client_working}
-                        edit={edit}
-                        updateClient={this.updateClient}
-                        addClient={this.addClient}
-                        onClose={this.onClose}
-                    />
+                <NewClient
+                    client_working={client_working}
+                    edit={edit}
+                    updateClient={this.updateClient}
+                    addClient={this.addClient}
+                    onClose={this.onClose}
+                />
                 }
                 {blackListModal &&
-                    <AddBlackList
-                        isLoading={isLoading}
-                        clients={client}
-                        updateClient={this.updateClient}
-                        addClient={this.addClient}
-                        onClose={this.closeBlackListModal}
-                    />
+                <AddBlackList
+                    isLoading={isLoading}
+                    clients={client}
+                    updateClient={this.updateClient}
+                    addClient={this.addClient}
+                    onClose={this.closeBlackListModal}
+                />
                 }
                 <ClientDetails
                     clientId={infoClient}
                     // editClient={this.handleEditClient}
                     editClient={this.handleClick}
                 />
+
+
+
             </div>
         );
     }
 
     handleSubmit(e) {
-        const { firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking } = this.state.client;
-        const { dispatch } = this.props;
+        const {firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking} = this.state.client;
+        const {dispatch} = this.props;
+
 
         e.preventDefault();
 
-        this.setState({ submitted: true });
+        this.setState({submitted: true});
 
         if (firstName || lastName || email || phone) {
-            let params = JSON.stringify({ firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking });
+            let params = JSON.stringify({
+                firstName,
+                lastName,
+                email,
+                phone,
+                roleId,
+                workStartMilis,
+                workEndMilis,
+                onlineBooking
+            });
             dispatch(clientActions.add(params));
         }
     }
 
-    onClose(){
+    onClose() {
         this.setState({...this.state, openedModal: false});
     }
 
     openBlackListModal() {
-        this.setState({ blackListModal: true });
+        this.setState({blackListModal: true});
     }
 
     closeBlackListModal() {
-        this.setState({ blackListModal: false })
+        this.setState({blackListModal: false})
     }
 
     handleClick(id) {
-        const { client } = this.state;
+        const {client} = this.state;
 
-        if(id!=null) {
-            const client_working = client.client.find((item) => {return id === item.clientId});
+        if (id != null) {
+            const client_working = client.client.find((item) => {
+                return id === item.clientId
+            });
 
             this.setState({...this.state, openedModal: true, edit: true, client_working: client_working});
         } else {
             this.setState({...this.state, openedModal: true, edit: false, client_working: {}});
         }
     }
-    openClientStats(client){
 
-        this.setState({ infoClient: client.clientId });
+    openClientStats(client) {
+
+        this.setState({infoClient: client.clientId});
         $('.client-detail').modal('show')
 
     }
 
-    updateClient(client, blacklisted){
-        const { dispatch } = this.props;
+    updateClient(client, blacklisted) {
+        const {dispatch} = this.props;
 
         dispatch(clientActions.updateClient(JSON.stringify(client), blacklisted));
     };
 
-    addClient(client){
-        const { dispatch } = this.props;
+    addClient(client) {
+        const {dispatch} = this.props;
 
         dispatch(clientActions.addClient(JSON.stringify(client)));
     };
 
-    deleteClient (id){
-        const { dispatch } = this.props;
 
-        dispatch(clientActions.deleteClient(id));
-    }
 
-    downloadFile (){
-        const { dispatch } = this.props;
+    downloadFile() {
+        const {dispatch} = this.props;
 
         dispatch(clientActions.downloadFile());
     }
 }
 
 function mapStateToProps(store) {
-    const {client, authentication, staff}=store;
+    const {client, authentication, staff} = store;
 
     return {
         client, authentication, staff

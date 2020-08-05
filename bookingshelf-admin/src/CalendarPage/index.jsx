@@ -12,6 +12,7 @@ import {
 import '../../public/scss/calendar.scss'
 
 import moment from 'moment';
+import {isMobile} from "react-device-detect";
 
 import {DatePicker} from "../_components/DatePicker";
 
@@ -110,6 +111,7 @@ class Index extends PureComponent {
             newClientModal: false,
             scrollableAppointmentAction: true,
             appointmentMarkerActionCalled: false,
+            scrolledToRight: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -142,6 +144,8 @@ class Index extends PureComponent {
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.scrollHandler = this.scrollHandler.bind(this);
     }
 
     componentDidMount() {
@@ -206,7 +210,7 @@ class Index extends PureComponent {
 
     navigateToRedLine() {
         setTimeout(() => {
-            const activeElem = document.getElementsByClassName("present-time-line")[0];
+            const activeElem = document.getElementsByClassName("present-time-line-shadow")[0];
             if (activeElem) {
                 activeElem.scrollIntoView();
             } else {
@@ -238,11 +242,6 @@ class Index extends PureComponent {
         $('.notes').css({'cursor': 'default'});
         $('textarea').css({'cursor': 'default'});
 
-        $('.add').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $('.buttons-container').fadeIn(400);
-        });
 
         if (prevState.typeSelected !== this.state.typeSelected) {
             this.setWorkingStaff()
@@ -373,6 +372,16 @@ class Index extends PureComponent {
         return !isOnAnotherVisit;
     }
 
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    scrollHandler() {
+        this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
+            this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 1000: 0;
+        });
+    }
+
 
     render() {
         const { authentication, company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
@@ -448,10 +457,18 @@ class Index extends PureComponent {
                             selectType={this.selectType}
                         />
                     </div>
-                    <div className="days-container">
+                    <div className="add-button">
+
+                    </div>
+                    <div className={"days-container " + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
+
+                        <button onClick={this.scrollHandler} className={"scroll-button" + (this.state.scrolledToRight ? " scrolled" : '')}></button>
+
                         <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                             <div className="calendar-list">
-                                <TabScrollHeader
+                             <div ref={this.setWrapperRef} className="calendar-list">
+
+
+                                 <TabScrollHeader
                                     selectedDays={selectedDays}
                                     timetable={workingStaff.timetable }
                                     timetableMessage={timetableMessage}
@@ -474,6 +491,7 @@ class Index extends PureComponent {
                                         changeTime={this.changeTime}
                                         changeTimeFromCell={this.changeTimeFromCell}
                                         moveVisit={this.moveVisit}
+                                        selectedDays={selectedDays}
                                     />)
                                  }
                             </div>

@@ -10,6 +10,7 @@ export function company(state = initialState, action) {
                 ...state,
                 isBookingInfoLoading: action.isBookingInfoLoading
             }
+
         case companyConstants.UPDATE_SAVED:
             return {
                 ...state,

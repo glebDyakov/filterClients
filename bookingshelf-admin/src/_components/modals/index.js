@@ -15,6 +15,7 @@ export * from './CreatedService';
 export * from './ClientDetails';
 export * from './NewStaffByMail';
 export * from './AppointmentFromSocket';
+export * from './SettingsSidebar';
 export * from './AddUnit';
 export * from './InfoProduct';
 export * from './ExpenditureProduct';

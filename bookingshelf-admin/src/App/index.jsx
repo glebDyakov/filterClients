@@ -18,6 +18,9 @@ import 'moment/locale/ru';
 import '../../public/css_admin/bootstrap.css'
 import '../../public/css_admin/datepicker.css'
 
+import "../../public/scss/dark_theme.scss";
+
+
 const MainIndexPage = React.lazy(() => import("../MainIndexPage"));
 const ClientsPage = React.lazy(() => import("../ClientsPage"));
 const ServicesPage = React.lazy(() => import("../ServicesPage"));
@@ -37,6 +40,7 @@ const PaymentsPage = React.lazy(() => import("../PaymentsPage"));
 import {Router, Route, Switch, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
 import SidebarMain from '../_components/SidebarMain';
+import ManagerSettings from '../_components/modals/ManagerSettings';
 
 import {access} from "../_helpers/access";
 const ActivationPage = React.lazy(() => import("../ActivationPage"));
@@ -67,6 +71,7 @@ class Index extends React.Component {
             isLoading: true,
             authentication: props.authentication,
             flagStaffId: true,
+            lightTheme: true
         }
 
         const { dispatch } = this.props;
@@ -82,13 +87,21 @@ class Index extends React.Component {
     }
 
     componentDidMount() {
-        let localStorageUser
+
+
+        let localStorageUser;
         try {
             localStorageUser = JSON.parse(localStorage.getItem('user'))
         } catch (e) {
 
         }
-        const user = this.props.authentication.user || localStorageUser
+        const user = this.props.authentication.user || localStorageUser;
+
+       if (user && user.lightTheme === false)$('body').addClass("dark-theme");
+        console.log(user && user.lightTheme === false)
+
+
+
         if (user && (this.props.authentication.loggedIn || this.props.company.switchedStaffId)) {
 
 
@@ -98,6 +111,15 @@ class Index extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+
+
+        const {company} = newProps;
+        if (company && company.settings && !company.settings.lightTheme) {
+            $('body').addClass("dark-theme")
+        } else {
+            $('body').removeClass("dark-theme")
+        };
+
         let localStorageUser
         try {
             localStorageUser = JSON.parse(localStorage.getItem('user'))
@@ -114,6 +136,8 @@ class Index extends React.Component {
             this.setState({ paymentsOnly: true, authentication: newProps.authentication })
             return;
         }
+
+
         if (this.state.paymentsOnly) {
             this.setState({paymentsOnly: false})
         }
@@ -250,16 +274,22 @@ class Index extends React.Component {
 
 
     render() {
+
         const { authentication, company, paymentsOnly } = this.state;
         {
            company && company.settings && authentication.menu && authentication.loggedIn &&
             moment.tz.setDefault(company.settings.timezoneId)
         }
+
+
         return (
             <Router history={history} >
                 <div>
+                    <div className="dark-theme-wrapper d-none"></div>
                     {authentication && authentication.user && authentication.menu && authentication.loggedIn && localStorage.getItem('user') &&
-                        <SidebarMain/>
+                        <React.Fragment>
+                            <SidebarMain/>
+                        </React.Fragment>
                     }
 
                     {/*<button style={{zIndex: "9999", position: "absolute", left: "400px", top: "200px"}} onClick={()=>this.playSound()}>Sound</button>*/}

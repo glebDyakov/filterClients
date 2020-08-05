@@ -96,35 +96,22 @@ class ClientDetails extends React.Component {
 
             <div className={"modal fade " + (wrapper)}>
 
-                <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className={"modal-dialog modal-lg modal-dialog-centered"}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Информация о клиенте</h4>
                             <button type="button" className="close" data-dismiss="modal"></button>
-                            {/*<div className="close"></div>*/}
-                            {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
                         </div>
                         <div className="client-info content-pages-bg">
                             {client &&
-                            <div className="clients-list pt-4 pl-4 pr-4">
-                                <div className="client">
-                                    <span className="abbreviation">{client.firstName && client.firstName.substr(0, 1)}</span>
-                                    <span style={{ maxWidth: '350px' }} className="name_container">{client.firstName} {client.lastName}
-                                        {access(12) && (
-                                            <React.Fragment>
-                                                <span className="email-user">{client.email}</span>
-                                                <span>{client.phone}</span>
-                                            </React.Fragment>
-                                        )}
-                                    </span>
+                            <div className="clients-list">
 
-                                </div>
-                                <div className="row">
-                                    <div className="col-6" style={{textAlign:'center'}}>
+                                <div className="row align-items-center all-visits-container">
+                                    <div className="col-6 all-visits" style={{textAlign:'center'}}>
                                         <strong>{defaultAppointmentsList.length} </strong><br/>
                                         <span className="gray-text">Всего визитов</span>
                                     </div>
-                                    <div className="col-6"  style={{textAlign:'center'}}>
+                                    <div className="col-6 all-visits"  style={{textAlign:'center'}}>
                                         <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
                                         <span className="gray-text">Сумма визитов</span>
                                     </div>
@@ -133,18 +120,18 @@ class ClientDetails extends React.Component {
                             }
                             <hr className="gray"/>
                             {client && client.appointments && client.appointments.length!==0 ?
-                                <p className="pl-4 pr-4">Список визитов</p> : <p className="pl-4 pr-4">Нет визитов</p>
+                                '' : <p className="not-visits">Нет визитов</p>
                             }
 
-                            {(defaultAppointmentsList && defaultAppointmentsList.length!==0 && defaultAppointmentsList!=="" &&
-                                    <div className="row align-items-center content clients mb-2 search-block">
-                                        <div className="search col-7">
-                                            <input type="search" placeholder="Введите название услуги"
-                                                   aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>
-                                            <button className="search-icon" type="submit"/>
-                                        </div>
-                                    </div>
-                                )}
+                            {/*{(defaultAppointmentsList && defaultAppointmentsList.length!==0 && defaultAppointmentsList!=="" &&*/}
+                            {/*        <div className="row align-items-center content clients search-block">*/}
+                            {/*            <div className="search col-7">*/}
+                            {/*                <input type="search" placeholder="Введите название услуги"*/}
+                            {/*                       aria-label="Search" ref={input => this.search = input} onChange={this.handleSearch}/>*/}
+                            {/*                <button className="search-icon" type="submit"/>*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+                            {/*    )}*/}
 
                             <div className="visit-info-wrapper">
                                 {client && client.appointments && client.appointments
@@ -156,50 +143,43 @@ class ClientDetails extends React.Component {
                                         const activeAppointmentStaff = staff && staff.staff && staff.staff.find(staffItem => staffItem.staffId === appointment.staffId);
 
                                         return(
-                                            <div style={{
-                                                paddingTop: '4px',
-                                                cursor: 'pointer',
-                                                borderBottom: '10px solid rgb(245, 245, 246)'
-                                            }} className="visit-info row pl-4 pr-4 mb-2"
+                                            <div className="visit-info row d-flex justify-content-between align-items-center"
                                                  onClick={() => this.goToPageCalendar(appointment, appointment.staffId)}
                                             >
-                                                <div style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center'
-                                                }} className="col-9">
+                                                <div className="col-9 col-sm-8">
                                                     <p className="visit-detail">
-                                                        <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
-                                                        <span style={{
-                                                            whiteSpace: 'normal',
-                                                            fontSize: '12px'
-                                                        }}><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
-                                                        <strong
-                                                            style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
+                                                        <span className="timing"><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                        <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
+                                                        <span className="service"
+                                                            style={{fontSize: '13px'}}>{appointment.serviceName}</span>
                                                         {(activeService && activeService.details) ?
-                                                            <span style={{ fontSize: '12px' }}>{activeService.details}</span> : ''}
+                                                            <span className="service">{activeService.details}</span> : ''}
                                                         {appointment.description ? <span
-                                                            className="visit-description">Заметка: {appointment.description}</span> : ''}
-                                                        {appointment.clientNotCome ? <span
-                                                            style={{ fontSize: '14px' }} className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                            className="visit-description service">Заметка: {appointment.description}</span> : ''}
+                                                        {appointment.clientNotCome ? <span className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                        <span className="price">Цена: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</span>
+
                                                     </p>
+
+
                                                 </div>
 
-                                                <div style={{ padding: 0, textAlign: 'right' }} className="col-2">
+                                                <div style={{ padding: 0, textAlign: 'center' }} className="col-3 d-flex flex-column justify-content-center align-items-center">
                                                     {
                                                         activeAppointmentStaff && activeAppointmentStaff.staffId &&
                                                         <div style={{ position: 'static' }} className="img-container">
-                                                            <img style={{ width: '50px', height: '50px' }} className="rounded-circle"
+                                                            <img style={{ width: '70px', height: '70px' }} className="rounded-circle"
                                                                  src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
                                                             {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
                                                         </div>
                                                     }
 
-                                                    <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                    <span className="gray-text duration">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
 
-                                                    <br />
 
-                                                    <strong style={{fontSize: '12px'}}>{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</strong>
                                                 </div>
+
+
                                             </div>
                                         )}
                                 )}
@@ -207,8 +187,7 @@ class ClientDetails extends React.Component {
 
                             <span className="closer"/>
                         </div>
-                        <hr/>
-                        <div className="buttons p-4">
+                        <div className="buttons">
                             <button type="button" className="button" data-toggle="modal"
                                     data-target=".new-client"  onClick={()=> {
                                 $('.client-detail').modal('hide')

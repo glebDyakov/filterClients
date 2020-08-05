@@ -118,20 +118,20 @@ class UserSettings extends React.Component {
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
-                            <form className="form-group mr-3 ml-3"  name="form">
+                            <form className="form-group form-user-setting mr-3 ml-3"  name="form">
                                 <div className="row">
-                                    <div style={{ position: 'relative' }} className="calendar col-xl-6">
+                                    <div style={{ position: 'relative' }} className="calendar col-xl-12">
                                         <p>Имя</p>
-                                        <input style={{paddingRight: '56px'}} type="text" name="firstName" value={firstName}  onChange={this.handleChange} maxLength="100" placeholder="Например: Иван"/>
+                                        <input style={{paddingRight: '56px'}} type="text" name="firstName" value={firstName}  onChange={this.handleChange} maxLength="100" placeholder="Введите имя"/>
                                         <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7}}>{firstName.length}/100</span>
                                     </div>
-                                    <div className="calendar col-xl-6">
+                                    <div className="calendar col-xl-12">
                                         <p>Номер телефона</p>
                                         <ReactPhoneInput
                                             defaultCountry={'by'}
                                             country={'by'}
                                             regions={['america', 'europe']}
-                                            placeholder=""
+                                            placeholder="Введите номер телефона"
                                             value={phone}
                                             onChange={phone => {
                                                 this.setState({
@@ -142,16 +142,22 @@ class UserSettings extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div  style={{ position: 'relative' }}  className="calendar col-xl-6">
+                                    <div  style={{ position: 'relative' }}  className="calendar col-xl-12">
                                         <p>Фамилия</p>
-                                        <input style={{paddingRight: '56px'}} type="text" name="lastName" value={lastName} onChange={this.handleChange} maxLength="100" placeholder="Например: Иванов"/>
+                                        <input style={{paddingRight: '56px'}} type="text" name="lastName" value={lastName} onChange={this.handleChange} maxLength="100" placeholder="Введите фамилию"/>
                                         <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7}}>{lastName ? lastName.length : 0}/100</span>
                                     </div>
-                                    <div className="calendar col-xl-6">
+                                    <div className="calendar col-xl-12">
                                         <p>Электронный адрес</p>
-                                        <input type="text" name="email" disabled={true} className="disabledField" value={email} onChange={this.handleChange} placeholder="Например: ivanov@gmail.com"/>
+                                        <input type="text" name="email" disabled={true} className="disabledField" value={email} onChange={this.handleChange} placeholder="Введите Email"/>
                                     </div>
                                 </div>
+
+                                <hr/>
+                                <p className="change-password-block--title">
+                                    Изменить пароль
+                                </p>
+
                                 <div className="row">
                                     <div className="col-xl-12">
                                         <p>Текущий пароль</p>
@@ -159,7 +165,7 @@ class UserSettings extends React.Component {
                                             <input name="passwd" type="password" style={{display:'none'}}/>
 
                                             <input type="password"
-                                                   placeholder=""
+                                                   placeholder="Введите текущий пароль"
                                                    autoComplete="new-password"
                                                    value={profile.password && profile.password}
                                                    name="password" onChange={this.handleChange}/>
@@ -168,13 +174,13 @@ class UserSettings extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="calendar col-xl-6">
+                                    <div className="calendar col-xl-12">
                                         <p>Новый пароль</p>
-                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPassword && profile.newPassword} onChange={this.handleChange} placeholder=""/>
+                                        <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPassword && profile.newPassword} onChange={this.handleChange} placeholder="Введите новый пароль"/>
                                     </div>
-                                    <div className="calendar col-xl-6">
-                                        <p>Повторить пароль</p>
-                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPasswordRepeat && profile.newPasswordRepeat} onChange={this.handleChange} placeholder=""/>
+                                    <div className="calendar col-xl-12">
+                                        <p>Повторите пароль</p>
+                                        <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPasswordRepeat && profile.newPasswordRepeat} onChange={this.handleChange} placeholder="Повторите новый пароль"/>
                                     </div>
                                 </div>
                                 <div className="check-box">
@@ -185,6 +191,9 @@ class UserSettings extends React.Component {
                                         Звуковые уведомления для визитов
                                     </label>
                                 </div>
+
+
+
                                 {authentication && authentication.status === 200 &&
                                 <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
                                 }
@@ -200,9 +209,9 @@ class UserSettings extends React.Component {
                                 }
 
                                 <div className="buttons">
-                                    <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
                                     <button className={"button text-center "+(authentication.adding && 'disabledField')} type="button" onClick={!authentication.adding && this.handleSubmit}>Сохранить</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
