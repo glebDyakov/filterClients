@@ -136,12 +136,40 @@
 
     }
 
-    &.yellow {
-      border-left-color: #fbde14;
+    &.lime {
+      border-left-color: $lime-color;
     }
 
+    &.light-green {
+      border-left-color: $light-green-color;
+    }
+    &.violet {
+      border-left-color: $violet-color;
+    }
+
+    &.sky {
+      border-left-color: $sky-color;
+    }
+
+    &.white {
+      border-left-color: $white-color;
+    }
+
+    &.rose {
+      border-left-color: $rose-color;
+    }
+
+    &.orange {
+      border-left-color: $orange-color;
+    }
+
+    &.yellow {
+      border-left-color: $yellow-color;
+    }
+
+
     &.green {
-      border-left-color: #8fbc94;
+      border-left-color: $green-color;
     }
 
     &.turquoise {
@@ -153,23 +181,19 @@
     }
 
     &.blue {
-      border-left-color: #4ea1d3;
-    }
-
-    &.orange {
-      border-left-color: #f17f42;
+      border-left-color: $blue-color;
     }
 
     &.red {
-      border-left-color: red;
+      border-left-color: $red-color;
     }
 
     &.grey {
-      border-left-color: #6d819c;
+      border-left-color: $gray-color;
     }
 
     &.pink {
-      border-left-color: #ef5285;
+      border-left-color: $pink-color;
     }
 
     &.dark_blue {
@@ -177,14 +201,46 @@
     }
 
     .buttonsCollapse {
+      .limeButtonEdit {
+        border-color: $lime-color;
+        background-color: $lime-color;
+      }
+
+      .lightButtonEdit {
+        border-color: $light-green-color;
+        background-color: $light-green-color;
+      }
+      .violetButtonEdit {
+        border-color: $violet-color;
+        background-color: $violet-color;
+      }
+      .skyButtonEdit {
+        border-color: $sky-color;
+        background-color: $sky-color;
+      }
+
+      .whiteButtonEdit {
+        border-color: $white-color;
+        background-color: $white-color;
+      }
+      .roseButtonEdit {
+        border-color: $rose-color;
+        background-color: $rose-color;
+      }
+
+      .orangeButtonEdit {
+        border-color: $orange-color;
+        background-color: $orange-color;
+      }
+
       .yellowButtonEdit {
-        border-color: #fbde14;
-        background-color: #fbde14;
+        border-color: $yellow-color;
+        background-color: $yellow-color;
       }
 
       .greenButtonEdit {
-        border-color: #8fbc94;
-        background-color: #8fbc94;
+        border-color: $green-color;
+        background-color: $green-color;
       }
 
       .turquoiseButtonEdit {
@@ -198,14 +254,10 @@
       }
 
       .blueButtonEdit {
-        border-color: #4ea1d3;
-        background-color: #4ea1d3;
+        border-color: $blue-color;
+        background-color: $blue-color;
       }
 
-      .orangeButtonEdit {
-        border-color: #f17f42;
-        background-color: #f17f42;
-      }
 
       .redButtonEdit {
         border-color: red;
@@ -213,13 +265,13 @@
       }
 
       .greyButtonEdit {
-        border-color: #6d819c;
-        background-color: #6d819c;
+        border-color: $gray-color;
+        background-color: $gray-color;
       }
 
       .pinkButtonEdit {
-        border-color: #ef5285;
-        background-color: #ef5285;
+        border-color: $pink-color;
+        background-color: $pink-color;
       }
 
       .dark_blueButtonEdit {

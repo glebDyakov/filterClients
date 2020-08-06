@@ -170,14 +170,14 @@
 
       .red {
         border-radius: 0px 0px 2px 2px;
-        background: #F46A6A;
+        background: $red-color;
         width: 3px;
 
       }
 
       .green {
         border-radius: 2px 2px 0px 0px;
-        background: #34C38F;
+        background: $green-color;
         width: 3px;
 
       }
@@ -321,7 +321,7 @@
               justify-content: flex-start;
 
               .number-statistics.red {
-                color: #F46A6A;
+                color: $red-color;
               }
 
               p {
