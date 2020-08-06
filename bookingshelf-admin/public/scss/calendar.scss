@@ -2883,11 +2883,18 @@
 
 }
 
+
+.new_appointment {
+  .modal-content {
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+}
+
 .form-group-addService {
   max-height: 80%;
   background: #F8F8FB;
   padding: 16px 0 0 0;
-  overflow: hidden;
   margin: 0;
 
   .calendar_modal_buttons {
