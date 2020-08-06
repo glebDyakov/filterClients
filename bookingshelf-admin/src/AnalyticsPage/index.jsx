@@ -78,6 +78,9 @@ class Index extends Component {
         };
 
         this.state = {
+
+            selectedStartDayOff: moment().subtract(1, 'month').utc().toDate(),
+            selectedEndDayOff: moment().utc().toDate(),
             type: 'day',
             selectedDay: dateFrom,
             selectedDays: dateTo,
@@ -436,7 +439,7 @@ class Index extends Component {
             this.setState({initChartData: true})
         }
 
-        if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
+        if (newProps.company.settings && JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
             const staffOptions = (newProps.company.settings.companyTypeId === 2 || newProps.company.settings.companyTypeId === 3) ? {
                 firstName: 'Доступные',
                 lastName: 'рабочие места'
@@ -476,11 +479,37 @@ class Index extends Component {
         }
     }
 
+    handleDayOffClick(day, modifiers = {}, dayKey) {
+        const { selectedStartDayOff, selectedEndDayOff } = this.state;
+        let daySelected = moment(day);
+
+        const updatedState = {
+            selectedStartDayOff,
+            selectedEndDayOff
+        };
+        if (dayKey === 'selectedStartDayOff') {
+            updatedState.selectedStartDayOff = daySelected.utc().startOf('day').toDate();
+            updatedState.selectedEndDayOff = moment().utc().startOf('day').toDate();
+
+        } else {
+            updatedState.selectedEndDayOff = daySelected.utc().startOf('day').toDate();
+
+        }
+
+
+        this.props.dispatch(analiticsActions.getFinancialAnalyticChart(
+          moment(updatedState.selectedStartDayOff).format('x'),
+          moment(updatedState.selectedEndDayOff).format('x')
+        ));
+
+        this.setState(updatedState);
+    }
+
 
     render() {
 
         const {isLoadingFirst, isLoadingSecond} = this.props.analitics;
-        const {selectedDay, selectedDays, type, saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart} = this.state;
+        const {selectedDay, selectedDays, type, saveStatistics, chosenPeriod, dropdownFirst, currentSelectedStaff, currentSelectedStaffChart, selectedStartDayOff, selectedEndDayOff,} = this.state;
         const dateArray = this.props.analitics.countRecAndCliChart.dateArrayChartFirst;
         const recordsArray = this.props.analitics.countRecAndCliChart.recordsArrayChartFirst;
 
@@ -584,6 +613,16 @@ class Index extends Component {
             }
         };
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
+        const dayPickerProps = {
+            month: new Date(),
+            toMonth: new Date(),
+            disabledDays: [
+                {
+                    after: new Date(),
+                },
+            ]
+        }
 
         return (
             <div className="retreats analytics_container">
@@ -960,29 +999,62 @@ class Index extends Component {
                 {/*// <!--end group-container-->*/}
 
                 <div style={{width: '99.9%'}} className="analytics_list analytics_chart">
-                    <div className="fin-analytic-container" style={{display: 'flex', justifyContent: 'flex-start'}}>
+                    <div className="fin-analytic-container">
                         <span className="title-container">
                             <span style={{width: 'auto'}} className="title-list">Финансовая аналитика</span>
                         <Hint hintMessage="Сумма стоимости визитов в журнале записи"/>
                         </span>
 
-                        <div className="sum-container">
-                            <div className="sum-payments">
-                                <span className="green-marker"></span>
-                                <p className="sum-text">Сумма: &nbsp;</p>
-                                <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b)} BYN</p>
-                            </div>
-                            <div className="cash-payments">
-                                <span className="purple-marker"></span>
-                                <p className="cash-text">Наличный расчет: &nbsp;</p>
-                                <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b)} BYN</p>
-                            </div>
-                            <div className="card-payments">
-                                <span className="orange-marker"></span>
-                                <p className="card-text">Безналичный расчет: &nbsp;</p>
-                                <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b)} BYN</p>
-                            </div>
+                        <div
+                          className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+                            <p className="staff-day-picker-title">Начало</p>
+                            <DatePicker
+                              // closedDates={staffAll.closedDates}
+                              type="day"
+                              selectedDay={selectedStartDayOff}
+                              handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
+                              dayPickerProps={dayPickerProps}
+                            />
+                        </div>
 
+                        <div
+                          className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+                            <p className="staff-day-picker-title">Конец</p>
+                            <DatePicker
+                              // closedDates={staffAll.closedDates}
+                              type="day"
+                              selectedDay={selectedEndDayOff}
+                              handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
+                              dayPickerProps={{
+                                  ...dayPickerProps,
+                                  disabledDays: [
+                                      {
+                                          before: new Date(moment(selectedStartDayOff).utc().toDate()),
+                                      },
+                                      {
+                                          after: new Date(),
+                                      },
+                                  ]
+                              }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="sum-container mb-4">
+                        <div className="sum-payments">
+                            <span className="green-marker"></span>
+                            <p className="sum-text">Сумма: &nbsp;</p>
+                            <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b)} BYN</p>
+                        </div>
+                        <div className="cash-payments">
+                            <span className="purple-marker"></span>
+                            <p className="cash-text">Наличный расчет: &nbsp;</p>
+                            <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b)} BYN</p>
+                        </div>
+                        <div className="card-payments">
+                            <span className="orange-marker"></span>
+                            <p className="card-text">Безналичный расчет: &nbsp;</p>
+                            <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b)} BYN</p>
                         </div>
 
                     </div>
