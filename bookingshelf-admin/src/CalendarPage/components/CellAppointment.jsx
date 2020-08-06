@@ -237,7 +237,9 @@ const CellAppointment = (props) => {
                    height: resultTextAreaHeight + "px",
                }}>
                                             <span className="notes-container-message">
-                                                    <span
+                                                    <span onClick={() => {
+                                                        console.log(appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента')
+                                                    }}
                                                         className="client-name">{appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента'}</span>
                                                     <ul>
                                                         <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
@@ -339,7 +341,7 @@ const CellAppointment = (props) => {
                         $('.client-detail').modal('show')
                         handleUpdateClient(appointment.clientId)
                     }}
-                       className="name">{appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : 'Без клиента')}</p>}
+                       className="name">{appointment.clientFirstName ? (appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) : 'Без клиента'}</p>}
                     {access(12) && appointment.clientId && <p>{appointment.clientPhone}</p>}
                     {companyTypeId === 2 && appointment.carBrand
                     && <p><strong>Марка авто: </strong>
