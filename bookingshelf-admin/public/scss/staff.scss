@@ -1416,6 +1416,8 @@
 
 
 
+
+
     .modal-dialog {
       width: 100% !important;
       margin-left: 0 !important;
@@ -1547,11 +1549,7 @@
 }
 
 .time-to-online-visit {
-  height: 0;
-
-  @media screen and (max-width: $mob-width) {
-    height: 90px !important;
-  }
+    height: 68px;
 }
 
 .staff-day-picker {
@@ -1583,6 +1581,11 @@
 }
 
 .new-staff-modal {
+
+  .SelectedWeekExample {
+    top: unset !important;
+    bottom: 346px !important;
+  }
   .modal-header .modal-title {
     font-size: 16px;
     line-height: 14px;

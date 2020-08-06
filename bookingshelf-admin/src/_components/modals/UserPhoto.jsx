@@ -66,12 +66,11 @@ class UserPhoto extends React.Component {
             <div className="modal fade modal_photo">
                 <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
                     <div className="modal-content">
-                        <div className="form-group">
-                            <div className="modal-header">
-                                <h4 className="modal-title">Фото профиля</h4>
-                                <button type="button" className="close" data-dismiss="modal"></button>
-                            </div>
-                            <div className="form-group mr-3 ml-3">
+                        <div className="modal-header">
+                            <h2 className="modal-title">Фото профиля</h2>
+                            <button type="button" className="close" data-dismiss="modal"></button>
+                        </div>
+                            <div className="modal-body">
                                 <div className="upload_container">
                                     <div className="setting image_picker">
                                         <div className="settings_wrap">
@@ -100,7 +99,6 @@ class UserPhoto extends React.Component {
                                     </button>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>

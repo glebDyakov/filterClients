@@ -3,6 +3,37 @@
 
 .dark-theme {
   position: relative;
+  background-color: #222736 !important;
+
+
+  .rc-time-picker-panel {
+    .rc-time-picker-panel-inner {
+      background-color: #222736 !important;
+
+      * {
+        border-color: #3F4555 !important;
+      }
+
+      .rc-time-picker-panel-select-option-selected {
+        background-color: #2A3042 !important;
+      }
+
+      li {
+        color: #fff !important;
+
+        &:hover {
+          background-color: #2A3042 !important;
+        }
+      }
+    }
+  }
+
+  .start-modal-sms,
+  .start-modal {
+    li {
+      color: #fff !important;
+    }
+  }
 
   .action-modal {
     .modal-body {
@@ -36,15 +67,16 @@
 
     .not-approved-list {
       background-color: #222736 !important;
+
       li {
         background-color: #2A3042 !important;
 
         .service_item {
           background-color: #2A3042 !important;
+
           p, strong, .service_name {
             color: #fff;
           }
-
 
 
           .img-container {
@@ -56,9 +88,166 @@
     }
   }
 
+  .flag-dropdown {
+    color: #fff !important;
+    background-color: #222736 !important;
+    border: none !important;
+
+    &:hover {
+      background-color: #2A3042 !important;
+    }
+  }
+
+
+  .new-staff-modal {
+    .modal-body{
+      background-color: #2A3042 !important;
+
+      .container-fluid {
+        background-color: #2A3042 !important;
+
+        p, label, input, select, select option {
+          color: #fff !important;
+        }
+
+        .css-bg1rzq-control {
+          background-color: #222736 !important;
+
+          .css-1hwfws3 {
+            * {
+              color: #fff !important;
+
+            }
+          }
+        }
+
+
+
+        .image_picker {
+          background-color: unset !important;
+
+          .existed-image {
+            background-color: #222736 !important;
+          }
+        }
+
+
+      }
+    }
+  }
+
+  .new-client-modal {
+    .modal-content {
+      background-color: #2A3042 !important;
+
+      .form-group {
+        border-color: #222736 !important;
+        background-color: #2A3042 !important;
+
+
+
+        .custom-select {
+          option {
+            color: #fff !important;
+
+          }
+        }
+
+        input {
+          color: #fff !important;
+        }
+
+        p, label {
+          color: #fff !important;
+
+
+        }
+      }
+    }
+  }
+
+  .message-is-sent-wrapper {
+    .message-is-sent-modal {
+      background-color: #2A3042 !important;
+      .close {
+        &::before, &::after {
+          background-color: #fff !important;
+        }
+      }
+
+      .modal-body {
+        img {
+
+        }
+
+        .body-text {
+
+        }
+      }
+    }
+  }
+
+  .new-mail {
+       .modal-content, .form-group {
+         background-color: #2A3042 !important;
+         input {
+           color: #fff !important;
+         }
+       }
+  }
+
+  .modal_dates {
+    .modal-body {
+      .form-group {
+        p, label {
+          color: #fff !important;
+        }
+
+        * {
+          border-color: #383D4A !important;
+        }
+
+        input {
+          background-color: #2A3042 !important;
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
   .new_appointment {
-    .dropdown, .dropdown-toggle, .dropdown-toggle span {
+    .search {
+      background-color: unset !important;
+
+    }
+
+    .removeService-button {
+      &::before, &::after {
+        background-color: #fff !important;
+      }
+    }
+
+    .dropdown, .dropdown-toggle, .dropdown-toggle span:not(.color-circle) {
       background-color: #222736 !important;
+      color: #fff !important;
+    }
+
+    .appointments-container {
+      p {
+        color: #fff !important;
+
+      }
+    }
+
+    .addApointmentClientBlock {
+      p {
+        color: #fff !important;
+
+      }
+    }
+
+
+    .company_counter {
       color: #fff !important;
     }
   }
@@ -67,6 +256,7 @@
     * {
       color: #fff !important;
     }
+
     .left-container, .right-container {
       background-color: #2A3042 !important;
     }
@@ -76,6 +266,7 @@
         background-color: unset !important;
       }
     }
+
     .search-icon {
       background-color: unset !important;
     }
@@ -83,6 +274,7 @@
     .right-container {
       .search {
         background-color: unset !important;
+
         .search-icon {
           background-color: unset !important;
         }
@@ -98,6 +290,7 @@
   .modal_add_group {
     .modal-inner {
       background-color: #2A3042 !important;
+
       span {
         color: #fff !important;
       }
@@ -105,9 +298,9 @@
   }
 
   .reserved-time-modal {
-   .modal-body {
-     background-color: #2A3042 !important;
-   }
+    .modal-body {
+      background-color: #2A3042 !important;
+    }
   }
 
   .modal-content {
@@ -185,11 +378,14 @@
 
 
       }
+
       hr {
         border-color: #383D4A !important;
       }
 
       .visit-info-wrapper {
+        background-color: #222736 !important;
+
         .visit-info {
           background-color: #2A3042 !important;
 
@@ -211,6 +407,7 @@
 
       .clients-container {
         background-color: #2A3042 !important;
+
         .email-user {
           color: #fff !important;
         }
@@ -219,8 +416,6 @@
           background-color: unset !important;
         }
       }
-
-
 
 
       p, h2, span {
@@ -414,6 +609,17 @@
     }
   }
 
+  .create-edit-product {
+
+  }
+
+  .image_picker {
+    background-color: unset !important;
+    .existed-image {
+      background-color: #2A3042 !important;
+    }
+  }
+
   .staff {
     background: #222736;
 
@@ -462,6 +668,18 @@
         }
       }
 
+    }
+
+    .tab-content-list-mob {
+      background: #2A3042 !important;
+      color: #fff !important;
+      p, a, span {
+        color: #fff !important;
+      }
+      div {
+        background: #2A3042 !important;
+        color: #fff !important;
+      }
     }
 
     .tab-content-list {
@@ -589,6 +807,7 @@
   .no-scroll {
 
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
     .user-settings-dropdown {
       background-color: #3F4555 !important;
 
@@ -940,7 +1159,21 @@
     }
   }
 
+  .modal_user_setting {
+    .form-group {
+      background: #2A3042 !important;
+
+      label {
+        color: #fff !important;
+      }
+    }
+  }
+
   .services {
+    .not-services {
+      color: #fff;
+    }
+
     .search-header-container {
       background: #2A3042 !important;
       border: none;

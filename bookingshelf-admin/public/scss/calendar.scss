@@ -828,17 +828,6 @@
       .tab-content-list {
 
         div {
-
-          &:nth-child(n+2):hover {
-            background-color: #fff;
-
-            &.today-bd {
-              &:hover {
-                background-color: rgba(191, 210, 237, 0.11)
-              }
-            }
-          }
-
           p {
             color: #495057;
             font-size: 14px;

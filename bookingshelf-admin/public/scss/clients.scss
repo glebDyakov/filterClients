@@ -946,6 +946,7 @@
       background: #F8F8FB;
       overflow-x: hidden;
       max-height: calc(100% - 40px);
+      padding-bottom: 190px;
 
       @media screen and (max-height: $mob-width) {
         max-height: calc(100% - 205px);

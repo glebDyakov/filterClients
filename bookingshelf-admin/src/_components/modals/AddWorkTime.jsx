@@ -140,7 +140,7 @@ class AddWorkTime extends React.Component {
         const {company} = this.props;
 
         return (
-            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className={"mod modal-dates " + (company && company.settings && (company.settings.lightTheme ? '' : " dark-theme"))}>
+            <Modal size="md" onClose={this.closeModal} showCloseButton={false} className={"mod modal-dates"}>
                 <div className="modal_dates">
                     <div className="">
                         <div className="modal-content">
