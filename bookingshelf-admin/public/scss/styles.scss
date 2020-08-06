@@ -3408,6 +3408,33 @@ select {
   }
 }
 
+.online-zapis-date-picker {
+  .arrow-left, .arrow-right {
+    display: none !important;
+  }
+}
+
+.staff-day-picker {
+  margin-left: -17px;
+  min-width: 340px;
+  
+  &.analytic-day-picker {
+    margin-left: 0;
+    @media (max-width: $tablet-width) {
+      margin-left: -8px;
+      margin-bottom: 8px;
+    }
+  }
+
+  &-title {
+    text-align: center;
+  }
+
+  .select-date {
+    z-index: unset;
+  }
+}
+
 .description {
   margin-top: 10px;
 
