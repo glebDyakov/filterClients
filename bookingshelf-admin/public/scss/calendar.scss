@@ -1661,8 +1661,37 @@
               text-align: left;
             }
 
+            &.lime-color {
+              background: $lime-color;
+            }
+            &.light-green-color {
+              background: $light-green-color;
+            }
+            &.violet-color {
+              background: $violet-color;
+            }
+            &.sky-color {
+              background: $sky-color;
+            }
+            &.white-color {
+              background: $white-color;
+            }
+            &.rose-color {
+              background: $rose-color;
+            }
+
+            &.orange-color {
+              background: $orange-color;
+
+              //.notes-container {
+              //  * {
+              //    color: #874421;
+              //  }
+              //}
+            }
+
             &.yellow-color {
-              background: #E8F088;
+              background: $yellow-color;
 
               //.notes-container {
               //  * {
@@ -1672,7 +1701,7 @@
             }
 
             &.green-color {
-              background: #34C28E;
+              background: $green-color;
 
               //.notes-container {
               //  * {
@@ -1702,7 +1731,7 @@
             }
 
             &.blue-color {
-              background: #50A4F0;
+              background: $blue-color;
 
               //.notes-container {
               //  * {
@@ -1712,7 +1741,7 @@
             }
 
             &.red-color {
-              background: #f94e3f;
+              background: $red-color;
 
               //.notes-container {
               //  * {
@@ -1721,18 +1750,8 @@
               //}
             }
 
-            &.orange-color {
-              background: #E8F088;
-
-              //.notes-container {
-              //  * {
-              //    color: #874421;
-              //  }
-              //}
-            }
-
             &.pink-color {
-              background: #D596BB;
+              background: $pink-color;
 
               //.pink-container {
               //  * {
@@ -1742,7 +1761,7 @@
             }
 
             &.gray-color, &.grey-color {
-              background: #6d819c;
+              background: $gray-color;
 
               //.notes-container {
               //  * {

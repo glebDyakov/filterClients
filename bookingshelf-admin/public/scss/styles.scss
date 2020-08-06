@@ -1403,7 +1403,7 @@ input {
     ;
 
       hr {
-        border-color: #6d819c;
+        border-color: $gray-color;
       }
     }
 
@@ -3200,13 +3200,33 @@ input {
     border-radius: 50%;
 
     &.red {
-      background-color: #ff1e00;
+      background-color: $red-color;
     }
 
     &.green {
-      background-color: #03c112;
+      background-color: $green-color;
     }
 
+    &.lime {
+      background-color: $lime-color;
+    }
+
+    &.light-green {
+      background-color: $light-green-color;
+    }
+    &.violet {
+      background-color: $violet-color;
+    }
+    &.sky {
+      background-color: $sky-color;
+    }
+
+    &.white {
+      background-color: $white-color;
+    }
+    &.rose {
+      background-color: $rose-color;
+    }
     &.yellow {
       background-color: #f5cc1f;
     }
@@ -5339,11 +5359,58 @@ textarea {
         }
       }
 
-      .yellow {
-        color: #fbde14;
+      .lime {
+        color: $lime-color;
 
         &.color-circle {
-          background-color: #fbde14;
+          background-color: $lime-color;
+        }
+      }
+
+      .light-green {
+        color: $light-green-color;
+
+        &.color-circle {
+          background-color: $light-green-color;
+        }
+      }
+      .violet {
+        color: $violet-color;
+
+        &.color-circle {
+          background-color: $violet-color;
+        }
+      }
+
+      .sky {
+        color: $sky-color;
+
+        &.color-circle {
+          background-color: $sky-color;
+        }
+      }
+
+      .white {
+        color: $white-color;
+
+        &.color-circle {
+          background-color: $white-color;
+        }
+      }
+
+      .rose {
+        color: $rose-color;
+
+        &.color-circle {
+          background-color: $rose-color;
+        }
+      }
+
+      .yellow {
+        color: $yellow-color;
+
+        &.color-circle {
+          background-color: $yellow-color;
         }
       }
 
@@ -5364,20 +5431,72 @@ textarea {
     }
   }
 
-
-  .yellow {
-    color: #fbde14;
+  .lime {
+    color: $lime-color;
 
     &.color-circle {
-      background-color: #fbde14;
+      background-color: $lime-color;
+    }
+  }
+
+  .light-green {
+    color: $light-green-color;
+
+    &.color-circle {
+      background-color: $light-green-color;
+    }
+  }
+  .violet {
+    color: $violet-color;
+
+    &.color-circle {
+      background-color: $violet-color;
+    }
+  }
+  .sky {
+    color: $sky-color;
+
+    &.color-circle {
+      background-color: $sky-color;
+    }
+  }
+
+  .white {
+    color: $white-color;
+
+    &.color-circle {
+      background-color: $white-color;
+    }
+  }
+  .rose {
+    color: $rose-color;
+
+    &.color-circle {
+      background-color: $rose-color;
+    }
+  }
+
+  .orange {
+    color: $orange-color;
+
+    &.color-circle {
+      background-color: $orange-color;
+    }
+  }
+
+  .yellow {
+    color: $yellow-color;
+
+    &.color-circle {
+      background-color: $yellow-color;
     }
   }
 
   .green {
-    color: #8fbc94;
+    color: $green-color;
 
     &.color-circle {
-      background-color: #8fbc94;
+      background-color: $green-color;
     }
   }
 
@@ -5398,58 +5517,42 @@ textarea {
   }
 
   .blue {
-    color: #4ea1d3;
+    color: $blue-color;
 
     &.color-circle {
-      background-color: #4ea1d3;
+      background-color: $blue-color;
     }
   }
 
   .pink {
-    color: pink;
+    color: $pink-color;
 
     &.color-circle {
-      background-color: pink;
+      background-color: $pink-color;
     }
   }
 
   .red {
-    color: #f94e3f;
+    color: $red-color;
 
     &.color-circle {
-      background-color: #f94e3f;
-    }
-  }
-
-  .orange {
-    color: #f17f42;
-
-    &.color-circle {
-      background-color: #f17f42;
-    }
-  }
-
-  .rose {
-    color: #ef5285;
-
-    &.color-circle {
-      background-color: #ef5285;
+      background-color: $red-color;
     }
   }
 
   .gray {
-    color: #6d819c;
+    color: $gray-color;
 
     &.color-circle {
-      background-color: #6d819c;
+      background-color: $gray-color;
     }
   }
 
   .grey {
-    color: #6d819c;
+    color: $gray-color;
 
     &.color-circle {
-      background-color: #6d819c;
+      background-color: $gray-color;
     }
   }
 
