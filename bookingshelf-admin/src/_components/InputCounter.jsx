@@ -15,7 +15,7 @@ const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, typ
             onKeyUp={handleKeyUp}
             maxLength={maxLength}
         />
-        {withCounter && <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{value ? value.length : 0}/{maxLength}</span>}
+        {withCounter && <span className="company_counter" style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{value ? value.length : 0}/{maxLength}</span>}
     </div>
 );
 

@@ -517,7 +517,7 @@
         border: none;
 
         span {
-          color: #2A3042 !important;
+          color: #2A3042;
           font-weight: normal;
           font-size: 13px !important;
           line-height: 18px;
@@ -854,9 +854,6 @@
   .modal-dialog-lg {
     max-width: 100%;
     margin: auto;
-    @media screen and(max-width: 991px) {
-      max-width: 90%;
-    }
   }
 
   .block-style2 {

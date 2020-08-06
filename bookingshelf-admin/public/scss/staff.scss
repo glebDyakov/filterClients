@@ -118,7 +118,6 @@
       left: 0;
       top: 0;
       bottom: 0;
-      margin: auto;
       transition: 200ms !important;
       box-sizing: border-box;
       border: 1px solid rgba(128, 128, 128, 0.3);
@@ -136,12 +135,6 @@
     }
   }
 
-  .css-1e7mt16-menu {
-    * {
-
-      background-color: #fff;
-    }
-  }
 
   .user-feeds {
     background: #FFFFFF;
@@ -994,7 +987,6 @@
 
                 position: absolute;
                 top: 50%;
-                height: 100%;
                 overflow-y: auto;
                 left: 50%;
                 transform: translate(-50%, -50%);
@@ -1416,6 +1408,8 @@
 
 
 
+
+
     .modal-dialog {
       width: 100% !important;
       margin-left: 0 !important;
@@ -1547,11 +1541,7 @@
 }
 
 .time-to-online-visit {
-  height: 0;
-
-  @media screen and (max-width: $mob-width) {
-    height: 90px !important;
-  }
+    height: 68px;
 }
 
 .input_limited_3_digital {
@@ -1570,6 +1560,11 @@
 }
 
 .new-staff-modal {
+
+  .SelectedWeekExample {
+    top: unset !important;
+    bottom: 346px !important;
+  }
   .modal-header .modal-title {
     font-size: 16px;
     line-height: 14px;

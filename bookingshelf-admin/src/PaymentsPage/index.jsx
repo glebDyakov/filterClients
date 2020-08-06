@@ -642,9 +642,9 @@ class Index extends Component {
 
                                         {finalPriceMonthDiscount ? (
                                             <div>
-                                                <p style={{color: 'red'}}>Стоимость в месяц со скидкой: </p>
+                                                <p style={{color: '#F46A6A'}}>Стоимость в месяц со скидкой: </p>
                                                 <span style={{
-                                                    color: 'red',
+                                                    color: '#F46A6A',
                                                     textAlign: 'right'
                                                 }}>{finalPriceMonthDiscount} {countryCode ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'}</span>
                                             </div>

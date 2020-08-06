@@ -198,7 +198,7 @@ class AddProduct extends React.Component {
                                                 </select>
                                             </div>
                                             <div className="col-sm-4">
-                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={client.nominalAmount && String(client.nominalAmount)}
                                                               name="nominalAmount" handleChange={this.handleChange} maxLength={9} />
 
                                             </div>

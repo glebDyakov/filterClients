@@ -828,17 +828,6 @@
       .tab-content-list {
 
         div {
-
-          &:nth-child(n+2):hover {
-            background-color: #fff;
-
-            &.today-bd {
-              &:hover {
-                background-color: rgba(191, 210, 237, 0.11)
-              }
-            }
-          }
-
           p {
             color: #495057;
             font-size: 14px;
@@ -2285,13 +2274,18 @@
           align-items: center;
           justify-content: space-between;
           padding: 20px 15px;
+          background-color: #fff;
 
 
           .search {
+            background-color: #fff;
+
             input {
               font-size: 13px !important;
               line-height: 18px !important;
-              color: #495057 !important;
+              color: #2A3042 !important;
+              background-color: #fff;
+
             }
 
             width: 97%;
@@ -2299,6 +2293,7 @@
             .search-icon {
               right: 0;
               left: unset;
+              background-color: unset !important;
 
             }
           }
@@ -2331,6 +2326,10 @@
             text-align: right;
             width: 50%;
             color: #50A5F1 !important;
+
+            @media screen and (max-width: $mob-width) {
+              padding: 0 5px 0 0 !important;
+            }
 
             * {
               font-size: 13px !important;

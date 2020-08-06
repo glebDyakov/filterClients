@@ -416,7 +416,7 @@ class AddService extends React.Component {
                                     </div>
 
                                     {services && services.status === 200 &&
-                                    <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                    <p className="alert-success w-100 p-1 rounded pl-3 mb-2">Сохранено</p>
                                     }
                                     {services && services.adding &&
                                     <img style={{width: "57px"}}

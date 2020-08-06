@@ -465,7 +465,7 @@ class Index extends Component {
                                                             </div>
                                                             {isAvatarOpened &&
                                                                 <Avatar
-                                                                    height={180}
+                                                                    height={117}
                                                                     cropRadius="100%"
                                                                     label=""
                                                                     onCrop={(e) => this.onCrop(e, i)}
