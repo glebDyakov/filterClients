@@ -467,7 +467,7 @@ const CellAppointment = (props) => {
                     })
                     }
 
-                    <p className="all-price">Итого:&nbsp;<span className="price">{totalPrice}&nbsp;BYN</span></p>
+                    <p className="all-price">Итого:&nbsp;<span className="price">{totalAmount}&nbsp;BYN</span></p>
 
                     <hr className="block-line"/>
 
