@@ -16,13 +16,13 @@ class DeleteAppointment extends React.Component {
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h4 className="modal-title">Отменить запись?</h4>
+                            <h4 className="modal-title">Удалить запись?</h4>
                             <button type="button" className="close" data-dismiss="modal" />
                             {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
                         </div>
                         <div className="modal-body">
                             <div className="form-group">
-                                <button type="button" className="button" onClick={this.cancel} data-dismiss="modal">Отменить</button>
+                                <button type="button" className="button" onClick={this.cancel} data-dismiss="modal">Удалить</button>
                                 <button type="button" className="gray-button" data-dismiss="modal">Отмена</button>
                             </div>
                         </div>

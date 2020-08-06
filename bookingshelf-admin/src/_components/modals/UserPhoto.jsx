@@ -82,7 +82,7 @@ class UserPhoto extends React.Component {
 
                                                     </div>
                                                     <Avatar
-                                                        height={180}
+                                                        height={117}
                                                         cropRadius="100%"
                                                         label=""
                                                         onCrop={this.onCrop}

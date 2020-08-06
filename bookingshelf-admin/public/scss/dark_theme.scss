@@ -5,6 +5,59 @@
   position: relative;
   background-color: #222736 !important;
 
+  .modal-category, .modal-brand, .modal-storehouse {
+    .form-group {
+      background-color: #2A3042 !important;
+      input {
+        color: #fff !important;
+      }
+    }
+  }
+
+  .search {
+    .search-input, .mob-search-input {
+      color: #fff !important;
+      border-color: #383D4A !important;
+    }
+
+    .search-icon {
+      background-color: unset !important;
+    }
+  }
+
+  .mod.create-edit-product {
+    .form-group {
+      background-color: #2A3042 !important;
+
+    }
+
+    label {
+      color: #fff !important;
+    }
+
+    .custom-select, input {
+      color: #fff !important;
+
+      option {
+        color: #fff !important;
+      }
+    }
+  }
+
+  .modal-product-details{
+    .form-group {
+      background-color: #2A3042 !important;
+
+    }
+
+    label {
+      color: #fff !important;
+    }
+
+    .custom-select, input {
+      color: #fff !important;
+    }
+  }
 
   .rc-time-picker-panel {
     .rc-time-picker-panel-inner {
@@ -110,16 +163,6 @@
           color: #fff !important;
         }
 
-        .css-bg1rzq-control {
-          background-color: #222736 !important;
-
-          .css-1hwfws3 {
-            * {
-              color: #fff !important;
-
-            }
-          }
-        }
 
 
 
@@ -252,6 +295,34 @@
     }
   }
 
+  .add-holiday.modal-content {
+    * {
+      color: #fff !important;
+    }
+    .SelectedWeekExample {
+      background-color: #222736 !important;
+
+    }
+
+    .form-group {
+      background-color: unset !important;
+    }
+
+    .modal-body {
+      background-color: #2A3042 !important;
+
+    }
+
+    input, textarea {
+      background-color: #2A3042 !important;
+
+    }
+  }
+
+  .company_counter {
+    color: #fff !important;
+  }
+
   .new-service-modal {
     * {
       color: #fff !important;
@@ -346,7 +417,7 @@
         }
       }
 
-      .services-title, .dropdown-item, .name-service {
+      .services-title, .dropdown-item, .name-service, .name-service span {
         background-color: #222736 !important;
         color: #fff !important;
         border-color: #383D4A !important;
@@ -401,6 +472,8 @@
         }
       }
     }
+
+
 
     .form-group, .modal-body, .modal-inner {
       background-color: #222736;
@@ -609,6 +682,17 @@
     }
   }
 
+  .modal_add_service_by_list_group {
+    .modal-body {
+      background-color: #2A3042 !important;
+      .dropdown-menu {
+        span {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
   .create-edit-product {
 
   }
@@ -696,6 +780,13 @@
 
   .clients-page {
     background: #222736;
+
+    .search {
+      input {
+        color: #fff !important;
+        border-color: #383D4A !important;
+      }
+    }
 
     p {
       color: #fff;
@@ -804,6 +895,10 @@
     }
   }
 
+  .add {
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.3);
+  }
+
   .no-scroll {
 
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
@@ -830,6 +925,17 @@
 
     * {
       color: #fff !important;
+    }
+
+    .user-settings-dropdown {
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      * {
+        border-color: #3C4050 !important;
+      }
+
+      a {
+        color: #F46A6A !important;
+      }
     }
 
     .dropdown-menu {
@@ -1169,6 +1275,16 @@
     }
   }
 
+  .make-payment-modal {
+    .modal-body {
+      background-color: #222736 !important;
+      p {
+        color: #fff !important;
+      }
+    }
+
+  }
+
   .services {
     .not-services {
       color: #fff;
@@ -1182,6 +1298,7 @@
       .search {
         .search-input, .mob-search-input {
           color: #fff !important;
+          border-color: #383D4A !important;
         }
 
         .search-icon {
@@ -1189,6 +1306,7 @@
         }
       }
     }
+
 
 
     .services_wrapper {
@@ -1214,6 +1332,7 @@
 
     }
   }
+
 
   #payments {
     .current-packet {
@@ -1268,11 +1387,40 @@
     }
   }
 
+
+
   .material {
+
+    .dropdown-button {
+      color: #fff !important;
+
+      &::before {
+        content: url("../img/dark-theme/down-arrow.svg") !important;
+      }
+    }
+
+    .dropdown-buttons {
+      .nav-link {
+        background-color: #2A3042 !important;
+        color: #fff !important;
+      }
+    }
+
     .content {
       background-color: #2A3042 !important;
 
     }
+
+      .tab-content-list {
+        background-color: #2A3042 !important;
+        .productName {
+          color: #50A5F1;
+        }
+
+        span {
+          color: #fff;
+        }
+      }
 
     .tab-content-list {
       div {

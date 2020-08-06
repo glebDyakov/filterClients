@@ -126,7 +126,14 @@ class NewStaff extends React.Component {
                     ...base,
                     zIndex: 99999999999
                 }
-            }
+            },
+            option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+                return {
+                    ...styles,
+                    backgroundColor: '#2E3548',
+                    color: '#fff',
+                };
+            },
         }
 
         const emailInput = (

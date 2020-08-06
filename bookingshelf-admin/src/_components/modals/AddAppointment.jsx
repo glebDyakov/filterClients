@@ -989,12 +989,11 @@ class AddAppointment extends React.Component {
                                                                 <ul className="dropdown-menu">
                                                                     <li className="dropdown-item-title">
                                                                         <div
-                                                                            className="row align-items-center content clients"
+                                                                            className="align-items-center content clients"
                                                                             style={{
-                                                                                margin: "0 -15px",
                                                                                 padding: '0 8px',
                                                                                 height: '52px',
-                                                                                width: "calc(100% + 30px)"
+                                                                                boxShadow: "none",
                                                                             }}>
                                                                             <div className="search">
                                                                                 <input type="search"

@@ -3075,13 +3075,13 @@ input {
           }
 
           .image_preview {
-            height: 117px;
+            min-height: 117px;
 
             div {
               div {
                 position: relative;
                 //width: 180px;
-                height: 117px;
+                min-height: 117px;
                 //background-color: rgba(181, 185, 190, 0.17);
                 background-size: cover;
                 background-position: center;
@@ -4541,6 +4541,179 @@ select {
 }
 
 
+.modal-content {
+  border-radius: 10px !important;
+
+  .modal-header {
+    border-radius: 10px 10px 0px 0px !important;
+  }
+
+}
+
+.modal.client-detail {
+  .modal-content {
+    max-width: 502px;
+    width: 502px;
+
+    @media screen and (max-width: $mob-width) {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    hr {
+      margin: 0 auto 15px;
+      max-width: 352px;
+    }
+    .all-visits-container {
+      background: none;
+      padding: 15px 0;
+
+
+
+      strong {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        /* identical to box height */
+
+        text-align: center;
+
+        color: #2A3042;
+      }
+
+      .gray-text {
+        font-weight: 300;
+        font-size: 13px;
+        line-height: 18px;
+        /* identical to box height */
+
+        text-align: center;
+
+        color: #2A3042;
+
+        opacity: 0.5;
+      }
+    }
+
+    .client-info {
+      max-height: 100%;
+      border:none;
+      border-radius: 0;
+      background: #F8F8FB;
+
+    }
+
+    .visit-info-wrapper {
+      overflow-y: auto;
+      background: #F8F8FB;
+      overflow-x: hidden;
+      max-height: calc(100% - 40px);
+      padding-bottom: 190px;
+
+      @media screen and (max-height: $mob-width) {
+        max-height: calc(100% - 205px);
+      }
+
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        background: #2A3042;
+        border-radius: 4px;
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+        background: #b30000;
+      }
+
+      .visit-info {
+        background: #FFFFFF;
+        padding: 15px;
+
+        .duration {
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 14px;
+          /* identical to box height, or 108% */
+
+
+          color: #2A3042;
+          margin-top: 5px;
+        }
+
+        .visit-detail {
+          display: flex;
+          flex-direction: column;
+
+          .price {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 23px;
+            /* identical to box height, or 177% */
+
+
+            color: #50A5F1;
+          }
+
+          span {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 23px;
+            /* or 177% */
+
+
+            color: #2A3042;
+
+          }
+
+          strong {
+            font-style: normal;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 23px;
+            /* or 177% */
+            color: #2A3042;
+
+          }
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 7px;
+        }
+      }
+    }
+
+    .buttons {
+      .button {
+        width: 100%;
+        background: #50A5F1;
+        /* Drop Shadow */
+
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+        border-radius: 0px 0px 5px 5px;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 27px;
+
+        color: #FFFFFF;
+        height: 57px;
+        border: none;
+      }
+    }
+  }
+}
+
+
 .new-service-modal {
 
 
@@ -5058,7 +5231,6 @@ textarea {
     label {
       position: relative;
       display: block;
-      float: right;
 
       span {
         background: url(../img/add.svg) no-repeat 5px center;
@@ -5521,7 +5693,7 @@ textarea {
     }
 
     .dropdown-menu {
-      width: calc(100% + 2px);
+      width: 100%;
       left: -1px !important;
       padding: 0;
       right: 0;
@@ -6650,6 +6822,7 @@ textarea {
 
 .modal---modal-overlay---3D5Nr {
   z-index: 15 !important;
+  background-color: rgba(0,0,0,0.5) !important;
 }
 
 
