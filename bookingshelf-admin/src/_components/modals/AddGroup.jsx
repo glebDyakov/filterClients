@@ -205,8 +205,12 @@ class AddGroup extends React.Component {
                                 }
 
                                 <div className="buttons">
-                                    <button type="button" className={"button float-right "+(services.adding && ' disabledField')}  data-toggle={newSet&&"modal"} data-target={newSet&&".modal_add_service_by_list_group"}
-                                            onClick={!services.adding && (edit ? this.updateGroup : this.addGroup)}
+                                    <button type="button" className={"button float-right "+(services.adding || group.name.length === 0 && ' disabledField')}  data-toggle={newSet&&"modal"} data-target={newSet&&".modal_add_service_by_list_group"}
+                                            onClick={() => {
+                                                if (group.name.length > 0) {
+                                                    !services.adding && (edit ? this.updateGroup() : this.addGroup());
+                                                }
+                                            }}
                                     >{edit ? 'Обновить' : 'Сохранить'} </button>
                                 </div>
                             </div>

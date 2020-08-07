@@ -97,8 +97,13 @@ class Index extends React.Component {
         }
         const user = this.props.authentication.user || localStorageUser;
 
-       if (user && user.lightTheme === false)$('body').addClass("dark-theme");
+
+       if (user && user.lightTheme === false) {
+           $('body').addClass("dark-theme");
+       };
+
         console.log(user && user.lightTheme === false)
+
 
 
 
@@ -111,8 +116,6 @@ class Index extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-
-
         const {company} = newProps;
         if (company && company.settings && !company.settings.lightTheme) {
             $('body').addClass("dark-theme")
