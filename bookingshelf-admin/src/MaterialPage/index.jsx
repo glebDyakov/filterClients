@@ -35,6 +35,7 @@ import FeedbackStaff from "../_components/modals/FeedbackStaff";
 import EmptyContent from "./EmptyContent";
 import Modal from "@trendmicro/react-modal";
 import AddButton from "./AddButton";
+import ActionModal from "../_components/modals/ActionModal";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -96,7 +97,13 @@ class Index extends Component {
             addWorkTime: false,
             newStaffByMail: false,
             newStaff: false,
+
             isOpenDropdownMenu: false,
+            isOpenDeleteProductModal: false,
+            isOpenDeleteCategoryModal: false,
+            isOpenDeleteBrandModal: false,
+            isOpenDeleteProviderModal: false,
+            isOpenDeleteDModal: false,
 
             products: props.material.products,
             defaultProductsList: props.material.categories,
@@ -666,7 +673,7 @@ class Index extends Component {
                                         title="Нет товаров"
                                         text="Добавьте первый товар, чтобы начать работу"
                                         buttonText="Новый товар"
-                                        buttonClick={() => this.toggleProduct()}
+                                        buttonClick={this.toggleProduct}
                                     />)
                                     }
 
@@ -741,7 +748,7 @@ class Index extends Component {
                                             title="Нет категорий"
                                             text="Создайте категории и свяжите их с продуктами"
                                             buttonText="Новая категория"
-                                            buttonClick={() => this.toggleCategory()}
+                                            buttonClick={this.toggleCategory}
                                         />
                                     )}
 
@@ -813,7 +820,7 @@ class Index extends Component {
                                             title="Нет брендов"
                                             text="Создайте новый бренд и свяжите его с товарами"
                                             buttonText="Новый бренд"
-                                            buttonClick={() => this.toggleBrand()}
+                                            buttonClick={this.toggleBrand}
                                         />
                                     )}
                                 </div>
@@ -906,7 +913,7 @@ class Index extends Component {
                                                 title="Нет поставщиков"
                                                 text="Добавьте поставщиков, чтобы создавать автоматические ордеры на поставку товаров"
                                                 buttonText="Новый поставщик"
-                                                buttonClick={() => this.toggleProvider()}
+                                                buttonClick={this.toggleProvider}
                                             />
                                         )}
                                     </div>
@@ -992,7 +999,8 @@ class Index extends Component {
                                     title="Нет товаров"
                                     text="Добавьте первый товар, чтобы начать работу"
                                     buttonText="Новый товар"
-                                    buttonClick={() => this.toggleProvider()}
+                                    buttonClick={this.toggleProvider}
+                                    hideButton={true}
                                 />
                             </div>)}
 

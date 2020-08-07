@@ -31,7 +31,7 @@ class HolidayInfo extends Component {
 
         return (
             <div className="row holiday-list" key={key}>
-                <div className="col">
+                <div className="col flex-column d-flex flex-md-row">
                     <span>
                         <strong>Начало</strong>
                         {moment(item.startDateMillis).format('L')}
