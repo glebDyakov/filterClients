@@ -35,6 +35,7 @@ import FeedbackStaff from "../_components/modals/FeedbackStaff";
 import EmptyContent from "./EmptyContent";
 import Modal from "@trendmicro/react-modal";
 import AddButton from "./AddButton";
+import ActionModal from "../_components/modals/ActionModal";
 
 function getWeekDays(weekStart) {
     const days = [weekStart];
@@ -96,8 +97,13 @@ class Index extends Component {
             addWorkTime: false,
             newStaffByMail: false,
             newStaff: false,
-            isOpenDropdownMenu: false,
 
+            isOpenDropdownMenu: false,
+            isOpenDeleteProductModal: false,
+            isOpenDeleteCategoryModal: false,
+            isOpenDeleteBrandModal: false,
+            isOpenDeleteProviderModal: false,
+            isOpenDeleteDModal: false,
 
             products: props.material.products,
             defaultProductsList: props.material.categories,

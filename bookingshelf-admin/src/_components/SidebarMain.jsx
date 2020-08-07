@@ -760,45 +760,76 @@ class SidebarMain extends React.Component {
                                             return (condition &&
                                                 <li className="opacity0">
                                                     <div className="service_item">
-                                                        <div className="left-block">
+                                                        <div className="left-block d-none d-md-flex">
                                                             <div className="img-container d-none d-md-flex">
                                                                 <img
                                                                     src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                     className="img"/></div>
+
                                                             <div>
-                                                                <p className="service_name" style={{
-                                                                    wordWrap: "break-word"
-                                                                }}>{appointment.serviceName}<br/>
-                                                                    <span
-                                                                        className="deleted"
-                                                                        style={{color: "#3E90FF"}}>{appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}</span>
+                                                                <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
+
+                                                                <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                                                    <div className="img-container d-md-none">
+                                                                        <img
+                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                            className="img"/></div>
+                                                                </p>
+                                                                <p className="service_name"
+                                                                >{appointment.serviceName}
+
+                                                                    {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                                                 </p>
                                                             </div>
                                                         </div>
                                                         <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
-                                                            {appointment.clientFirstName ? <React.Fragment><p> <div className="img-container d-md-none">
-                                                                <img
-                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                    className="img"/></div>
+                                                            {appointment.clientFirstName ? <React.Fragment><p>
                                                                 <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
-                                                            </p><br/> </React.Fragment> : 'Без клиента'}
-
-                                                            {appointment.clientPhone && <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
-
-                                                            {companyTypeId === 2 && appointment.carBrand && <p><strong style={{textDecoration: 'underline'}}>Марка авто: </strong> {appointment.carBrand}</p>}
-
-                                                            {companyTypeId === 2 && appointment.carNumber && <p><strong style={{textDecoration: 'underline'}}>Гос. номер: </strong> {appointment.carNumber}</p>}
-                                                            <p className="service_time"
-                                                               style={{textTransform: 'capitalize'}}
+                                                            </p></React.Fragment> : ''}
+                                                            {appointment.clientPhone &&
+                                                            <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
+                                                            {companyTypeId === 2 && appointment.carBrand &&
+                                                            <p style={{textDecoration: 'underline'}}><strong>Марка
+                                                                авто: </strong> {appointment.carBrand}</p>}
+                                                            {companyTypeId === 2 && appointment.carNumber &&
+                                                            <p style={{textDecoration: 'underline'}}><strong>Гос.
+                                                                номер: </strong> {appointment.carNumber}</p>}
+                                                            <p className="service_time" style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
                                                             >
                                                                 <strong>Время: </strong>
                                                                 {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
                                                             </p>
+                                                            <p className="d-none d-md-flex" style={{color: "#50A5F1"}}>
+                                                                {appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}
+
+                                                            </p>
+
+                                                        </div>
+
+                                                        <div className="left-block d-flex d-md-none flex-column">
+                                                            <br/>
+                                                            <div className="img-container d-none d-md-flex">
+                                                                <img
+                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                    className="img"/></div>
+
+                                                            <div>
+                                                                <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                                                    <div className="img-container d-md-none">
+                                                                        <img
+                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                            className="img"/></div>
+                                                                    <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
+
+                                                                </p>
+                                                            </div>
+                                                            <br/>
+                                                            <p style={{color: "#50A5F1"}}>
+                                                                {appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}
+                                                            </p>
                                                         </div>
                                                     </div>
-
-
                                                 </li>
                                             )
                                         })}

@@ -1203,10 +1203,10 @@ class AddAppointment extends React.Component {
 
                                                 <div className="row">
                                                     <div className="col-sm-12">
-                                                        <p className="title mobile-visible">Добавление клиента <Hint
+                                                        <p className="add-helpers-text mobile-visible">Добавление клиента <Hint
                                                             hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/>
                                                         </p>
-                                                        <p className="title mb-3 desktop-visible">Добавление
+                                                        <p className="add-helpers-text mb-3 desktop-visible">Добавление
                                                             клиента <Hint
                                                                 hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/>
                                                         </p>
@@ -1221,9 +1221,7 @@ class AddAppointment extends React.Component {
                                                 {/*    </form>*/}
                                                 {/*</div>*/}
                                                 <div className="row">
-                                                    <div className="col-12">
-                                                        <p className="subtitle">Быстрый поиск
-                                                            или добавление клиента:</p>
+                                                    <div className="col-12 py-4 py-mb-0">
                                                         {Object.entries({
                                                             clientFirstName: typeAheadOptions.clientFirstName,
                                                             clientPhone: typeAheadOptions.clientPhone
