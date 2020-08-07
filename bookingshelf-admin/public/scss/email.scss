@@ -92,6 +92,14 @@
 
     color: #495057;
     margin-bottom: 15px;
+
+    span {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+
+      color: #495057;
+    }
   }
 
 
@@ -826,7 +834,28 @@
   left: unset !important;
   z-index: 50;
   max-height: 300px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #2A3042;
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b30000;
+  }
 }
 
     .sticky-item {
