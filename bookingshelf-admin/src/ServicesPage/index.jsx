@@ -519,8 +519,8 @@ class Index extends Component {
       const {defaultServicesList} = this.state;
 
       const searchServicesList = defaultServicesList.services.filter((item) => {
-          return item.services.some(item => item.name.toLowerCase().includes(value.toLowerCase()))
-              || item.services.some(item => item.details.toLowerCase().includes(value.toLowerCase()))
+          return (item.services && item.services.some(item => item.name.toLowerCase().includes(value.toLowerCase())))
+              || (item.services && item.services.some(item => item.details.toLowerCase().includes(value.toLowerCase())))
           // || item.name.toLowerCase().includes(value.toLowerCase())
           // || item.description.toLowerCase().includes(value.toLowerCase())
 
