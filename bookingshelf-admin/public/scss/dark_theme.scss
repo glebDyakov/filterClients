@@ -5,6 +5,16 @@
   position: relative;
   background-color: #222736 !important;
 
+  .questions_dropdown {
+    background: #2A3042 !important;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3) !important;
+    * {
+      color: #fff !important;
+    }
+    color: #fff !important;
+
+  }
+
   .modal-category, .modal-brand, .modal-storehouse {
     .form-group {
       background-color: #2A3042 !important;
@@ -335,6 +345,8 @@
 
     }
   }
+
+
 
   .company_counter {
     color: #fff !important;
@@ -1364,7 +1376,7 @@
         color: #fff;
       }
 
-      .title_block, .title-label, label, .title-label span {
+      .title_block, .title_block span .title-label, label, .title-label span {
         color: #fff;
       }
 
