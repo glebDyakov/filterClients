@@ -92,7 +92,7 @@ class NewStaff extends React.Component {
     }
 
     render() {
-        const {authentication, staffs} = this.props;
+        const {authentication, staffs, company} = this.props;
         const {staff, edit, extraSuccessText, selectedStartDayOff, selectedEndDayOff, message} = this.state;
         const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
@@ -120,21 +120,71 @@ class NewStaff extends React.Component {
             })
         )
 
+        const isLightTheme = company && company.settings && company.settings.lightTheme;
+
         const colourStyles = {
-            menu: (base) => {
-                return {
-                    ...base,
-                    zIndex: 99999999999
-                }
-            },
-            option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-                return {
-                    ...styles,
-                    backgroundColor: '#2E3548',
-                    color: '#fff',
-                };
-            },
-        }
+            menu: (provided, state) => ({
+                ...provided,
+                alignItems: "center",
+                height: 'fit-content',
+                border: "none",
+                boxShadow: (isLightTheme ? "0px 0px 10px rgba(0, 0, 0, 0.1)" : "0px 0px 10px rgba(0, 0, 0, 0.1)"),
+                backgroundColor: (isLightTheme ? "#fff" : "#222736")
+            }),
+            option: (provided, state) => ({
+                ...provided,
+                padding: "15px 10px",
+                borderBottom: "1px solid",
+                borderColor: (isLightTheme ? "#EEEFF0" : "#383D4A"),
+                color: (isLightTheme ? "#2A3042" : "#fff"),
+                fontSize: 13 + "px",
+                lineHeight: 18 + "px",
+                backgroundColor: (isLightTheme ? (state.isFocused ? "#DFDFE7" : "#fff") : (state.isFocused ? "#2A3042" : "#222736")),
+            }),
+
+            multiValue: (provided, state) => ({
+                ...provided,
+                backgroundColor: (isLightTheme ? '#DFDFE7' : "#2A3042"),
+                color: (isLightTheme ? '#fff' : "#fff"),
+            }),
+
+            multiValueLabel: (provided, state) => ({
+              ...provided,
+                backgroundColor: (isLightTheme ? '#DFDFE7' : "#2A3042"),
+                color: (isLightTheme ? '' : "#fff"),
+            }),
+
+            multiValueRemove: (provided, state) => ({
+                ...provided,
+                backgroundColor: (isLightTheme ? '#DFDFE7' : "#2A3042"),
+                color: (isLightTheme ? '#2A3042' : "#fff"),
+
+            }),
+            valueContainer: provided => ({
+                ...provided,
+                minHeight: 36 + "px",
+                border: "none",
+            }),
+            control: provided => ({
+               ...provided,
+               border: "none",
+                background: (isLightTheme ? "#F3F3F9" : "#222736"),
+                borderRadius: 0
+            }),
+            indicatorSeparator: provided => ({
+               ...provided,
+               display: 'none',
+            }),
+            indicatorsContainer: provided => ({
+
+            }),
+            placeholder: provided => ({
+                ...provided,
+                fontSize: 13 + "px",
+                lineHeight: 18 + "px",
+                color: "#8F919E"
+            })
+    }
 
         const emailInput = (
             <React.Fragment>

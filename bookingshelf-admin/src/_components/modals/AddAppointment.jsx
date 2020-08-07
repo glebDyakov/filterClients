@@ -148,6 +148,7 @@ class AddAppointment extends React.Component {
         appointmentEdited && this.getInfo(appointmentEdited)
         this.props.dispatch(clientActions.getClientV2(1));
         this.props.dispatch(servicesActions.get());
+        this.props.dispatch(servicesActions.getServices());
     }
 
     componentWillReceiveProps(newProps) {

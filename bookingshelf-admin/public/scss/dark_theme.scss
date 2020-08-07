@@ -8,6 +8,7 @@
   .modal-category, .modal-brand, .modal-storehouse {
     .form-group {
       background-color: #2A3042 !important;
+
       input {
         color: #fff !important;
       }
@@ -44,7 +45,7 @@
     }
   }
 
-  .modal-product-details{
+  .modal-product-details {
     .form-group {
       background-color: #2A3042 !important;
 
@@ -153,7 +154,7 @@
 
 
   .new-staff-modal {
-    .modal-body{
+    .modal-body {
       background-color: #2A3042 !important;
 
       .container-fluid {
@@ -162,8 +163,6 @@
         p, label, input, select, select option {
           color: #fff !important;
         }
-
-
 
 
         .image_picker {
@@ -186,7 +185,6 @@
       .form-group {
         border-color: #222736 !important;
         background-color: #2A3042 !important;
-
 
 
         .custom-select {
@@ -212,6 +210,7 @@
   .message-is-sent-wrapper {
     .message-is-sent-modal {
       background-color: #2A3042 !important;
+
       .close {
         &::before, &::after {
           background-color: #fff !important;
@@ -231,12 +230,13 @@
   }
 
   .new-mail {
-       .modal-content, .form-group {
-         background-color: #2A3042 !important;
-         input {
-           color: #fff !important;
-         }
-       }
+    .modal-content, .form-group {
+      background-color: #2A3042 !important;
+
+      input {
+        color: #fff !important;
+      }
+    }
   }
 
   .modal_dates {
@@ -259,9 +259,18 @@
   }
 
   .new_appointment {
+    .content.clients {
+      border: none !important;
+      border-bottom: 1px solid #383D4A !important;
+      box-sizing: border-box;
+    }
+
     .search {
       background-color: unset !important;
-
+      input {
+        color: #fff !important;
+        border: none !important;
+      }
     }
 
     .removeService-button {
@@ -299,6 +308,7 @@
     * {
       color: #fff !important;
     }
+
     .SelectedWeekExample {
       background-color: #222736 !important;
 
@@ -472,7 +482,6 @@
         }
       }
     }
-
 
 
     .form-group, .modal-body, .modal-inner {
@@ -685,6 +694,7 @@
   .modal_add_service_by_list_group {
     .modal-body {
       background-color: #2A3042 !important;
+
       .dropdown-menu {
         span {
           color: #fff !important;
@@ -699,6 +709,7 @@
 
   .image_picker {
     background-color: unset !important;
+
     .existed-image {
       background-color: #2A3042 !important;
     }
@@ -757,9 +768,11 @@
     .tab-content-list-mob {
       background: #2A3042 !important;
       color: #fff !important;
+
       p, a, span {
         color: #fff !important;
       }
+
       div {
         background: #2A3042 !important;
         color: #fff !important;
@@ -885,6 +898,7 @@
 
     input, textarea, .flag-dropdown {
       background: #2A3042 !important;
+      color: #fff !important;
     }
   }
 
@@ -896,7 +910,7 @@
   }
 
   .add {
-    box-shadow: 0 0 6px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
   }
 
   .no-scroll {
@@ -929,6 +943,7 @@
 
     .user-settings-dropdown {
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+
       * {
         border-color: #3C4050 !important;
       }
@@ -1053,6 +1068,25 @@
     .cell {
       .msg-inner {
         background-color: #2E3548 !important;
+
+        p.name {
+          color: #50A5F1 !important;
+        }
+
+        .dropdown-selected {
+          border-color: #383D4A !important;
+          box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+          .dropdown-item {
+            border-color: #383D4A !important;
+            transition: 200ms linear;
+
+
+            &:hover {
+              background: #222736 !important;
+              transition: 200ms linear;
+            }
+          }
+        }
       }
 
       * {
@@ -1278,6 +1312,7 @@
   .make-payment-modal {
     .modal-body {
       background-color: #222736 !important;
+
       p {
         color: #fff !important;
       }
@@ -1306,7 +1341,6 @@
         }
       }
     }
-
 
 
     .services_wrapper {
@@ -1388,7 +1422,6 @@
   }
 
 
-
   .material {
 
     .dropdown-button {
@@ -1411,16 +1444,17 @@
 
     }
 
-      .tab-content-list {
-        background-color: #2A3042 !important;
-        .productName {
-          color: #50A5F1;
-        }
+    .tab-content-list {
+      background-color: #2A3042 !important;
 
-        span {
-          color: #fff;
-        }
+      .productName {
+        color: #50A5F1;
       }
+
+      span {
+        color: #fff;
+      }
+    }
 
     .tab-content-list {
       div {
