@@ -666,7 +666,7 @@ class Index extends Component {
                                         title="Нет товаров"
                                         text="Добавьте первый товар, чтобы начать работу"
                                         buttonText="Новый товар"
-                                        buttonClick={() => this.toggleProduct()}
+                                        buttonClick={this.toggleProduct}
                                     />)
                                     }
 
@@ -741,7 +741,7 @@ class Index extends Component {
                                             title="Нет категорий"
                                             text="Создайте категории и свяжите их с продуктами"
                                             buttonText="Новая категория"
-                                            buttonClick={() => this.toggleCategory()}
+                                            buttonClick={this.toggleCategory}
                                         />
                                     )}
 
@@ -813,7 +813,7 @@ class Index extends Component {
                                             title="Нет брендов"
                                             text="Создайте новый бренд и свяжите его с товарами"
                                             buttonText="Новый бренд"
-                                            buttonClick={() => this.toggleBrand()}
+                                            buttonClick={this.toggleBrand}
                                         />
                                     )}
                                 </div>
@@ -906,7 +906,7 @@ class Index extends Component {
                                                 title="Нет поставщиков"
                                                 text="Добавьте поставщиков, чтобы создавать автоматические ордеры на поставку товаров"
                                                 buttonText="Новый поставщик"
-                                                buttonClick={() => this.toggleProvider()}
+                                                buttonClick={this.toggleProvider}
                                             />
                                         )}
                                     </div>
@@ -992,7 +992,8 @@ class Index extends Component {
                                     title="Нет товаров"
                                     text="Добавьте первый товар, чтобы начать работу"
                                     buttonText="Новый товар"
-                                    buttonClick={() => this.toggleProvider()}
+                                    buttonClick={this.toggleProvider}
+                                    hideButton={true}
                                 />
                             </div>)}
 
