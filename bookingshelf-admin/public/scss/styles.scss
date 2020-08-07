@@ -6454,6 +6454,231 @@ textarea {
 
 }
 
+.new-client-modal {
+  .modal-content {
+
+    /* Drop Shadow */
+    background: #fff;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border-radius: 0px 0px 10px 10px;
+
+    .modal-header {
+      box-shadow: none;
+    }
+
+    .buttons {
+      .button {
+        height: 42px;
+
+        background: #50A5F1;
+        border-radius: 30px;
+        opacity: 0.7;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        /* identical to box height */
+        transition: 200ms;
+
+
+        color: #FFFFFF;
+        padding: 10px 64px;
+        border: none;
+
+        &:hover {
+          opacity: 1;
+          transition: 200ms;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        justify-content: center;
+      }
+    }
+
+    .birthday-date-container {
+      .custom-select {
+        width: 100%;
+
+        &:not(:last-child) {
+          margin-right: 1px;
+        }
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          right: 5px;
+          transform: translateY(-50%);
+          content: url("../img/icons/arrow.svg");
+        }
+      }
+    }
+
+    .custom-select {
+      background: #F3F3F9;
+      font-weight: normal;
+      font-size: 13px;
+      line-height: 18px;
+      /* identical to box height */
+
+
+      color: #495057;
+
+    }
+
+    .form-group {
+      border-top: 14px solid #F8F8FB;
+      padding: 0 30px;
+      max-height: 70vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      @media screen and (max-width: 768px) {
+        padding: 0 10px;
+      }
+
+      hr {
+        margin: 15px 0 5px;
+        display: block;
+      }
+
+      .check-box .form-check-input[type="checkbox"] + .check {
+        margin: 0;
+      }
+
+      .check-box {
+        label {
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #2A3042;
+          margin: 15px 0 25px;
+          padding-left: 65px;
+        }
+      }
+
+      .title {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+        color: #2A3042;
+        padding: 20px 0;
+      }
+
+      p {
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+        display: block;
+        margin-bottom: 7px;
+      }
+
+      span {
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+
+        right: 10px !important;
+        position: absolute;
+        top: 60% !important;
+        opacity: 0.7 !important;
+        transform: translateY(-50%) !important;
+        bottom: unset !important;
+      }
+
+      .react-tel-input {
+        input {
+          padding-left: 48px;
+        }
+      }
+
+      input {
+        height: 36px;
+        min-height: unset;
+        background: #F3F3F9;
+        border-radius: 2px;
+
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+
+        padding: 9px 10px;
+        border: none;
+      }
+    }
+
+  }
+
+
+
+  .tab-content-list {
+    position: relative;
+
+    @media screen and (max-width: $mob-width) {
+      justify-content: flex-start !important;
+      .cell_client-email {
+        width: 50%;
+
+      }
+    }
+
+    .red-date {
+      color: #F46A6A !important;
+    }
+
+
+
+    .clientEditWrapper {
+      right: 30px !important;
+      top: -12px !important;
+    }
+
+    .clientEdit {
+      margin: 0 5px;
+      width: 30px;
+      height: 30px;
+      background-image: url(../img/pen_new.svg);
+      background-repeat: no-repeat;
+      padding: 0;
+      background-position: center;
+      background-size: 15px;
+
+      &:hover {
+        opacity: 0.7;
+        cursor: pointer;
+      }
+    }
+
+    .clientEyeDel {
+      display: none !important;
+      position: absolute;
+      background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+      background-size: contain;
+      height: 18px;
+      width: 18px !important;
+      right: 5px;
+      cursor: pointer;
+      padding: 0 !important;
+      right: 40px;
+      margin-top: 2px;
+    }
+
+    @media screen and(max-width: 720px) {
+      .abbreviation {
+        margin: 8px 0;
+      }
+      .delete {
+        height: 16px !important;
+      }
+      .clientEyeDel {
+        margin-top: 0;
+        display: block !important;
+      }
+    }
+  }
+}
+
+
 .new-client,
 .edit-client {
   .check-box {
