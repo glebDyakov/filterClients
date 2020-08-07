@@ -641,7 +641,7 @@ class SidebarMain extends React.Component {
                                                      onClick={() => this.toggleDropdown('isPaymentDropdown')}>
 
                                                     {packetShowCondition && <React.Fragment>
-                                                        <span className="sidebar-notification"/>
+                                                        <span className="sidebar-notification">!</span>
                                                         {isPaymentDropdown && (
                                                             <ul className="sidebar-notification-dropdown">
                                                                 <li>{packetEndText}</li>
