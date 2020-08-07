@@ -98,6 +98,7 @@ class Index extends Component {
             newStaff: false,
             isOpenDropdownMenu: false,
 
+
             products: props.material.products,
             defaultProductsList: props.material.categories,
             categories: props.material.categories,

@@ -323,12 +323,14 @@ class Index extends Component {
                     {
                         (!isLoading && (!services.services || services.services.length === 0)) && !search &&
                         <div className="no-holiday">
-                                    <span className="services-is-not-added">
-                                        Услуги не добавлены</span>
-                            <button type="button"
-                                    className="button"
-                                    onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу
-                            </button>
+                                    <span>
+                                        Услуги не добавлены
+                                        <span className="buttons">
+                                            <button type="button"
+                                                    className="button"
+                                                    onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
+                                        </span>
+                                    </span>
                         </div>
                     }
                     {
@@ -516,8 +518,11 @@ class Index extends Component {
         const {defaultServicesList} = this.state;
 
         const searchServicesList = defaultServicesList.services.filter((item) => {
-                return item.services.some(item => item.name.toLowerCase().includes(this.search.value.toLowerCase()))
-                    || item.services.some(item => item.details.toLowerCase().includes(this.search.value.toLowerCase()))
+            return item.services.some(item => item.name.toLowerCase().includes(this.search.value.toLowerCase()))
+                || item.services.some(item => item.details.toLowerCase().includes(this.search.value.toLowerCase()))
+            // || item.name.toLowerCase().includes(this.search.value.toLowerCase())
+            // || item.description.toLowerCase().includes(this.search.value.toLowerCase())
+
         });
 
         this.setState({
