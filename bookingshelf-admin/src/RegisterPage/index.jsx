@@ -201,13 +201,13 @@ class Index extends React.Component {
                             <form id="sign-up-form" name="form" className="row justify-content-center" onSubmit={this.handleSubmit}>
 
                                 <div className="row col-12 p-0">
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pl-md-0">
                                         <span>Название компании</span>
                                         <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')}
                                                onBlur={this.handleBlur} name="companyName" value={user.companyName}
                                                onChange={this.handleChange}/>
                                     </div>
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pr-md-0">
                                         <span>Вид деятельности</span>
                                         <div className="custom-select-wrapper">
 
@@ -222,7 +222,7 @@ class Index extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row col-12 p-0">
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pl-md-0">
                                         <span>Cтрана</span>
                                         <div className="custom-select-wrapper">
                                             <select
@@ -236,7 +236,7 @@ class Index extends React.Component {
                                             </select>
                                         </div>
                                     </div>
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pr-md-0">
                                         <span>Таймзона</span>
                                         <div className="custom-select-wrapper">
                                             {user.countryCode === '' &&
@@ -303,7 +303,7 @@ class Index extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row col-12 p-0">
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pl-md-0">
                                         <span>Телефон</span>
                                         <ReactPhoneInput
                                             defaultCountry={'by'}
@@ -316,7 +316,7 @@ class Index extends React.Component {
                                             }}
                                         />
                                     </div>
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pr-md-0">
                                         <span>Введите email</span>
                                         <input type="text" className={'' + (invalidFields.email ? ' redBorder' : '')}
                                                onBlur={this.handleBlur} name="email" value={user.email}
@@ -328,13 +328,13 @@ class Index extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row col-12 p-0">
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pl-md-0">
                                         <span>Пароль</span>
                                         <input type="password" className={'' + (invalidFields.password ? ' redBorder' : '')}
                                                onBlur={this.handleBlur} name="password" value={user.password}
                                                onChange={this.handleChange}/>
                                     </div>
-                                    <div className="col-md-6 mx-auto p-0">
+                                    <div className="col-md-6 mx-auto pr-md-0">
                                         <span>Подтвердите пароль</span>
                                         <input type="password"
                                                className={'' + (user.password && !user.password_repeated || (user.password_repeated && user.password !== user.password_repeated) ? ' redBorder' : '')}

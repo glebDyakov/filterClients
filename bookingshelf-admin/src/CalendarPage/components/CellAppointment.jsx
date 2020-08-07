@@ -172,7 +172,10 @@ const CellAppointment = (props) => {
             }
         >
             <p className={`notes-title${appointment.clientNotCome ? " client-not-come-background" : (appointment.clientConfirmed ? " client-confirmed-background" : '')} ${appointment.duration === 900 ? ' notes-title-bordered' : ''}`}
-               onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}>
+               onClick={() => dispatch(appointmentActions.toggleSelectedNote(appointment.appointmentId === selectedNote ? null : appointment.appointmentId))}
+            style={{
+                borderRadius: (resultTextAreaHeight === 0 ? "5px" : '')
+            }}>
                 <span className="notes-buttons-container">
                     {appointment.online && <Popover props={{className: "globus", title: "Онлайн-запись"}}/>}
 
@@ -235,6 +238,7 @@ const CellAppointment = (props) => {
                    minHeight: minTextAreaHeight + "px",
                    maxHeight: maxTextAreaHeight + "px",
                    height: resultTextAreaHeight + "px",
+                   padding: (resultTextAreaHeight === 0 ? "0px" : '')
                }}>
                                             <span className="notes-container-message">
                                                     <span onClick={() => {
@@ -250,7 +254,7 @@ const CellAppointment = (props) => {
                                             </span>
             </p>
             {!isStartMovingVisit && <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
-                <div className="cell msg-inner">
+                <div className={"cell msg-inner" + (appointment.clientId ? "" : " pt-0")}>
                     <p>
                         <p className="new-text">Запись&nbsp;<p
                             className="visit-time">{moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')}</p>
@@ -261,6 +265,7 @@ const CellAppointment = (props) => {
                         }} className="close"/>
                     </p>
 
+                    {appointment.clientId &&
                     <div className="dropdown-client-container">
                         <p onClick={isOpenDropdownSelectClientStatus ? handleCloseSelectDropdown : handleOpenSelectDropdown}
                            className={"dropdown-selected-item" + (isOpenDropdownSelectClientStatus ? " opened" : '') + (appointment.clientNotCome ? " clientNotCome" : (appointment.clientConfirmed ? " clientConfirmed" : " default"))}>{(appointment.clientNotCome ? "Клиент не пришел" : (appointment.clientConfirmed ? "Клиент подтвержден" : 'Ожидание клиента'))}</p>
@@ -326,7 +331,7 @@ const CellAppointment = (props) => {
                         </div>
                         }
                     </div>
-
+                    }
 
                     <p style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
                        className="client-name-book">

@@ -149,6 +149,8 @@ class Index extends PureComponent {
     }
 
     componentDidMount() {
+
+
         if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
             this.props.history.push('/nopage');
             return false;
@@ -182,6 +184,9 @@ class Index extends PureComponent {
         this.props.dispatch(staffActions.get());
         this.props.dispatch(staffActions.getClosedDates());
         this.refreshTable(startTime, endTime);
+
+        this.props.dispatch(servicesActions.get());
+        this.props.dispatch(servicesActions.getServices());
 
         setTimeout(() => {
             if (!this.props.scrollableAppointmentId && (moment(selectedDays[0]).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {

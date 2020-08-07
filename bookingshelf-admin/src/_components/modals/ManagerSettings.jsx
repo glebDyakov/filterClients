@@ -167,25 +167,25 @@ class ManagerSettings extends React.Component {
                             this.handleChangeTheme(false);
                         }} className="screen black"></div>
                     </div>
-                    <div className="manager-block">
-                        <h5>Ваш менеджер</h5>
-                        <div className="contact">
-                                    <span className="abbreviation">
-                                    </span>
-                            <p className="manager-name">
-                                {/*{((managers[0] && managers[0].firstName) ? managers[0].firstName : 'Имя') + ' ' + ((managers[0] && managers[0].lastName) ?  managers[0].lastName : 'Фамилия')}*/}
-                                Скригаловский Андрей
-                            </p>
-                            <p className="manager-questions">Ответит на ваши вопросы</p>
-                        </div>
-                        {/*{managers[0] && managers[0].phone1 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone1 ? managers[0].phone1 : ''}</p></div>}*/}
-                        {/*{managers[0] && managers[0].phone2 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone2 ? managers[0].phone2 : ''}</p></div>}*/}
-                        {/*{managers[0] && managers[0].email && <div className="email contact-details"><span className="email_logo"></span><p>{managers[0].email ? managers[0].email : ''}</p></div>}*/}
-                        <div className="phone contact-details"><span className="phone_logo"></span><a href="tel:+375 24 112 4444">+375 24 112 4444</a>
-                        </div>
-                        <div className="email contact-details"><span className="email_logo"></span>
-                            <a href="mailto:Andrey.skr@online-zapis.com">Andrey.skr@online-zapis.com</a></div>
-                    </div>
+                    {/*<div className="manager-block">*/}
+                    {/*    <h5>Ваш менеджер</h5>*/}
+                    {/*    <div className="contact">*/}
+                    {/*                <span className="abbreviation">*/}
+                    {/*                </span>*/}
+                    {/*        <p className="manager-name">*/}
+                    {/*            /!*{((managers[0] && managers[0].firstName) ? managers[0].firstName : 'Имя') + ' ' + ((managers[0] && managers[0].lastName) ?  managers[0].lastName : 'Фамилия')}*!/*/}
+                    {/*            Скригаловский Андрей*/}
+                    {/*        </p>*/}
+                    {/*        <p className="manager-questions">Ответит на ваши вопросы</p>*/}
+                    {/*    </div>*/}
+                    {/*    /!*{managers[0] && managers[0].phone1 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone1 ? managers[0].phone1 : ''}</p></div>}*!/*/}
+                    {/*    /!*{managers[0] && managers[0].phone2 && <div className="phone contact-details"><span className="phone_logo"></span><p>{managers[0].phone2 ? managers[0].phone2 : ''}</p></div>}*!/*/}
+                    {/*    /!*{managers[0] && managers[0].email && <div className="email contact-details"><span className="email_logo"></span><p>{managers[0].email ? managers[0].email : ''}</p></div>}*!/*/}
+                    {/*    <div className="phone contact-details"><span className="phone_logo"></span><a href="tel:+375 24 112 4444">+375 24 112 4444</a>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="email contact-details"><span className="email_logo"></span>*/}
+                    {/*        <a href="mailto:Andrey.skr@online-zapis.com">Andrey.skr@online-zapis.com</a></div>*/}
+                    {/*</div>*/}
                     <div className="send-leader">
                         <h5>Написать руководству</h5>
                         <InputCounter

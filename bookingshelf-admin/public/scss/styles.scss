@@ -1749,33 +1749,6 @@ input {
           }
 
 
-          .helper-input-container {
-            & > div {
-
-
-              & > div {
-                height: 36px;
-                background: #F3F3F9;
-                border-radius: 2px;
-                border: none;
-
-                .css-1hwfws3 {
-                  margin: 0;
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-
-                  .css-151xaom-placeholder, .css-1g6gooi {
-                    font-weight: normal;
-                    font-size: 13px;
-                    line-height: 18px;
-                    color: #2A3042;
-                  }
-                }
-              }
-            }
-          }
-
 
           .check-box-container {
 
@@ -4491,23 +4464,6 @@ select {
   border-right: unset;
   top: 14px;
   border-radius: 19px;
-}
-
-.css-1g6gooi {
-  //height: 40px;
-}
-
-.css-1hwfws3 {
-  margin-top: 9px;
-
-  div {
-    width: unset !important;
-  }
-}
-
-.css-vj8t7z, .css-2o5izw {
-  //height: 35px!important;
-  margin-bottom: 10px !important;
 }
 
 .questions {
