@@ -282,12 +282,12 @@ class Index extends Component {
                                     <div className="search">
                                         <input className="search-input" type="search"
                                                placeholder="Введите название услуги"
-                                               aria-label="Search" ref={input => this.search = input}
+                                               aria-label="Search" value={this.state.searchInput}
                                                onChange={this.handleSearch}/>
 
                                         <input className="mob-search-input" type="search"
                                                placeholder="Введите название услуги"
-                                               aria-label="Search" ref={input => this.search = input}
+                                               aria-label="Search" value={this.state.searchInput}
                                                onChange={this.handleSearch}/>
                                         <button className="search-icon" type="submit"/>
                                     </div>
@@ -514,28 +514,30 @@ class Index extends Component {
         this.setState({...this.state, addService: false, addGroup: false, createdService: false});
     }
 
-    handleSearch() {
-        const {defaultServicesList} = this.state;
+    handleSearch(e) {
+      const { value } = e.target;
+      const {defaultServicesList} = this.state;
 
-        const searchServicesList = defaultServicesList.services.filter((item) => {
-            return item.services.some(item => item.name.toLowerCase().includes(this.search.value.toLowerCase()))
-                || item.services.some(item => item.details.toLowerCase().includes(this.search.value.toLowerCase()))
-            // || item.name.toLowerCase().includes(this.search.value.toLowerCase())
-            // || item.description.toLowerCase().includes(this.search.value.toLowerCase())
+      const searchServicesList = defaultServicesList.services.filter((item) => {
+          return (item.services && item.services.some(item => item.name.toLowerCase().includes(value.toLowerCase())))
+              || (item.services && item.services.some(item => item.details.toLowerCase().includes(value.toLowerCase())))
+          // || item.name.toLowerCase().includes(value.toLowerCase())
+          // || item.description.toLowerCase().includes(value.toLowerCase())
 
-        });
+      });
 
-        this.setState({
-            search: true,
-            services: {services: searchServicesList}
-        });
+      this.setState({
+        searchInput: value,
+        search: true,
+        services: {services: searchServicesList}
+      });
 
-        if (this.search.value === '') {
-            this.setState({
-                search: true,
-                services: defaultServicesList
-            })
-        }
+      if (this.search.value === '') {
+          this.setState({
+              search: true,
+              services: defaultServicesList
+          })
+      }
 
 
     }
