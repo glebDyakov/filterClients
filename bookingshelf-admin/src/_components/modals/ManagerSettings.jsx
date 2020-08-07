@@ -86,7 +86,8 @@ class ManagerSettings extends React.Component {
 
     handleChangeTheme(newTheme) {
         const {dispatch} = this.props;
-        console.log(this.props.authentication.user)
+        console.log(this.props.authentication.user);
+
         this.props.dispatch(companyActions.updateCompanySettings({
             ...this.props.company.subcompanies[0],
             lightTheme: newTheme

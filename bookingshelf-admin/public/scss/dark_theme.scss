@@ -265,8 +265,15 @@
       box-sizing: border-box;
     }
 
+    .custom-select {
+      option {
+        color: #fff !important;
+      }
+    }
+
     .search {
       background-color: unset !important;
+
       input {
         color: #fff !important;
         border: none !important;
@@ -1011,7 +1018,97 @@
     }
   }
 
+  .alert.alert-danger {
+    color: #fff !important;
+    background-color: #F46A6A !important;
+    border: none !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  .alert-success {
+    color: #fff !important;
+    background-color: #34C38F !important;
+    border: none !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    font-size: 16px;
+    font-weight: normal;
+
+  }
+
+  .sign_up_container, .sigh_in_container {
+    .logo_sign_in {
+      background: rgba(85, 110, 230, 0.25) !important;
+
+      .logo-title, .logo-description {
+        color: #fff !important;
+      }
+    }
+
+    .sign_in, .sign_up {
+      background: #2A3042 !important;
+      box-shadow: 0px 12px 24px rgba(18, 38, 63, 0.1) !important;
+
+      span, label, a {
+        color: #fff !important;
+      }
+
+      input, .custom-select {
+        color: #fff !important;
+        background: #2E3548 !important;
+        border: none !important;
+      }
+
+      .custom-select option {
+        color: #fff !important;
+      }
+
+      .popup_forgot {
+        color: #fff !important;
+      }
+    }
+
+    .sign_up_text {
+      color: #fff !important;
+
+    }
+  }
+
+  p.footer {
+    color: #fff !important;
+  }
+
+  .modal_reset_password {
+    .modal-content {
+      p {
+        color: #fff !important;
+
+      }
+
+      input {
+        color: #fff !important;
+        background: #2E3548 !important;
+        border: none !important;
+      }
+    }
+  }
+
   .calendar {
+
+    .notes-container-message {
+      span, li {
+        color: #495057 !important;
+      }
+    }
+
+    //.drag-vert {
+    //  &::before, &::after {
+    //    background-color: #fff !important;
+    //  }
+    //}
 
     .calendar {
       @media screen and (max-width: $mob-width) {
@@ -1066,6 +1163,8 @@
     }
 
     .cell {
+
+
       .msg-inner {
         background-color: #2E3548 !important;
 
@@ -1076,6 +1175,7 @@
         .dropdown-selected {
           border-color: #383D4A !important;
           box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726) !important;
+
           .dropdown-item {
             border-color: #383D4A !important;
             transition: 200ms linear;
