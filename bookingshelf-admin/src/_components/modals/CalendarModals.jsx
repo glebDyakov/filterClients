@@ -40,8 +40,7 @@ class CalendarModals extends Component {
         this.newReservedTime = this.newReservedTime.bind(this);
         this.checkAvaibleTime = this.checkAvaibleTime.bind(this);
         this.handleOpenModal = this.handleOpenModal.bind(this);
-        this.setWrapperRef = this.setWrapperRef.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
+
     }
     updateClient(client){
         this.props.updateClient(client);
@@ -67,23 +66,23 @@ class CalendarModals extends Component {
         this.setState({handleOpen: !this.state.handleOpen});
     }
 
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside);
-    }
-
-    setWrapperRef(node) {
-        this.wrapperRef = node;
-    }
-
-    handleClickOutside(event) {
-        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            this.setState({handleOpen: false});
-        }
-    }
+    // componentDidMount() {
+    //     document.addEventListener('mousedown', this.handleClickOutside);
+    // }
+    //
+    // componentWillUnmount() {
+    //     document.removeEventListener('mousedown', this.handleClickOutside);
+    // }
+    //
+    // setWrapperRef(node) {
+    //     this.wrapperRef = node;
+    // }
+    //
+    // handleClickOutside(event) {
+    //     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    //         this.setState({handleOpen: false});
+    //     }
+    // }
 
     newAppointment(appointment, serviceId, staffId, clientId, coStaffs) {
         this.props.newAppointment(appointment, serviceId, staffId, clientId, coStaffs);
@@ -138,7 +137,7 @@ class CalendarModals extends Component {
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
         return(<React.Fragment>
-                   <div ref={this.setWrapperRef}>
+                   <div>
                        {type==='day' && workingStaff.timetable && workingStaff.timetable[0] &&
                        <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>}
                        <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>

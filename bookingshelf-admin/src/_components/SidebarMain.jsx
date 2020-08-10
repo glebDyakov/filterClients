@@ -157,6 +157,7 @@ class SidebarMain extends React.Component {
             document.removeEventListener('click', this.handleDropdownButtons, false);
         }
 
+
     }
 
     openModalUserSettings() {
@@ -967,6 +968,7 @@ class SidebarMain extends React.Component {
         // this.props.dispatch(clientActions.getClientWithInfo())
         this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
         this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
+        this.props.dispatch(calendarActions.getAppointments(moment().startOf('day').format('x'), moment().add(7, 'month').endOf('month').format('x')));
 
         // setTimeout(() => {
         //     this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));

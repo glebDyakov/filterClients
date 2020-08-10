@@ -34,7 +34,7 @@ class ActionModal extends Component {
 
         return (
             <span className="action-modal-wrapper">
-                <span className="action-modal">
+                <span ref={this.setWrapperRef} className="action-modal">
                     <span className="modal-content">
                         <span className="modal-header">
                             <h4 className="modal-title">{title}</h4>
