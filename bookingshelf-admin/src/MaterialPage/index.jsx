@@ -174,6 +174,8 @@ class Index extends Component {
         this.deleteSupplier = this.deleteSupplier.bind(this);
         this.deleteMovement = this.deleteMovement.bind(this);
         this.deleteStoreHouse = this.deleteStoreHouse.bind(this);
+
+        this.toggleInfoProduct = this.toggleInfoProduct.bind(this);
     }
 
     componentDidMount() {
