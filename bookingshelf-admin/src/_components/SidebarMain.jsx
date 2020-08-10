@@ -956,7 +956,9 @@ class SidebarMain extends React.Component {
                 params.moved = false;
 
             }
-            this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify(params)))
+
+            this.props.dispatch(calendarActions.approveAppointment(appointmentId, params));
+            // this.props.dispatch(calendarActions.updateAppointment(appointmentId, JSON.stringify(params)));
         }
 
         this.props.dispatch(calendarActions.setScrollableAppointment(appointmentId))
