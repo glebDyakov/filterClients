@@ -1109,6 +1109,16 @@
     }
   }
 
+  .empty-content {
+    .empty-content-title {
+      color: #fff !important;
+    }
+
+    .empty-content-text {
+      color: #fff !important;
+    }
+  }
+
   .calendar {
 
     .notes-container-message {
@@ -1536,6 +1546,17 @@
 
   .material {
 
+
+    .search {
+      input {
+        color: #fff !important;
+        border-color: #383D4A !important;
+      }
+
+      .search-icon {
+        background-color: unset !important;
+      }
+    }
     .dropdown-button {
       color: #fff !important;
 
