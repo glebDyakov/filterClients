@@ -213,6 +213,7 @@ class AddAppointment extends React.Component {
                 staffCurrent: newProps.staffId ? newProps.staffId : {id: -1},
                 edit_appointment: newProps.edit_appointment,
                 editedElement: newProps.appointmentEdited && newProps.appointmentEdited.sort((a, b) => a.appointmentId - b.appointmentId)
+            }, () => {
             });
 
             // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
@@ -489,8 +490,10 @@ class AddAppointment extends React.Component {
         const step = booktimeStep / 60;
 
         if (appointment && appointment[0]) {
-            const startTime = appointment[0].appointmentTimeMillis
-            const endTime = appointment[appointment.length - 1].appointmentTimeMillis + ((appointment[appointment.length - 1].duration - 900) * 1000)
+            const startTime = +appointment[0].appointmentTimeMillis
+            const endTime = +appointment[appointment.length - 1].appointmentTimeMillis + +((appointment[appointment.length - 1].duration - 900) * 1000)
+
+            console.log(startTime, endTime)
 
             for (let i = startTime; i <= endTime; i += step * 60 * 1000) {
                 const minutesIndex = minutes.findIndex(minute => minute === moment(i).format('HH:mm'))
@@ -505,6 +508,7 @@ class AddAppointment extends React.Component {
             let minuteStart = time
             let minute = time;
 
+
             while (minutes.indexOf(moment(minute, 'x').format("H:mm")) === -1) {
                 minute = parseInt(minute) + (step * 60 * 100);
                 let bool = minutes.indexOf(moment(minute, 'x').format("H:mm"));
@@ -515,7 +519,6 @@ class AddAppointment extends React.Component {
                 }
             }
         }
-
         return moment.duration(timeArrange[1] - parseInt(timeArrange[0]), 'milliseconds').format("m").replace(/\s/g, '')
     }
 
@@ -551,19 +554,22 @@ class AddAppointment extends React.Component {
         const {appointment, serviceCurrent, timeNow} = this.state
         let startTime = parseInt(moment(moment(timeNow, 'x').format('DD/MM/YYYY') + " " + moment(appointmentTimeMillis).format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
         let timing = this.getTimeArrange(parseInt(moment(appointmentTimeMillis).format('x')), minutes, appointment)
+
+
         appointment[index].appointmentTimeMillis = startTime;
         serviceCurrent[index] = {
             id: -1,
             service: []
-        }
+        };
 
-        this.setState({
-            appointment,
-            timeArrange: timing.replace(/\s/, ''),
-            serviceCurrent
-        })
 
-        return this.state;
+                this.setState({
+                    appointment,
+                    timeArrange: timing.replace(/\s/, ''),
+                    serviceCurrent
+                }, () => {
+                    console.log(this.state.timeArrange, this.state.serviceCurrent, this.state.appointment)
+                });
     }
 
     disabledMinutes(h, str = 'start') {
@@ -709,8 +715,9 @@ class AddAppointment extends React.Component {
             if ((item.staffId === staffCurrent.staffId) && item.serviceDuration) {
                 durationForCurrentStaff = item.serviceDuration
             }
-        })
+        });
         return durationForCurrentStaff;
+
     }
 
     getServiceList(index) {
@@ -914,6 +921,7 @@ class AddAppointment extends React.Component {
             const durationForCurrentStaff = this.getDurationForCurrentStaff(service);
             return parseInt(durationForCurrentStaff) / 60 <= parseInt(timeArrange)
         });
+
 
         const hasAddedServices = (staffCurrent && services[0] && services[0].servicesList && services[0].servicesList.some(serviceListItem => serviceListItem.staffs && serviceListItem.staffs.some(item => item.staffId === staffCurrent.staffId)))
 
