@@ -4987,6 +4987,21 @@ select {
   color: #F46A6A !important;
 }
 
+.button-save {
+  margin: 0 auto;
+  color: #fff;
+  background: #50A5F1;
+  border-radius: 30px;
+  height: 42px;
+  padding: 10px 68px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  /* identical to box height */
+
+  text-align: center;
+}
+
 .questions_black {
   cursor: pointer;
   position: relative;
