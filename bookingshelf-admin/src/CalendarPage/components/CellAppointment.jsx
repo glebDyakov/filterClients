@@ -574,7 +574,7 @@ const CellAppointment = (props) => {
         </div>
     }
 
-    return <div style={{display: 'block', width: '100%', overflow: 'visible', position: 'relative', zIndex: 6}}>
+    return <div style={{display: 'block', width: '100%', overflow: 'visible', position: 'relative'}}>
         <Box
             moveVisit={moveVisit}
             appointmentId={appointment.appointmentId}
