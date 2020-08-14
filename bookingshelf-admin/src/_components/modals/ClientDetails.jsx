@@ -156,7 +156,7 @@ class ClientDetails extends React.Component {
                                                             <span className="service">{activeService.details}</span> : ''}
                                                         {appointment.description ? <span
                                                             className="visit-description service">Заметка: {appointment.description}</span> : ''}
-                                                        {appointment.clientNotCome ? <span className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                        {appointment.clientNotCome ? <span className="visit-description" style={{color: "#F46A6A"}}>Клиент не пришел</span> : ''}
                                                         <span className="price">Цена: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + " - " + appointment.priceTo : appointment.price} {appointment.currency}</span>
 
                                                     </p>
