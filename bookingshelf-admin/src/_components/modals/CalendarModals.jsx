@@ -23,7 +23,7 @@ class CalendarModals extends Component {
             services: props.services,
             appointmentEdited: null,
             reserved: false,
-            minutesReservedtime:[],
+            minutesReservedtime: [],
             staffId: null,
             handleOpen: false
 
@@ -42,21 +42,24 @@ class CalendarModals extends Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
 
     }
-    updateClient(client){
+
+    updateClient(client) {
         this.props.updateClient(client);
     };
-    addClient(client){
+
+    addClient(client) {
         this.props.addClient(client);
     };
-    onCloseClient(){
+
+    onCloseClient() {
         this.setState({newClientModal: false});
     }
 
     handleEditClient(client, isModalShouldPassClient) {
-        if(client) {
-            this.setState({ editClient: true, client_working: client, isModalShouldPassClient, newClientModal: true});
+        if (client) {
+            this.setState({editClient: true, client_working: client, isModalShouldPassClient, newClientModal: true});
         } else {
-            this.setState({ editClient: false, client_working: null, isModalShouldPassClient, newClientModal: true});
+            this.setState({editClient: false, client_working: null, isModalShouldPassClient, newClientModal: true});
         }
     }
 
@@ -89,36 +92,39 @@ class CalendarModals extends Component {
     }
 
     changeTime(time, staffId, number, edit_appointment, appointment) {
-        this.setState({ appointmentModal: true, minutesReservedtime:[] });
+        this.setState({appointmentModal: true, minutesReservedtime: []});
         this.props.changeTime(time, staffId, number, edit_appointment, appointment);
     }
-    onCloseAppointment(){
-        this.setState({ appointmentModal:false });
+
+    onCloseAppointment() {
+        this.setState({appointmentModal: false});
         this.props.onClose();
     }
 
-    onCloseReserved(){
-        this.setState({ reserved :false });
+    onCloseReserved() {
+        this.setState({reserved: false});
         this.props.onClose();
     }
 
     newReservedTime(staffId, reservedTime) {
         this.props.newReservedTime(staffId, reservedTime);
     }
-    changeReservedTime(minutesReservedtime, staffId, newTime=null){
+
+    changeReservedTime(minutesReservedtime, staffId, newTime = null) {
         // this.checkAvaibleTime();
-        this.setState({ reserved: true })
+        this.setState({reserved: true})
         return this.props.changeReservedTime(minutesReservedtime, staffId, newTime);
     }
 
     checkUser(checkedUser) {
-        this.setState({ checkedUser, appointmentModal: true })
+        this.setState({checkedUser, appointmentModal: true})
     }
-    checkAvaibleTime(){
+
+    checkAvaibleTime() {
         const {selectedDayMoment, selectedDays, type} = this.props;
         let startTime, endTime;
 
-        if(type==='day'){
+        if (type === 'day') {
             startTime = selectedDayMoment.startOf('day').format('x');
             endTime = selectedDayMoment.endOf('day').format('x')
         } else {
@@ -128,98 +134,107 @@ class CalendarModals extends Component {
         this.props.dispatch(staffActions.getTimetableStaffs(startTime, endTime, true));
     }
 
-    render(){
-        const {clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
+    render() {
+        const {
+            clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
             services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
             reserved: reservedFromProps, getByStaffKey, moveVisit, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting
         } = this.props;
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
-        return(<React.Fragment>
-                   <div>
-                       {type==='day' && workingStaff.timetable && workingStaff.timetable[0] &&
-                       <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>}
-                       <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
-                           <div className="buttons">
-                               <button type="button"
-                                       onClick={()=>this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers)}
-                                       className="button">Визит
-                               </button>
-                               <button type="button"
-                                       onClick={()=>this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null)}
-                                       className="button">Резерв времени
-                               </button>
-                           </div>
-                           <div className="arrow"/>
-                       </div>
-                   </div>
-                    {newClientModal &&
-                    <NewClient
-                        client_working={client_working}
-                        edit={editClient}
-                        isModalShouldPassClient={isModalShouldPassClient}
-                        updateClient={this.updateClient}
-                        checkUser={this.checkUser}
-                        addClient={this.addClient}
-                        onClose={this.onCloseClient}
-                    />
-                    }
-                    {(appointmentModal || appointmentModalFromProps) &&
-                    <AddAppointment
-                        clients={clients}
-                        checkedUser={checkedUser}
-                        staff={staff && staff.staff}
-                        staffs={staff}
-                        randNum={Math.random()}
-                        addAppointment={this.newAppointment}
-                        editAppointment={this.editAppointment}
-                        adding={adding}
-                        status={status}
-                        handleEditClient={this.handleEditClient}
-                        services={services}
-                        clickedTime={clickedTime}
-                        minutes={minutes}
-                        staffId={staffClicked}
-                        selectedDayMoment={selectedDayMoment}
-                        selectedDay={selectedDay}
-                        appointmentEdited={appointmentEdited}
-                        getHours={this.changeTime}
-                        edit_appointment={edit_appointment}
-                        onClose={this.onCloseAppointment}
-                        type={type}
-                    />
-                    }
-                    <ClientDetails
-                        clientId={infoClient}
-                        editClient={this.handleEditClient}
-                    />
-                    {(reservedFromProps || reserved) &&
-                    <ReservedTime
-                        timetable={workingStaff.timetable}
-                        staffs={staff}
-                        minutesReservedtime={minutesReservedtime}
-                        getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
-                        staff={staff && staff.staff}
-                        newReservedTime={this.newReservedTime}
-                        reservedTimeEdited={reservedTimeEdited}
-                        clickedTime={clickedTime}
-                        reservedStuffId={reservedStuffId}
-                        onClose={this.onCloseReserved}
-                    />
-                    }
-                    <MoveVisit getByStaffKey={getByStaffKey} moveVisit={moveVisit} />
-                    <DeleteAppointment
-                        appointmentForDeleting={appointmentForDeleting}
-                    />
-                    <DeleteReserve />
+        return (<React.Fragment>
+                {type === 'day' && workingStaff.timetable && workingStaff.timetable[0] &&
+                <div>
+                    <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#"
+                       onClick={this.handleOpenModal}/>
+                    <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
+                        <div className="buttons">
+                            <button type="button"
+                                    onClick={(e) => {
+                                        this.handleOpenModal(e);
+                                        this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers);
+                                    }}
+                                    className="button">Визит
+                            </button>
+                            <button type="button"
+                                    onClick={(e) => {
+                                        this.handleOpenModal(e);
+                                        this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null);
+                                    }}
+                                    className="button">Резерв времени
+                            </button>
+                        </div>
+                        <div className="arrow"/>
+                    </div>
+                </div>}
+                {newClientModal &&
+                <NewClient
+                    client_working={client_working}
+                    edit={editClient}
+                    isModalShouldPassClient={isModalShouldPassClient}
+                    updateClient={this.updateClient}
+                    checkUser={this.checkUser}
+                    addClient={this.addClient}
+                    onClose={this.onCloseClient}
+                />
+                }
+                {(appointmentModal || appointmentModalFromProps) &&
+                <AddAppointment
+                    clients={clients}
+                    checkedUser={checkedUser}
+                    staff={staff && staff.staff}
+                    staffs={staff}
+                    randNum={Math.random()}
+                    addAppointment={this.newAppointment}
+                    editAppointment={this.editAppointment}
+                    adding={adding}
+                    status={status}
+                    handleEditClient={this.handleEditClient}
+                    services={services}
+                    clickedTime={clickedTime}
+                    minutes={minutes}
+                    staffId={staffClicked}
+                    selectedDayMoment={selectedDayMoment}
+                    selectedDay={selectedDay}
+                    appointmentEdited={appointmentEdited}
+                    getHours={this.changeTime}
+                    edit_appointment={edit_appointment}
+                    onClose={this.onCloseAppointment}
+                    type={type}
+                />
+                }
+                <ClientDetails
+                    clientId={infoClient}
+                    editClient={this.handleEditClient}
+                />
+                {(reservedFromProps || reserved) &&
+                <ReservedTime
+                    timetable={workingStaff.timetable}
+                    staffs={staff}
+                    minutesReservedtime={minutesReservedtime}
+                    getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
+                    staff={staff && staff.staff}
+                    newReservedTime={this.newReservedTime}
+                    reservedTimeEdited={reservedTimeEdited}
+                    clickedTime={clickedTime}
+                    reservedStuffId={reservedStuffId}
+                    onClose={this.onCloseReserved}
+                />
+                }
+                <MoveVisit getByStaffKey={getByStaffKey} moveVisit={moveVisit}/>
+                <DeleteAppointment
+                    appointmentForDeleting={appointmentForDeleting}
+                />
+                <DeleteReserve/>
 
-        </React.Fragment>
+            </React.Fragment>
         );
 
     }
 
 
 }
+
 const connectedMainIndexPage = connect(null)(CalendarModals);
 export {connectedMainIndexPage as CalendarModals};

@@ -744,7 +744,10 @@ class Index extends Component {
                                             <div className="col-md-6">
                                                 <div className="check-box">
 
-                                                    <label className="title-label">
+                                                    <label onClick={e => {
+                                                        e.preventDefault();
+                                                            this.toggleChange('clientVerification');
+                                                    }} className="title-label">
                                                         <span>Опция подтверждения новых клиентов     <Hint
                                                             hintMessage="Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение."/></span>
 

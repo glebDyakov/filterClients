@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
@@ -9,7 +9,7 @@ import PhoneInput from "../PhoneInput";
 import InputCounter from "../InputCounter";
 import moment from "moment";
 import ReactPhoneInput from "react-phone-input-2";
-import { companyActions, materialActions } from "../../_actions";
+import {companyActions, materialActions} from "../../_actions";
 
 class AddProduct extends React.Component {
     constructor(props) {
@@ -43,8 +43,8 @@ class AddProduct extends React.Component {
         }
         const [year, month, day] = client.birthDate
             ? client.birthDate.slice(0, 10).split('-')
-            : ['' , '' , '']
-        this.state={
+            : ['', '', '']
+        this.state = {
             client: {
                 ...client,
                 checkOn: client.checkOn || false,
@@ -74,21 +74,21 @@ class AddProduct extends React.Component {
         if (newProps.material.status === 200) {
             setTimeout(() => this.props.onClose(), 1000)
         }
-        if ( JSON.stringify(this.props.alert) !==  JSON.stringify(newProps.alert)) {
-            this.setState({alert:newProps.alert});
+        if (JSON.stringify(this.props.alert) !== JSON.stringify(newProps.alert)) {
+            this.setState({alert: newProps.alert});
             setTimeout(() => {
-                this.setState({...this.state, alert: [] });
+                this.setState({...this.state, alert: []});
             }, 3000)
         }
 
-        if ( JSON.stringify(this.props.client) !==  JSON.stringify(newProps.client)) {
-            this.setState({clients:newProps.client});
+        if (JSON.stringify(this.props.client) !== JSON.stringify(newProps.client)) {
+            this.setState({clients: newProps.client});
         }
     }
 
     getDayOptionList() {
         const options = []
-        for(let i = 1; i <= 31; i++) {
+        for (let i = 1; i <= 31; i++) {
             options.push(i)
         }
 
@@ -150,12 +150,12 @@ class AddProduct extends React.Component {
             }
         ];
 
-        return options.map(({ value, label }) => <option value={value}>{label}</option>);
+        return options.map(({value, label}) => <option value={value}>{label}</option>);
     }
 
     getYearOptionList() {
         const options = []
-        for(let i = parseInt(moment().format('YYYY')); i >= 1900; i--) {
+        for (let i = parseInt(moment().format('YYYY')); i >= 1900; i--) {
             options.push(i)
         }
 
@@ -163,9 +163,9 @@ class AddProduct extends React.Component {
     }
 
     render() {
-        const { company, material } = this.props;
-        const { categories, brands, suppliers, units } = material;
-        const { day, month, year, client, edit, alert, clients, client_working }=this.state;
+        const {company, material} = this.props;
+        const {categories, brands, suppliers, units} = material;
+        const {day, month, year, client, edit, alert, clients, client_working} = this.state;
         const companyTypeId = company.settings && company.settings.companyTypeId
 
         const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
@@ -173,54 +173,65 @@ class AddProduct extends React.Component {
         return (
             <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod create-edit-product">
                 <div className="">
-                    {client  &&
+                    {client &&
                     <div>
                         <div className="modal-content">
                             <div className="modal-header">
                                 {!edit ? <h4 className="modal-title">Новый товар</h4>
                                     : <h4 className="modal-title">Редактирование товара</h4>
                                 }
-                                <button type="button" className="close" onClick={this.closeModal} />
+                                <button type="button" className="close" onClick={this.closeModal}/>
                             </div>
                             <div className="form-group">
                                 <p className="title mb-2">Описание товара</p>
                                 <div className="row main-info">
                                     <div className="col-sm-8">
-                                        <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
-                                                      name="productName" handleChange={this.handleChange} maxLength={128} />
+                                        <InputCounter title="Наименование" placeholder='Например: Средний шампунь'
+                                                      value={client.productName}
+                                                      name="productName" handleChange={this.handleChange}
+                                                      maxLength={128}/>
                                         <div className="row">
                                             <div className="col-sm-4">
                                                 <p>Единица измерения</p>
-                                                <select className="custom-select" name="unitId" onChange={this.handleChange}
-                                                        value={client.unitId} >
+                                                <select className="custom-select" name="unitId"
+                                                        onChange={this.handleChange}
+                                                        value={client.unitId}>
                                                     <option value="">Выберите единицу измерения</option>
-                                                    {units.map(brand => <option value={brand.unitId}>{brand.unitName}</option>)}
+                                                    {units.map(brand => <option
+                                                        value={brand.unitId}>{brand.unitName}</option>)}
                                                 </select>
                                             </div>
                                             <div className="col-sm-4">
-                                                <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={client.nominalAmount && String(client.nominalAmount)}
-                                                              name="nominalAmount" handleChange={this.handleChange} maxLength={9} />
+                                                <InputCounter title="Номинал. объем"
+                                                              placeholder="Введите номинальный объем"
+                                                              value={client.nominalAmount && String(client.nominalAmount)}
+                                                              name="nominalAmount" handleChange={this.handleChange}
+                                                              maxLength={9}/>
 
                                             </div>
                                             <div className="col-sm-4">
-                                                <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
-                                                              name="productCode" handleChange={this.handleChange} maxLength={7} />
+                                                <InputCounter title="Код товара" placeholder="Введите код"
+                                                              value={client.productCode}
+                                                              name="productCode" handleChange={this.handleChange}
+                                                              maxLength={7}/>
                                             </div>
                                         </div>
-                                        </div>
+                                    </div>
                                     <div className="col-sm-4">
                                         <p>Категория</p>
                                         <select className="custom-select" name="categoryId" onChange={this.handleChange}
                                                 value={client.categoryId}>
                                             <option value="">Выберите категорию</option>
-                                            {categories.map(category => <option value={category.categoryId}>{category.categoryName}</option>)}
+                                            {categories.map(category => <option
+                                                value={category.categoryId}>{category.categoryName}</option>)}
                                         </select>
 
                                         <p>Бренд</p>
                                         <select className="custom-select" name="brandId" onChange={this.handleChange}
                                                 value={client.brandId}>
                                             <option value="">Выберите бренд</option>
-                                            {brands.map(brand => <option value={brand.brandId}>{brand.brandName}</option>)}
+                                            {brands.map(brand => <option
+                                                value={brand.brandId}>{brand.brandName}</option>)}
                                         </select>
                                     </div>
 
@@ -229,12 +240,20 @@ class AddProduct extends React.Component {
                                 <hr/>
                                 <div className="row min-amount-and-description">
                                     <div className="col-sm-4">
-                                        <InputCounter title="Минимальное количество" placeholder="Введите количество" value={client.minAmount} name="minAmount"
-                                                      handleChange={this.handleChange} maxLength={128} />
+                                        {/*<InputCounter title="Минимальное количество" placeholder="Введите количество"*/}
+                                        {/*              value={client.minAmount} name="minAmount"*/}
+                                        {/*              handleChange={this.handleChange} maxLength={128}/>*/}
+
+                                        <InputCounter title="Минимальное количество"
+                                                      placeholder="Введите количество"
+                                                      value={String(client.minAmount ? client.minAmount : '')}
+                                                      name="minAmount"
+                                                      handleChange={this.handleChange} maxLength={9}/>
                                     </div>
                                     <div className="col-sm-8">
                                         <InputCounter title="Описание" placeholder="Описание" value={client.description}
-                                                      name="description" handleChange={this.handleChange} maxLength={128} />
+                                                      name="description" handleChange={this.handleChange}
+                                                      maxLength={128}/>
                                     </div>
                                 </div>
 
@@ -243,9 +262,9 @@ class AddProduct extends React.Component {
                                     <label>
                                         <input className="form-check-input"
                                                checked={client.checkOn}
-                                               onChange={()=>this.toggleChange('checkOn')}
+                                               onChange={() => this.toggleChange('checkOn')}
                                                type="checkbox"/>
-                                        <span className="check-box-circle" />
+                                        <span className="check-box-circle"/>
                                         Включить контроль склада
                                     </label>
                                 </div>
@@ -254,9 +273,9 @@ class AddProduct extends React.Component {
                                     <label>
                                         <input className="form-check-input"
                                                checked={client.retailOn}
-                                               onChange={()=>this.toggleChange('retailOn')}
+                                               onChange={() => this.toggleChange('retailOn')}
                                                type="checkbox"/>
-                                        <span className="check-box-circle" />
+                                        <span className="check-box-circle"/>
                                         Включить продажу в розницу
                                     </label>
                                 </div>
@@ -282,10 +301,6 @@ class AddProduct extends React.Component {
                                     {/*        {suppliers.map(supplier =><option value={supplier.supplierId}>{supplier.supplierName}</option>)}*/}
                                     {/*    </select>*/}
                                     {/*</div>*/}
-                                    <div className="col-sm-6">
-                                        <InputCounter title="Уведомление о низком остатке" placeholder="Введите количество" value={String(client.minAmount ? client.minAmount : '')} name="minAmount"
-                                                      handleChange={this.handleChange} maxLength={9} />
-                                    </div>
                                 </div>
                                 {material && material.adding &&
                                 <img className="material-adding"
@@ -302,11 +317,11 @@ class AddProduct extends React.Component {
                                 {/*        onClick={!clients.adding && client.firstName && isValidPhone && (edit ? this.updateClient : this.addProduct)}*/}
                                 {/*>Сохранить*/}
                                 {/*</button>*/}
-                                <button style={{ display: 'block', marginLeft: 'auto' }}
-                                        className={(!( client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0)) ? 'disabledField': '')+' button'}
+                                <button style={{display: 'block', marginLeft: 'auto', marginRight: "unset"}}
+                                        className={(!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0)) ? 'disabledField' : '') + ' button-save'}
                                         disabled={!(client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0))}
                                         type="button"
-                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0)&& (edit ? ()=>this.updateProduct(client) : this.addProduct)}
+                                        onClick={client.productName && client.categoryId && client.brandId && client.productCode && client.unitId && (client.nominalAmount > 0) && (edit ? () => this.updateProduct(client) : this.addProduct)}
                                 >Сохранить
                                 </button>
                             </div>
@@ -318,27 +333,27 @@ class AddProduct extends React.Component {
         )
     }
 
-    handleBirthdayChange({ target: { name, value } }) {
-        this.setState({ [name]: value })
+    handleBirthdayChange({target: {name, value}}) {
+        this.setState({[name]: value})
     }
 
     handleChange(e) {
-        const { name, value } = e.target;
-        const { client } = this.state;
+        const {name, value} = e.target;
+        const {client} = this.state;
 
         let newValue = value
 
 
-        this.setState({ client: {...client, [name]: newValue }});
+        this.setState({client: {...client, [name]: newValue}});
     }
 
-    toggleChange (key) {
-        const { client } = this.state;
+    toggleChange(key) {
+        const {client} = this.state;
 
-        this.setState({ client: {...client, [key]: !this.state.client[key] }});
+        this.setState({client: {...client, [key]: !this.state.client[key]}});
     }
 
-    updateProduct(client){
+    updateProduct(client) {
 
         // const {client, day, month, year } = this.state;
         // let birthDate;
@@ -357,13 +372,13 @@ class AddProduct extends React.Component {
         this.props.dispatch(materialActions.toggleProduct(client, true))
     };
 
-    addProduct(){
+    addProduct() {
 
         const {addProduct, isModalShouldPassClient} = this.props;
-        const {client, day, month, year } = this.state;
+        const {client, day, month, year} = this.state;
         let birthDate;
         if (day || month || year) {
-            birthDate =`${year}-${month}-${day}`;
+            birthDate = `${year}-${month}-${day}`;
         }
         if (isModalShouldPassClient) {
             this.props.checkUser(client);
@@ -377,7 +392,7 @@ class AddProduct extends React.Component {
         this.props.dispatch(materialActions.toggleProduct(client))
     };
 
-    closeModal () {
+    closeModal() {
         const {onClose} = this.props;
 
         return onClose()
@@ -385,13 +400,13 @@ class AddProduct extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, client, company, material } = state;
+    const {alert, client, company, material} = state;
     return {
         alert, client, company, material
     };
 }
 
-AddProduct.propTypes ={
+AddProduct.propTypes = {
     client_working: PropTypes.object,
     edit: PropTypes.bool.isRequired,
     isModalShouldPassClient: PropTypes.bool,
@@ -402,4 +417,4 @@ AddProduct.propTypes ={
 };
 
 const connectedApp = connect(mapStateToProps)(AddProduct);
-export { connectedApp as AddProduct };
+export {connectedApp as AddProduct};

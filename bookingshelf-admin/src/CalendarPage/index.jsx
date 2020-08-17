@@ -462,9 +462,6 @@ class Index extends PureComponent {
                             selectType={this.selectType}
                         />
                     </div>
-                    <div className="add-button">
-
-                    </div>
                     <div className={"days-container " + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
 
                         <button onClick={this.scrollHandler} className={"scroll-button" + (this.state.scrolledToRight ? " scrolled" : '')}></button>

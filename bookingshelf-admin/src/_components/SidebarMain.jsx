@@ -317,9 +317,7 @@ class SidebarMain extends React.Component {
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
                                         <p className="service_name"
-                                        >{appointment.serviceName}
-
-                                            {extraServiceText}
+                                        >{appointment.serviceName}&nbsp;{extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p>
                                     </div>
@@ -327,7 +325,7 @@ class SidebarMain extends React.Component {
                                 <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p>
                                         <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
-                                    </p><br/></React.Fragment> : ''}
+                                    </p></React.Fragment> : ''}
                                     {appointment.clientPhone &&
                                     <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {companyTypeId === 2 && appointment.carBrand &&
@@ -363,9 +361,7 @@ class SidebarMain extends React.Component {
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
                                         <p className="service_name"
-                                        >{appointment.serviceName}
-
-                                            {extraServiceText}
+                                        >{appointment.serviceName}&nbsp;{extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p>
                                     </div>
@@ -472,9 +468,7 @@ class SidebarMain extends React.Component {
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
                                         <p className="service_name"
-                                        >{appointment.serviceName}
-
-                                            {extraServiceText}
+                                        >{appointment.serviceName}&nbsp;{extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p>
                                     </div>
@@ -482,7 +476,7 @@ class SidebarMain extends React.Component {
                                 <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
                                     {appointment.clientFirstName ? <React.Fragment><p>
                                         <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
-                                    </p><br/></React.Fragment> : ''}
+                                    </p></React.Fragment> : ''}
                                     {appointment.clientPhone &&
                                     <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                     {companyTypeId === 2 && appointment.carBrand &&
@@ -518,9 +512,7 @@ class SidebarMain extends React.Component {
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
                                         <p className="service_name"
-                                        >{appointment.serviceName}
-
-                                            {extraServiceText}
+                                        >{appointment.serviceName}&nbsp;{extraServiceText}
                                             {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                         </p>
                                     </div>
@@ -677,7 +669,8 @@ class SidebarMain extends React.Component {
 
                 </ul>
                 <div className="sidebar-modal modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-lg modal-dialog-centered" role="document">
+                    <div style={{maxWidth: "761px"}} className="modal-dialog modal-dialog-lg modal-dialog-centered"
+                         role="document">
                         <div className="modal-content modal-height">
                             <div className="modal-header">
                                 <h4 className="modal-title">Уведомления</h4>
@@ -770,7 +763,8 @@ class SidebarMain extends React.Component {
                                                             <div>
                                                                 <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
 
-                                                                <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                                                <p style={{float: "none"}}
+                                                                   className="user-name d-flex align-items-center">
                                                                     <div className="img-container d-md-none">
                                                                         <img
                                                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -779,11 +773,11 @@ class SidebarMain extends React.Component {
                                                                 <p className="service_name"
                                                                 >{appointment.serviceName}
 
-                                                                    {/*<br/>{appointmentInfo.staff.firstName + " " + appointmentInfo.staff.lastName}*/}
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className="d-flex flex-column" style={{wordBreak: 'break-word'}}>
+                                                        <div className="d-flex flex-column"
+                                                             style={{wordBreak: 'break-word'}}>
                                                             {appointment.clientFirstName ? <React.Fragment><p>
                                                                 <strong>Клиент:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                                             </p></React.Fragment> : ''}
@@ -795,7 +789,8 @@ class SidebarMain extends React.Component {
                                                             {companyTypeId === 2 && appointment.carNumber &&
                                                             <p style={{textDecoration: 'underline'}}><strong>Гос.
                                                                 номер: </strong> {appointment.carNumber}</p>}
-                                                            <p className="service_time" style={{textTransform: 'capitalize'}}
+                                                            <p className="service_time"
+                                                               style={{textTransform: 'capitalize'}}
                                                                 // style={{width: "30%", textAlign: "left"}}
                                                             >
                                                                 <strong>Время: </strong>
@@ -816,16 +811,19 @@ class SidebarMain extends React.Component {
                                                                     className="img"/></div>
 
                                                             <div>
-                                                                <p style={{float: "none"}} className="user-name d-flex align-items-center">
+                                                                <p style={{float: "none"}}
+                                                                   className="user-name d-flex align-items-center">
                                                                     <div className="img-container d-md-none">
                                                                         <img
                                                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                             className="img"/></div>
                                                                     <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
-
                                                                 </p>
                                                             </div>
-                                                            <br/>
+                                                            <p className="service_name">
+                                                                {appointment.serviceName}
+                                                            </p>
+
                                                             <p style={{color: "#50A5F1"}}>
                                                                 {appointment.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником'}
                                                             </p>
