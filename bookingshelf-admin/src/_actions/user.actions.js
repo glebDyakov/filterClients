@@ -68,7 +68,6 @@ function checkLogin(localStorageUser) {
                     }
                 );
         } else {
-
             dispatch(failure());
         }
     };

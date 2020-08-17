@@ -967,6 +967,8 @@ input {
     opacity: 1;
   }
 
+
+
   @media screen {
 
     @media (max-width: $laptop-width) {
@@ -4085,9 +4087,19 @@ select {
     max-width: fit-content !important;
   }
 
+
+
   @media (max-width: $mob-width) {
     .modal-dialog {
       max-width: unset !important;
+    }
+
+    .user-name {
+      margin: 12px 0 0 0 !important;
+    }
+
+    .service_name {
+      margin-bottom: 12px !important;
     }
 
     .modal-height {
@@ -6066,6 +6078,8 @@ textarea {
     margin: auto;
   }
 }
+
+
 
 .form-group {
   margin: 0 0 15px 0;

@@ -215,7 +215,7 @@ class ReservedTime extends React.Component {
                     <div>
                         <div className="modal-content reserved-time-modal">
                             <div className="modal-header">
-                                <h4 className="modal-title">Зарезервированое время</h4>
+                                <h4 className="modal-title">Зарезервированное время</h4>
                                 <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
