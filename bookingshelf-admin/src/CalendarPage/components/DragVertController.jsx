@@ -50,7 +50,7 @@ class DragVertController extends React.Component {
     }
 
     handleMouseUp() {
-        const cellHeight = 30;
+        const cellHeight = 25;
 
         const { appointments, staff, company, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
         const newOffsetHeight = document.getElementById(textAreaId).offsetHeight
