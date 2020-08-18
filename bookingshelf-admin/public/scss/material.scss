@@ -2,6 +2,8 @@
 .material {
   padding-bottom: 50px;
 
+
+
   .content {
     padding: 0 10px !important;
 
@@ -644,7 +646,6 @@
       display: block;
       margin-top: 15px;
       background: #50A5F1;
-      opacity: 0.7;
       border-radius: 30px;
       padding: 10px 64px;
       border: none;
@@ -652,10 +653,8 @@
       width: 213px;
       height: 42px;
       @media (max-width: $mob-width) {
-        margin: 15px auto;
-      }
-      &:hover{
-        opacity: 1;
+        margin: 15px auto !important;
+
       }
     }
     .info-product-buttons{

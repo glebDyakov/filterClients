@@ -960,6 +960,11 @@
     border-top-left-radius: 0.3rem;
     border-top-right-radius: 0.3rem;
 
+    @media screen and (max-width: $mob-width) {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
     .modal-header {
       position: relative;
       background-color: #0a1232;
@@ -985,7 +990,7 @@
 
     .acts-body {
       padding: 20px 5%;
-      overflow-y: auto;
+      overflow: auto;
       max-height: calc(100vh - 210px);
       display: block !important;
     }

@@ -183,7 +183,6 @@ class AddProduct extends React.Component {
                                 <button type="button" className="close" onClick={this.closeModal}/>
                             </div>
                             <div className="form-group">
-                                <p className="title mb-2">Описание товара</p>
                                 <div className="row main-info">
                                     <div className="col-sm-8">
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь'
@@ -244,7 +243,7 @@ class AddProduct extends React.Component {
                                         {/*              value={client.minAmount} name="minAmount"*/}
                                         {/*              handleChange={this.handleChange} maxLength={128}/>*/}
 
-                                        <InputCounter title="Минимальное количество"
+                                        <InputCounter title="Уведомление о низком остатке"
                                                       placeholder="Введите количество"
                                                       value={String(client.minAmount ? client.minAmount : '')}
                                                       name="minAmount"
