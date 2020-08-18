@@ -479,9 +479,8 @@ class Index extends Component {
                 </div>
                 <div className="retreats">
                     <div style={{overflowX: 'visible'}} className="tab-content">
-                        <div style={{height: '100%', maxHeight: '65vh'}}
-                             className={"tab-pane" + (activeTab === 'workinghours' ? ' active' : '')} id="tab1">
-                            <div style={{overflowX: 'auto', position: 'relative', zIndex: 0}}>
+                        <div className={"tab-pane" + (activeTab === 'workinghours' ? ' active' : '')} id="tab1">
+                            <div style={{overflowX: 'auto', position: 'relative', zIndex: 0, maxHeight: "70vh"}}>
                                 <div style={{overflowX: 'hidden', display: 'inline-block'}}
                                      className="content-tab-date min-width-desktop">
                                     <div style={{position: 'sticky', top: 0, zIndex: 5, width: '100%'}}

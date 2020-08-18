@@ -125,7 +125,7 @@
     }
   }
 
-  .check-box .title-label, .check-box .title-label span {
+  .check-box .title-label, .check-box .title-label span:not(.questions_dropdown) {
     font-weight: 600;
     font-size: 16px;
     line-height: 22px;

@@ -746,7 +746,6 @@ class Index extends Component {
 
                                                     <label onClick={e => {
                                                         e.preventDefault();
-                                                            this.toggleChange('clientVerification');
                                                     }} className="title-label">
                                                         <span>Опция подтверждения новых клиентов     <Hint
                                                             hintMessage="Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение."/></span>
@@ -755,7 +754,9 @@ class Index extends Component {
                                                                checked={notifications && notifications.clientVerification}
                                                                onChange={() => this.toggleChange('clientVerification')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span onClick={() => {
+                                                            this.toggleChange('clientVerification');
+                                                        }} className="check"/>
                                                     </label>
 
 
