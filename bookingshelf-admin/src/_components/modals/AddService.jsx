@@ -36,6 +36,7 @@ class AddService extends React.Component {
                     "productId": ''
                 }]
             },
+            selectedProduct: null,
             editServiceItem: props.editServiceItem,
             staffs: props.staffs && props.staffs,
             allStaffs: props.staffs && props.staffs,
@@ -237,7 +238,7 @@ class AddService extends React.Component {
                                             {service && service.serviceProducts && service.serviceProducts
                                               .sort((a, b) => a.serviceProductId - b.serviceProductId)
                                               .map((item, index) =>{
-                                            return <div className="select-color dropdown mb-3 border-color">
+                                            return <div className="select-color using-materials-dropdown dropdown mb-3 border-color">
 
                                                 {
                                                     // serviceCurrent[index] && serviceCurrent[index].id!==-1 ?
@@ -271,7 +272,7 @@ class AddService extends React.Component {
                                                         </li>
                                                         <li className="services_list_wrapper">
 
-                                                            <ul>
+                                                            <ul className="pt-0">
                                                                 {/*{this.getServiceList(index)}*/}
 
 
@@ -520,6 +521,7 @@ class AddService extends React.Component {
         const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
         deletedProductsList.splice(deletedIndex, 1);
         this.setState({ service, deletedProductsList });
+
 
     }
 
