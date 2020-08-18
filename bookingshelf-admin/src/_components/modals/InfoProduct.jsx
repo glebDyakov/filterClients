@@ -195,7 +195,6 @@ class InfoProduct extends React.Component {
                                 <button type="button" className="close" onClick={this.closeModal} />
                             </div>
                             <div className="form-group mr-3 ml-3">
-                                <p className="title mb-2">Описание товара</p>
                                 <div className="row main-info">
                                     <div className="col-sm-8">
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}

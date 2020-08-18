@@ -757,9 +757,9 @@
     }
 
     .content-tab-date {
-      overflow: auto;
+      overflow: hidden !important;
       margin-bottom: 20px;
-      max-height: 100%;
+      max-height: unset !important;
 
       .tab-content-inner {
         min-width: 890px;

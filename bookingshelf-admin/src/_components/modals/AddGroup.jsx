@@ -50,7 +50,7 @@ class AddGroup extends React.Component {
                 },
                 "ORANGE": {
                     "key": "orange",
-                    "name": "Светло-оранжевый"
+                    "name": "Оранжевый"
                 },
                 "PINK": {
                     "key": "pink",
@@ -66,11 +66,11 @@ class AddGroup extends React.Component {
                 },
                 "SKY": {
                     "key": "sky",
-                    "name": "Светло-голубой с примесью зеленого"
+                    "name": "Бирюзовый"
                 },
                 "VIOLET": {
                     "key": "violet",
-                    "name": "Светло-фиолетовый"
+                    "name": "Фиолетовый"
                 },
                 "GREY": {
                     "key": "grey",
@@ -78,11 +78,11 @@ class AddGroup extends React.Component {
                 },
                 "LIGHT-GREEN": {
                     "key": "light-green",
-                    "name": "Cветло-зеленый"
+                    "name": "Зеленый"
                 },
                 "DARK_BLUE": {
                     "key": "dark-blue",
-                    "name": "Темно синий"
+                    "name": "Синий"
                 }
             },
             availableColors: [
