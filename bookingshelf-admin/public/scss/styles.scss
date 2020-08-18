@@ -4635,7 +4635,7 @@ select {
     }
 
     .client-info {
-      max-height: 100%;
+      max-height: calc(100% - 180px);
       border:none;
       border-radius: 0;
       background: #F8F8FB;
