@@ -298,7 +298,7 @@ class AddService extends React.Component {
                                                     </ul>
                                                     <div className="arrow-dropdown"><i></i></div>
 
-                                                <div className="select-material col-md-4">
+                                                <div className="select-material row col-12 col-md-4">
                                                     <InputCounter  placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
                                                                    title={`Норма списания, ${item.unitName ? (item.unitName) : ''}`}
                                                                    name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
@@ -509,7 +509,7 @@ class AddService extends React.Component {
         service.serviceProducts[index].productCode = product.productCode;
         service.serviceProducts[index].unitId = product.unitId;
         const activeUnit = this.props.material.units.find(currentUnit => product.unitId === currentUnit.unitId);
-        service.serviceProducts[index].unitName = activeUnit.unitName
+        service.serviceProducts[index].unitName = activeUnit && activeUnit.unitName
 
         const oldValue = deletedProductsList.find(item => item.productName === product.productName);
         if(oldValue) {
@@ -521,8 +521,6 @@ class AddService extends React.Component {
         const deletedIndex = deletedProductsList.findIndex(item => item.productId === updatedValue)
         deletedProductsList.splice(deletedIndex, 1);
         this.setState({ service, deletedProductsList });
-
-
     }
 
     handleDurationChange(e) {
