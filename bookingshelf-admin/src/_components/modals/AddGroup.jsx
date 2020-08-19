@@ -78,7 +78,7 @@ class AddGroup extends React.Component {
                 },
                 "LIGHT-GREEN": {
                     "key": "light-green",
-                    "name": "Зеленый"
+                    "name": "Салатовый"
                 },
                 "DARK_BLUE": {
                     "key": "dark-blue",
