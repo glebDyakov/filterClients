@@ -478,7 +478,7 @@ class Index extends Component {
                     }
                 </div>
                 <div className="retreats">
-                    <div style={{overflow: 'auto', maxHeight: "calc(100% - 60px)"}} className="tab-content">
+                    <div style={{overflow: 'auto'}} className="tab-content">
                         <div className={"tab-pane" + (activeTab === 'workinghours' ? ' active' : '')} id="tab1">
                             <div style={{overflow: 'auto', position: 'relative', zIndex: 0}}>
                                 <div style={{overflowX: 'hidden', display: 'inline-block'}}
@@ -568,16 +568,17 @@ class Index extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={"tab-pane staff-list-tab" + (activeTab === 'staff' ? ' active' : '')} id="tab2">
+                        <div className={"tab-pane content staff-list-tab" + (activeTab === 'staff' ? ' active' : '')} id="tab2">
+                            <div className="tab-content-list header-content-list">
+                                <div className="tab-content-header-item client-name"><p>Сотрудники</p></div>
+                                <div className="tab-content-header-item">Мобильный телефон</div>
+                                <div className="tab-content-header-item">Email адрес</div>
+                                <div className="tab-content-header-item">Категория доступа</div>
+                                <div className="tab-content-header-item delete">Функции</div>
+                            </div>
                             <div className="content tabs-container">
 
-                                <div className="tab-content-list header-content-list">
-                                    <div className="tab-content-header-item client-name"><p>Сотрудники</p></div>
-                                    <div className="tab-content-header-item">Мобильный телефон</div>
-                                    <div className="tab-content-header-item">Email адрес</div>
-                                    <div className="tab-content-header-item">Категория доступа</div>
-                                    <div className="tab-content-header-item delete">Функции</div>
-                                </div>
+
 
                                 <DragDrop
                                     dragDropItems={dragDropItems}
