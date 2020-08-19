@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import '../../public/scss/online_booking.scss'
 import {companyActions} from "../_actions";
@@ -12,10 +12,9 @@ class Index extends Component {
     constructor(props) {
         super(props);
 
-        if(!access(9)){
+        if (!access(9)) {
             props.history.push('/denied')
         }
-
 
 
         this.state = {
@@ -46,7 +45,7 @@ class Index extends Component {
             this.queryInitData()
         }
 
-        if ( JSON.stringify(this.props) !==  JSON.stringify(newProps)) {
+        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
             this.setState({
                 booking: newProps.company.booking,
             })
@@ -70,7 +69,7 @@ class Index extends Component {
                 this.props.dispatch(companyActions.updateSaved(newProps.company.saved));
             }, 3000)
         }
-        if (newProps.company && newProps.company.status==='saved.settings') {
+        if (newProps.company && newProps.company.status === 'saved.settings') {
             this.setState({status: newProps.company.status})
             setTimeout(() => {
                 this.setState({status: '', submitted: false})
@@ -100,7 +99,7 @@ class Index extends Component {
     }
 
     handleScreenCheckboxChange(firstScreen) {
-        this.setState({ firstScreen })
+        this.setState({firstScreen})
         const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
         this.props.dispatch(companyActions.updateCompanySettings({
             imageBase64: activeCompany && activeCompany.imageBase64,
@@ -109,12 +108,12 @@ class Index extends Component {
         }, 'isFirstScreenLoading'));
     }
 
-    handleStepChange({ target: { name, value }}) {
-        this.setState({ [name]: value });
+    handleStepChange({target: {name, value}}) {
+        this.setState({[name]: value});
     }
 
     handleStepSubmit() {
-        const { booktimeStep } = this.state;
+        const {booktimeStep} = this.state;
         const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
 
         this.props.dispatch(companyActions.updateCompanySettings({
@@ -125,23 +124,23 @@ class Index extends Component {
     }
 
     handleChange(e) {
-        const { name, value } = e.target;
-        const { booking } = this.state;
+        const {name, value} = e.target;
+        const {booking} = this.state;
 
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
 
-        const bookElement={...booking, [name]: value }
+        const bookElement = {...booking, [name]: value}
 
         this.setState({booking: bookElement})
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
     }
 
-    handleMessageChange({ target : { name, value }}) {
-        this.setState({ [name]: value })
+    handleMessageChange({target: {name, value}}) {
+        this.setState({[name]: value})
     }
 
     handleSubmit() {
-        const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
+        const {onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage} = this.state;
         const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies.find(item => item.companyId === this.props.company.settings.companyId)
         this.props.dispatch(companyActions.add({
             imageBase64: activeCompany && activeCompany.imageBase64,
@@ -153,7 +152,7 @@ class Index extends Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         if (this.props.authentication.loginChecked) {
             this.queryInitData()
         }
@@ -173,32 +172,32 @@ class Index extends Component {
         })
     }
 
-    setColor (color) {
-        const {booking}=this.state;
-        const { dispatch } = this.props;
+    setColor(color) {
+        const {booking} = this.state;
+        const {dispatch} = this.props;
 
-        const bookElement={...booking, bookingColor: parseInt(color, 16)}
+        const bookElement = {...booking, bookingColor: parseInt(color, 16)}
 
         this.setState({booking: bookElement})
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement)));
 
     }
 
-    setBookingCode (type, updatePosition) {
-        const { dispatch } = this.props;
-        const { booking } = this.state;
-        const { bookingCode } = booking;
+    setBookingCode(type, updatePosition) {
+        const {dispatch} = this.props;
+        const {booking} = this.state;
+        const {bookingCode} = booking;
 
         const bookingCodeClassNames = bookingCode.split(' ')
         bookingCodeClassNames[updatePosition ? 1 : 0] = type
 
-        const bookElement={...booking, bookingCode: bookingCodeClassNames[0] + ' ' + bookingCodeClassNames[1]}
+        const bookElement = {...booking, bookingCode: bookingCodeClassNames[0] + ' ' + bookingCodeClassNames[1]}
 
         // this.setState({booking: bookElement})
         dispatch(companyActions.updateBookingInfo(JSON.stringify(bookElement), updatePosition));
     }
 
-    copyToClipboard (e, key) {
+    copyToClipboard(e, key) {
         //this[key].select();
 
         var textField = document.createElement('textarea')
@@ -209,22 +208,22 @@ class Index extends Component {
         textField.remove()
 
         e.target.focus();
-        this.setState({ copySuccess: 'Copied!', messageCopyModalOpen: true });
+        this.setState({copySuccess: 'Copied!', messageCopyModalOpen: true});
     };
 
     render() {
-        const { company } = this.props
-        const { booking, submitted, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status } = this.state;
+        const {company} = this.props
+        const {booking, submitted, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status} = this.state;
 
         const isOnlineZapisChecked = !onlineZapisOn
 
-        const { isServiceIntervalLoading, settings, isBookingInfoLoading, isFirstScreenLoading, saved } = company;
+        const {isServiceIntervalLoading, settings, isBookingInfoLoading, isFirstScreenLoading, saved} = company;
 
         const dayPickerProps = {
             month: new Date(),
             fromMonth: new Date(),
             toMonth: new Date(moment().utc().add(6, 'month').toDate()),
-            disabledDays:[
+            disabledDays: [
                 {
                     before: new Date(),
                 },
@@ -242,53 +241,57 @@ class Index extends Component {
                         <div className="col-xl-4 block-h p-0">
                             <div className=" content-pages-bg mb-0 h-auto p-zapis your-page">
                                 <p className="title mb-3">Ваша страница</p>
-                                <p className="text">Перейдите по ссылке для того что бы открыть
-                                    вашу персональную страницу онлайн записи. Вы увидете полную страницу
-                                    всех ваших онлайн бронирований. Также можете перейти по ссылке: через
-                                    свою электронную почту или с помощью кнопки онлайн-бронирования на
-                                    сайте:</p>
+                                <p className="text">Перейдите по ссылке для того, чтобы открыть вашу персональную
+                                    страницу онлайн-записи, вы увидите страницу всех ваших онлайн бронирований. Также вы
+                                    можете открыть данную страницу с помощью кнопки онлайн-бронирования на вашем
+                                    сайте.</p>
                                 <div className="booking-page">
                                     <a
                                         target="_blank"
-                                       href={"https://online-zapis.com/online/" + booking.bookingPage}
-                                       className=""
+                                        href={"https://online-zapis.com/online/" + booking.bookingPage}
+                                        className=""
                                         ref={(text) => this.textLink = text}
                                     >{"online-zapis.com/online/" + booking.bookingPage}
                                     </a>
                                     <span onClick={(e) => this.copyToClipboard(e, 'textLink')}/>
                                 </div>
-                                <div className="clearfix" />
+                                <div className="clearfix"/>
 
                             </div>
                             <div className=" content-pages-bg mb-0 p-zapis h-auto extra-messages">
                                 <p className="title">
                                     Дополнительное сообщение в онлайн-записи
-                                    <Hint customLeft="-1px" hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства." />
+                                    <Hint customLeft="-1px"
+                                          hintMessage="Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства."/>
                                 </p>
-                                <textarea className="text" onChange={this.handleMessageChange} name="appointmentMessage" value={appointmentMessage}/>
+                                <textarea className="text" onChange={this.handleMessageChange} name="appointmentMessage"
+                                          value={appointmentMessage}/>
                                 {/*<p className="text">{appointmentMessage}</p>*/}
-
 
 
                                 <p className="title limit-time">
                                     Ограничить время онлайн-записи
                                     &nbsp;
-                                    <Hint customLeft="-4px" hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес." />
+                                    <Hint customLeft="-4px"
+                                          hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес."/>
 
                                 </p>
                                 <div className="check-box">
                                     <label>
-                                        <input className="form-check-input" type="checkbox" checked={isOnlineZapisChecked} onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
+                                        <input className="form-check-input" type="checkbox"
+                                               checked={isOnlineZapisChecked}
+                                               onChange={() => this.handleCheckboxChange('onlineZapisOn')}/>
                                         <span className="check"/>
                                     </label>
                                 </div>
-                                {isOnlineZapisChecked && <div className="online-page-picker online-zapis-date-picker mb-3">
+                                {isOnlineZapisChecked &&
+                                <div className="online-page-picker online-zapis-date-picker mb-3">
                                     <DatePicker
-                                      // closedDates={staffAll.closedDates}
-                                      type="day"
-                                      selectedDay={selectedDay}
-                                      handleDayClick={this.handleDayClick}
-                                      dayPickerProps={dayPickerProps}
+                                        // closedDates={staffAll.closedDates}
+                                        type="day"
+                                        selectedDay={selectedDay}
+                                        handleDayClick={this.handleDayClick}
+                                        dayPickerProps={dayPickerProps}
                                     />
                                 </div>
                                 }
@@ -305,14 +308,17 @@ class Index extends Component {
                                 <div className="check-box">
                                     <label>
                                         {isFirstScreenLoading
-                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                          : <React.Fragment>
-                                        <input className="form-check-input"
-                                               checked={(company.settings && company.settings.firstScreen) === 'staffs'}
-                                               onChange={() => this.handleScreenCheckboxChange('staffs')}
-                                               type="checkbox"/>
-                                        <span className="check-box-circle" />
-                                          </React.Fragment>
+                                            ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                   className="loader"><img style={{width: '40px'}}
+                                                                           src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                           alt=""/></div>
+                                            : <React.Fragment>
+                                                <input className="form-check-input"
+                                                       checked={(company.settings && company.settings.firstScreen) === 'staffs'}
+                                                       onChange={() => this.handleScreenCheckboxChange('staffs')}
+                                                       type="checkbox"/>
+                                                <span className="check-box-circle"/>
+                                            </React.Fragment>
                                         }
                                         Сотрудники
                                     </label>
@@ -320,14 +326,17 @@ class Index extends Component {
                                 <div className="check-box">
                                     <label>
                                         {isFirstScreenLoading
-                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                          : <React.Fragment>
-                                        <input className="form-check-input"
-                                               checked={(company.settings && company.settings.firstScreen) === 'services'}
-                                               onChange={() => this.handleScreenCheckboxChange('services')}
-                                               type="checkbox"/>
-                                        <span className="check-box-circle" />
-                                          </React.Fragment>
+                                            ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                   className="loader"><img style={{width: '40px'}}
+                                                                           src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                           alt=""/></div>
+                                            : <React.Fragment>
+                                                <input className="form-check-input"
+                                                       checked={(company.settings && company.settings.firstScreen) === 'services'}
+                                                       onChange={() => this.handleScreenCheckboxChange('services')}
+                                                       type="checkbox"/>
+                                                <span className="check-box-circle"/>
+                                            </React.Fragment>
                                         }
                                         Услуги
                                     </label>
@@ -341,14 +350,17 @@ class Index extends Component {
                                 <div className="check-box">
                                     <label>
                                         {isServiceIntervalLoading
-                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                          : <React.Fragment>
-                                              <input className="form-check-input"
-                                                     checked={!serviceIntervalOn}
-                                                     onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
-                                                     type="checkbox"/>
-                                              <span className="check-box-circle" />
-                                          </React.Fragment>
+                                            ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                   className="loader"><img style={{width: '40px'}}
+                                                                           src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                           alt=""/></div>
+                                            : <React.Fragment>
+                                                <input className="form-check-input"
+                                                       checked={!serviceIntervalOn}
+                                                       onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
+                                                       type="checkbox"/>
+                                                <span className="check-box-circle"/>
+                                            </React.Fragment>
                                         }
                                         15 минут
                                     </label>
@@ -356,14 +368,17 @@ class Index extends Component {
                                 <div className="check-box">
                                     <label>
                                         {isServiceIntervalLoading
-                                          ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                          : <React.Fragment>
-                                              <input className="form-check-input"
-                                                     checked={serviceIntervalOn}
-                                                     onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
-                                                     type="checkbox"/>
-                                              <span className="check-box-circle" />
-                                          </React.Fragment>
+                                            ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                   className="loader"><img style={{width: '40px'}}
+                                                                           src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                           alt=""/></div>
+                                            : <React.Fragment>
+                                                <input className="form-check-input"
+                                                       checked={serviceIntervalOn}
+                                                       onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
+                                                       type="checkbox"/>
+                                                <span className="check-box-circle"/>
+                                            </React.Fragment>
                                         }
                                         Равен времени услуги
                                     </label>
@@ -400,7 +415,7 @@ class Index extends Component {
                                 </div>
                                 <div className="buttons">
                                     <button type="button"
-                                            className={(booking.bookingCode.split(' ')[0]=== "button-standart" && 'active') + " button-standart mb-3 ml-0 mr-2 mt-0"}
+                                            className={(booking.bookingCode.split(' ')[0] === "button-standart" && 'active') + " button-standart mb-3 ml-0 mr-2 mt-0"}
                                             onClick={() => this.setBookingCode("button-standart")} style={{
                                         'animation': 'unset',
                                         'height': '40px',
@@ -473,14 +488,17 @@ class Index extends Component {
                                     <div className="check-box">
                                         <label>
                                             {isBookingInfoLoading
-                                              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                              : <React.Fragment>
-                                                  <input className="form-check-input"
-                                                         checked={booking.bookingCode.includes('left')}
-                                                         onChange={() => this.setBookingCode('left', true)}
-                                                         type="checkbox"/>
-                                                  <span className="check-box-circle" />
-                                              </React.Fragment>
+                                                ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                       className="loader"><img style={{width: '40px'}}
+                                                                               src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                               alt=""/></div>
+                                                : <React.Fragment>
+                                                    <input className="form-check-input"
+                                                           checked={booking.bookingCode.includes('left')}
+                                                           onChange={() => this.setBookingCode('left', true)}
+                                                           type="checkbox"/>
+                                                    <span className="check-box-circle"/>
+                                                </React.Fragment>
                                             }
                                             Слева
                                         </label>
@@ -488,14 +506,17 @@ class Index extends Component {
                                     <div className="check-box">
                                         <label>
                                             {isBookingInfoLoading
-                                              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                              : <React.Fragment>
-                                                  <input className="form-check-input"
-                                                         checked={!booking.bookingCode.includes('left')}
-                                                         onChange={() => this.setBookingCode('right', true)}
-                                                         type="checkbox"/>
-                                                  <span className="check-box-circle" />
-                                              </React.Fragment>
+                                                ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                       className="loader"><img style={{width: '40px'}}
+                                                                               src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                               alt=""/></div>
+                                                : <React.Fragment>
+                                                    <input className="form-check-input"
+                                                           checked={!booking.bookingCode.includes('left')}
+                                                           onChange={() => this.setBookingCode('right', true)}
+                                                           type="checkbox"/>
+                                                    <span className="check-box-circle"/>
+                                                </React.Fragment>
                                             }
                                             Справа
                                         </label>
@@ -507,7 +528,10 @@ class Index extends Component {
                                 {/*<p className="sub-title mb-3">Название кнопки</p>*/}
                                 {/*<input type="text" placeholder="Например: Онлайн-запись" value={booking.bookingButton} name="bookingButton" onChange={this.handleChange}/>*/}
                                 <strong className="sub-title text-example">Пример</strong>
-                                <div style={{ display: 'flex', justifyContent: (booking.bookingCode.includes('left') ? 'flex-start' : 'flex-end')}} className="buttons-container-color-form mb-4 but">
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: (booking.bookingCode.includes('left') ? 'flex-start' : 'flex-end')
+                                }} className="buttons-container-color-form mb-4 but">
                                     <button type="button"
                                             className={"exemple-buton " + booking.bookingCode + " color" + booking.bookingColor.toString(16)}>Онлайн
                                         запись
@@ -518,14 +542,20 @@ class Index extends Component {
                                     <div className="check-box">
                                         <label>
                                             {isBookingInfoLoading
-                                              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                              : <React.Fragment>
-                                                  <input className="form-check-input"
-                                                         checked={!this.state.urlButton}
-                                                         onChange={()=>this.setState({...this.state, urlButton: false})}
-                                                         type="checkbox"/>
-                                                  <span className="check-box-circle" />
-                                              </React.Fragment>
+                                                ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                       className="loader"><img style={{width: '40px'}}
+                                                                               src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                               alt=""/></div>
+                                                : <React.Fragment>
+                                                    <input className="form-check-input"
+                                                           checked={!this.state.urlButton}
+                                                           onChange={() => this.setState({
+                                                               ...this.state,
+                                                               urlButton: false
+                                                           })}
+                                                           type="checkbox"/>
+                                                    <span className="check-box-circle"/>
+                                                </React.Fragment>
                                             }
                                             Код кнопки на сайт
                                         </label>
@@ -533,14 +563,20 @@ class Index extends Component {
                                     <div className="check-box">
                                         <label>
                                             {isBookingInfoLoading
-                                              ? <div style={{ position: 'absolute', left: '-10px', width: 'auto' }} className="loader"><img style={{ width: '40px' }} src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
-                                              : <React.Fragment>
-                                                  <input className="form-check-input"
-                                                         checked={this.state.urlButton}
-                                                         onChange={()=>this.setState({...this.state, urlButton: true})}
-                                                         type="checkbox"/>
-                                                  <span className="check-box-circle" />
-                                              </React.Fragment>
+                                                ? <div style={{position: 'absolute', left: '-10px', width: 'auto'}}
+                                                       className="loader"><img style={{width: '40px'}}
+                                                                               src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                                               alt=""/></div>
+                                                : <React.Fragment>
+                                                    <input className="form-check-input"
+                                                           checked={this.state.urlButton}
+                                                           onChange={() => this.setState({
+                                                               ...this.state,
+                                                               urlButton: true
+                                                           })}
+                                                           type="checkbox"/>
+                                                    <span className="check-box-circle"/>
+                                                </React.Fragment>
                                             }
                                             Код ссылки на сайт
                                         </label>
@@ -560,7 +596,8 @@ class Index extends Component {
                                 "<a type=\"button\" onclick=\"displayFrame()\" id='bb' class='url' code='" + booking.bookingPage + "' style='visibility: hidden'>Онлайн запись</a>\n" +
                                 "<script type=\"text/javascript\" src=\"https://online-zapis.com/bb/frame.js\"></script>"}/>
                                 }
-                                <p onClick={(e) => this.copyToClipboard(e, 'textArea')} className="copy-code">Скопировать код</p>
+                                <p onClick={(e) => this.copyToClipboard(e, 'textArea')}
+                                   className="copy-code">Скопировать код</p>
                             </div>
                         </div>
                     </div>
@@ -569,7 +606,8 @@ class Index extends Component {
                         <div className="message-is-sent-modal">
                             <button onClick={this.handleMessageCopyModal} className="close"></button>
                             <div className="modal-body">
-                                <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
+                                <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`}
+                                     alt="message is sent image"/>
                                 <p className="body-text">
                                     Скопировано!
                                 </p>
@@ -585,11 +623,12 @@ class Index extends Component {
 
         );
     }
-    handleMessageCopyModal(){
+
+    handleMessageCopyModal() {
         this.setState({messageCopyModalOpen: false})
     }
 
-    handleDayClick(day){
+    handleDayClick(day) {
 
         let daySelected = moment(day);
 
@@ -601,7 +640,7 @@ class Index extends Component {
 }
 
 function mapStateToProps(state) {
-    const { alert, company, authentication } = state;
+    const {alert, company, authentication} = state;
     return {
         alert, company, authentication
     };
