@@ -768,6 +768,10 @@
         //  max-height: 65vh;
         //}
 
+        @media screen and (max-width: $mob-width) {
+          max-height: calc(100% - 150px) !important;
+        }
+
         &:first-of-type {
           .tab-content-list {
             height: 48px;
