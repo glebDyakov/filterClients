@@ -383,7 +383,7 @@ class Index extends PureComponent {
 
     scrollHandler() {
         this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
-            this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 1000: 0;
+            this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 9999 : 0;
         });
     }
 
