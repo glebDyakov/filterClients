@@ -654,7 +654,7 @@ class Index extends Component {
                                    onClick={this.handleOpenDropdownMenu}/>
                                 <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
                                     <div className="buttons">
-                                        <button type="button" className="button new-holiday">Новый выходной</button>
+                                        <button type="button" onClick={this.handleOpenDropdownMenu} className="button new-holiday">Новый выходной</button>
                                     </div>
                                     <div className="arrow"></div>
                                 </div>
