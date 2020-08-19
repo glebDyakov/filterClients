@@ -14,9 +14,8 @@ class ActionModal extends Component {
 
     onClickOutside() {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            console.log(event.target)
             const {closeHandler} = this.props;
-            closeHandler();
+            // closeHandler();
         }
     }
 
@@ -46,8 +45,8 @@ class ActionModal extends Component {
                                     const {handler, params, innerText, className, additionalHandler, additionalParam} = item;
                                     return (
                                         <button type="button" className={className} onClick={() => {
-
                                             handler((params ? params : null), (additionalParam ? additionalParam : null));
+                                            console.log(handler)
                                             if (additionalHandler) {
                                                 additionalHandler();
                                             }
