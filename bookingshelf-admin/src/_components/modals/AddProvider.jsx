@@ -187,7 +187,7 @@ class AddProvider extends React.Component {
                                 }
                                 <button type="button" className="close" onClick={this.closeModal} />
                             </div>
-                            <div className="form-group mr-3 ml-3">
+                            <div className="form-group mx-3 mx-md-0">
                                 <p className="title mb-2">Общая информация</p>
                                 <div className="row">
                                     <div className="col-sm-4">

@@ -50,7 +50,7 @@ class MoveVisit extends React.Component {
                             <button type="button" className="close" onClick={this.handleNo} data-dismiss="modal" />
                         </div>
                        <div className="modal-body">
-                           <div style={{ color: 'red', fontSize: '11px' }}>
+                           <div className="extra-text">
                                {isExtraText ? 'Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?' : ''}
                            </div>
                            <div className="form-group mr-3 ml-3">

@@ -102,6 +102,7 @@ class Index extends Component {
         }
     }
 
+
     setDefaultWorkersCount(staff) {
         const {company} = this.props
         const companyTypeId = company.settings && company.settings.companyTypeId;
@@ -225,8 +226,9 @@ class Index extends Component {
         this.setState({rate: {...this.state.rate, workersCount: value, specialWorkersCount: ''}});
     }
 
-    rateChangeSpecialWorkersCount(value, count) {
-        this.setState({staffCount: count, rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
+    rateChangeSpecialWorkersCount(value) {
+        // this.setState({staffCount: count, rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
+        this.setState({rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
     }
 
     rateChangePeriod(e) {

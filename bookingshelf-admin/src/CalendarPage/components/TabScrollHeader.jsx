@@ -46,15 +46,16 @@ class TabScrollHeader extends PureComponent {
                         {selectedDays.length>1 && <div className="cell hours"><span></span></div>}
 
                         {
-                            selectedDays.length>1 && selectedDays.map((item, weekKey)=> {
-
-                                    let clDate= closedDates && closedDates.some((st) =>
-                                        parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
-                                        parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")));
+                            selectedDays.length > 1 && selectedDays.map((item, weekKey)=> {
+                                    let clDate= closedDates && closedDates.some((st) => {
+                                        // console.log(moment(item).format("DD MMMM"), parseInt(st.startDateMillis), parseInt(moment(item).format("x")),  parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")));
+                                        return parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
+                                        parseInt(st.endDateMillis) >= parseInt(moment(item).format("x"))
+                                    });
 
                                     return <div className={"cell" + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
                                     >
-                                        <p className="text-capitalize">{moment(item).locale("ru").format('dd')},&nbsp;<span className={clDate && 'closedDate'}>{clDate ? 'выходной' : moment(item).format("DD MMMM")}</span>
+                                        <p className="text-capitalize">{moment(item).locale("ru").format('dd')},&nbsp;<span className={`text-capitalize ${clDate && 'closedDate'}`}>{clDate ? <p>{moment(item).format("DD MMMM")} <p style={{color: "#F46A6A"}}>&nbsp;(выходной)</p></p> : moment(item).format("DD MMMM")}</span>
                                         </p>
                                     </div>
                                 }

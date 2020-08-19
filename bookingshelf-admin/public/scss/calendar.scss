@@ -1996,6 +1996,23 @@
   }
 }
 
+.move-visit-modal {
+  .extra-text {
+    margin: 15px auto;
+
+    background: none;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: justify;
+    color: #F46A6A;
+    max-width: 380px;
+
+    @media screen and (max-width: $mob-width) {
+      margin: 15px;
+    }
+  }
+}
+
 .save-notes-modal,
 .delete-notes-modal,
 .start-moving-modal,

@@ -747,7 +747,7 @@ class Index extends Component {
                                                     <label onClick={e => {
                                                         e.preventDefault();
                                                     }} className="title-label">
-                                                        <span>Опция подтверждения новых клиентов     <Hint
+                                                        <span className="option-new-client">Опция подтверждения новых клиентов     <Hint
                                                             hintMessage="Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение."/></span>
 
                                                         <input className="form-check-input"

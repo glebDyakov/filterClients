@@ -824,7 +824,8 @@ class AddAppointment extends React.Component {
             </div>
 
             {isAddCostaff && <ul style={{
-                maxHeight: '175px'
+                maxHeight: '175px',
+                overflow: "hidden auto"
             }} className="clients-list-container">
                 {staffFromProps && staffFromProps
                     .filter(item => item.staffId !== staffCurrent.staffId)
@@ -1432,7 +1433,7 @@ class AddAppointment extends React.Component {
                                                         {!!cl.discountPercent &&
                                                         <div style={{
                                                             textAlign: 'center',
-                                                            color: '#d41316',
+                                                            color: '#F46A6A',
                                                             margin: '16px 0'
                                                         }}>Персональная скидка клиента: {cl.discountPercent}%</div>
                                                         }

@@ -128,6 +128,7 @@ class NewStaff extends React.Component {
                 alignItems: "center",
                 height: 'fit-content',
                 border: "none",
+                zIndex: 1001,
                 boxShadow: (isLightTheme ? "0px 0px 10px rgba(0, 0, 0, 0.1)" : "0px 0px 10px rgba(0, 0, 0, 0.1)"),
                 backgroundColor: (isLightTheme ? "#fff" : "#222736")
             }),

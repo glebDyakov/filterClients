@@ -815,6 +815,12 @@
   }
   .address-block, .contacts-block{
     padding-top: 20px;
+
+    .react-tel-input {
+      input {
+        padding-left: 45px !important;
+      }
+    }
   }
   .button-save-block {
     background-color: #F8F8FB;
