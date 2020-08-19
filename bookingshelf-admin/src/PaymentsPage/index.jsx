@@ -97,7 +97,7 @@ class Index extends Component {
         if (newProps.payments.confirmationUrl && (this.props.payments.confirmationUrl !== newProps.payments.confirmationUrl)) {
             this.setState({invoiceSelected: false})
         }
-        if (JSON.stringify(this.props.staff.staff) !== JSON.stringify(newProps.staff.staff)) {
+        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
             this.setDefaultWorkersCount(newProps.staff.staff)
         }
     }
@@ -108,14 +108,14 @@ class Index extends Component {
         const companyTypeId = company.settings && company.settings.companyTypeId;
         const count = staff ? staff.length : -1;
         if ((companyTypeId === 2)) {
-            this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}})
             if (count <= 5) {
+                this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}}, () => this.calculateRate())
             } else {
                 this.rateChangeSpecialWorkersCount('to 30', count)
             }
         } else {
             if (count <= 10) {
-                this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}})
+                this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}}, () => this.calculateRate())
             } else if (count > 10 && count <= 20) {
                 this.rateChangeSpecialWorkersCount('to 20', count)
             } else if (count > 20 && count <= 30) {
@@ -228,7 +228,7 @@ class Index extends Component {
 
     rateChangeSpecialWorkersCount(value) {
         // this.setState({staffCount: count, rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
-        this.setState({rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}});
+        this.setState({rate: {...this.state.rate, workersCount: '', specialWorkersCount: value}}, () => this.calculateRate());
     }
 
     rateChangePeriod(e) {
