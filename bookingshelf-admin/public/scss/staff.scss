@@ -756,14 +756,12 @@
     }
 
     .content-tab-date {
-      overflow: hidden !important;
+      overflow: auto !important;
       margin-bottom: 20px;
-      max-height: unset !important;
+      max-height: calc(100% - 60px) !important;
 
       .tab-content-inner {
         min-width: 890px;
-        overflow: auto;
-        max-height: calc(100% - 120px);
         //@media screen and(max-width: $tablet-width) {
         //  max-height: 65vh;
         //}
