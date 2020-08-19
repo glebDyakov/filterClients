@@ -568,7 +568,7 @@ class Index extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={"tab-pane content staff-list-tab" + (activeTab === 'staff' ? ' active' : '')} id="tab2">
+                        <div className={"tab-pane content tabs-container staff-list-tab" + (activeTab === 'staff' ? ' active' : '')} id="tab2">
                             <div className="tab-content-list header-content-list">
                                 <div className="tab-content-header-item client-name"><p>Сотрудники</p></div>
                                 <div className="tab-content-header-item">Мобильный телефон</div>
@@ -576,9 +576,7 @@ class Index extends Component {
                                 <div className="tab-content-header-item">Категория доступа</div>
                                 <div className="tab-content-header-item delete">Функции</div>
                             </div>
-                            <div className="content tabs-container">
-
-
+                            <div style={{maxHeight: "calc(100% - 120px)"}} className="content tabs-container">
 
                                 <DragDrop
                                     dragDropItems={dragDropItems}
