@@ -103,7 +103,7 @@ class StorehouseProduct extends React.Component {
 
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title={`Количество товара на пополнение, единиц`} value={String(client.amount ? client.amount : '')}
+                                            <InputCounter withCounter={true} title={`Количество товара на пополнение, единиц`} value={String(client.amount ? client.amount : '')}
                                                           name="amount" handleChange={this.handleChange} maxLength={9} />
                                         </div>
                                     </div>
@@ -113,15 +113,15 @@ class StorehouseProduct extends React.Component {
                                         <div className="col-sm-12">
                                             <div className="row">
                                                 <div className="col-sm-12">
-                                                    <InputCounter title="Розничная цена" placeholder="Введите цену" value={String(client.retailPrice ? client.retailPrice : '')}
+                                                    <InputCounter withCounter={true} title="Розничная цена" placeholder="Введите цену" value={String(client.retailPrice ? client.retailPrice : '')}
                                                                   name="retailPrice" handleChange={this.handleChange} maxLength={9} />
                                                 </div>
                                                 <div className="col-sm-12">
-                                                    <InputCounter title="Специальная цена" placeholder="Введите цену" value={String(client.specialPrice ? client.specialPrice : '')}
+                                                    <InputCounter withCounter={true} title="Специальная цена" placeholder="Введите цену" value={String(client.specialPrice ? client.specialPrice : '')}
                                                                   name="specialPrice" handleChange={this.handleChange} maxLength={9} />
                                                 </div>
                                             </div>
-                                            <InputCounter title="Цена поставщика" placeholder="Введите цену" value={String(client.supplierPrice ? client.supplierPrice : '')} name="supplierPrice"
+                                            <InputCounter withCounter={true} title="Цена поставщика" placeholder="Введите цену" value={String(client.supplierPrice ? client.supplierPrice : '')} name="supplierPrice"
                                                           handleChange={this.handleChange} maxLength={9} />
                                             <p>Поставщик</p>
                                             <select className="custom-select" name="supplierId" onChange={this.handleChange}
