@@ -163,7 +163,7 @@ class AddCategory extends React.Component {
                                 <div className="form-group mr-3 ml-3">
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Название категории" placeholder="Например: Лаки" value={client.categoryName}
+                                            <InputCounter withCounter={true} title="Название категории" placeholder="Например: Лаки" value={client.categoryName}
                                                           name="categoryName" handleChange={this.handleChange} maxLength={64} />
                                         </div>
                                     </div>

@@ -164,7 +164,7 @@ class AddBrand extends React.Component {
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <InputCounter title="Название бренда" placeholder="Например: БелКосметик" value={client.brandName}
-                                                          name="brandName" handleChange={this.handleChange} maxLength={64} />
+                                                          withCounter={true} name="brandName" handleChange={this.handleChange} maxLength={64} />
                                         </div>
                                     </div>
 

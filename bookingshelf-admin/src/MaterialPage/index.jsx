@@ -635,7 +635,7 @@ class Index extends Component {
                                         </div>
 
                                         <React.Fragment>
-                                            {products.map(product => {
+                                            {this.state.products.map(product => {
                                                 const activeCategory = categories && categories.find((item) => item.categoryId === product.categoryId);
                                                 const activeUnit = units && units.find((item) => item.unitId === product.unitId);
                                                 return (
@@ -708,7 +708,7 @@ class Index extends Component {
                                             </div>
                                         </div>
 
-                                        {categories.map(category => (
+                                        {this.state.categories.map(category => (
                                         <CategoryList
                                             openClientStats={this.openClientStats}
                                             deleteCategory={this.deleteCategory}
@@ -1181,11 +1181,14 @@ class Index extends Component {
 
         const {[defaultKey]: defaultList} = this.state;
 
+
         const searchServicesList = defaultList.filter((item) => {
             return fields.some((field) => {
                 return item[field].toLowerCase().includes(this[searchKey].value.toLowerCase())
             })
         });
+
+
 
         this.setState({
             search: true,
@@ -1203,7 +1206,6 @@ class Index extends Component {
     handleSearchMoving(fields = ['productName', 'description', 'productCode']) {
         const {products} = this.props.material;
         const {defaultStoreHouseProductsList: defaultListPlus, defaultExpenditureProductsList: defaultListMinus} = this.state;
-
         const searchListPlus = defaultListPlus.filter((item) => {
             const activeProduct = products && products.find((product) => item.productId === product.productId);
             return fields.some((field) => {

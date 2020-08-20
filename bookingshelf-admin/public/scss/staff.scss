@@ -986,7 +986,19 @@
                 width: 765px;
                 @media screen and (max-width: $mob-width) {
                   width: 100%;
+
+                  .float-right {
+                    float: unset !important;
+
+                    .buttons {
+                      button {
+                        margin: 0 auto !important;
+                      }
+                    }
+                  }
                 }
+
+
 
                 position: absolute;
                 top: 50%;

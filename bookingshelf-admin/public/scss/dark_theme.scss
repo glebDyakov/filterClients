@@ -1228,6 +1228,18 @@
 
   .calendar {
 
+    .cell.reserve {
+      background: #222736 !important;
+      .notes.color-grey {
+        background-color: unset !important;
+      }
+      .notes-container {
+        background: #222736 !important;
+        box-shadow: 0 2px 6px 0 rgba(0,0,0,0.5);
+
+      }
+    }
+
     .cell .notes-container-message {
       color: #495057 !important;
     }
@@ -1571,6 +1583,12 @@
       color: #fff;
     }
 
+    .no-holiday {
+      span {
+        color: #fff;
+      }
+    }
+
     .search-header-container {
       background: #2A3042 !important;
       border: none;
@@ -1676,6 +1694,7 @@
       }
     }
   }
+
 
 
   .material {

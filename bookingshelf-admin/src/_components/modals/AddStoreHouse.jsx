@@ -90,7 +90,7 @@ class AddStoreHouse extends React.Component {
                                 <div className="form-group mr-3 ml-3">
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <InputCounter title="Название склада" placeholder="Например: склад Ашан на ул.Горького 19" value={client.storehouseName}
+                                            <InputCounter withCounter={true} title="Название склада" placeholder="Например: склад Ашан на ул.Горького 19" value={client.storehouseName}
                                                           name="storehouseName" handleChange={this.handleChange} maxLength={32} />
                                         </div>
                                     </div>

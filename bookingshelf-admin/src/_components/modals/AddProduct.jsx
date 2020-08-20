@@ -188,6 +188,7 @@ class AddProduct extends React.Component {
                                         <InputCounter title="Наименование" placeholder='Например: Средний шампунь'
                                                       value={client.productName}
                                                       name="productName" handleChange={this.handleChange}
+                                                      withCounter={true}
                                                       maxLength={128}/>
                                         <div className="row">
                                             <div className="col-sm-4">
@@ -205,6 +206,7 @@ class AddProduct extends React.Component {
                                                               placeholder="Введите номинальный объем"
                                                               value={client.nominalAmount && String(client.nominalAmount)}
                                                               name="nominalAmount" handleChange={this.handleChange}
+                                                              withCounter={true}
                                                               maxLength={9}/>
 
                                             </div>
@@ -212,6 +214,7 @@ class AddProduct extends React.Component {
                                                 <InputCounter title="Код товара" placeholder="Введите код"
                                                               value={client.productCode}
                                                               name="productCode" handleChange={this.handleChange}
+                                                              withCounter={true}
                                                               maxLength={7}/>
                                             </div>
                                         </div>
@@ -247,11 +250,13 @@ class AddProduct extends React.Component {
                                                       placeholder="Введите количество"
                                                       value={String(client.minAmount ? client.minAmount : '')}
                                                       name="minAmount"
+                                                      withCounter={true}
                                                       handleChange={this.handleChange} maxLength={9}/>
                                     </div>
                                     <div className="col-sm-8">
                                         <InputCounter title="Описание" placeholder="Описание" value={client.description}
                                                       name="description" handleChange={this.handleChange}
+                                                      withCounter={true}
                                                       maxLength={128}/>
                                     </div>
                                 </div>
