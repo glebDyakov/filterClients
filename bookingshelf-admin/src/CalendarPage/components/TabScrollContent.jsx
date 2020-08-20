@@ -8,15 +8,18 @@ import Backend from 'react-dnd-html5-backend';
 import DragVertController from "./DragVertController";
 import BaseCell from "./BaseCell";
 import {getCurrentCellTime} from "../../_helpers";
+import {staffActions} from "../../_actions";
 
 class TabScroll extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            numbers: []
+            numbers: [],
+            clDate: false
         }
         this.getHours24 = this.getHours24.bind(this);
         this.getIsPresent = this.getIsPresent.bind(this);
+        this.isClosed = this.isClosed.bind(this);
     }
 
     componentDidMount() {
@@ -25,13 +28,29 @@ class TabScroll extends React.Component {
         }
     }
 
+
     componentWillReceiveProps(newProps) {
         $('.msg-client-info').css({'visibility': 'visible', 'cursor': 'default'});
         if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
             this.getHours24(newProps.timetable);
         }
+
+        if (newProps.selectedDays) {
+            this.isClosed(newProps.selectedDays);
+        }
     }
 
+    isClosed(selectedDays) {
+        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.some((st) => {
+            return moment(moment(selectedDays[0]).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
+        });
+
+        console.log(moment(selectedDays[0]).subtract(-1, "minute").format("DD MMMM H:mm") ,clDate)
+
+        this.setState({
+            clDate
+        })
+    }
 
     getHours24(timetable) {
         const {booktimeStep} = this.props.company.settings;
@@ -81,11 +100,6 @@ class TabScroll extends React.Component {
         const {booktimeStep} = company.settings
         const step = booktimeStep / 60;
 
-
-        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.some((st) => {
-            return moment(selectedDays[0]).isBetween(moment(st.startDateMillis).subtract(1, "days"), moment(st.endDateMillis));
-        });
-
         // console.log(clDate, moment(selectedDays).format("DD/MMMM"));
 
         let listClass = 'list-15'
@@ -112,7 +126,7 @@ class TabScroll extends React.Component {
                             <div key={`number-${key}`} className={"tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
                                 {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
                                 <TabScrollLeftMenu time={time}/>
-                                {availableTimetable && !clDate && availableTimetable.map((workingStaffElement, staffKey) =>
+                                {availableTimetable && selectedDays && this.props.closedDates && !this.state.clDate && availableTimetable.map((workingStaffElement, staffKey) =>
                                     <BaseCell
                                         checkForCostaffs={checkForCostaffs}
                                         getCellTime={getCellTime}
