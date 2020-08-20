@@ -385,95 +385,106 @@ class Index extends Component {
 
         const pdfMarkup = <React.Fragment>
 
-            {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
-                <button className="inv-date" style={{
-                    backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
-                    color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff' : '#000'
-                }}
-                        data-target=".make-payment-modal"
-                        data-toggle="modal"
-                        onClick={() => {
-                            this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
-                            this.repeatPayment(chosenInvoice.invoiceId)
-                        }}>
-                    {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                        (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                </button>
-            </div>}
+
             <div id="divIdToPrint">
-                <div className="account-info col-12">
-                    <h3>Счёт {chosenInvoice.customId}</h3>
-                    <p style={{fontSize: "1.2em"}}>{moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</p>
-                </div>
-                <div className="customer-seller">
-                    {authentication.user && <div className="col-md-6 col-12 customer">
+                <div className="row customer-seller">
+                    {authentication.user && <div className="col-md-4 col-12 customer">
                         <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
-                        <p>Представитель: {authentication.user.profile ? authentication.user.profile.lastName : ''} {authentication.user.profile.firstName}</p>
-                        <p>Адрес: {authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</p>
+                        <p>Представитель: <strong>{authentication.user.profile ? authentication.user.profile.lastName : ''} {authentication.user.profile.firstName}</strong></p>
+                        <p>Адрес: <strong>{authentication.user.companyAddress1 || authentication.user.companyAddress2 || authentication.user.companyAddress3}</strong></p>
                     </div>}
 
-                    <div className="col-md-6 col-12 seller">
+                    <div className="col-md-4 col-12 seller">
                         <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>
-                        <p>Адрес: 220034, Беларусь, Минск, Марьевская 7а-1-6</p>
-                        <p>Тел +375 44 5655557</p>
+                        <p>Адрес: <strong>220034, Беларусь, Минск, Марьевская 7а-1-6</strong></p>
+                        <p>Телефон: <strong>+375 44 5655557</strong></p>
+                    </div>
+
+                    <div className="col-md-4 col-12 payments-type">
+                        <p>Способ оплаты: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
+                        {chosenInvoice.invoiceStatus !== 'PAID' && <p>
+                            Заплатить до: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                        </p>}
+                        <p>Статус: <span className="status"
+                            style={{color: chosenInvoice.invoiceStatus === 'PAID' ? '#34C38F' : '#50A5F1'}}>{chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                            (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                    </span>
+                        </p>
                     </div>
                 </div>
 
-                <div className="payments-type">
-                    <p>Способ оплаты: Credit Card / WebMoney / Bank Transfer</p>
-                    {chosenInvoice.invoiceStatus !== 'PAID' && <p>
-                        <strong>Заплатить до: {moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
-                    </p>}
-                    <p>
-                        Статус: <span
-                        style={{fontWeight: chosenInvoice.invoiceStatus === 'PAID' ? 'bold' : 'normal'}}>{chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                        (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
-                    </span>
-                    </p>
-                </div>
+                <hr/>
 
                 <div className="table">
-                    <div className="table-header">
-                        <div className="table-description"><p>Описание</p></div>
-                        <div className="table-count"><p
-                            className="default">Количество {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
+                    <div className="table-header row">
+                        <div className="col-4 table-description"><p>Описание:</p></div>
+                        <div className="col-4 table-count"><p
+                            className="default">Количество:</p>
                             <p
                                 className="mob">Кол-во {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
                         </div>
-                        <div className="table-price"><p>Стоимость</p></div>
+                        <div className="col-4 table-price"><p>Стоимость:</p></div>
                     </div>
                     {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map(packet => {
                         let name = packets && packets.find(item => item.packetId === packet.packetId)
                         return (
-                            <div className="table-row">
-                                <div className="table-description">
-                                    <p>{name.packetName} {chosenPacket.packetType !== 'SMS_PACKET' ? '' : `, ${chosenPacket.smsAmount} sms`}</p>
+                            <div className="table-row row">
+                                <div className="col-4 table-description">
+                                    <p>{name && name.packetName} {chosenPacket.packetType !== 'SMS_PACKET' ? '' : `, ${chosenPacket.smsAmount} sms`}</p>
                                 </div>
-                                <div className="table-count"><p>{packet.amount}</p>
+                                <div className="col-4 table-count"><p>{packet.amount}</p>
                                 </div>
-                                <div className="table-price">
+                                <div className="col-4 table-price">
                                     <p>{packet.sum} {packet.currency}</p></div>
                             </div>
                         );
                     })}
                 </div>
 
-                <div className="result-price">
-                    <div>
-                        <p>Общая сумма</p>
-                    </div>
-                    <div>
-                        <p>{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
-                    </div>
-                </div>
-                <div className="result-price">
-                    <div>
-                        <p>Без НДС</p>
-                    </div>
-                    <div>
-                        <p>0.00 {chosenInvoice.currency}</p>
-                    </div>
-                </div>
+                <hr/>
+
+               <div className="row footer-container">
+                   <div className="col-12 col-md-4 result-price-container">
+                       <div className="result-price">
+                           <div>
+                               <p>Общая сумма:</p>
+                           </div>
+                           <div>
+                               <p className="bold-text">{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
+                           </div>
+                       </div>
+                   </div>
+                   <div className="col-12 col-md-4 result-price-container">
+                       <div className="result-price">
+                           <div>
+                               <p>Без НДС</p>
+                           </div>
+                           <div>
+                               <p className="bold-text">0.00 {chosenInvoice.currency}</p>
+                           </div>
+                       </div>
+                   </div>
+                   <div className="col-12 col-md-4 payment-button-container">
+                       <p className="download"
+                          onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                       {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
+                           <button className="inv-date" style={{
+                               backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
+                               color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff' : '#000'
+                           }}
+                                   data-target=".make-payment-modal"
+                                   data-toggle="modal"
+                                   onClick={() => {
+                                       this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId))
+                                       this.repeatPayment(chosenInvoice.invoiceId)
+                                   }}>
+                               {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
+                                   (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' : (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))}
+                           </button>
+                       </div>}
+
+                   </div>
+               </div>
             </div>
         </React.Fragment>
 
@@ -794,27 +805,27 @@ class Index extends Component {
                                 // !!0 && list.map(invoice => {
                                 //  return(
 
+                                    <div className="chosen-invoice-wrapper">
+                                        <div className="chosen-invoice">
+                                            <div className="modal-header">
+                                                <h4 className="modal-title">Счёт {chosenInvoice.customId}; {moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')}</h4>
+                                                <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
+                                                     className="close" style={{height: "50px"}}
+                                                     onClick={() => this.closeModalActs()}
+                                                />
+                                            </div>
+                                            <div className="act-body-wrapper">
+                                                <div className="acts-body">
 
-                                <div className="chosen-invoice">
-                                    <div className="modal-header">
-                                        <h4 className="modal-title">Счёт</h4>
-                                        <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
-                                             className="close" style={{height: "50px"}}
-                                             onClick={() => this.closeModalActs()}
-                                        />
-                                    </div>
-                                    <div className="act-body-wrapper">
-                                        <div className="acts-body">
+                                                    {pdfMarkup}
 
-                                            {pdfMarkup}
 
-                                            <p className="download"
-                                               onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                                                </div>
+
+                                            </div>
+
                                         </div>
-
                                     </div>
-
-                                </div>
                                     // );})
                                 }
                             </div>

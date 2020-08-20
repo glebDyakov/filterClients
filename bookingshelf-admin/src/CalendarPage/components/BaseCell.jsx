@@ -184,7 +184,7 @@ class BaseCell extends React.Component {
             workingStaffElement,
             handleUpdateClient,
             updateAppointmentForDeleting,
-            closedDates,
+            clDate,
             selectedDays
         } = this.props;
 
@@ -215,9 +215,12 @@ class BaseCell extends React.Component {
 
         let notExpired = cellType === cellTypes.CELL_WHITE;
         const day = getCurrentCellTime(selectedDays, selectedDaysKey, '00:00');
-        let clDate = closedDates && closedDates.some((st) =>
-            parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));
+        // let clDate = closedDates && closedDates.some((st) =>
+        //     // parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+        //     // parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+        //     moment(day).startOf('day').isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day")));
+        // ;
+
         const wrapperClassName = 'cell cell-height col-tab'
             + (notExpired ? '' : ' expired')
             + (clDate ? ' closedDateTick' : '');
@@ -262,7 +265,7 @@ function mapStateToProps(state) {
         company,
         appointments,
         reservedTime,
-        selectedDays
+        selectedDays,
     }
 }
 

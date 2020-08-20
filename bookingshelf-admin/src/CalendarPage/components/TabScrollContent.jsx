@@ -32,6 +32,7 @@ class TabScroll extends React.Component {
         }
     }
 
+
     getHours24(timetable) {
         const {booktimeStep} = this.props.company.settings;
         const step = booktimeStep / 60;
@@ -80,6 +81,13 @@ class TabScroll extends React.Component {
         const {booktimeStep} = company.settings
         const step = booktimeStep / 60;
 
+
+        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.some((st) => {
+            return moment(selectedDays[0]).isBetween(moment(st.startDateMillis).subtract(1, "days"), moment(st.endDateMillis));
+        });
+
+        // console.log(clDate, moment(selectedDays).format("DD/MMMM"));
+
         let listClass = 'list-15'
         switch (step) {
             case 5:
@@ -104,7 +112,7 @@ class TabScroll extends React.Component {
                             <div key={`number-${key}`} className={"tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
                                 {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
                                 <TabScrollLeftMenu time={time}/>
-                                {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) =>
+                                {availableTimetable && !clDate && availableTimetable.map((workingStaffElement, staffKey) =>
                                     <BaseCell
                                         checkForCostaffs={checkForCostaffs}
                                         getCellTime={getCellTime}
