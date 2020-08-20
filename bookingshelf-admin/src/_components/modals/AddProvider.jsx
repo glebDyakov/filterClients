@@ -215,12 +215,12 @@ class AddProvider extends React.Component {
                                             <option value='UKR'>Украина</option>
                                             <option value='RUS'>Россия</option>
                                         </select>
-                                        <InputCounter title="Улица" placeholder="Введите улицу" value={client.street}
-                                                      name="street" handleChange={this.handleChange} withCounter={true} maxLength={64} />
-                                    </div>
-                                    <div className="col-sm-4">
                                         <InputCounter title="Город" placeholder="Введите город" value={client.city} name="city"
                                                       handleChange={this.handleChange} withCounter={true} maxLength={32} />
+                                    </div>
+                                    <div className="col-sm-4">
+                                        <InputCounter title="Улица" placeholder="Введите улицу" value={client.street}
+                                                      name="street" handleChange={this.handleChange} withCounter={true} maxLength={64} />
 
                                         <div className="row">
                                             <div className="col-sm-6">
@@ -292,7 +292,7 @@ class AddProvider extends React.Component {
                                                                           emailIsValid: isValidEmailAddress(client.contactPersons[index].email)
                                                                       })}
                                                                       extraClassName={'' + (!isValidEmailAddress(client.contactPersons[index].email) && client.contactPersons[index].email!=='' ? ' redBorder' : '')}
-                                                                      handleChange={(e) => this.handleContactChange(e, index)} maxLength={128} />
+                                                                      handleChange={(e) => this.handleContactChange(e, index)} maxLength={64} />
                                                     </div>
                                                 </div>
                                             </div>
