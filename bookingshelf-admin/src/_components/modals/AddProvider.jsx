@@ -192,15 +192,16 @@ class AddProvider extends React.Component {
                                 <div className="row">
                                     <div className="col-sm-4">
                                         <InputCounter title="Наименование" placeholder='Например: ООО "Поставка Бест"' value={client.supplierName}
-                                                      name="supplierName" handleChange={this.handleChange} maxLength={64} />
+                                                      name="supplierName" handleChange={this.handleChange} withCounter={true} maxLength={64} />
 
                                         <InputCounter title="Веб-сайт" placeholder="www.website.com" value={client.webSite}
-                                                      name="webSite" handleChange={this.handleChange} maxLength={128} />
+                                                      name="webSite" handleChange={this.handleChange} withCounter={true} maxLength={128} />
                                     </div>
                                     <div className="col-sm-8">
                                         <p>Описание</p>
                                         <textarea placeholder="Например: Поставщик шампуней" value={client.description}
                                                   name="description" onChange={this.handleChange} maxLength={128} />
+                                        <span className="company_counter" style={{ bottom: '27px', right: '25px', position: 'absolute', opacity: 0.7}}>{client.description ? client.description.length : 0}/{128}</span>
                                     </div>
                                 </div>
                                 <hr/>
@@ -215,20 +216,20 @@ class AddProvider extends React.Component {
                                             <option value='RUS'>Россия</option>
                                         </select>
                                         <InputCounter title="Улица" placeholder="Введите улицу" value={client.street}
-                                                      name="street" handleChange={this.handleChange} maxLength={64} />
+                                                      name="street" handleChange={this.handleChange} withCounter={true} maxLength={64} />
                                     </div>
                                     <div className="col-sm-4">
                                         <InputCounter title="Город" placeholder="Введите город" value={client.city} name="city"
-                                                      handleChange={this.handleChange} maxLength={32} />
+                                                      handleChange={this.handleChange} withCounter={true} maxLength={32} />
 
                                         <div className="row">
                                             <div className="col-sm-6">
                                                 <InputCounter title="Здание, офис" placeholder="Дом 205" value={client.office}
-                                                              name="office" handleChange={this.handleChange} maxLength={32} />
+                                                              name="office" withCounter={true} handleChange={this.handleChange} maxLength={32} />
                                             </div>
                                             <div className="col-sm-6">
                                                 <InputCounter title="Почтовый код" placeholder="Введите код" value={client.zipCode}
-                                                              name="zipCode" handleChange={this.handleChange} maxLength={12} />
+                                                              name="zipCode" withCounter={true} handleChange={this.handleChange} maxLength={12} />
                                             </div>
                                         </div>
                                     </div>
@@ -244,11 +245,11 @@ class AddProvider extends React.Component {
                                                 <div className="row">
                                                     <div className="col-sm-6 first-name">
                                                         <InputCounter title="Имя" placeholder="" value={contactPerson.firstName}
-                                                                      name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                                                      withCounter={true} name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                                     </div>
                                                     <div className="col-sm-6">
                                                         <InputCounter title="Фамилия" placeholder="" value={contactPerson.lastName}
-                                                                      name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                                                      withCounter={true} name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -285,7 +286,7 @@ class AddProvider extends React.Component {
                                                         />
                                                     </div>
                                                     <div className="col-sm-4">
-                                                        <InputCounter type="email" placeholder="mail@example.com" value={client.contactPersons[index].email}
+                                                        <InputCounter withCounter={true} type="email" placeholder="mail@example.com" value={client.contactPersons[index].email}
                                                                       name="email" title="Email"
                                                                       handleKeyUp={() => this.setState({
                                                                           emailIsValid: isValidEmailAddress(client.contactPersons[index].email)

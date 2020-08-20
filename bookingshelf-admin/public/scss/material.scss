@@ -586,7 +586,6 @@
       font-size: 13px !important;
       line-height: 18px !important;
       color: #2A3042 !important;
-      padding: 9px 10px !important;
       border: none;
       border-radius: 2px;
       background: #F3F3F9;
@@ -711,11 +710,15 @@
     margin: 0!important;
   }
 
+  .company_counter {
+    bottom: 37px !important;
+  }
+
   input{
     font-size: 13px !important;
     line-height: 18px !important;
     color: #2A3042 !important;
-    padding: 9px 10px !important;
+    padding: 9px 10px;
     border: none;
     border-radius: 2px;
     background: #F3F3F9;
@@ -795,6 +798,11 @@
   .form-group{
     padding: 20px 65px 30px 30px;
     margin: 0;
+
+    .company_counter {
+      bottom: 27px !important;
+    }
+
     @media (max-width: $mob-width) {
       padding: 10px 5px;
     }
@@ -802,7 +810,7 @@
       font-size: 13px !important;
       line-height: 18px !important;
       color: #2A3042 !important;
-      padding: 9px 10px !important;
+      padding: 9px 10px;
       border: none;
       border-radius: 2px;
       background: #F3F3F9;
