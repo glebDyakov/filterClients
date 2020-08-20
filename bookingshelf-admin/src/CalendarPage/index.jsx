@@ -156,6 +156,8 @@ class Index extends PureComponent {
             return false;
         }
 
+
+
         this.props.dispatch(cellActions.togglePayload({ selectedDays: this.state.selectedDays }))
 
         if (this.props.authentication.loginChecked) {
@@ -171,6 +173,7 @@ class Index extends PureComponent {
         const { startTime, endTime } = this.getSelectedTimeRange(selectedDays)
 
         this.getTimetable(null, moment(selectedDays[0]), true);
+
 
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
@@ -246,6 +249,8 @@ class Index extends PureComponent {
 
         $('.notes').css({'cursor': 'default'});
         $('textarea').css({'cursor': 'default'});
+
+
 
 
         if (prevState.typeSelected !== this.state.typeSelected) {

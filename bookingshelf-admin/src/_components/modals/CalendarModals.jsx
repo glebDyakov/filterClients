@@ -143,11 +143,17 @@ class CalendarModals extends Component {
 
         const {newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient} = this.state;
 
+        const clDate = selectedDay && this.props.staff && this.props.staff.closedDates && this.props.staff.closedDates.some((st) => {
+            return moment(moment(selectedDay).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
+        });
+
+
         return (<React.Fragment>
-                {type === 'day' && workingStaff.timetable && workingStaff.timetable[0] &&
+                {type === 'day' && !clDate && workingStaff.timetable && workingStaff.timetable[0] &&
                 <div>
                     <a className={"add" + (this.state.handleOpen ? ' rotate' : '')} href="#"
-                       onClick={this.handleOpenModal}/>
+                                   onClick={this.handleOpenModal}/>
+
                     <div className={"buttons-container" + (this.state.handleOpen ? '' : ' hide')}>
                         <div className="buttons">
                             <button type="button"
