@@ -1208,13 +1208,13 @@ class Index extends Component {
         const {defaultStoreHouseProductsList: defaultListPlus, defaultExpenditureProductsList: defaultListMinus} = this.state;
         const searchListPlus = defaultListPlus.filter((item) => {
             const activeProduct = products && products.find((product) => item.productId === product.productId);
-            return fields.some((field) => {
+            return activeProduct && fields.some((field) => {
                 return String(activeProduct[field]).toLowerCase().includes(this.movingSearch.value.toLowerCase())
             })
         });
         const searchListMinus = defaultListMinus.filter((item) => {
             const activeProduct = products && products.find((product) => item.productId === product.productId);
-            return fields.some((field) => {
+            return activeProduct && fields.some((field) => {
                 return String(activeProduct[field]).toLowerCase().includes(this.movingSearch.value.toLowerCase())
             })
         });
