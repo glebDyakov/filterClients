@@ -1633,6 +1633,32 @@
 
 
   #payments {
+
+    .chosen-invoice-wrapper {
+      .chosen-invoice {
+        background: #222736 !important;
+        .modal-header {
+          background-color: #2A3042 !important;
+          border: none;
+          h4 {
+            color: #fff !important;
+          }
+
+        }
+
+        .acts-body {
+          background-color: #2A3042 !important;
+          p, strong {
+            color: #fff !important;
+          }
+
+          .download {
+            color: #50A5F1 !important;
+          }
+        }
+      }
+    }
+
     .current-packet {
       color: #fff;
     }
