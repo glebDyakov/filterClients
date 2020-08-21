@@ -168,10 +168,8 @@ class AddBlackList extends React.Component {
                                 </div>
 
                                 <div className="buttons">
-                                    <button onClick={this.addUsersToBlackList} className="button">Сохранить
-                                    </button>
+                                    <button onClick={this.addUsersToBlackList} className="button">Сохранить</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
