@@ -41,11 +41,9 @@ class TabScroll extends React.Component {
     }
 
     isClosed(selectedDays) {
-        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.some((st) => {
+        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.length > 0 && this.props.closedDates.some((st) => {
             return moment(moment(selectedDays[0]).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
-        });
-
-        console.log(moment(selectedDays[0]).subtract(-1, "minute").format("DD MMMM H:mm") ,clDate)
+        }) || false;
 
         this.setState({
             clDate
@@ -126,7 +124,7 @@ class TabScroll extends React.Component {
                             <div key={`number-${key}`} className={"tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
                                 {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
                                 <TabScrollLeftMenu time={time}/>
-                                {availableTimetable && selectedDays && this.props.closedDates && !this.state.clDate && availableTimetable.map((workingStaffElement, staffKey) =>
+                                {availableTimetable && selectedDays && !this.state.clDate && availableTimetable.map((workingStaffElement, staffKey) =>
                                     <BaseCell
                                         checkForCostaffs={checkForCostaffs}
                                         getCellTime={getCellTime}
