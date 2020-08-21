@@ -962,8 +962,6 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      max-height: 80vh;
-      overflow-y: auto;
       width: 70%;
       max-width: 1132px;
       transform: translate(-50%, -50%);
@@ -973,7 +971,6 @@
       @media screen and (max-width: $mob-width) {
         max-width: 100%;
         width: 100% !important;
-        max-height: 95vh;
       }
 
       .modal-header {
@@ -1008,9 +1005,15 @@
       }
 
       .acts-body {
+        max-height: 70vh;
+        overflow: auto;
         margin-top: 20px;
         background: #FFFFFF;
         border-radius: 0 0 10px 10px;
+
+        @media screen and (max-width: $mob-width) {
+          max-height: 80vh;
+        }
 
 
       }
