@@ -46,13 +46,10 @@
   margin-top: 7px;
 
 
-
-
-  .content-pages-bg{
+  .content-pages-bg {
     background: #FFFFFF;
     border-radius: 0;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
-
 
 
     strong {
@@ -64,11 +61,11 @@
 
       color: #495057;
 
-       @media screen and (max-width: $mob-width) {
-         &.sub-title {
-           margin-top: 15px;
-         }
-       }
+      @media screen and (max-width: $mob-width) {
+        &.sub-title {
+          margin-top: 15px;
+        }
+      }
     }
 
     span {
@@ -654,12 +651,11 @@ input {
   }
 
 
-
   .company_fields {
     background: #FFFFFF;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
     border: none;
-    border-radius: 0!important;
+    border-radius: 0 !important;
 
     &:not(:first-child) {
       margin-top: 10px;
@@ -677,7 +673,7 @@ input {
     line-height: 18px;
     /* identical to box height */
 
-background: none;
+    background: none;
     border: none;
     padding: 0;
     color: #50A5F1;
@@ -687,6 +683,7 @@ background: none;
   .buttons-container-setting {
     width: fit-content;
     margin-top: 35px;
+
     .button {
       font-weight: normal;
       font-size: 16px;
@@ -966,7 +963,6 @@ input {
   .sidebar-notification-wrapper {
     opacity: 1;
   }
-
 
 
   @media screen {
@@ -1751,7 +1747,6 @@ input {
           }
 
 
-
           .check-box-container {
 
 
@@ -2059,7 +2054,7 @@ input {
 
   .no-scroll {
     margin: 0 0 0 300px;
-   // transition: all ease-in-out 0.3s;
+    // transition: all ease-in-out 0.3s;
     z-index: 3;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
     background-color: #fff;
@@ -2970,9 +2965,11 @@ input {
   .modal-content {
     margin: 0 auto;
     min-width: 300px;
+
     .buttons-container-setting {
       display: flex;
       justify-content: center;
+
       button {
         background: #50A5F1;
         opacity: 0.7;
@@ -3197,9 +3194,11 @@ input {
     &.light-green {
       background-color: $light-green-color;
     }
+
     &.violet {
       background-color: $violet-color;
     }
+
     &.sky {
       background-color: $sky-color;
     }
@@ -3207,9 +3206,11 @@ input {
     &.white {
       background-color: $white-color;
     }
+
     &.rose {
       background-color: $rose-color;
     }
+
     &.yellow {
       background-color: #f5cc1f;
     }
@@ -3420,7 +3421,7 @@ select {
 .staff-day-picker {
   margin-left: -17px;
   min-width: 340px;
-  
+
   &.analytic-day-picker {
     margin-left: 0;
     @media (max-width: $tablet-width) {
@@ -3664,8 +3665,6 @@ select {
   height: 100%;
 
 
-
-
   .button-field-mob {
 
     display: none !important;
@@ -3758,6 +3757,7 @@ select {
       }
     }
   }
+
   .down-button {
     .approveAll {
       width: 100%;
@@ -3928,7 +3928,7 @@ select {
                 img {
                   width: 18px !important;
                   height: 18px !important;
-                  margin: 0 10px 0 0!important;
+                  margin: 0 10px 0 0 !important;
                 }
               }
             }
@@ -4086,7 +4086,6 @@ select {
   .modal-dialog {
     max-width: fit-content !important;
   }
-
 
 
   @media (max-width: $mob-width) {
@@ -4603,10 +4602,10 @@ select {
       margin: 0 auto 15px;
       max-width: 352px;
     }
+
     .all-visits-container {
       background: none;
       padding: 15px 0;
-
 
 
       strong {
@@ -4636,7 +4635,7 @@ select {
 
     .client-info {
       max-height: calc(100% - 180px);
-      border:none;
+      border: none;
       border-radius: 0;
       background: #F8F8FB;
 
@@ -5562,6 +5561,7 @@ textarea {
           background-color: $light-green-color;
         }
       }
+
       .violet {
         color: $violet-color;
 
@@ -5634,6 +5634,7 @@ textarea {
       background-color: $light-green-color;
     }
   }
+
   .violet {
     color: $violet-color;
 
@@ -5641,6 +5642,7 @@ textarea {
       background-color: $violet-color;
     }
   }
+
   .sky {
     color: $sky-color;
 
@@ -5656,6 +5658,7 @@ textarea {
       background-color: $white-color;
     }
   }
+
   .rose {
     color: $rose-color;
 
@@ -6078,7 +6081,6 @@ textarea {
     margin: auto;
   }
 }
-
 
 
 .form-group {
@@ -6644,7 +6646,6 @@ textarea {
   }
 
 
-
   .tab-content-list {
     position: relative;
 
@@ -6659,7 +6660,6 @@ textarea {
     .red-date {
       color: #F46A6A !important;
     }
-
 
 
     .clientEditWrapper {
@@ -7191,7 +7191,7 @@ textarea {
 
 .modal---modal-overlay---3D5Nr {
   z-index: 15 !important;
-  background-color: rgba(0,0,0,0.5) !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 
@@ -7320,6 +7320,8 @@ textarea {
 
       .color-circle {
         margin: 0 12px 0 10px;
+        border: 1px solid #eeeeee;
+        box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.3);
       }
     }
 
@@ -7373,10 +7375,12 @@ textarea {
     .form-group {
       margin-bottom: 0 !important;
     }
+
     .form-user-setting {
       max-height: 615px;
       overflow-y: auto;
       overflow-x: hidden;
+
       .check-box {
         label {
           padding-left: 70px !important;

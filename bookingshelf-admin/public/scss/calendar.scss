@@ -485,6 +485,12 @@
       //  content: '';
       //}
 
+      &.clDate {
+        &::before {
+          content: unset !important;
+        }
+      }
+
       .present-cell {
         position: relative;
       }

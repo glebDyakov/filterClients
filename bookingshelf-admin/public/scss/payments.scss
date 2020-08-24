@@ -1118,6 +1118,10 @@
 
       p {
         min-height: 80px;
+
+        @media screen and (max-width: $mob-width) {
+          min-height: 40px;
+        }
       }
 
       p, strong {
