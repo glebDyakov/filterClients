@@ -23,8 +23,8 @@ class NewStaff extends React.Component {
         super(props);
 
         this.state = {
-            selectedStartDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.startDateOffMilis).add(1, 'day').utc().toDate() : moment().utc().toDate(),
-            selectedEndDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.endDateOffMilis).subtract(1, 'day').utc().toDate() : moment().utc().toDate(),
+            selectedStartDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.startDateOffMilis).startOf("day").utc().toDate() : moment().utc().toDate(),
+            selectedEndDayOff: (props.edit && props.staff_working.startDateOffMilis < props.staff_working.endDateOffMilis) ? moment(props.staff_working.endDateOffMilis).endOf("day").utc().toDate() : moment().utc().toDate(),
             staff: props.edit && props.edit ? props.staff_working : {
                 "firstName": "",
                 "lastName": "",
@@ -611,22 +611,27 @@ class NewStaff extends React.Component {
 
         let daySelected = moment(day);
 
+
         const updatedState = {};
         if (dayKey === 'selectedStartDayOff') {
-            updatedState.selectedStartDayOff = daySelected.utc().startOf('day').toDate();
-            updatedState.selectedEndDayOff = daySelected.add(1, 'day').utc().startOf('day').toDate();
+
+            updatedState.selectedStartDayOff = daySelected.startOf('day').toDate();
+            updatedState.selectedEndDayOff = daySelected.endOf('day').toDate();
+
             updatedState.staff = {
                 ...staff,
-                startDateOffMilis: parseInt(moment(day).subtract(1, 'day').format('x')),
-                endDateOffMilis: parseInt(moment(day).add(2, 'day').format('x'))
+                startDateOffMilis: parseInt(moment(day).startOf("day").format('x')),
+                endDateOffMilis: parseInt(moment(day).endOf("day").format('x'))
             }
         } else {
-            updatedState.selectedEndDayOff = daySelected.utc().startOf('day').toDate();
+            updatedState.selectedEndDayOff = daySelected.endOf('day').toDate();
+
             updatedState.staff = {
                 ...staff,
-                endDateOffMilis: parseInt(moment(day).add(1, 'day').format('x'))
+                endDateOffMilis: parseInt(moment(day).endOf("day").format('x'))
             }
         }
+
 
         this.setState(updatedState);
     }
@@ -639,20 +644,21 @@ class NewStaff extends React.Component {
         if (this.state.staff.startDateOffMilis === this.state.staff.endDateOffMilis) {
             updatedState.staff = {
                 ...staff,
-                startDateOffMilis: parseInt(moment().subtract(1, 'day').format('x')),
-                endDateOffMilis: parseInt(moment().add(2, 'day').format('x'))
+                startDateOffMilis: parseInt(moment().startOf("day").format('x')),
+                endDateOffMilis: parseInt(moment().endOf("day").format('x'))
             };
-            updatedState.selectedStartDayOff = moment().utc().startOf('day').toDate();
-            updatedState.selectedEndDayOff = moment().add(1, 'day').utc().startOf('day').toDate();
+            updatedState.selectedStartDayOff = moment().startOf('day').toDate();
+            updatedState.selectedEndDayOff = moment().endOf('day').toDate();
         } else {
             updatedState.staff = {
                 ...staff,
                 startDateOffMilis: parseInt(moment().format('x')),
                 endDateOffMilis: parseInt(moment().format('x'))
             };
-            updatedState.selectedStartDayOff = moment().utc().startOf('day').toDate();
-            updatedState.selectedEndDayOff = moment().utc().startOf('day').toDate();
+            updatedState.selectedStartDayOff = moment().startOf('day').toDate();
+            updatedState.selectedEndDayOff = moment().endOf('day').toDate();
         }
+
         this.setState(updatedState);
     }
 
