@@ -1442,6 +1442,7 @@ input {
     background: #fff;
     padding: 8px 6px;
     margin-bottom: 1px;
+    cursor: pointer;
 
     a {
       display: flex;
@@ -3952,8 +3953,7 @@ select {
   height: 90vh;
 
   .not-approved-list {
-    padding-bottom: 61px;
-    height: calc(100% - 102px);
+    height: calc(100% - 150px);
     @media (max-width: $laptop-width) {
       height: calc(100% - 110px);
     }
@@ -4646,11 +4646,6 @@ select {
       background: #F8F8FB;
       overflow-x: hidden;
       max-height: calc(100% - 40px);
-      padding-bottom: 190px;
-
-      @media screen and (max-height: $mob-width) {
-        max-height: calc(100% - 205px);
-      }
 
       &::-webkit-scrollbar {
         width: 2px;
