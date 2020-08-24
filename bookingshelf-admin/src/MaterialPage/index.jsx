@@ -117,6 +117,8 @@ class Index extends Component {
             newStaffByMail: false,
             newStaff: false,
 
+            productsCurrentPage: 1,
+
             isOpenDropdownMenu: false,
 
             products: props.material.products,
@@ -332,13 +334,21 @@ class Index extends Component {
             document.title = "Категории | Онлайн-запись"
         }
         if (tab === 'products') {
-            document.title = "Товары| Онлайн-запись"
+            document.title = "Товары | Онлайн-запись"
+            this.props.dispatch(materialActions.getProducts(this.state.productsCurrentPage));
+
         }
         if (tab === 'units') {
-            document.title = "Еденицы измерения | Онлайн-запись"
+            document.title = "Единицы измерения | Онлайн-запись"
         }
         if (tab === 'store-houses') {
             document.title = "Склады | Онлайн-запись"
+        }
+
+        if(tab === 'moving') {
+            document.title = "Движение товаров | Онлайн-запись"
+            this.props.dispatch(materialActions.getProducts());
+
         }
 
         history.pushState(null, '', '/material/' + tab);
@@ -347,7 +357,11 @@ class Index extends Component {
     handlePageClick(data) {
         const {selected} = data;
         const currentPage = selected + 1;
+        this.setState({
+            productsCurrentPage: currentPage
+        });
         this.props.dispatch(materialActions.getProducts(currentPage));
+
     };
 
     toggleProvider(supplier_working) {
