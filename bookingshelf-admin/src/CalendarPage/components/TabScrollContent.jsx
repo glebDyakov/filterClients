@@ -121,7 +121,7 @@ class TabScroll extends React.Component {
                         const isPresent = this.getIsPresent(currentCellTime);
 
                         return (
-                            <div key={`number-${key}`} className={"tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
+                            <div key={`number-${key}`} className={(selectedDays && this.state.clDate ? "clDate " : '') + "tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
                                 {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
                                 <TabScrollLeftMenu time={time}/>
                                 {availableTimetable && selectedDays && !this.state.clDate && availableTimetable.map((workingStaffElement, staffKey) =>

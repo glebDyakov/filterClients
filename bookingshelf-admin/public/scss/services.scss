@@ -98,6 +98,16 @@
         height: 27px;
       }
 
+      &.whiteButtonEdit {
+        &::before {
+          border: 1px solid #eee;
+        }
+
+        &::after {
+          border: 1px solid #eee;
+        }
+      }
+
       &::before {
         position: absolute;
         top: 50%;
@@ -219,7 +229,7 @@
       }
 
       .whiteButtonEdit {
-        border-color: $white-color;
+        border: 1px solid #eee;
         background-color: $white-color;
       }
       .roseButtonEdit {

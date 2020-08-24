@@ -544,7 +544,9 @@ class SidebarMain extends React.Component {
                                 this.onOpen()
                             }
                         }} style={{height: "55px"}}>
-                            <li className="mob-menu-closer">
+                            <li onClick={() => {
+                                $('.sidebar').slideUp(200);
+                            }} className="mob-menu-closer">
                                 <div>
                                     <img src={`${process.env.CONTEXT}public/img/closer_mob.svg`} alt=""/>
                                 </div>
