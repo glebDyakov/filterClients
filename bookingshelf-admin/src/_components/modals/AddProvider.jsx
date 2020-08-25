@@ -455,7 +455,7 @@ class AddProvider extends React.Component {
 
         finalClient.contactPersons.forEach(item => {
             item.phone1 = item.phone1.startsWith('+') ? item.phone1 : `+${item.phone1}`;
-            item.phone2 = item.phone2.startsWith('+') ? item.phone2 : `+${item.phone2}`;
+            item.phone2 = item.phone2.startsWith('+') ? item.phone2 : ``;
         });
         return finalClient;
     }
