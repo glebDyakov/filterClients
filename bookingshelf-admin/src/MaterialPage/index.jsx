@@ -335,7 +335,7 @@ class Index extends Component {
         }
         if (tab === 'products') {
             document.title = "Товары | Онлайн-запись"
-            this.props.dispatch(materialActions.getProducts(this.state.productsCurrentPage));
+            // this.props.dispatch(materialActions.getProducts(this.state.productsCurrentPage));
 
         }
         if (tab === 'units') {
@@ -347,7 +347,7 @@ class Index extends Component {
 
         if(tab === 'moving') {
             document.title = "Движение товаров | Онлайн-запись"
-            this.props.dispatch(materialActions.getProducts());
+            // this.props.dispatch(materialActions.getProducts());
 
         }
 
@@ -567,7 +567,7 @@ class Index extends Component {
                     movingArrray.map(movement => {
                             const activeProduct = products && products.find((item) => item.productId === movement.productId);
                             const activeStorehouse = storeHouses && storeHouses.find((item) => item.storehouseId === movement.storehouseId);
-                            const activeUnit = activeProduct && units.find(unit => unit.unitId === activeProduct.unitId)
+                            const activeUnit = units.find(unit => unit.unitId === movement.unitId);
                             return (
                                 <MovementList
                                     movement={movement}
