@@ -375,9 +375,9 @@ class Index extends Component {
         } else if (pathname === '/invoices') {
             document.title = "Счета | Онлайн-запись";
         }
-        const currentPacket = activePacket ? activePacket.packetName : authentication.user && (authentication.user && authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбраного пакета')
+        const currentPacket = activePacket ? activePacket.packetName : authentication.user && (authentication.user && authentication.user.forceActive || (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x')) ? 'Пробный период' : 'Нет выбранного пакета')
         const paymentId = authentication && authentication.user && authentication.user.menu.find(item => item.id === 'payments_menu_id')
-        if (!paymentId && currentPacket === 'Нет выбраного пакета') {
+        if (!paymentId && currentPacket === 'Нет выбранного пакета') {
             return (
                 <div style={{color: '#0a1330', fontSize: '22px'}} className="payments-message">
                     Срок действия лицензии истек

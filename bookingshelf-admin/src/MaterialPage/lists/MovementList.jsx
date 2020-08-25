@@ -32,11 +32,11 @@ class MovementList extends Component {
                 </div>
                 <div>
                     <p><span
-                        className="mob-title">Код товара: </span>{activeProduct && activeProduct.productCode}
+                        className="mob-title">Код товара: </span>{movement && movement.productCode}
                     </p>
                 </div>
                 <div>
-                    <p className="productName">{activeProduct && activeProduct.productName}</p>
+                    <p className="productName">{movement && movement.productName}</p>
                 </div>
                 {/*<div>*/}
                 {/*        <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>*/}
@@ -74,7 +74,7 @@ class MovementList extends Component {
                 {/*</div>*/}
                 <div>
                     <p><span
-                        className="mob-title">Остаток: </span>{activeProduct && activeProduct.currentAmount}
+                        className="mob-title">Остаток: </span>{movement && movement.currentAmount}
                     </p>
                 </div>
                 <div className="delete clientEditWrapper">

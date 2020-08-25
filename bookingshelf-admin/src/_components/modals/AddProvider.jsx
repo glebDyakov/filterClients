@@ -51,7 +51,8 @@ class AddProvider extends React.Component {
                 ...newClient,
             },
             edit: props.edit,
-            clients: props.client
+            clients: props.client,
+            lastContactPersonId: 0,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -238,68 +239,68 @@ class AddProvider extends React.Component {
                                 <div className="contacts-block">
                                 <p className="title mb-2">Контакты</p>
                                 {client.contactPersons && client.contactPersons.map((contactPerson, index) =>
-                                    <React.Fragment>
-                                        {(client.contactPersons.length > 1) && <p>Контакт {index + 1}</p>}
-                                        <div className="row position-relative">
-                                            <div className="col-sm-8">
-                                                <div className="row">
-                                                    <div className="col-sm-6 first-name">
-                                                        <InputCounter title="Имя" placeholder="" value={contactPerson.firstName}
-                                                                      withCounter={true} name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                            <React.Fragment>
+                                                {(client.contactPersons.length > 1) && <p>Контакт {index + 1}</p>}
+                                                <div className="row position-relative">
+                                                    <div className="col-sm-8">
+                                                        <div className="row">
+                                                            <div className="col-sm-6 first-name">
+                                                                <InputCounter title="Имя" placeholder="" value={contactPerson.firstName}
+                                                                              withCounter={true} name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                                            </div>
+                                                            <div className="col-sm-6">
+                                                                <InputCounter title="Фамилия" placeholder="" value={contactPerson.lastName}
+                                                                              withCounter={true} name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-sm-6">
-                                                        <InputCounter title="Фамилия" placeholder="" value={contactPerson.lastName}
-                                                                      withCounter={true} name="lastName"  handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
+                                                    <div className="col-12">
+                                                        <div className="row">
+                                                            <div className="col-sm-4 phone-one">
+                                                                <p>Номер телефона 1</p>
+                                                                <ReactPhoneInput
+                                                                    defaultCountry={'by'}
+                                                                    country={'by'}
+                                                                    regions={['america', 'europe']}
+                                                                    placeholder=""
+                                                                    value={client.contactPersons[index].phone1}
+                                                                    onChange={phone => {
+                                                                        const updatedClient = { ...client };
+                                                                        updatedClient.contactPersons[index].phone1 = phone.replace(/[() ]/g, '')
+                                                                        this.setState({ client: updatedClient })
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <div className="col-sm-4">
+                                                                <p>Номер телефона 2</p>
+                                                                <ReactPhoneInput
+                                                                    defaultCountry={'by'}
+                                                                    country={'by'}
+                                                                    regions={['america', 'europe']}
+                                                                    placeholder=""
+                                                                    value={client.contactPersons[index].phone2}
+                                                                    onChange={phone => {
+                                                                        const updatedClient = { ...client };
+                                                                        updatedClient.contactPersons[index].phone2 = phone.replace(/[() ]/g, '')
+                                                                        this.setState({ client: updatedClient })
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <div className="col-sm-4">
+                                                                <InputCounter withCounter={true} type="email" placeholder="mail@example.com" value={client.contactPersons[index].email}
+                                                                              name="email" title="Email"
+                                                                              handleKeyUp={() => this.setState({
+                                                                                  emailIsValid: isValidEmailAddress(client.contactPersons[index].email)
+                                                                              })}
+                                                                              extraClassName={'' + (!isValidEmailAddress(client.contactPersons[index].email) && client.contactPersons[index].email!=='' ? ' redBorder' : '')}
+                                                                              handleChange={(e) => this.handleContactChange(e, index)} maxLength={64} />
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    {1 && <button className="close close-contact" onClick={()=>this.removeContact(index)}>x</button>}
                                                 </div>
-                                            </div>
-                                            <div className="col-12">
-                                                <div className="row">
-                                                    <div className="col-sm-4 phone-one">
-                                                        <p>Номер телефона 1</p>
-                                                        <ReactPhoneInput
-                                                            defaultCountry={'by'}
-                                                            country={'by'}
-                                                            regions={['america', 'europe']}
-                                                            placeholder=""
-                                                            value={client.contactPersons[index].phone1}
-                                                            onChange={phone => {
-                                                                const updatedClient = { ...client };
-                                                                updatedClient.contactPersons[index].phone1 = phone.replace(/[() ]/g, '')
-                                                                this.setState({ client: updatedClient })
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-4">
-                                                        <p>Номер телефона 2</p>
-                                                        <ReactPhoneInput
-                                                            defaultCountry={'by'}
-                                                            country={'by'}
-                                                            regions={['america', 'europe']}
-                                                            placeholder=""
-                                                            value={client.contactPersons[index].phone2}
-                                                            onChange={phone => {
-                                                                const updatedClient = { ...client };
-                                                                updatedClient.contactPersons[index].phone2 = phone.replace(/[() ]/g, '')
-                                                                this.setState({ client: updatedClient })
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-4">
-                                                        <InputCounter withCounter={true} type="email" placeholder="mail@example.com" value={client.contactPersons[index].email}
-                                                                      name="email" title="Email"
-                                                                      handleKeyUp={() => this.setState({
-                                                                          emailIsValid: isValidEmailAddress(client.contactPersons[index].email)
-                                                                      })}
-                                                                      extraClassName={'' + (!isValidEmailAddress(client.contactPersons[index].email) && client.contactPersons[index].email!=='' ? ' redBorder' : '')}
-                                                                      handleChange={(e) => this.handleContactChange(e, index)} maxLength={64} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {1 && <button className="close close-contact" onClick={()=>this.removeContact(index)}>x</button>}
-                                        </div>
 
-                                    </React.Fragment>
+                                            </React.Fragment>
                                 )}
                                 </div>
 
