@@ -332,11 +332,12 @@ class AddProvider extends React.Component {
                                             (client.contactPersons.every(contact =>
                                             {
                                                 if(Object.values(contact).some(item => item)){
-                                                    return (isValidEmailAddress(contact.email)
-                                                        && (isValidNumber(this.fixNumber2(contact.phone1)))
-                                                        && (isValidNumber(this.fixNumber2(contact.phone2)))
+                                                    return (
+                                                        // isValidEmailAddress(contact.email)
+                                                        (isValidNumber(this.fixNumber2(contact.phone1)))
+                                                        // && (isValidNumber(this.fixNumber2(contact.phone2)))
                                                         && (contact.firstName)
-                                                        && (contact.lastName)
+                                                        // && (contact.lastName)
                                                     )}else{
                                                         return true;
                                                     }
@@ -351,11 +352,12 @@ class AddProvider extends React.Component {
                                             (client.contactPersons.every(contact =>
                                                 {
                                                     if(Object.values(contact).some(item => item)){
-                                                        return (isValidEmailAddress(contact.email)
-                                                            && (isValidNumber(this.fixNumber2(contact.phone1)))
-                                                            && (isValidNumber(this.fixNumber2(contact.phone2)))
+                                                        return (
+                                                            // isValidEmailAddress(contact.email)
+                                                            (isValidNumber(this.fixNumber2(contact.phone1)))
+                                                            // && (isValidNumber(this.fixNumber2(contact.phone2)))
                                                             && (contact.firstName)
-                                                            && (contact.lastName)
+                                                            // && (contact.lastName)
                                                         )}else{
                                                         return true;
                                                     }

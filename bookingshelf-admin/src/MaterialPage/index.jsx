@@ -546,7 +546,7 @@ class Index extends Component {
                         item.targetTranslated = 'Товар поврежден';
                         break;
                     case 'CHANGING':
-                        item.targetTranslated = 'Изменения наличия';
+                        item.targetTranslated = 'Изменение наличия';
                         break;
                     case 'LOST':
                         item.targetTranslated = 'Утеря';
