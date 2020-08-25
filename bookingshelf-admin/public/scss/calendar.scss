@@ -464,6 +464,9 @@
     }
   }
 
+  .cell .closedDate-color, .calendar-container .closedDate-color {
+    color: #F46A6A !important;
+  }
 
   .calendar-list {
     height: 100%;
@@ -551,7 +554,7 @@
         }
 
         &.day-active {
-          border-top: 2px solid #ed1b24;
+          border-top: 2px solid #F46A6A;
           border-top-left-radius: 0;
           border-top-right-radius: 0;
         }

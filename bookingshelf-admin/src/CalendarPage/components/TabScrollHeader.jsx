@@ -57,7 +57,7 @@ class TabScrollHeader extends PureComponent {
 
                                     return <div className={"cell" + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
                                     >
-                                        <p className="text-capitalize">{moment(item).locale("ru").format('dd')},&nbsp;<span className={`text-capitalize ${clDate && 'closedDate'}`}>{clDate ? <p>{moment(item).format("DD MMMM")} <p style={{color: "#F46A6A"}}>&nbsp;(выходной)</p></p> : moment(item).format("DD MMMM")}</span>
+                                        <p className="text-capitalize">{moment(item).locale("ru").format('dd')},&nbsp;<span className={`text-capitalize ${clDate && 'closedDate'}`}>{clDate ? <p>{moment(item).format("DD MMMM")} <p className="closedDate-color">&nbsp;(выходной)</p></p> : moment(item).format("DD MMMM")}</span>
                                         </p>
                                     </div>
                                 }
