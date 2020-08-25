@@ -15,11 +15,9 @@ class TabScroll extends React.Component {
         super(props);
         this.state = {
             numbers: [],
-            clDate: false
         }
         this.getHours24 = this.getHours24.bind(this);
         this.getIsPresent = this.getIsPresent.bind(this);
-        this.isClosed = this.isClosed.bind(this);
     }
 
     componentDidMount() {
@@ -35,19 +33,6 @@ class TabScroll extends React.Component {
             this.getHours24(newProps.timetable);
         }
 
-        if (newProps.selectedDays) {
-            this.isClosed(newProps.selectedDays);
-        }
-    }
-
-    isClosed(selectedDays) {
-        const clDate = selectedDays.length === 1 && this.props.closedDates && this.props.closedDates.length > 0 && this.props.closedDates.some((st) => {
-            return moment(moment(selectedDays[0]).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
-        }) || false;
-
-        this.setState({
-            clDate
-        })
     }
 
     getHours24(timetable) {
@@ -87,8 +72,8 @@ class TabScroll extends React.Component {
     }
 
     getIsPresent(currentCellTime) {
-        const { booktimeStep } = this.props.company.settings;
-        const step  = booktimeStep / 60;
+        const {booktimeStep} = this.props.company.settings;
+        const step = booktimeStep / 60;
         return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
     }
 
@@ -117,34 +102,46 @@ class TabScroll extends React.Component {
             <div className="tabs-scroll" id="calendar-tabs-scroll">
                 <DndProvider backend={Backend}>
                     {numbers && numbers.map((time, key) => {
-                        const currentCellTime = getCurrentCellTime(selectedDays, 0, time);
-                        const isPresent = this.getIsPresent(currentCellTime);
+                            const currentCellTime = getCurrentCellTime(selectedDays, 0, time);
+                            const isPresent = this.getIsPresent(currentCellTime);
 
-                        return (
-                            <div key={`number-${key}`} className={(selectedDays && this.state.clDate ? "clDate " : '') + "tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
-                                {type === 'day'  && isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
-                                <TabScrollLeftMenu time={time}/>
-                                {availableTimetable && selectedDays && !this.state.clDate && availableTimetable.map((workingStaffElement, staffKey) =>
-                                    <BaseCell
-                                        checkForCostaffs={checkForCostaffs}
-                                        getCellTime={getCellTime}
-                                        key={`working-staff-${staffKey}`}
-                                        numberKey={key}
-                                        staffKey={staffKey}
-                                        changeTime={changeTime}
-                                        changeTimeFromCell={changeTimeFromCell}
-                                        handleUpdateClient={handleUpdateClient}
-                                        numbers={numbers}
-                                        services={services}
-                                        workingStaffElement={workingStaffElement}
-                                        updateAppointmentForDeleting={updateAppointmentForDeleting}
-                                        selectedDaysKey={type === 'day' ? 0 : staffKey}
-                                        time={time}
-                                        moveVisit={moveVisit}
-                                    />
-                                )}
-                            </div>
-                        )}
+                            return (
+                                <div key={`number-${key}`}
+                                     className={(selectedDays && this.state.clDate ? "clDate " : '') + "tab-content-list " + listClass + (isPresent ? ' present-line-block' : '')}>
+                                    {type === 'day' && isPresent &&
+                                    <span data-time={moment().format("HH:mm")} className="present-time-line"/>}
+                                    <TabScrollLeftMenu time={time}/>
+                                    {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => {
+                                            if (!(this.props.closedDates && this.props.closedDates.length > 0 && this.props.closedDates.some((st) => {
+                                                return moment(moment(selectedDays[type === 'day' ? 0 : staffKey]).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
+                                            }) || false)) {
+                                                return (
+                                                    <BaseCell
+                                                        checkForCostaffs={checkForCostaffs}
+                                                        getCellTime={getCellTime}
+                                                        key={`working-staff-${staffKey}`}
+                                                        numberKey={key}
+                                                        staffKey={staffKey}
+                                                        changeTime={changeTime}
+                                                        changeTimeFromCell={changeTimeFromCell}
+                                                        handleUpdateClient={handleUpdateClient}
+                                                        numbers={numbers}
+                                                        services={services}
+                                                        workingStaffElement={workingStaffElement}
+                                                        updateAppointmentForDeleting={updateAppointmentForDeleting}
+                                                        selectedDaysKey={type === 'day' ? 0 : staffKey}
+                                                        time={time}
+                                                        moveVisit={moveVisit}
+                                                    />
+                                                )
+                                            } else {
+                                                return <div className="cell expired"></div>
+                                            }
+                                        }
+                                    )}
+                                </div>
+                            )
+                        }
                     )}
                 </DndProvider>
                 <DragVertController/>
