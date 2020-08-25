@@ -109,9 +109,13 @@ class Index extends Component {
         const count = staff ? staff.length : -1;
         if ((companyTypeId === 2)) {
             if (count <= 5) {
+                console.log(count)
                 this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}}, () => this.calculateRate())
             } else {
+                console.log(count)
+
                 this.rateChangeSpecialWorkersCount('to 30', count)
+                this.setState({staffCount: count});
             }
         } else {
             if (count <= 10) {

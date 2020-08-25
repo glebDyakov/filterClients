@@ -237,6 +237,12 @@
     width:80px !important;
   }
 
+  .plus-or-minus-field {
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
   .clientEditWrapper {
     width: 20px !important;
     padding-left: 0 !important;
