@@ -762,8 +762,8 @@ class SidebarMain extends React.Component {
                                                                     src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                     className="img"/></div>
 
-                                                            <div>
-                                                                <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
+                                                            <div className="d-flex flex-column">
+                                                                <p><strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
 
                                                                 <p style={{float: "none"}}
                                                                    className="user-name d-flex align-items-center">
@@ -819,7 +819,7 @@ class SidebarMain extends React.Component {
                                                                         <img
                                                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
                                                                             className="img"/></div>
-                                                                    <strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}
+                                                                    <p><strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
                                                                 </p>
                                                             </div>
                                                             <p className="service_name">
