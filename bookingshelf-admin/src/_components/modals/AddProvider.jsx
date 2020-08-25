@@ -28,6 +28,7 @@ class AddProvider extends React.Component {
                 "countryCode": "",
                 contactPersons: [
                     {
+                        // contactPersonId: 0,
                         "email": "",
                         "firstName": "",
                         "lastName": "",
@@ -52,7 +53,6 @@ class AddProvider extends React.Component {
             },
             edit: props.edit,
             clients: props.client,
-            lastContactPersonId: 0,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -318,6 +318,7 @@ class AddProvider extends React.Component {
                                        onClick={() => {
                                            const updatedClient = { ...client}
                                            updatedClient.contactPersons.push({
+                                               // "contactPersonId": this.state.client.contactPersons.length > 0 && updatedClient.contactPersons.reduce((a, b) => a.contactPersonId > b.contactPersonId ? a : b) || 0,
                                                "email": "",
                                                "firstName": "",
                                                "lastName": "",
