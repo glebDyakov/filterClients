@@ -13,7 +13,7 @@ export function diffTime(end, start) {
 
 export function getWeekRange(date) {
     return {
-        from: moment(date).utc()
+        from: moment(date)
             .startOf('week')
             .toDate(),
         to: moment(date)

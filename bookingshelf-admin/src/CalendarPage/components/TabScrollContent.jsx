@@ -114,7 +114,7 @@ class TabScroll extends React.Component {
                                     {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => {
                                             if (!(this.props.closedDates && this.props.closedDates.length > 0 && this.props.closedDates.some((st) => {
                                                 return moment(moment(selectedDays[type === 'day' ? 0 : staffKey]).valueOf()).subtract(-1, "minute").isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day"));
-                                            }) || false)) {
+                                            }))) {
                                                 return (
                                                     <BaseCell
                                                         checkForCostaffs={checkForCostaffs}
