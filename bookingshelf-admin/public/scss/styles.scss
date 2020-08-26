@@ -4572,6 +4572,11 @@ select {
 
 .add_appointment_staff {
   padding-left: 0;
+
+  .dropdown-menu {
+    z-index: 1001;
+  }
+
   @media (max-width: $mob-width) {
     padding-left: 15px;
 
