@@ -649,7 +649,7 @@ class Index extends PureComponent {
         const startTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x')
         this.refreshTable(startTime, endTime);
-        this.getTimetable(selectedDays[0], weeks[0]);
+        this.getTimetable(selectedDays[0], weeks[6]);
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
