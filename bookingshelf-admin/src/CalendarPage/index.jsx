@@ -39,19 +39,21 @@ function getWeekDays(weekStart) {
     const days = [weekStart];
     for (let i = 1; i < 7; i += 1) {
         days.push(
-            moment(weekStart).utc().locale('ru')
+            moment(weekStart).locale('ru')
                 .add(i, 'days')
                 .toDate()
         );
     }
+
+    console.log(days);
     return days;
 }
 
 function getDayRange(date) {
     return {
-        from: moment(date).utc().locale('ru')
+        from: moment(date).locale('ru')
             .toDate(),
-        to: moment(date).utc().locale('ru')
+        to: moment(date).locale('ru')
             .endOf('day')
             .toDate(),
     };
@@ -411,7 +413,9 @@ class Index extends PureComponent {
 
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
-        let path="/"+location.pathname.split('/')[1]
+        let path="/"+ location && location.pathname.split('/')[1]
+
+        console.log(path)
 
         let redTitle
         if (path === '/invoices') {
@@ -652,6 +656,7 @@ class Index extends PureComponent {
         this.getTimetable(selectedDays[0], weeks[6]);
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
+        console.log(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
     }
 

@@ -116,6 +116,15 @@ export function company(state = initialState, action) {
                 [action.loadingKey]: false,
                 error: action.error
             }
+
+        case companyConstants.CHANGE_THEME:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    lightTheme: action.isLightTheme
+                }
+            }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
             return {
                 ...state,
