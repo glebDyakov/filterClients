@@ -48,11 +48,7 @@ class TabScrollHeader extends PureComponent {
                         {
                             selectedDays.length > 1 && selectedDays.map((item, weekKey)=> {
                                     let clDate= closedDates && closedDates.some((st) => {
-                                        // console.log(moment(item).format("DD MMMM"), parseInt(st.startDateMillis), parseInt(moment(item).format("x")),  parseInt(st.endDateMillis) >= parseInt(moment(item).format("x")));
-                                        // return parseInt(st.startDateMillis) <= parseInt(moment(item).format("x")) &&
-                                        // parseInt(st.endDateMillis) >= parseInt(moment(item).format("x"))
-
-                                        return moment(item).isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf("day"));
+                                        return moment(item).add("1", "minute").isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf("day"));
                                     });
 
                                     return <div className={"cell" + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
