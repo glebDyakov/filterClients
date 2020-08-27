@@ -389,9 +389,30 @@ class Index extends PureComponent {
     }
 
     scrollHandler() {
-        this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
-            this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 9999 : 0;
-        });
+        const childrens = $($(".tab-content-list")[0]).children();
+        const countCols = childrens.length - 1;
+        const widthTabConent = $(".days-container").width();
+
+        if (countCols > 4) {
+            const countColsToWidth = parseInt(widthTabConent / childrens[1].offsetWidth);
+            const countPlus = countColsToWidth * childrens[1].offsetWidth;
+            const allWidth = $(".tab-content-list").width() - ((childrens[1].offsetWidth + 5) * countColsToWidth) - 200;
+
+            if (this.wrapperRef.scrollLeft < allWidth) {
+                this.wrapperRef.scrollLeft += countPlus;
+
+
+                if (this.wrapperRef.scrollLeft > allWidth) {
+                    this.setState({scrolledToRight: true});
+                }
+
+            } else {
+                this.wrapperRef.scrollLeft = 0;
+                this.setState({scrolledToRight: false});
+            }
+        }
+
+
     }
 
 
@@ -473,7 +494,7 @@ class Index extends PureComponent {
                     </div>
                     <div className={"days-container " + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
 
-                        <button onClick={this.scrollHandler} className={"scroll-button" + (this.state.scrolledToRight ? " scrolled" : '')}></button>
+                        <button onClick={this.scrollHandler} className={"scroll-button" + (!this.state.scrolledToRight ? "" : " scrolled")}></button>
 
                         <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
                              <div ref={this.setWrapperRef} className="calendar-list">
