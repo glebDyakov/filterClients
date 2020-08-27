@@ -8,3 +8,8 @@ export * from './calendar.service';
 export * from './notification.service';
 export * from './analitics.service';
 export * from './payments.service';
+export * from './managers.service';
+export * from './managers.service';
+export * from './managers.service';
+export * from './managers.service';
+export * from './managers.service';

@@ -10,6 +10,7 @@ export function company(state = initialState, action) {
                 ...state,
                 isBookingInfoLoading: action.isBookingInfoLoading
             }
+
         case companyConstants.UPDATE_SAVED:
             return {
                 ...state,
@@ -114,6 +115,15 @@ export function company(state = initialState, action) {
                 ...state,
                 [action.loadingKey]: false,
                 error: action.error
+            }
+
+        case companyConstants.CHANGE_THEME:
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    lightTheme: action.isLightTheme
+                }
             }
         case companyConstants.UPDATE_SUBCOMPANY_SUCCESS:
             return {

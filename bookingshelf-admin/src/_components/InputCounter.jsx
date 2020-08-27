@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength }) => (
+const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, type = 'text', extraClassName, handleChange, handleKeyUp, placeholder, maxLength, withCounter }) => (
     <div className={extraWrapperClassName}  style={{position: 'relative'}}>
         <p>{title}</p>
         <input
@@ -15,7 +15,7 @@ const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, typ
             onKeyUp={handleKeyUp}
             maxLength={maxLength}
         />
-        <span style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{value ? value.length : 0}/{maxLength}</span>
+        {withCounter && <span className="company_counter" style={{ bottom: '17px', right: '10px', position: 'absolute', opacity: 0.7}}>{value ? value.length : 0}/{maxLength}</span>}
     </div>
 );
 

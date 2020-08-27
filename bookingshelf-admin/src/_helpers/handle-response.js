@@ -7,7 +7,7 @@ export const clearStorage = () => {
     location.reload(true);
 }
 
-export const hostname = (location.hostname === 'localhost') ? 'staging.online-zapis.com' : location.hostname;
+export const hostname = (location.hostname === 'localhost') ? 'staging.admin.online-zapis.com' : location.hostname;
 
 export const origin = (location.hostname === 'localhost') ? 'https://staging.admin.online-zapis.com' : location.origin;
 

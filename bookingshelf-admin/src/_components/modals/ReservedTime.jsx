@@ -215,13 +215,13 @@ class ReservedTime extends React.Component {
                     <div>
                         <div className="modal-content reserved-time-modal">
                             <div className="modal-header">
-                                <h4 className="modal-title">Зарезервированое время</h4>
+                                <h4 className="modal-title">Зарезервированное время</h4>
                                 <button type="button" className="close" onClick={this.closeModal} />
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
-                            <div className="modal-inner pl-4 pr-4 pb-4">
-                                <p className="title mb-3 text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
+                            <div className="modal-body">
+                                <p className="title text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
 
                                 <p>Сотрудники</p>
                                 <div className="dropdown add-staff mb-3">
@@ -279,7 +279,7 @@ class ReservedTime extends React.Component {
                                     onChange={(endTimeMillis)=>this.setTime(endTimeMillis, 'endTimeMillis')}
                                 />
                                 <p>Описание</p>
-                                <input type="email" placeholder=""  name="description"  value={reservedTime.description} onChange={this.handleChange} onChange={this.handleChange}/>
+                                <input className="description-input" type="email" placeholder="Введите описание"  name="description"  value={reservedTime.description} onChange={this.handleChange} onChange={this.handleChange}/>
                                 {
                                     calendar.status === 200 &&
                                     <p className="alert-success p-1 rounded pl-3 mb-2">Время сохранено</p>
@@ -292,8 +292,6 @@ class ReservedTime extends React.Component {
                                 <div style={{ padding: '4px 12px' }} className="alert alert-danger">{message}</div>
                                 }
                                 <div className="buttons">
-                                    <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
-
                                     <button className={'small-button'} type="button"
                                             onClick={() => {
                                                 if (calendar.adding || !staffCurrent.staffId || !reservedTime.endTimeMillis || !reservedTime.startTimeMillis) {

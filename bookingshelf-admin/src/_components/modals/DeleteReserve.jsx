@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { calendarActions } from "../../_actions";
+import {calendarActions} from "../../_actions";
 
 class DeleteReserve extends React.Component {
     constructor(props) {
@@ -12,39 +12,42 @@ class DeleteReserve extends React.Component {
 
     render() {
         return (
-            <div className="modal fade delete-reserve-modal">
-                <div className="modal-dialog modal-lg modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h4 className="modal-title">Удалить</h4>
-                            <button type="button" className="close" data-dismiss="modal" />
-                            {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" data-dismiss="modal"/>*/}
+            <span className="modal delete-reserve-modal">
+                <span className="action-modal d-flex h-100">
+                    <span className="modal-content">
+                        <span className="modal-header">
+                            <h4 className="modal-title">Удалить резерв времени?</h4>
+                            <button type="button" className="close" data-dismiss="modal"/>
+                        </span>
+                        <span className="modal-body">
+                               <div className="form-group mr-3 ml-3">
+                            <button type="button" className="button" onClick={this.cancel}
+                                    data-dismiss="modal">Удалить</button>
+                            <button type="button" className="gray-button" data-dismiss="modal">Отмена</button>
+                        </div>
+                        </span>
+                    </span>
+                </span>
+            </span>
 
-                        </div>
-                        <div className="form-group mr-3 ml-3">
-                            <button type="button" className="button" onClick={this.cancel} data-dismiss="modal">Да</button>
-                            <button type="button" className="gray-button" data-dismiss="modal">Нет</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         )
     }
 
     cancel() {
-        const { dispatch, reservedTimeId, reservedTimeStaffId } = this.props;
+        const {dispatch, reservedTimeId, reservedTimeStaffId} = this.props;
         dispatch(calendarActions.deleteReservedTime(reservedTimeStaffId, reservedTimeId));
     }
 }
 
-DeleteReserve.propTypes ={
+DeleteReserve.propTypes = {
     id: PropTypes.number,
     staffId: PropTypes.number
 };
 
 function mapStateToProps(state) {
-    const { modals: { reservedTimeId, reservedTimeStaffId } } = state;
-    return { reservedTimeId, reservedTimeStaffId };
+    const {modals: {reservedTimeId, reservedTimeStaffId}} = state;
+    return {reservedTimeId, reservedTimeStaffId};
 }
 
 export default connect(mapStateToProps)(DeleteReserve);

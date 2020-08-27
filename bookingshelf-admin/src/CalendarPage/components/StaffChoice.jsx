@@ -33,7 +33,7 @@ class StaffChoice extends PureComponent {
                         {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
                             <p>{currentSelectedStaff.firstName + " " + (currentSelectedStaff.lastName ? currentSelectedStaff.lastName : '')}</p>)
                         }
-                        {typeSelected && typeSelected===2 && < p> Все {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочие места' : 'сотрудники'} </p>}
+                        {typeSelected && typeSelected===2 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Все рабочие места' : 'Все сотрудники'} </p>}
 
                     </div>
                 )}

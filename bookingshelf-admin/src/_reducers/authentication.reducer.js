@@ -1,4 +1,4 @@
-import {clientConstants, userConstants} from '../_constants';
+import {clientConstants, companyConstants, userConstants} from '../_constants';
 import {userActions} from "../_actions/user.actions";
 import {access} from "../_helpers/access";
 

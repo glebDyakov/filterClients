@@ -17,6 +17,7 @@ export const companyActions = {
     getAppointmentsCountMarkerIncrement,
     getMovedAppointmentsCountMarkerIncrement,
     getAppointmentsCountMarkerDecrement,
+    changeTheme
 };
 
 function add(companyInfo) {
@@ -38,6 +39,10 @@ function add(companyInfo) {
     };
 
     function success(company, menu, profile) { return { type: userConstants.UPDATE_COMPANY_SUCCESS, company, menu, profile } }
+}
+
+function changeTheme(isLightTheme) {
+    return {type: companyConstants.CHANGE_THEME, isLightTheme};
 }
 
 function updateSaved(saved) {

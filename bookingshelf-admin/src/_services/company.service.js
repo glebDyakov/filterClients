@@ -11,7 +11,8 @@ export const companyService = {
     getSubcompanies,
     updateBookingInfo,
     getBookingInfo,
-    getNewAppointments
+    getNewAppointments,
+    updateCompany
 };
 
 function add(params) {
@@ -65,6 +66,22 @@ function updateSubcompany(params) {
     };
 
     return fetch(`${origin}${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
+        .then((data) => handleResponse(data, requestOptions));
+}
+
+function updateCompany(params) {
+    const requestOptions = {
+        method: 'PUT',
+        body: JSON.stringify(params),
+        crossDomain: true,
+        credentials: 'include',
+        xhrFields: {
+            withCredentials: true
+        },
+        headers: {...authHeader(), 'Content-Type': 'application/json'}
+    };
+
+    return fetch(`${origin}${config.apiUrl}/company`, requestOptions)
         .then((data) => handleResponse(data, requestOptions));
 }
 

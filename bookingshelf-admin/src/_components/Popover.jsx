@@ -19,11 +19,9 @@ class Popover extends React.PureComponent {
         const { opened } = this.state;
 
         return (
-            <span style={{ position: 'relative' }} className="questions_black" onMouseEnter={this.toggleDropdown} onMouseLeave={this.toggleDropdown} {...rest}>
+            <span style={{ position: 'relative', zIndex: 1000 }} className="questions_black" onMouseEnter={this.toggleDropdown} onMouseLeave={this.toggleDropdown} {...rest}>
                 {opened && (
-                    <span
-                        style={{ color: 'black', padding: '2px 4px', textAlign: 'center', minWidth }}
-                        className="questions_dropdown">
+                    <span className="questions_dropdown">
                         {title}
                     </span>
                 )}

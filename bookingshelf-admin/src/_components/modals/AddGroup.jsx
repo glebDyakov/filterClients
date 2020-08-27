@@ -20,47 +20,83 @@ class AddGroup extends React.Component {
             newSet: props.newSet && props.newSet,
             edit: props.edit && props.edit,
             colors: {
-                    "YELLOW": {
-                        "key": "yellow",
-                        "name": "Желтый"
-                    },
-                    "GREEN": {
-                        "key": "green",
-                        "name": "Зеленый"
-                    },
-                    "TURQUOISE": {
-                        "key": "turquoise",
-                        "name": "Бирюзовый"
-                    },
-                    "PURPLE": {
-                        "key": "purple",
-                        "name": "Фиолетовый"
-                    },
-                    "BLUE": {
-                        "key": "blue",
-                        "name": "Голубой"
-                    },
-                    "RED": {
-                        "key": "red",
-                        "name": "Красный"
-                    },
-                    "ORANGE": {
-                        "key": "orange",
-                        "name": "Оранжевый"
-                    },
-                    "PINK": {
-                        "key": "pink",
-                        "name": "Розовый"
-                    },
-                    "GREY": {
-                        "key": "grey",
-                        "name": "Серый"
-                    },
-                    "DARK_BLUE": {
-                        "key": "dark-blue",
-                        "name": "Темно синий"
-                    }
+                "LIME": {
+                    "key": "lime",
+                    "name": "Лаймовый"
                 },
+                "YELLOW": {
+                    "key": "yellow",
+                    "name": "Желтый"
+                },
+                "GREEN": {
+                    "key": "green",
+                    "name": "Зеленый"
+                },
+                "TURQUOISE": {
+                    "key": "turquoise",
+                    "name": "Бирюзовый"
+                },
+                "PURPLE": {
+                    "key": "purple",
+                    "name": "Фиолетовый"
+                },
+                "BLUE": {
+                    "key": "blue",
+                    "name": "Голубой"
+                },
+                "RED": {
+                    "key": "red",
+                    "name": "Красный"
+                },
+                "ORANGE": {
+                    "key": "orange",
+                    "name": "Оранжевый"
+                },
+                "PINK": {
+                    "key": "pink",
+                    "name": "Розовый"
+                },
+                "ROSE": {
+                    "key": "rose",
+                    "name": "Розовый"
+                },
+                "WHITE": {
+                    "key": "white",
+                    "name": "Белый"
+                },
+                "SKY": {
+                    "key": "sky",
+                    "name": "Бирюзовый"
+                },
+                "VIOLET": {
+                    "key": "violet",
+                    "name": "Фиолетовый"
+                },
+                "GREY": {
+                    "key": "grey",
+                    "name": "Серый"
+                },
+                "LIGHT-GREEN": {
+                    "key": "light-green",
+                    "name": "Салатовый"
+                },
+                "DARK_BLUE": {
+                    "key": "dark-blue",
+                    "name": "Синий"
+                }
+            },
+            availableColors: [
+              'LIME',
+              'ORANGE',
+              'YELLOW',
+              'GREEN',
+              'ROSE',
+              'WHITE',
+              'SKY',
+              'VIOLET',
+              'LIGHT-GREEN',
+              'BLUE',
+            ],
             services: props.services && props.services
         };
 
@@ -80,10 +116,10 @@ class AddGroup extends React.Component {
     }
 
     render() {
-        const {group, edit, colors, newSet, services}=this.state;
+        const {group, edit, colors, availableColors, newSet, services}=this.state;
 
         return (
-            <Modal size="sm" style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="sm" style={{maxWidth: '480px'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="modal_add_group" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="" role="document">
@@ -101,16 +137,11 @@ class AddGroup extends React.Component {
                                 {/*<img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal} aria-label="Close" aria-hidden="true"*/}
                                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
                             </div>
-                            <div className="modal-inner pl-4 pr-4 pb-4">
+                            <div className="modal-inner">
                                 <p>Название группы</p>
                                 <div  style={{position: 'relative'}}>
-                                    <input type="text"  name="name" value={group.name} onChange={this.handleChange}/>
-                                    <span style={{
-                                        position: 'absolute',
-                                        right: '12px',
-                                        bottom: '17px',
-                                        opacity: '0.7'
-                                    }}>
+                                    <input type="text" placeholder="Введите название" name="name" value={group.name} onChange={this.handleChange}/>
+                                    <span className="name-length-text">
                                         {group.name.length}/60
                                     </span>
                                 </div>
@@ -119,48 +150,49 @@ class AddGroup extends React.Component {
                                 <div className="select-color dropdown mb-3 color-radius">
                                     <a className="select-button dropdown-toggle yellow" id="dropdownMenuButton"
                                        data-toggle="dropdown" href="#"><span className={'color-circle'+' '+ group.color.toLowerCase()}/><span
-                                        className={colors[group.color].key}>{colors[group.color].name}</span></a>
+                                        className="color-name">{colors[group.color].name}</span></a>
                                     <ul className="dropdown-menu"  aria-labelledby="dropdownMenuButton">
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("YELLOW")}><a><span
-                                            className="color-circle yellow"/><span
-                                            className="yellow">Желтый</span></a></li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("GREEN")}><a ><span
-                                            className="color-circle green"/><span className="green">Зеленый</span></a>
-                                        </li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("TURQUOISE")}><a ><span
-                                            className="color-circle turquoise"/><span
-                                            className="turquoise">Бирюзовый</span></a></li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("PURPLE")}><a ><span
-                                            className="color-circle purple"/><span
-                                            className="purple">Фиолетовый</span></a></li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("BLUE")}><a ><span
-                                            className="color-circle blue"/><span className="blue">Голубой</span></a>
-                                        </li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("RED")}><a ><span className="color-circle red"></span><span
-                                            className="red">Красный</span></a></li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("ORANGE")}><a ><span
-                                            className="color-circle orange"/><span className="orange">Оранжевый</span></a>
-                                        </li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("PINK")}><a ><span
-                                            className="color-circle rose"/><span className="rose">Розовый</span></a>
-                                        </li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("GREY")}><a ><span
-                                            className="color-circle gray"/><span className="gray">Серый</span></a>
-                                        </li>
-                                        <li className="dropdown-item" onClick={()=>this.handleChangeColor("DARK_BLUE")}><a ><span
-                                            className="color-circle dark-blue"/><span className="dark-blue">Темно синий</span></a>
-                                        </li>
+                                        {availableColors.map(availableColor => (
+                                          <li className="dropdown-item" onClick={()=>this.handleChangeColor(availableColor)}><a><span
+                                            className={`color-circle ${availableColor.toLowerCase()}`}/><span
+                                            className="color-name">{colors[availableColor].name}</span></a>
+                                          </li>
+                                        ))}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("YELLOW")}><a><span*/}
+                                        {/*    className="color-circle yellow"/><span*/}
+                                        {/*    className="color-name">Желтый</span></a></li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("GREEN")}><a ><span*/}
+                                        {/*    className="color-circle green"/><span className="color-name">Зеленый</span></a>*/}
+                                        {/*</li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("TURQUOISE")}><a ><span*/}
+                                        {/*    className="color-circle turquoise"/><span*/}
+                                        {/*    className="color-name">Бирюзовый</span></a></li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("PURPLE")}><a ><span*/}
+                                        {/*    className="color-circle purple"/><span*/}
+                                        {/*    className="color-name">Фиолетовый</span></a></li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("BLUE")}><a ><span*/}
+                                        {/*    className="color-circle blue"/><span className="color-name">Голубой</span></a>*/}
+                                        {/*</li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("RED")}><a ><span className="color-circle red"></span><span*/}
+                                        {/*    className="color-name">Красный</span></a></li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("ORANGE")}><a ><span*/}
+                                        {/*    className="color-circle orange"/><span className="color-name">Оранжевый</span></a>*/}
+                                        {/*</li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("PINK")}><a ><span*/}
+                                        {/*    className="color-circle rose"/><span className="color-name">Розовый</span></a>*/}
+                                        {/*</li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("GREY")}><a ><span*/}
+                                        {/*    className="color-circle gray"/><span className="color-name">Серый</span></a>*/}
+                                        {/*</li>*/}
+                                        {/*<li className="dropdown-item" onClick={()=>this.handleChangeColor("DARK_BLUE")}><a ><span*/}
+                                        {/*    className="color-circle dark-blue"/><span className="color-name">Темно синий</span></a>*/}
+                                        {/*</li>*/}
                                     </ul>
                                 </div>
                                 <p>Описание</p>
                                 <div  className="mb-3" style={{position: 'relative'}}>
-                                    <textarea className="comments"  name="description" value={group.description}  onChange={this.handleChange}/>
-                                    <span style={{
-                                        position: 'absolute',
-                                        right: '12px',
-                                        bottom: '6px',
-                                        opacity: '0.7'
-                                    }}>
+                                    <textarea className="comments" placeholder="Описание группы" name="description" value={group.description}  onChange={this.handleChange}/>
+                                    <span className="textarea-length">
                                         {group.description.length}/120
                                     </span>
                                 </div>
@@ -173,9 +205,12 @@ class AddGroup extends React.Component {
                                 }
 
                                 <div className="buttons">
-                                    <button className="small-button cancel-button" type="button" onClick={this.closeModal}>Отменить</button>
-                                    <button type="button" className={"button float-right "+(services.adding && ' disabledField')}  data-toggle={newSet&&"modal"} data-target={newSet&&".modal_add_service_by_list_group"}
-                                            onClick={!services.adding && (edit ? this.updateGroup : this.addGroup)}
+                                    <button type="button" className={"button float-right "+(services.adding || group.name.length === 0 && ' disabledField')}  data-toggle={newSet&&"modal"} data-target={newSet&&".modal_add_service_by_list_group"}
+                                            onClick={() => {
+                                                if (group.name.length > 0) {
+                                                    !services.adding && (edit ? this.updateGroup() : this.addGroup());
+                                                }
+                                            }}
                                     >{edit ? 'Обновить' : 'Сохранить'} </button>
                                 </div>
                             </div>

@@ -104,7 +104,7 @@ class DatePicker extends PureComponent {
             selectedDaysText = (
                 <React.Fragment>
                     {moment(selectedDay).format('dd, DD MMMM YYYY')}
-                    {clDates && <span style={{color: 'red', textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
+                    {clDates && <span className="closedDate-color" style={{textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
                 </React.Fragment>
             );
         } else {
@@ -147,7 +147,6 @@ class DatePicker extends PureComponent {
                             {selectedDaysText}
                         </span>
                         <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
-                            <i className="datepicker--pointer" />
                             <DayPicker
                                 selectedDays={selectedDays}
                                 onDayClick={(date) => this.handleLocalDayClick(date)}

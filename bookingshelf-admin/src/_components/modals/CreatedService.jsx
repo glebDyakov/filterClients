@@ -31,7 +31,7 @@ class CreatedService extends React.Component {
         let serviceSet=service || serviceCurrent
 
         return (
-            <Modal size="lg"  style={{maxWidth: '50%'}} onClose={this.closeModal} showCloseButton={false} className="mod">
+            <Modal size="lg"  style={{maxWidth: '480px'}} onClose={this.closeModal} showCloseButton={false} className="mod">
 
                 <div className="modal_add_service_by_list_group" tabIndex="-1" role="dialog" aria-hidden="true">
                     <div className="" role="document">
@@ -40,7 +40,7 @@ class CreatedService extends React.Component {
                                 <h4 className="modal-title">Выберите группу услуг</h4>
                                 <button type="button" className="close" onClick={this.closeModal} />
                             </div>
-                            <div className="modal-inner pl-4 pr-4 pb-4">
+                            <div className="modal-body">
                                 <div className="select-color dropdown mb-3 border-color">
                                     {
                                         serviceCurrent || service ?
@@ -67,15 +67,11 @@ class CreatedService extends React.Component {
                                     </ul>
                                 </div>
 
-                                <div>
-                                    <button type="button" className="button" onClick={(e)=>this.newGroup()}>Новая группа услуг
+                                <div className="d-flex justify-content-center align-items-center flex-column">
+                                    <button type="button" className="button-next" onClick={(e)=>this.newService(e)}>Далее
                                     </button>
-                                    <button type="button" className="button float-right" onClick={(e)=>this.newService(e)}>Далее
+                                    <button type="button" className="button-new" onClick={(e)=>this.newGroup()}>Новая группа услуг
                                     </button>
-                                    {/*<span className="ellipsis">*/}
-                                    {/*<img src={`${process.env.CONTEXT}public/img/ellipsis.png`} alt=""/>*/}
-                                    {/*</span>*/}
-
                                 </div>
 
                             </div>

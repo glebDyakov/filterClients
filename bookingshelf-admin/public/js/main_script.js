@@ -148,20 +148,13 @@ function initializeJs() {
         reader.readAsDataURL(file);
     });
 
-    $('body').click(function () {
-        $('.buttons-container').fadeOut(400);
-    });
-    $('.add').click(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $('.buttons-container').fadeIn(400);
-    });
     $('.new-holiday').click(function () {
-        $('.add-holiday').fadeIn(300);
+        $('.addHoliday-wrapper').fadeIn(300);
     });
 
-    $('.close-holiday').click(function () {
-        $('.add-holiday').fadeOut(300);
+
+    $('.close-holiday, .close-modal-add-holiday-js').click(function () {
+        $('.addHoliday-wrapper').fadeOut(300);
     });
 
     $('.new-templates.new-email-templates').click(function () {

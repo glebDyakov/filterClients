@@ -12,6 +12,7 @@ import {
 import '../../public/scss/calendar.scss'
 
 import moment from 'moment';
+import {isMobile} from "react-device-detect";
 
 import {DatePicker} from "../_components/DatePicker";
 
@@ -38,19 +39,21 @@ function getWeekDays(weekStart) {
     const days = [weekStart];
     for (let i = 1; i < 7; i += 1) {
         days.push(
-            moment(weekStart).utc().locale('ru')
+            moment(weekStart).locale('ru')
                 .add(i, 'days')
                 .toDate()
         );
     }
+
+    console.log(days);
     return days;
 }
 
 function getDayRange(date) {
     return {
-        from: moment(date).utc().locale('ru')
+        from: moment(date).locale('ru')
             .toDate(),
-        to: moment(date).utc().locale('ru')
+        to: moment(date).locale('ru')
             .endOf('day')
             .toDate(),
     };
@@ -110,6 +113,7 @@ class Index extends PureComponent {
             newClientModal: false,
             scrollableAppointmentAction: true,
             appointmentMarkerActionCalled: false,
+            scrolledToRight: false
         };
 
         this.newAppointment = this.newAppointment.bind(this);
@@ -142,13 +146,19 @@ class Index extends PureComponent {
         this.handleUpdateClient = this.handleUpdateClient.bind(this);
         this.closeAppointmentFromSocket = this.closeAppointmentFromSocket.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.scrollHandler = this.scrollHandler.bind(this);
     }
 
     componentDidMount() {
+
+
         if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
             this.props.history.push('/nopage');
             return false;
         }
+
+
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: this.state.selectedDays }))
 
@@ -166,6 +176,7 @@ class Index extends PureComponent {
 
         this.getTimetable(null, moment(selectedDays[0]), true);
 
+
         const { search } = this.props.location
         if (search.includes('appointmentId')) {
             this.props.dispatch(calendarActions.setScrollableAppointment(search.split('=')[1]))
@@ -178,6 +189,9 @@ class Index extends PureComponent {
         this.props.dispatch(staffActions.get());
         this.props.dispatch(staffActions.getClosedDates());
         this.refreshTable(startTime, endTime);
+
+        this.props.dispatch(servicesActions.get());
+        this.props.dispatch(servicesActions.getServices());
 
         setTimeout(() => {
             if (!this.props.scrollableAppointmentId && (moment(selectedDays[0]).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
@@ -206,7 +220,7 @@ class Index extends PureComponent {
 
     navigateToRedLine() {
         setTimeout(() => {
-            const activeElem = document.getElementsByClassName("present-time-line")[0];
+            const activeElem = document.getElementsByClassName("present-time-line-shadow")[0];
             if (activeElem) {
                 activeElem.scrollIntoView();
             } else {
@@ -238,11 +252,8 @@ class Index extends PureComponent {
         $('.notes').css({'cursor': 'default'});
         $('textarea').css({'cursor': 'default'});
 
-        $('.add').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $('.buttons-container').fadeIn(400);
-        });
+
+
 
         if (prevState.typeSelected !== this.state.typeSelected) {
             this.setWorkingStaff()
@@ -373,6 +384,43 @@ class Index extends PureComponent {
         return !isOnAnotherVisit;
     }
 
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    scrollHandler() {
+        const childrens = $($(".tab-content-list")[0]).children();
+        const countCols = childrens.length - 1;
+        const widthTabConent = $(".days-container").width();
+
+        if (countCols > 7) {
+            const countColsToWidth = parseInt(widthTabConent / childrens[1].offsetWidth);
+            const countPlus = countColsToWidth * (childrens[1].offsetWidth - 5);
+            const allWidth = $(".tab-content-list").width() - ((childrens[1].offsetWidth + 5) * countColsToWidth) - (countCols > 10 ? 200 : 0);
+
+
+            console.log(this.wrapperRef.scrollLeft, allWidth, countPlus)
+            if (this.wrapperRef.scrollLeft < allWidth) {
+                this.wrapperRef.scrollLeft += countPlus;
+
+
+                if (this.wrapperRef.scrollLeft > allWidth) {
+                    this.setState({scrolledToRight: true});
+                }
+
+            } else {
+                this.wrapperRef.scrollLeft = 0;
+                this.setState({scrolledToRight: false});
+            }
+        } else {
+            this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
+               this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 9999 : 0;
+            });
+        }
+
+
+    }
+
 
     render() {
         const { authentication, company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
@@ -392,7 +440,9 @@ class Index extends PureComponent {
 
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
-        let path="/"+location.pathname.split('/')[1]
+        let path="/"+ location && location.pathname.split('/')[1]
+
+        console.log(path)
 
         let redTitle
         if (path === '/invoices') {
@@ -448,10 +498,15 @@ class Index extends PureComponent {
                             selectType={this.selectType}
                         />
                     </div>
-                    <div className="days-container">
+                    <div className={"days-container " + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
+
+                        <button onClick={this.scrollHandler} className={"scroll-button" + (!this.state.scrolledToRight ? "" : " scrolled")}></button>
+
                         <div className="tab-pane active" id={selectedDays.length===1 ? "days_20" : "weeks"}>
-                             <div className="calendar-list">
-                                <TabScrollHeader
+                             <div ref={this.setWrapperRef} className="calendar-list">
+
+
+                                 <TabScrollHeader
                                     selectedDays={selectedDays}
                                     timetable={workingStaff.timetable }
                                     timetableMessage={timetableMessage}
@@ -474,6 +529,7 @@ class Index extends PureComponent {
                                         changeTime={this.changeTime}
                                         changeTimeFromCell={this.changeTimeFromCell}
                                         moveVisit={this.moveVisit}
+                                        selectedDays={selectedDays}
                                     />)
                                  }
                             </div>
@@ -624,9 +680,10 @@ class Index extends PureComponent {
         const startTime = moment(weeks[0]).startOf('day').format('x');
         const endTime = moment(weeks[6]).endOf('day').format('x')
         this.refreshTable(startTime, endTime);
-        this.getTimetable(selectedDays[0], weeks[0]);
+        this.getTimetable(selectedDays[0], weeks[6]);
 
         this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }))
+        console.log(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
         history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+"/"+moment(weeks[6]).format('DD-MM-YYYY'))
     }
 

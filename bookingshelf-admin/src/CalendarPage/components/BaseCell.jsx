@@ -34,8 +34,10 @@ class BaseCell extends React.Component {
         const currentCellTime = getCurrentCellTime(props.selectedDays, props.selectedDaysKey, props.time);
         this.state = {
             isPresent: this.getIsPresent(currentCellTime),
+            isPresentShadow: this.getIsPresentShadow(currentCellTime),
             ...filledCell
         };
+
     }
 
     shouldComponentUpdate(newProps, newState) {
@@ -64,6 +66,12 @@ class BaseCell extends React.Component {
         const { booktimeStep } = this.props.company.settings;
         const step  = booktimeStep / 60;
         return currentCellTime <= moment().format("x") && currentCellTime >= moment().subtract(step, "minutes").format("x")
+    }
+
+    getIsPresentShadow(currentCellTime) {
+        const { booktimeStep } = this.props.company.settings;
+        const step  = booktimeStep / 60;
+        return currentCellTime <= moment().subtract(1 , 'hour').format("x") && currentCellTime >= moment().subtract(1, 'hour').subtract(step, "minutes").format("x")
     }
 
     onUpdateWorkingStaff(props) {
@@ -176,12 +184,12 @@ class BaseCell extends React.Component {
             workingStaffElement,
             handleUpdateClient,
             updateAppointmentForDeleting,
-            closedDates,
+            clDate,
             selectedDays
         } = this.props;
 
 
-        const { cellType, cell, isPresent } = this.state;
+        const { cellType, cell, isPresent, isPresentShadow } = this.state;
 
         if (cellType === cellTypes.CELL_APPOINTMENT) {
             return (
@@ -207,20 +215,27 @@ class BaseCell extends React.Component {
 
         let notExpired = cellType === cellTypes.CELL_WHITE;
         const day = getCurrentCellTime(selectedDays, selectedDaysKey, '00:00');
-        let clDate = closedDates && closedDates.some((st) =>
-            parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-            parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")));
-        const wrapperClassName = 'cell col-tab'
+        // let clDate = closedDates && closedDates.some((st) =>
+        //     // parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
+        //     // parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
+        //     moment(day).startOf('day').isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day")));
+        // ;
+
+        const wrapperClassName = 'cell cell-height col-tab'
             + (notExpired ? '' : ' expired')
             + (clDate ? ' closedDateTick' : '');
         const content = (
             <React.Fragment>
                 <span className={(time.split(':')[1] === "00" && notExpired) ? 'visible-fade-time':'fade-time' }>{time}</span>
-                {isPresent && <span className="present-time-line" />}
+                {/*{isPresent && <span data-time={moment().format("HH:mm")} className="present-time-line" />}*/}
+                {isPresentShadow && <span data-time={time} className="present-time-line-shadow" />}
             </React.Fragment>
         );
 
+
+
         if (notExpired) {
+
             return <CellWhite
                 time={time}
                 staffKey={staffKey}
@@ -250,7 +265,7 @@ function mapStateToProps(state) {
         company,
         appointments,
         reservedTime,
-        selectedDays
+        selectedDays,
     }
 }
 
