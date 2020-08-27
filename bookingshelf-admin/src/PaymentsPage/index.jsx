@@ -118,6 +118,7 @@ class Index extends Component {
                 this.setState({staffCount: count});
             }
         } else {
+            this.setState({staffCount: count});
             if (count <= 10) {
                 this.setState({staffCount: count, rate: {...this.state.rate, workersCount: count}}, () => this.calculateRate())
             } else if (count > 10 && count <= 20) {
