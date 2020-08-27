@@ -393,11 +393,13 @@ class Index extends PureComponent {
         const countCols = childrens.length - 1;
         const widthTabConent = $(".days-container").width();
 
-        if (countCols > 4) {
+        if (countCols > 7) {
             const countColsToWidth = parseInt(widthTabConent / childrens[1].offsetWidth);
-            const countPlus = countColsToWidth * childrens[1].offsetWidth;
-            const allWidth = $(".tab-content-list").width() - ((childrens[1].offsetWidth + 5) * countColsToWidth) - 200;
+            const countPlus = countColsToWidth * (childrens[1].offsetWidth - 5);
+            const allWidth = $(".tab-content-list").width() - ((childrens[1].offsetWidth + 5) * countColsToWidth) - (countCols > 10 ? 200 : 0);
 
+
+            console.log(this.wrapperRef.scrollLeft, allWidth, countPlus)
             if (this.wrapperRef.scrollLeft < allWidth) {
                 this.wrapperRef.scrollLeft += countPlus;
 
@@ -410,6 +412,10 @@ class Index extends PureComponent {
                 this.wrapperRef.scrollLeft = 0;
                 this.setState({scrolledToRight: false});
             }
+        } else {
+            this.setState({scrolledToRight: !this.state.scrolledToRight}, () => {
+               this.wrapperRef.scrollLeft = this.state.scrolledToRight ? 9999 : 0;
+            });
         }
 
 
