@@ -115,7 +115,8 @@ class AddAppointment extends React.Component {
                 customId: ''
             }],
             editedElement: sortedAppointment,
-            visitFreeMinutes: this.getVisitFreeMinutes(sortedAppointment)
+            visitFreeMinutes: this.getVisitFreeMinutes(sortedAppointment),
+            appointmentsAllPrice: 0
         };
 
         this.addAppointment = this.addAppointment.bind(this);
@@ -930,8 +931,9 @@ class AddAppointment extends React.Component {
         const cl = clientChecked
 
         const appointmentsAllPrice = appointment.reduce((prev, current) => {
-            return prev + current.price
+            return +prev + +current.price
         }, 0) || 0;
+
 
         let servicesDisabling = services[0].servicesList && services[0].servicesList.some((service) => {
             const durationForCurrentStaff = this.getDurationForCurrentStaff(service);
@@ -1167,7 +1169,10 @@ class AddAppointment extends React.Component {
                                                             <p>Фактич. цена</p>
                                                             <input type="text" name="price"
                                                             value={appointment[index].price}
-                                                            onChange={(e) => this.handleChange(e, index)}/>
+                                                            onChange={(e) => {
+                                                                this.handleChange(e, index);
+                                                                console.log(e.value);
+                                                            }}/>
                                                             </div>)
                                                         }
 
@@ -1696,6 +1701,7 @@ class AddAppointment extends React.Component {
         } else {
             appointment[index] = {...appointment[index], [name]: value};
         }
+
 
         this.setState({appointment});
     }
