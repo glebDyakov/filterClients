@@ -245,6 +245,10 @@ class SidebarMain extends React.Component {
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
+
+        const activeStaff = staff && staff.staff && staff.staff.find(item =>
+            ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
         const {invoicePacket, forceActive, trialEndDateMillis} = authentication.user;
         let packetEnd, packetEndText;
         if (invoicePacket) {
@@ -556,7 +560,7 @@ class SidebarMain extends React.Component {
 
                             <div className="img-container">
                                 <img className="rounded-circle" style={{opacity: "1"}}
-                                     src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + authentication.user.profile.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                     src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
                                      alt=""/>
                             </div>
                             <p onClick={() => this.openModalUserSettings()} className="firm-name"
