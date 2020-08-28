@@ -463,6 +463,7 @@
         width: 24px;
         height: 24px;
 
+
         @media screen and (width: $mob-width){
           width: 50px !important;
           height: 50px !important;
@@ -642,6 +643,7 @@
             display: block;
             float: left;
             margin: 0 4% 0 5%;
+
 
             @media screen and(max-width: $tablet-width) {
               float: none;
