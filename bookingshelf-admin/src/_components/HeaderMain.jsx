@@ -402,7 +402,7 @@ class HeaderMain extends React.PureComponent {
                                     }}/>
                                 </div>
                                 <div className="img-container" data-toggle="modal" data-target=".modal_photo">
-                                    <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}/>
+                                    <img src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}/>
                                 </div>
 
                                 <a className={"firm-name user-dropdown" + (this.state.openUserSettings ? " opened" : '')} onClick={this.handleOpenSettingsUserModal}>

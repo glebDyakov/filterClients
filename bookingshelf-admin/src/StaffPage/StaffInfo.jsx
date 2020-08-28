@@ -38,7 +38,7 @@ class StaffInfo extends Component {
                         <a style={{paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab'}} key={i}>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
-                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                          alt=""/>
                                                 </span>
                             <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
@@ -95,7 +95,7 @@ class StaffInfo extends Component {
                             <a style={{paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab'}} key={i}>
                                                 <span className="img-container">
                                                     <img className="rounded-circle"
-                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                         src={staff_user.imageBase64 ? "data:image/png;base64," + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                          alt=""/>
                                                 </span>
                                 <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>

@@ -374,7 +374,7 @@ class AddService extends React.Component {
                                                     <div className="col-5">
                                                         <span className="img-container">
                                                              <img className="rounded-circle"
-                                                                  src={item.imageBase64 ? "data:image/png;base64," + item.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                  src={item.imageBase64 ? "data:image/png;base64," + item.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                   alt=""/>
                                                         </span>
                                                         <p>{item.firstName} {item.lastName ? item.lastName : ''}</p>

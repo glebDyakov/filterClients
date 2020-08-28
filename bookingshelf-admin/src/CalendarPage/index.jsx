@@ -512,6 +512,7 @@ class Index extends PureComponent {
                                     timetableMessage={timetableMessage}
                                     closedDates={staff.closedDates}
                                     staff={staff && staff.staff}
+                                    type={type}
                                 />
                                  {company.settings && (
                                      <TabScrollContent

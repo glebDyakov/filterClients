@@ -245,6 +245,10 @@ class SidebarMain extends React.Component {
 
         const companyTypeId = company.settings && company.settings.companyTypeId;
 
+
+        const activeStaff = staff && staff.staff && staff.staff.find(item =>
+            ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
         const {invoicePacket, forceActive, trialEndDateMillis} = authentication.user;
         let packetEnd, packetEndText;
         if (invoicePacket) {
@@ -306,13 +310,13 @@ class SidebarMain extends React.Component {
                                 <div className="left-block d-none d-md-flex">
                                     <div className="img-container d-none d-md-flex">
                                         <img
-                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                             className="img"/></div>
                                     <div>
                                         <p style={{float: "none"}} className="user-name d-flex align-items-center">
                                             <div className="img-container d-md-none">
                                                 <img
-                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                     className="img"/></div>
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
@@ -350,13 +354,13 @@ class SidebarMain extends React.Component {
                                     <br/>
                                     <div className="img-container d-none d-md-flex">
                                         <img
-                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                             className="img"/></div>
                                     <div>
                                         <p style={{float: "none"}} className="user-name d-flex align-items-center">
                                             <div className="img-container d-md-none">
                                                 <img
-                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                     className="img"/></div>
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
@@ -401,13 +405,13 @@ class SidebarMain extends React.Component {
                             {/*    <div className="left-block">*/}
                             {/*        <div className="img-container d-none d-md-flex">*/}
                             {/*            <img*/}
-                            {/*                src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
+                            {/*                src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}*/}
                             {/*                className="img"/></div>*/}
                             {/*        <div>*/}
                             {/*            <p style={{float: "none"}}>*/}
                             {/*                <div className="img-container d-md-none">*/}
                             {/*                    <img*/}
-                            {/*                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}*/}
+                            {/*                        src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}*/}
                             {/*                        className="img"/></div>*/}
                             {/*                <strong>Мастер: </strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}*/}
                             {/*            </p>*/}
@@ -457,13 +461,13 @@ class SidebarMain extends React.Component {
                                 <div className="left-block d-none d-md-flex">
                                     <div className="img-container d-none d-md-flex">
                                         <img
-                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                             className="img"/></div>
                                     <div>
                                         <p style={{float: "none"}} className="user-name d-flex align-items-center">
                                             <div className="img-container d-md-none">
                                                 <img
-                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                     className="img"/></div>
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
@@ -501,13 +505,13 @@ class SidebarMain extends React.Component {
                                     <br/>
                                     <div className="img-container d-none d-md-flex">
                                         <img
-                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                             className="img"/></div>
                                     <div>
                                         <p style={{float: "none"}} className="user-name d-flex align-items-center">
                                             <div className="img-container d-md-none">
                                                 <img
-                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                     className="img"/></div>
                                             <strong>Мастер:&nbsp;</strong>{appointmentInfo.staff.firstName + " " + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                                         </p>
@@ -556,7 +560,7 @@ class SidebarMain extends React.Component {
 
                             <div className="img-container">
                                 <img className="rounded-circle" style={{opacity: "1"}}
-                                     src={authentication.user.profile.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + authentication.user.profile.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}
+                                     src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
                                      alt=""/>
                             </div>
                             <p onClick={() => this.openModalUserSettings()} className="firm-name"
@@ -759,7 +763,7 @@ class SidebarMain extends React.Component {
                                                         <div className="left-block d-none d-md-flex">
                                                             <div className="img-container d-none d-md-flex">
                                                                 <img
-                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                     className="img"/></div>
 
                                                             <div className="d-flex flex-column">
@@ -769,7 +773,7 @@ class SidebarMain extends React.Component {
                                                                    className="user-name d-flex align-items-center">
                                                                     <div className="img-container d-md-none">
                                                                         <img
-                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                             className="img"/></div>
                                                                 </p>
                                                                 <p className="service_name"
@@ -809,7 +813,7 @@ class SidebarMain extends React.Component {
                                                             <br/>
                                                             <div className="img-container d-none d-md-flex">
                                                                 <img
-                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                    src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                     className="img"/></div>
 
                                                             <div>
@@ -817,7 +821,7 @@ class SidebarMain extends React.Component {
                                                                    className="user-name d-flex align-items-center">
                                                                     <div className="img-container d-md-none">
                                                                         <img
-                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                             className="img"/></div>
                                                                     <p><strong>Мастер:&nbsp;</strong>{activeStaff.firstName + " " + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
                                                                 </p>

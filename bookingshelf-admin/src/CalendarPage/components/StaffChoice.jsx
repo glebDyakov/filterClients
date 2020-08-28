@@ -24,7 +24,7 @@ class StaffChoice extends PureComponent {
                                                         className="rounded-circle"
                                                         src={currentSelectedStaff.imageBase64
                                                             ? "data:image/png;base64," + currentSelectedStaff.imageBase64
-                                                            : `${process.env.CONTEXT}public/img/image.png`}
+                                                            : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                         alt=""
                                                     />
                                                 </span>
@@ -44,7 +44,7 @@ class StaffChoice extends PureComponent {
                                 className="rounded-circle"
                                 src={currentSelectedStaff.imageBase64
                                     ? "data:image/png;base64," + currentSelectedStaff.imageBase64
-                                    : `${process.env.CONTEXT}public/img/image.png`}
+                                    : `${process.env.CONTEXT}public/img/avatar.svg`}
                                 alt=""
                             />
                         </span>
@@ -76,7 +76,7 @@ class StaffChoice extends PureComponent {
                                                                      ? "data:image/png;base64," +
                                                                      activeStaff.imageBase64
                                                                      // "1555020690000"
-                                                                     : `${process.env.CONTEXT}public/img/image.png`}
+                                                                     : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                  alt=""/>
                                                         </span>
                                         <p>{staffEl.firstName + " " + (staffEl.lastName ? staffEl.lastName : '')}</p>
