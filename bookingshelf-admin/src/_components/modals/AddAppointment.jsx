@@ -837,7 +837,7 @@ class AddAppointment extends React.Component {
                                                             <span style={{position: 'static'}}
                                                                   className="img-container">
                                                                  <img className="rounded-circle"
-                                                                      src={item.imageBase64 ? "data:image/png;base64," + item.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                      src={item.imageBase64 ? "data:image/png;base64," + item.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                       alt=""/>
                                                             </span>
                                 <span
@@ -1097,7 +1097,7 @@ class AddAppointment extends React.Component {
                                                                             activeStaffCurrent.staffId &&
                                                                             <div className="img-container">
                                                                                 <img className="rounded-circle"
-                                                                                     src={activeStaffCurrent.imageBase64 ? "data:image/png;base64," + activeStaffCurrent.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                                     src={activeStaffCurrent.imageBase64 ? "data:image/png;base64," + activeStaffCurrent.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                                      alt=""/>
                                                                                 <span
                                                                                     className="staff-name">{activeStaffCurrent.firstName + " " + (activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>
@@ -1126,7 +1126,7 @@ class AddAppointment extends React.Component {
                                                                                                         className="img-container">
                                                                                                         <img
                                                                                                             className="rounded-circle"
-                                                                                                            src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                                                            src={activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                                                             alt=""/>
                                                                                                         <span
                                                                                                             style={{lineHeight: activeStaff.description ? '8px' : '20px'}}
@@ -1414,7 +1414,7 @@ class AddAppointment extends React.Component {
                                                                                         <div style={{position: 'static'}}
                                                                                              className="img-container text-center">
                                                                                             <img className="rounded-circle"
-                                                                                                 src={activeAppointmentStaff.imageBase64 ? "data:image/png;base64," + activeAppointmentStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                                                                 src={activeAppointmentStaff.imageBase64 ? "data:image/png;base64," + activeAppointmentStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                                                                  alt=""/>
                                                                                             {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
                                                                                         </div>
