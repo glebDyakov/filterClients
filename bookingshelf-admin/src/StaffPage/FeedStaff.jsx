@@ -51,7 +51,7 @@ class FeedStaff extends Component {
                                             height: '24px',
                                             margin: '0 15px 0 0'
                                         }} className="rounded-circle user-star-image"
-                                             src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                             src={(activeStaff && activeStaff.imageBase64) ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                              alt=""
                                         />
                                         <div className="star-ratings-container" style={{width: '130px'}}>

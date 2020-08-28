@@ -25,7 +25,7 @@ class TabScrollHeader extends PureComponent {
                                 return <div className="cell">
                                      <span className="img-container">
                                          <img className="rounded-circle"
-                                              src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                              src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                               alt=""/>
                                      </span>
                                     <p>{workingStaffElement.firstName + " " + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>

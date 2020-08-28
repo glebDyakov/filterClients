@@ -78,7 +78,7 @@ class UserPhoto extends React.Component {
                                                 <div className="image_preview">
                                                     <div className="existed-image">
                                                         <img
-                                                            src={activeStaff && activeStaff.imageBase64 && activeStaff.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/image.png`}/>
+                                                            src={activeStaff && activeStaff.imageBase64 && activeStaff.imageBase64 !== '' ? ("data:image/png;base64," + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}/>
 
                                                     </div>
                                                     <Avatar

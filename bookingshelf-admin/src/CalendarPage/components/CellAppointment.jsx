@@ -482,7 +482,7 @@ const CellAppointment = (props) => {
                     <div className="staff-block">
                          <span className="img-container">
                                          <img
-                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                             src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                              className="rounded-circle" alt="staff image"/>
                                      </span>
 

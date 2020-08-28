@@ -41,7 +41,7 @@ class FeedbackStaff extends React.Component {
                             <div className="clients-list pt-4 pl-4 pr-4">
                                 <div className="client">
                                     <img style={{ height: '40px' }} className="rounded-circle"
-                                         src={(feedbackStaff && feedbackStaff.imageBase64) ? "data:image/png;base64," + feedbackStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                         src={(feedbackStaff && feedbackStaff.imageBase64) ? "data:image/png;base64," + feedbackStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                          alt=""
                                     />
                                     <span className="name_container">{feedbackStaff.firstName} {feedbackStaff.lastName}

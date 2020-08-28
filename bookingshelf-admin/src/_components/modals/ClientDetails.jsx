@@ -169,7 +169,7 @@ class ClientDetails extends React.Component {
                                                         activeAppointmentStaff && activeAppointmentStaff.staffId &&
                                                         <div style={{ position: 'static' }} className="img-container">
                                                             <img style={{ width: '70px', height: '70px' }} className="rounded-circle"
-                                                                 src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/image.png`}  alt=""/>
+                                                                 src={activeAppointmentStaff.imageBase64?"data:image/png;base64,"+activeAppointmentStaff.imageBase64:`${process.env.CONTEXT}public/img/avatar.svg`}  alt=""/>
                                                             {/*<span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
                                                         </div>
                                                     }

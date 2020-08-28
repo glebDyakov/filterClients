@@ -112,7 +112,7 @@ class AppointmentFromSocket extends React.Component {
                 <div className="service_item">
                     <div className="img-container">
                         <img
-                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                            src={activeStaff && activeStaff.imageBase64 ? "data:image/png;base64," + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                             className="img"/>
                         <p style={{float: "none"}}>Мастер: <br/>
                             {staffName}

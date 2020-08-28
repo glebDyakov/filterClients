@@ -868,7 +868,7 @@ class Index extends Component {
                                                              ? "data:image/png;base64," +
                                                              activeStaff.imageBase64
                                                              // "1555020690000"
-                                                             : `${process.env.CONTEXT}public/img/image.png`}
+                                                             : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                          alt=""/>
                                                 </span>
                                                         <p>{staffEl.firstName + " " + staffEl.lastName}</p>
@@ -960,7 +960,7 @@ class Index extends Component {
                                                              ? "data:image/png;base64," +
                                                              activeStaff.imageBase64
                                                              // "1555020690000"
-                                                             : `${process.env.CONTEXT}public/img/image.png`}
+                                                             : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                          alt=""/>
                                                 </span>
                                                             <p>{staffEl.firstName + " " + staffEl.lastName}</p>
