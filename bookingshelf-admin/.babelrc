@@ -13,6 +13,5 @@
   "plugins": [
     "syntax-dynamic-import",
     "@babel/plugin-proposal-class-properties",
-    "react-refresh/babel"
   ]
 }
