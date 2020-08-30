@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import ActionModal from '../_components/modals/ActionModal';
-import { clientActions } from '../_actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import moment from 'moment';
+
+import ActionModal from '../_components/modals/ActionModal';
+
+import { clientActions } from '../_actions';
 
 class UserInfo extends Component {
   constructor(props) {
@@ -12,7 +14,6 @@ class UserInfo extends Component {
     this.state = {
       isOpenDeleteClientModal: false,
       defaultAppointmentsList: [],
-
     };
 
     this.closeDeleteClientModal = this.closeDeleteClientModal.bind(this);
@@ -48,7 +49,7 @@ class UserInfo extends Component {
   }
 
   render() {
-    const { client_user, activeTab, i, deleteClient, handleClick, openClientsStats } = this.props;
+    const { client_user, activeTab, i, handleClick, openClientsStats } = this.props;
     console.log(this.state);
 
     return (
@@ -65,11 +66,14 @@ class UserInfo extends Component {
           {client_user.email}
         </div>
         <div className="cell_client-country">
-          {client_user.country && (client_user.country)}{client_user.city && ((client_user.country && ', ') + client_user.city)}{client_user.province && (((client_user.country || client_user.city) && ', ') + client_user.province)}
+          {client_user.country && (client_user.country)}
+          {client_user.city && ((client_user.country && ', ') + client_user.city)}
+          {client_user.province && (((client_user.country || client_user.city) && ', ') + client_user.province)}
         </div>
 
         <div className="cell_client-last-visit">
-          {this.state.defaultAppointmentsList && this.state.defaultAppointmentsList.length > 0 && moment(this.state.defaultAppointmentsList[0].appointmentTimeMillis).format('DD, dd MMMM, YYYY')}
+          {this.state.defaultAppointmentsList && this.state.defaultAppointmentsList.length > 0 &&
+          moment(this.state.defaultAppointmentsList[0].appointmentTimeMillis).format('DD, dd MMMM, YYYY')}
         </div>
 
         <div className="cell_client-discount">
@@ -77,19 +81,26 @@ class UserInfo extends Component {
         </div>
 
         <div
-          className={'cell_client-birthDate' + (client_user.birthDate && (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') && moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 3) ? ' red-date' : '')}>
+          className={'cell_client-birthDate' + (client_user.birthDate &&
+          (0 <= moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') &&
+            moment(client_user.birthDate).year(2000).diff(moment().year(2000), 'days') < 3)
+            ? ' red-date'
+            : '')
+          }
+        >
           {client_user.birthDate && moment(client_user.birthDate).format('DD.MM.YYYY')}
         </div>
 
-
         <div className="list-button-wrapper">
-          {client_user.blacklisted && <a className="client-in-blacklist">
-            <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`}
-              alt=""/>
-          </a>}
+          {client_user.blacklisted &&
+            <a className="client-in-blacklist">
+              <img src={`${process.env.CONTEXT}public/img/client-in-blacklist.svg`} alt=""/>
+            </a>
+          }
 
-          {!client_user.blacklisted && <a className="clientEdit"
-            onClick={(e) => handleClick(client_user.clientId, e, this)}/>}
+          {!client_user.blacklisted &&
+            <a className="clientEdit" onClick={(e) => handleClick(client_user.clientId, e, this)}/>
+          }
 
           <div className="delete dropdown">
             <a className="delete-icon menu-delete-icon" onClick={this.openDeleteClientModal}>
@@ -98,44 +109,42 @@ class UserInfo extends Component {
           </div>
 
           {this.state.isOpenDeleteClientModal && activeTab === 'clients' &&
-                    <ActionModal
-                      title="Удалить клиента?"
-                      closeHandler={this.closeDeleteClientModal}
-                      buttons={[{
-                        handler: this.deleteClient,
-                        params: client_user.clientId,
-                        innerText: 'Удалить',
-                        className: 'button',
-                      },
-                      {
-                        handler: this.closeDeleteClientModal,
-                        innerText: 'Отмена',
-                        className: 'gray-button',
-                      }]}
-                    />
+            <ActionModal
+              title="Удалить клиента?"
+              closeHandler={this.closeDeleteClientModal}
+              buttons={[{
+                handler: this.deleteClient,
+                params: client_user.clientId,
+                innerText: 'Удалить',
+                className: 'button',
+              },
+              {
+                handler: this.closeDeleteClientModal,
+                innerText: 'Отмена',
+                className: 'gray-button',
+              }]}
+            />
           }
 
           {this.state.isOpenDeleteClientModal && activeTab === 'blacklist' &&
-                    <ActionModal
-                      title="Удалить клиента из черного списка?"
-                      closeHandler={this.closeDeleteClientModal}
-                      buttons={[{
-                        handler: this.deleteClientFromBlacklist,
-                        params: client_user,
-                        innerText: 'Удалить',
-                        className: 'button',
-                      },
-                      {
-                        handler: this.closeDeleteClientModal,
-                        innerText: 'Отмена',
-                        className: 'gray-button',
-                      }]}
-                    />
+            <ActionModal
+              title="Удалить клиента из черного списка?"
+              closeHandler={this.closeDeleteClientModal}
+              buttons={[{
+                handler: this.deleteClientFromBlacklist,
+                params: client_user,
+                innerText: 'Удалить',
+                className: 'button',
+              },
+              {
+                handler: this.closeDeleteClientModal,
+                innerText: 'Отмена',
+                className: 'gray-button',
+              }]}
+            />
           }
-
         </div>
       </div>
-
     );
   }
 }

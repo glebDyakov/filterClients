@@ -22,7 +22,7 @@ class AllReviews extends Component {
 
         <div className="feeds-container">
           {feeds && feeds.map((item, i) =>
-            <React.Fragment>
+            <React.Fragment key={`user-feeds-${i}`}>
               {i > 0 && <hr className="m-0"/>}
               <div className="review-container">
                 <h2 className="review-user-name">{item.clientName}</h2>
@@ -37,7 +37,6 @@ class AllReviews extends Component {
                 <p className="review-comment">{item.comment}</p>
               </div>
             </React.Fragment>,
-
           )}
         </div>
       </div>

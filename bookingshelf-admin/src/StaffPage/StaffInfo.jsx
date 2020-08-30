@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import ActionModal from '../_components/modals/ActionModal';
-import { clientActions } from '../_actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+
+import ActionModal from '../_components/modals/ActionModal';
 
 class StaffInfo extends Component {
   constructor(props) {
@@ -37,7 +36,10 @@ class StaffInfo extends Component {
             <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>
               <span className="img-container">
                 <img className="rounded-circle"
-                  src={staff_user.imageBase64 ? 'data:image/png;base64,' + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                  src={staff_user.imageBase64
+                    ? 'data:image/png;base64,' + staff_user.imageBase64
+                    : `${process.env.CONTEXT}public/img/avatar.svg`
+                  }
                   alt=""/>
               </span>
               <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
@@ -94,7 +96,10 @@ class StaffInfo extends Component {
               <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>
                 <span className="img-container">
                   <img className="rounded-circle"
-                    src={staff_user.imageBase64 ? 'data:image/png;base64,' + staff_user.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                    src={staff_user.imageBase64
+                      ? 'data:image/png;base64,' + staff_user.imageBase64
+                      : `${process.env.CONTEXT}public/img/avatar.svg`
+                    }
                     alt=""/>
                 </span>
                 <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>

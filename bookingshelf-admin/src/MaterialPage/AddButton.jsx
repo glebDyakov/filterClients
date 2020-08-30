@@ -41,8 +41,10 @@ class AddButton extends Component {
 
     return (
       <React.Fragment>
-
-        <a className={'add' + (showButtons ? ' rotate' : '')} onClick={showButtons ? this.hideButtons : this.showButtons}/>
+        <a
+          className={'add' + (showButtons ? ' rotate' : '')}
+          onClick={showButtons ? this.hideButtons : this.showButtons}
+        />
         <div className={'buttons-container' + (showButtons ? '' : ' hide')}>
           <div className="p-4">
             <button type="button"
@@ -50,13 +52,11 @@ class AddButton extends Component {
               className="button">{buttonText}
             </button>
           </div>
-          <div className="arrow"></div>
+          <div className="arrow" />
         </div>
       </React.Fragment>
-
     );
   }
 }
-
 
 export default AddButton;

@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import StarRatings from 'react-star-ratings';
-
-import { notificationActions, staffActions } from '../_actions';
-import { AddWorkTime } from '../_components/modals/AddWorkTime';
-import { NewStaff } from '../_components/modals/NewStaff';
-import { isMobile } from 'react-device-detect';
-
-import '../../public/scss/staff.scss';
-
-import moment from 'moment';
-import { NewStaffByMail } from '../_components/modals';
-
 import 'react-day-picker/lib/style.css';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import MomentLocaleUtils from 'react-day-picker/moment';
+import moment from 'moment';
+
+import { AddWorkTime } from '../_components/modals/AddWorkTime';
+import { NewStaff } from '../_components/modals/NewStaff';
+import { NewStaffByMail } from '../_components/modals';
 import '../../public/css_admin/date.css';
 import { DatePicker } from '../_components/DatePicker';
-import { getWeekRange } from '../_helpers/time';
-import { access } from '../_helpers/access';
 import DragDrop from '../_components/DragDrop';
-import Paginator from '../_components/Paginator';
 import FeedbackStaff from '../_components/modals/FeedbackStaff';
 import FeedStaff from './FeedStaff';
-import ActionModal from '../_components/modals/ActionModal';
 import StaffInfo from './StaffInfo';
 import HolidayInfo from './HolidayInfo';
+
+import { staffActions } from '../_actions';
+
+import { getWeekRange } from '../_helpers/time';
+import { access } from '../_helpers/access';
+
+import '../../public/scss/staff.scss';
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -187,7 +183,10 @@ class Index extends Component {
     this.props.dispatch(staffActions.getAccess());
     this.props.dispatch(staffActions.getAccessList());
     this.props.dispatch(staffActions.getClosedDates());
-    this.props.dispatch(staffActions.getTimetable(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(selectedDays[0]).startOf('day').format('x'),
+      moment(selectedDays[6]).endOf('day').format('x')),
+    );
   }
 
   handleOpenDropdownMenu(e) {
@@ -212,7 +211,9 @@ class Index extends Component {
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
-        document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : 'Сотрудники | Онлайн-запись';
+        document.title = (companyTypeId === 2 || companyTypeId === 3)
+          ? 'Рабочие места | Онлайн-запись'
+          : 'Сотрудники | Онлайн-запись';
       }
     }
 
@@ -222,7 +223,9 @@ class Index extends Component {
       });
     }
 
-    if (this.state.staff_working.staffId && JSON.stringify(newProps.staff.staff) !== (JSON.stringify(this.props.staff.staff))) {
+    if (this.state.staff_working.staffId &&
+      JSON.stringify(newProps.staff.staff) !== (JSON.stringify(this.props.staff.staff))
+    ) {
       const staff_working = newProps.staff.staff.find((item) => item.staffId === this.state.staff_working.staffId);
       if (staff_working) {
         this.setState({ staff_working });
@@ -247,7 +250,9 @@ class Index extends Component {
       document.title = 'Выходные дни | Онлайн-запись';
     }
     if (tab === 'staff') {
-      document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : 'Сотрудники | Онлайн-запись';
+      document.title = (companyTypeId === 2 || companyTypeId === 3)
+        ? 'Рабочие места | Онлайн-запись'
+        : 'Сотрудники | Онлайн-запись';
     }
     if (tab === 'workinghours') {
       document.title = 'Рабочие часы | Онлайн-запись';
@@ -278,7 +283,9 @@ class Index extends Component {
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
     switch (itemList.permissionCode) {
       case 2:
-        return (companyTypeId === 2 || companyTypeId === 3) ? 'Календарь других рабочих мест' : 'Календарь других сотрудников';
+        return (companyTypeId === 2 || companyTypeId === 3)
+          ? 'Календарь других рабочих мест'
+          : 'Календарь других сотрудников';
       case 10:
         return (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники';
       default:
@@ -294,22 +301,12 @@ class Index extends Component {
 
   render() {
     const { staff, company } = this.props;
-    const { emailNew, emailIsValid, feedbackStaff, staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff, date, editing_object, editWorkingHours, hoverRange, selectedDays, opacity, activeTab, addWorkTime, newStaffByMail, newStaff } = this.state;
+    const {
+      staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff,
+      date, editing_object, editWorkingHours, selectedDays, activeTab, addWorkTime, newStaffByMail, newStaff,
+    } = this.state;
 
     const companyTypeId = company.settings && company.settings.companyTypeId;
-    const daysAreSelected = selectedDays.length > 0;
-
-    const modifiers = {
-      hoverRange,
-      selectedRange: daysAreSelected && {
-        from: selectedDays[0],
-        to: selectedDays[6],
-      },
-      hoverRangeStart: hoverRange && hoverRange.from,
-      hoverRangeEnd: hoverRange && hoverRange.to,
-      selectedRangeStart: daysAreSelected && selectedDays[0],
-      selectedRangeEnd: daysAreSelected && selectedDays[6],
-    };
 
     const { from, to, enteredTo } = this.state;
     const modifiersClosed = { start: from, end: enteredTo };
@@ -320,12 +317,14 @@ class Index extends Component {
     const staffGroups = [];
 
     staff.staff && staff.staff.forEach((staff_user, i) => {
-      const staffGroupIndex = staff.costaff && staff.costaff.findIndex((staffGroup) => staffGroup.some((item) => item.staffId === staff_user.staffId));
+      const staffGroupIndex = staff.costaff && staff.costaff
+        .findIndex((staffGroup) => staffGroup.some((item) => item.staffId === staff_user.staffId));
 
       const isGroup = staff.costaff && staff.costaff[staffGroupIndex] && staff.costaff[staffGroupIndex].length > 1;
       let groupIndex;
       if (isGroup) {
-        const localIndex = staffGroups.findIndex((staffGroup) => staffGroup.some((staffInGroup) => staffInGroup.staffId === staff_user.staffId));
+        const localIndex = staffGroups
+          .findIndex((staffGroup) => staffGroup.some((staffInGroup) => staffInGroup.staffId === staff_user.staffId));
 
         if (localIndex === -1) {
           staffGroups.push(staff.costaff[staffGroupIndex]);
@@ -372,7 +371,10 @@ class Index extends Component {
               <li className="nav-item">
                 <a className={'nav-link' + (activeTab === 'staff' ? ' active show' : '')}
                   data-toggle="tab" href="#tab2"
-                  onClick={() => this.setTab('staff')}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
+                  onClick={() => this.setTab('staff')}
+                >
+                  {(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}
+                </a>
               </li>
               <li className="nav-item">
                 <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
@@ -405,70 +407,73 @@ class Index extends Component {
           </div>
 
           <div className="mobile-header-dropdown-container">
-            <p onClick={this.handleOpenHeaderDropdown} className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}>{(activeTab === 'workinghours' ? 'Рабочие часы'
-              : (activeTab === 'staff' ? 'Сотрудники'
-                : (activeTab === 'holidays' ? 'Выходные дни'
-                  : (activeTab === 'permissions' ? 'Доступ'
-                    : (activeTab === 'feedback' ? 'Отзывы' : '')))))}</p>
+            <p
+              onClick={this.handleOpenHeaderDropdown}
+              className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
+            >{(activeTab === 'workinghours' ? 'Рабочие часы'
+                : (activeTab === 'staff' ? 'Сотрудники'
+                  : (activeTab === 'holidays' ? 'Выходные дни'
+                    : (activeTab === 'permissions' ? 'Доступ'
+                      : (activeTab === 'feedback' ? 'Отзывы' : '')))))}</p>
 
             {this.state.isOpenHeaderDropdown &&
-                        <ul className="nav nav-tabs-mobile-dropdown">
-                          <li className="nav-item">
-                            <a className={'nav-link' + (activeTab === 'workinghours' ? ' active show' : '')}
-                              data-toggle="tab" href="#tab1" onClick={() => {
-                                this.updateTimetable();
-                                this.setTab('workinghours');
-                                this.handleOpenHeaderDropdown();
-                              }}>Рабочие часы</a>
-                          </li>
-                          <li className="nav-item">
-                            <a className={'nav-link' + (activeTab === 'staff' ? ' active show' : '')}
-                              data-toggle="tab" href="#tab2"
-                              onClick={() => {
-                                this.setTab('staff');
-                                this.handleOpenHeaderDropdown();
-                              }}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
-                          </li>
-                          <li className="nav-item">
-                            <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
-                              data-toggle="tab" href="#tab3" onClick={() => {
-                                this.setTab('holidays');
-                                this.handleOpenHeaderDropdown();
-                              }}>Выходные
-                                    дни</a>
-                          </li>
-                          {access(-1) &&
-                            <li className="nav-item">
-                              <a className={'nav-link' + (activeTab === 'permissions' ? ' active show' : '')}
-                                data-toggle="tab" href="#tab4" onClick={() => {
-                                  this.setTab('permissions');
-                                  this.handleOpenHeaderDropdown();
-                                }}>Доступ</a>
-                            </li>
-                          }
-                          <li className="nav-item">
-                            <a className={'nav-link' + (activeTab === 'feedback' ? ' active show' : '')}
-                              data-toggle="tab" href="#tab5" onClick={() => {
-                                this.setTab('feedback');
-                                this.handleOpenHeaderDropdown();
-                              }}>Отзывы</a>
-                          </li>
-                        </ul>}
+              <ul className="nav nav-tabs-mobile-dropdown">
+                <li className="nav-item">
+                  <a className={'nav-link' + (activeTab === 'workinghours' ? ' active show' : '')}
+                    data-toggle="tab" href="#tab1" onClick={() => {
+                      this.updateTimetable();
+                      this.setTab('workinghours');
+                      this.handleOpenHeaderDropdown();
+                    }}>Рабочие часы</a>
+                </li>
+                <li className="nav-item">
+                  <a className={'nav-link' + (activeTab === 'staff' ? ' active show' : '')}
+                    data-toggle="tab" href="#tab2"
+                    onClick={() => {
+                      this.setTab('staff');
+                      this.handleOpenHeaderDropdown();
+                    }}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
+                </li>
+                <li className="nav-item">
+                  <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
+                    data-toggle="tab" href="#tab3" onClick={() => {
+                      this.setTab('holidays');
+                      this.handleOpenHeaderDropdown();
+                    }}>Выходные
+                          дни</a>
+                </li>
+                {access(-1) &&
+                  <li className="nav-item">
+                    <a className={'nav-link' + (activeTab === 'permissions' ? ' active show' : '')}
+                      data-toggle="tab" href="#tab4" onClick={() => {
+                        this.setTab('permissions');
+                        this.handleOpenHeaderDropdown();
+                      }}>Доступ</a>
+                  </li>
+                }
+                <li className="nav-item">
+                  <a className={'nav-link' + (activeTab === 'feedback' ? ' active show' : '')}
+                    data-toggle="tab" href="#tab5" onClick={() => {
+                      this.setTab('feedback');
+                      this.handleOpenHeaderDropdown();
+                    }}>Отзывы</a>
+                </li>
+              </ul>}
           </div>
 
           {activeTab === 'workinghours' &&
-                    <div className="mobile-datePicker">
-                      <DatePicker
-                        type={'week'}
-                        // selectedDay={selectedDay}
-                        selectedDays={selectedDays}
-                        showPrevWeek={this.showPrevWeek}
-                        showNextWeek={this.showNextWeek}
-                        handleDayChange={this.handleDayChange}
-                        handleDayClick={this.handleDayClick}
-                        handleWeekClick={this.handleWeekClick}
-                      />
-                    </div>
+            <div className="mobile-datePicker">
+              <DatePicker
+                type={'week'}
+                // selectedDay={selectedDay}
+                selectedDays={selectedDays}
+                showPrevWeek={this.showPrevWeek}
+                showNextWeek={this.showNextWeek}
+                handleDayChange={this.handleDayChange}
+                handleDayClick={this.handleDayClick}
+                handleWeekClick={this.handleWeekClick}
+              />
+            </div>
           }
         </div>
         <div className="retreats">
@@ -482,13 +487,16 @@ class Index extends Component {
                     <div className="tab-content-list">
                       <div>Сотрудники</div>
                       {
-                        timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((item, weekKey) =>
-                          <div key={weekKey}>
-                            <p><span
-                              className="dates-full-width text-capitalize">{moment(item, 'x').locale('ru').format('dd')}, {moment(item, 'x').format('DD MMMM')}</span>
-                            </p>
-                          </div>,
-                        )
+                        timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo)
+                          .map((item, weekKey) =>
+                            <div key={weekKey}>
+                              <p>
+                                <span className="dates-full-width text-capitalize">
+                                  {moment(item, 'x').locale('ru').format('dd')}, {moment(item, 'x').format('DD MMMM')}
+                                </span>
+                              </p>
+                            </div>,
+                          )
                       }
                     </div>
                   </div>
@@ -501,16 +509,25 @@ class Index extends Component {
                           <div className="staff-time-schedule"
                             onClick={() => this.handleClick(time.staffId, false)}>
                             <img className="rounded-circle"
-                              src={(activeStaff && activeStaff.imageBase64) ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                              src={(activeStaff && activeStaff.imageBase64)
+                                ? 'data:image/png;base64,' + activeStaff.imageBase64
+                                : `${process.env.CONTEXT}public/img/avatar.svg`
+                              }
                               alt=""/>
                             <p>{time.firstName}&nbsp;{time.lastName ? time.lastName : ''}</p>
                           </div>
                           {
-                            time.timetables && timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey) => {
+                            time.timetables && timetableFrom &&
+                            this.enumerateDaysBetweenDates(timetableFrom, timetableTo).map((day, dayKey) => {
                               const times = time.timetables.filter((timetableItem) =>
-                                (moment(timetableItem.startTimeMillis, 'x') >= moment(day, 'x').startOf('day').format('x') &&
-                                                                            moment(timetableItem.endTimeMillis, 'x') <= moment(day, 'x').endOf('day').format('x'))
-                                                                        || (timetableItem.repeat === 'WEEKLY' && moment(timetableItem.startTimeMillis, 'x').format('dd') === moment(day, 'x').format('dd')),
+                                (moment(timetableItem.startTimeMillis, 'x') >=
+                                  moment(day, 'x').startOf('day').format('x') &&
+                                    moment(timetableItem.endTimeMillis, 'x') <=
+                                    moment(day, 'x').endOf('day').format('x')) ||
+                                (timetableItem.repeat === 'WEEKLY' &&
+                                  moment(timetableItem.startTimeMillis, 'x').format('dd') ===
+                                  moment(day, 'x').format('dd')
+                                ),
                               );
 
                               times.sort((a, b) => {
@@ -545,8 +562,12 @@ class Index extends Component {
                                     addWorkTime: true,
                                   })}>
                                   <a>
-                                    {times.map((time) =>
-                                      <span>{moment(time.startTimeMillis, 'x').format('HH:mm')}-{moment(time.endTimeMillis, 'x').format('HH:mm')}</span>,
+                                    {times.map((time, i) =>
+                                      <span key={`staff-page_dates-container-item-${i}`}>
+                                        {
+                                          moment(time.startTimeMillis, 'x').format('HH:mm')
+                                        }-{moment(time.endTimeMillis, 'x').format('HH:mm')}
+                                      </span>,
                                     )}
                                   </a>
                                 </div>
@@ -562,7 +583,10 @@ class Index extends Component {
                 </div>
               </div>
             </div>
-            <div className={'tab-pane content tabs-container staff-list-tab' + (activeTab === 'staff' ? ' active' : '')} id="tab2">
+            <div
+              className={'tab-pane content tabs-container staff-list-tab' + (activeTab === 'staff' ? ' active' : '')}
+              id="tab2"
+            >
               <div className="tab-content-list header-content-list">
                 <div className="tab-content-header-item client-name"><p>Сотрудники</p></div>
                 <div className="tab-content-header-item">Мобильный телефон</div>
@@ -593,7 +617,10 @@ class Index extends Component {
                           <p>Начало/Конец</p>
                           <div className="button-calendar button-calendar-inline">
                             <input type="button" data-range="true"
-                              value={(from && from !== 0 ? moment(from).format('DD.MM.YYYY') : '') + (to ? ' - ' + moment(to).format('DD.MM.YYYY') : '')}
+                              value={
+                                (from && from !== 0 ? moment(from).format('DD.MM.YYYY') : '') +
+                                (to ? ' - ' + moment(to).format('DD.MM.YYYY') : '')
+                              }
                               data-multiple-dates-separator=" - " name="date"
                               ref={(input) => this.startClosedDate = input}/>
                           </div>
@@ -608,14 +635,17 @@ class Index extends Component {
                             localeUtils={MomentLocaleUtils}
                             locale={'ru'}
                           />
-
                         </div>
+
                         <div className="description col-sm-6">
                           <p>Описание</p>
-                          <textarea className="form-control" rows="3" name="description"
-                            value={closedDates.description} placeholder="Например: дополнительный выходной в честь дня рождения организации" onChange={this.handleClosedDate}/>
+                          <textarea
+                            className="form-control" rows="3" name="description"
+                            value={closedDates.description}
+                            placeholder="Например: дополнительный выходной в честь дня рождения организации"
+                            onChange={this.handleClosedDate}
+                          />
                         </div>
-
                       </div>
 
                       <div className="float-right mt-3">
@@ -634,13 +664,15 @@ class Index extends Component {
 
                 </div>
                 {
-                  staff.closedDates && staff.closedDates.sort((a, b) => this.calcDiff(a.startDateMillis) - this.calcDiff(b.startDateMillis)).map((item, key) =>
-                    <HolidayInfo
-                      item={item}
-                      key={key}
-                      deleteClosedDate={this.deleteClosedDate}
-                    />,
-                  )
+                  staff.closedDates && staff.closedDates
+                    .sort((a, b) => this.calcDiff(a.startDateMillis) - this.calcDiff(b.startDateMillis))
+                    .map((item, key) =>
+                      <HolidayInfo
+                        item={item}
+                        key={key}
+                        deleteClosedDate={this.deleteClosedDate}
+                      />,
+                    )
                 }
               </div>
               <div ref={this.setWrapperRef}>
@@ -648,71 +680,76 @@ class Index extends Component {
                   onClick={this.handleOpenDropdownMenu}/>
                 <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
                   <div className="buttons">
-                    <button type="button" onClick={this.handleOpenDropdownMenu} className="button new-holiday">Новый выходной</button>
+                    <button type="button" onClick={this.handleOpenDropdownMenu} className="button new-holiday">
+                      Новый выходной
+                    </button>
                   </div>
                   <div className="arrow"></div>
                 </div>
               </div>
             </div>
+
             {access(-1) && !staff.error &&
-                        <div className={'tab-pane access-tab' + (activeTab === 'permissions' ? ' active' : '')}
-                          id="tab4">
-                          <div className="tab-content-list header-content-list">
-                            <div className="tab-content-header-item"><p>Категория</p></div>
-                            <div className="tab-content-header-item">Низкий доступ</div>
-                            <div className="tab-content-header-item">Средний доступ</div>
-                            <div className="tab-content-header-item">Администратор</div>
-                            <div className="tab-content-header-item">Владелец</div>
-                          </div>
-                          <div className="access">
+              <div className={'tab-pane access-tab' + (activeTab === 'permissions' ? ' active' : '')}
+                id="tab4">
+                <div className="tab-content-list header-content-list">
+                  <div className="tab-content-header-item"><p>Категория</p></div>
+                  <div className="tab-content-header-item">Низкий доступ</div>
+                  <div className="tab-content-header-item">Средний доступ</div>
+                  <div className="tab-content-header-item">Администратор</div>
+                  <div className="tab-content-header-item">Владелец</div>
+                </div>
+                <div className="access">
 
-                            {
-                              staff.accessList && staff.accessList.map((itemList, index) => {
-                                return (<div className="tab-content-list" key={itemList.permissionCode}>
-                                  <div>
-                                    {this.getItemListName(itemList)}
-                                  </div>
-                                  {staff.access && staff.access.map((item) => {
-                                    const checkedPermission = item.permissions.find((element) => {
-                                      return element.permissionCode === itemList.permissionCode;
-                                    },
-                                    );
-
-                                    return (
-                                      <div key={item.roleCode}>
-                                        <div className="check-box">
-                                          <label>
-                                            <input
-                                              className="form-check-input"
-                                              checked={checkedPermission !== undefined}
-                                              disabled={item.roleCode === 4 || index === 0}
-                                              type="checkbox"
-                                              onChange={() => this.toggleChange(item.roleCode, itemList.permissionCode)}/>
-                                            <span className="check-box-circle"></span>
-                                          </label>
-                                        </div>
-                                      </div>
-                                    );
-                                  },
-                                  )}
-                                </div>
-                                );
-                              },
-                              )
-                            }
-                          </div>
+                  {
+                    staff.accessList && staff.accessList.map((itemList, index) => {
+                      return (<div className="tab-content-list" key={itemList.permissionCode}>
+                        <div>
+                          {this.getItemListName(itemList)}
                         </div>
+                        {staff.access && staff.access.map((item) => {
+                          const checkedPermission = item.permissions.find((element) => {
+                            return element.permissionCode === itemList.permissionCode;
+                          },
+                          );
+
+                          return (
+                            <div key={item.roleCode}>
+                              <div className="check-box">
+                                <label>
+                                  <input
+                                    className="form-check-input"
+                                    checked={checkedPermission !== undefined}
+                                    disabled={item.roleCode === 4 || index === 0}
+                                    type="checkbox"
+                                    onChange={() => this.toggleChange(item.roleCode, itemList.permissionCode)}/>
+                                  <span className="check-box-circle" />
+                                </label>
+                              </div>
+                            </div>
+                          );
+                        },
+                        )}
+                      </div>
+                      );
+                    },
+                    )
+                  }
+                </div>
+              </div>
             }
 
             <div className={'tab-pane' + (activeTab === 'feedback' ? ' active' : '')} id="tab5">
               <div className="holiday-tab">
-
-                {
-                  staff.feedback && staff.feedback.sort((a, b) => (b.averageStaffRating || 0) - (a.averageStaffRating || 0)).map((feedbackStaff, key) => {
-                    const activeStaff = staff.staff && staff.staff.find((item) => item.staffId === feedbackStaff.staffId);
+                {staff.feedback && staff.feedback
+                  .sort((a, b) => (b.averageStaffRating || 0) - (a.averageStaffRating || 0))
+                  .map((feedbackStaff, i) => {
+                    const activeStaff = staff.staff && staff.staff
+                      .find((item) => item.staffId === feedbackStaff.staffId);
 
                     return (
                       <FeedStaff
+                        key={`staff-page_holiday-tab-item-${i}`}
                         staff={this.props.staff}
                         activeStaff={activeStaff}
                         feedbackStaff={feedbackStaff}
@@ -724,60 +761,72 @@ class Index extends Component {
               </div>
             </div>
             {staff.isLoadingStaff &&
-                        <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
-                        </div>}
+              <div className="loader">
+                <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
+              </div>
+            }
             {staff.error &&
-                        <div className="errorStaff"><h2 style={{ textAlign: 'center', marginTop: '50px' }}>Извините,
-                            что-то пошло не так</h2></div>}
+              <div className="errorStaff">
+                <h2 style={{ textAlign: 'center', marginTop: '50px' }}>Извините, что-то пошло не так</h2>
+              </div>
+            }
           </div>
         </div>
+
         <FeedbackStaff/>
         {activeTab === 'staff' &&
-
-                <div ref={this.setWrapperRef}>
-                  <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
-                    onClick={this.handleOpenDropdownMenu}/>
-                  {activeTab === 'staff' &&
-                    <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
-                      <div className="buttons">
-                        {!(companyTypeId === 2 || companyTypeId === 3) &&
-                            <button className="button new-staff" type="button"
-                              onClick={() => this.handleClick(null, true)}>Пригласить по Email</button>}
-                        <button className="button new-staff" type="button"
-                          onClick={() => this.handleClick(null, false)}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}</button>
-
-                      </div>
-                      <div className="arrow"/>
-                    </div>}
+          <div ref={this.setWrapperRef}>
+            <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
+              onClick={this.handleOpenDropdownMenu}/>
+            {activeTab === 'staff' &&
+              <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
+                <div className="buttons">
+                  {!(companyTypeId === 2 || companyTypeId === 3) &&
+                      <button className="button new-staff" type="button"
+                        onClick={() => this.handleClick(null, true)}
+                      >
+                        Пригласить по Email
+                      </button>
+                  }
+                  <button className="button new-staff" type="button"
+                    onClick={() => this.handleClick(null, false)}
+                  >
+                    {(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}
+                  </button>
 
                 </div>
+                <div className="arrow"/>
+              </div>
+            }
+          </div>
         }
+
         {addWorkTime &&
-                <AddWorkTime
-                  addWorkingHours={this.addWorkingHours}
-                  deleteWorkingHours={this.deleteWorkingHours}
-                  currentStaff={currentStaff}
-                  date={date}
-                  editWorkingHours={editWorkingHours}
-                  editing_object={editing_object}
-                  onClose={this.onClose}
-                />
+          <AddWorkTime
+            addWorkingHours={this.addWorkingHours}
+            deleteWorkingHours={this.deleteWorkingHours}
+            currentStaff={currentStaff}
+            date={date}
+            editWorkingHours={editWorkingHours}
+            editing_object={editing_object}
+            onClose={this.onClose}
+          />
         }
         {newStaff &&
-                <NewStaff
-                  staff={staff}
-                  staff_working={staff_working}
-                  edit={edit}
-                  updateStaff={this.updateStaff}
-                  addStaff={this.addStaff}
-                  onClose={this.onClose}
-                />
+          <NewStaff
+            staff={staff}
+            staff_working={staff_working}
+            edit={edit}
+            updateStaff={this.updateStaff}
+            addStaff={this.addStaff}
+            onClose={this.onClose}
+          />
         }
         {newStaffByMail &&
-                <NewStaffByMail
-                  addStaffEmail={this.addStaffEmail}
-                  onClose={this.onClose}
-                />
+          <NewStaffByMail
+            addStaffEmail={this.addStaffEmail}
+            onClose={this.onClose}
+          />
         }
       </div>
     );
@@ -963,7 +1012,10 @@ class Index extends Component {
 
   updateTimetable() {
     const { selectedDays } = this.state;
-    this.props.dispatch(staffActions.getTimetable(moment(selectedDays[0]).startOf('day').format('x'), moment(selectedDays[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(selectedDays[0]).startOf('day').format('x'),
+      moment(selectedDays[6]).endOf('day').format('x'),
+    ));
   }
 
   handleDayChange(date) {
@@ -974,7 +1026,10 @@ class Index extends Component {
       timetableFrom: moment(weeks[0]).startOf('day').format('x'),
       timetableTo: moment(weeks[6]).endOf('day').format('x'),
     });
-    this.props.dispatch(staffActions.getTimetable(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(weeks[0]).startOf('day').format('x'),
+      moment(weeks[6]).endOf('day').format('x'),
+    ));
   };
 
   handleDayEnter(date) {
@@ -1013,7 +1068,10 @@ class Index extends Component {
       timetableFrom: moment(days[0]).startOf('day').format('x'),
       timetableTo: moment(days[6]).endOf('day').format('x'),
     });
-    this.props.dispatch(staffActions.getTimetable(moment(days[0]).startOf('day').format('x'), moment(days[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(days[0]).startOf('day').format('x'),
+      moment(days[6]).endOf('day').format('x'),
+    ));
   };
 
   showPrevWeek() {
@@ -1026,7 +1084,10 @@ class Index extends Component {
       timetableFrom: moment(weeks[0]).startOf('day').format('x'),
       timetableTo: moment(weeks[6]).endOf('day').format('x'),
     });
-    this.props.dispatch(staffActions.getTimetable(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(weeks[0]).startOf('day').format('x'),
+      moment(weeks[6]).endOf('day').format('x'),
+    ));
   }
 
   showNextWeek() {
@@ -1039,7 +1100,10 @@ class Index extends Component {
       timetableFrom: moment(weeks[0]).startOf('day').format('x'),
       timetableTo: moment(weeks[6]).endOf('day').format('x'),
     });
-    this.props.dispatch(staffActions.getTimetable(moment(weeks[0]).startOf('day').format('x'), moment(weeks[6]).endOf('day').format('x')));
+    this.props.dispatch(staffActions.getTimetable(
+      moment(weeks[0]).startOf('day').format('x'),
+      moment(weeks[6]).endOf('day').format('x'),
+    ));
   }
 
   isSelectingFirstDay(from, to, day) {

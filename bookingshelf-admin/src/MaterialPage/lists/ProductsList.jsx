@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import ActionModal from '../../_components/modals/ActionModal';
 
 class ProductsList extends Component {
@@ -27,7 +28,6 @@ class ProductsList extends Component {
     return (
       <div className="tab-content-list mb-2" >
         <div className="material-products-details">
-          {/* <a onClick={()=>this.openClientStats(product)}>*/}
           <a onClick={() => toggleInfoProduct(product)}>
             <p className="productName"><span className="mob-title">Наименование: </span>{product.productName}</p>
           </a>
@@ -39,7 +39,10 @@ class ProductsList extends Component {
           <p><span className="mob-title">Категория: </span>{activeCategory && activeCategory.categoryName}</p>
         </div>
         <div>
-          <p><span className="mob-title">Номинальный объем: </span>{product && product.nominalAmount} {activeUnit && activeUnit.unitName}</p>
+          <p>
+            <span className="mob-title">Номинальный объем: </span>
+            {product && product.nominalAmount} {activeUnit && activeUnit.unitName}
+          </p>
         </div>
         <div >
           <p><span className="mob-title">Остаток: </span>{product.currentAmount}</p>
@@ -53,26 +56,24 @@ class ProductsList extends Component {
           </a>
         </div>
         {this.state.isOpenDeleteModal &&
-                                <ActionModal
-                                  title="Удалить товар?"
-                                  closeHandler={this.closeDeleteModal}
-                                  buttons={[{
-                                    handler: deleteProduct,
-                                    params: product.productId,
-                                    innerText: 'Удалить',
-                                    className: 'button',
-                                    additionalHandler: this.closeDeleteModal,
-                                  },
-                                  {
-                                    handler: this.closeDeleteModal,
-                                    innerText: 'Отмена',
-                                    className: 'gray-button',
-                                  }]}
-                                />
+          <ActionModal
+            title="Удалить товар?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: deleteProduct,
+              params: product.productId,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
       </div>
-
-
     );
   }
 }

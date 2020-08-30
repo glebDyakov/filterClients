@@ -21,16 +21,16 @@ class StoreHouseList extends Component {
         {/* </div>*/}
         <div className="delete dropdown">
           {/* <div className="clientEyeDel" onClick={()=>this.toggleStoreHouse(storeHouse)}></div>*/}
-          {/* <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
+          {/* <a style={{ marginRight: '24px' }} className="delete-icon menu-delete-icon"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
           {/*    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>*/}
           {/* </a>*/}
           {/* <div className="dropdown-menu delete-menu p-3">*/}
-          {/*    <button type="button" className="button delete-tab" onClick={()=>this.deleteStoreHouse(storeHouse.storehouseId)}>Удалить</button>*/}
+          {/*    <button type="button" className="button delete-tab"
+          onClick={()=>this.deleteStoreHouse(storeHouse.storehouseId)}>Удалить</button>*/}
 
           {/* </div>*/}
-          <a className="clientEdit"
-            onClick={() => toggleStoreHouse(storeHouse)}/>
-
+          <a className="clientEdit" onClick={() => toggleStoreHouse(storeHouse)} />
         </div>
       </div>
     );

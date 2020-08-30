@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import ActionModal from '../_components/modals/ActionModal';
 import DragDrop from '../_components/DragDrop';
 
@@ -24,10 +25,16 @@ class ServiceGroupInfo extends Component {
   }
 
   render() {
-    const { onCollapse, services, item, keyGroup, dragHandleProps, collapse, handleClick, _delete, dragDropServicesItems, handleServicesDrogEnd, newService } = this.props;
+    const {
+      onCollapse, services, item, keyGroup, dragHandleProps, collapse, handleClick,
+      _delete, dragDropServicesItems, handleServicesDrogEnd, newService,
+    } = this.props;
 
     return (
-      <div className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3' : ''}` + ' service_one collapsible' + (collapse.indexOf(item.serviceGroupId) === -1 ? ' opened' : '')}
+      <div
+        className={item.color.toLowerCase() + `${(services.services.length - 1) !== keyGroup ? ' mb-3' : ''}` +
+        ' service_one collapsible' + (collapse.indexOf(item.serviceGroupId) === -1 ? ' opened' : '')
+        }
         key={keyGroup}>
 
         <div className="service-content">
@@ -35,10 +42,14 @@ class ServiceGroupInfo extends Component {
 
           <div className="col-sm-7 buttonsCollapse d-flex align-items-center">
             <div
-              className={item.color.toLowerCase() + 'ButtonEdit ' + 'btn btn-warning text-light float-left mr-3' + (collapse.indexOf(item.serviceGroupId) === -1 ? ' opened' : '')}
+              className={item.color.toLowerCase() + 'ButtonEdit ' + 'btn btn-warning text-light float-left mr-3' +
+                (collapse.indexOf(item.serviceGroupId) === -1 ? ' opened' : '')
+              }
               onClick={() => onCollapse(item.serviceGroupId)}>
             </div>
-            <p className="title_block mt-1">{item.name} {item.description.length === 0 ? '' : ('(' + item.description + ')')}</p>
+            <p className="title_block mt-1">
+              {item.name} {item.description.length === 0 ? '' : ('(' + item.description + ')')}
+            </p>
           </div>
 
           <div className="header-right-container">
@@ -51,28 +62,27 @@ class ServiceGroupInfo extends Component {
               </a>
 
             </div>
-            <a className="new-service" onClick={(e) => newService(null, item, e, this)}>Новая
-                            услуга</a>
+            <a className="new-service" onClick={(e) => newService(null, item, e, this)}>Новая услуга</a>
           </div>
         </div>
 
         {this.state.isOpenDeleteModal &&
-                <ActionModal
-                  title= "Удалить группу услуг?"
-                  closeHandler={this.closeDeleteModal}
-                  buttons={[{
-                    handler: _delete,
-                    params: item.serviceGroupId,
-                    innerText: 'Удалить',
-                    className: 'button',
-                    additionalHandler: this.closeDeleteModal,
-                  },
-                  {
-                    handler: this.closeDeleteModal,
-                    innerText: 'Отмена',
-                    className: 'gray-button',
-                  }]}
-                />
+          <ActionModal
+            title= "Удалить группу услуг?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: _delete,
+              params: item.serviceGroupId,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
 
         <DragDrop
@@ -81,9 +91,9 @@ class ServiceGroupInfo extends Component {
         />
 
         {(collapse.indexOf(item.serviceGroupId) === -1 && (!item.services || item.services.length === 0)) &&
-                <div className="services_items d-flex justify-content-center w-100">
-                  <p className="not-services">Нет услуг</p>
-                </div>
+          <div className="services_items d-flex justify-content-center w-100">
+            <p className="not-services">Нет услуг</p>
+          </div>
         }
       </div>
     );

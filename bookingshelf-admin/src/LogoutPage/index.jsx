@@ -1,10 +1,9 @@
-import { Link, Redirect } from 'react-router-dom';
 import React from 'react';
-import { userActions } from '../_actions';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import { withRouter } from 'react-router';
 
+import { userActions } from '../_actions';
 
 class Index extends React.Component {
   constructor(props) {
@@ -22,7 +21,6 @@ class Index extends React.Component {
   render() {
     return (
       <a onClick={()=>this.logout()}>Выход</a>
-
     );
   }
 }

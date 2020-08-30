@@ -1,6 +1,16 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { isMobile } from 'react-device-detect';
 
+import { DatePicker } from '../_components/DatePicker';
+import { CalendarModals } from '../_components/modals/CalendarModals';
+import TabScrollContent from './components/TabScrollContent';
+import StaffChoice from './components/StaffChoice';
+import TabScrollHeader from './components/TabScrollHeader';
+import CalendarSwitch from './components/CalendarSwitch';
+
+import { cellActions } from '../_actions/cell.actions';
 import {
   calendarActions,
   staffActions,
@@ -9,30 +19,18 @@ import {
   appointmentActions,
 } from '../_actions';
 
-import '../../public/scss/calendar.scss';
-
-import moment from 'moment';
-import { isMobile } from 'react-device-detect';
-
-import { DatePicker } from '../_components/DatePicker';
-
-import 'react-day-picker/lib/style.css';
-import '../../public/css_admin/date.css';
+import { getCurrentCellTime } from '../_helpers';
 import { access } from '../_helpers/access';
 import { getWeekRange } from '../_helpers/time';
-import { CalendarModals } from '../_components/modals/CalendarModals';
-
-import TabScrollContent from './components/TabScrollContent';
-import StaffChoice from './components/StaffChoice';
-import TabScrollHeader from './components/TabScrollHeader';
-import CalendarSwitch from './components/CalendarSwitch';
 import {
   checkIsOnAnotherReservedTime,
   checkIsOnAnotherVisit,
   getStaffListWithAppointments,
 } from '../_helpers/available-time';
-import { cellActions } from '../_actions/cell.actions';
-import { getCurrentCellTime } from '../_helpers';
+
+import 'react-day-picker/lib/style.css';
+import '../../public/css_admin/date.css';
+import '../../public/scss/calendar.scss';
 
 
 function getWeekDays(weekStart) {
@@ -62,14 +60,14 @@ function getDayRange(date) {
 class Index extends PureComponent {
   constructor(props) {
     super(props);
-    let staffFromUrl; let param1; let dateFr; let dateTo; let dateToType;
+    let staffFromUrl; let param1; let dateToType;
 
-    dateFr=props.match.params.dateFrom ?
+    const dateFr=props.match.params.dateFrom ?
       moment(props.match.params.dateFrom, 'DD-MM-YYYY') :
       moment();
 
 
-    dateTo=props.match.params.dateTo ? getWeekDays(getWeekRange(dateFr).from) :
+    const dateTo=props.match.params.dateTo ? getWeekDays(getWeekRange(dateFr).from) :
       [getDayRange(dateFr).from];
 
     if (!access(2)) {
@@ -90,7 +88,8 @@ class Index extends PureComponent {
         null;
     }
 
-    if (!access(2) && props.match.params.selectedType && props.match.params.staffNum && props.match.params.dateFrom && props.match.params.selectedType!=='staff') {
+    if (!access(2) && props.match.params.selectedType && props.match.params.staffNum &&
+      props.match.params.dateFrom && props.match.params.selectedType!=='staff') {
       props.history.push('/denied');
     }
 
@@ -151,7 +150,9 @@ class Index extends PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' && this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' && !this.props.match.params.dateFrom) {
+    if (this.props.match.params.selectedType && this.props.match.params.selectedType !== 'workingstaff' &&
+      this.props.match.params.selectedType !== 'staff' && this.props.match.params.selectedType !== 'allstaff' &&
+      !this.props.match.params.dateFrom) {
       this.props.history.push('/nopage');
       return false;
     }
@@ -191,7 +192,9 @@ class Index extends PureComponent {
     this.props.dispatch(servicesActions.getServices());
 
     setTimeout(() => {
-      if (!this.props.scrollableAppointmentId && (moment(selectedDays[0]).format('DD-MM-YYYY')=== moment().format('DD-MM-YYYY'))) {
+      if (!this.props.scrollableAppointmentId &&
+        (moment(selectedDays[0]).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY'))
+      ) {
         this.navigateToRedLine();
       }
     }, 500);
@@ -293,8 +296,10 @@ class Index extends PureComponent {
       });
     }
 
-    // const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable || newProps.staff.isLoadingAvailableTime;
-    if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) || (JSON.stringify(this.props.staff.timetable) !== JSON.stringify(newProps.staff.timetable))) {
+    // const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable
+    // || newProps.staff.isLoadingAvailableTime;
+    if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) ||
+      (JSON.stringify(this.props.staff.timetable) !== JSON.stringify(newProps.staff.timetable))) {
       this.initAvailableTime(newProps.staff, newProps.authentication, newProps.selectedDays);
     }
 
@@ -317,9 +322,12 @@ class Index extends PureComponent {
     if (this.state.typeSelected===3 || this.state.typeSelected===2 || this.state.type==='week') {
       const updatedWorkingStaff = this.state.typeSelected===3 || this.state.type === 'week'
         ? { timetable: timetable && timetable.filter((staff)=>staff.staffId===
-                    (!access(2) ? (authentication.user && authentication.user.profile.staffId) : (this.state.staffFromUrl===null
-                      ? JSON.parse(this.state.selectedStaff).staffId
-                      :this.state.staffFromUrl))),
+          (!access(2)
+            ? (authentication.user && authentication.user.profile.staffId)
+            : (this.state.staffFromUrl===null
+              ? JSON.parse(this.state.selectedStaff).staffId
+              :this.state.staffFromUrl)
+          )),
         }
         : staff;
       if (this.state.type === 'week' && updatedWorkingStaff && updatedWorkingStaff.timetable) {
@@ -331,8 +339,10 @@ class Index extends PureComponent {
         opacity: false,
         typeSelected: this.state.typeSelected===1?3:this.state.typeSelected,
         selectedStaff: this.state.staffFromUrl!==null && timetable
-          ?JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2) ? (authentication.user && authentication.user.profile.staffId) : this.state.staffFromUrl))[0])
-          :[],
+          ? JSON.stringify(timetable.filter((staff)=>staff.staffId===(!access(2)
+            ? (authentication.user && authentication.user.profile.staffId)
+            : this.state.staffFromUrl))[0])
+          : [],
         workingStaff: updatedWorkingStaff,
       });
     }
@@ -374,8 +384,11 @@ class Index extends PureComponent {
     const { workingStaff } = this.state;
     const staffWithTimetable = workingStaff.timetable[staffKey];
 
-    const staffListWithAppointments = getStaffListWithAppointments({ appointments, staffWithTimetable, staff, excludeCurrentStaff: true });
-    const isOnAnotherVisit = staffListWithAppointments && staffListWithAppointments.some((staffWithAppointments) => checkIsOnAnotherVisit(staffWithAppointments, currentTime));
+    const staffListWithAppointments = getStaffListWithAppointments(
+      { appointments, staffWithTimetable, staff, excludeCurrentStaff: true },
+    );
+    const isOnAnotherVisit = staffListWithAppointments && staffListWithAppointments
+      .some((staffWithAppointments) => checkIsOnAnotherVisit(staffWithAppointments, currentTime));
     return !isOnAnotherVisit;
   }
 
@@ -391,10 +404,11 @@ class Index extends PureComponent {
     if (countCols > 7) {
       const countColsToWidth = parseInt(widthTabConent / childrens[1].offsetWidth);
       const countPlus = countColsToWidth * (childrens[1].offsetWidth - 5);
-      const allWidth = $('.tab-content-list').width() - ((childrens[1].offsetWidth + 5) * countColsToWidth) - (countCols > 10 ? 200 : 0);
+      const allWidth = $('.tab-content-list').width() -
+        ((childrens[1].offsetWidth + 5) * countColsToWidth) - (countCols > 10 ? 200 : 0);
 
 
-      console.log(this.wrapperRef.scrollLeft, allWidth, countPlus);
+      // console.log(this.wrapperRef.scrollLeft, allWidth, countPlus);
       if (this.wrapperRef.scrollLeft < allWidth) {
         this.wrapperRef.scrollLeft += countPlus;
 
@@ -415,26 +429,29 @@ class Index extends PureComponent {
 
 
   render() {
-    const { authentication, company, services, clients, staff, status, adding, isLoadingCalendar, isLoadingAppointments, isLoadingReservedTime, selectedDays } = this.props;
-    const { appointmentForDeleting, workingStaff, reserved, appointmentEdited,
+    const {
+      authentication, company, services, clients, staff, status, adding, isLoadingCalendar,
+      isLoadingAppointments, isLoadingReservedTime, selectedDays,
+    } = this.props;
+    const {
+      appointmentForDeleting, workingStaff, reserved, appointmentEdited,
       clickedTime, minutes, minutesReservedtime, staffClicked,
       type, appointmentModal, edit_appointment, infoClient,
       typeSelected, selectedStaff, reservedTimeEdited, reservedStuffId, timetableMessage,
     } = this.state;
     const calendarModalsProps = {
       appointmentModal, appointmentEdited, clients, staff, edit_appointment, services, staffClicked, adding, status,
-      clickedTime, selectedDayMoment: moment(selectedDays[0]), selectedDay: selectedDays[0], workingStaff, minutes, reserved, type, infoClient, minutesReservedtime,
+      clickedTime, selectedDayMoment: moment(selectedDays[0]), selectedDay: selectedDays[0], workingStaff,
+      minutes, reserved, type, infoClient, minutesReservedtime,
       reservedTimeEdited, reservedStuffId, appointmentForDeleting,
-      newReservedTime: this.newReservedTime, changeTime: this.changeTime, moveVisit: this.moveVisit, getByStaffKey: this.getByStaffKey, changeReservedTime: this.changeReservedTime,
-      onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient, newAppointment: this.newAppointment,
-      deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
+      newReservedTime: this.newReservedTime, changeTime: this.changeTime, moveVisit: this.moveVisit,
+      getByStaffKey: this.getByStaffKey, changeReservedTime: this.changeReservedTime,
+      onClose: this.onClose, updateClient: this.updateClient, addClient: this.addClient,
+      newAppointment: this.newAppointment, deleteAppointment: this.deleteAppointment, timetable: workingStaff.timetable,
     };
-
 
     const companyTypeId = company.settings && company.settings.companyTypeId;
     const path='/'+ location && location.pathname.split('/')[1];
-
-    console.log(path);
 
     let redTitle;
     if (path === '/invoices') {
@@ -451,7 +468,8 @@ class Index extends PureComponent {
         }
       }
     }
-    const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments || isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
+    const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments ||
+      isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
     return (
       <React.Fragment>
@@ -494,11 +512,13 @@ class Index extends PureComponent {
           </div>
           <div className={'days-container ' + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
 
-            <button onClick={this.scrollHandler} className={'scroll-button' + (!this.state.scrolledToRight ? '' : ' scrolled')}></button>
+            <button
+              onClick={this.scrollHandler}
+              className={'scroll-button' + (!this.state.scrolledToRight ? '' : ' scrolled')}
+            />
 
             <div className="tab-pane active" id={selectedDays.length===1 ? 'days_20' : 'weeks'}>
               <div ref={this.setWrapperRef} className="calendar-list">
-
 
                 <TabScrollHeader
                   selectedDays={selectedDays}
@@ -508,6 +528,7 @@ class Index extends PureComponent {
                   staff={staff && staff.staff}
                   type={type}
                 />
+
                 {company.settings && (
                   <TabScrollContent
                     company={company}
@@ -532,7 +553,9 @@ class Index extends PureComponent {
           </div>
 
           <CalendarModals {...calendarModalsProps} />
-          {isLoading && <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+          {isLoading &&
+            <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>
+          }
         </div>
       </React.Fragment>
     );
@@ -559,11 +582,15 @@ class Index extends PureComponent {
 
     if (type==='day') {
       appointment.forEach((currentAppointment, i) => {
-        appointment[i].appointmentTimeMillis = moment(moment(selectedDays[0]).format('DD MM YYYY') + ' ' + moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
+        appointment[i].appointmentTimeMillis =
+          moment(moment(selectedDays[0]).format('DD MM YYYY') + ' ' +
+            moment(appointment[i].appointmentTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
       });
     }
 
-    dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, startTime, endTime, coStaffs));
+    dispatch(calendarActions.addAppointment(
+      JSON.stringify(appointment), serviceId, staffId, clientId, startTime, endTime, coStaffs),
+    );
   }
 
   newReservedTime(staffId, reservedTime) {
@@ -571,8 +598,10 @@ class Index extends PureComponent {
     const { type } = this.state;
 
     if (type==='day') {
-      reservedTime.startTimeMillis=moment(moment(selectedDays[0]).format('DD MM YYYY')+' '+moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
-      reservedTime.endTimeMillis=moment(moment(selectedDays[0]).format('DD MM YYYY')+' '+moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
+      reservedTime.startTimeMillis=moment(moment(selectedDays[0]).format('DD MM YYYY')+' '
+        +moment(reservedTime.startTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
+      reservedTime.endTimeMillis=moment(moment(selectedDays[0]).format('DD MM YYYY')+' '
+        +moment(reservedTime.endTimeMillis, 'x').format('HH:mm'), 'DD MM YYYY HH:mm').format('x');
     }
 
     const { startTime, endTime } = this.getSelectedTimeRange();
@@ -601,7 +630,12 @@ class Index extends PureComponent {
   }
 
   changeTime(time, staffId, number, edit_appointment, appointment) {
-    this.setState({ appointmentModal: true, clickedTime: time, minutesReservedtime: [], minutes: this.getHours(staffId, time, appointment), staffClicked: staffId, edit_appointment: edit_appointment, appointmentEdited: appointment });
+    this.setState(
+      {
+        appointmentModal: true, clickedTime: time, minutesReservedtime: [],
+        minutes: this.getHours(staffId, time, appointment), staffClicked: staffId, edit_appointment: edit_appointment,
+        appointmentEdited: appointment,
+      });
   }
 
   changeReservedTime(minutesReservedtime, staffId, newTime=null) {
@@ -633,7 +667,8 @@ class Index extends PureComponent {
 
     this.refreshTable(startTime, endTime);
     this.getTimetable(selectedDays[0], date);
-    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
+    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'
+      +moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
   };
 
   handleWeekClick(weekNumber, selectedDays, e) {
@@ -647,7 +682,8 @@ class Index extends PureComponent {
       type: 'week',
       opacity: false,
     });
-    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(selectedDays[0]).format('DD-MM-YYYY')+'/'+moment(selectedDays[6]).format('DD-MM-YYYY'));
+    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'
+      +moment(selectedDays[0]).format('DD-MM-YYYY')+'/'+moment(selectedDays[6]).format('DD-MM-YYYY'));
 
     this.refreshTable(startTime, endTime);
   };
@@ -664,7 +700,8 @@ class Index extends PureComponent {
 
     this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }));
 
-    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
+    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'
+      +moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
   }
 
   showNextWeek() {
@@ -677,8 +714,8 @@ class Index extends PureComponent {
     this.getTimetable(selectedDays[0], weeks[6]);
 
     this.props.dispatch(cellActions.togglePayload({ selectedDays: weeks }));
-    console.log(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
-    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'+moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
+    history.pushState(null, '', '/calendar/staff/'+JSON.parse(selectedStaff).staffId+'/'
+      +moment(weeks[0]).format('DD-MM-YYYY')+'/'+moment(weeks[6]).format('DD-MM-YYYY'));
   }
 
   handleDayClick(day) {
@@ -741,14 +778,21 @@ class Index extends PureComponent {
       newState = {
         ...newState,
         typeSelected: types,
-        staffFromUrl: JSON.parse((selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(currentWorkingStaff)).staffId,
-        selectedStaff: (selectedStaff && selectedStaff.length!==0) ? selectedStaff : JSON.stringify(currentWorkingStaff),
+        staffFromUrl: JSON.parse((selectedStaff && selectedStaff.length!==0)
+          ? selectedStaff
+          : JSON.stringify(currentWorkingStaff)).staffId,
+        selectedStaff: (selectedStaff && selectedStaff.length!==0)
+          ? selectedStaff
+          : JSON.stringify(currentWorkingStaff),
         type: 'week',
       };
 
       this.getTimetable(prevDay, selectedDays[0]);
 
-      url = `staff/${JSON.parse((selectedStaff && selectedStaff.length) ? selectedStaff : JSON.stringify(currentWorkingStaff)).staffId}/${moment(selectedDays[0]).format('DD-MM-YYYY')}/${moment(selectedDays[6]).format('DD-MM-YYYY')}`;
+      url = `staff/${JSON.parse((selectedStaff && selectedStaff.length)
+        ? selectedStaff
+        : JSON.stringify(currentWorkingStaff)).staffId}` +
+        `/${moment(selectedDays[0]).format('DD-MM-YYYY')}/${moment(selectedDays[6]).format('DD-MM-YYYY')}`;
     }
     const { startTime, endTime } = this.getSelectedTimeRange(selectedDays, type);
 
@@ -757,7 +801,10 @@ class Index extends PureComponent {
     history.pushState(null, '', `/calendar/${url}`);
   }
 
-  setWorkingStaff(staffEl = null, typeSelected = this.state.typeSelected, timetable = this.props.staff.timetable, selectedDays = this.props.selectedDays) {
+  setWorkingStaff(
+    staffEl = null, typeSelected = this.state.typeSelected, timetable = this.props.staff.timetable,
+    selectedDays = this.props.selectedDays,
+  ) {
     const { workingStaff, type, selectedStaff } = this.state;
     let newState = {};
     let url;
@@ -768,8 +815,7 @@ class Index extends PureComponent {
         const currentDay = moment(selectedDays[0]).format('DD MM YYYY');
 
         return checkingDay === currentDay;
-      }),
-      );
+      }));
 
       newState = {
         workingStaff: {
@@ -790,8 +836,10 @@ class Index extends PureComponent {
       };
       url = `/calendar/allstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
     } else {
-      staffEl = staffEl ? staffEl :[JSON.parse(selectedStaff)];
-      const staff=selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
+      staffEl = staffEl ? staffEl : [JSON.parse(selectedStaff)];
+      const staff=selectedStaff
+        ? JSON.stringify(staffEl[0])
+        : JSON.stringify(timetable.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId));
 
       if (type === 'week') {
         staffEl.push(staffEl[0]);
@@ -808,15 +856,24 @@ class Index extends PureComponent {
       newState = {
         workingStaff: { ...workingStaff, timetable: staffEl },
         timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
-        selectedStaff: selectedStaff?JSON.stringify(staffEl[0]):JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
+        selectedStaff: selectedStaff
+          ? JSON.stringify(staffEl[0])
+          : JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
         typeSelected: typeSelected,
         staffFromUrl: JSON.parse(staff).staffId,
       };
-      const urlPath = selectedDays.length===1 ? moment(selectedDays[0]).format('DD-MM-YYYY') : moment(selectedDays[0]).format('DD-MM-YYYY')+'/'+moment(selectedDays[6]).format('DD-MM-YYYY');
+      const urlPath = selectedDays.length===1
+        ? moment(selectedDays[0]).format('DD-MM-YYYY')
+        : moment(selectedDays[0]).format('DD-MM-YYYY')+'/'+
+        moment(selectedDays[6]).format('DD-MM-YYYY');
       url = `/calendar/staff/${JSON.parse(staff).staffId}/${urlPath}`;
     }
 
-    this.setState(newState, () => type==='week' && typeSelected !== 3 && this.props.dispatch(cellActions.togglePayload({ selectedDays: [getDayRange(moment(selectedDays[0]).format()).from] })));
+    this.setState(newState,
+      () => type==='week' && typeSelected !== 3 &&
+        this.props.dispatch(cellActions.togglePayload(
+          { selectedDays: [getDayRange(moment(selectedDays[0]).format()).from] },
+        )));
     history.pushState(null, '', url);
   }
 
@@ -848,25 +905,30 @@ class Index extends PureComponent {
     const dayPart = moment(day, 'x').format('DD/MM/YYYY')+' ';
     const subtractWeek = moment().subtract(1, 'week').format('x');
 
-    const newStaff = appointments && appointments.find((item) => (item.staff && item.staff.staffId) === idStaff.staffId);
-    const staffWithReservedTime = reservedTimeFromProps && reservedTimeFromProps.find((item) => (item.staff && item.staff.staffId) === idStaff.staffId);
+    const newStaff = appointments && appointments
+      .find((item) => (item.staff && item.staff.staffId) === idStaff.staffId);
+    const staffWithReservedTime = reservedTimeFromProps && reservedTimeFromProps
+      .find((item) => (item.staff && item.staff.staffId) === idStaff.staffId);
     numbers.forEach((item)=> {
       const currentTime=parseInt(moment(dayPart+moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
       const hoursPart = moment(item, 'x').format('HH:mm');
-      const formattedDayPart = parseInt(moment(dayPart + moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
+      const formattedDayPart = parseInt(moment(dayPart +
+        moment(item, 'x').format('HH:mm'), 'DD/MM/YYYY HH:mm').format('x'));
 
       timetable.forEach((timing) =>
         timing.staffId === idStaff.staffId && timing.timetables.forEach((time) => {
           if (
-            parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' + hoursPart, 'DD/MM/YYYY HH:mm').format('x')) ===
-                      formattedDayPart
+            parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' +
+              hoursPart, 'DD/MM/YYYY HH:mm').format('x')) === formattedDayPart
           ) {
             const isOnAnotherVisit = checkIsOnAnotherVisit(newStaff, currentTime);
             if (!isOnAnotherVisit) {
               const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime);
 
               if (!isOnAnotherReservedTime) {
-                if (currentTime >= time.startTimeMillis && currentTime < time.endTimeMillis && currentTime >= subtractWeek) {
+                if (currentTime >= time.startTimeMillis && currentTime <
+                  time.endTimeMillis && currentTime >= subtractWeek
+                ) {
                   hoursArray.splice(hoursArray.indexOf(moment(item, 'x').format('H:mm')), 1);
                 }
               }

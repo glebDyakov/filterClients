@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
+import { ClientDetails, NewClient, AddBlackList } from '../_components/modals';
+import Paginator from '../_components/Paginator';
+import UserInfo from './UserInfo';
+
+import { staffActions } from '../_actions/staff.actions';
 import { clientActions } from '../_actions';
 
-import '../../public/scss/clients.scss';
-import moment, { now } from 'moment';
-import { ClientDetails, NewClient, AddBlackList } from '../_components/modals';
 import { access } from '../_helpers/access';
-import StaffChoice from '../CalendarPage/components/StaffChoice';
-import { servicesActions } from '../_actions/services.actions';
-import Paginator from '../_components/Paginator';
-import { staffActions } from '../_actions/staff.actions';
-import ActionModal from '../_components/modals/ActionModal';
-import UserInfo from './UserInfo';
+
+import '../../public/scss/clients.scss';
 
 class Index extends Component {
   constructor(props) {
@@ -22,7 +21,6 @@ class Index extends Component {
       props.history.push('/denied');
     }
     document.title = 'Клиенты | Онлайн-запись';
-
 
     this.state = {
       client: props.client,
@@ -75,11 +73,6 @@ class Index extends Component {
   }
 
   handleOpenDropdownMenu() {
-    // this.setState(state => {
-    //     console.log(state.isOpenDropdownMenu, !state.isOpenDropdownMenu)
-    //     return {isOpenDropdownMenu: !state.isOpenDropdownMenu};
-    // });
-
     this.setState({ isOpenDropdownMenu: !this.state.isOpenDropdownMenu });
   }
 
@@ -126,7 +119,8 @@ class Index extends Component {
     }
     if (JSON.stringify(this.props.client) !== JSON.stringify(newProps.client)) {
       this.setState({
-        openedModal: newProps.client && newProps.client.status && newProps.client.status === 209 ? false : this.state.openedModal,
+        openedModal: newProps.client && newProps.client.status &&
+          newProps.client.status === 209 ? false : this.state.openedModal,
         client: newProps.client,
         defaultClientsList: newProps.client,
       });
@@ -145,18 +139,10 @@ class Index extends Component {
     this.updateClients(1, tab);
   }
 
-  getData(result) {
-    this.setState({ data: result.data });
-  }
-
   onFileChange(e) {
     const uploadFile = e.target.files[0];
 
     this.setState({ uploadFile });
-    //
-    // Papa.parse(csvData, {
-    //     complete: this.getData
-    // });
   }
 
   handleFileSubmit(e) {
@@ -166,11 +152,7 @@ class Index extends Component {
     const formData = new FormData();
     formData.append('file', this.state.uploadFile);
 
-    const reader = new FileReader();
-
     this.props.dispatch(clientActions.uploadFile(formData));
-    // this.props.dispatch(clientActions.uploadFile(reader.readAsDataURL(this.state.uploadFile)))
-    // this.props.dispatch(clientActions.uploadFile(this.state.uploadFile))
   }
 
   onChangePage(pageOfItems) {
@@ -218,21 +200,14 @@ class Index extends Component {
   }
 
   render() {
-    const { staff } = this.props;
-    const { client, client_working, edit, activeTab, blackListModal, defaultClientsList, selectedStaffList, typeSelected, openedModal, infoClient } = this.state;
+    const {
+      client, client_working, edit, activeTab, blackListModal, defaultClientsList, selectedStaffList,
+      typeSelected, openedModal, infoClient,
+    } = this.state;
     const isLoading = client ? client.isLoading : false;
 
-
     const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client;
-
     const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages;
-
-    // sort((a, b) => {
-    //     if (moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') >= 0) {
-    //         return moment(a.birthDate).year(2000).diff(moment().year(2000), 'days') - moment(b.birthDate).year(2000).diff(moment().year(2000), 'days');
-    //     }
-    // })
-
 
     return (
       <div className="clients-page">
@@ -241,8 +216,7 @@ class Index extends Component {
 
 
         <div style={{ position: 'relative' }} className="clients-page-container">
-          <div style={{ zIndex: 2 }}
-            className="row content clients">
+          <div style={{ zIndex: 2 }} className="row content clients">
             {/* <StaffChoice*/}
             {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
             {/*    typeSelected={typeSelected}*/}
@@ -287,26 +261,24 @@ class Index extends Component {
               )}
             </div>
 
-
             <div className="col-2 d-flex justify-content-end export-container">
               {/* {access(5) &&*/}
               {/* <div className="export">*/}
               {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-              {/*        <input onChange={this.onFileChange} type="file" className="button client-download" ref={this.uploadFile} />*/}
+              {/*        <input onChange={this.onFileChange} type="file" className="button client-download"
+              ref={this.uploadFile} />*/}
               {/*        <input type="submit" value="Загрузить" />*/}
               {/*    </form>*/}
               {/* </div>}*/}
               {access(5) &&
-                            <div className="export">
-
-                              <button onClick={this.downloadFile} type="button" className="button client-download"
-                              >Скачать CSV
-                              </button>
-                            </div>
+                <div className="export">
+                  <button onClick={this.downloadFile} type="button" className="button client-download">
+                    Скачать CSV
+                  </button>
+                </div>
               }
             </div>
           </div>
-
 
           <div className="final-clients">
             <div className="tab-content-list" style={{ position: 'relative' }}>
@@ -323,7 +295,9 @@ class Index extends Component {
             }).map((client_user, i) => {
               let condition = true;
               if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
-                condition = client_user.appointments.find((appointment) => selectedStaffList.find((selectedStaff) => appointment.staffId === selectedStaff.staffId));
+                condition = client_user.appointments.find((appointment) => selectedStaffList
+                  .find((selectedStaff) => appointment.staffId === selectedStaff.staffId),
+                );
               }
               return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
                 <UserInfo
@@ -334,7 +308,6 @@ class Index extends Component {
                   handleClick={this.handleClick}
                   updateClient={this.updateClient}
                   openClientsStats={this.openClientStats}
-
                 />
               );
             },
@@ -342,38 +315,38 @@ class Index extends Component {
           </div>
 
           <div className="tab-content">
-            {
-              (!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'] || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
-                            <div className="no-holiday">
-                              {(this.search && this.search.value.length > 0)
-                                ? <span>Поиск результатов не дал</span>
-                                : (
-                                  <span>
-                                    {client.error ? client.error : 'Клиенты не добавлены'}
-                                    {activeTab === 'clients' &&
-                                            <button
-                                              type="button"
-                                              className="button mt-3 p-3"
-                                              onClick={(e) => this.handleClick(null, e)}
-                                            >
-                                                Добавить нового клиента
-                                            </button>
-                                    }
-                                    {activeTab === 'blacklist' &&
-                                            <button
-                                              type="button"
-                                              className="button mt-3 p-3"
-                                              data-target=".add-black-list-modal"
-                                              data-toggle="modal"
-                                              onClick={this.addToBlackList}
-                                            >
-                                                Добавить в черный список
-                                            </button>
-                                    }
-                                  </span>)
-                              }
-
-                            </div>
+            {(!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients']
+              || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
+                <div className="no-holiday">
+                  {(this.search && this.search.value.length > 0)
+                    ? <span>Поиск результатов не дал</span>
+                    : (
+                      <span>
+                        {client.error ? client.error : 'Клиенты не добавлены'}
+                        {activeTab === 'clients' &&
+                                <button
+                                  type="button"
+                                  className="button mt-3 p-3"
+                                  onClick={(e) => this.handleClick(null, e)}
+                                >
+                                    Добавить нового клиента
+                                </button>
+                        }
+                        {activeTab === 'blacklist' &&
+                                <button
+                                  type="button"
+                                  className="button mt-3 p-3"
+                                  data-target=".add-black-list-modal"
+                                  data-toggle="modal"
+                                  onClick={this.addToBlackList}
+                                >
+                                    Добавить в черный список
+                                </button>
+                        }
+                      </span>
+                    )
+                  }
+                </div>
             }
           </div>
 
@@ -385,58 +358,66 @@ class Index extends Component {
           </div>
         </div>
         <div ref={this.setWrapperRef}>
-          <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
-            onClick={this.handleOpenModal}/>
+          <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>
           <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
             <div className="buttons">
               {activeTab === 'clients' &&
-                            <button type="button" className="button" onClick={(e) => {
-                              this.handleClick(null, e);
-                              this.handleOpenModal();
-                            }}>Новый
-                                клиент</button>}
-              {activeTab === 'blacklist' && <button type="button" className="button"
-                data-target=".add-black-list-modal"
-                data-toggle="modal"
-                onClick={this.addToBlackList}>Добавить в
-                                черный список</button>}
+                <button type="button" className="button" onClick={(e) => {
+                  this.handleClick(null, e);
+                  this.handleOpenModal();
+                }}
+                >
+                  Новый клиент
+                </button>
+              }
+              {activeTab === 'blacklist' &&
+                <button type="button" className="button"
+                  data-target=".add-black-list-modal"
+                  data-toggle="modal"
+                  onClick={this.addToBlackList}
+                >
+                  Добавить в черный список
+                </button>
+              }
             </div>
             <div className="arrow"/>
           </div>
         </div>
+
         {openedModal &&
-                <NewClient
-                  client_working={client_working}
-                  edit={edit}
-                  updateClient={this.updateClient}
-                  addClient={this.addClient}
-                  onClose={this.onClose}
-                />
+          <NewClient
+            client_working={client_working}
+            edit={edit}
+            updateClient={this.updateClient}
+            addClient={this.addClient}
+            onClose={this.onClose}
+          />
         }
+
         {blackListModal &&
-                <AddBlackList
-                  isLoading={isLoading}
-                  clients={client}
-                  updateClient={this.updateClient}
-                  addClient={this.addClient}
-                  onClose={this.closeBlackListModal}
-                />
+          <AddBlackList
+            isLoading={isLoading}
+            clients={client}
+            updateClient={this.updateClient}
+            addClient={this.addClient}
+            onClose={this.closeBlackListModal}
+          />
         }
+
         <ClientDetails
           clientId={infoClient}
           // editClient={this.handleEditClient}
           editClient={this.handleClick}
         />
-
-
       </div>
     );
   }
 
   handleSubmit(e) {
-    const { firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking } = this.state.client;
+    const {
+      firstName, lastName, email, phone, roleId, workStartMilis, workEndMilis, onlineBooking,
+    } = this.state.client;
     const { dispatch } = this.props;
-
 
     e.preventDefault();
 
@@ -477,9 +458,9 @@ class Index extends Component {
         return id === item.clientId;
       });
 
-      this.setState({ ...this.state, openedModal: true, edit: true, client_working: client_working });
+      this.setState({ openedModal: true, edit: true, client_working: client_working });
     } else {
-      this.setState({ ...this.state, openedModal: true, edit: false, client_working: {} });
+      this.setState({ openedModal: true, edit: false, client_working: {} });
     }
   }
 

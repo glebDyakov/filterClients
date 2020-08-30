@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+
 import ActionModal from '../../_components/modals/ActionModal';
 
 class MovementList extends Component {
@@ -23,7 +24,7 @@ class MovementList extends Component {
   }
 
   render() {
-    const { movement, activeProduct, deleteMovement, toggleStorehouseProduct, toggleExProd, activeStorehouse, activeUnit } = this.props;
+    const { movement, deleteMovement, toggleStorehouseProduct, toggleExProd, activeUnit } = this.props;
 
     return (
       <div className="tab-content-list mb-2">
@@ -39,10 +40,12 @@ class MovementList extends Component {
           <p className="productName">{movement && movement.productName}</p>
         </div>
         {/* <div>*/}
-        {/*        <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>{activeProduct && activeProduct.description}</p>*/}
+        {/*        <p style={{ width: "100%" }}><span className="mob-title">Описание: </span>
+        {activeProduct && activeProduct.description}</p>*/}
         {/* </div>*/}
         {/* <div >*/}
-        {/*        <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>{activeStorehouse && activeStorehouse.storehouseName}</p>*/}
+        {/*        <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>
+        {activeStorehouse && activeStorehouse.storehouseName}</p>*/}
         {/* </div>*/}
         <div className={(movement && movement.targetTranslated) ? '' : 'movement-target-empty'}>
           <p><span
@@ -65,12 +68,18 @@ class MovementList extends Component {
           </p>
         </div>
         <div>
-          <p><span
-            className="mob-title">Дата: </span>{movement && moment(movement.deliveryDateMillis ? movement.deliveryDateMillis : movement.expenditureDateMillis).format('DD.MM HH:mm')}
+          <p>
+            <span className="mob-title">Дата: </span>
+            {movement && moment(movement.deliveryDateMillis
+              ? movement.deliveryDateMillis
+              : movement.expenditureDateMillis).format('DD.MM HH:mm')
+            }
           </p>
         </div>
         {/* <div >*/}
-        {/*    <p><span className="mob-title">Время: </span>{movement && moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis).format('HH:mm')}</p>*/}
+        {/*    <p><span className="mob-title">Время: </span>{movement &&
+        moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis)
+        .format('HH:mm')}</p>*/}
         {/* </div>*/}
         <div>
           <p><span
@@ -78,8 +87,10 @@ class MovementList extends Component {
           </p>
         </div>
         <div className="delete clientEditWrapper">
-          <a className="clientEdit"
-            onClick={() => (movement.storehouseProductId) ? toggleStorehouseProduct(movement) : toggleExProd(movement)}/>
+          <a
+            className="clientEdit"
+            onClick={() => (movement.storehouseProductId) ? toggleStorehouseProduct(movement) : toggleExProd(movement)}
+          />
         </div>
         <div className="delete dropdown">
           <a className="delete-icon menu-delete-icon" onClick={this.openDeleteModal}>
@@ -88,25 +99,24 @@ class MovementList extends Component {
         </div>
 
         {this.state.isOpenDeleteModal &&
-                <ActionModal
-                  title="Удалить запись?"
-                  closeHandler={this.closeDeleteModal}
-                  buttons={[{
-                    handler: deleteMovement,
-                    params: movement,
-                    innerText: 'Удалить',
-                    className: 'button',
-                    additionalHandler: this.closeDeleteModal,
-                  },
-                  {
-                    handler: this.closeDeleteModal,
-                    innerText: 'Отмена',
-                    className: 'gray-button',
-                  }]}
-                />
+          <ActionModal
+            title="Удалить запись?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: deleteMovement,
+              params: movement,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
       </div>
-
     );
   }
 }

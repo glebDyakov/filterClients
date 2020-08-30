@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import ActionModal from '../../_components/modals/ActionModal';
 
 class CategoryList extends Component {
@@ -21,7 +22,7 @@ class CategoryList extends Component {
   }
 
   render() {
-    const { openClientStats, deleteCategory, categories, category, toggleCategory } = this.props;
+    const { openClientStats, deleteCategory, category, toggleCategory } = this.props;
 
     return (
       <div className="tab-content-list mb-2">
@@ -38,26 +39,25 @@ class CategoryList extends Component {
           <a className="delete-icon menu-delete-icon" onClick={this.openDeleteModal}>
             <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
           </a>
-
         </div>
 
         {this.state.isOpenDeleteModal &&
-                <ActionModal
-                  title="Удалить категорию?"
-                  closeHandler={this.closeDeleteModal}
-                  buttons={[{
-                    handler: deleteCategory,
-                    params: category.categoryId,
-                    innerText: 'Удалить',
-                    className: 'button',
-                    additionalHandler: this.closeDeleteModal,
-                  },
-                  {
-                    handler: this.closeDeleteModal,
-                    innerText: 'Отмена',
-                    className: 'gray-button',
-                  }]}
-                />
+          <ActionModal
+            title="Удалить категорию?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: deleteCategory,
+              params: category.categoryId,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
       </div>
     );

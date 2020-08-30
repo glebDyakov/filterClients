@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { AddGroup, AddService, CreatedService } from '../_components/modals';
+import DragDrop from '../_components/DragDrop';
+import ServiceGroupInfo from './ServiceGroupInfo';
+import ServiceInfo from './ServiceInfo';
+
 import { servicesActions, staffActions, materialActions } from '../_actions';
 
 import '../../public/scss/services.scss';
-import { AddGroup, AddService, CreatedService } from '../_components/modals';
 
-import moment from 'moment';
-import DragDrop from '../_components/DragDrop';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import ServiceGroupInfo from './ServiceGroupInfo';
-import ServiceInfo from './ServiceInfo';
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -20,27 +19,27 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the dragDropItems look a bit nicer
-  userSelect: 'none',
-  // padding: grid * 2,
-  // margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? '#f5f5f6' : 'transparent',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver) => ({
-  // background: isDraggingOver ? "#0a1330" : "transparent",
-  padding: grid,
-  position: 'relative',
-  width: '100%',
-});
+// const grid = 8;
+//
+// const getItemStyle = (isDragging, draggableStyle) => ({
+//   // some basic styles to make the dragDropItems look a bit nicer
+//   userSelect: 'none',
+//   // padding: grid * 2,
+//   // margin: `0 0 ${grid}px 0`,
+//
+//   // change background colour if dragging
+//   background: isDragging ? '#f5f5f6' : 'transparent',
+//
+//   // styles we need to apply on draggables
+//   ...draggableStyle,
+// });
+//
+// const getListStyle = (isDraggingOver) => ({
+//   // background: isDraggingOver ? "#0a1330" : "transparent",
+//   padding: grid,
+//   position: 'relative',
+//   width: '100%',
+// });
 
 class Index extends Component {
   constructor(props) {
@@ -134,7 +133,9 @@ class Index extends Component {
         services: newProps.services,
         addService: newProps.services.status && newProps.services.status === 209 ? false : this.state.addService,
         addGroup: newProps.services.status && newProps.services.status === 209 ? false : this.state.addGroup,
-        createdService: newProps.services.status && newProps.services.status === 209 ? false : this.state.createdService,
+        createdService: newProps.services.status && newProps.services.status === 209
+          ? false
+          : this.state.createdService,
         staff: newProps.staff,
       });
     }
@@ -213,32 +214,35 @@ class Index extends Component {
   }
 
   render() {
-    const { services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet, idGroupEditable, addService, addGroup, createdService, defaultServicesList, search } = this.state;
+    const {
+      services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet,
+      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search,
+    } = this.state;
     const isLoading = staff.isLoading || services.isLoading;
     const dragDropGroupsItems = [];
 
 
     services.services && services.services.forEach((item, keyGroup) => {
       const dragDropServicesItems = [];
-      collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 &&
-            item.services
-              .map((item2, keyService) => {
-                dragDropServicesItems.push({
-                  serviceId: item2.serviceId,
-                  id: `service-${keyGroup}-${keyService}`,
-                  getContent: (dragHandleProps) => (
-                    <ServiceInfo
-                      keyGroup={keyGroup}
-                      dragHandleProps={dragHandleProps}
-                      keyService={keyService}
-                      item2={item2}
-                      item={item}
-                      newService={this.newService}
-                      deleteService={this.deleteService}
-                    />
-                  ),
-                });
-              });
+      collapse.indexOf(item.serviceGroupId) === -1 && item.services && item.services.length > 0 && item.services
+        .map((item2, keyService) => {
+          dragDropServicesItems.push({
+            serviceId: item2.serviceId,
+            id: `service-${keyGroup}-${keyService}`,
+            getContent: (dragHandleProps) => (
+              <ServiceInfo
+                keyGroup={keyGroup}
+                dragHandleProps={dragHandleProps}
+                keyService={keyService}
+                item2={item2}
+                item={item}
+                newService={this.newService}
+                deleteService={this.deleteService}
+              />
+            ),
+          });
+        });
+
       dragDropGroupsItems.push({
         dragDropServicesItems,
         item,
@@ -266,32 +270,35 @@ class Index extends Component {
 
     return (
       <div className="services">
-        {/* {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
+        {/* {this.state.isLoading
+          ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div>
+          : null}*/
+        }
         {isLoading &&
-                <div className="loader loader-service"><img src={`${process.env.CONTEXT}public/img/spinner.gif`}
-                  alt=""/></div>}
+          <div className="loader loader-service">
+            <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
+          </div>
+        }
+
         <div className="pages-content">
-
           <div className="services_list" id="sortable_list">
-            {
-              (defaultServicesList.services && defaultServicesList !== '' &&
-                                // (1 &&
-                                <div className="row align-items-center search-header-container content clients mb-2">
-                                  <div className="search">
-                                    <input className="search-input" type="search"
-                                      placeholder="Введите название услуги"
-                                      aria-label="Search" value={this.state.searchInput}
-                                      onChange={this.handleSearch}/>
+            {(defaultServicesList.services && defaultServicesList !== '' &&
+              <div className="row align-items-center search-header-container content clients mb-2">
+                <div className="search">
+                  <input className="search-input" type="search"
+                    placeholder="Введите название услуги"
+                    aria-label="Search" value={this.state.searchInput}
+                    onChange={this.handleSearch}/>
 
-                                    <input className="mob-search-input" type="search"
-                                      placeholder="Введите название услуги"
-                                      aria-label="Search" value={this.state.searchInput}
-                                      onChange={this.handleSearch}/>
-                                    <button className="search-icon" type="submit"/>
-                                  </div>
-                                </div>
-              )
-            }
+                  <input className="mob-search-input" type="search"
+                    placeholder="Введите название услуги"
+                    aria-label="Search" value={this.state.searchInput}
+                    onChange={this.handleSearch}/>
+                  <button className="search-icon" type="submit"/>
+                </div>
+              </div>
+            )}
+
             <div className="services_wrapper">
               <DragDrop
                 dragDropItems={dragDropGroupsItems}
@@ -300,76 +307,80 @@ class Index extends Component {
             </div>
           </div>
           <div ref={this.setWrapperRef}>
-            <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
-              onClick={this.handleOpenDropdownMenu}/>
+            <a
+              className={'add' + (this.state.handleOpen ? ' rotate' : '')}
+              href="#"
+              onClick={this.handleOpenDropdownMenu}
+            />
+
             <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
               <div className="buttons">
-                <button type="button"
-                  className="button" onClick={(e) => this.handleClick(null, false, e)}>Новая
-                                    группа услуг
+                <button type="button" className="button" onClick={(e) => this.handleClick(null, false, e)}>
+                  Новая группа услуг
                 </button>
-                <button type="button"
-                  onClick={() => this.setState({ ...this.state, createdService: true })}
-                  className="button">Новая услуга
+
+                <button type="button" onClick={() => this.setState({ createdService: true })} className="button">
+                  Новая услуга
                 </button>
               </div>
-              <div className="arrow"></div>
+              <div className="arrow" />
             </div>
           </div>
         </div>
         <div className="tab-content">
-          {
-            (!isLoading && (!services.services || services.services.length === 0)) && !search &&
-                        <div className="no-holiday">
-                          <span>
-                                        Услуги не добавлены
-                            <span className="buttons">
-                              <button type="button"
-                                className="button"
-                                onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
-                            </span>
-                          </span>
-                        </div>
+          {(!isLoading && (!services.services || services.services.length === 0)) && !search &&
+            <div className="no-holiday">
+              <span>
+                            Услуги не добавлены
+                <span className="buttons">
+                  <button type="button"
+                    className="button"
+                    onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
+                </span>
+              </span>
+            </div>
           }
-          {
-            (!isLoading && (!services.services || services.services.length === 0)) && search &&
-                        <div className="no-holiday">
-                          <span>
-                                        Услуг не найдено
-                          </span>
-                        </div>
+
+          {(!isLoading && (!services.services || services.services.length === 0)) && search &&
+            <div className="no-holiday">
+              <span>
+                  Услуг не найдено
+              </span>
+            </div>
           }
         </div>
+
         {addGroup &&
-                <AddGroup
-                  group_workingGroup={group_workingGroup}
-                  edit={edit}
-                  update={this.update}
-                  add={this.add}
-                  newSet={newSet}
-                  onClose={this.onClose}
-                />
+          <AddGroup
+            group_workingGroup={group_workingGroup}
+            edit={edit}
+            update={this.update}
+            add={this.add}
+            newSet={newSet}
+            onClose={this.onClose}
+          />
         }
 
         {addService &&
-                <AddService
-                  group_working={group_working}
-                  editServiceItem={editServiceItem}
-                  updateService={this.updateService}
-                  addService={this.addService}
-                  staffs={staff.staff}
-                  group={idGroupEditable}
-                  onClose={this.onClose}
-                />
+          <AddService
+            group_working={group_working}
+            editServiceItem={editServiceItem}
+            updateService={this.updateService}
+            addService={this.addService}
+            staffs={staff.staff}
+            group={idGroupEditable}
+            onClose={this.onClose}
+          />
         }
+
         {createdService &&
-                <CreatedService
-                  services={services}
-                  newServiceGroup={this.handleClick}
-                  newServiceFromGroup={this.newService}
-                  serviceCurrent={this.state.newSetElement}
-                  onClose={this.onClose}
-                />
+          <CreatedService
+            services={services}
+            newServiceGroup={this.handleClick}
+            newServiceFromGroup={this.newService}
+            serviceCurrent={this.state.newSetElement}
+            onClose={this.onClose}
+          />
         }
       </div>
     );
@@ -383,17 +394,15 @@ class Index extends Component {
       const group_workingGroup = services.services.find((item) => {
         return id === item.serviceGroupId;
       });
-
-      this.setState({ ...this.state, edit: true, addGroup: true, group_workingGroup: group_workingGroup });
+      this.setState({ edit: true, addGroup: true, group_workingGroup: group_workingGroup });
     } else {
-      this.setState({ ...this.state, edit: false, addGroup: true, group_workingGroup: {}, newSet: newSet });
+      this.setState({ edit: false, addGroup: true, group_workingGroup: {}, newSet: newSet });
     }
   }
 
   newService(item2, id2) {
     if (item2 != null) {
       this.setState({
-        ...this.state,
         editServiceItem: true,
         addService: true,
         group_working: item2,
@@ -401,7 +410,6 @@ class Index extends Component {
       });
     } else {
       this.setState({
-        ...this.state,
         editServiceItem: false,
         addService: true,
         group_working: {},
@@ -447,7 +455,10 @@ class Index extends Component {
     const { dispatch } = this.props;
     const { idGroupEditable } = this.state;
 
-    const finalServiceProducts = service.serviceProducts.filter((item) => deletedProductsList.every((serviceProductForDeleting) => serviceProductForDeleting.productId !== item.productId));
+    const finalServiceProducts = service.serviceProducts
+      .filter((item) => deletedProductsList
+        .every((serviceProductForDeleting) => serviceProductForDeleting.productId !== item.productId),
+      );
     if (service && service.usingMaterials) {
       const productToPost = [];
       const productToPut = [];
@@ -484,7 +495,6 @@ class Index extends Component {
       });
     });
 
-
     dispatch(servicesActions.updateService(JSON.stringify(service), idGroupEditable.serviceGroupId));
   };
 
@@ -517,7 +527,7 @@ class Index extends Component {
 
     const searchServicesList = defaultServicesList.services.filter((item) => {
       return (item.services && item.services.some((item) => item.name.toLowerCase().includes(value.toLowerCase())))
-              || (item.services && item.services.some((item) => item.details.toLowerCase().includes(value.toLowerCase())));
+        || (item.services && item.services.some((item) => item.details.toLowerCase().includes(value.toLowerCase())));
       // || item.name.toLowerCase().includes(value.toLowerCase())
       // || item.description.toLowerCase().includes(value.toLowerCase())
     });

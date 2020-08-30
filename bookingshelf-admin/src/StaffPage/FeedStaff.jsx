@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { isMobile } from 'react-device-detect';
 import StarRatings from 'react-star-ratings';
+
 import AllReviews from './AllReviews';
-import { staffActions } from '../_actions';
 
 class FeedStaff extends Component {
   constructor(props) {
@@ -50,7 +50,10 @@ class FeedStaff extends Component {
                       height: '24px',
                       margin: '0 15px 0 0',
                     }} className="rounded-circle user-star-image"
-                    src={(activeStaff && activeStaff.imageBase64) ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                    src={(activeStaff && activeStaff.imageBase64)
+                      ? 'data:image/png;base64,' + activeStaff.imageBase64
+                      : `${process.env.CONTEXT}public/img/avatar.svg`
+                    }
                     alt=""
                     />
                     <div className="star-ratings-container" style={{ width: '130px' }}>
@@ -65,8 +68,9 @@ class FeedStaff extends Component {
 
                     <div className="container-user-name-mob">
                       <div className="user-name-container flex-column flex-md-row">
-                        <strong
-                          className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                        <strong className="user-name">
+                          {activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}
+                        </strong>
                       </div>
                     </div>
                   </div>
@@ -78,8 +82,9 @@ class FeedStaff extends Component {
                     alignItems: 'center',
                   }}>
                     <div className="user-name-container flex-column flex-md-row">
-                      <strong
-                        className="user-name">{activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}</strong>
+                      <strong className="user-name">
+                        {activeStaff.firstName} {activeStaff.lastName ? activeStaff.lastName : ''}
+                      </strong>
                       <p className="user-description">{activeStaff.description}</p>
                     </div>
                   </div>
@@ -100,29 +105,33 @@ class FeedStaff extends Component {
                     </div>
                   </div>
                 </div>
-                <button type="button" onClick={() => {
-                  this.handleAllFeedbackClick(activeStaff);
-                }} className={'button desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}>{this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
+                <button
+                  type="button"
+                  onClick={() => this.handleAllFeedbackClick(activeStaff)}
+                  className={'button desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}
+                >
+                  {this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
                 </button>
 
-                <button type="button" onClick={() => {
-                  this.handleAllFeedbackClick(activeStaff);
-                }} className={'button mobile-visible desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}>{this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
+                <button
+                  type="button"
+                  onClick={() => this.handleAllFeedbackClick(activeStaff)}
+                  className={'button mobile-visible desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}
+                >
+                  {this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
                 </button>
               </div>
-
-
             </React.Fragment>
           )}
-
         </div>
-        {this.state.isOpenReview &&
-                <AllReviews
-                  rating={this.state.rating}
-                  feeds={this.state.feeds}
-                />}
-      </React.Fragment>
 
+        {this.state.isOpenReview &&
+          <AllReviews
+            rating={this.state.rating}
+            feeds={this.state.feeds}
+          />
+        }
+      </React.Fragment>
     );
   }
 }

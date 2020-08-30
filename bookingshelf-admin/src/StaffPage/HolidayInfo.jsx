@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import ActionModal from '../_components/modals/ActionModal';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import moment from 'moment';
+
+import ActionModal from '../_components/modals/ActionModal';
 
 class HolidayInfo extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isOpenDeleteModal: false,
-
     };
 
     this.closeDeleteModal = this.closeDeleteModal.bind(this);
@@ -52,22 +49,22 @@ class HolidayInfo extends Component {
         </div>
 
         {this.state.isOpenDeleteModal &&
-                <ActionModal
-                  title="Удалить выходные дни?"
-                  closeHandler={this.closeDeleteModal}
-                  buttons={[{
-                    handler: deleteClosedDate,
-                    params: item.companyClosedDateId,
-                    innerText: 'Удалить',
-                    className: 'button',
-                    additionalHandler: this.closeDeleteModal,
-                  },
-                  {
-                    handler: this.closeDeleteModal,
-                    innerText: 'Отмена',
-                    className: 'gray-button',
-                  }]}
-                />
+          <ActionModal
+            title="Удалить выходные дни?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: deleteClosedDate,
+              params: item.companyClosedDateId,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
       </div>
 

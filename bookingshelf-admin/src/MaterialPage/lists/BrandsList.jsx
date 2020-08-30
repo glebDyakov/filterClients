@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import ActionModal from '../../_components/modals/ActionModal';
 
 class BrandsList extends Component {
@@ -42,22 +43,22 @@ class BrandsList extends Component {
           </a>
         </div>
         {this.state.isOpenDeleteModal &&
-                <ActionModal
-                  title="Удалить бренд?"
-                  closeHandler={this.closeDeleteModal}
-                  buttons={[{
-                    handler: deleteBrand,
-                    params: brand.brandId,
-                    innerText: 'Удалить',
-                    className: 'button',
-                    additionalHandler: this.closeDeleteModal,
-                  },
-                  {
-                    handler: this.closeDeleteModal,
-                    innerText: 'Отмена',
-                    className: 'gray-button',
-                  }]}
-                />
+          <ActionModal
+            title="Удалить бренд?"
+            closeHandler={this.closeDeleteModal}
+            buttons={[{
+              handler: deleteBrand,
+              params: brand.brandId,
+              innerText: 'Удалить',
+              className: 'button',
+              additionalHandler: this.closeDeleteModal,
+            },
+            {
+              handler: this.closeDeleteModal,
+              innerText: 'Отмена',
+              className: 'gray-button',
+            }]}
+          />
         }
       </div>
     );

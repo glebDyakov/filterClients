@@ -1,47 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import StarRatings from 'react-star-ratings';
-
-import { notificationActions, staffActions, materialActions } from '../_actions';
-import { AddWorkTime } from '../_components/modals/AddWorkTime';
-import { NewStaff } from '../_components/modals/NewStaff';
-import { isMobile } from 'react-device-detect';
-
-import '../../public/scss/staff.scss';
-import '../../public/scss/material.scss';
-
 import moment from 'moment';
-import {
-  AddProduct,
-  AddCategory,
-  AddProvider,
-  AddBrand,
-  AddUnit,
-  InfoProduct,
-  AddStoreHouse,
-  ExpenditureProduct, StorehouseProduct,
-} from '../_components/modals';
 
-import 'react-day-picker/lib/style.css';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import MomentLocaleUtils from 'react-day-picker/moment';
-import '../../public/css_admin/date.css';
-import { DatePicker } from '../_components/DatePicker';
-import { getWeekRange } from '../_helpers/time';
-import { access } from '../_helpers/access';
-import DragDrop from '../_components/DragDrop';
+import {
+  AddProduct, AddCategory, AddProvider, AddBrand, AddUnit,
+  InfoProduct, AddStoreHouse, ExpenditureProduct, StorehouseProduct,
+} from '../_components/modals';
 import Paginator from '../_components/Paginator';
 import FeedbackStaff from '../_components/modals/FeedbackStaff';
 import EmptyContent from './EmptyContent';
-import Modal from '@trendmicro/react-modal';
 import AddButton from './AddButton';
-import ActionModal from '../_components/modals/ActionModal';
 import ProductsList from './lists/ProductsList';
 import CategoryList from './lists/CategoryList';
 import BrandsList from './lists/BrandsList';
 import SuppliersList from './lists/SuppliersList';
 import MovementList from './lists/MovementList';
 import StoreHouseList from './lists/StoreHouseList';
+
+import { materialActions } from '../_actions';
+
+import { getWeekRange } from '../_helpers/time';
+import { access } from '../_helpers/access';
+
+import 'react-day-picker/lib/style.css';
+import '../../public/css_admin/date.css';
+
+import '../../public/scss/staff.scss';
+import '../../public/scss/material.scss';
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
