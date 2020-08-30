@@ -5,104 +5,104 @@ import ReactPhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
 class PhoneInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            countryCode: 'by',
-            isValidPhone: this.validatePhone(props.value),
-            isTouchedPhone: false
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-        this.getIsValidPhone = this.getIsValidPhone.bind(this);
-        this.validatePhone = this.validatePhone.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      countryCode: 'by',
+      isValidPhone: this.validatePhone(props.value),
+      isTouchedPhone: false,
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.getIsValidPhone = this.getIsValidPhone.bind(this);
+    this.validatePhone = this.validatePhone.bind(this);
+  }
+
+  componentDidMount() {
+    this.getIsValidPhone(this.state.isValidPhone);
+    this.updateCountryCode(this.props.countryCode);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isValidPhone } = this.state;
+    if (prevState.isValidPhone !== isValidPhone) {
+      this.getIsValidPhone(isValidPhone);
     }
+  }
 
-    componentDidMount() {
-        this.getIsValidPhone(this.state.isValidPhone);
-        this.updateCountryCode(this.props.countryCode)
+  componentWillReceiveProps(newProps) {
+    if (newProps.countryCode && (newProps.countryCode !== this.props.countryCode)) {
+      this.updateCountryCode(newProps.countryCode);
     }
+  }
 
-    componentDidUpdate(prevProps, prevState) {
-        const { isValidPhone } = this.state;
-        if (prevState.isValidPhone !== isValidPhone) {
-            this.getIsValidPhone(isValidPhone)
-        }
+  updateCountryCode(newCountryCode) {
+    let countryCode;
+    switch (newCountryCode) {
+      case 'UKR':
+        countryCode = 'ua';
+        break;
+      case 'RUS':
+        countryCode = 'ru';
+        break;
+      default:
+        countryCode = 'by';
     }
+    this.setState( { countryCode });
+  }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.countryCode && (newProps.countryCode !== this.props.countryCode)) {
-            this.updateCountryCode(newProps.countryCode)
-        }
+  handleChange(phone) {
+    const value = phone.startsWith('+') ? phone : `+${phone}`;
+    this.setState({ isValidPhone: this.validatePhone(value) });
+    this.props.handleChange(value.replace(/[() ]/g, ''));
+  }
+
+  handleBlur(event) {
+    const { value } = event.target;
+    const { isValidPhone, isTouchedPhone } = this.state;
+
+    const newState = {
+      isTouchedPhone: true,
+    };
+    newState.isValidPhone = this.validatePhone(value);
+
+    if ((isValidPhone !== newState.isValidPhone) || (isTouchedPhone !== newState.isTouchedPhone)) {
+      this.setState(newState);
     }
+  }
 
-    updateCountryCode(newCountryCode) {
-        let countryCode;
-        switch (newCountryCode) {
-            case 'UKR':
-                countryCode = 'ua';
-                break;
-            case 'RUS':
-                countryCode = 'ru';
-                break;
-            default:
-                countryCode = 'by';
-        }
-        this.setState( { countryCode });
+  getIsValidPhone(isValidPhone) {
+    const { getIsValidPhone } = this.props;
+    if (getIsValidPhone) {
+      getIsValidPhone(isValidPhone);
     }
+  }
 
-    handleChange(phone) {
-        const value = phone.startsWith('+') ? phone : `+${phone}`;
-        this.setState({ isValidPhone: this.validatePhone(value) })
-        this.props.handleChange(value.replace(/[() ]/g, ''));
-    }
+  validatePhone(phone) {
+    return phone && phone.replace(/[+]/g, '') && isValidNumber(phone);
+  }
 
-    handleBlur(event) {
-        const { value } = event.target;
-        const { isValidPhone, isTouchedPhone } = this.state;
+  render() {
+    const { value } = this.props;
+    const { isValidPhone, isTouchedPhone, countryCode } = this.state;
 
-        const newState = {
-            isTouchedPhone: true
-        };
-        newState.isValidPhone = this.validatePhone(value);
-
-        if ((isValidPhone !== newState.isValidPhone) || (isTouchedPhone !== newState.isTouchedPhone)) {
-            this.setState(newState)
-        }
-    }
-
-    getIsValidPhone(isValidPhone) {
-        const { getIsValidPhone } = this.props
-        if (getIsValidPhone) {
-            getIsValidPhone(isValidPhone)
-        }
-    }
-
-    validatePhone(phone) {
-        return phone && phone.replace(/[+]/g, '') && isValidNumber(phone);
-    }
-
-    render() {
-        const { value } = this.props;
-        const { isValidPhone, isTouchedPhone, countryCode } = this.state
-
-        return (
-            <ReactPhoneInput
-                defaultCountry={countryCode}
-                country={countryCode}
-                regions={['america', 'europe']}
-                placeholder=""
-                inputClass={`${((!isTouchedPhone || isValidPhone) ? '' : ' redBorder')}`}
-                value={value}
-                onChange={this.handleChange}
-                onBlur={this.handleBlur}
-            />
-        )
-    }
+    return (
+      <ReactPhoneInput
+        defaultCountry={countryCode}
+        country={countryCode}
+        regions={['america', 'europe']}
+        placeholder=""
+        inputClass={`${((!isTouchedPhone || isValidPhone) ? '' : ' redBorder')}`}
+        value={value}
+        onChange={this.handleChange}
+        onBlur={this.handleBlur}
+      />
+    );
+  }
 }
 function mapStateToProps(state) {
-    const { authentication } = state;
-    return { countryCode: authentication.user && authentication.user.countryCode };
+  const { authentication } = state;
+  return { countryCode: authentication.user && authentication.user.countryCode };
 }
 
 export default connect(mapStateToProps)(PhoneInput);

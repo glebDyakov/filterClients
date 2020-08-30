@@ -27,12 +27,16 @@
         "object-curly-spacing": [2, "always"],
         "require-jsdoc": 0,
         "max-len": [2, { "code": 120, "tabWidth": 2 }],
-        "indent": ["error", 2, { "MemberExpression": 1, "SwitchCase": 1 }],
+        "indent": [2, 2, { "MemberExpression": 1, "SwitchCase": 1 }],
         "operator-linebreak": 0,
-        "semi": ["error", "always"],
+        "semi": [2, "always"],
         "camelcase": 0,
+        "new-cap": 0,
         "react/display-name": 0,
+        "react/no-string-refs": 0,
+        "react/no-deprecated": 0,
         "react/prop-types": 0,
+        "react/jsx-no-target-blank": 0,
         "react/js": 0
     }
 }
