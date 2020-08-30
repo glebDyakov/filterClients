@@ -39,21 +39,16 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: require.resolve('style-loader'),
+                    },
                     {
                         loader: require.resolve('css-loader'),
                     },
                     {
                         loader: require.resolve('sass-loader'),
                     },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss-scss',
-                            syntax: 'postcss-scss',
-                            plugins: () => [autoprefixer()]
-                        }
-                    },
+
                 ]
             }
         ]
@@ -64,10 +59,6 @@ module.exports = {
             filename: 'index.html',
             inject: 'body',
             vendorsFilename: process.env.CONTEXT,
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[id].[hash].css',
         }),
         new webpack.DefinePlugin({
             'process.env': {
@@ -104,14 +95,6 @@ module.exports = {
                     nameCache: null,
                     ie8: false,
                     keep_fnames: false,
-                },
-            }),
-            new OptimizeCSSAssetsPlugin({
-                cssProcessorOptions: {
-                    safe: true,
-                    discardComments: {
-                        removeAll: true,
-                    },
                 },
             }),
         ],
