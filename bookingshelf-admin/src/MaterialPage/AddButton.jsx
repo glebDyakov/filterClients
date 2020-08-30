@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 
 class AddButton extends Component {
@@ -9,33 +9,30 @@ class AddButton extends Component {
       selectedDay: moment().utc().toDate(),
       urlButton: false,
       appointmentMessage: '',
-      status: ''
+      status: '',
     };
-    this.showButtons = this.showButtons.bind(this)
-    this.hideButtons = this.hideButtons.bind(this)
-    this.handleOutsideAddClick = this.handleOutsideAddClick.bind(this)
+    this.showButtons = this.showButtons.bind(this);
+    this.hideButtons = this.hideButtons.bind(this);
+    this.handleOutsideAddClick = this.handleOutsideAddClick.bind(this);
   }
 
   componentDidUpdate(nextProps, nextState, nextContext) {
-
-
     if (this.state.showButtons) {
       document.addEventListener('click', this.handleOutsideAddClick, false);
     } else {
       document.removeEventListener('click', this.handleOutsideAddClick, false);
     }
-
   }
   handleOutsideAddClick() {
-    this.setState({ showButtons: false })
+    this.setState({ showButtons: false });
   }
 
   showButtons() {
-    this.setState({ showButtons: true })
+    this.setState({ showButtons: true });
   }
 
   hideButtons() {
-    this.setState({ showButtons: false })
+    this.setState({ showButtons: false });
   }
 
   render() {
@@ -45,12 +42,12 @@ class AddButton extends Component {
     return (
       <React.Fragment>
 
-        <a className={"add" + (showButtons ? ' rotate' : '')} onClick={showButtons ? this.hideButtons : this.showButtons}/>
-        <div className={"buttons-container" + (showButtons ? '' : ' hide')}>
+        <a className={'add' + (showButtons ? ' rotate' : '')} onClick={showButtons ? this.hideButtons : this.showButtons}/>
+        <div className={'buttons-container' + (showButtons ? '' : ' hide')}>
           <div className="p-4">
             <button type="button"
-                    onClick={handleOpen}
-                    className="button">{buttonText}
+              onClick={handleOpen}
+              className="button">{buttonText}
             </button>
           </div>
           <div className="arrow"></div>

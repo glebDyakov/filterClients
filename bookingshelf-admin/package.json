@@ -9,7 +9,7 @@
     "build": "cross-env CONTEXT=/ webpack --config webpack.config.js",
     "create-report": "webpack --profile --json > stats.json",
     "view-report": "webpack-bundle-analyzer --port 4200 stats.json",
-    "eslint-fix": "eslint --fix 'src/**/*.js'"
+    "eslint-fix": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
     "@trendmicro/react-modal": "^3.0.0",
