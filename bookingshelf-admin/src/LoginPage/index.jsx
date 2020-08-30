@@ -4,7 +4,7 @@ import { userActions } from '../_actions';
 import '../../public/scss/log_in.scss'
 import {Link} from "react-router-dom";
 import {isValidEmailAddress} from "../_helpers/validators";
-declare var $ : any;
+// declare var $ : any;
 
 
 class Index extends React.Component {
@@ -50,7 +50,7 @@ class Index extends React.Component {
 
             if(newProps.authentication && newProps.authentication.status==='reset.email' && newProps.authentication.error==-1){
                 setTimeout(() => {
-                    $('.modal_reset_password').modal('hide')
+                    // $('.modal_reset_password').modal('hide')
                     this.setState({...this.state, 'login': newProps.authentication.email, 'password': '', authentication: [], resetPasswordModal: false, forgottenEmail: '' });
                 }, 3000)
             }
