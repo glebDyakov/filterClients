@@ -1,19 +1,19 @@
 import { socketConstants } from '../_constants';
 
 export const socketActions = {
-    alertSocketMessage,
-    error,
-    clear
+  alertSocketMessage,
+  error,
+  clear,
 };
 
 function alertSocketMessage(appointmentSocketMessage) {
-    return { type: socketConstants.SUCCESS, appointmentSocketMessage };
+  return { type: socketConstants.SUCCESS, appointmentSocketMessage };
 }
 
 function error(message) {
-    return { type: socketConstants.ERROR, message };
+  return { type: socketConstants.ERROR, message };
 }
 
 function clear() {
-    return { type: socketConstants.CLEAR };
+  return { type: socketConstants.CLEAR };
 }

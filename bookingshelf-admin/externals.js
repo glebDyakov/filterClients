@@ -4,5 +4,5 @@ module.exports = {
     apiUrlv2: '/rest/v2',
     apiSocket: '/websocket',
     warehouseApiUrl: '/warehouse/rest/v1',
-  })
+  }),
 };

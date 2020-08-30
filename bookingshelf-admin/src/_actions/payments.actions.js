@@ -1,94 +1,106 @@
-import {paymentsConstants} from '../_constants';
-import { paymentsService} from '../_services';
-import { history } from '../_helpers';
-
+import { paymentsConstants } from '../_constants';
+import { paymentsService } from '../_services';
 
 export const paymentsActions = {
-    getInvoiceList,
-    getPackets,
-    makePayment,
-    getInvoice,
-    cancelPayment,
-    addInvoice
-}
+  getInvoiceList,
+  getPackets,
+  makePayment,
+  getInvoice,
+  cancelPayment,
+  addInvoice,
+};
+
 function getInvoiceList(activeInvoice) {
-    return dispatch => {
+  return (dispatch) => {
+    paymentsService.getInvoiceList()
+      .then(
+        (list) => {
+          dispatch(success(list));
+          if (activeInvoice) {
+            $('.make-payment-modal').modal('show');
+            dispatch(paymentsActions.makePayment(activeInvoice.invoiceId));
+          }
+        },
+      );
+  };
 
-        paymentsService.getInvoiceList()
-            .then(
-                list => {
-                    dispatch(success(list))
-                    if (activeInvoice) {
-                        $('.make-payment-modal').modal('show')
-                        dispatch(paymentsActions.makePayment(activeInvoice.invoiceId))
-                    }
-                },
-            );
-    };
-
-    function success(list) { return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, payload: {list, activeInvoice} }}
+  function success(list) {
+    return { type: paymentsConstants.GET_INVOICE_LIST_SUCCESS, payload: { list, activeInvoice } };
+  }
 }
 
 function getInvoice(invoiceId) {
-    return dispatch => {
+  return (dispatch) => {
+    paymentsService.getInvoice(invoiceId)
+      .then(
+        (invoice) => {
+          dispatch(success(invoice));
+        },
+        () => dispatch(failure()),
+      );
+  };
 
-        paymentsService.getInvoice(invoiceId)
-            .then(
-                (invoice) => {
-                    dispatch(success(invoice))
-                },
-                () => dispatch(failure()),
-            );
-    };
-
-    function success(invoice) { return { type: paymentsConstants.GET_INVOICE_SUCCESS, pendingInvoice: invoice }}
-    function failure() { return { type: paymentsConstants.GET_INVOICE_FAILURE, pendingInvoice: null }}
+  function success(invoice) {
+    return { type: paymentsConstants.GET_INVOICE_SUCCESS, pendingInvoice: invoice };
+  }
+  function failure() {
+    return { type: paymentsConstants.GET_INVOICE_FAILURE, pendingInvoice: null };
+  }
 }
 
 function makePayment(invoiceId) {
-    return dispatch => {
-        dispatch(request())
-        paymentsService.makePayment(invoiceId)
-            .then(
-                data => {
-                    dispatch(success(data))
-                },
-                error => {
-                    dispatch(failure("Нельзя оплатить. Попробуйте позже"))
-                }
-            );
-    };
+  return (dispatch) => {
+    dispatch(request());
+    paymentsService.makePayment(invoiceId)
+      .then(
+        (data) => {
+          dispatch(success(data));
+        },
+        (error) => {
+          dispatch(failure('Нельзя оплатить. Попробуйте позже'));
+        },
+      );
+  };
 
-    function request() { return { type: paymentsConstants.MAKE_PAYMENT, confirmationUrl: null }}
-    function success(data) { return { type: paymentsConstants.MAKE_PAYMENT_SUCCESS, confirmationUrl: data.confirmationUrl }}
-    function failure(error) { return { type: paymentsConstants.MAKE_PAYMENT_FAILURE, exceptionMessage: error }}
+  function request() {
+    return { type: paymentsConstants.MAKE_PAYMENT, confirmationUrl: null };
+  }
+  function success(data) {
+    return { type: paymentsConstants.MAKE_PAYMENT_SUCCESS, confirmationUrl: data.confirmationUrl };
+  }
+  function failure(error) {
+    return { type: paymentsConstants.MAKE_PAYMENT_FAILURE, exceptionMessage: error };
+  }
 }
 
 function cancelPayment() {
-    return dispatch => {
-        dispatch(success())
-    };
+  return (dispatch) => {
+    dispatch(success());
+  };
 
-    function success() { return { type: paymentsConstants.CANCEL_PAYMENT, confirmationUrl: null }}
+  function success() {
+    return { type: paymentsConstants.CANCEL_PAYMENT, confirmationUrl: null };
+  }
 }
 
 function getPackets() {
-    return dispatch => {
+  return (dispatch) => {
+    paymentsService.getPackets()
+      .then(
+        (packets) => dispatch(success(packets)),
+      );
+  };
 
-        paymentsService.getPackets()
-            .then(
-                packets => dispatch(success(packets)),
-            );
-    };
-
-    function success(packets) { return { type: paymentsConstants.GET_PACKETS_SUCCESS, packets }}
+  function success(packets) {
+    return { type: paymentsConstants.GET_PACKETS_SUCCESS, packets };
+  }
 }
 
 function addInvoice(invoice) {
-    return dispatch => {
-        paymentsService.addInvoice(invoice)
-            .then((data) => {
-                dispatch(getInvoiceList(data))
-            });
-    }
+  return (dispatch) => {
+    paymentsService.addInvoice(invoice)
+      .then((data) => {
+        dispatch(getInvoiceList(data));
+      });
+  };
 }
