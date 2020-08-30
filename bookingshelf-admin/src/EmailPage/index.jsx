@@ -464,7 +464,7 @@ class Index extends Component {
                     this.setTab('auto_notification');
                   }}
                 >
-                  вто уведомления
+                  Авто уведомления
                 </a>
               </li>
               <li className="nav-item">
