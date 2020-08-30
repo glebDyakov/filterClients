@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpackDev.config.js",
+    "start-prod": "cross-env CONTEXT=/ webpack-dev-server --open --config webpack.config.js",
     "dev": "cross-env CONTEXT=/ webpack --config webpack.config.js",
     "build": "cross-env CONTEXT=/ webpack --config webpack.config.js",
     "create-report": "webpack --profile --json > stats.json",
