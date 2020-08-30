@@ -8,7 +8,8 @@
     "dev": "cross-env CONTEXT=/ webpack --config webpack.config.js",
     "build": "cross-env CONTEXT=/ webpack --config webpack.config.js",
     "create-report": "webpack --profile --json > stats.json",
-    "view-report": "webpack-bundle-analyzer --port 4200 stats.json"
+    "view-report": "webpack-bundle-analyzer --port 4200 stats.json",
+    "eslint-fix": "eslint --fix 'src/**/*.js'"
   },
   "dependencies": {
     "@trendmicro/react-modal": "^3.0.0",
@@ -66,6 +67,9 @@
     "compression-webpack-plugin": "^5.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^4.2.1",
+    "eslint": "^7.7.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.20.6",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.10.0",

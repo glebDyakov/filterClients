@@ -1,0 +1,38 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "google"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "no-invalid-this": 0,
+        "object-curly-spacing": [2, "always"],
+        "require-jsdoc": 0,
+        "max-len": [2, { "code": 120, "tabWidth": 2 }],
+        "indent": ["error", 2, { "MemberExpression": 1, "SwitchCase": 1 }],
+        "operator-linebreak": 0,
+        "semi": ["error", "always"],
+        "camelcase": 0,
+        "react/display-name": 0,
+        "react/prop-types": 0,
+        "react/js": 0
+    }
+}
