@@ -266,35 +266,35 @@ function getReservedTime(dateFrom, dateTo) {
     return fetch(`${origin}${config.apiUrl}/reservedtimes/staffs?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions).then((data) => handleResponse(data, requestOptions));
 }
 
-function addManager(manager) {
-    const requestOptions = {
-        method: 'POST',
-        body: manager,
-        crossDomain: true,
-        credentials: 'include',
-        xhrFields: {
-            withCredentials: true
-        },
-        headers: {...authHeader(), 'Content-Type': 'application/json'}
-    };
+// function addManager(manager) {
+//     const requestOptions = {
+//         method: 'POST',
+//         body: manager,
+//         crossDomain: true,
+//         credentials: 'include',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         headers: {...authHeader(), 'Content-Type': 'application/json'}
+//     };
+//
+//     return fetch(`${origin}${config.apiUrl}/managers`, requestOptions)
+//         .then((data) => handleResponse(data, requestOptions));
+// }
 
-    return fetch(`${origin}${config.apiUrl}/managers`, requestOptions)
-        .then((data) => handleResponse(data, requestOptions));
-}
-
-function getManagers(dateFrom, dateTo) {
-    const requestOptions = {
-        method: 'GET',
-        crossDomain: true,
-        credentials: 'include',
-        xhrFields: {
-            withCredentials: true
-        },
-        headers: authHeader()
-    };
-
-    return fetch(`${origin}${config.apiUrl}/managers`, requestOptions).then((data) => handleResponse(data, requestOptions));
-}
+// function getManagers(dateFrom, dateTo) {
+//     const requestOptions = {
+//         method: 'GET',
+//         crossDomain: true,
+//         credentials: 'include',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         headers: authHeader()
+//     };
+//
+//     return fetch(`${origin}${config.apiUrl}/managers`, requestOptions).then((data) => handleResponse(data, requestOptions));
+// }
 
 function addManager(manager) {
     const requestOptions = {

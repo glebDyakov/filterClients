@@ -1,7 +1,14 @@
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+
+const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const externals = require('./externals');
 
 module.exports = {
     devtool: 'cheap-module-source-map',
@@ -15,8 +22,7 @@ module.exports = {
         extensions: ['.js', '.json', '.jsx']
     },
     module: {
-
-        loaders: [
+        rules: [
             { test: /\.css$/, loader: "style-loader!css-loader" },
             {
                 test: /\.(png|jpg|gif|svg)$/,
@@ -29,23 +35,28 @@ module.exports = {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['react', ['es2015', { loose: true, modules: false }], 'stage-3']
-                }
+                options: {
+                    plugins: [require.resolve('react-refresh/babel')],
+                },
             },
             {
                 test: /\.scss$/,
                 use: [
-                    {
-                        loader: require.resolve('style-loader'),
-                    },
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: require.resolve('css-loader'),
                     },
                     {
                         loader: require.resolve('sass-loader'),
                     },
-
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss-scss',
+                            syntax: 'postcss-scss',
+                            plugins: () => [autoprefixer()]
+                        }
+                    },
                 ]
             }
         ]
@@ -55,7 +66,11 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
             inject: 'body',
-            vendorsFilename: process.env.CONTEXT
+            vendorsFilename: process.env.CONTEXT,
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].[hash].css',
+            chunkFilename: '[id].[hash].css',
         }),
         new webpack.DefinePlugin({
             'process.env': {
@@ -63,53 +78,52 @@ module.exports = {
                 CONTEXT: JSON.stringify(process.env.CONTEXT)
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            mangle: true,
-            sourcemap: false,
-            debug: false,
-            minimize: true,
-            compress: {
-                warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-                properties: true,
-                booleans: true,
-                drop_console: true,
-
-            }
-        }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new CompressionPlugin({
-            filename: "[path].gz[query]",
-            algorithm: "gzip",
-            test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        }), new webpack.NoEmitOnErrorsPlugin(),
         new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
         new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
-        new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/)
+        new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/),
+
+        new CompressionPlugin({
+            filename: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.scss$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+        }),
     ],
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                test: /\.js(\?.*)?$/i,
+                cache: true,
+                parallel: true,
+                sourceMap: true,
+                extractComments: 'all',
+                uglifyOptions: {
+                    warnings: false,
+                    parse: {},
+                    compress: {},
+                    mangle: true, // Note `mangle.properties` is `false` by default.
+                    output: null,
+                    toplevel: false,
+                    nameCache: null,
+                    ie8: false,
+                    keep_fnames: false,
+                },
+            }),
+            new OptimizeCSSAssetsPlugin({
+                cssProcessorOptions: {
+                    safe: true,
+                    discardComments: {
+                        removeAll: true,
+                    },
+                },
+            }),
+        ],
+    },
     devServer: {
         historyApiFallback: { index: process.env.CONTEXT },
         host: 'localhost',
         port: 8081,
         contentBase: './',
     },
-    externals: {
-        config: JSON.stringify({
-            apiUrl: '/rest/v1',
-            warehouseApiUrl: '/warehouse/rest/v1',
-            apiSocket: '/websocket',
-            apiUrlv2: '/rest/v2'
-        })
-    }
+    externals
 }
