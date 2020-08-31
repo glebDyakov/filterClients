@@ -15,29 +15,29 @@
  */
 if (!String.fromCodePoint) {
   (function() {
-    var defineProperty = (function() {
+    const defineProperty = (function() {
       try {
-        var object = {};
-        var $defineProperty = Object.defineProperty;
+        const object = {};
+        const $defineProperty = Object.defineProperty;
         var result = $defineProperty(object, object, object) && $defineProperty;
       } catch (error) {}
       return result;
     })();
-    var stringFromCharCode = String.fromCharCode;
-    var floor = Math.floor;
-    var fromCodePoint = function() {
-      var MAX_SIZE = 0x4000;
-      var codeUnits = [];
-      var highSurrogate;
-      var lowSurrogate;
-      var index = -1;
-      var length = arguments.length;
+    const stringFromCharCode = String.fromCharCode;
+    const floor = Math.floor;
+    const fromCodePoint = function() {
+      const MAX_SIZE = 0x4000;
+      const codeUnits = [];
+      let highSurrogate;
+      let lowSurrogate;
+      let index = -1;
+      const length = arguments.length;
       if (!length) {
         return '';
       }
-      var result = '';
+      let result = '';
       while (++index < length) {
-        var codePoint = Number(arguments[index]);
+        let codePoint = Number(arguments[index]);
         if (
           !isFinite(codePoint) ||
           codePoint < 0 ||
@@ -66,7 +66,7 @@ if (!String.fromCodePoint) {
       defineProperty(String, 'fromCodePoint', {
         value: fromCodePoint,
         configurable: true,
-        writable: true
+        writable: true,
       });
     } else {
       String.fromCodePoint = fromCodePoint;
@@ -108,21 +108,21 @@ if (!String.fromCodePoint) {
 if (!String.prototype.codePointAt) {
   (function() {
     'use strict';
-    var codePointAt = function(position) {
+    const codePointAt = function(position) {
       if (this == null) {
         throw TypeError();
       }
-      var string = String(this);
-      var size = string.length;
-      var index = position ? Number(position) : 0;
+      const string = String(this);
+      const size = string.length;
+      let index = position ? Number(position) : 0;
       if (index != index) {
         index = 0;
       }
       if (index < 0 || index >= size) {
         return undefined;
       }
-      var first = string.charCodeAt(index);
-      var second;
+      const first = string.charCodeAt(index);
+      let second;
       if (first >= 0xd800 && first <= 0xdbff && size > index + 1) {
         second = string.charCodeAt(index + 1);
         if (second >= 0xdc00 && second <= 0xdfff) {
@@ -135,7 +135,7 @@ if (!String.prototype.codePointAt) {
       Object.defineProperty(String.prototype, 'codePointAt', {
         value: codePointAt,
         configurable: true,
-        writable: true
+        writable: true,
       });
     } else {
       String.prototype.codePointAt = codePointAt;
@@ -160,7 +160,7 @@ if (!String.prototype.codePointAt) {
  */
 if (!String.prototype.endsWith) {
   String.prototype.endsWith = function(searchString, position) {
-    var subjectString = this.toString();
+    const subjectString = this.toString();
     if (
       typeof position !== 'number' ||
       !isFinite(position) ||
@@ -170,7 +170,7 @@ if (!String.prototype.endsWith) {
       position = subjectString.length;
     }
     position -= searchString.length;
-    var lastIndex = subjectString.lastIndexOf(searchString, position);
+    const lastIndex = subjectString.lastIndexOf(searchString, position);
     return lastIndex !== -1 && lastIndex === position;
   };
 }
@@ -256,14 +256,14 @@ if (!String.prototype.normalize) {
  */
 if (!String.prototype.padEnd) {
   String.prototype.padEnd = function padEnd(targetLength, padString) {
-    targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+    targetLength = targetLength >> 0; // floor if number or convert non-number to 0;
     padString = String(typeof padString !== 'undefined' ? padString : ' ');
     if (this.length > targetLength) {
       return String(this);
     } else {
       targetLength = targetLength - this.length;
       if (targetLength > padString.length) {
-        padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+        padString += padString.repeat(targetLength / padString.length); // append to original to ensure we are longer than needed
       }
       return String(this) + padString.slice(0, targetLength);
     }
@@ -279,14 +279,14 @@ if (!String.prototype.padEnd) {
  */
 if (!String.prototype.padStart) {
   String.prototype.padStart = function padStart(targetLength, padString) {
-    targetLength = targetLength >> 0; //floor if number or convert non-number to 0;
+    targetLength = targetLength >> 0; // floor if number or convert non-number to 0;
     padString = String(typeof padString !== 'undefined' ? padString : ' ');
     if (this.length > targetLength) {
       return String(this);
     } else {
       targetLength = targetLength - this.length;
       if (targetLength > padString.length) {
-        padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+        padString += padString.repeat(targetLength / padString.length); // append to original to ensure we are longer than needed
       }
       return padString.slice(0, targetLength) + String(this);
     }
@@ -304,9 +304,9 @@ if (!String.prototype.repeat) {
   String.prototype.repeat = function(count) {
     'use strict';
     if (this == null) {
-      throw new TypeError("can't convert " + this + ' to object');
+      throw new TypeError('can\'t convert ' + this + ' to object');
     }
-    var str = '' + this;
+    let str = '' + this;
     count = +count;
     if (count != count) {
       count = 0;
@@ -323,10 +323,10 @@ if (!String.prototype.repeat) {
     }
     if (str.length * count >= 1 << 28) {
       throw new RangeError(
-        'repeat count must not overflow maximum string size'
+        'repeat count must not overflow maximum string size',
       );
     }
-    var rpt = '';
+    let rpt = '';
     for (;;) {
       if ((count & 1) == 1) {
         rpt += str;
