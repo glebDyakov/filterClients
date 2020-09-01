@@ -242,7 +242,7 @@ class Index extends Component {
       <div>
         {booking &&
           <div className="pages-content container-fluid online-zapis-page">
-            <div className="row justify-content-between">
+            <div className="row h-100 justify-content-between">
               <div className="col-xl-4 block-h p-0">
                 <div className=" content-pages-bg mb-0 h-auto p-zapis your-page">
                   <p className="title mb-3">Ваша страница</p>

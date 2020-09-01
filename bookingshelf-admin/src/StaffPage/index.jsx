@@ -479,7 +479,7 @@ class Index extends Component {
         <div className="retreats">
           <div style={{ overflow: 'auto' }} className="tab-content">
             <div className={'tab-pane' + (activeTab === 'workinghours' ? ' active' : '')} id="tab1">
-              <div style={{ overflow: 'auto', position: 'relative', zIndex: 0 }}>
+              <div style={{ height: "100%", overflow: 'auto', position: 'relative', zIndex: 0 }}>
                 <div style={{ overflowX: 'hidden', display: 'inline-block' }}
                   className="content-tab-date min-width-desktop">
                   <div style={{ position: 'sticky', top: 0, zIndex: 5, width: '100%' }}
@@ -594,7 +594,7 @@ class Index extends Component {
                 <div className="tab-content-header-item">Категория доступа</div>
                 <div className="tab-content-header-item delete">Функции</div>
               </div>
-              <div style={{ maxHeight: 'calc(100% - 120px)' }} className="content tabs-container">
+              <div style={{ maxHeight: 'calc(100% - 120px)' }} className="h-100 content tabs-container">
 
                 <DragDrop
                   dragDropItems={dragDropItems}
@@ -603,7 +603,7 @@ class Index extends Component {
               </div>
             </div>
             <div className={'tab-pane' + (activeTab === 'holidays' ? ' active' : '')} id="tab3">
-              <div className="holiday-tab">
+              <div className="holiday-tab h-100">
                 <div className="addHoliday-wrapper">
                   <div className="add-holiday modal-content">
                     <div className="modal-header">
