@@ -514,7 +514,7 @@ class Index extends Component {
       <React.Fragment>
         {isLoading &&
                 <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
-        {!isLoading && <div className="retreats">
+        {!isLoading && <div className="h-100 retreats">
 
 
           <div className="tab-content">
