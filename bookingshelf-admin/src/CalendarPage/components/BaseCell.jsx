@@ -103,14 +103,22 @@ class BaseCell extends React.Component {
   }
 
   getCellEmpty(props) {
-    const { workingStaffElement, selectedDaysKey, time, selectedDays, appointments, staffKey, checkForCostaffs } = props;
+    const {
+      workingStaffElement, closedDates, selectedDaysKey, time, selectedDays, appointments, staffKey,
+      checkForCostaffs,
+    } = props;
     const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
 
-    const notExpired = workingStaffElement && workingStaffElement.timetables && workingStaffElement.timetables.some((currentTimetable) => {
-      return (currentTime >= currentTimetable.startTimeMillis && currentTime < currentTimetable.endTimeMillis
-                && currentTime>=parseInt(moment().subtract(1, 'week').format('x')))
-            && checkForCostaffs({ appointments, staffKey, currentTime });
-    });
+    const notExpired = workingStaffElement && workingStaffElement.timetables &&
+      workingStaffElement.timetables.some((currentTimetable) => {
+        return (currentTime >= currentTimetable.startTimeMillis && currentTime < currentTimetable.endTimeMillis
+                  && currentTime>=parseInt(moment().subtract(1, 'week').format('x')))
+              && checkForCostaffs({ appointments, staffKey, currentTime });
+      }) &&
+      (!(closedDates && closedDates.length > 0 && closedDates.some((st) => {
+        return moment(moment(selectedDays[selectedDaysKey]).valueOf()).subtract(-1, 'minute')
+          .isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf('day'));
+      })));
 
     if (notExpired) {
       return { cellType: cellTypes.CELL_WHITE, cell: null, staffArray: null };
@@ -253,6 +261,7 @@ class BaseCell extends React.Component {
 function mapStateToProps(state) {
   const {
     company,
+    staff: { closedDates },
     calendar: {
       appointments,
       reservedTime,
@@ -261,6 +270,7 @@ function mapStateToProps(state) {
   } = state;
 
   return {
+    closedDates,
     company,
     appointments,
     reservedTime,
