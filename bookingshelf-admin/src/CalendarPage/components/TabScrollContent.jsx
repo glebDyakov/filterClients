@@ -105,38 +105,32 @@ class TabScroll extends React.Component {
 
             return (
               <div key={`number-${key}`}
-                className={(selectedDays && this.state.clDate ? 'clDate ' : '') + 'tab-content-list ' + listClass + (isPresent ? ' present-line-block' : '')}>
+                className={(selectedDays && this.state.clDate ? 'clDate ' : '') + 'tab-content-list ' +
+                listClass + (isPresent ? ' present-line-block' : '')}
+              >
                 {type === 'day' && isPresent &&
-                                    <span data-time={moment().format('HH:mm')} className="present-time-line"/>}
-                <TabScrollLeftMenu time={time}/>
-                {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => {
-                  if (!(this.props.closedDates && this.props.closedDates.length > 0 && this.props.closedDates.some((st) => {
-                    return moment(moment(selectedDays[type === 'day' ? 0 : staffKey]).valueOf()).subtract(-1, 'minute').isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf('day'));
-                  }))) {
-                    return (
-                      <BaseCell
-                        checkForCostaffs={checkForCostaffs}
-                        getCellTime={getCellTime}
-                        key={`working-staff-${staffKey}`}
-                        numberKey={key}
-                        staffKey={staffKey}
-                        changeTime={changeTime}
-                        changeTimeFromCell={changeTimeFromCell}
-                        handleUpdateClient={handleUpdateClient}
-                        numbers={numbers}
-                        services={services}
-                        workingStaffElement={workingStaffElement}
-                        updateAppointmentForDeleting={updateAppointmentForDeleting}
-                        selectedDaysKey={type === 'day' ? 0 : staffKey}
-                        time={time}
-                        moveVisit={moveVisit}
-                      />
-                    );
-                  } else {
-                    return <div className="cell expired"></div>;
-                  }
-                },
-                )}
+                  <span data-time={moment().format('HH:mm')} className="present-time-line"/>
+                }
+                <TabScrollLeftMenu time={time} />
+                {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => (
+                  <BaseCell
+                    checkForCostaffs={checkForCostaffs}
+                    getCellTime={getCellTime}
+                    key={`working-staff-${staffKey}`}
+                    numberKey={key}
+                    staffKey={staffKey}
+                    changeTime={changeTime}
+                    changeTimeFromCell={changeTimeFromCell}
+                    handleUpdateClient={handleUpdateClient}
+                    numbers={numbers}
+                    services={services}
+                    workingStaffElement={workingStaffElement}
+                    updateAppointmentForDeleting={updateAppointmentForDeleting}
+                    selectedDaysKey={type === 'day' ? 0 : staffKey}
+                    time={time}
+                    moveVisit={moveVisit}
+                  />
+                ))}
               </div>
             );
           },
