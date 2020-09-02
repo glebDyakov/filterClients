@@ -539,6 +539,13 @@
       }
 
 
+      .cell-appointment {
+        display: block;
+        width: 100%;
+        overflow: visible;
+        position: relative;
+      }
+
       .cell {
         margin-right: 5px;
         border-radius: 4px;

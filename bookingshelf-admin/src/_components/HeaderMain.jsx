@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import LogoutPage from '../LogoutPage';
 import { calendarActions, clientActions, companyActions, staffActions, userActions } from '../_actions';
-import { UserSettings, UserPhoto, ClientDetails, NewClient } from './modals';
+import { UserSettings, UserPhoto, ClientDetails, NewClient, SettingsSidebar } from './modals';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import { clientService, managersService } from '../_services';
 import { isValidNumber } from 'libphonenumber-js';
@@ -424,7 +424,7 @@ class HeaderMain extends React.PureComponent {
               </div>
             </div>
 
-            <settingsSidebar/>
+            <SettingsSidebar/>
 
 
             <UserSettings onClose={this.onClose}/>

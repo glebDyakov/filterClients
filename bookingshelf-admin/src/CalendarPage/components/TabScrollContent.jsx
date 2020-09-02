@@ -76,10 +76,14 @@ class TabScroll extends React.Component {
   }
 
   render() {
-    const { company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient, updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays } = this.props;
+    const {
+      company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient,
+      updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays
+    } = this.props;
     const { numbers } = this.state;
     const { booktimeStep } = company.settings;
     const step = booktimeStep / 60;
+    const cellHeight = 25;
 
     // console.log(clDate, moment(selectedDays).format("DD/MMMM"));
 
@@ -114,6 +118,8 @@ class TabScroll extends React.Component {
                 <TabScrollLeftMenu time={time} />
                 {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => (
                   <BaseCell
+                    step={step}
+                    cellHeight={cellHeight}
                     checkForCostaffs={checkForCostaffs}
                     getCellTime={getCellTime}
                     key={`working-staff-${staffKey}`}
@@ -136,7 +142,7 @@ class TabScroll extends React.Component {
           },
           )}
         </DndProvider>
-        <DragVertController/>
+        <DragVertController cellHeight={cellHeight} step={step} />
       </div>
     );
   }

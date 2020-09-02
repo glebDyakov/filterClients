@@ -4513,39 +4513,48 @@ select {
   cursor: pointer;
 }
 
-.drag-vert {
-  height: 14px;
-  width: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+.drag-vert-wrapper {
+  cursor: ns-resize;
+  height: 8px;
   position: absolute;
-  bottom: 0;
-  z-index: 999;
+  bottom: 4px;
+  width: 100%;
+  z-index: 9990;
 
-
-  &::before {
-    width: 28px;
-    height: 1px;
-    content: '';
-    background-color: #555B6D;
-    position: absolute;
+  .drag-vert {
+    height: 14px;
+    width: 20px;
     left: 50%;
-    bottom: 1px;
     transform: translateX(-50%);
+    position: absolute;
+    bottom: 0;
     z-index: 999;
 
-  }
 
-  &::after {
-    width: 28px;
-    height: 1px;
-    content: '';
-    background-color: #555B6D;
-    position: absolute;
-    left: 50%;
-    bottom: 4px;
-    transform: translateX(-50%);
-    z-index: 999;
+    &::before {
+      width: 28px;
+      height: 1px;
+      content: '';
+      background-color: #555B6D;
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      transform: translateX(-50%);
+      z-index: 999;
+
+    }
+
+    &::after {
+      width: 28px;
+      height: 1px;
+      content: '';
+      background-color: #555B6D;
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      transform: translateX(-50%);
+      z-index: 999;
+    }
   }
 }
 

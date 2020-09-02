@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import CellAppointment from './CellAppointment';
+import CellAppointment from './CellAppointment/CellAppointment';
 import { appointmentActions } from '../../_actions';
 import CellWhite from './CellWhite';
 import CellExpired from './CellExpired';
@@ -217,7 +217,12 @@ class BaseCell extends React.Component {
     }
 
     if (cellType === cellTypes.CELL_RESERVED_TIME) {
-      return <CellReservedTime cell={cell} workingStaffElement={workingStaffElement}/>;
+      return <CellReservedTime
+        step={step}
+        cellHeight={cellHeight}
+        cell={cell}
+        workingStaffElement={workingStaffElement}
+      />;
     }
 
     const notExpired = cellType === cellTypes.CELL_WHITE;
