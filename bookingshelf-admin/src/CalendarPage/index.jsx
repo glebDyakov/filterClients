@@ -536,7 +536,6 @@ class Index extends PureComponent {
                     getCellTime={this.getCellTime}
                     type={type}
                     timetable={staff.timetable}
-                    services={services}
                     availableTimetable={workingStaff.timetable}
                     closedDates={staff.closedDates}
                     clients={clients && clients.client}

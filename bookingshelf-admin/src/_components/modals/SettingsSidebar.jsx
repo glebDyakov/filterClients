@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { managersService } from '../../_services/index';
-class settingsSidebar extends React.Component {
+class SettingsSidebar extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    managersService.getAllManagers().then((value) => value.json())
-      .then((json) => console.log(json));
+    // managersService.getAllManagers().then((value) => value.json())
+    //   .then((json) => console.log(json));
   }
 
   render() {
@@ -50,5 +50,5 @@ class settingsSidebar extends React.Component {
 function mapStateToProps(state) {
 }
 
-const connectedApp = connect(mapStateToProps)(settingsSidebar);
-export { connectedApp as settingsSidebar };
+const connectedApp = connect(mapStateToProps)(SettingsSidebar);
+export { connectedApp as SettingsSidebar };

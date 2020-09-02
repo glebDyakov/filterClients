@@ -22,19 +22,18 @@ class DragVertController extends React.Component {
   }
 
   handleMouseMove(e) {
-    const { currentTarget, company, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId } = this.props;
+    const {
+      cellHeight, step, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
+    } = this.props;
     const node = document.getElementById(textAreaId);
     const appointmentId = textAreaId.split('-')[0];
     const serviceTimeNode = document.getElementById(`${appointmentId}-service-time`);
 
-    const { booktimeStep } = company.settings;
-    const step = booktimeStep / 60;
-    const cellHeight = 25;
     // 'res' = начальная высота div'a + кол-во пикселов смещения
     const res = offsetHeight + e.pageY - changingPos;
     if (res > minTextAreaHeight && res <= maxTextAreaHeight) {
       node.style.height = res + 'px';
-      currentTarget.style.bottom = -(res - 2) + 'px';
+      // currentTarget.style.bottom = -(res - 2) + 'px';
 
       const [firstTime] = serviceTimeNode.innerHTML.split('-');
       const resultSecondTime = Math.ceil((res + 10) / cellHeight);
@@ -50,14 +49,11 @@ class DragVertController extends React.Component {
   }
 
   handleMouseUp() {
-    const cellHeight = 25;
-
-    const { appointments, staff, company, reservedTime, timetable, changingVisit, offsetHeight, textAreaId } = this.props;
+    const {
+      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step
+    } = this.props;
     const newOffsetHeight = document.getElementById(textAreaId).offsetHeight;
     const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / cellHeight);
-
-    const { booktimeStep } = company.settings;
-    const step = booktimeStep / 60;
 
     let newDuration = (step * 60 * offsetDifference);
 
@@ -77,9 +73,12 @@ class DragVertController extends React.Component {
 
     const staffWithTimetable = timetable && timetable.find((item) => item.staffId === changingVisit.staffId);
 
-    const isOwnInterval = (i) => changingVisit.appointmentTimeMillis <= i && (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i;
+    const isOwnInterval = (i) => changingVisit.appointmentTimeMillis <= i &&
+      (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i;
 
-    const shouldDrag = isAvailableTime(startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval);
+    const shouldDrag = isAvailableTime(
+      startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval
+    );
     if (shouldDrag) {
       if (changingVisit.hasCoAppointments) {
         const coAppointments = [];
@@ -159,7 +158,6 @@ class DragVertController extends React.Component {
 
 function mapStateToProps(state) {
   const {
-    company,
     calendar: { appointments, reservedTime },
     staff: { timetable, staff },
     appointment: {
@@ -168,7 +166,8 @@ function mapStateToProps(state) {
   } = state;
 
   return {
-    company, appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId,
+    appointments, reservedTime, timetable, staff, changingVisit, currentTarget, changingPos, offsetHeight,
+    minTextAreaHeight, maxTextAreaHeight, textAreaId,
   };
 }
 

@@ -9,7 +9,7 @@ class CalendarSwitch extends PureComponent {
         <ul className="nav nav-tabs">
           <li className="nav-item no-bg">
             <a
-              className={type==='day'&&' active show '+'nav-link'}
+              className={'nav-link' + (type==='day' ? ' active show' : '')}
               onClick={()=>selectType('day')}
               data-toggle="tab"
             >
@@ -18,7 +18,7 @@ class CalendarSwitch extends PureComponent {
           </li>
           <li className="nav-item no-bg">
             <a
-              className={type==='week'&&' active show '+'nav-link'}
+              className={'nav-link' + (type==='week' ? ' active show' : '')}
               onClick={()=>selectType('week')}
             >
                             Неделя
