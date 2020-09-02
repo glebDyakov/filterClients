@@ -50,7 +50,9 @@ class BaseCell extends React.Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) || (newProps.selectedDays.length !== this.props.selectedDays.length)) {
+    if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) ||
+      (newProps.selectedDays.length !== this.props.selectedDays.length)
+    ) {
       const currentCellTime = getCurrentCellTime(newProps.selectedDays, newProps.selectedDaysKey, newProps.time);
       if (this.getIsPresent(currentCellTime)) {
         this.setState({ isPresent: true });
@@ -70,7 +72,8 @@ class BaseCell extends React.Component {
   getIsPresentShadow(currentCellTime) {
     const { booktimeStep } = this.props.company.settings;
     const step = booktimeStep / 60;
-    return currentCellTime <= moment().subtract(1, 'hour').format('x') && currentCellTime >= moment().subtract(1, 'hour').subtract(step, 'minutes').format('x');
+    return currentCellTime <= moment().subtract(1, 'hour').format('x') &&
+      currentCellTime >= moment().subtract(1, 'hour').subtract(step, 'minutes').format('x');
   }
 
   onUpdateWorkingStaff(props) {
@@ -94,10 +97,10 @@ class BaseCell extends React.Component {
     } else {
       filledCell = this.getCellEmpty(props);
 
-      if ((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) {
-        this.setState( { ...filledCell });
-      } else if (cellType !== cellTypes.CELL_EXPIRED) {
-        this.setState( { ...filledCell });
+      if (((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) ||
+        (cellType !== cellTypes.CELL_EXPIRED)
+      ) {
+        this.setState({ ...filledCell });
       }
     }
   }
@@ -156,15 +159,17 @@ class BaseCell extends React.Component {
     const staffArray = props[staffArrayKey];
 
     const checkingArray = staffArray && staffArray.find((appointmentStaff) =>
-      appointmentStaff[checkingArrayKey] && (appointmentStaff.staff && appointmentStaff.staff.staffId) === (workingStaffElement && workingStaffElement.staffId),
+      appointmentStaff[checkingArrayKey] && (appointmentStaff.staff && appointmentStaff.staff.staffId) ===
+      (workingStaffElement && workingStaffElement.staffId),
     );
-    const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey].find((checkingItem) => {
-      const checkingTime = parseInt(checkingItem[checkingTimeKey]);
-      const currentCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
-      const nextCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1]);
+    const cell = checkingArray && checkingArray[checkingArrayKey] && checkingArray[checkingArrayKey]
+      .find((checkingItem) => {
+        const checkingTime = parseInt(checkingItem[checkingTimeKey]);
+        const currentCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
+        const nextCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1]);
 
-      return (currentCellTime <= checkingTime) && (nextCellTime > checkingTime);
-    });
+        return (currentCellTime <= checkingTime) && (nextCellTime > checkingTime);
+      });
 
     if (exists(cell)) {
       return {
@@ -192,11 +197,12 @@ class BaseCell extends React.Component {
       handleUpdateClient,
       updateAppointmentForDeleting,
       clDate,
-      selectedDays,
+      step,
+      cellHeight,
     } = this.props;
 
 
-    const { cellType, cell, isPresent, isPresentShadow } = this.state;
+    const { cellType, cell, isPresentShadow } = this.state;
 
     if (cellType === cellTypes.CELL_APPOINTMENT) {
       return (
@@ -226,11 +232,14 @@ class BaseCell extends React.Component {
     }
 
     const notExpired = cellType === cellTypes.CELL_WHITE;
-    const day = getCurrentCellTime(selectedDays, selectedDaysKey, '00:00');
+    // const day = getCurrentCellTime(selectedDays, selectedDaysKey, '00:00');
     // let clDate = closedDates && closedDates.some((st) =>
-    //     // parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <= parseInt(moment(day).startOf('day').format("x")) &&
-    //     // parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >= parseInt(moment(day).endOf('day').format("x")))
-    //     moment(day).startOf('day').isBetween(moment(st.startDateMillis).startOf("day"), moment(st.endDateMillis).endOf("day")));
+    //     // parseInt(moment(st.startDateMillis, 'x').startOf('day').format("x")) <=
+    //     parseInt(moment(day).startOf('day').format("x")) &&
+    //     // parseInt(moment(st.endDateMillis, 'x').endOf('day').format("x")) >=
+    //     parseInt(moment(day).endOf('day').format("x")))
+    //     moment(day).startOf('day').isBetween(moment(st.startDateMillis).startOf("day"),
+    //     moment(st.endDateMillis).endOf("day")));
     // ;
 
     const wrapperClassName = 'cell cell-height col-tab'
@@ -243,7 +252,6 @@ class BaseCell extends React.Component {
         {isPresentShadow && <span data-time={time} className="present-time-line-shadow" />}
       </React.Fragment>
     );
-
 
     if (notExpired) {
       return <CellWhite
