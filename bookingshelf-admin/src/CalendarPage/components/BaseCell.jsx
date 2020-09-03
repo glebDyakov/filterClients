@@ -70,13 +70,7 @@ class BaseCell extends React.Component {
   }
 
   updateCell(filledCell) {
-    const { staffKey, numberKey } = this.props;
-
-    if (staffKey >=5 || numberKey > 24) {
-      setTimeout(() => this.setState({ ...filledCell }), 500 + (100 * staffKey));
-    } else {
-      this.setState({ ...filledCell });
-    }
+    this.setState({ ...filledCell });
   }
 
   getCellEmpty(props) {
