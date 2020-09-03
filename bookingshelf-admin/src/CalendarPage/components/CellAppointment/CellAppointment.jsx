@@ -38,7 +38,7 @@ class CellAppointment extends React.PureComponent {
   updateAppointmentInfo(props) {
     const {
       services, appointment, appointments, blickClientId, selectedNote,
-      selectedDays, selectedDaysKey, time, step, workingStaffElement, isWeekBefore,
+      selectedDays, selectedDaysKey, time, step, workingStaffElement,
     } = props;
     const currentAppointments = [appointment];
 
@@ -104,10 +104,9 @@ class CellAppointment extends React.PureComponent {
       currentTime >= moment().subtract(step, 'minutes').format('x') ? 'present-time ' : '') +
       (appointment.appointmentId === selectedNote ? 'selectedNote' : '');
 
-
     const updatedValues = {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments, wrapperClassName,
-      contentClassName, currentTime, isWeekBefore, contentId, isCellInitialized: true,
+      contentClassName, currentTime, contentId, isCellInitialized: true,
     };
     Object.entries(updatedValues).forEach(([key, value]) => {
       if (this.state[key] !== value) {
@@ -155,31 +154,18 @@ class CellAppointment extends React.PureComponent {
 
   render() {
     const {
-      step,
-      cellHeight,
-      settings,
-      moveVisit,
-      numberKey,
-      staffKey,
-      appointment,
-      appointments,
-      isStartMovingVisit,
-      numbers,
-      selectedNote,
-      workingStaffElement,
-      handleUpdateClient,
-      services,
-      changeTime,
-      updateAppointmentForDeleting,
+      step, cellHeight, settings, moveVisit, numberKey, staffKey, appointment, appointments, isStartMovingVisit,
+      numbers, selectedNote, workingStaffElement, handleUpdateClient, services, changeTime,
+      updateAppointmentForDeleting, isWeekBefore,
     } = this.props;
 
     const {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
-      contentClassName, wrapperClassName, currentTime, isWeekBefore, contentId, isCellInitialized,
+      contentClassName, wrapperClassName, currentTime, contentId, isCellInitialized,
     } = this.state;
 
     if (!isCellInitialized) {
-      return <div className="cell-appointment"></div>;
+      return <div className="cell-appointment" />;
     }
 
     const content = (

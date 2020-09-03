@@ -21,6 +21,8 @@ class BaseCell extends React.Component {
     this.state = {
       cellType: cellTypes.CELL_WHITE,
     };
+    this.handleMoveVisit = this.handleMoveVisit.bind(this);
+    this.handleAddVisit = this.handleAddVisit.bind(this);
   }
 
   componentDidMount() {
@@ -66,7 +68,7 @@ class BaseCell extends React.Component {
     }
 
     if (filledCell) {
-      setTimeout(() => this.setState({ ...filledCell }));
+      this.setState({ ...filledCell });
     } else {
       filledCell = this.getCellEmpty(props);
 
@@ -219,7 +221,6 @@ class BaseCell extends React.Component {
 
 function mapStateToProps(state) {
   const {
-    company,
     staff: { closedDates },
     calendar: {
       appointments,
@@ -230,7 +231,6 @@ function mapStateToProps(state) {
 
   return {
     closedDates,
-    company,
     appointments,
     reservedTime,
     selectedDays,

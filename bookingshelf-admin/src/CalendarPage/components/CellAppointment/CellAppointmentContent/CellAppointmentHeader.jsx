@@ -6,12 +6,8 @@ import Popover from '../../../../_components/Popover';
 class CellAppointmentHeader extends React.PureComponent {
   render() {
     const {
-      toggleSelectedNote,
-      appointment,
-      resultTextAreaHeight,
-      totalDuration,
-      updateAppointmentForDeleting,
-      workingStaffElement,
+      toggleSelectedNote, appointment, resultTextAreaHeight, totalDuration,
+      updateAppointmentForDeleting, workingStaffElement,
     } = this.props;
 
     return (
