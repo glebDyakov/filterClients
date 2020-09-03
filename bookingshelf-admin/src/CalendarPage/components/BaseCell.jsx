@@ -30,12 +30,10 @@ class BaseCell extends React.Component {
   }
 
   shouldComponentUpdate(newProps, newState) {
-    return (this.state.cellType !== newState.cellType)
-            || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]
-              .some((cellType) => (this.state.cellType === cellType && newState.cellType === cellType))
-                && Object.entries(newState.cell).some(([key, value]) => this.state.cell[key] !== value)
-            )
-            || Object.entries(newProps.numbers).some(([key, value]) => this.props.numbers[key] !== value);
+    return (this.state.cellType !== newState.cellType) || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]
+      .some((cellType) => (this.state.cellType === cellType && newState.cellType === cellType)) &&
+        Object.entries(newState.cell).some(([key, value]) => this.state.cell[key] !== value)
+    ) || Object.entries(newProps.numbers).some(([key, value]) => this.props.numbers[key] !== value);
   }
 
   componentWillReceiveProps(newProps, nextContext) {
@@ -72,10 +70,10 @@ class BaseCell extends React.Component {
   }
 
   updateCell(filledCell) {
-    const { staffKey } = this.props;
+    const { staffKey, numberKey } = this.props;
 
-    if (staffKey >=5) {
-      setTimeout(() => this.setState({ ...filledCell }), 100 * (staffKey));
+    if (staffKey >=5 || numberKey > 24) {
+      setTimeout(() => this.setState({ ...filledCell }), 500 + (100 * staffKey));
     } else {
       this.setState({ ...filledCell });
     }
