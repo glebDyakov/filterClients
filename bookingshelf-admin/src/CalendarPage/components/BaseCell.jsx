@@ -39,16 +39,7 @@ class BaseCell extends React.Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) ||
-      (newProps.selectedDays.length !== this.props.selectedDays.length)
-    ) {
-      this.setState(
-        { cellType: cellTypes.CELL_WHITE },
-        () => this.initCell(newProps),
-      );
-    } else {
-      this.initCell(newProps);
-    }
+    this.initCell(newProps);
   }
 
   initCell(props) {
@@ -68,15 +59,25 @@ class BaseCell extends React.Component {
     }
 
     if (filledCell) {
-      this.setState({ ...filledCell });
+      this.updateCell(filledCell);
     } else {
       filledCell = this.getCellEmpty(props);
 
       if (((filledCell.cellType === cellTypes.CELL_WHITE) && (cellType !== cellTypes.CELL_WHITE)) ||
         (cellType !== cellTypes.CELL_EXPIRED)
       ) {
-        this.setState({ ...filledCell });
+        this.updateCell(filledCell);
       }
+    }
+  }
+
+  updateCell(filledCell) {
+    const { staffKey } = this.props;
+
+    if (staffKey >=5) {
+      setTimeout(() => this.setState({ ...filledCell }), 100 * (staffKey));
+    } else {
+      this.setState({ ...filledCell });
     }
   }
 
