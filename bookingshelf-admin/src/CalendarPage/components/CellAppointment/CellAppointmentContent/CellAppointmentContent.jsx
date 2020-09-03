@@ -9,19 +9,8 @@ import { appointmentActions } from '../../../../_actions';
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      maxTextAreaHeight: 0,
-    };
 
     this.toggleSelectedNote = this.toggleSelectedNote.bind(this);
-  }
-
-  componentDidMount() {
-    this.updateMaxTextareaHeight(this.props);
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.updateMaxTextareaHeight(newProps);
   }
 
   updateMaxTextareaHeight(props) {
@@ -53,10 +42,7 @@ class CellAppointmentContent extends React.PureComponent {
     );
     const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (step * 60000)))
       / 1000 / 60 / step;
-    const maxTextAreaHeight = maxTextAreaCellCount * cellHeight;
-    if (this.state.maxTextAreaHeight !== maxTextAreaHeight) {
-      this.setState({ maxTextAreaHeight });
-    }
+    return maxTextAreaCellCount * cellHeight;
   }
 
   toggleSelectedNote() {
@@ -70,9 +56,20 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
+      appointments, timetable, reservedTime, staff,
     } = this.props;
 
-    const { maxTextAreaHeight } = this.state;
+    const maxTextAreaHeight = this.updateMaxTextareaHeight({
+      appointment,
+      staff,
+      appointments,
+      timetable,
+      reservedTime,
+      workingStaffElement,
+      totalDuration,
+      step,
+      cellHeight,
+    });
 
     const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * cellHeight;
 

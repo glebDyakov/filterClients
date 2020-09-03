@@ -13,26 +13,10 @@ import CellAppointmentContent from './CellAppointmentContent/CellAppointmentCont
 class CellAppointment extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      totalDuration: 0,
-      totalCount: 0,
-      totalAmount: 0,
-      appointmentServices: [],
-      currentAppointments: [],
-    };
 
     this.startMovingVisit = this.startMovingVisit.bind(this);
-    this.updateAppointmentInfo = this.updateAppointmentInfo.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
-  }
-
-  componentDidMount() {
-    this.updateAppointmentInfo(this.props);
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.updateAppointmentInfo(newProps);
   }
 
   updateAppointmentInfo(props) {
@@ -104,15 +88,10 @@ class CellAppointment extends React.PureComponent {
       currentTime >= moment().subtract(step, 'minutes').format('x') ? 'present-time ' : '') +
       (appointment.appointmentId === selectedNote ? 'selectedNote' : '');
 
-    const updatedValues = {
+    return {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments, wrapperClassName,
-      contentClassName, currentTime, contentId, isCellInitialized: true,
+      contentClassName, currentTime, contentId,
     };
-    Object.entries(updatedValues).forEach(([key, value]) => {
-      if (this.state[key] !== value) {
-        this.setState({ [key]: value });
-      }
-    });
   }
 
   startMovingVisit(draggingAppointmentId) {
@@ -155,18 +134,17 @@ class CellAppointment extends React.PureComponent {
   render() {
     const {
       step, cellHeight, settings, moveVisit, numberKey, staffKey, appointment, appointments, isStartMovingVisit,
-      numbers, selectedNote, workingStaffElement, handleUpdateClient, services, changeTime,
-      updateAppointmentForDeleting, isWeekBefore,
+      numbers, selectedNote, workingStaffElement, handleUpdateClient, services, changeTime, time,
+      updateAppointmentForDeleting, isWeekBefore, selectedDaysKey, blickClientId, selectedDays,
     } = this.props;
 
     const {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
-      contentClassName, wrapperClassName, currentTime, contentId, isCellInitialized,
-    } = this.state;
-
-    if (!isCellInitialized) {
-      return <div className="cell-appointment" />;
-    }
+      contentClassName, wrapperClassName, currentTime, contentId,
+    } = this.updateAppointmentInfo({
+      services, appointment, appointments, blickClientId, selectedNote,
+      selectedDays, selectedDaysKey, time, step, workingStaffElement,
+    });
 
     const content = (
       <div
@@ -215,7 +193,7 @@ class CellAppointment extends React.PureComponent {
     );
 
     return <div className="cell-appointment">
-      {(isCellInitialized && !appointment.coappointment && !isMobile)
+      {(!appointment.coappointment && !isMobile)
         ? (
           <Box
             moveVisit={moveVisit}
