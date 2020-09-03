@@ -6,7 +6,7 @@ import CellAppointmentArea from './CellAppointmentArea';
 import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
 
-class CellAppointmentContent extends React.Component {
+class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {

@@ -78,12 +78,15 @@ class TabScroll extends React.Component {
   render() {
     const {
       company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient,
-      updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays
+      updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays,
     } = this.props;
     const { numbers } = this.state;
     const { booktimeStep } = company.settings;
     const step = booktimeStep / 60;
     const cellHeight = 25;
+    const isWeekBefore =
+      moment(selectedDays[0]).startOf('day').format('x') >
+      parseInt(moment().subtract(1, 'week').format('x'));
 
     // console.log(clDate, moment(selectedDays).format("DD/MMMM"));
 
@@ -99,25 +102,26 @@ class TabScroll extends React.Component {
       default:
     }
 
-
     return (
-      <div className="tabs-scroll" id="calendar-tabs-scroll">
+      <div className="tabs-scroll">
         <DndProvider backend={Backend}>
           {numbers && numbers.map((time, key) => {
             const currentCellTime = getCurrentCellTime(selectedDays, 0, time);
             const isPresent = this.getIsPresent(currentCellTime);
 
             return (
-              <div key={`number-${key}`}
-                className={(selectedDays && this.state.clDate ? 'clDate ' : '') + 'tab-content-list ' +
+              <div
+                key={`number-${key}`}
+                className={'tab-content-list ' +
                 listClass + (isPresent ? ' present-line-block' : '')}
               >
-                {type === 'day' && isPresent &&
+                {isPresent && type === 'day' &&
                   <span data-time={moment().format('HH:mm')} className="present-time-line"/>
                 }
                 <TabScrollLeftMenu time={time} />
-                {availableTimetable && selectedDays && availableTimetable.map((workingStaffElement, staffKey) => (
+                {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) => (
                   <BaseCell
+                    isWeekBefore={isWeekBefore}
                     step={step}
                     cellHeight={cellHeight}
                     checkForCostaffs={checkForCostaffs}

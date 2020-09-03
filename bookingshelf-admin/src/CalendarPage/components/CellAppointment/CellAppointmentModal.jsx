@@ -23,6 +23,7 @@ const CellAppointmentModal = (props) => {
     services,
     totalAmount,
     numbers,
+    staff,
   } = props;
 
   const activeStaff = staff && staff.find((item) => workingStaffElement.staffId === item.staffId);
@@ -378,4 +379,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CellAppointmentModal);
+export default connect(mapStateToProps)(React.memo(CellAppointmentModal));

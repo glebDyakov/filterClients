@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import ItemTypes from './ItemTypes';
+import BaseCellContent from '../../CalendarPage/components/BaseCellContent';
 
-const Dustbin = ({ content, time, staffKey, selectedDaysKey, wrapperClassName, isStartMovingVisit, addVisit, moveVisit }) => {
-  wrapperClassName += isStartMovingVisit ? ' start-moving ' : '';
+const Dustbin = ({ time, staffKey, selectedDaysKey, isStartMovingVisit, addVisit, moveVisit }) => {
   const wrapperClick = isStartMovingVisit ? moveVisit : addVisit;
 
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -24,14 +24,14 @@ const Dustbin = ({ content, time, staffKey, selectedDaysKey, wrapperClassName, i
   }
   return (
     <div
-      className={wrapperClassName}
+      className={`cell cell-height col-tab${(isStartMovingVisit ? ' start-moving ' : '')}`}
       onClick={wrapperClick}
       data-toggle={isStartMovingVisit && 'modal'}
       data-target={isStartMovingVisit && '.move-visit-modal'}
       ref={drop}
       style={{ border }}
     >
-      {content}
+      <BaseCellContent time={time} notExpired/>
     </div>
   );
 };

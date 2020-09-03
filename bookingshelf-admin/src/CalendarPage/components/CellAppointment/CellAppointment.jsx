@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { isMobile } from 'react-device-detect';
-
-import Box from '../../../_components/dragAndDrop/Box';
-import CellAppointmentModal from './CellAppointmentModal';
-import CellAppointmentContent from './CellAppointmentContent/CellAppointmentContent';
 
 import { appointmentActions } from '../../../_actions';
 
+import moment from 'moment';
+import { isMobile } from 'react-device-detect';
+import Box from '../../../_components/dragAndDrop/Box';
 import { getCurrentCellTime } from '../../../_helpers';
+import CellAppointmentModal from './CellAppointmentModal';
+import CellAppointmentContent from './CellAppointmentContent/CellAppointmentContent';
 
 class CellAppointment extends React.PureComponent {
   constructor(props) {
@@ -38,10 +37,9 @@ class CellAppointment extends React.PureComponent {
 
   updateAppointmentInfo(props) {
     const {
-      services, appointment, appointments, selectedDays, selectedDaysKey, time, blickClientId,
-      workingStaffElement, selectedNote, step,
+      services, appointment, appointments, blickClientId, selectedNote,
+      selectedDays, selectedDaysKey, time, step, workingStaffElement, isWeekBefore,
     } = props;
-
     const currentAppointments = [appointment];
 
     let totalDuration = appointment.duration;
@@ -51,7 +49,7 @@ class CellAppointment extends React.PureComponent {
 
     const appointmentServices = [];
     const activeService = services && services.servicesList &&
-      services.servicesList.find((service) => service.serviceId === appointment.serviceId,
+      services.servicesList.find((service) => service.serviceId === appointment.serviceId
       );
     appointmentServices.push({
       ...activeService,
@@ -87,7 +85,6 @@ class CellAppointment extends React.PureComponent {
     }
 
     const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
-    const isWeekBefore = currentTime >= parseInt(moment().subtract(1, 'week').format('x'));
 
     const contentId = appointment.coappointment
       ? ''
@@ -107,9 +104,10 @@ class CellAppointment extends React.PureComponent {
       currentTime >= moment().subtract(step, 'minutes').format('x') ? 'present-time ' : '') +
       (appointment.appointmentId === selectedNote ? 'selectedNote' : '');
 
+
     const updatedValues = {
-      totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
-      isWeekBefore, contentId, contentClassName, wrapperClassName, currentTime,
+      totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments, wrapperClassName,
+      contentClassName, currentTime, isWeekBefore, contentId, isCellInitialized: true,
     };
     Object.entries(updatedValues).forEach(([key, value]) => {
       if (this.state[key] !== value) {
@@ -119,7 +117,8 @@ class CellAppointment extends React.PureComponent {
   }
 
   startMovingVisit(draggingAppointmentId) {
-    const { appointment, totalDuration, workingStaffElement } = this.props;
+    const { appointment, workingStaffElement } = this.props;
+    const { totalDuration } = this.state;
     this.props.dispatch(appointmentActions.togglePayload({
       movingVisit: appointment,
       movingVisitDuration: totalDuration,
@@ -158,7 +157,7 @@ class CellAppointment extends React.PureComponent {
     const {
       step,
       cellHeight,
-      currentTime,
+      settings,
       moveVisit,
       numberKey,
       staffKey,
@@ -176,8 +175,12 @@ class CellAppointment extends React.PureComponent {
 
     const {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
-      isWeekBefore, contentId, contentClassName, wrapperClassName,
+      contentClassName, wrapperClassName, currentTime, isWeekBefore, contentId, isCellInitialized,
     } = this.state;
+
+    if (!isCellInitialized) {
+      return <div className="cell-appointment"></div>;
+    }
 
     const content = (
       <div
@@ -208,6 +211,7 @@ class CellAppointment extends React.PureComponent {
             isStartMovingVisit={isStartMovingVisit}
             appointment={appointment}
             totalDuration={totalDuration}
+            settings={settings}
             currentAppointments={currentAppointments}
             handleUpdateClient={handleUpdateClient}
             appointmentServices={appointmentServices}
@@ -224,26 +228,29 @@ class CellAppointment extends React.PureComponent {
       </div>
     );
 
-    if (!appointment.coappointment && !isMobile) {
-      return <div className="cell-appointment">
-        <Box
-          moveVisit={moveVisit}
-          appointmentId={appointment.appointmentId}
-          startMoving={() => this.startMovingVisit(appointment.appointmentId)}
-          content={content}
-          wrapperClassName={wrapperClassName}
-        />
-      </div>;
-    }
-
     return <div className="cell-appointment">
-      <div className={wrapperClassName}>{content}</div>
+      {(isCellInitialized && !appointment.coappointment && !isMobile)
+        ? (
+          <Box
+            moveVisit={moveVisit}
+            appointmentId={appointment.appointmentId}
+            startMoving={() => this.startMovingVisit(appointment.appointmentId)}
+            content={content}
+            wrapperClassName={wrapperClassName}
+          />
+        ): (
+          <div className={wrapperClassName}>{content}</div>
+        )
+      }
     </div>;
   };
 }
 
 function mapStateToProps(state) {
   const {
+    company: {
+      settings,
+    },
     calendar: {
       appointments,
     },
@@ -257,6 +264,7 @@ function mapStateToProps(state) {
   } = state;
 
   return {
+    settings,
     appointments,
     blickClientId,
     selectedNote,
