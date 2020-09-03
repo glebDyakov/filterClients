@@ -26,15 +26,8 @@ class CellAppointmentArea extends React.PureComponent {
 
   render() {
     const {
-      isWeekBefore,
-      appointment,
-      textAreaId,
-      minTextAreaHeight,
-      maxTextAreaHeight,
-      resultTextAreaHeight,
-      extraServiceText,
-      services,
-      movingVisit,
+      isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
+      resultTextAreaHeight, extraServiceText, services, movingVisit,
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
