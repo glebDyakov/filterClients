@@ -8,7 +8,7 @@ import { appointmentActions } from '../../../../_actions';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.toggleSelectedNote = this.toggleSelectedNote.bind(this);
   }
