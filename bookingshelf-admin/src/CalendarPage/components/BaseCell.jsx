@@ -18,16 +18,28 @@ const cellTypes = {
 class BaseCell extends React.Component {
   constructor(props) {
     super(props);
+    let filledCell;
+    const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
+    if (cellAppointment) {
+      filledCell = cellAppointment;
+    } else {
+      const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
+      if (cellReservedTime) {
+        filledCell = cellReservedTime;
+      } else {
+        filledCell = this.getCellEmpty(props);
+      }
+    }
     this.state = {
-      cellType: cellTypes.CELL_WHITE,
+      ...filledCell,
     };
     this.handleMoveVisit = this.handleMoveVisit.bind(this);
     this.handleAddVisit = this.handleAddVisit.bind(this);
   }
 
-  componentDidMount() {
-    this.initCell(this.props);
-  }
+  // componentDidMount() {
+  //   this.initCell(this.props);
+  // }
 
   shouldComponentUpdate(newProps, newState) {
     return (this.state.cellType !== newState.cellType) || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]

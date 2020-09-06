@@ -94,9 +94,8 @@ class CellAppointment extends React.PureComponent {
     };
   }
 
-  startMovingVisit(draggingAppointmentId) {
+  startMovingVisit(draggingAppointmentId, totalDuration) {
     const { appointment, workingStaffElement } = this.props;
-    const { totalDuration } = this.state;
     this.props.dispatch(appointmentActions.togglePayload({
       movingVisit: appointment,
       movingVisitDuration: totalDuration,
@@ -181,7 +180,7 @@ class CellAppointment extends React.PureComponent {
             appointmentServices={appointmentServices}
             workingStaffElement={workingStaffElement}
             currentTime={currentTime}
-            startMovingVisit={this.startMovingVisit}
+            startMovingVisit={() => this.startMovingVisit(null, totalDuration)}
             changeTime={changeTime}
             updateAppointmentForDeleting={updateAppointmentForDeleting}
             services={services}
@@ -198,7 +197,7 @@ class CellAppointment extends React.PureComponent {
           <Box
             moveVisit={moveVisit}
             appointmentId={appointment.appointmentId}
-            startMoving={() => this.startMovingVisit(appointment.appointmentId)}
+            startMoving={() => this.startMovingVisit(appointment.appointmentId, totalDuration)}
             content={content}
             wrapperClassName={wrapperClassName}
           />
