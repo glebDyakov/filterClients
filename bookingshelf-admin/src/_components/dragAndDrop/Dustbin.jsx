@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import ItemTypes from './ItemTypes';
-import BaseCellContent from '../../CalendarPage/components/BaseCellContent';
+import CellEmptyContent from '../../CalendarPage/components/CellEmptyContent';
 
 const Dustbin = ({ time, staffKey, selectedDaysKey, isStartMovingVisit, addVisit, moveVisit }) => {
   const wrapperClick = isStartMovingVisit ? moveVisit : addVisit;
@@ -31,7 +31,7 @@ const Dustbin = ({ time, staffKey, selectedDaysKey, isStartMovingVisit, addVisit
       ref={drop}
       style={{ border }}
     >
-      <BaseCellContent time={time} notExpired/>
+      <CellEmptyContent time={time} notExpired/>
     </div>
   );
 };

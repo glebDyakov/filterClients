@@ -35,7 +35,7 @@ const CellReservedTime = (props) => {
           </span>
 
         </p>
-        <p className="notes-container" style={{ background: "#b0b3b9", height: textAreaHeight+ 'px' }}>
+        <p className="notes-container" style={{ background: '#b0b3b9', height: textAreaHeight+ 'px' }}>
           <span style={{ color: '#5d5d5d', fontSize: '10px' }}>{reservedTime.description}</span>
         </p>
       </div>

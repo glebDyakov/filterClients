@@ -324,7 +324,7 @@ const CellAppointmentModal = (props) => {
         {isWeekBefore && (
           <div className="msg-inner-buttons">
             <div
-              onClick={() => startMovingVisit()}
+              onClick={startMovingVisit}
               className="msg-inner-button-wrapper"
             >
               <div className="msg-inner-button-wrapper-1">

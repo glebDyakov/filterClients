@@ -529,7 +529,7 @@ class Index extends PureComponent {
                   type={type}
                 />
 
-                {company.settings && (
+                {company.settings && selectedDays.length && (
                   <TabScrollContent
                     company={company}
                     checkForCostaffs={this.checkForCostaffs}
@@ -545,8 +545,8 @@ class Index extends PureComponent {
                     changeTimeFromCell={this.changeTimeFromCell}
                     moveVisit={this.moveVisit}
                     selectedDays={selectedDays}
-                  />)
-                }
+                  />
+                )}
               </div>
             </div>
           </div>
