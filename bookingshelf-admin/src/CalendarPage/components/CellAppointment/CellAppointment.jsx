@@ -19,7 +19,7 @@ class CellAppointment extends React.PureComponent {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
-  getAppointmentInfo(props) {
+  updateAppointmentInfo(props) {
     const {
       services, appointment, appointments, blickClientId, selectedNote,
       selectedDays, selectedDaysKey, time, step, workingStaffElement,
@@ -33,7 +33,7 @@ class CellAppointment extends React.PureComponent {
 
     const appointmentServices = [];
     const activeService = services && services.servicesList &&
-      services.servicesList.find((service) => service.serviceId === appointment.serviceId,
+      services.servicesList.find((service) => service.serviceId === appointment.serviceId
       );
     appointmentServices.push({
       ...activeService,
@@ -94,8 +94,9 @@ class CellAppointment extends React.PureComponent {
     };
   }
 
-  startMovingVisit(draggingAppointmentId, totalDuration) {
+  startMovingVisit(draggingAppointmentId) {
     const { appointment, workingStaffElement } = this.props;
+    const { totalDuration } = this.state;
     this.props.dispatch(appointmentActions.togglePayload({
       movingVisit: appointment,
       movingVisitDuration: totalDuration,
@@ -140,7 +141,7 @@ class CellAppointment extends React.PureComponent {
     const {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
       contentClassName, wrapperClassName, currentTime, contentId,
-    } = this.getAppointmentInfo({
+    } = this.updateAppointmentInfo({
       services, appointment, appointments, blickClientId, selectedNote,
       selectedDays, selectedDaysKey, time, step, workingStaffElement,
     });
@@ -180,7 +181,7 @@ class CellAppointment extends React.PureComponent {
             appointmentServices={appointmentServices}
             workingStaffElement={workingStaffElement}
             currentTime={currentTime}
-            startMovingVisit={() => this.startMovingVisit(null, totalDuration)}
+            startMovingVisit={this.startMovingVisit}
             changeTime={changeTime}
             updateAppointmentForDeleting={updateAppointmentForDeleting}
             services={services}
@@ -197,7 +198,7 @@ class CellAppointment extends React.PureComponent {
           <Box
             moveVisit={moveVisit}
             appointmentId={appointment.appointmentId}
-            startMoving={() => this.startMovingVisit(appointment.appointmentId, totalDuration)}
+            startMoving={() => this.startMovingVisit(appointment.appointmentId)}
             content={content}
             wrapperClassName={wrapperClassName}
           />

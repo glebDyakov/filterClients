@@ -1,13 +1,13 @@
 import React from 'react';
 
-import CellEmptyContent from './CellEmptyContent';
+import BaseCellContent from './BaseCellContent';
 
 const CellExpired = (props) => {
   const { time } = props;
 
   return (
     <div className="cell cell-height col-tab expired">
-      <CellEmptyContent time={time} />
+      <BaseCellContent time={time} />
     </div>
   );
 };

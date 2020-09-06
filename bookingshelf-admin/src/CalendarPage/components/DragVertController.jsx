@@ -23,7 +23,7 @@ class DragVertController extends React.Component {
 
   handleMouseMove(e) {
     const {
-      cellHeight, step, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId,
+      cellHeight, step, changingPos, offsetHeight, minTextAreaHeight, maxTextAreaHeight, textAreaId
     } = this.props;
     const node = document.getElementById(textAreaId);
     const appointmentId = textAreaId.split('-')[0];
@@ -50,7 +50,7 @@ class DragVertController extends React.Component {
 
   handleMouseUp() {
     const {
-      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step,
+      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step
     } = this.props;
     const newOffsetHeight = document.getElementById(textAreaId).offsetHeight;
     const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / cellHeight);
@@ -77,7 +77,7 @@ class DragVertController extends React.Component {
       (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i;
 
     const shouldDrag = isAvailableTime(
-      startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval,
+      startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval
     );
     if (shouldDrag) {
       if (changingVisit.hasCoAppointments) {

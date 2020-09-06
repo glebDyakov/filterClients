@@ -15,59 +15,53 @@ class TabScrollHeader extends PureComponent {
             //     'minWidth': (120*parseInt(timetable && timetable.length))+'px'
             // }}
           >
-            <div className="tab-content-list-wrapper">
-              <div className="tab-content-list tab-content-list-first">
-                {(timetable || timetableMessage) && <div className="cell hours left-menu-item"><span></span></div>}
+            <div className="tab-content-list tab-content-list-first">
+              {(timetable || timetableMessage) && <div className="cell hours"><span></span></div>}
 
-                {timetable && timetable.map((workingStaffElement, i) => {
-                  const activeStaff = staff && staff.find((staffItem) => staffItem.staffId === workingStaffElement.staffId);
-                  const wrapperProps = i === 0 ? { id: `fixed-tab-cell-0` } : {};
+              {timetable && timetable.map((workingStaffElement) => {
+                const activeStaff = staff && staff.find((staffItem) => staffItem.staffId === workingStaffElement.staffId);
 
-                  return <div {...wrapperProps} className="cell">
-                    <span className="img-container">
-                      <img className="rounded-circle"
-                        src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
-                        alt=""/>
-                    </span>
-                    <p>{workingStaffElement.firstName + ' ' + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>
-                  </div>;
-                },
-                )
+                return <div className="cell">
+                  <span className="img-container">
+                    <img className="rounded-circle"
+                      src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                      alt=""/>
+                  </span>
+                  <p>{workingStaffElement.firstName + ' ' + (workingStaffElement.lastName ? workingStaffElement.lastName : '') }</p>
+                </div>;
+              },
+              )
 
-                }
-                {timetableMessage && <div className="cell"><p>{timetableMessage}</p></div>}
-              </div>
+              }
+              {timetableMessage && <div className="cell"><p>{timetableMessage}</p></div>}
             </div>
           </div>
 
         )}
 
         {type && type === 'week' &&
-          <div className="fixed-tab"
-            // style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}
-          >
-            <div className="tab-content-list-wrapper">
-              <div className="tab-content-list tab-content-list-first">
-                {selectedDays.length>1 && <div className="cell hours left-menu-item"><span></span></div>}
-
-                {
-                  selectedDays.length > 1 && selectedDays.map((item, weekKey)=> {
-                    const clDate= closedDates && closedDates.some((st) => {
-                      return moment(item).add('1', 'minute').isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf('day'));
-                    });
-                    const wrapperProps = weekKey === 0 ? { id: `fixed-tab-cell-0` } : {};
-
-                    return <div {...wrapperProps} className={'cell' + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
+                    <div className="fixed-tab"
+                      // style={{'minWidth': (120*parseInt(timetable && timetable.length))+'px'}}
                     >
-                      <p className="text-capitalize">{moment(item).locale('ru').format('dd')},&nbsp;<span className={`text-capitalize ${clDate && 'closedDate'}`}>{clDate ? <p>{moment(item).format('DD MMMM')} <p className="closedDate-color">&nbsp;(выходной)</p></p> : moment(item).format('DD MMMM')}</span>
-                      </p>
-                    </div>;
-                  },
-                  )
-                }
-              </div>
-            </div>
-          </div>
+                      <div className="tab-content-list">
+                        {selectedDays.length>1 && <div className="cell hours"><span></span></div>}
+
+                        {
+                          selectedDays.length > 1 && selectedDays.map((item, weekKey)=> {
+                            const clDate= closedDates && closedDates.some((st) => {
+                              return moment(item).add('1', 'minute').isBetween(moment(st.startDateMillis).startOf('day'), moment(st.endDateMillis).endOf('day'));
+                            });
+
+                            return <div className={'cell' + (moment(item).format('DD') === moment().format('DD') ? ' day-active' : '') } key={weekKey}
+                            >
+                              <p className="text-capitalize">{moment(item).locale('ru').format('dd')},&nbsp;<span className={`text-capitalize ${clDate && 'closedDate'}`}>{clDate ? <p>{moment(item).format('DD MMMM')} <p className="closedDate-color">&nbsp;(выходной)</p></p> : moment(item).format('DD MMMM')}</span>
+                              </p>
+                            </div>;
+                          },
+                          )
+                        }
+                      </div>
+                    </div>
         }
 
       </React.Fragment>
