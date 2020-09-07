@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import {staffActions} from "../../_actions";
 import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
+import {withTranslation} from "react-i18next";
 
 
 
@@ -35,18 +36,18 @@ class TabCompanySelection extends  PureComponent{
 
     render() {
 
-        const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, t} = this.props;
 
         return(
             <div className="service_selection screen1">
                 <div className="title_block n">
-                    <p className="modal_title">Выберите филиал</p>
+                    <p className="modal_title">{t("Выберите филиал")}</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(getFirstScreen(selectedSubcompany.firstScreen));
                         this.props.history.push(`/${selectedSubcompany.bookingPage}`)
                         //refreshTimetable();
-                    }}>Далее</span>}
+                    }}>{t("Далее")}</span>}
                 </div>
                 <ul className={`staff_popup`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
@@ -102,4 +103,4 @@ class TabCompanySelection extends  PureComponent{
         );
     }
 }
-export default connect()(TabCompanySelection);
+export default connect()(withTranslation("common")(TabCompanySelection));

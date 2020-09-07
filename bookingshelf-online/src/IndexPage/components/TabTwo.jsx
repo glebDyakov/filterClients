@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import { getFirstScreen } from "../../_helpers/common";
 import { staffActions } from "../../_actions";
+import {withTranslation} from "react-i18next";
 
 class TabTwo extends Component {
     constructor(props) {
@@ -13,12 +14,12 @@ class TabTwo extends Component {
 
     render() {
 
-        const {selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag} = this.props;
+        const {selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff,services, selectedService,servicesForStaff, selectService, setDefaultFlag ,t} = this.props;
         const { searchValue } = this.state;
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
-                    Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                    {t("Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.")}
                     {(subcompanies.length > 1) && (
                         <button onClick={() => {
                             setScreen(0)
@@ -26,7 +27,7 @@ class TabTwo extends Component {
                             let {company} = match.params;
                             let url = company.includes('_') ? company.split('_')[0] : company
                             history.push(`/${url}`)
-                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">{t("На страницу выбора филиалов")}</button>
                     )}
                 </div>
             )
@@ -58,13 +59,13 @@ class TabTwo extends Component {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                        (<p>Выбрано услуг: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
+                        (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
                         <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
                     </span>
                     <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
                         {selectedServices.map(service => (
                             <p>• {service.name}</p>
                         ))}
@@ -96,14 +97,14 @@ class TabTwo extends Component {
                                 clearSelectedServices()
                             }
                         }
-                    }}><span className="title_block_text">Назад</span></span>}
-                    <p className="modal_title">Выбор услуги</p>
+                    }}><span className="title_block_text">{t("Назад")}</span></span>}
+                    <p className="modal_title">{t("Выбор услуги")}</p>
                     {!!selectedServices.length && <span className="next_block" onClick={() => {
                         if (selectedServices.length) {
                             setScreen(3);
                         }
                         refreshTimetable();
-                    }}><span className="title_block_text">Далее</span></span>}
+                    }}><span className="title_block_text">{t("Далее")}</span></span>}
                 </div>
                 {selectedStaff.staffId && <div className="specialist">
                     <div>
@@ -124,7 +125,7 @@ class TabTwo extends Component {
                         <div className="row align-items-center content clients mb-2 search-block">
                             <div className="search col-12">
                                 <img style={{ position: 'absolute', left: '20px' }} src={`${process.env.CONTEXT}public/img/search-icon.svg`} />
-                                <input style={{ margin: 0, paddingLeft: '38px' }} type="search" placeholder="Введите название или описание услуги"
+                                <input style={{ margin: 0, paddingLeft: '38px' }} type="search" placeholder={t("Введите название или описание услуги")}
                                        aria-label="Search" ref={input => this.search = input} onChange={(e) => this.setState({ searchValue: e.target.value })}/>
                             </div>
                         </div>
@@ -218,7 +219,7 @@ class TabTwo extends Component {
                     </React.Fragment>
                 ) : (!isLoading &&
                     <div className="final-book">
-                        <p>Нет доступных услуг</p>
+                        <p>{t("Нет доступных услуг")}</p>
                     </div>
                 )}
 
@@ -229,10 +230,11 @@ class TabTwo extends Component {
                     }
                     refreshTimetable();
                 }}>
-                    <button style={{ marginTop: '4px', marginBottom: '20px' }} className="button load">Продолжить</button>
+                    <button style={{ marginTop: '4px', marginBottom: '20px' }} className="button load">{t("Продолжить")}</button>
                 </div>}
             </div>
         );
     }
 }
-export default TabTwo;
+
+export default withTranslation("common")(TabTwo);
