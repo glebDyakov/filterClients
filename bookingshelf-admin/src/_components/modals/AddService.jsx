@@ -284,7 +284,7 @@ class AddService extends React.Component {
 
                                                           <p className="product-info">
                                                             <span className="product-amount">На складе: {product && product.currentAmount}</span>
-                                                            <span className="product-id">№: {product && product.productId}</span>
+                                                            <span className="product-id">№: {product && product.productCode}</span>
                                                           </p>
                                                         </li>);
                                                       })}
