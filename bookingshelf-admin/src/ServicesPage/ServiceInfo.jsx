@@ -24,8 +24,31 @@ class ServiceInfo extends Component {
     this.setState({ isOpenDeleteModal: true });
   }
 
+  getUnit(unit) {
+    switch (unit) {
+      case "Штука":
+        return "шт";
+
+      case "Миллилитр":
+        return "мл";
+
+      case "Килограмм":
+        return "кг";
+
+      case "Грамм":
+        return "гр";
+
+      case "Коробка":
+        return "кор";
+
+      default:
+        return "";
+    }
+  }
+
   render() {
     const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup } = this.props;
+
 
     return (
       <div {...dragHandleProps} className="services_items" key={keyService}
@@ -35,8 +58,15 @@ class ServiceInfo extends Component {
             <span className="buttonsCollapse">
               <span className={'item-list-circle ' + item.color.toLowerCase() + 'ButtonEdit'} />
             </span>
+
+            {item2 && item2.serviceProducts &&
+            // eslint-disable-next-line max-len
+            <span className="item-detail"><br/>Учет материалов: {item2.serviceProducts[0].productName}, {item2.serviceProducts[0].amount} {this.getUnit(item2.serviceProducts[0].unitName)}.</span>
+            }
           </span>
-          <span className="item-detail">{item2.details.length !== 0 && '(' + item2.details + ')'}</span>
+          {item2 && item2.details.length > 0 &&
+          <span className="item-detail"><br/>Детали: {item2.details.length !== 0 && item2.details}</span>}
+
           <span className="hide-item">
             <span className="price">
               {item2.priceFrom} {item2.priceFrom !== item2.priceTo && ' - ' + item2.priceTo} {item2.currency}
