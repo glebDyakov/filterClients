@@ -11,6 +11,8 @@ import {I18nextProvider} from "react-i18next";
 
 import common_ru from "../public/lang/translations.ru";
 import common_pl from "../public/lang/translations.pl";
+import common_ua from "../public/lang/translations.ua";
+import common_en from "../public/lang/translations.en";
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
@@ -22,6 +24,12 @@ i18next.init({
         pl: {
             common: common_pl
         },
+        en: {
+            common: common_en
+        },
+        ua: {
+            common: common_ua
+        }
     },
 });
 

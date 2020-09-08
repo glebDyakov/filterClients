@@ -93,7 +93,7 @@ class TabThird extends  PureComponent {
                         month={new Date(moment(month).format( 'YYYY-MM' ))}
                         onDayClick={handleDayClick}
                         localeUtils={MomentLocaleUtils}
-                        locale={t("locale")}
+                        locale="en"
 
                     />
                     <p>
