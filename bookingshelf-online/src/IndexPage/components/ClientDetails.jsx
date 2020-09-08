@@ -7,6 +7,7 @@ import {staffActions} from "../../_actions";
 import './ClientDetails.scss'
 import '../../../public/css/bootstrap.css'
 import Paginator from "./Paginator";
+import {withTranslation} from "react-i18next";
 
 
 class ClientDetails extends React.Component {
@@ -105,7 +106,7 @@ class ClientDetails extends React.Component {
     }
 
     render() {
-        const { staff } = this.props;
+        const { staff, t } = this.props;
         const {client, defaultClientsList, allVisits}=this.state;
         const { info } = staff;
 
@@ -128,24 +129,24 @@ class ClientDetails extends React.Component {
                                     <div className="row">
                                         <div className="col-6" style={{textAlign:'center'}}>
                                             <strong>{defaultClientsList.appointments.length} </strong><br/>
-                                            <span className="gray-text">Всего визитов</span>
+                                            <span className="gray-text">{t("Всего визитов")}</span>
                                         </div>
                                         <div className="col-6"  style={{textAlign:'center'}}>
                                             <strong>{this.state.allPrice} {defaultClientsList.appointments[0] && defaultClientsList.appointments[0].currency}</strong><br/>
-                                            <span className="gray-text">Сумма визитов</span>
+                                            <span className="gray-text">{t("Сумма визитов")}</span>
                                         </div>
                                     </div>
                                 </div>
                                 }
                                 <hr className="gray"/>
                                 {client && client.appointments && client.appointments.length!==0 ?
-                                    <p className="pl-4 pr-4 mb-2">Список визитов</p> : <p className="pl-4 pr-4">Нет визитов</p>
+                                    <p className="pl-4 pr-4 mb-2">{t("Список визитов")}</p> : <p className="pl-4 pr-4">{t("Нет визитов")}</p>
                                 }
 
                                 {(defaultClientsList && defaultClientsList.appointments && defaultClientsList.appointments.length!==0 && defaultClientsList!=="" &&
                                         <div className="row align-items-center content clients mb-2 search-block">
                                             <div className="search col-7">
-                                                <input type="search" placeholder="Введите название услуги"
+                                                <input type="search" placeholder={t("Введите название услуги")}
                                                        aria-label="Search" ref={input => this.search = input} onChange={this.handleSearchAppointments}/>
                                                 <button className="search-icon" type="submit"/>
                                             </div>
@@ -173,7 +174,7 @@ class ClientDetails extends React.Component {
                                                             <span style={{
                                                                 whiteSpace: 'normal',
                                                                 fontSize: '12px'
-                                                            }}><strong>{info.template === 1 ? 'Сотрудник' : 'Рабочее место'}: </strong>{appointment.staffName}</span>
+                                                            }}><strong>{info.template === 1 ? t('Сотрудник') : t('Рабочее место')}: </strong>{appointment.staffName}</span>
                                                             <strong
                                                                 style={{fontSize: '13px'}}>{appointment.serviceName}</strong>
                                                             {(activeService && activeService.details) ?
@@ -225,5 +226,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(withRouter(ClientDetails));
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(ClientDetails));
 export { connectedApp as ClientDetails };

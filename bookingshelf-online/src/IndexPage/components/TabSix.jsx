@@ -128,7 +128,7 @@ class TabSix extends  PureComponent {
                     }}>{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
                 }
                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
-                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
+                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
                         const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
                         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))

@@ -5,6 +5,7 @@ import {staffActions} from "../../_actions";
 import PhoneInput from "../../_components/PhoneInput";
 import {getCookie} from "../../_helpers/cookie";
 import moment from "moment";
+import {withTranslation} from "react-i18next";
 
 class TabCreateComment extends  PureComponent{
     constructor(props) {
@@ -145,8 +146,8 @@ class TabCreateComment extends  PureComponent{
                         setScreen('staff-comments');
                         this.props.dispatch(staffActions.clearMessages())
 
-                    }}><span className="title_block_text">Назад</span></span>
-                    <p className="modal_title">Отзывы</p>
+                    }}><span className="title_block_text">{t("Назад")}</span></span>
+                    <p className="modal_title">{t("Отзывы")}</p>
                 </div>
 
                 <div className="staff_popup staff_popup_large">
@@ -166,11 +167,11 @@ class TabCreateComment extends  PureComponent{
                 {clientCookie ? (
                     <div>
                         <div style={{ textAlign: 'right' }}>
-                            <p>Вы вошли как {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
-                            <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => this.props.dispatch(staffActions.clearClientLogin())}>Сменить аккаунт</p>
+                            <p>{t("Вы вошли как")} {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
+                            <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => this.props.dispatch(staffActions.clearClientLogin())}>{t("Сменить аккаунт")}</p>
                         </div>
                         <br/>
-                        <p>Рейтинг</p>
+                        <p>{t("Рейтинг")}</p>
                         <StarRatings
                             rating={group.rating}
                             changeRating={this.changeRating}
@@ -181,14 +182,14 @@ class TabCreateComment extends  PureComponent{
                             starSpacing="5px"
                         />
 
-                        <p style={{ marginTop: '15px' }}>Комментарии</p>
+                        <p style={{ marginTop: '15px' }}>{t("Комментарии")}</p>
                         <textarea placeholder=""  name="comment" onChange={this.handleCommentChange} value={group.comment}/>
 
                         <input
                             style={{ marginBottom: '20px' }}
                             className={((!group.comment || !group.rating) ? 'disabledField': '')+" book_button"}
                             disabled={!group.comment || !group.rating}
-                            type="submit" value={group.clientPassword ? 'Добавить отзыв' : 'Добавить отзыв'} onClick={this.handleSave}
+                            type="submit" value={group.clientPassword ? t('Добавить отзыв') : t('Добавить отзыв')} onClick={this.handleSave}
                         />
                     </div>
                 ) : (
@@ -197,12 +198,12 @@ class TabCreateComment extends  PureComponent{
                             <input
                                 style={{ backgroundColor: tab === 'login_tab' ? '#39434f' : 'grey'}}
                                 className="book_button book_button_tab"
-                                type="button" value="Вход" onClick={() => this.updateTab('login_tab')}
+                                type="button" value={t("Вход")} onClick={() => this.updateTab('login_tab')}
                             />
                             <input
                                 style={{ backgroundColor: tab === 'sms_tab' ? '#39434f' : 'grey'}}
                                 className="book_button book_button_tab"
-                                type="button" value="SMS авторизация" onClick={() => this.updateTab('sms_tab')}
+                                type="button" value={t("SMS авторизация")} onClick={() => this.updateTab('sms_tab')}
                             />
                         </div>
 
@@ -210,7 +211,7 @@ class TabCreateComment extends  PureComponent{
                             <React.Fragment>
                                 {tab === 'login_tab' && (
                                     <React.Fragment>
-                                        <p>Телефон</p>
+                                        <p>{t("Телефон")}</p>
                                         <div className="phones_country">
                                             <PhoneInput
                                                 value={loginPhone}
@@ -220,10 +221,10 @@ class TabCreateComment extends  PureComponent{
                                         </div>
                                         <br/>
 
-                                        <p>Персональный пароль</p>
+                                        <p>{t("Персональный пароль")}</p>
                                         <p style={{ display: 'flex' }}>
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                            /> <span>Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации</span>
+                                            /> <span>{t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации")}</span>
                                         </p>
                                         <input type="text" placeholder="Введите пароль" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
                                         {clientLoginMessage && (
@@ -236,7 +237,7 @@ class TabCreateComment extends  PureComponent{
                                             style={{ margin: '20px auto' }}
                                             className={((!isValidLoginPhone || !loginPassword) ? 'disabledField': '')+" book_button"}
                                             disabled={!isValidLoginPhone || !loginPassword}
-                                            type="submit" value="Войти" onClick={this.handleLogin}
+                                            type="submit" value={t("Войти")} onClick={this.handleLogin}
                                         />
                                     </React.Fragment>
                                 )}
@@ -246,7 +247,7 @@ class TabCreateComment extends  PureComponent{
                                         <p style={{ display: 'flex' }}>
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>
-                                    Введите номер телефона, на него будет отправлено SMS с паролем для входа.
+                                            {t("Введите номер телефона, на него будет отправлено SMS с паролем для входа.")}
                                 </span>
                                         </p>
                                         <div className="phones_country">
@@ -266,7 +267,7 @@ class TabCreateComment extends  PureComponent{
 
                                         {timeExpires && (
                                             <p style={{ display: 'flex', marginTop: '10px' }}>
-                                                <span>Осталось времени: {timeExpires}</span>
+                                                <span>{t("Осталось времени")}: {timeExpires}</span>
                                             </p>
                                         )}
 
@@ -274,7 +275,7 @@ class TabCreateComment extends  PureComponent{
                                             style={{ margin: '20px auto' }}
                                             className={((!isValidSendPasswordPhone || sendSmsTimer) ? 'disabledField': '')+" book_button"}
                                             disabled={!isValidSendPasswordPhone || sendSmsTimer}
-                                            type="submit" value="Отправить" onClick={this.handleSendPassword}
+                                            type="submit" value={t("Отправить")} onClick={this.handleSendPassword}
                                         />
                                     </React.Fragment>
                                 )}
@@ -296,4 +297,4 @@ function mapStateToProps(store) {
     };
 }
 
-export default connect(mapStateToProps)(TabCreateComment);
+export default connect(mapStateToProps)(withTranslation("common")(TabCreateComment));

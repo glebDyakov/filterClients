@@ -43,7 +43,7 @@
   "Выбор времени": "Wybierz czas",
   "Перенести визит?": "Przełożyć wizytę?",
   "Нет": "Nie",
-  "Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.": "Rezerwacja online została wyłączona. Skontaktuj się z administratorem. Przepraszamy za niedogodności.",
+  "Онлайн-запись отключена...": "Rezerwacja online została wyłączona. Skontaktuj się z administratorem. Przepraszamy za niedogodności.",
   "На страницу выбора филиалов": "Na stronę wyboru oddziałów",
   "Выбор рабочего места": "Wybierz stanowisko pracy",
   "Выбор сотрудника": "Wybierz pracownika",
@@ -78,5 +78,6 @@
   "Ваша запись": "Twoja rezerwacja",
   "Ваша персональная скидка составит": "Twój personalny rabat wyniesie",
   "Все визиты": "Wszystkie wizyty",
-  "Пропустить выбор": "Pomiń wybór pracowników"
+  "Пропустить выбор": "Pomiń wybór pracowników",
+  "locale": "pl"
 }
