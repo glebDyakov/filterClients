@@ -1,9 +1,9 @@
 import { modalsConstants } from '../_constants';
 
 export const modalsActions = {
-    togglePayload,
+  togglePayload,
 };
 
 function togglePayload(payload) {
-    return { type: modalsConstants.MODALS_TOGGLE_BY_KEY, payload };
+  return { type: modalsConstants.MODALS_TOGGLE_BY_KEY, payload };
 }

@@ -6,8 +6,7 @@
  */
 
 ;(function($) {
-
-  var defaults = {
+  const defaults = {
 
     // GENERAL
     mode: 'horizontal',
@@ -83,16 +82,27 @@
     shrinkItems: false,
 
     // CALLBACKS
-    onSliderLoad: function() { return true; },
-    onSlideBefore: function() { return true; },
-    onSlideAfter: function() { return true; },
-    onSlideNext: function() { return true; },
-    onSlidePrev: function() { return true; },
-    onSliderResize: function() { return true; }
+    onSliderLoad: function() {
+      return true;
+    },
+    onSlideBefore: function() {
+      return true;
+    },
+    onSlideAfter: function() {
+      return true;
+    },
+    onSlideNext: function() {
+      return true;
+    },
+    onSlidePrev: function() {
+      return true;
+    },
+    onSliderResize: function() {
+      return true;
+    },
   };
 
   $.fn.bxSlider = function(options) {
-
     if (this.length === 0) {
       return this;
     }
@@ -106,15 +116,17 @@
     }
 
     // create a namespace to be used throughout the plugin
-    var slider = {},
+    const slider = {};
     // set a reference to our slider element
-    el = this,
+    const el = this;
     // get the original window dimens (thanks a lot IE)
-    windowWidth = $(window).width(),
-    windowHeight = $(window).height();
+    let windowWidth = $(window).width();
+    let windowHeight = $(window).height();
 
     // Return if slider is already initialized
-    if ($(el).data('bxSlider')) { return; }
+    if ($(el).data('bxSlider')) {
+      return;
+    }
 
     /**
      * ===================================================================================
@@ -125,9 +137,11 @@
     /**
      * Initializes namespace settings to be used throughout plugin
      */
-    var init = function() {
+    const init = function() {
       // Return if slider is already initialized
-      if ($(el).data('bxSlider')) { return; }
+      if ($(el).data('bxSlider')) {
+        return;
+      }
       // merge user-supplied options with the defaults
       slider.settings = $.extend({}, defaults, options);
       // parse slideWidth setting
@@ -135,16 +149,24 @@
       // store the original children
       slider.children = el.children(slider.settings.slideSelector);
       // check if actual number of slides is less than minSlides / maxSlides
-      if (slider.children.length < slider.settings.minSlides) { slider.settings.minSlides = slider.children.length; }
-      if (slider.children.length < slider.settings.maxSlides) { slider.settings.maxSlides = slider.children.length; }
+      if (slider.children.length < slider.settings.minSlides) {
+        slider.settings.minSlides = slider.children.length;
+      }
+      if (slider.children.length < slider.settings.maxSlides) {
+        slider.settings.maxSlides = slider.children.length;
+      }
       // if random start, set the startSlide setting to random number
-      if (slider.settings.randomStart) { slider.settings.startSlide = Math.floor(Math.random() * slider.children.length); }
+      if (slider.settings.randomStart) {
+        slider.settings.startSlide = Math.floor(Math.random() * slider.children.length);
+      }
       // store active slide information
       slider.active = { index: slider.settings.startSlide };
       // store if the slider is in carousel mode (displaying / moving multiple slides)
       slider.carousel = slider.settings.minSlides > 1 || slider.settings.maxSlides > 1 ? true : false;
       // if carousel, force preloadImages = 'all'
-      if (slider.carousel) { slider.settings.preloadImages = 'all'; }
+      if (slider.carousel) {
+        slider.settings.preloadImages = 'all';
+      }
       // calculate the min / max width thresholds based on min / max number of slides
       // used to setup and update carousel slides dimensions
       slider.minThreshold = (slider.settings.minSlides * slider.settings.slideWidth) + ((slider.settings.minSlides - 1) * slider.settings.slideMargin);
@@ -160,11 +182,11 @@
       // determine if hardware acceleration can be used
       slider.usingCSS = slider.settings.useCSS && slider.settings.mode !== 'fade' && (function() {
         // create our test div element
-        var div = document.createElement('div'),
+        const div = document.createElement('div');
         // css transition properties
-        props = ['WebkitPerspective', 'MozPerspective', 'OPerspective', 'msPerspective'];
+        const props = ['WebkitPerspective', 'MozPerspective', 'OPerspective', 'msPerspective'];
         // test for each property
-        for (var i = 0; i < props.length; i++) {
+        for (let i = 0; i < props.length; i++) {
           if (div.style[props[i]] !== undefined) {
             slider.cssPrefix = props[i].replace('Perspective', '').toLowerCase();
             slider.animProp = '-' + slider.cssPrefix + '-transform';
@@ -174,7 +196,9 @@
         return false;
       }());
       // if vertical mode always make maxSlides and minSlides equal
-      if (slider.settings.mode === 'vertical') { slider.settings.maxSlides = slider.settings.minSlides; }
+      if (slider.settings.mode === 'vertical') {
+        slider.settings.maxSlides = slider.settings.minSlides;
+      }
       // save original style data
       el.data('origStyle', el.attr('style'));
       el.children(slider.settings.slideSelector).each(function() {
@@ -189,7 +213,7 @@
      * Performs all DOM and CSS modifications
      */
     var setup = function() {
-      var preloadSelector = slider.children.eq(slider.settings.startSlide); // set the default preload selector (visible)
+      let preloadSelector = slider.children.eq(slider.settings.startSlide); // set the default preload selector (visible)
 
       // wrap el in a wrapper
       el.wrap('<div class="' + slider.settings.wrapperClass + '"><div class="bx-viewport"></div></div>');
@@ -207,7 +231,7 @@
       // also strip any margin and padding from el
       el.css({
         width: slider.settings.mode === 'horizontal' ? (slider.children.length * 1000 + 215) + '%' : 'auto',
-        position: 'relative'
+        position: 'relative',
       });
       // if using CSS, add the easing property
       if (slider.usingCSS && slider.settings.easing) {
@@ -220,51 +244,69 @@
       slider.viewport.css({
         width: '100%',
         overflow: 'hidden',
-        position: 'relative'
+        position: 'relative',
       });
       slider.viewport.parent().css({
-        maxWidth: getViewportMaxWidth()
+        maxWidth: getViewportMaxWidth(),
       });
       // apply css to all slider children
       slider.children.css({
         float: slider.settings.mode === 'horizontal' ? 'left' : 'none',
         listStyle: 'none',
-        position: 'relative'
+        position: 'relative',
       });
       // apply the calculated width after the float is applied to prevent scrollbar interference
       slider.children.css('width', getSlideWidth());
       // if slideMargin is supplied, add the css
-      if (slider.settings.mode === 'horizontal' && slider.settings.slideMargin > 0) { slider.children.css('marginRight', slider.settings.slideMargin); }
-      if (slider.settings.mode === 'vertical' && slider.settings.slideMargin > 0) { slider.children.css('marginBottom', slider.settings.slideMargin); }
+      if (slider.settings.mode === 'horizontal' && slider.settings.slideMargin > 0) {
+        slider.children.css('marginRight', slider.settings.slideMargin);
+      }
+      if (slider.settings.mode === 'vertical' && slider.settings.slideMargin > 0) {
+        slider.children.css('marginBottom', slider.settings.slideMargin);
+      }
       // if "fade" mode, add positioning and z-index CSS
       if (slider.settings.mode === 'fade') {
         slider.children.css({
           position: 'absolute',
           zIndex: 0,
-          display: 'none'
+          display: 'none',
         });
         // prepare the z-index on the showing element
-        slider.children.eq(slider.settings.startSlide).css({zIndex: slider.settings.slideZIndex, display: 'block'});
+        slider.children.eq(slider.settings.startSlide).css({ zIndex: slider.settings.slideZIndex, display: 'block' });
       }
       // create an element to contain all slider controls (pager, start / stop, etc)
       slider.controls.el = $('<div class="bx-controls" />');
       // if captions are requested, add them
-      if (slider.settings.captions) { appendCaptions(); }
+      if (slider.settings.captions) {
+        appendCaptions();
+      }
       // check if startSlide is last slide
       slider.active.last = slider.settings.startSlide === getPagerQty() - 1;
       // if video is true, set up the fitVids plugin
-      if (slider.settings.video) { el.fitVids(); }
-      if (slider.settings.preloadImages === 'all' || slider.settings.ticker) { preloadSelector = slider.children; }
+      if (slider.settings.video) {
+        el.fitVids();
+      }
+      if (slider.settings.preloadImages === 'all' || slider.settings.ticker) {
+        preloadSelector = slider.children;
+      }
       // only check for control addition if not in "ticker" mode
       if (!slider.settings.ticker) {
         // if controls are requested, add them
-        if (slider.settings.controls) { appendControls(); }
+        if (slider.settings.controls) {
+          appendControls();
+        }
         // if auto is true, and auto controls are requested, add them
-        if (slider.settings.auto && slider.settings.autoControls) { appendControlsAuto(); }
+        if (slider.settings.auto && slider.settings.autoControls) {
+          appendControlsAuto();
+        }
         // if pager is requested, add it
-        if (slider.settings.pager) { appendPager(); }
+        if (slider.settings.pager) {
+          appendPager();
+        }
         // if any control option is requested, add the controls wrapper
-        if (slider.settings.controls || slider.settings.autoControls || slider.settings.pager) { slider.viewport.after(slider.controls.el); }
+        if (slider.settings.controls || slider.settings.autoControls || slider.settings.pager) {
+          slider.viewport.after(slider.controls.el);
+        }
       // if ticker mode, do not allow a pager
       } else {
         slider.settings.pager = false;
@@ -273,17 +315,21 @@
     };
 
     var loadElements = function(selector, callback) {
-      var total = selector.find('img:not([src=""]), iframe').length,
-      count = 0;
+      const total = selector.find('img:not([src=""]), iframe').length;
+      let count = 0;
       if (total === 0) {
         callback();
         return;
       }
       selector.find('img:not([src=""]), iframe').each(function() {
         $(this).one('load error', function() {
-          if (++count === total) { callback(); }
+          if (++count === total) {
+            callback();
+          }
         }).each(function() {
-          if (this.complete) { $(this).trigger('load'); }
+          if (this.complete) {
+            $(this).trigger('load');
+          }
         });
       });
     };
@@ -294,9 +340,9 @@
     var start = function() {
       // if infinite loop, prepare additional slides
       if (slider.settings.infiniteLoop && slider.settings.mode !== 'fade' && !slider.settings.ticker) {
-        var slice    = slider.settings.mode === 'vertical' ? slider.settings.minSlides : slider.settings.maxSlides,
-        sliceAppend  = slider.children.slice(0, slice).clone(true).addClass('bx-clone'),
-        slicePrepend = slider.children.slice(-slice).clone(true).addClass('bx-clone');
+        const slice = slider.settings.mode === 'vertical' ? slider.settings.minSlides : slider.settings.maxSlides;
+        const sliceAppend = slider.children.slice(0, slice).clone(true).addClass('bx-clone');
+        const slicePrepend = slider.children.slice(-slice).clone(true).addClass('bx-clone');
         if (slider.settings.ariaHidden) {
           sliceAppend.attr('aria-hidden', true);
           slicePrepend.attr('aria-hidden', true);
@@ -308,7 +354,9 @@
       // set the left / top position of "el"
       setSlidePosition();
       // if "vertical" mode, always use adaptiveHeight to prevent odd behavior
-      if (slider.settings.mode === 'vertical') { slider.settings.adaptiveHeight = true; }
+      if (slider.settings.mode === 'vertical') {
+        slider.settings.adaptiveHeight = true;
+      }
       // set the viewport height
       slider.viewport.height(getViewportHeight());
       // make sure everything is positioned just right (same as a window resize)
@@ -318,17 +366,29 @@
       // slider has been fully initialized
       slider.initialized = true;
       // bind the resize call to the window
-      if (slider.settings.responsive) { $(window).bind('resize', resizeWindow); }
+      if (slider.settings.responsive) {
+        $(window).bind('resize', resizeWindow);
+      }
       // if auto is true and has more than 1 page, start the show
-      if (slider.settings.auto && slider.settings.autoStart && (getPagerQty() > 1 || slider.settings.autoSlideForOnePage)) { initAuto(); }
+      if (slider.settings.auto && slider.settings.autoStart && (getPagerQty() > 1 || slider.settings.autoSlideForOnePage)) {
+        initAuto();
+      }
       // if ticker is true, start the ticker
-      if (slider.settings.ticker) { initTicker(); }
+      if (slider.settings.ticker) {
+        initTicker();
+      }
       // if pager is requested, make the appropriate pager link active
-      if (slider.settings.pager) { updatePagerActive(slider.settings.startSlide); }
+      if (slider.settings.pager) {
+        updatePagerActive(slider.settings.startSlide);
+      }
       // check for any updates to the controls (like hideControlOnEnd updates)
-      if (slider.settings.controls) { updateDirectionControls(); }
+      if (slider.settings.controls) {
+        updateDirectionControls();
+      }
       // if touchEnabled is true, setup the touch events
-      if (slider.settings.touchEnabled && !slider.settings.ticker) { initTouch(); }
+      if (slider.settings.touchEnabled && !slider.settings.ticker) {
+        initTouch();
+      }
       // if keyboardEnabled is true, setup the keyboard events
       if (slider.settings.keyboardEnabled && !slider.settings.ticker) {
         $(document).keydown(keyPress);
@@ -339,9 +399,9 @@
      * Returns the calculated height of the viewport, used to determine either adaptiveHeight or the maxHeight value
      */
     var getViewportHeight = function() {
-      var height = 0;
+      let height = 0;
       // first determine which children (slides) should be used in our height calculation
-      var children = $();
+      let children = $();
       // if mode is not "vertical" and adaptiveHeight is false, include all children
       if (slider.settings.mode !== 'vertical' && !slider.settings.adaptiveHeight) {
         children = slider.children;
@@ -352,7 +412,7 @@
         // if carousel, return a slice of children
         } else {
           // get the individual slide index
-          var currentIndex = slider.settings.moveSlides === 1 ? slider.active.index : slider.active.index * getMoveBy();
+          const currentIndex = slider.settings.moveSlides === 1 ? slider.active.index : slider.active.index * getMoveBy();
           // add the current slide to the children
           children = slider.children.eq(currentIndex);
           // cycle through the remaining "showing" slides
@@ -396,7 +456,7 @@
      * Returns the calculated width to be used for the outer wrapper / viewport
      */
     var getViewportMaxWidth = function() {
-      var width = '100%';
+      let width = '100%';
       if (slider.settings.slideWidth > 0) {
         if (slider.settings.mode === 'horizontal') {
           width = (slider.settings.maxSlides * slider.settings.slideWidth) + ((slider.settings.maxSlides - 1) * slider.settings.slideMargin);
@@ -411,8 +471,8 @@
      * Returns the calculated width to be applied to each slide
      */
     var getSlideWidth = function() {
-      var newElWidth = slider.settings.slideWidth, // start with any user-supplied slide width
-      wrapWidth      = slider.viewport.width();    // get the current viewport width
+      let newElWidth = slider.settings.slideWidth; // start with any user-supplied slide width
+      const wrapWidth = slider.viewport.width(); // get the current viewport width
       // if slide width was not supplied, or is larger than the viewport use the viewport width
       if (slider.settings.slideWidth === 0 ||
         (slider.settings.slideWidth > wrapWidth && !slider.carousel) ||
@@ -434,9 +494,9 @@
     /**
      * Returns the number of slides currently visible in the viewport (includes partially visible slides)
      */
-    var getNumberSlidesShowing = function() {
-      var slidesShowing = 1,
-      childWidth = null;
+    const getNumberSlidesShowing = function() {
+      let slidesShowing = 1;
+      let childWidth = null;
       if (slider.settings.mode === 'horizontal' && slider.settings.slideWidth > 0) {
         // if viewport is smaller than minThreshold, return minSlides
         if (slider.viewport.width() < slider.minThreshold) {
@@ -461,9 +521,9 @@
      * Returns the number of pages (one full viewport of slides is one "page")
      */
     var getPagerQty = function() {
-      var pagerQty = 0,
-      breakPoint = 0,
-      counter = 0;
+      let pagerQty = 0;
+      let breakPoint = 0;
+      let counter = 0;
       // if moveSlides is specified by the user
       if (slider.settings.moveSlides > 0) {
         if (slider.settings.infiniteLoop) {
@@ -499,7 +559,7 @@
      * Sets the slider's (el) left or top position
      */
     var setSlidePosition = function() {
-      var position, lastChild, lastShowingIndex;
+      let position; let lastChild; let lastShowingIndex;
       // if last slide, not infinite loop, and number of children is larger than specified maxSlides
       if (slider.children.length > slider.settings.maxSlides && slider.active.last && !slider.settings.infiniteLoop) {
         if (slider.settings.mode === 'horizontal') {
@@ -520,11 +580,16 @@
         // get the position of the first showing slide
         position = slider.children.eq(slider.active.index * getMoveBy()).position();
         // check for last slide
-        if (slider.active.index === getPagerQty() - 1) { slider.active.last = true; }
+        if (slider.active.index === getPagerQty() - 1) {
+          slider.active.last = true;
+        }
         // set the respective position
         if (position !== undefined) {
-          if (slider.settings.mode === 'horizontal') { setPositionProperty(-position.left, 'reset', 0); }
-          else if (slider.settings.mode === 'vertical') { setPositionProperty(-position.top, 'reset', 0); }
+          if (slider.settings.mode === 'horizontal') {
+            setPositionProperty(-position.left, 'reset', 0);
+          } else if (slider.settings.mode === 'vertical') {
+            setPositionProperty(-position.top, 'reset', 0);
+          }
         }
       }
     };
@@ -546,7 +611,7 @@
      *  - an optional parameter containing any variables that need to be passed in
      */
     var setPositionProperty = function(value, type, duration, params) {
-      var animateObj, propValue;
+      let animateObj; let propValue;
       // use CSS transform
       if (slider.usingCSS) {
         // determine the translate3d value
@@ -559,13 +624,15 @@
           if (duration !== 0) {
             // bind a callback method - executes when CSS transition completes
             el.bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
-              //make sure it's the correct one
-              if (!$(e.target).is(el)) { return; }
+              // make sure it's the correct one
+              if (!$(e.target).is(el)) {
+                return;
+              }
               // unbind the callback
               el.unbind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
               updateAfterSlideTransition();
             });
-          } else { //duration = 0
+          } else { // duration = 0
             updateAfterSlideTransition();
           }
         } else if (type === 'reset') {
@@ -576,8 +643,10 @@
           el.css(slider.animProp, propValue);
           if (duration !== 0) {
             el.bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
-              //make sure it's the correct one
-              if (!$(e.target).is(el)) { return; }
+              // make sure it's the correct one
+              if (!$(e.target).is(el)) {
+                return;
+              }
               // unbind the callback
               el.unbind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
               // reset the position
@@ -585,7 +654,7 @@
               // start the loop again
               tickerLoop();
             });
-          } else { //duration = 0
+          } else { // duration = 0
             setPositionProperty(params.resetValue, 'reset', 0);
             tickerLoop();
           }
@@ -613,12 +682,12 @@
     /**
      * Populates the pager with proper amount of pages
      */
-    var populatePager = function() {
-      var pagerHtml = '',
-      linkContent = '',
-      pagerQty = getPagerQty();
+    const populatePager = function() {
+      let pagerHtml = '';
+      let linkContent = '';
+      const pagerQty = getPagerQty();
       // loop through each pager item
-      for (var i = 0; i < pagerQty; i++) {
+      for (let i = 0; i < pagerQty; i++) {
         linkContent = '';
         // if a buildPager function is supplied, use it to get pager link value, else use index + 1
         if (slider.settings.buildPager && $.isFunction(slider.settings.buildPager) || slider.settings.pagerCustom) {
@@ -723,7 +792,7 @@
       // cycle through each child
       slider.children.each(function(index) {
         // get the image title attribute
-        var title = $(this).find('img:first').attr('title');
+        const title = $(this).find('img:first').attr('title');
         // append the caption
         if (title !== undefined && ('' + title).length) {
           $(this).append('<div class="bx-caption"><span>' + title + '</span></div>');
@@ -739,9 +808,13 @@
      */
     var clickNextBind = function(e) {
       e.preventDefault();
-      if (slider.controls.el.hasClass('disabled')) { return; }
+      if (slider.controls.el.hasClass('disabled')) {
+        return;
+      }
       // if auto show is running, stop it
-      if (slider.settings.auto && slider.settings.stopAutoOnClick) { el.stopAuto(); }
+      if (slider.settings.auto && slider.settings.stopAutoOnClick) {
+        el.stopAuto();
+      }
       el.goToNextSlide();
     };
 
@@ -753,9 +826,13 @@
      */
     var clickPrevBind = function(e) {
       e.preventDefault();
-      if (slider.controls.el.hasClass('disabled')) { return; }
+      if (slider.controls.el.hasClass('disabled')) {
+        return;
+      }
       // if auto show is running, stop it
-      if (slider.settings.auto && slider.settings.stopAutoOnClick) { el.stopAuto(); }
+      if (slider.settings.auto && slider.settings.stopAutoOnClick) {
+        el.stopAuto();
+      }
       el.goToPrevSlide();
     };
 
@@ -788,18 +865,22 @@
      *  - DOM event object
      */
     var clickPagerBind = function(e) {
-      var pagerLink, pagerIndex;
+      let pagerLink; let pagerIndex;
       e.preventDefault();
       if (slider.controls.el.hasClass('disabled')) {
         return;
       }
       // if auto show is running, stop it
-      if (slider.settings.auto  && slider.settings.stopAutoOnClick) { el.stopAuto(); }
+      if (slider.settings.auto && slider.settings.stopAutoOnClick) {
+        el.stopAuto();
+      }
       pagerLink = $(e.currentTarget);
       if (pagerLink.attr('data-slide-index') !== undefined) {
         pagerIndex = parseInt(pagerLink.attr('data-slide-index'));
         // if clicked pager link is not active, continue with the goToSlide call
-        if (pagerIndex !== slider.active.index) { el.goToSlide(pagerIndex); }
+        if (pagerIndex !== slider.active.index) {
+          el.goToSlide(pagerIndex);
+        }
       }
     };
 
@@ -811,7 +892,7 @@
      */
     var updatePagerActive = function(slideIndex) {
       // if "short" pager type
-      var len = slider.children.length; // nb of children
+      let len = slider.children.length; // nb of children
       if (slider.settings.pagerType === 'short') {
         if (slider.settings.maxSlides > 1) {
           len = Math.ceil(slider.children.length / slider.settings.maxSlides);
@@ -822,7 +903,9 @@
       // remove all pager active classes
       slider.pagerEl.find('a').removeClass('active');
       // apply the active class for all pagers
-      slider.pagerEl.each(function(i, el) { $(el).find('a').eq(slideIndex).addClass('active'); });
+      slider.pagerEl.each(function(i, el) {
+        $(el).find('a').eq(slideIndex).addClass('active');
+      });
     };
 
     /**
@@ -831,7 +914,7 @@
     var updateAfterSlideTransition = function() {
       // if infinite loop is true
       if (slider.settings.infiniteLoop) {
-        var position = '';
+        let position = '';
         // first slide
         if (slider.active.index === 0) {
           // set the new position
@@ -844,8 +927,11 @@
           position = slider.children.eq(slider.children.length - 1).position();
         }
         if (position) {
-          if (slider.settings.mode === 'horizontal') { setPositionProperty(-position.left, 'reset', 0); }
-          else if (slider.settings.mode === 'vertical') { setPositionProperty(-position.top, 'reset', 0); }
+          if (slider.settings.mode === 'horizontal') {
+            setPositionProperty(-position.left, 'reset', 0);
+          } else if (slider.settings.mode === 'vertical') {
+            setPositionProperty(-position.top, 'reset', 0);
+          }
         }
       }
       // declare that the transition is complete
@@ -901,12 +987,12 @@
     var initAuto = function() {
       // if autoDelay was supplied, launch the auto show using a setTimeout() call
       if (slider.settings.autoDelay > 0) {
-        var timeout = setTimeout(el.startAuto, slider.settings.autoDelay);
+        const timeout = setTimeout(el.startAuto, slider.settings.autoDelay);
       // if autoDelay was not supplied, start the auto show normally
       } else {
         el.startAuto();
 
-        //add focus and blur events to ensure its running if timeout gets paused
+        // add focus and blur events to ensure its running if timeout gets paused
         $(window).focus(function() {
           el.startAuto();
         }).blur(function() {
@@ -940,8 +1026,8 @@
      * Initializes the ticker process
      */
     var initTicker = function() {
-      var startPosition = 0,
-      position, transform, value, idx, ratio, property, newSpeed, totalDimens;
+      let startPosition = 0;
+      let position; let transform; let value; let idx; let ratio; let property; let newSpeed; let totalDimens;
       // if autoDirection is "next", append a clone of the entire slider
       if (slider.settings.autoDirection === 'next') {
         el.append(slider.children.clone().addClass('bx-clone'));
@@ -1005,10 +1091,10 @@
      * Runs a continuous loop, news ticker-style
      */
     var tickerLoop = function(resumeSpeed) {
-      var speed = resumeSpeed ? resumeSpeed : slider.settings.speed,
-      position = {left: 0, top: 0},
-      reset = {left: 0, top: 0},
-      animateProperty, resetValue, params;
+      const speed = resumeSpeed ? resumeSpeed : slider.settings.speed;
+      let position = { left: 0, top: 0 };
+      let reset = { left: 0, top: 0 };
+      let animateProperty; let resetValue; let params;
 
       // if "next" animate left position to last child, then reset left to 0
       if (slider.settings.autoDirection === 'next') {
@@ -1019,20 +1105,20 @@
       }
       animateProperty = slider.settings.mode === 'horizontal' ? -position.left : -position.top;
       resetValue = slider.settings.mode === 'horizontal' ? -reset.left : -reset.top;
-      params = {resetValue: resetValue};
+      params = { resetValue: resetValue };
       setPositionProperty(animateProperty, 'ticker', speed, params);
     };
 
     /**
      * Check if el is on screen
      */
-    var isOnScreen = function(el) {
-      var win = $(window),
-      viewport = {
+    const isOnScreen = function(el) {
+      const win = $(window);
+      const viewport = {
         top: win.scrollTop(),
-        left: win.scrollLeft()
-      },
-      bounds = el.offset();
+        left: win.scrollLeft(),
+      };
+      const bounds = el.offset();
 
       viewport.right = viewport.left + win.width();
       viewport.bottom = viewport.top + win.height();
@@ -1046,10 +1132,10 @@
      * Initializes keyboard events
      */
     var keyPress = function(e) {
-      var activeElementTag = document.activeElement.tagName.toLowerCase(),
-      tagFilters = 'input|textarea',
-      p = new RegExp(activeElementTag,['i']),
-      result = p.exec(tagFilters);
+      const activeElementTag = document.activeElement.tagName.toLowerCase();
+      const tagFilters = 'input|textarea';
+      const p = new RegExp(activeElementTag, ['i']);
+      const result = p.exec(tagFilters);
 
       if (result == null && isOnScreen(el)) {
         if (e.keyCode === 39) {
@@ -1068,13 +1154,13 @@
     var initTouch = function() {
       // initialize object to contain all touch values
       slider.touch = {
-        start: {x: 0, y: 0},
-        end: {x: 0, y: 0}
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: 0 },
       };
       slider.viewport.bind('touchstart MSPointerDown pointerdown', onTouchStart);
 
-      //for browsers that have implemented pointer events and fire a click after
-      //every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
+      // for browsers that have implemented pointer events and fire a click after
+      // every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
       slider.viewport.on('click', '.bxslider a', function(e) {
         if (slider.viewport.hasClass('click-disabled')) {
           e.preventDefault();
@@ -1090,7 +1176,7 @@
      *  - DOM event object
      */
     var onTouchStart = function(e) {
-      //disable slider controls while user is interacting with slides to avoid slider freeze that happens on touch devices when a slide swipe happens immediately after interacting with slider controls
+      // disable slider controls while user is interacting with slides to avoid slider freeze that happens on touch devices when a slide swipe happens immediately after interacting with slider controls
       slider.controls.el.addClass('disabled');
 
       if (slider.working) {
@@ -1099,8 +1185,8 @@
       } else {
         // record the original position when touch starts
         slider.touch.originalPos = el.position();
-        var orig = e.originalEvent,
-        touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
+        const orig = e.originalEvent;
+        const touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
         // record the starting touch x, y coordinates
         slider.touch.start.x = touchPoints[0].pageX;
         slider.touch.start.y = touchPoints[0].pageY;
@@ -1128,7 +1214,7 @@
       doesn't fire after a touchstart (this happens on windows phones only) */
       setPositionProperty(slider.touch.originalPos.left, 'reset', 0);
 
-      //remove handlers
+      // remove handlers
       slider.controls.el.removeClass('disabled');
       slider.viewport.unbind('MSPointerCancel pointercancel', onPointerCancel);
       slider.viewport.unbind('touchmove MSPointerMove pointermove', onTouchMove);
@@ -1145,13 +1231,13 @@
      *  - DOM event object
      */
     var onTouchMove = function(e) {
-      var orig = e.originalEvent,
-      touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig],
+      const orig = e.originalEvent;
+      const touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
       // if scrolling on y axis, do not prevent default
-      xMovement = Math.abs(touchPoints[0].pageX - slider.touch.start.x),
-      yMovement = Math.abs(touchPoints[0].pageY - slider.touch.start.y),
-      value = 0,
-      change = 0;
+      const xMovement = Math.abs(touchPoints[0].pageX - slider.touch.start.x);
+      const yMovement = Math.abs(touchPoints[0].pageY - slider.touch.start.y);
+      let value = 0;
+      let change = 0;
 
       // x axis swipe
       if ((xMovement * 3) > yMovement && slider.settings.preventDefaultSwipeX) {
@@ -1182,12 +1268,12 @@
      */
     var onTouchEnd = function(e) {
       slider.viewport.unbind('touchmove MSPointerMove pointermove', onTouchMove);
-      //enable slider controls as soon as user stops interacing with slides
+      // enable slider controls as soon as user stops interacing with slides
       slider.controls.el.removeClass('disabled');
-      var orig    = e.originalEvent,
-      touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig],
-      value       = 0,
-      distance    = 0;
+      const orig = e.originalEvent;
+      const touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
+      let value = 0;
+      let distance = 0;
       // record end x, y positions
       slider.touch.end.x = touchPoints[0].pageX;
       slider.touch.end.y = touchPoints[0].pageY;
@@ -1241,14 +1327,16 @@
      */
     var resizeWindow = function(e) {
       // don't do anything if slider isn't initialized.
-      if (!slider.initialized) { return; }
+      if (!slider.initialized) {
+        return;
+      }
       // Delay if slider working.
       if (slider.working) {
         window.setTimeout(resizeWindow, 10);
       } else {
         // get the new window dimens (again, thank you IE)
-        var windowWidthNew = $(window).width(),
-        windowHeightNew = $(window).height();
+        const windowWidthNew = $(window).width();
+        const windowHeightNew = $(window).height();
         // make sure that it is a true window resize
         // *we must check this because our dinosaur friend IE fires a window resize event when certain DOM elements
         // are resized. Can you just die already?*
@@ -1270,8 +1358,8 @@
      * @param startVisibleIndex (int)
      *  - the first visible element's index
      */
-    var applyAriaHiddenAttributes = function(startVisibleIndex) {
-      var numberOfSlidesShowing = getNumberSlidesShowing();
+    const applyAriaHiddenAttributes = function(startVisibleIndex) {
+      const numberOfSlidesShowing = getNumberSlidesShowing();
       // only apply attributes if the setting is enabled and not in ticker mode
       if (slider.settings.ariaHidden && !slider.settings.ticker) {
         // add aria-hidden=true to all elements
@@ -1287,12 +1375,12 @@
      * @param slideOndex (int)
      *  - the desired slide index
      */
-    var setSlideIndex = function(slideIndex) {
+    const setSlideIndex = function(slideIndex) {
       if (slideIndex < 0) {
         if (slider.settings.infiniteLoop) {
           return getPagerQty() - 1;
-        }else {
-          //we don't go to undefined slides
+        } else {
+          // we don't go to undefined slides
           return slider.active.index;
         }
       // if slideIndex is greater than children length, set active index to 0 (this happens during infinite loop)
@@ -1300,7 +1388,7 @@
         if (slider.settings.infiniteLoop) {
           return 0;
         } else {
-          //we don't move to undefined pages
+          // we don't move to undefined pages
           return slider.active.index;
         }
       // set active index to requested slide
@@ -1327,18 +1415,20 @@
     el.goToSlide = function(slideIndex, direction) {
       // onSlideBefore, onSlideNext, onSlidePrev callbacks
       // Allow transition canceling based on returned value
-      var performTransition = true,
-      moveBy = 0,
-      position = {left: 0, top: 0},
-      lastChild = null,
-      lastShowingIndex, eq, value, requestEl;
+      let performTransition = true;
+      let moveBy = 0;
+      let position = { left: 0, top: 0 };
+      let lastChild = null;
+      let lastShowingIndex; let eq; let value; let requestEl;
       // store the old index
       slider.oldIndex = slider.active.index;
-      //set new index
+      // set new index
       slider.active.index = setSlideIndex(slideIndex);
 
       // if plugin is currently in motion, ignore request
-      if (slider.working || slider.active.index === slider.oldIndex) { return; }
+      if (slider.working || slider.active.index === slider.oldIndex) {
+        return;
+      }
       // declare that plugin is in motion
       slider.working = true;
 
@@ -1366,17 +1456,21 @@
       // check if last slide
       slider.active.last = slider.active.index >= getPagerQty() - 1;
       // update the pager with active class
-      if (slider.settings.pager || slider.settings.pagerCustom) { updatePagerActive(slider.active.index); }
+      if (slider.settings.pager || slider.settings.pagerCustom) {
+        updatePagerActive(slider.active.index);
+      }
       // // check for direction control update
-      if (slider.settings.controls) { updateDirectionControls(); }
+      if (slider.settings.controls) {
+        updateDirectionControls();
+      }
       // if slider is set to mode: "fade"
       if (slider.settings.mode === 'fade') {
         // if adaptiveHeight is true and next height is different from current height, animate to the new height
         if (slider.settings.adaptiveHeight && slider.viewport.height() !== getViewportHeight()) {
-          slider.viewport.animate({height: getViewportHeight()}, slider.settings.adaptiveHeightSpeed);
+          slider.viewport.animate({ height: getViewportHeight() }, slider.settings.adaptiveHeightSpeed);
         }
         // fade out the visible child and reset its z-index value
-        slider.children.filter(':visible').fadeOut(slider.settings.speed).css({zIndex: 0});
+        slider.children.filter(':visible').fadeOut(slider.settings.speed).css({ zIndex: 0 });
         // fade in the newly requested slide
         slider.children.eq(slider.active.index).css('zIndex', slider.settings.slideZIndex + 1).fadeIn(slider.settings.speed, function() {
           $(this).css('zIndex', slider.settings.slideZIndex);
@@ -1386,7 +1480,7 @@
       } else {
         // if adaptiveHeight is true and next height is different from current height, animate to the new height
         if (slider.settings.adaptiveHeight && slider.viewport.height() !== getViewportHeight()) {
-          slider.viewport.animate({height: getViewportHeight()}, slider.settings.adaptiveHeightSpeed);
+          slider.viewport.animate({ height: getViewportHeight() }, slider.settings.adaptiveHeightSpeed);
         }
         // if carousel and not infinite loop
         if (!slider.settings.infiniteLoop && slider.carousel && slider.active.last) {
@@ -1414,7 +1508,7 @@
           slider.active.last = false;
         // normal non-zero requests
         } else if (slideIndex >= 0) {
-          //parseInt is applied to allow floats for slides/page
+          // parseInt is applied to allow floats for slides/page
           requestEl = slideIndex * parseInt(getMoveBy());
           position = slider.children.eq(requestEl).position();
         }
@@ -1431,7 +1525,9 @@
           slider.working = false;
         }
       }
-      if (slider.settings.ariaHidden) { applyAriaHiddenAttributes(slider.active.index * getMoveBy()); }
+      if (slider.settings.ariaHidden) {
+        applyAriaHiddenAttributes(slider.active.index * getMoveBy());
+      }
     };
 
     /**
@@ -1439,8 +1535,10 @@
      */
     el.goToNextSlide = function() {
       // if infiniteLoop is false and last page is showing, disregard call
-      if (!slider.settings.infiniteLoop && slider.active.last) { return; }
-      var pagerIndex = parseInt(slider.active.index) + 1;
+      if (!slider.settings.infiniteLoop && slider.active.last) {
+        return;
+      }
+      const pagerIndex = parseInt(slider.active.index) + 1;
       el.goToSlide(pagerIndex, 'next');
     };
 
@@ -1449,8 +1547,10 @@
      */
     el.goToPrevSlide = function() {
       // if infiniteLoop is false and last page is showing, disregard call
-      if (!slider.settings.infiniteLoop && slider.active.index === 0) { return; }
-      var pagerIndex = parseInt(slider.active.index) - 1;
+      if (!slider.settings.infiniteLoop && slider.active.index === 0) {
+        return;
+      }
+      const pagerIndex = parseInt(slider.active.index) - 1;
       el.goToSlide(pagerIndex, 'prev');
     };
 
@@ -1462,7 +1562,9 @@
      */
     el.startAuto = function(preventControlUpdate) {
       // if an interval already exists, disregard call
-      if (slider.interval) { return; }
+      if (slider.interval) {
+        return;
+      }
       // create an interval
       slider.interval = setInterval(function() {
         if (slider.settings.autoDirection === 'next') {
@@ -1472,7 +1574,9 @@
         }
       }, slider.settings.pause);
       // if auto controls are displayed and preventControlUpdate is not true
-      if (slider.settings.autoControls && preventControlUpdate !== true) { updateAutoControls('stop'); }
+      if (slider.settings.autoControls && preventControlUpdate !== true) {
+        updateAutoControls('stop');
+      }
     };
 
     /**
@@ -1483,12 +1587,16 @@
      */
     el.stopAuto = function(preventControlUpdate) {
       // if no interval exists, disregard call
-      if (!slider.interval) { return; }
+      if (!slider.interval) {
+        return;
+      }
       // clear the interval
       clearInterval(slider.interval);
       slider.interval = null;
       // if auto controls are displayed and preventControlUpdate is not true
-      if (slider.settings.autoControls && preventControlUpdate !== true) { updateAutoControls('start'); }
+      if (slider.settings.autoControls && preventControlUpdate !== true) {
+        updateAutoControls('start');
+      }
     };
 
     /**
@@ -1537,18 +1645,26 @@
       // adjust the height
       slider.viewport.css('height', getViewportHeight());
       // update the slide position
-      if (!slider.settings.ticker) { setSlidePosition(); }
+      if (!slider.settings.ticker) {
+        setSlidePosition();
+      }
       // if active.last was true before the screen resize, we want
       // to keep it last no matter what screen size we end on
-      if (slider.active.last) { slider.active.index = getPagerQty() - 1; }
+      if (slider.active.last) {
+        slider.active.index = getPagerQty() - 1;
+      }
       // if the active index (page) no longer exists due to the resize, simply set the index as last
-      if (slider.active.index >= getPagerQty()) { slider.active.last = true; }
+      if (slider.active.index >= getPagerQty()) {
+        slider.active.last = true;
+      }
       // if a pager is being displayed and a custom pager is not being used, update it
       if (slider.settings.pager && !slider.settings.pagerCustom) {
         populatePager();
         updatePagerActive(slider.active.index);
       }
-      if (slider.settings.ariaHidden) { applyAriaHiddenAttributes(slider.active.index * getMoveBy()); }
+      if (slider.settings.ariaHidden) {
+        applyAriaHiddenAttributes(slider.active.index * getMoveBy());
+      }
     };
 
     /**
@@ -1556,7 +1672,9 @@
      */
     el.destroySlider = function() {
       // don't do anything if slider has already been destroyed
-      if (!slider.initialized) { return; }
+      if (!slider.initialized) {
+        return;
+      }
       slider.initialized = false;
       $('.bx-clone', this).remove();
       slider.children.each(function() {
@@ -1572,16 +1690,30 @@
         $(this).removeAttr('style');
       }
       $(this).unwrap().unwrap();
-      if (slider.controls.el) { slider.controls.el.remove(); }
-      if (slider.controls.next) { slider.controls.next.remove(); }
-      if (slider.controls.prev) { slider.controls.prev.remove(); }
-      if (slider.pagerEl && slider.settings.controls && !slider.settings.pagerCustom) { slider.pagerEl.remove(); }
+      if (slider.controls.el) {
+        slider.controls.el.remove();
+      }
+      if (slider.controls.next) {
+        slider.controls.next.remove();
+      }
+      if (slider.controls.prev) {
+        slider.controls.prev.remove();
+      }
+      if (slider.pagerEl && slider.settings.controls && !slider.settings.pagerCustom) {
+        slider.pagerEl.remove();
+      }
       $('.bx-caption', this).remove();
-      if (slider.controls.autoEl) { slider.controls.autoEl.remove(); }
+      if (slider.controls.autoEl) {
+        slider.controls.autoEl.remove();
+      }
       clearInterval(slider.interval);
-      if (slider.settings.responsive) { $(window).unbind('resize', resizeWindow); }
-      if (slider.settings.keyboardEnabled) { $(document).unbind('keydown', keyPress); }
-      //remove self reference in data
+      if (slider.settings.responsive) {
+        $(window).unbind('resize', resizeWindow);
+      }
+      if (slider.settings.keyboardEnabled) {
+        $(document).unbind('keydown', keyPress);
+      }
+      // remove self reference in data
       $(this).removeData('bxSlider');
     };
 
@@ -1589,10 +1721,12 @@
      * Reload the slider (revert all DOM changes, and re-initialize)
      */
     el.reloadSlider = function(settings) {
-      if (settings !== undefined) { options = settings; }
+      if (settings !== undefined) {
+        options = settings;
+      }
       el.destroySlider();
       init();
-      //store reference to self in order to access public functions later
+      // store reference to self in order to access public functions later
       $(el).data('bxSlider', this);
     };
 
@@ -1603,5 +1737,4 @@
     // returns the current jQuery object
     return this;
   };
-
 })(jQuery);

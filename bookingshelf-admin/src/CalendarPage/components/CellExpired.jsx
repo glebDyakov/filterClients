@@ -1,11 +1,14 @@
 import React from 'react';
 
-const CellExpired = (props) => {
-    const {
-        content,
-        wrapperClassName,
-    } = props;
+import BaseCellContent from './BaseCellContent';
 
-    return (<div className={wrapperClassName}>{content}</div>);
-}
+const CellExpired = (props) => {
+  const { time } = props;
+
+  return (
+    <div className="cell cell-height col-tab expired">
+      <BaseCellContent time={time} />
+    </div>
+  );
+};
 export default CellExpired;

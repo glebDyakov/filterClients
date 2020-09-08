@@ -539,6 +539,13 @@
       }
 
 
+      .cell-appointment {
+        display: block;
+        width: 100%;
+        overflow: visible;
+        position: relative;
+      }
+
       .cell {
         margin-right: 5px;
         border-radius: 4px;
@@ -547,7 +554,7 @@
         position: relative;
         overflow: visible;
         padding: 0 0 !important;
-        min-width: 215px;
+        min-width: 195px;
 
         &-height {
           height: 20px;
@@ -1651,7 +1658,7 @@
           }
 
           .notes-container {
-            background: #fff;
+            //background: #fff;
             /*изменения*/
             padding: 2px 3px;
             min-height: 1px;

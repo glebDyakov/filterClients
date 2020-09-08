@@ -1,115 +1,91 @@
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 const CompressionPlugin = require('compression-webpack-plugin');
 
+const externals = require('./externals');
+
 module.exports = {
-    devtool: 'cheap-module-source-map',
-    entry: './src/index.jsx',
-    output: {
-        path: path.resolve('dist'),
-        filename: 'app-[hash].js',
-        publicPath: process.env.CONTEXT
-    },
-    resolve: {
-        extensions: ['.js', '.json', '.jsx']
-    },
-    module: {
+  devtool: 'cheap-module-source-map',
+  entry: ['webpack-dev-server/client', 'webpack/hot/dev-server', './src/index.jsx'],
+  output: {
+    path: path.resolve('dist'),
+    filename: 'app-[hash].js',
+    publicPath: process.env.CONTEXT,
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx'],
+  },
+  module: {
+    rules: [
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'url-loader',
+        query: {
+          name: '[name].[ext]?[hash]',
+        },
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        options: {
+          plugins: [require.resolve('react-refresh/babel')],
+        },
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: require.resolve('style-loader'),
+          },
+          {
+            loader: require.resolve('css-loader'),
+          },
+          {
+            loader: require.resolve('sass-loader'),
+          },
 
-        loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader" },
-            {
-                test: /\.(png|jpg|gif|svg)$/,
-                loader: 'url-loader',
-                query: {
-                    name: '[name].[ext]?[hash]'
-                }
-            },
-            {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['react', ['es2015', { loose: true, modules: false }], 'stage-3']
-                }
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    {
-                        loader: require.resolve('style-loader'),
-                    },
-                    {
-                        loader: require.resolve('css-loader'),
-                    },
-                    {
-                        loader: require.resolve('sass-loader'),
-                    },
-
-                ]
-            }
-        ]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: 'index.html',
-            inject: 'body',
-            vendorsFilename: process.env.CONTEXT
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify('production'),
-                CONTEXT: JSON.stringify(process.env.CONTEXT)
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false
-            },
-            mangle: true,
-            sourcemap: false,
-            debug: false,
-            minimize: true,
-            compress: {
-                warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-                properties: true,
-                booleans: true,
-                drop_console: true,
-
-            }
-        }),
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new CompressionPlugin({
-            filename: "[path].gz[query]",
-            algorithm: "gzip",
-            test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        }), new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
-        new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
-        new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/)
+        ],
+      },
     ],
-    devServer: {
-        historyApiFallback: { index: process.env.CONTEXT },
-        host: 'localhost',
-        port: 8081,
-        contentBase: './',
-    },
-    externals: {
-        config: JSON.stringify({
-            apiUrl: '/rest/v1',
-            warehouseApiUrl: '/warehouse/rest/v1',
-            apiSocket: '/websocket',
-            apiUrlv2: '/rest/v2'
-        })
-    }
-}
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+      inject: 'body',
+      vendorsFilename: process.env.CONTEXT,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        CONTEXT: JSON.stringify(process.env.CONTEXT),
+      },
+    }),
+    new CompressionPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.scss$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+    }),
+
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
+    new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
+    new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/),
+
+    new webpack.HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
+  ],
+  devServer: {
+    historyApiFallback: { index: process.env.CONTEXT },
+    host: 'localhost',
+    port: 8081,
+    hot: true,
+    contentBase: './',
+  },
+  externals,
+};
