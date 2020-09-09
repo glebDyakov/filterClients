@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from '@trendmicro/react-modal';
 import { isValidEmailAddress } from '../../_helpers/validators';
+import {withTranslation} from "react-i18next";
 
 class NewStaffByMail extends React.Component {
   constructor(props) {
@@ -45,6 +46,8 @@ class NewStaffByMail extends React.Component {
   render() {
     const { emailNew, emailIsValid, staffs } = this.state;
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
+    const { t } = this.props;
     return (
       <React.Fragment>
         {this.state.openSuccessModal &&
@@ -55,7 +58,7 @@ class NewStaffByMail extends React.Component {
                       <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`}
                         alt="message is sent image"/>
                       <p className="body-text">
-                                Приглашение отправлено
+                        {t("Приглашение отправлено")}
                       </p>
                     </div>
                   </div>
@@ -67,7 +70,7 @@ class NewStaffByMail extends React.Component {
               <div className="modal-content">
                 <div className="form-group">
                   <div className="modal-header">
-                    <h4 className="modal-title">Пригласить по Email</h4>
+                    <h4 className="modal-title">{t("Пригласить по Email")}</h4>
                     <button type="button" className="close" onClick={this.closeModal}/>
                     {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                     {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -75,7 +78,7 @@ class NewStaffByMail extends React.Component {
                   </div>
                   <form>
                     <div className="form-group d-flex flex-column justify-content-center align-items-center">
-                      <input type="email" placeholder="Введите Email нового сотрудника"
+                      <input type="email" placeholder={t("Введите Email нового сотрудника")}
                         name="email"
                         value={emailNew} onChange={this.handleChangeEmail}
                         onKeyUp={() => this.setState({
@@ -88,8 +91,7 @@ class NewStaffByMail extends React.Component {
 
                       {/* }*/}
                       {staffs && staffs.status === 210 &&
-                                            <p className="alert-danger rounded mt-0 mb-1">Такой email
-                                                существует!</p>
+                                            <p className="alert-danger rounded mt-0 mb-1">{t("Такой email существует!")}</p>
                       }
                       {staffs && staffs.adding && staffs.status !== 200 &&
                                             <img style={{ width: '57px' }}
@@ -100,7 +102,7 @@ class NewStaffByMail extends React.Component {
                         <button
                           className={((!emailIsValid) || staffs.adding ? 'disabledField' : '') + ' button new-staff-button'}
                           type="button"
-                          onClick={() => emailIsValid && !staffs.adding && this.addStaffEmail()}>Отправить
+                          onClick={() => emailIsValid && !staffs.adding && this.addStaffEmail()}>{t("Отправить")}
                         </button>
                       </div>
                       <span className="arrow"/>
@@ -148,5 +150,5 @@ NewStaffByMail.propTypes = {
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(NewStaffByMail);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(NewStaffByMail));
 export { connectedApp as NewStaffByMail };

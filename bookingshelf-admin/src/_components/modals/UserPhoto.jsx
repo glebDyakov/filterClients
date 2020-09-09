@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../_actions';
 import Avatar from 'react-avatar-edit';
+import {withTranslation} from "react-i18next";
 
 class UserPhoto extends React.Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class UserPhoto extends React.Component {
   }
 
   render() {
-    const { staff } = this.props;
+    const { staff, t } = this.props;
     const { authentication } = this.state;
 
     const activeStaff = staff && staff.find((item) =>
@@ -67,7 +68,7 @@ class UserPhoto extends React.Component {
         <div className="modal-dialog modal-dialog-lg modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h2 className="modal-title">Фото профиля</h2>
+              <h2 className="modal-title">{t("Фото профиля")}</h2>
               <button type="button" className="close" data-dismiss="modal"></button>
             </div>
             <div className="modal-body">
@@ -95,7 +96,7 @@ class UserPhoto extends React.Component {
               </div>
               <div className="buttons-container-setting">
                 <button type="button" className="small-button" onClick={this.handleSubmit}
-                  data-dismiss="modal">Сохранить
+                  data-dismiss="modal">{t("Сохранить")}
                 </button>
               </div>
             </div>
@@ -113,5 +114,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedApp = connect(mapStateToProps)(UserPhoto);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(UserPhoto));
 export { connectedApp as UserPhoto };

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from '@trendmicro/react-modal';
+import {withTranslation} from "react-i18next";
 
 class CreatedService extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class CreatedService extends React.Component {
 
   render() {
     const { services, serviceCurrent, service }=this.state;
-
+    const { t } = this.props;
     const serviceSet=service || serviceCurrent;
 
     return (
@@ -36,7 +37,7 @@ class CreatedService extends React.Component {
           <div className="" role="document">
             <div className="modal-content visibleDropdown">
               <div className="modal-header">
-                <h4 className="modal-title">Выберите группу услуг</h4>
+                <h4 className="modal-title">{t("Выберите группу услуг")}</h4>
                 <button type="button" className="close" onClick={this.closeModal} />
               </div>
               <div className="modal-body">
@@ -52,7 +53,7 @@ class CreatedService extends React.Component {
                       : <a className="select-button dropdown-toggle yellow"
                         data-toggle="dropdown" href="#"><span
                           className="color-circle yellow"/><span
-                          className="yellow"><span className="items-color"><span>Выберите группу услуг</span> </span></span>
+                          className="yellow"><span className="items-color"><span>{t("Выберите группу услуг")}</span> </span></span>
                       </a>
                   }
                   <ul className="dropdown-menu">
@@ -67,9 +68,9 @@ class CreatedService extends React.Component {
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center flex-column">
-                  <button type="button" className="button-next" onClick={(e)=>this.newService(e)}>Далее
+                  <button type="button" className="button-next" onClick={(e)=>this.newService(e)}>{t("Далее")}
                   </button>
-                  <button type="button" className="button-new" onClick={(e)=>this.newGroup()}>Новая группа услуг
+                  <button type="button" className="button-new" onClick={(e)=>this.newGroup()}>{t("Новая группа услуг")}
                   </button>
                 </div>
 
@@ -125,5 +126,5 @@ CreatedService.propTypes ={
 
 };
 
-const connectedApp = connect(mapStateToProps)(CreatedService);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(CreatedService));
 export { connectedApp as CreatedService };

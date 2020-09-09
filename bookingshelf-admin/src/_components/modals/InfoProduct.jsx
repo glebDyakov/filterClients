@@ -13,6 +13,7 @@ import { companyActions, materialActions } from '../../_actions';
 import { AddBrand } from './AddBrand';
 import { ExpenditureProduct } from './ExpenditureProduct';
 import { StorehouseProduct } from './StorehouseProduct';
+import {withTranslation} from "react-i18next";
 
 class InfoProduct extends React.Component {
   constructor(props) {
@@ -113,51 +114,51 @@ class InfoProduct extends React.Component {
     const options = [
       {
         value: '01',
-        label: 'январь',
+        label: this.props.t('январь'),
       },
       {
         value: '02',
-        label: 'февраль',
+        label: this.props.t('февраль'),
       },
       {
         value: '03',
-        label: 'март',
+        label: this.props.t('март'),
       },
       {
         value: '04',
-        label: 'апрель',
+        label: this.props.t('апрель'),
       },
       {
         value: '05',
-        label: 'май',
+        label: this.props.t('май'),
       },
       {
         value: '06',
-        label: 'июнь',
+        label: this.props.t('июнь'),
       },
       {
         value: '07',
-        label: 'июль',
+        label: this.props.t('июль'),
       },
       {
         value: '08',
-        label: 'август',
+        label: this.props.t('август'),
       },
       {
         value: '09',
-        label: 'сентябрь',
+        label: this.props.t('сентябрь'),
       },
       {
         value: '10',
-        label: 'октябрь',
+        label: this.props.t('октябрь'),
       },
       {
         value: '11',
-        label: 'ноябрь',
+        label: this.props.t('ноябрь'),
       },
       {
         value: '12',
-        label: 'декабрь',
+        label: this.props.t('декабрь'),
       },
     ];
 
@@ -174,7 +175,7 @@ class InfoProduct extends React.Component {
   }
 
   render() {
-    const { company, material } = this.props;
+    const { company, material, t } = this.props;
     const { categories, brands, suppliers, units } = material;
     const { day, month, year, client, edit, alert, clients, exProdOpen, storehouseProductOpen, ex_product_working, storehouseProduct_working } = this.state;
     const companyTypeId = company.settings && company.settings.companyTypeId;
@@ -189,48 +190,48 @@ class InfoProduct extends React.Component {
                     <div>
                       <div className="modal-content">
                         <div className="modal-header">
-                          {!edit ? <h4 className="modal-title">Новый товар</h4>
-                            : <h4 className="modal-title">Детали товара</h4>
+                          {!edit ? <h4 className="modal-title">{t("Новый товар")}</h4>
+                            : <h4 className="modal-title">{t("Детали товара")}</h4>
                           }
                           <button type="button" className="close" onClick={this.closeModal} />
                         </div>
                         <div className="form-group mr-3 ml-3">
                           <div className="row main-info">
                             <div className="col-sm-8">
-                              <InputCounter title="Наименование" placeholder='Например: Средний шампунь' value={client.productName}
+                              <InputCounter title={t("Наименование")} placeholder={t("'Например Средний шампунь'")} value={client.productName}
                                 name="productName" handleChange={this.handleChange} maxLength={128} disabled={true}/>
                               <div className="row">
                                 <div className="col-sm-4">
-                                  <p>Единица измерения</p>
+                                  <p>{t("Единица измерения")}</p>
                                   <select className="custom-select" name="unitId" onChange={this.handleChange}
                                     value={client.unitId} disabled={true}>
-                                    <option value="">Выберите единицу измерения</option>
+                                    <option value="">{t("Выберите единицу измерения")}</option>
                                     {units.map((brand) => <option value={brand.unitId}>{brand.unitName}</option>)}
                                   </select>
                                 </div>
                                 <div className="col-sm-4">
-                                  <InputCounter title="Номинал. объем" placeholder="Введите номинальный объем" value={String(client.nominalAmount)}
+                                  <InputCounter title={t("Номинал объем")} placeholder={t("Введите номинальный объем")} value={String(client.nominalAmount)}
                                     name="nominalAmount" handleChange={this.handleChange} maxLength={9} disabled={true} />
 
                                 </div>
                                 <div className="col-sm-4">
-                                  <InputCounter title="Код товара" placeholder="Введите код" value={client.productCode}
+                                  <InputCounter title={t("Код товара")} placeholder={t("Введите код")} value={client.productCode}
                                     name="productCode" handleChange={this.handleChange} maxLength={7} disabled={true}/>
                                 </div>
                               </div>
                             </div>
                             <div className="col-sm-4">
-                              <p>Категория</p>
+                              <p>{t("Категория")}</p>
                               <select className="custom-select" name="categoryId" onChange={this.handleChange}
                                 value={client.categoryId} disabled={true}>
-                                <option value="">Выберите категорию</option>
+                                <option value="">{t("Выберите категорию")}</option>
                                 {categories.map((category) => <option value={category.categoryId}>{category.categoryName}</option>)}
                               </select>
 
                               <p>Бренд</p>
                               <select className="custom-select" name="brandId" onChange={this.handleChange}
                                 value={client.brandId} disabled={true}>
-                                <option value="">Выберите бренд</option>
+                                <option value="">{t("Выберите бренд")}</option>
                                 {brands.map((brand) => <option value={brand.brandId}>{brand.brandName}</option>)}
                               </select>
                             </div>
@@ -240,11 +241,11 @@ class InfoProduct extends React.Component {
                           <hr/>
                           <div className="row min-amount-and-description">
                             <div className="col-sm-4">
-                              <InputCounter title="Минимальное количество" placeholder="Введите количество" value={client.minAmount} name="minAmount"
+                              <InputCounter title={t("Минимальное количество")} placeholder={t("Введите количество")} value={client.minAmount} name="minAmount"
                                 handleChange={this.handleChange} maxLength={9} disabled={true}/>
                             </div>
                             <div className="col-sm-8">
-                              <InputCounter title="Описание" placeholder="Описание" value={client.description}
+                              <InputCounter title={t("Описание")} placeholder={t("Описание")} value={client.description}
                                 name="description" handleChange={this.handleChange} maxLength={128} disabled={true}/>
                             </div>
                           </div>
@@ -259,7 +260,7 @@ class InfoProduct extends React.Component {
                                     type="checkbox"
                                     disabled={true}/>
                                   <span className="check-box-circle" />
-                                                Включить контроль склада
+                                  {t("Включить контроль склада")}
                                 </label>
                               </div>
 
@@ -271,14 +272,14 @@ class InfoProduct extends React.Component {
                                     type="checkbox"
                                     disabled={true}/>
                                   <span className="check-box-circle" />
-                                                Включить продажу в розницу
+                                                {t("Включить продажу в розницу")}
                                 </label>
                               </div>
                             </div>
                             <div className="col-sm-8 info-product-buttons">
-                              <p className="in-storehouse"><span> {client.currentAmount}</span>Остаток на складе</p>
-                              <p className="plus" onClick={()=>this.toggleStorehouseProduct(client)}>+ Поступление</p>
-                              <p className="minus" onClick={()=>this.toggleExProd(client)}>— Списание</p>
+                              <p className="in-storehouse"><span> {client.currentAmount}</span>{t("Остаток на складе")}</p>
+                              <p className="plus" onClick={()=>this.toggleStorehouseProduct(client)}>+ {t("Поступление")}</p>
+                              <p className="minus" onClick={()=>this.toggleExProd(client)}>— {t("Списание")}</p>
                             </div>
                           </div>
                         </div>
@@ -387,5 +388,5 @@ InfoProduct.propTypes ={
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(InfoProduct);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(InfoProduct));
 export { connectedApp as InfoProduct };

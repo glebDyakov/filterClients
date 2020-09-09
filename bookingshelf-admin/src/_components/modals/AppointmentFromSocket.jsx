@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { calendarActions, socketActions } from '../../_actions';
 import { withRouter } from 'react-router';
+import {compose} from "redux";
+import {withTranslation} from "react-i18next";
 
 // import PropTypes from 'prop-types';
 
@@ -61,7 +63,7 @@ class AppointmentFromSocket extends React.Component {
   }
 
   render() {
-    const { socket, appointmentSocketMessage, staff, client, company } = this.props;
+    const { socket, appointmentSocketMessage, staff, client, company, t } = this.props;
 
 
     if (!socket.appointmentSocketMessage) {
@@ -86,20 +88,20 @@ class AppointmentFromSocket extends React.Component {
       case 'APPOINTMENT_CREATED':
         staffName = payload && payload.staffName;
         clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : '';
-        socketTitle = payload && payload.online ? 'Онлайн-запись' : 'Запись в журнал';
-        socketFooterText = 'Просмотреть запись';
+        socketTitle = payload && payload.online ? t('Онлайн-запись') : t('Запись в журнал');
+        socketFooterText = t('Просмотреть запись');
         break;
       case 'APPOINTMENT_DELETED':
         staffName = `${activeStaff ? activeStaff.firstName : ''} ${activeStaff.lastName ? activeStaff.lastName : ''}`;
         clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : '';
-        socketTitle = `Отменено ${payload.canceledOnline ? 'клиентом' : 'сотрудником'}`;
-        socketFooterText = (payload && payload.canceledOnline ? 'Удален клиентом' : 'Удален сотрудником');
+        socketTitle = `${t("Отменено")} ${payload.canceledOnline ? t('клиентом') : t('сотрудником')}`;
+        socketFooterText = (payload && payload.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником'));
         break;
       case 'APPOINTMENT_MOVED':
         staffName = payload && payload.staffName;
         clientName = payload && payload.clientId ? `${payload.clientFirstName} ${(payload.clientLastName ? payload.clientLastName : '')}` : '';
-        socketTitle = 'Запись перенесена';
-        socketFooterText = 'Просмотреть запись';
+        socketTitle = t('Запись перенесена');
+        socketFooterText = t('Просмотреть запись');
         break;
       default:
     }
@@ -111,7 +113,7 @@ class AppointmentFromSocket extends React.Component {
             <img
               src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
               className="img"/>
-            <p style={{ float: 'none' }}>Мастер: <br/>
+            <p style={{ float: 'none' }}>{t("Мастер")}: <br/>
               {staffName}
             </p>
           </div>
@@ -127,31 +129,31 @@ class AppointmentFromSocket extends React.Component {
 
 
             {clientName
-              ? <p>Клиент: {clientName}</p>
-              : <p>Без клиента</p>}
+              ? <p>{t("Клиент")}: {clientName}</p>
+              : <p>{t("Без клиента")}</p>}
             {companyTypeId === 2 && payload && payload.carBrand
-                            && <p style={{ textDecoration: 'underline' }}><strong>Марка авто: </strong>
+                            && <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong>
                               {payload.carBrand}
                             </p>
             }
             {companyTypeId === 2 && payload && payload.carNumber
-                            && <p style={{ textDecoration: 'underline' }}><strong>Гос. номер: </strong>
+                            && <p style={{ textDecoration: 'underline' }}><strong>{t("Гос номер")}: </strong>
                               {payload.carNumber}
                             </p>
             }
-            {activeClient && activeClient.phone && <p><strong>Телефон: </strong> {activeClient.phone}</p>}
+            {activeClient && activeClient.phone && <p><strong>{t("Телефон")}: </strong> {activeClient.phone}</p>}
             <p className="service_time">
-              <span style={{ textTransform: 'capitalize' }}>Время: </span>
+              <span style={{ textTransform: 'capitalize' }}>{t("Время")}: </span>
               {payload && moment(payload.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY, HH:mm')}
             </p>
             <p onClick={() => {
-              if (socketFooterText === 'Просмотреть запись') {
+              if (socketFooterText === t('Просмотреть запись')) {
                 this.goToPageCalendar(payload, payload.staffId, wsMessageType);
               }
             }}
             className="service_go"
             style={{
-              cursor: (socketFooterText === 'Просмотреть запись' ? 'pointer' : 'default'),
+              cursor: (socketFooterText === t('Просмотреть запись') ? 'pointer' : 'default'),
             }}>{socketFooterText} → </p>
 
           </div>
@@ -168,4 +170,5 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(withRouter(AppointmentFromSocket));
+export default compose(connect(mapStateToProps), withRouter, withTranslation("common"))(AppointmentFromSocket);
+
