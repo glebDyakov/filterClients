@@ -521,8 +521,6 @@ class Index extends PureComponent {
               <div ref={this.setWrapperRef} className="calendar-list">
 
                 <TabScrollHeader
-                  isLoadingAppointments={isLoadingAppointments}
-                  isLoadingReservedTime={isLoadingReservedTime}
                   selectedDays={selectedDays}
                   timetable={workingStaff.timetable }
                   timetableMessage={timetableMessage}
