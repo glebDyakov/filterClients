@@ -3,6 +3,10 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 
 class TabScrollHeader extends PureComponent {
+  shouldComponentUpdate(newProps) {
+    return newProps
+  }
+
   render() {
     const { selectedDays, timetable, timetableMessage, closedDates, staff, type } =this.props;
 
