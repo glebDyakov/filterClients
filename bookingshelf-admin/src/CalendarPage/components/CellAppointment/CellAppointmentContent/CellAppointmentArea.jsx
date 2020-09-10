@@ -54,16 +54,18 @@ class CellAppointmentArea extends React.PureComponent {
           }}
         >
           <span className="notes-container-message">
-            <span className="client-name">
-              {appointment.clientFirstName
-                ? ('Клиент: ' + appointment.clientFirstName +
-                (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
-                : 'Без клиента'}
+            <span className="client-name w-100 d-flex justify-content-between">
+              <span className="client-name">{appointment.clientFirstName
+                  ? ('Клиент: ' + appointment.clientFirstName +
+                  (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
+                  : 'Без клиента'}</span>
+              <span style={{width: "43%"}} className="text-right client-name">{appointment.totalAmount} {appointment.currency}</span>
             </span>
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
             </ul>
             {extraServiceText}
+            {appointment.description.length > 0 && <p className="mt-2 service client-name">Заметка: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
             ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description
             ? `\nЗаметка: ${appointment.description}` : ''}`;*/}
