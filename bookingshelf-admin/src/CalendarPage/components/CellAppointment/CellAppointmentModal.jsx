@@ -3,6 +3,7 @@ import moment from 'moment';
 import { appointmentActions, calendarActions } from '../../../_actions';
 import { access } from '../../../_helpers/access';
 import { connect } from 'react-redux';
+import {withTranslation} from "react-i18next";
 
 const CellAppointmentModal = (props) => {
   const {
@@ -24,6 +25,7 @@ const CellAppointmentModal = (props) => {
     totalAmount,
     numbers,
     staff,
+    t,
   } = props;
 
   const activeStaff = staff && staff.find((item) => workingStaffElement.staffId === item.staffId);
@@ -46,7 +48,7 @@ const CellAppointmentModal = (props) => {
     <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
       <div className={'cell msg-inner' + (appointment.clientId ? '' : ' pt-0')}>
         <p>
-          <p className="new-text">Запись&nbsp;
+          <p className="new-text">{t("Запись")}&nbsp;
             <p className="visit-time">
               {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{
                 moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')
@@ -70,8 +72,8 @@ const CellAppointmentModal = (props) => {
             )}
           >
             {(appointment.clientNotCome
-              ? 'Клиент не пришел'
-              : (appointment.clientConfirmed ? 'Клиент подтвержден' : 'Ожидание клиента')
+              ? t('Клиент не пришел')
+              : (appointment.clientConfirmed ? t('Клиент подтвержден') : t('Ожидание клиента'))
             )}
           </p>
 
@@ -92,7 +94,7 @@ const CellAppointmentModal = (props) => {
               handleCloseSelectDropdown();
             }
             }>
-              Ожидание клиента
+              {t("Ожидание клиента")}
             </p>
             }
 
@@ -112,7 +114,7 @@ const CellAppointmentModal = (props) => {
               handleCloseSelectDropdown();
             }
             }>
-              Клиент подтвердил
+              {t("Клиент подтвердил")}
             </p>}
 
             {appointment.clientNotCome !== true &&
@@ -129,7 +131,7 @@ const CellAppointmentModal = (props) => {
               dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
-              Клиент не пришел
+              {t("Клиент не пришел")}
             </p>}
           </div>
           }
@@ -140,11 +142,11 @@ const CellAppointmentModal = (props) => {
           style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           className="client-name-book"
         >
-          <span className="client-title">Клиент:</span>
+          <span className="client-title">{t("Клиент")}:</span>
         </p>
 
         {!appointment.clientId &&
-        <p className="name">Без клиента</p>}
+        <p className="name">{t("Без клиента")}</p>}
 
         {appointment.clientId &&
           <p
@@ -157,7 +159,7 @@ const CellAppointmentModal = (props) => {
           >
             {appointment.clientFirstName
               ? (appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
-              : 'Без клиента'
+              : t('Без клиента')
             }
           </p>
         }
@@ -178,7 +180,7 @@ const CellAppointmentModal = (props) => {
         <div className="cash-choice">
           <div style={{ position: 'relative' }} className="check-box">
             <label>
-              Безналичный расчет
+              {t("Безналичный расчет")}
               <input
                 className="form-check-input" type="checkbox"
                 checked={!appointment.cashPayment}
@@ -202,7 +204,7 @@ const CellAppointmentModal = (props) => {
           </div>
           <div style={{ position: 'relative' }} className="check-box">
             <label>
-              Наличный расчет
+              {t("Наличный расчет")}
               <input
                 className="form-check-input" type="checkbox"
                 checked={appointment.cashPayment}
@@ -264,7 +266,7 @@ const CellAppointmentModal = (props) => {
 
         {appointment.clientId && <hr className="block-line"/>}
 
-        <p className="client-name-book">{appointmentServices.length > 1 ? 'Список услуг:' : 'Услуга:'}</p>
+        <p className="client-name-book">{appointmentServices.length > 1 ? t("Список услуг") + ':' : t("Услуга") + ':'}</p>
         {appointmentServices.map((service, i) => {
           const details = services && services.servicesList &&
             (services.servicesList.find((service) => service.serviceId === appointment.serviceId) || {}).details;
@@ -286,8 +288,8 @@ const CellAppointmentModal = (props) => {
               {!!service.discountPercent &&
                 <span style={{ textAlign: 'left', fontSize: '13px', color: 'rgb(212, 19, 22)' }}>
                   {`${(service.discountPercent === (appointment && appointment.clientDiscountPercent))
-                    ? 'Скидка клиента'
-                    : 'Единоразовая скидка'
+                    ? t('Скидка клиента')
+                    : t('Единоразовая скидка')
                   }: ${service.discountPercent}%`
                   }
                 </span>
@@ -297,10 +299,10 @@ const CellAppointmentModal = (props) => {
         })
         }
 
-        <p className="all-price">Итого:&nbsp;<span className="price">{totalAmount}&nbsp;BYN</span></p>
+        <p className="all-price">{t("Итого")}:&nbsp;<span className="price">{totalAmount}&nbsp;{appointment && appointment.currency}</span></p>
         <hr className="block-line"/>
 
-        <p className="staff-block-title">Мастер</p>
+        <p className="staff-block-title">{t("Мастер")}</p>
         <div className="staff-block">
           <span className="img-container">
             <img
@@ -320,7 +322,7 @@ const CellAppointmentModal = (props) => {
         </div>
 
         {appointment.description &&
-        <p className="visit-note"><p className="bold-text">Заметка:</p>&nbsp;{appointment.description}</p>}
+        <p className="visit-note"><p className="bold-text">{t("Заметка")}:</p>&nbsp;{appointment.description}</p>}
         {isWeekBefore && (
           <div className="msg-inner-buttons">
             <div
@@ -329,7 +331,7 @@ const CellAppointmentModal = (props) => {
             >
               <div className="msg-inner-button-wrapper-1">
                 <img style={{ width: '20px' }} src={`${process.env.CONTEXT}public/img/appointment_move.svg`} alt=""/>
-                Перенести
+                {t("Перенести")}
               </div>
               {/* <span className="move-white"/>*/}
             </div>
@@ -339,7 +341,7 @@ const CellAppointmentModal = (props) => {
             >
               <div className="msg-inner-button-wrapper-2">
                 <img style={{ width: '20px' }} src={`${process.env.CONTEXT}public/img/appointment_edit.svg`} alt=""/>
-                Изменить
+                {t("Изменить")}
               </div>
               {/* <span className="move-white"/>*/}
             </div>
@@ -354,7 +356,7 @@ const CellAppointmentModal = (props) => {
             >
               <div className="msg-inner-button-wrapper-3">
                 <img style={{ width: '17px' }} src={`${process.env.CONTEXT}public/img/appointment_delete.svg`} alt=""/>
-                Удалить
+                {t("Удалить")}
               </div>
               {/* <span className="cancel-white"/>*/}
             </div>
@@ -379,4 +381,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(React.memo(CellAppointmentModal));
+export default connect(mapStateToProps)(withTranslation("common")(React.memo(CellAppointmentModal)));

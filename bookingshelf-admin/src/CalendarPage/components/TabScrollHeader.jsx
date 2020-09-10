@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 
 import moment from 'moment';
+import {withTranslation} from "react-i18next";
 
 class TabScrollHeader extends PureComponent {
   shouldComponentUpdate(newProps) {
-    return newProps
+    return newProps;
   }
 
   render() {
@@ -74,7 +75,7 @@ class TabScrollHeader extends PureComponent {
                         {clDate
                           ?
                           <p>{moment(item).format('DD MMMM')}
-                            <p className="closedDate-color">&nbsp;(выходной)</p>
+                            <p className="closedDate-color">&nbsp;({t("выходной")})</p>
                           </p>
                           : moment(item).format('DD MMMM')}
                       </span>
@@ -90,4 +91,4 @@ class TabScrollHeader extends PureComponent {
     );
   }
 }
-export default TabScrollHeader;
+export default withTranslation("common")(TabScrollHeader);

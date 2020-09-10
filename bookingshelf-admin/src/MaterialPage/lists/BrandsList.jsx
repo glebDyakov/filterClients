@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ActionModal from '../../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class BrandsList extends Component {
   constructor(props) {
@@ -44,18 +45,18 @@ class BrandsList extends Component {
         </div>
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить бренд?"
+            title={this.props.t("Удалить бренд?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteBrand,
               params: brand.brandId,
-              innerText: 'Удалить',
+              innerText: this.props.t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: this.props.t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -65,4 +66,4 @@ class BrandsList extends Component {
   }
 }
 
-export default BrandsList;
+export default withTranslation("common")(BrandsList);

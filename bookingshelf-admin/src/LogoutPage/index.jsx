@@ -4,6 +4,7 @@ import connect from 'react-redux/es/connect/connect';
 import { withRouter } from 'react-router';
 
 import { userActions } from '../_actions';
+import {withTranslation} from "react-i18next";
 
 class Index extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Index extends React.Component {
 
   render() {
     return (
-      <a onClick={()=>this.logout()}>Выход</a>
+      <a onClick={()=>this.logout()}>{this.props.t("Выход")}</a>
     );
   }
 }
@@ -36,4 +37,4 @@ Index.proptypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(withRouter(Index));
+export default connect(mapStateToProps)(withRouter(withTranslation("common")(Index)));

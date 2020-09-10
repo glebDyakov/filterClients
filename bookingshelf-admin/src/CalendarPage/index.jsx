@@ -31,6 +31,7 @@ import {
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css';
 import '../../public/scss/calendar.scss';
+import {withTranslation} from "react-i18next";
 
 
 function getWeekDays(weekStart) {
@@ -164,7 +165,7 @@ class Index extends PureComponent {
       this.queryInitData();
     }
 
-    document.title = 'Журнал записи | Онлайн-запись';
+    document.title = this.props.t('Журнал записи | Онлайн-запись');
     initializeJs();
   }
 
@@ -289,7 +290,7 @@ class Index extends PureComponent {
       this.queryInitData();
     }
 
-    if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+    if (JSON.stringify(this.props.status) !== JSON.stringify(newProps.status)) {
       this.setState({
         reserved: newProps.status && newProps.status===209 ? false : this.state.reserved,
         newClientModal: newProps.clients.status && newProps.clients.status===209 ? false : this.state.newClientModal,
@@ -431,7 +432,7 @@ class Index extends PureComponent {
   render() {
     const {
       authentication, company, services, clients, staff, status, adding, isLoadingCalendar,
-      isLoadingAppointments, isLoadingReservedTime, selectedDays,
+      isLoadingAppointments, isLoadingReservedTime, selectedDays, t,
     } = this.props;
     const {
       appointmentForDeleting, workingStaff, reserved, appointmentEdited,
@@ -821,7 +822,7 @@ class Index extends PureComponent {
           ...workingStaff,
           timetable: staffWorking.length ? staffWorking : null,
         },
-        timetableMessage: staffWorking.length ? '' : 'Нет работающих сотрудников',
+        timetableMessage: staffWorking.length ? '' : t('Нет работающих сотрудников'),
         typeSelected: typeSelected,
         type: 'day',
       };
@@ -829,7 +830,7 @@ class Index extends PureComponent {
     } else if (typeSelected === 2) {
       newState = {
         workingStaff: { ...workingStaff, timetable: timetable },
-        timetableMessage: timetable.length ? '' : 'Нет работающих сотрудников',
+        timetableMessage: timetable.length ? '' : t('Нет работающих сотрудников'),
         typeSelected: typeSelected,
         type: 'day',
       };
@@ -854,7 +855,7 @@ class Index extends PureComponent {
 
       newState = {
         workingStaff: { ...workingStaff, timetable: staffEl },
-        timetableMessage: staffEl.length ? '' : 'Нет работающих сотрудников',
+        timetableMessage: staffEl.length ? '' : t('Нет работающих сотрудников'),
         selectedStaff: selectedStaff
           ? JSON.stringify(staffEl[0])
           : JSON.stringify(staffEl.filter((staff)=>staff.staffId===JSON.parse(selectedStaff).staffId)),
@@ -988,4 +989,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

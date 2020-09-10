@@ -5,6 +5,7 @@ import CellAppointmentHeader from './CellAppointmentHeader';
 import CellAppointmentArea from './CellAppointmentArea';
 import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
+import {withTranslation} from "react-i18next";
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
@@ -56,7 +57,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff,
+      appointments, timetable, reservedTime, staff, t,
     } = this.props;
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
@@ -79,7 +80,7 @@ class CellAppointmentContent extends React.PureComponent {
         extraServiceText = '';
         break;
       case 1:
-        extraServiceText = 'и ещё 1 услуга';
+        extraServiceText = t('и ещё 1 услуга');
         break;
       case 2:
       case 3:
@@ -87,7 +88,7 @@ class CellAppointmentContent extends React.PureComponent {
         extraServiceText = `и ещё ${totalCount} услуги`;
         break;
       default:
-        extraServiceText = `и ещё 5+ услуг`;
+        extraServiceText = t(`и ещё 5+ услуг`);
     }
 
     const minTextAreaHeight = ((currentAppointments.length - 1) ? cellHeight * (currentAppointments.length - 1) : 0);
@@ -135,4 +136,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)((CellAppointmentContent));
+export default connect(mapStateToProps)(withTranslation("common")(CellAppointmentContent));

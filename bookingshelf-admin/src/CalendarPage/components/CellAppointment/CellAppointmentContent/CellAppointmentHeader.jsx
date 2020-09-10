@@ -2,12 +2,13 @@ import React from 'react';
 import moment from 'moment';
 
 import Popover from '../../../../_components/Popover';
+import {withTranslation} from "react-i18next";
 
 class CellAppointmentHeader extends React.PureComponent {
   render() {
     const {
       toggleSelectedNote, appointment, resultTextAreaHeight, totalDuration,
-      updateAppointmentForDeleting, workingStaffElement,
+      updateAppointmentForDeleting, workingStaffElement, t,
     } = this.props;
 
     return (
@@ -23,23 +24,23 @@ class CellAppointmentHeader extends React.PureComponent {
         }}
       >
         <span className="notes-buttons-container">
-          {appointment.online && <Popover props={{ className: 'globus', title: 'Онлайн-запись' }}/>}
+          {appointment.online && <Popover props={{ className: 'globus', title: t('Онлайн-запись') }}/>}
 
           {!!appointment.discountPercent &&
             <Popover props={{ className: 'percentage', title: `${appointment.discountPercent}%`, minWidth: '30px' }}/>
           }
 
           {!appointment.clientId &&
-            <Popover props={{ className: 'no-client-icon', title: 'Визит от двери', minWidth: '55px' }}/>
+            <Popover props={{ className: 'no-client-icon', title: t('Визит от двери'), minWidth: '55px' }}/>
           }
 
-          {!appointment.online && <Popover props={{ className: 'pen', title: 'Запись через журнал' }}/>}
+          {!appointment.online && <Popover props={{ className: 'pen', title: t('Запись через журнал') }}/>}
 
-          {appointment.hasCoAppointments && <Popover props={{ className: 'super-visit', title: 'Мультивизит' }}/>}
+          {appointment.hasCoAppointments && <Popover props={{ className: 'super-visit', title: t('Мультивизит') }}/>}
 
           <Popover props={appointment.cashPayment
-            ? { className: 'cash-payment', title: 'Оплата наличными', minWidth: '55px' }
-            : { className: 'no-cash-payment', title: 'Оплата картой', minWidth: '55px' }}
+            ? { className: 'cash-payment', title: t('Оплата наличными'), minWidth: '55px' }
+            : { className: 'no-cash-payment', title: t('Оплата картой'), minWidth: '55px' }}
           />
 
           {!appointment.coappointment && (
@@ -48,7 +49,7 @@ class CellAppointmentHeader extends React.PureComponent {
                 'className': 'delete',
                 'data-toggle': 'modal',
                 'data-target': '.delete-notes-modal',
-                'title': 'Отменить встречу',
+                'title': t('Отменить встречу'),
                 'onClick': () => updateAppointmentForDeleting({
                   ...appointment,
                   staffId: workingStaffElement.staffId,
@@ -74,4 +75,4 @@ class CellAppointmentHeader extends React.PureComponent {
   };
 }
 
-export default CellAppointmentHeader;
+export default withTranslation("common")(CellAppointmentHeader);
