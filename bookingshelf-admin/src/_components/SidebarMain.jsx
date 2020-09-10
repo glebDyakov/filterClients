@@ -100,6 +100,7 @@ class SidebarMain extends React.Component {
         count: newProps.company.count && newProps.company.count,
       });
     }
+
     if (JSON.stringify(newProps.company.count) !== JSON.stringify(this.props.company.count)) {
       // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
       // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
@@ -107,6 +108,12 @@ class SidebarMain extends React.Component {
   }
 
   componentDidMount() {
+    const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
+        ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
+
+    if (activeStaff) {
+      this.props.i18n.changeLanguage(activeStaff.languageCode);
+    }
     $('.arrow_collapse').click(function(e) {
       // e.preventDefault();
       // e.stopPropagation();
@@ -247,6 +254,8 @@ class SidebarMain extends React.Component {
 
     const activeStaff = staff && staff.staff && staff.staff.find((item) =>
       ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
+
 
     const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
     let packetEnd; let packetEndText;

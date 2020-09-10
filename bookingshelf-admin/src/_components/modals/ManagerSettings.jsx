@@ -45,6 +45,7 @@ class ManagerSettings extends React.Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleMessageIsSentModal = this.handleMessageIsSentModal.bind(this);
     this.handleChangeTheme = this.handleChangeTheme.bind(this);
+    this.handleChangeLang = this.handleChangeLang.bind(this);
   }
 
 
@@ -87,15 +88,27 @@ class ManagerSettings extends React.Component {
   }
 
   handleChangeTheme(newTheme) {
-    const { dispatch } = this.props;
     console.log(this.props.authentication.user);
 
     this.props.dispatch(companyActions.changeTheme(newTheme));
 
-    this.props.dispatch(companyActions.updateCompanySettings({
+    this.props.dispatch(staffActions.update({
       ...this.props.company.subcompanies[0],
       lightTheme: newTheme,
     }, 'isFirstScreenLoading'));
+  }
+
+  handleChangeLang(lang) {
+    const { staff, authentication } = this.props;
+    this.props.i18n.changeLanguage(lang);
+
+    const activeStaff = staff && staff.find((item) =>
+        ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
+    const body = JSON.parse(JSON.stringify(activeStaff));
+    body.languageCode = lang.toUpperCase();
+    this.props.dispatch(staffActions.update(JSON.stringify([body]), activeStaff.staffId));
+
   }
 
   addManager() {
@@ -173,6 +186,18 @@ class ManagerSettings extends React.Component {
               this.handleChangeTheme(false);
             }} className="screen black"></div>
           </div>
+
+          <div className="theme-block lang-block">
+            <h5>Выберите язык</h5>
+            <select value={this.props.i18n.language} onChange={(e) => {
+              this.handleChangeLang(e.target.value);
+            }} className="custom-select">
+
+              <option value="ru">Русский</option>
+              <option value="pl">Польский</option>
+            </select>
+          </div>
+
           {/* <div className="manager-block">*/}
           {/*    <h5>Ваш менеджер</h5>*/}
           {/*    <div className="contact">*/}
@@ -272,10 +297,10 @@ class ManagerSettings extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { authentication, calendar, company } = state;
+  const { authentication, calendar, company, staff } = state;
 
   return {
-    authentication, calendar, company,
+    authentication, calendar, company, staff: staff.staff,
   };
 }
 
