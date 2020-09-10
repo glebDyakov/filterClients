@@ -18,30 +18,35 @@ const cellTypes = {
 class BaseCell extends React.Component {
   constructor(props) {
     super(props);
-    let filledCell;
-    const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
-    if (cellAppointment) {
-      filledCell = cellAppointment;
-    } else {
-      const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
-      if (cellReservedTime) {
-        filledCell = cellReservedTime;
-      } else {
-        filledCell = this.getCellEmpty(props);
-      }
-    }
+    const filledCell = this.getCellEmpty(props);;
+    // const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
+    // if (cellAppointment) {
+    //   filledCell = cellAppointment;
+    // } else {
+    //   const cellReservedTime = this.getCellFilled({ ...props, cellType: cellTypes.CELL_RESERVED_TIME });
+    //   if (cellReservedTime) {
+    //     filledCell = cellReservedTime;
+    //   } else {
+    //     filledCell = this.getCellEmpty(props);
+    //   }
+    // }
     this.state = {
       ...filledCell,
     };
     this.handleMoveVisit = this.handleMoveVisit.bind(this);
     this.handleAddVisit = this.handleAddVisit.bind(this);
+    // console.log('constructor');
   }
 
-  // componentDidMount() {
-  //   this.initCell(this.props);
-  // }
+  componentDidMount() {
+    this.initCell(this.props);
+  }
 
   shouldComponentUpdate(newProps, newState) {
+    // const { numberKey, staffKey } = newProps;
+    // if (numberKey === 0 && staffKey === 0) {
+    //   console.log('shouldUpdate', newState.cellType);
+    // }
     return (this.state.cellType !== newState.cellType) || ([cellTypes.CELL_APPOINTMENT, cellTypes.CELL_RESERVED_TIME]
       .some((cellType) => (this.state.cellType === cellType && newState.cellType === cellType)) &&
         Object.entries(newState.cell).some(([key, value]) => this.state.cell[key] !== value)
@@ -49,12 +54,19 @@ class BaseCell extends React.Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    this.initCell(newProps);
+    if (!newProps.isLoadingAppointments && !newProps.isLoadingReservedTime) {
+      this.initCell(newProps);
+    }
   }
 
   initCell(props) {
+    const { numberKey, staffKey } = props;
     const { cellType } = this.state;
     let filledCell;
+
+    // if (numberKey === 0 && staffKey === 0) {
+    //   console.log('initCell', props);
+    // }
 
     const cellAppointment = this.getCellFilled({ ...props, cellType: cellTypes.CELL_APPOINTMENT });
     if (cellAppointment) {
@@ -111,7 +123,7 @@ class BaseCell extends React.Component {
   }
 
   getCellFilled(props) {
-    const { cellType, workingStaffElement, numbers, numberKey, selectedDaysKey, time, selectedDays } = props;
+    const { cellType, workingStaffElement, step, selectedDaysKey, time, selectedDays } = props;
 
     let uniqConditions = {};
 
@@ -146,7 +158,7 @@ class BaseCell extends React.Component {
       .find((checkingItem) => {
         const checkingTime = parseInt(checkingItem[checkingTimeKey]);
         const currentCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
-        const nextCellTime = getCurrentCellTime(selectedDays, selectedDaysKey, numbers[numberKey + 1]);
+        const nextCellTime = currentCellTime + (step * 60 * 1000)
 
         return (currentCellTime <= checkingTime) && (nextCellTime > checkingTime);
       });
@@ -178,6 +190,10 @@ class BaseCell extends React.Component {
       time, workingStaffElement, handleUpdateClient, updateAppointmentForDeleting, step, cellHeight,
     } = this.props;
     const { cellType, cell } = this.state;
+
+    // if (numberKey === 0 && staffKey === 0) {
+    //   console.log('rerendered');
+    // }
 
     switch (cellType) {
       case cellTypes.CELL_APPOINTMENT:
@@ -228,6 +244,8 @@ function mapStateToProps(state) {
   const {
     staff: { closedDates },
     calendar: {
+      isLoadingAppointments,
+      isLoadingReservedTime,
       appointments,
       reservedTime,
     },
@@ -235,6 +253,8 @@ function mapStateToProps(state) {
   } = state;
 
   return {
+    isLoadingAppointments,
+    isLoadingReservedTime,
     closedDates,
     appointments,
     reservedTime,

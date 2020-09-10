@@ -1,14 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
-import TabScrollLeftMenu from './TabScrollLeftMenu';
-
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import moize from 'moize';
+
 import DragVertController from './DragVertController';
-import BaseCell from './BaseCell';
-import { getCurrentCellTime } from '../../_helpers';
-import { staffActions } from '../../_actions';
+import TabScrollContentLine from './TabScrollContentLine';
 
 class TabScroll extends React.Component {
   constructor(props) {
@@ -18,6 +15,8 @@ class TabScroll extends React.Component {
     };
     this.getHours24 = this.getHours24.bind(this);
     this.getIsPresent = this.getIsPresent.bind(this);
+    this.moizedGetIsToday = moize(this.getIsToday);
+    this.moizedGetIsWeekBefore = moize(this.getIsWeekBefore);
   }
 
   componentDidMount() {
@@ -75,20 +74,26 @@ class TabScroll extends React.Component {
     return currentCellTime <= moment().format('x') && currentCellTime >= moment().subtract(step, 'minutes').format('x');
   }
 
-  render() {
+  getIsToday(selectedDay) {
+    return moment().startOf('day').format('x') ===
+      moment(selectedDay).startOf('day').format('x');
+  }
+
+  getIsWeekBefore(selectedDay) {
+    console.log('selectedDay', selectedDay)
+    return moment(selectedDay).startOf('day').format('x') >
+    parseInt(moment().subtract(1, 'week').format('x'));
+  }
+
+  renderTable({ step, cellHeight }) {
     const {
-      company, availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient,
+      availableTimetable, getCellTime, checkForCostaffs, services, moveVisit, type, handleUpdateClient,
       updateAppointmentForDeleting, changeTime, changeTimeFromCell, selectedDays,
     } = this.props;
     const { numbers } = this.state;
-    const { booktimeStep } = company.settings;
-    const step = booktimeStep / 60;
-    const cellHeight = 25;
-    const isWeekBefore =
-      moment(selectedDays[0]).startOf('day').format('x') >
-      parseInt(moment().subtract(1, 'week').format('x'));
 
-    // console.log(clDate, moment(selectedDays).format("DD/MMMM"));
+    const isWeekBefore = this.moizedGetIsWeekBefore(selectedDays[0])
+    const isToday = this.moizedGetIsToday(selectedDays[0]);
 
     let listClass = 'list-15';
     switch (step) {
@@ -102,54 +107,55 @@ class TabScroll extends React.Component {
       default:
     }
 
+
+    return numbers.map((time, numberKey) => (
+      <TabScrollContentLine
+        isToday={isToday}
+        key={`number-${numberKey}`}
+        listClass={listClass}
+        availableTimetable={availableTimetable}
+        isWeekBefore={isWeekBefore}
+        step={step}
+        cellHeight={cellHeight}
+        checkForCostaffs={checkForCostaffs}
+        getCellTime={getCellTime}
+        numberKey={numberKey}
+        changeTime={changeTime}
+        changeTimeFromCell={changeTimeFromCell}
+        handleUpdateClient={handleUpdateClient}
+        numbers={numbers}
+        services={services}
+        updateAppointmentForDeleting={updateAppointmentForDeleting}
+        time={time}
+        moveVisit={moveVisit}
+        type={type}
+        selectedDays={selectedDays}
+        getIsPresent={this.getIsPresent}
+      />
+    ));
+  }
+
+  render() {
+    const { numbers } = this.state;
+    if (!(numbers && numbers.length)) {
+      return null;
+    }
+
+    const { company } = this.props;
+    const { booktimeStep } = company.settings;
+    const step = booktimeStep / 60;
+    const cellHeight = 25;
+
     return (
       <div className="tabs-scroll">
         <DndProvider backend={Backend}>
-          {numbers && numbers.map((time, key) => {
-            const currentCellTime = getCurrentCellTime(selectedDays, 0, time);
-            const isPresent = this.getIsPresent(currentCellTime);
-
-            return (
-              <div
-                key={`number-${key}`}
-                className={'tab-content-list ' +
-                listClass + (isPresent ? ' present-line-block' : '')}
-              >
-                {isPresent && type === 'day' &&
-                  <span data-time={moment().format('HH:mm')} className="present-time-line"/>
-                }
-                <TabScrollLeftMenu time={time} />
-                {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) => (
-                  <BaseCell
-                    isWeekBefore={isWeekBefore}
-                    step={step}
-                    cellHeight={cellHeight}
-                    checkForCostaffs={checkForCostaffs}
-                    getCellTime={getCellTime}
-                    key={`working-staff-${staffKey}`}
-                    numberKey={key}
-                    staffKey={staffKey}
-                    changeTime={changeTime}
-                    changeTimeFromCell={changeTimeFromCell}
-                    handleUpdateClient={handleUpdateClient}
-                    numbers={numbers}
-                    services={services}
-                    workingStaffElement={workingStaffElement}
-                    updateAppointmentForDeleting={updateAppointmentForDeleting}
-                    selectedDaysKey={type === 'day' ? 0 : staffKey}
-                    time={time}
-                    moveVisit={moveVisit}
-                  />
-                ))}
-              </div>
-            );
-          },
-          )}
+          {this.renderTable({ step, cellHeight })}
         </DndProvider>
-        <DragVertController cellHeight={cellHeight} step={step} />
+
+        <DragVertController step={step} cellHeight={cellHeight} />
       </div>
     );
   }
 }
 
-export default connect()(TabScroll);
+export default TabScroll;
