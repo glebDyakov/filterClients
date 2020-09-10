@@ -15,18 +15,18 @@ import common_en from '../public/lang/translations.en';
 
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
-  lng: 'pl', // language to use
+  lng: 'ru', // language to use
   resources: {
-    ru: {
+    RU: {
       common: common_ru, // 'common' is our custom namespace
     },
-    pl: {
+    PL: {
       common: common_pl,
     },
-    en: {
+    EN: {
       common: common_en,
     },
-    ua: {
+    UA: {
       common: common_ua,
     },
   },

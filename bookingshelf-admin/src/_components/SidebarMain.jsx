@@ -105,15 +105,18 @@ class SidebarMain extends React.Component {
       // this.props.dispatch(calendarActions.getAppointmentsCount(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
       // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
     }
+
+    if (this.props.i18n.language !== newProps.i18n.language) {
+      const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
+          ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
+
+      if (activeStaff) {
+        this.props.i18n.changeLanguage(activeStaff.languageCode);
+      }
+    }
   }
 
   componentDidMount() {
-    const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
-        ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
-
-    if (activeStaff) {
-      this.props.i18n.changeLanguage(activeStaff.languageCode);
-    }
     $('.arrow_collapse').click(function(e) {
       // e.preventDefault();
       // e.stopPropagation();
@@ -156,6 +159,13 @@ class SidebarMain extends React.Component {
       document.addEventListener('click', this.handleOutsideClick, false);
     } else {
       document.removeEventListener('click', this.handleOutsideClick, false);
+    }
+
+    const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
+        ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
+
+    if (activeStaff && activeStaff.languageCode !== this.props.i18n.language) {
+      this.props.i18n.changeLanguage(activeStaff.languageCode);
     }
 
     if (this.state.isOpenDropdownButtons) {

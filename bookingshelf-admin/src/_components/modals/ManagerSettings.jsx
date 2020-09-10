@@ -193,8 +193,8 @@ class ManagerSettings extends React.Component {
               this.handleChangeLang(e.target.value);
             }} className="custom-select">
 
-              <option value="ru">Русский</option>
-              <option value="pl">Польский</option>
+              <option value="RU">Русский</option>
+              <option value="PL">Польский</option>
             </select>
           </div>
 
