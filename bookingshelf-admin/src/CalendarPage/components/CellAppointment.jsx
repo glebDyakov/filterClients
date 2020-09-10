@@ -56,6 +56,7 @@ const CellAppointment = (props) => {
   let totalCount = 0;
   let totalPrice = appointment.price;
   let totalAmount = appointment.totalAmount;
+  const currency = appointment.currency;
   const currentAppointments = [appointment];
   const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
   const activeService = services && services.servicesList && services.servicesList.find((service) => service.serviceId === appointment.serviceId);
@@ -238,14 +239,16 @@ const CellAppointment = (props) => {
           height: resultTextAreaHeight + 'px',
           padding: (resultTextAreaHeight === 0 ? '0px' : ''),
         }}>
-        <span className="notes-container-message">
+        <span className="notes-container-message w-100">
           <span onClick={() => {
             console.log(appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента');
           }}
-          className="client-name">{appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента'}</span>
+          className="w-100 d-flex justify-content-between"><span className="client-name">{appointment.clientFirstName ? ('Клиент: ' + appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n' : 'Без клиента'}</span> <span className="text-right client-name">{appointment.totalAmount} {appointment.currency}</span></span>
           <ul>
             <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
           </ul>
+          {appointment.description.length > 0 && <p className="service client-name">Заметка: {appointment.description}</p>}
+          <p className="service"></p>
           {extraServiceText}
           {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description ? `\nЗаметка: ${appointment.description}` : ''}`;*/}
 
@@ -469,7 +472,7 @@ const CellAppointment = (props) => {
           })
           }
 
-          <p className="all-price">Итого:&nbsp;<span className="price">{totalAmount}&nbsp;BYN</span></p>
+          <p className="all-price">Итого:&nbsp;<span className="price">{totalAmount}&nbsp;{currency}</span></p>
 
           <hr className="block-line"/>
 
