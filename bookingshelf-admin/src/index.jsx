@@ -15,6 +15,7 @@ import common_en from '../public/lang/translations.en';
 
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
+  keySeparator: false,
   lng: 'ru', // language to use
   resources: {
     RU: {

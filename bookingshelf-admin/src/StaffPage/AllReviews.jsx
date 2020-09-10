@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import StarRatings from 'react-star-ratings';
+import {withTranslation} from "react-i18next";
 
 class AllReviews extends Component {
   constructor(props) {
@@ -10,13 +11,13 @@ class AllReviews extends Component {
     };
   }
   render() {
-    const { feeds, rating } = this.props;
+    const { feeds, rating, t } = this.props;
     return (
       <div className="user-feeds">
         <hr className="m-0"/>
         <div className="feeds-header">
-          <h2 className="title">Всего отзывов: {feeds.length}</h2>
-          <h2 className="title">Средняя оценка: {rating}</h2>
+          <h2 className="title">{t("Всего отзывов")}: {feeds.length}</h2>
+          <h2 className="title">{t("Средняя оценка")}: {rating}</h2>
         </div>
         <hr className="m-0"/>
 
@@ -44,4 +45,5 @@ class AllReviews extends Component {
   }
 }
 
-export default AllReviews;
+
+export default withTranslation("common")(AllReviews);

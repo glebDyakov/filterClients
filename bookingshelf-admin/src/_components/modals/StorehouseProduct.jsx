@@ -123,7 +123,7 @@ class StorehouseProduct extends React.Component {
                                   </div>
                                   <InputCounter withCounter={true} title={t("Цена поставщика")} placeholder={t("Введите цену")} value={String(client.supplierPrice ? client.supplierPrice : '')} name="supplierPrice"
                                     handleChange={this.handleChange} maxLength={9} />
-                                  <p>Поставщик</p>
+                                  <p>{t("Поставщик")}</p>
                                   <select className="custom-select" name="supplierId" onChange={this.handleChange}
                                     value={client.supplierId}>
                                     <option value="">{t("Выберите поставщика")}</option>

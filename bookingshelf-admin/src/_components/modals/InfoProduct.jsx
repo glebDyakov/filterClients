@@ -228,7 +228,7 @@ class InfoProduct extends React.Component {
                                 {categories.map((category) => <option value={category.categoryId}>{category.categoryName}</option>)}
                               </select>
 
-                              <p>Бренд</p>
+                              <p>{t("Бренд")}</p>
                               <select className="custom-select" name="brandId" onChange={this.handleChange}
                                 value={client.brandId} disabled={true}>
                                 <option value="">{t("Выберите бренд")}</option>

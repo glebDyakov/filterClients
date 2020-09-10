@@ -22,6 +22,7 @@ import { getWeekRange } from '../_helpers/time';
 import { access } from '../_helpers/access';
 
 import '../../public/scss/staff.scss';
+import {withTranslation} from "react-i18next";
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -58,20 +59,22 @@ class Index extends Component {
     }
 
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+    const {t} = props;
+
     if (props.match.params.activeTab === 'permissions') {
-      document.title = 'Доступы | Онлайн-запись';
+      document.title = t('Доступы | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'holidays') {
-      document.title = 'Выходные дни | Онлайн-запись';
+      document.title = t('Выходные дни | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'staff') {
-      document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : 'Сотрудники | Онлайн-запись';
+      document.title = (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места | Онлайн-запись') : t('Сотрудники | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'feedback') {
-      document.title = 'Отзывы | Онлайн-запись';
+      document.title = t('Отзывы | Онлайн-запись');
     }
     if (!props.match.params.activeTab || props.match.params.activeTab === 'workinghours') {
-      document.title = 'Рабочие часы | Онлайн-запись';
+      document.title = t('Рабочие часы | Онлайн-запись');
     }
 
 
@@ -212,8 +215,8 @@ class Index extends Component {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
         document.title = (companyTypeId === 2 || companyTypeId === 3)
-          ? 'Рабочие места | Онлайн-запись'
-          : 'Сотрудники | Онлайн-запись';
+          ? this.props.t('Рабочие места | Онлайн-запись')
+          : this.props.t('Сотрудники | Онлайн-запись');
       }
     }
 
@@ -242,20 +245,22 @@ class Index extends Component {
       activeTab: tab,
     });
 
+    const {t} = this.props;
+
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
     if (tab === 'permissions') {
-      document.title = 'Доступы | Онлайн-запись';
+      document.title = t('Доступы | Онлайн-запись');
     }
     if (tab === 'holidays') {
-      document.title = 'Выходные дни | Онлайн-запись';
+      document.title = t('Выходные дни | Онлайн-запись');
     }
     if (tab === 'staff') {
       document.title = (companyTypeId === 2 || companyTypeId === 3)
-        ? 'Рабочие места | Онлайн-запись'
-        : 'Сотрудники | Онлайн-запись';
+        ? t('Рабочие места | Онлайн-запись')
+        : t('Сотрудники | Онлайн-запись');
     }
     if (tab === 'workinghours') {
-      document.title = 'Рабочие часы | Онлайн-запись';
+      document.title = t('Рабочие часы | Онлайн-запись');
     }
 
     history.pushState(null, '', '/staff/' + tab);
@@ -280,16 +285,18 @@ class Index extends Component {
 
 
   getItemListName(itemList) {
+    const {t} = this.props;
+
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
     switch (itemList.permissionCode) {
       case 2:
         return (companyTypeId === 2 || companyTypeId === 3)
-          ? 'Календарь других рабочих мест'
-          : 'Календарь других сотрудников';
+          ? t('Календарь других рабочих мест')
+          : t('Календарь других сотрудников');
       case 10:
-        return (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники';
+        return (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники');
       default:
-        return itemList.name;
+        return t(itemList.name);
     }
   }
 
@@ -300,7 +307,7 @@ class Index extends Component {
   }
 
   render() {
-    const { staff, company } = this.props;
+    const { staff, company, t } = this.props;
     const {
       staff_working, edit, closedDates, timetableFrom, timetableTo, currentStaff,
       date, editing_object, editWorkingHours, selectedDays, activeTab, addWorkTime, newStaffByMail, newStaff,
@@ -366,30 +373,29 @@ class Index extends Component {
                   data-toggle="tab" href="#tab1" onClick={() => {
                     this.updateTimetable();
                     this.setTab('workinghours');
-                  }}>Рабочие часы</a>
+                  }}>{t("Рабочие часы")}</a>
               </li>
               <li className="nav-item">
                 <a className={'nav-link' + (activeTab === 'staff' ? ' active show' : '')}
                   data-toggle="tab" href="#tab2"
                   onClick={() => this.setTab('staff')}
                 >
-                  {(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}
+                  {(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')}
                 </a>
               </li>
               <li className="nav-item">
                 <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
-                  data-toggle="tab" href="#tab3" onClick={() => this.setTab('holidays')}>Выходные
-                                    дни</a>
+                  data-toggle="tab" href="#tab3" onClick={() => this.setTab('holidays')}>{t("Выходные дни")}</a>
               </li>
               {access(-1) &&
                             <li className="nav-item">
                               <a className={'nav-link' + (activeTab === 'permissions' ? ' active show' : '')}
-                                data-toggle="tab" href="#tab4" onClick={() => this.setTab('permissions')}>Доступ</a>
+                                data-toggle="tab" href="#tab4" onClick={() => this.setTab('permissions')}>{t("Доступ")}</a>
                             </li>
               }
               <li className="nav-item">
                 <a className={'nav-link' + (activeTab === 'feedback' ? ' active show' : '')}
-                  data-toggle="tab" href="#tab5" onClick={() => this.setTab('feedback')}>Отзывы</a>
+                  data-toggle="tab" href="#tab5" onClick={() => this.setTab('feedback')}>{t("Отзывы")}</a>
               </li>
             </ul>
 
@@ -410,11 +416,11 @@ class Index extends Component {
             <p
               onClick={this.handleOpenHeaderDropdown}
               className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
-            >{(activeTab === 'workinghours' ? 'Рабочие часы'
-                : (activeTab === 'staff' ? 'Сотрудники'
-                  : (activeTab === 'holidays' ? 'Выходные дни'
-                    : (activeTab === 'permissions' ? 'Доступ'
-                      : (activeTab === 'feedback' ? 'Отзывы' : '')))))}</p>
+            >{(activeTab === 'workinghours' ? t('Рабочие часы')
+                : (activeTab === 'staff' ? t('Сотрудники')
+                  : (activeTab === 'holidays' ? t('Выходные дни')
+                    : (activeTab === 'permissions' ? t('Доступ')
+                      : (activeTab === 'feedback' ? t('Отзывы') : '')))))}</p>
 
             {this.state.isOpenHeaderDropdown &&
               <ul className="nav nav-tabs-mobile-dropdown">
@@ -424,7 +430,7 @@ class Index extends Component {
                       this.updateTimetable();
                       this.setTab('workinghours');
                       this.handleOpenHeaderDropdown();
-                    }}>Рабочие часы</a>
+                    }}>{t("Рабочие часы")}</a>
                 </li>
                 <li className="nav-item">
                   <a className={'nav-link' + (activeTab === 'staff' ? ' active show' : '')}
@@ -432,15 +438,14 @@ class Index extends Component {
                     onClick={() => {
                       this.setTab('staff');
                       this.handleOpenHeaderDropdown();
-                    }}>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники'}</a>
+                    }}>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')}</a>
                 </li>
                 <li className="nav-item">
                   <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
                     data-toggle="tab" href="#tab3" onClick={() => {
                       this.setTab('holidays');
                       this.handleOpenHeaderDropdown();
-                    }}>Выходные
-                          дни</a>
+                    }}>{t("Выходные дни")}</a>
                 </li>
                 {access(-1) &&
                   <li className="nav-item">
@@ -448,7 +453,7 @@ class Index extends Component {
                       data-toggle="tab" href="#tab4" onClick={() => {
                         this.setTab('permissions');
                         this.handleOpenHeaderDropdown();
-                      }}>Доступ</a>
+                      }}>{t("Доступ")}</a>
                   </li>
                 }
                 <li className="nav-item">
@@ -456,7 +461,7 @@ class Index extends Component {
                     data-toggle="tab" href="#tab5" onClick={() => {
                       this.setTab('feedback');
                       this.handleOpenHeaderDropdown();
-                    }}>Отзывы</a>
+                    }}>{t("Отзывы")}</a>
                 </li>
               </ul>}
           </div>
@@ -485,7 +490,7 @@ class Index extends Component {
                   <div style={{ position: 'sticky', top: 0, zIndex: 5, width: '100%' }}
                     className="tab-content-inner">
                     <div className="tab-content-list">
-                      <div>Сотрудники</div>
+                      <div>{t("Сотрудники")}</div>
                       {
                         timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo)
                           .map((item, weekKey) =>
@@ -588,11 +593,11 @@ class Index extends Component {
               id="tab2"
             >
               <div className="tab-content-list header-content-list">
-                <div className="tab-content-header-item client-name"><p>Сотрудники</p></div>
-                <div className="tab-content-header-item">Мобильный телефон</div>
-                <div className="tab-content-header-item">Email адрес</div>
-                <div className="tab-content-header-item">Категория доступа</div>
-                <div className="tab-content-header-item delete">Функции</div>
+                <div className="tab-content-header-item client-name"><p>{t("Сотрудники")}</p></div>
+                <div className="tab-content-header-item">{t("Мобильный телефон")}</div>
+                <div className="tab-content-header-item">{t("Email адрес")}</div>
+                <div className="tab-content-header-item">{t("Категория доступа")}</div>
+                <div className="tab-content-header-item delete">{t("Функции")}</div>
               </div>
               <div style={{ maxHeight: 'calc(100% - 120px)' }} className="h-100 content tabs-container">
 
@@ -607,14 +612,14 @@ class Index extends Component {
                 <div className="addHoliday-wrapper">
                   <div className="add-holiday modal-content">
                     <div className="modal-header">
-                      <p className="modal-title">Настройка выходных дней</p>
+                      <p className="modal-title">{t("Настройка выходных дней")}</p>
                       <button className="close close-modal-add-holiday-js"></button>
                     </div>
 
                     <div className="modal-body">
                       <div className="form-group row">
                         <div className="col-sm-6">
-                          <p>Начало/Конец</p>
+                          <p>{t("Начало/Конец")}</p>
                           <div className="button-calendar button-calendar-inline">
                             <input type="button" data-range="true"
                               value={
@@ -638,11 +643,11 @@ class Index extends Component {
                         </div>
 
                         <div className="description col-sm-6">
-                          <p>Описание</p>
+                          <p>{t("Описание")}</p>
                           <textarea
                             className="form-control" rows="3" name="description"
                             value={closedDates.description}
-                            placeholder="Например: дополнительный выходной в честь дня рождения организации"
+                            placeholder={t("Например: дополнительный выходной в честь дня рождения организации")}
                             onChange={this.handleClosedDate}
                           />
                         </div>
@@ -655,7 +660,7 @@ class Index extends Component {
                             type="button"
                             onClick={from && closedDates.description && this.addClosedDate}
                             data-dismiss="modal"
-                          >Сохранить
+                          >{t("Сохранить")}
                           </button>
                         </div>
                       </div>
@@ -681,7 +686,7 @@ class Index extends Component {
                 <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
                   <div className="buttons">
                     <button type="button" onClick={this.handleOpenDropdownMenu} className="button new-holiday">
-                      Новый выходной
+                      {t("Новый выходной")}
                     </button>
                   </div>
                   <div className="arrow"></div>
@@ -693,11 +698,11 @@ class Index extends Component {
               <div className={'tab-pane access-tab' + (activeTab === 'permissions' ? ' active' : '')}
                 id="tab4">
                 <div className="tab-content-list header-content-list">
-                  <div className="tab-content-header-item"><p>Категория</p></div>
-                  <div className="tab-content-header-item">Низкий доступ</div>
-                  <div className="tab-content-header-item">Средний доступ</div>
-                  <div className="tab-content-header-item">Администратор</div>
-                  <div className="tab-content-header-item">Владелец</div>
+                  <div className="tab-content-header-item"><p>{t("Категория")}</p></div>
+                  <div className="tab-content-header-item">{t("Низкий доступ")}</div>
+                  <div className="tab-content-header-item">{t("Средний доступ")}</div>
+                  <div className="tab-content-header-item">{t("Администратор")}</div>
+                  <div className="tab-content-header-item">{t("Владелец")}</div>
                 </div>
                 <div className="access">
 
@@ -767,7 +772,7 @@ class Index extends Component {
             }
             {staff.error &&
               <div className="errorStaff">
-                <h2 style={{ textAlign: 'center', marginTop: '50px' }}>Извините, что-то пошло не так</h2>
+                <h2 style={{ textAlign: 'center', marginTop: '50px' }}>{t("Извините, что-то пошло не так")}</h2>
               </div>
             }
           </div>
@@ -785,13 +790,13 @@ class Index extends Component {
                       <button className="button new-staff" type="button"
                         onClick={() => this.handleClick(null, true)}
                       >
-                        Пригласить по Email
+                        {t("Пригласить по Email")}
                       </button>
                   }
                   <button className="button new-staff" type="button"
                     onClick={() => this.handleClick(null, false)}
                   >
-                    {(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}
+                    {(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : t('Новый сотрудник')}
                   </button>
 
                 </div>
@@ -911,15 +916,17 @@ class Index extends Component {
   }
 
   renderSwitch(param) {
+    const {t} = this.props;
+
     switch (param) {
       case 4:
-        return 'Владелец';
+        return t('Владелец');
       case 3:
-        return 'Админ';
+        return t('Админ');
       case 2:
-        return 'Средний доступ';
+        return t('Средний доступ');
       default:
-        return 'Низкий доступ';
+        return t('Низкий доступ');
     }
   };
 
@@ -1170,4 +1177,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

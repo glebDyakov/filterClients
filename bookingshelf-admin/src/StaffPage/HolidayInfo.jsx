@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 import ActionModal from '../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class HolidayInfo extends Component {
   constructor(props) {
@@ -23,21 +24,21 @@ class HolidayInfo extends Component {
   }
 
   render() {
-    const { item, key, deleteClosedDate } = this.props;
+    const { item, key, deleteClosedDate, t } = this.props;
 
     return (
       <div className="row holiday-list" key={key}>
         <div className="col flex-column d-flex flex-md-row">
           <span>
-            <strong>Начало</strong>
+            <strong>{t("Начало")}</strong>
             {moment(item.startDateMillis).format('L')}
           </span>
           <span>
-            <strong>Количество дней</strong>
+            <strong>{t("Количество дней")}</strong>
             {Math.round((item.endDateMillis - item.startDateMillis) / (1000 * 60 * 60 * 24)) + 1}
           </span>
           <span>
-            <strong>Описание</strong>
+            <strong>{t("Описание")}</strong>
             {item.description}
           </span>
         </div>
@@ -50,18 +51,18 @@ class HolidayInfo extends Component {
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить выходные дни?"
+            title={t("Удалить выходные дни?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteClosedDate,
               params: item.companyClosedDateId,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -73,4 +74,4 @@ class HolidayInfo extends Component {
 }
 
 
-export default HolidayInfo;
+export default withTranslation("common")(HolidayInfo);
