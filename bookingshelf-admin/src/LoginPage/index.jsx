@@ -16,6 +16,8 @@ class Index extends React.Component {
       forgottenEmail: '',
       authentication: props.authentication,
       resetPasswordModal: false,
+      isOpenSuccessForgotModal: false
+
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,16 +47,20 @@ class Index extends React.Component {
 
       if (newProps.authentication && newProps.authentication.status==='reset.email' &&
         newProps.authentication.error===-1) {
-        setTimeout(() => {
-          // $('.modal_reset_password').modal('hide')
-          this.setState({
-            'login': newProps.authentication.email,
-            'password': '',
-            'authentication': [],
-            'resetPasswordModal': false,
-            'forgottenEmail': '',
-          });
-        }, 3000);
+        this.setState({isOpenSuccessForgotModal: true}, () => {
+          setTimeout(() => {
+            // $('.modal_reset_password').modal('hide')
+            this.setState({
+              'login': newProps.authentication.email,
+              'password': '',
+              'authentication': [],
+              'resetPasswordModal': false,
+              'forgottenEmail': '',
+            }, () => {
+              this.setState({isOpenSuccessForgotModal: false, resetPasswordModal: false});
+            });
+          }, 3000);
+        });
       }
 
       if (newProps.authentication && newProps.authentication.error && (newProps.authentication.error.code === 5 ||
@@ -198,7 +204,18 @@ class Index extends React.Component {
             </div>
           </div>
           <div>
-            <p>Инструкция по сбросу пароля отправлена на Ваш Email</p>
+            {this.state.isOpenSuccessForgotModal &&
+            <div className="message-is-sent-wrapper">
+              <div className="message-is-sent-modal">
+                <button onClick={()=> this.setState({ isOpenSuccessForgotModal: false, resetPasswordModal: false })} className="close" />
+                <div className="modal-body">
+                  <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
+                  <p className="body-text">
+                    Инструкция по сбросу пароля отправлена на Ваш Email
+                  </p>
+                </div>
+              </div>
+            </div>}
           </div>
         </div>
         <p className="footer">© Онлайн запись</p>
