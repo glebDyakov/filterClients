@@ -136,7 +136,7 @@ class TabCreateComment extends  PureComponent{
     }
 
     render() {
-        const { setScreen, sendSmsTimer, staffCommentsStaff, isLoading, commentPassword, clientCookie, clientLoginMessage } = this.props;
+        const { setScreen, sendSmsTimer, staffCommentsStaff, isLoading, commentPassword, clientCookie, clientLoginMessage, t } = this.props;
         const { group, timeExpires, tab, isValidSendPasswordPhone, sendPasswordPhone, loginPhone, loginPassword, isValidLoginPhone } = this.state;
 
         return(
@@ -226,7 +226,7 @@ class TabCreateComment extends  PureComponent{
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>{t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации")}</span>
                                         </p>
-                                        <input type="text" placeholder="Введите пароль" name="loginPassword" onChange={this.handleChange} value={loginPassword} />
+                                        <input type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
                                         {clientLoginMessage && (
                                             <p style={{ display: 'flex' }}>
                                                 <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
@@ -243,7 +243,7 @@ class TabCreateComment extends  PureComponent{
                                 )}
                                 {tab === 'sms_tab' && (
                                     <React.Fragment>
-                                        <p>Телефон</p>
+                                        <p>{t("Телефон")}</p>
                                         <p style={{ display: 'flex' }}>
                                             <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                                             /> <span>

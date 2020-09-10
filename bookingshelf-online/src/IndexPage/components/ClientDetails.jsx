@@ -192,7 +192,7 @@ class ClientDetails extends React.Component {
                                                             </div>
                                                         }
 
-                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format("h[ ч] m[ мин]")}</span>
+                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format(`h[ ч] m[ ${t("минут")}]`)}</span>
 
                                                         <br />
 

@@ -84,6 +84,8 @@ class IndexPage extends PureComponent {
         let {company} = this.props.match.params
         company = company.includes('_') ? company.split('_')[0] : company
 
+        const language = localStorage.getItem("lang") || "ru";
+        this.props.i18n.changeLanguage(language);
 
         this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
