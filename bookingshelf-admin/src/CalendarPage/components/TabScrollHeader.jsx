@@ -35,8 +35,8 @@ class TabScrollHeader extends PureComponent {
                       }
                       alt=""/>
                   </span>
-                  <p>{workingStaffElement.firstName + ' ' +
-                    (workingStaffElement.lastName ? workingStaffElement.lastName : '') }
+                  <p>{(workingStaffElement.firstName.length >= 15 ? workingStaffElement.firstName.substr(0, 13) + "..." : workingStaffElement.firstName) + ' ' +
+                    (workingStaffElement.lastName ? (workingStaffElement.lastName.length >= 15 ? workingStaffElement.lastName.substr(0, 13) + "..." : workingStaffElement.lastName) : '') }
                   </p>
                 </div>;
               },
