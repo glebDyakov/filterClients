@@ -88,11 +88,11 @@ class ManagerSettings extends React.Component {
   }
 
   handleChangeTheme(newTheme) {
-    console.log(this.props.authentication.user);
+    console.log(this.props.company.subcompanies[0]);
 
     this.props.dispatch(companyActions.changeTheme(newTheme));
 
-    this.props.dispatch(staffActions.update({
+    this.props.dispatch(companyActions.updateSubcompany({
       ...this.props.company.subcompanies[0],
       lightTheme: newTheme,
     }, 'isFirstScreenLoading'));

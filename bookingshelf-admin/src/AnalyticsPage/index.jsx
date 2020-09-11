@@ -799,7 +799,7 @@ class Index extends Component {
                 {analitics.counter && analitics.counter.withoutClientToday}
                 <span
                   className="small">{analitics.counter && ((analitics.counter.withoutClientPercent > 0 ? '+' : '')
-                                    + analitics.counter.withoutClientPercent.toFixed(2))}% со вчера</span>
+                                    + analitics.counter.withoutClientPercent.toFixed(2))}% {t("со вчера")}</span>
               </span>
             </div>
           </div>

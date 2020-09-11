@@ -30,6 +30,7 @@ class SidebarMain extends React.Component {
       isOpenDropdownButtons: false,
       openManager: false,
       openUserSettings: true,
+      language: "ru"
 
     };
 
@@ -85,6 +86,13 @@ class SidebarMain extends React.Component {
         calendar: newProps.calendar,
       });
     }
+
+    if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
+      this.setState({
+        language: newProps.i18n.language
+      });
+    }
+
     if (JSON.stringify(this.props.menu) !== JSON.stringify(newProps.menu)) {
       this.setState({
         menu: newProps.menu,

@@ -865,7 +865,7 @@ class Index extends Component {
                     <div className="chosen-invoice">
                       <div className="modal-header">
                         <h4 className="modal-title">
-                          Счёт {chosenInvoice.customId}; {
+                          {t("Счет")} {chosenInvoice.customId}; {
                             moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
                           }
                         </h4>

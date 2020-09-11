@@ -114,6 +114,7 @@ class Index extends PureComponent {
       scrollableAppointmentAction: true,
       appointmentMarkerActionCalled: false,
       scrolledToRight: false,
+      language: "ru"
     };
 
     this.newAppointment = this.newAppointment.bind(this);
@@ -288,6 +289,12 @@ class Index extends PureComponent {
   componentWillReceiveProps(newProps) {
     if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
       this.queryInitData();
+    }
+
+    if (this.props.i18n.language !== newProps.i18n.language) {
+      this.setState({
+        language: newProps.i18n.language,
+      })
     }
 
     if (JSON.stringify(this.props.status) !== JSON.stringify(newProps.status)) {

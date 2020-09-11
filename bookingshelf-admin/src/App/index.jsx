@@ -60,6 +60,7 @@ import '../../public/scss/styles.scss';
 let socket;
 
 import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
+import {withTranslation} from "react-i18next";
 
 const sound = new Audio(`${process.env.CONTEXT}public/mp3/message_sound.mp3`);
 
@@ -72,6 +73,7 @@ class Index extends React.Component {
       authentication: props.authentication,
       flagStaffId: true,
       lightTheme: true,
+      language: 'ru'
     };
 
     const { dispatch } = this.props;
@@ -103,6 +105,7 @@ class Index extends React.Component {
     console.log(user && user.lightTheme === false);
 
 
+
     if (user && (this.props.authentication.loggedIn || this.props.company.switchedStaffId)) {
       const socketStaffId = this.props.company.switchedStaffId ? this.props.company.switchedStaffId : this.props.authentication.user.profile.staffId;
       this.initSocket(socketStaffId);
@@ -116,6 +119,12 @@ class Index extends React.Component {
     } else {
       $('body').removeClass('dark-theme');
     };
+
+    if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
+      this.setState({
+        language: newProps.i18n.language
+      });
+    }
 
     let localStorageUser;
     try {
@@ -132,6 +141,8 @@ class Index extends React.Component {
       this.setState({ paymentsOnly: true, authentication: newProps.authentication });
       return;
     }
+
+
 
 
     if (this.state.paymentsOnly) {
@@ -341,4 +352,4 @@ Index.proptypes = {
 };
 
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

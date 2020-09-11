@@ -55,7 +55,7 @@ class StaffChoice extends PureComponent {
           <ul className="dropdown-menu">
             <li>
               <a onClick={() => setWorkingStaff(timetable, 2)}>
-                <p>Все {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочие места' ) : t('сотрудники')}</p>
+                <p>{t("Все")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочие места' ) : t('сотрудники')}</p>
               </a>
             </li>
             {!hideWorkingStaff && <li>

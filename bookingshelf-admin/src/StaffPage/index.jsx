@@ -499,7 +499,7 @@ class Index extends Component {
                             <div key={weekKey}>
                               <p>
                                 <span className="dates-full-width text-capitalize">
-                                  {moment(item, 'x').locale('ru').format('dd')}, {moment(item, 'x').format('DD MMMM')}
+                                  {moment(item, 'x').format('dd')}, {moment(item, 'x').format('DD MMMM')}
                                 </span>
                               </p>
                             </div>,

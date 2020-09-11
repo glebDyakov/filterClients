@@ -70,7 +70,7 @@ class TabScrollHeader extends PureComponent {
                     key={weekKey}
                   >
                     <p className="text-capitalize">
-                      {moment(item).locale('ru').format('dd')},&nbsp;
+                      {moment(item).format('dd')},&nbsp;
                       <span className={`text-capitalize ${clDate && 'closedDate'}`}>
                         {clDate
                           ?
