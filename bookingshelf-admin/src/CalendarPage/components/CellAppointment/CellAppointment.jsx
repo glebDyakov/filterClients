@@ -165,7 +165,6 @@ class CellAppointment extends React.PureComponent {
           totalCount={totalCount}
           currentAppointments={currentAppointments}
           numberKey={numberKey}
-          totalAmount={totalAmount}
           staffKey={staffKey}
         />
 

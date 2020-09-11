@@ -519,7 +519,6 @@ class Index extends PureComponent {
 
             <div className="tab-pane active" id={selectedDays.length===1 ? 'days_20' : 'weeks'}>
               <div ref={this.setWrapperRef} className="calendar-list">
-                <div className="tabs-scroll">
 
                 <TabScrollHeader
                   selectedDays={selectedDays}
@@ -548,9 +547,6 @@ class Index extends PureComponent {
                     selectedDays={selectedDays}
                   />)
                 }
-
-                </div>
-
               </div>
             </div>
           </div>
