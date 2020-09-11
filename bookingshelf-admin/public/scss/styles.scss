@@ -1471,6 +1471,12 @@ input {
         line-height: 24px;
         color: #495057;
 
+        overflow:hidden;
+        white-space: pre;
+        &:hover {
+          overflow: auto;
+        }
+
         margin-bottom: 0;
         padding-left: 0;
         @media screen and(max-width: $tablet-width) {
@@ -1519,6 +1525,12 @@ input {
         color: #495057;
         margin-bottom: 0;
         padding-left: 0;
+        overflow:hidden;
+        white-space: pre;
+        &:hover {
+          overflow: auto;
+        }
+
         @media screen and(max-width: $tablet-width) {
           font-size: 14px;
         }

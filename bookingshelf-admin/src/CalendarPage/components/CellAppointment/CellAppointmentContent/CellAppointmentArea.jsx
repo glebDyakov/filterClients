@@ -11,7 +11,7 @@ class CellAppointmentArea extends React.PureComponent {
   handleMouseDown(e) {
     e.preventDefault();
 
-    const { dispatch, minTextAreaHeight, maxTextAreaHeight, textAreaId, appointment, workingStaffElement } = this.props;
+    const { dispatch, minTextAreaHeight, totalPrice, maxTextAreaHeight, textAreaId, appointment, workingStaffElement } = this.props;
 
     dispatch(appointmentActions.togglePayload({
       minTextAreaHeight,
@@ -27,7 +27,7 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
-      resultTextAreaHeight, extraServiceText, services, movingVisit,
+      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount,
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
@@ -59,7 +59,7 @@ class CellAppointmentArea extends React.PureComponent {
                   ? ('Клиент: ' + appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
                   : 'Без клиента'}</span>
-              <span style={{width: "43%"}} className="text-right client-name">{appointment.totalAmount} {appointment.currency}</span>
+              <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>

@@ -147,13 +147,13 @@ class TabScroll extends React.Component {
     const cellHeight = 25;
 
     return (
-      <div className="tabs-scroll">
-        <DndProvider backend={Backend}>
-          {this.renderTable({ step, cellHeight })}
-        </DndProvider>
+        <React.Fragment>
+          <DndProvider backend={Backend}>
+            {this.renderTable({ step, cellHeight })}
+          </DndProvider>
 
-        <DragVertController step={step} cellHeight={cellHeight} />
-      </div>
+          <DragVertController step={step} cellHeight={cellHeight} />
+        </React.Fragment>
     );
   }
 }
