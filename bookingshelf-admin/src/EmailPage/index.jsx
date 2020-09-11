@@ -569,7 +569,7 @@ class Index extends Component {
 
                         <p className="title_block">
                           {t("SMS уведомления")} {notification.balance && notification.balance.smsAmount === 0 && (
-                            <span>({"уведомления отключены. Недостаточный баланс"})</span>
+                            <span>({t("уведомления отключены. Недостаточный баланс")})</span>
                           )}
                         </p>
                         <div className="check-box">

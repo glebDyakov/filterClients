@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import '../../public/scss/calendar.scss';
 
 import moment from 'moment';
-
 import 'react-day-picker/lib/style.css';
 import DayPicker from 'react-day-picker';
 import MomentLocaleUtils from 'react-day-picker/moment';
@@ -152,7 +151,7 @@ class DatePicker extends PureComponent {
                 onDayClick={(date) => this.handleLocalDayClick(date)}
                 localeUtils={MomentLocaleUtils}
                 showOutsideDays
-                locale={'ru'}
+                locale={this.props.language.toLowerCase()}
                 {...weekProps}
                 {...dayPickerProps}
               />

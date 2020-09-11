@@ -310,6 +310,7 @@ class Index extends Component {
                         selectedDay={selectedDay}
                         handleDayClick={this.handleDayClick}
                         dayPickerProps={dayPickerProps}
+                        language={this.props.i18n.language}
                       />
                     </div>
                   }
@@ -339,7 +340,7 @@ class Index extends Component {
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      Сотрудники
+                      {t("Сотрудники")}
                     </label>
                   </div>
                   <div className="check-box">

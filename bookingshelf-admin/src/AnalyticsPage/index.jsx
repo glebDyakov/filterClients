@@ -625,6 +625,7 @@ class Index extends Component {
             handleDayChange={this.handleDayChange}
             handleDayClick={this.handleDayClick}
             handleWeekClick={this.handleWeekClick}
+            language={this.props.i18n.language}
           />
 
         </div>
@@ -992,6 +993,7 @@ class Index extends Component {
                 selectedDay={selectedStartDayOff}
                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
                 dayPickerProps={dayPickerProps}
+                language={this.props.i18n.language}
               />
             </div>
 
@@ -1001,6 +1003,7 @@ class Index extends Component {
               <DatePicker
                 // closedDates={staffAll.closedDates}
                 type="day"
+                language={this.props.i18n.language}
                 selectedDay={selectedEndDayOff}
                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
                 dayPickerProps={{

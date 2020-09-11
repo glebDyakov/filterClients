@@ -478,6 +478,7 @@ class NewStaff extends React.Component {
                                                                 selectedDay={selectedStartDayOff}
                                                                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
                                                                 dayPickerProps={dayPickerProps}
+                                                                language={this.props.i18n.language}
                                                               />
                                                             </div>
                                         }
@@ -489,6 +490,7 @@ class NewStaff extends React.Component {
                                                               <DatePicker
                                                                 // closedDates={staffAll.closedDates}
                                                                 type="day"
+                                                                language={this.props.i18n.language}
                                                                 selectedDay={selectedEndDayOff}
                                                                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
                                                                 dayPickerProps={{

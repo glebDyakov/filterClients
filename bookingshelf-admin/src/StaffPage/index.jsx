@@ -409,6 +409,7 @@ class Index extends Component {
                           handleDayChange={this.handleDayChange}
                           handleDayClick={this.handleDayClick}
                           handleWeekClick={this.handleWeekClick}
+                          language={this.props.i18n.language}
                         />}
           </div>
 
@@ -477,6 +478,7 @@ class Index extends Component {
                 handleDayChange={this.handleDayChange}
                 handleDayClick={this.handleDayClick}
                 handleWeekClick={this.handleWeekClick}
+                language={this.props.i18n.language}
               />
             </div>
           }
