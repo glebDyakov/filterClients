@@ -29,7 +29,6 @@ class CellAppointmentContent extends React.PureComponent {
       .some((localAppointment) => localAppointment.appointmentId === appointment.appointmentId),
     );
 
-
     const timetableItems = timetable && timetable
       .filter((item) => item.staffId === workingStaffElement.staffId ||
         (appointment.coStaffs && staffList.some((coStaff) => coStaff.staff.staffId === item.staffId)),
@@ -57,10 +56,8 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, totalAmount,
+      appointments, timetable, reservedTime, staff,
     } = this.props;
-
-
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
       appointment,
@@ -116,7 +113,6 @@ class CellAppointmentContent extends React.PureComponent {
           maxTextAreaHeight={maxTextAreaHeight}
           resultTextAreaHeight={resultTextAreaHeight}
           extraServiceText={extraServiceText}
-          totalAmount={totalAmount}
         />
       </React.Fragment>
     );
