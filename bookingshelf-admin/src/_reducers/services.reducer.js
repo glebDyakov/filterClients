@@ -69,7 +69,26 @@ export function services(state= {}, action) {
         isLoading: true,
       };
     case servicesConstants.UPDATE_SERVICES_SUCCESS:
-      return state;
+      services = state.services;
+      services.forEach((item, key) => {
+        if (item) {
+          action.services.forEach((i, k) => {
+            if (i && item.services) {
+              item.services.forEach((ii, kk) => {
+                if (ii && i.serviceId === ii.serviceId) {
+                  services[key].services[kk].sortOrder = i.sortOrder;
+                  services[key].services.sort((a, b) => a.sortOrder - b.sortOrder);
+                }
+              })
+            }
+          })
+        }
+      });
+      return {
+        ...state,
+        services: (services || []).sort((a, b) => a.sortOrder - b.sortOrder),
+        isLoading: false,
+      };
     case servicesConstants.UPDATE_SERVICE_GROUPS_SUCCESS:
       services = state.services;
       services.forEach((item, key) => {
