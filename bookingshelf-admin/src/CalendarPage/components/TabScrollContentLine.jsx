@@ -49,7 +49,7 @@ class TabScrollContentLine extends React.PureComponent {
           <span data-time={moment().format('HH:mm')} className="present-time-line"/>
         }
         <TabScrollLeftMenu time={time}/>
-        {!isLoading && availableTimetable && availableTimetable.map((workingStaffElement, staffKey) => (
+        {availableTimetable && availableTimetable.map((workingStaffElement, staffKey) => (
           <BaseCell
             isWeekBefore={isWeekBefore}
             step={step}
