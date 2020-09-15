@@ -3,6 +3,7 @@
 .services_list {
   width: 100%;
   display: block;
+  height: 100%;
 
 
   .services_wrapper {
@@ -424,6 +425,10 @@
           line-height: 18px;
 
           color: #495057;
+        }
+
+        .item-detail {
+          font-size: 11px;
         }
 
         .item-list-circle {

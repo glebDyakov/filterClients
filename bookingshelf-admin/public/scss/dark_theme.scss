@@ -16,6 +16,20 @@
 
   }
 
+  .status-modal {
+    .form-group {
+      ul {
+        li {
+          strong {
+            color: #fff !important;
+          }
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+
   .modal-supplier {
     .modal-content {
       background: #2A3042 !important;
@@ -1249,7 +1263,7 @@
     }
 
     .notes-container-message {
-      span, li {
+      span, li, p {
         color: #495057 !important;
       }
     }

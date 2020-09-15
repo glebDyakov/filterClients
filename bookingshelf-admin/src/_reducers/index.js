@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
   calendar,
   notification,
   analitics,
-  payments
+  payments,
 });
 
 export default rootReducer;

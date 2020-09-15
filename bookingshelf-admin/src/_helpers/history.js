@@ -1,3 +1,3 @@
 import { createBrowserHistory } from 'history';
 
-export const history = createBrowserHistory({basename: process.env.CONTEXT});
+export const history = createBrowserHistory({ basename: process.env.CONTEXT });
