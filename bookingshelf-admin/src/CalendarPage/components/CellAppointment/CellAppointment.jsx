@@ -45,27 +45,28 @@ class CellAppointment extends React.PureComponent {
     });
 
     if (appointment.hasCoAppointments) {
-      appointments.forEach((staffAppointment) => staffAppointment.appointments.forEach((currentAppointment) => {
-        if (!currentAppointment.coappointment && (currentAppointment.coAppointmentId === appointment.appointmentId)) {
-          totalDuration += currentAppointment.duration;
-          totalCount++;
-          // totalPrice += currentAppointment.price;
-          totalAmount += currentAppointment.totalAmount;
+      appointments && appointments.forEach((staffAppointment) => staffAppointment.appointments &&
+        staffAppointment.appointments.forEach((currentAppointment) => {
+          if (!currentAppointment.coappointment && (currentAppointment.coAppointmentId === appointment.appointmentId)) {
+            totalDuration += currentAppointment.duration;
+            totalCount++;
+            // totalPrice += currentAppointment.price;
+            totalAmount += currentAppointment.totalAmount;
 
-          const activeCoService = services && services.servicesList &&
-            services.servicesList.find((service) => service.serviceId === currentAppointment.serviceId);
-          appointmentServices.push({
-            ...activeCoService,
-            discountPercent: currentAppointment.discountPercent,
-            totalAmount: currentAppointment.totalAmount,
-            serviceName: currentAppointment.serviceName,
-            price: currentAppointment.price,
-            serviceId: currentAppointment.serviceId,
-          });
+            const activeCoService = services && services.servicesList &&
+              services.servicesList.find((service) => service.serviceId === currentAppointment.serviceId);
+            appointmentServices.push({
+              ...activeCoService,
+              discountPercent: currentAppointment.discountPercent,
+              totalAmount: currentAppointment.totalAmount,
+              serviceName: currentAppointment.serviceName,
+              price: currentAppointment.price,
+              serviceId: currentAppointment.serviceId,
+            });
 
-          currentAppointments.push(currentAppointment);
-        }
-      }));
+            currentAppointments.push(currentAppointment);
+          }
+        }));
     }
 
     const currentTime = getCurrentCellTime(selectedDays, selectedDaysKey, time);
