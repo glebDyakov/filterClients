@@ -114,7 +114,7 @@ class SidebarMain extends React.Component {
       // this.props.dispatch(calendarActions.getAppointmentsCanceled(moment().startOf('day').format('x'), moment().add(1, 'month').endOf('month').format('x')));
     }
 
-    if (this.props.i18n.language !== newProps.i18n.language) {
+    if (this.props.i18n.language !== newProps.i18n.language || JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
       const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
           ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
 
@@ -125,6 +125,7 @@ class SidebarMain extends React.Component {
   }
 
   componentDidMount() {
+
     $('.arrow_collapse').click(function(e) {
       // e.preventDefault();
       // e.stopPropagation();
@@ -159,6 +160,8 @@ class SidebarMain extends React.Component {
 
     // this.props.dispatch(companyActions.getNewAppointments());
     this.props.dispatch(menuActions.getMenu());
+    this.props.dispatch(staffActions.get());
+
     // this.props.dispatch(clientActions.getClientWithInfo());
   }
 
@@ -367,7 +370,7 @@ class SidebarMain extends React.Component {
                     // style={{width: "30%", textAlign: "left"}}
                   >
                     <strong>{t("Время")}: </strong>
-                    {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
+                    {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
                   </p>
                   <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
                     {t("Просмотреть запись")} →
@@ -517,7 +520,7 @@ class SidebarMain extends React.Component {
                     // style={{width: "30%", textAlign: "left"}}
                   >
                     <strong>{t("Время")}: </strong>
-                    {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
+                    {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
                   </p>
                   <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
                                         {t("Просмотреть запись")} →
@@ -818,7 +821,7 @@ class SidebarMain extends React.Component {
                                                         // style={{width: "30%", textAlign: "left"}}
                                                       >
                                                         <strong>{t("Время")}: </strong>
-                                                        {moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}
+                                                        {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
                                                       </p>
                                                       <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
                                                         {appointment.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником')}
@@ -947,7 +950,7 @@ class SidebarMain extends React.Component {
     const { openedTab } = this.state;
     const { appointmentId, appointmentTimeMillis } = appointment;
 
-    const url = '/page/' + appointmentStaffId + '/' + moment(appointmentTimeMillis, 'x').locale('ru').format('DD-MM-YYYY');
+    const url = '/page/' + appointmentStaffId + '/' + moment(appointmentTimeMillis, 'x').format('DD-MM-YYYY');
     this.props.history.push(url);
 
     if (openedTab === 'new') {

@@ -662,5 +662,7 @@
   "Администратор": "Administrator",
   "Извините, что-то пошло не так": "I’m sorry, something went wrong",
   "Группа напарников": "The group of partners",
-  "Удалить сотрудника?": "To delete the employee?"
+  "Удалить сотрудника?": "To delete the employee?",
+  "руб": "rubles",
+  "грн": "hryvnia"
 }

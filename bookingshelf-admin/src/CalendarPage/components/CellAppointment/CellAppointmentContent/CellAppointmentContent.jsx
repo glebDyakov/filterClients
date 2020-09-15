@@ -57,7 +57,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, t,
+      appointments, timetable, reservedTime, staff, t, totalAmount
     } = this.props;
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
@@ -114,6 +114,7 @@ class CellAppointmentContent extends React.PureComponent {
           maxTextAreaHeight={maxTextAreaHeight}
           resultTextAreaHeight={resultTextAreaHeight}
           extraServiceText={extraServiceText}
+          totalAmount={totalAmount}
         />
       </React.Fragment>
     );

@@ -21,6 +21,7 @@ i18next.init({
 });
 
 i18next.on('languageChanged', function(lng) {
+  localStorage.setItem("language", lng);
   import(`../../public/lang/translations.${lng.toLowerCase()}`)
     .then((json) => {
       i18next.addResources(lng, 'common', json);
@@ -30,6 +31,5 @@ i18next.on('languageChanged', function(lng) {
     moment.locale(switchLang(lng), localization);
   });
 });
-
 
 export { i18next };

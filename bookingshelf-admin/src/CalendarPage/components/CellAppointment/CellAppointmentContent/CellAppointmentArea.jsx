@@ -28,7 +28,7 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, t,
+      resultTextAreaHeight, extraServiceText, services, movingVisit, t, totalAmount
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
@@ -60,13 +60,13 @@ class CellAppointmentArea extends React.PureComponent {
                   ? (t("Клиент") + ': ' + appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
                   : t('Без клиента')}</span>
-              <span style={{width: "43%"}} className="text-right client-name">{appointment.totalAmount} {appointment.currency}</span>
+              <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
             </ul>
             {extraServiceText}
-            {appointment.description.length > 0 && <p className="mt-2 service client-name">{t("Заметка")}: {appointment.description}</p>}
+            {appointment.description.length > 0 && <p className="service client-name">{t("Заметка")}: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
             ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description
             ? `\nЗаметка: ${appointment.description}` : ''}`;*/}

@@ -703,8 +703,8 @@ class Index extends Component {
                       <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>
                       <span style={{ textAlign: 'right' }}>
                         {finalPriceMonth} {countryCode ? (countryCode === 'BLR'
-                          ? 'руб'
-                          : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'
+                          ? t('руб')
+                          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')
                         }
                       </span>
                     </div>
@@ -714,10 +714,10 @@ class Index extends Component {
                         <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>
                         <span style={{ color: '#F46A6A', textAlign: 'right' }}>
                           {finalPriceMonthDiscount} {countryCode
-                            ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR'
-                              ? 'грн'
-                              : (countryCode === 'RUS' ? 'руб' : 'руб')))
-                            : 'руб'
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
                           }
                         </span>
                       </div>
@@ -726,8 +726,8 @@ class Index extends Component {
                       <p className="total-price">{t("Итоговая стоимость")}:
                         <span>
                           {finalPrice} {countryCode
-                            ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR'
-                              ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')
                           }
                         </span>
                       </p>

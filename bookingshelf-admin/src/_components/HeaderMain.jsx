@@ -55,9 +55,17 @@ class HeaderMain extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, staff, authentication } = this.props;
 
     dispatch(staffActions.get());
+
+    const activeStaff = staff && staff.find((item) =>
+        ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
+    if (activeStaff) {
+      this.props.i18n.changeLanguage(activeStaff.languageCode)
+    }
+
 
     $('.mob-menu').click(function(e) {
       e.preventDefault();
@@ -77,6 +85,7 @@ class HeaderMain extends React.PureComponent {
         company: newProps.company,
       });
     }
+
   }
 
   componentDidUpdate() {
