@@ -1010,7 +1010,29 @@
 }
 
 .status-modal {
+  .form-group {
+    padding-top: 10px;
+    ul {
+      li {
+        margin-bottom: 5px;
+        strong {
+          font-weight: 600;
+          color: #2A3042;
+          font-size: 14px;
+          line-height: 18px;
+        }
+        font-weight: 400;
 
+
+        font-size: 14px;
+        line-height: 18px;
+        /* identical to box height */
+
+
+        color: #2A3042;
+      }
+    }
+  }
 }
 
 .rdw-image-modal-btn {
