@@ -816,16 +816,9 @@
   .history_page {
     margin-top: 7px;
 
+
 .questions_dropdown {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%) !important;
-  right: 0;
-  left: unset !important;
-  z-index: 50;
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  display: none;
 
   &::-webkit-scrollbar {
     width: 2px;
@@ -1014,6 +1007,10 @@
   .selects-block {
     width: 100%;
   }
+}
+
+.status-modal {
+
 }
 
 .rdw-image-modal-btn {
