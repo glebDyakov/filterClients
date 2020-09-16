@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { access } from '../../_helpers/access';
 import { calendarActions, clientActions } from '../../_actions';
-import {compose} from "redux";
-import {withTranslation} from "react-i18next";
 
 class ClientDetails extends React.Component {
   constructor(props) {
@@ -91,7 +89,7 @@ class ClientDetails extends React.Component {
 
   render() {
     const { client, defaultAppointmentsList }=this.state;
-    const { editClient, services, t, staff, company, wrapper = 'client-detail' }=this.props;
+    const { editClient, services, staff, company, wrapper = 'client-detail' }=this.props;
     const companyTypeId = company.settings && company.settings.companyTypeId;
 
     return (
@@ -101,7 +99,7 @@ class ClientDetails extends React.Component {
         <div className={'modal-dialog modal-lg modal-dialog-centered'}>
           <div className="modal-content">
             <div className="modal-header">
-              <h4 className="modal-title">{t("Информация о клиенте")}</h4>
+              <h4 className="modal-title">Информация о клиенте</h4>
               <button type="button" className="close" data-dismiss="modal"></button>
             </div>
             <div className="client-info content-pages-bg">
@@ -111,18 +109,18 @@ class ClientDetails extends React.Component {
                               <div className="row align-items-center all-visits-container">
                                 <div className="col-6 all-visits" style={{ textAlign: 'center' }}>
                                   <strong>{defaultAppointmentsList.length} </strong><br/>
-                                  <span className="gray-text">{t("Всего визитов")}</span>
+                                  <span className="gray-text">Всего визитов</span>
                                 </div>
                                 <div className="col-6 all-visits" style={{ textAlign: 'center' }}>
-                                  <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
-                                  <span className="gray-text">{t("Сумма визитов")}</span>
+                                  <strong>{Math.floor(this.state.allPrice * 100) / 100 } {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
+                                  <span className="gray-text">Сумма визитов</span>
                                 </div>
                               </div>
                             </div>
               }
               <hr className="gray"/>
               {client && client.appointments && client.appointments.length!==0 ?
-                '' : <p className="not-visits">{t("Нет визитов")}</p>
+                '' : <p className="not-visits">Нет визитов</p>
               }
 
               {/* {(defaultAppointmentsList && defaultAppointmentsList.length!==0 && defaultAppointmentsList!=="" &&*/}
@@ -149,16 +147,16 @@ class ClientDetails extends React.Component {
                       >
                         <div className="col-9 col-sm-8">
                           <p className="visit-detail">
-                            <span className="timing"><strong>{t("Время")}: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
-                            <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочее место') : t('Сотрудник')}: </strong>{appointment.staffName}</span>
+                            <span className="timing"><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                            <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочее место' : 'Сотрудник'}: </strong>{appointment.staffName}</span>
                             <span className="service"
                               style={{ fontSize: '13px' }}>{appointment.serviceName}</span>
                             {(activeService && activeService.details) ?
                               <span className="service">{activeService.details}</span> : ''}
                             {appointment.description ? <span
-                              className="visit-description service">{t("Заметка")}: {appointment.description}</span> : ''}
-                            {appointment.clientNotCome ? <span className="visit-description" style={{ color: '#F46A6A' }}>{t("Клиент не пришел")}</span> : ''}
-                            <span className="price">{t("Цена")}: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : appointment.price} {appointment.currency}</span>
+                              className="visit-description service">Заметка: {appointment.description}</span> : ''}
+                            {appointment.clientNotCome ? <span className="visit-description" style={{ color: '#F46A6A' }}>Клиент не пришел</span> : ''}
+                            <span className="price">Цена: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : Math.floor(appointment.price * 100) / 100} {appointment.currency}</span>
 
                           </p>
 
@@ -175,8 +173,12 @@ class ClientDetails extends React.Component {
                                                         </div>
                           }
 
-                          <span className="gray-text duration">{moment.duration(parseInt(appointment.duration), 'seconds').format(`h[ ч] m[ ${t("мин")}]`)}</span>
+                          <span className="gray-text duration">{moment.duration(parseInt(appointment.duration), 'seconds').format('h[ ч] m[ мин]')}</span>
+
+
                         </div>
+
+
                       </div>
                     );
                   },
@@ -191,7 +193,7 @@ class ClientDetails extends React.Component {
                   $('.client-detail').modal('hide');
                   $('.header-client-detail').modal('hide');
                   editClient(client);
-                }}>{t("Редактировать клиента")}
+                }}>Редактировать клиента
               </button>
             </div>
           </div>
@@ -214,5 +216,5 @@ ClientDetails.propTypes ={
   editClient: PropTypes.func,
 };
 
-const connectedApp = compose(connect(mapStateToProps), withRouter, withTranslation("common"))(ClientDetails);
+const connectedApp = connect(mapStateToProps)(withRouter(ClientDetails));
 export { connectedApp as ClientDetails };

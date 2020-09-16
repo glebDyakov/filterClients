@@ -1,13 +1,8 @@
 import React, { PureComponent } from 'react';
 
 import moment from 'moment';
-import {withTranslation} from "react-i18next";
 
 class TabScrollHeader extends PureComponent {
-  shouldComponentUpdate(newProps) {
-    return newProps;
-  }
-
   render() {
     const { selectedDays, timetable, timetableMessage, closedDates, staff, type } =this.props;
 
@@ -70,12 +65,12 @@ class TabScrollHeader extends PureComponent {
                     key={weekKey}
                   >
                     <p className="text-capitalize">
-                      {moment(item).format('dd')},&nbsp;
+                      {moment(item).locale('ru').format('dd')},&nbsp;
                       <span className={`text-capitalize ${clDate && 'closedDate'}`}>
                         {clDate
                           ?
                           <p>{moment(item).format('DD MMMM')}
-                            <p className="closedDate-color">&nbsp;({t("выходной")})</p>
+                            <p className="closedDate-color">&nbsp;(выходной)</p>
                           </p>
                           : moment(item).format('DD MMMM')}
                       </span>
@@ -91,4 +86,4 @@ class TabScrollHeader extends PureComponent {
     );
   }
 }
-export default withTranslation("common")(TabScrollHeader);
+export default TabScrollHeader;

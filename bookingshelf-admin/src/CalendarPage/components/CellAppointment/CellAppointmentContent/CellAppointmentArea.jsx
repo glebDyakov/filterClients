@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions } from '../../../../_actions';
-import {withTranslation} from "react-i18next";
 
 class CellAppointmentArea extends React.PureComponent {
   constructor(props) {
@@ -28,7 +27,7 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, t, totalAmount
+      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
@@ -45,6 +44,7 @@ class CellAppointmentArea extends React.PureComponent {
       <React.Fragment>
         <p
           id={textAreaId}
+          onClick={toggleSelectedNote}
           className={`notes-container ${appointment.color.toLowerCase() + '-color'}`}
           onMouseDown={(e) => e.preventDefault()}
           style={{
@@ -57,16 +57,16 @@ class CellAppointmentArea extends React.PureComponent {
           <span className="notes-container-message">
             <span className="client-name w-100 d-flex justify-content-between">
               <span className="client-name">{appointment.clientFirstName
-                  ? (t("Клиент") + ': ' + appointment.clientFirstName +
+                  ? ('Клиент: ' + appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
-                  : t('Без клиента')}</span>
+                  : 'Без клиента'}</span>
               <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
             </ul>
             {extraServiceText}
-            {appointment.description.length > 0 && <p className="service client-name">{t("Заметка")}: {appointment.description}</p>}
+            {appointment.description.length > 0 && <p className="service client-name">Заметка: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
             ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description
             ? `\nЗаметка: ${appointment.description}` : ''}`;*/}
@@ -93,4 +93,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)((withTranslation("common")(CellAppointmentArea)));
+export default connect(mapStateToProps)((CellAppointmentArea));

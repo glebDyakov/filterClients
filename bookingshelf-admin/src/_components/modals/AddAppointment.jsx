@@ -924,9 +924,9 @@ class AddAppointment extends React.Component {
     const activeStaffCurrent = staffFromProps && staffFromProps.find((staffItem) => staffItem.staffId === staffCurrent.staffId);
     const cl = clientChecked;
 
-    const appointmentsAllPrice = appointment.reduce((prev, current) => {
+    const appointmentsAllPrice = Math.floor((appointment.reduce((prev, current) => {
       return +prev + +current.price;
-    }, 0) || 0;
+    }, 0) || 0) * 100) / 100;
 
 
     const servicesDisabling = services[0].servicesList && services[0].servicesList.some((service) => {
