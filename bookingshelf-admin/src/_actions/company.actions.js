@@ -161,6 +161,7 @@ function getSubcompanies() {
     companyService.getSubcompanies()
       .then(
         (subcompanies) => dispatch(success(subcompanies)),
+        () => {},
       );
   };
 
