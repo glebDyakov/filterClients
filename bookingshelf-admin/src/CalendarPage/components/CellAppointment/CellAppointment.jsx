@@ -167,7 +167,7 @@ class CellAppointment extends React.PureComponent {
           currentAppointments={currentAppointments}
           numberKey={numberKey}
           staffKey={staffKey}
-          totalAmount={totalAmount}
+          totalAmount={Math.floor(totalAmount * 100) / 100}
         />
 
         {appointment.appointmentId === selectedNote && !appointment.coappointment &&
@@ -186,7 +186,7 @@ class CellAppointment extends React.PureComponent {
             changeTime={changeTime}
             updateAppointmentForDeleting={updateAppointmentForDeleting}
             services={services}
-            totalAmount={totalAmount}
+            totalAmount={Math.floor(totalAmount * 100) / 100}
             numbers={numbers}
           />
         }
