@@ -100,7 +100,7 @@ function getClientAppointments(id, clientId, pageNum) {
         headers: { 'Content-Type': 'application/json' }
     };
 
-    return fetch(`${origin}${config.apiUrl}/${id}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
+    return fetch(`${origin}${config.apiUrl}/${id}/clients/${clientId}/appointments?dateFrom=${moment().subtract(1, 'year').format('x')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
 
     //return fetch(`${origin}${config.apiUrl}/${id}/clients/${clientId}/appointments?pageNum=${pageNum}&pageSize=10&dateFrom=${moment().subtract(1, 'year')}&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
     //return fetch(`${origin}${config.apiUrl}/${id}/appointments/clients?dateFrom=1&dateTo=${moment().add(6, 'month').endOf('month').format('x')}`, requestOptions).then(handleResponse);
