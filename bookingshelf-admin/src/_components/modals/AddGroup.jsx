@@ -76,7 +76,7 @@ class AddGroup extends React.Component {
           'key': 'grey',
           'name': 'Серый',
         },
-        'LIGHT-GREEN': {
+        'GREEN_LIGHT': {
           'key': 'light-green',
           'name': 'Салатовый',
         },
@@ -94,7 +94,7 @@ class AddGroup extends React.Component {
         'WHITE',
         'SKY',
         'VIOLET',
-        'LIGHT-GREEN',
+        'GREEN_LIGHT',
         'BLUE',
       ],
       services: props.services && props.services,

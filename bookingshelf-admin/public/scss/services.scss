@@ -153,6 +153,10 @@
     &.light-green {
       border-left-color: $light-green-color;
     }
+
+    &.green_light {
+      border-left-color: $light-green-color;
+    }
     &.violet {
       border-left-color: $violet-color;
     }
@@ -220,6 +224,12 @@
         border-color: $light-green-color;
         background-color: $light-green-color;
       }
+
+      .green_lightButtonEdit {
+        border-color: $light-green-color;
+        background-color: $light-green-color;
+      }
+
       .violetButtonEdit {
         border-color: $violet-color;
         background-color: $violet-color;

@@ -154,6 +154,8 @@ function getActiveClientAppointments(clientId, pageNum) {
   const dateFrom = moment().subtract(1, 'year').format('x');
   const dateTo = moment().add(6, 'month').endOf('month').format('x');
 
+  console.log(dateFrom, dateTo)
+
   return fetch(
     `${origin}${config.apiUrl}/clients/${clientId}/appointments?dateFrom=${dateFrom}&dateTo=${dateTo}`,
     requestOptions,
