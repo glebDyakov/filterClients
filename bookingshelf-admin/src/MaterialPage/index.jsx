@@ -1086,6 +1086,7 @@ class Index extends Component {
                   edit={!!info_product_working}
                   client_working={info_product_working}
                   onClose={this.onCloseInfoProducts}
+                  productPageNum={this.state.productsCurrentPage}
                 />
         }
         {providerOpen &&
@@ -1128,6 +1129,7 @@ class Index extends Component {
                   edit={!!ex_product_working}
                   client_working={ex_product_working}
                   onClose={this.onCloseExProd}
+                  productPageNum={this.state.productsCurrentPage}
                 />
         }
         {storehouseProductOpen &&
@@ -1136,6 +1138,7 @@ class Index extends Component {
                   client_working={storehouseProduct_working}
                   onClose={this.onCloseStorehouseProduct}
                   suppliers={suppliers}
+                  productPageNum={this.state.productsCurrentPage}
                 />
         }
 

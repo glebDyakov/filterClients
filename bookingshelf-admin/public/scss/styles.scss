@@ -3194,6 +3194,10 @@ input {
       background-color: $light-green-color;
     }
 
+    &.green_light {
+      background-color: $light-green-color;
+    }
+
     &.violet {
       background-color: $violet-color;
     }
@@ -5569,6 +5573,14 @@ textarea {
         }
       }
 
+      .green_light {
+        color: $light-green-color;
+
+        &.color-circle {
+          background-color: $light-green-color;
+        }
+      }
+
       .violet {
         color: $violet-color;
 
@@ -5635,6 +5647,14 @@ textarea {
   }
 
   .light-green {
+    color: $light-green-color;
+
+    &.color-circle {
+      background-color: $light-green-color;
+    }
+  }
+
+  .green_light {
     color: $light-green-color;
 
     &.color-circle {

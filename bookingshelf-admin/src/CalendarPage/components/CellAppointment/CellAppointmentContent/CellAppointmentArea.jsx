@@ -27,7 +27,7 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount,
+      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
@@ -44,6 +44,7 @@ class CellAppointmentArea extends React.PureComponent {
       <React.Fragment>
         <p
           id={textAreaId}
+          onClick={toggleSelectedNote}
           className={`notes-container ${appointment.color.toLowerCase() + '-color'}`}
           onMouseDown={(e) => e.preventDefault()}
           style={{

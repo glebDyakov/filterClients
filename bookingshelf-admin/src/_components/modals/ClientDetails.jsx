@@ -112,7 +112,7 @@ class ClientDetails extends React.Component {
                                   <span className="gray-text">Всего визитов</span>
                                 </div>
                                 <div className="col-6 all-visits" style={{ textAlign: 'center' }}>
-                                  <strong>{this.state.allPrice} {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
+                                  <strong>{Math.floor(this.state.allPrice * 100) / 100 } {defaultAppointmentsList[0] && defaultAppointmentsList[0].currency}</strong><br/>
                                   <span className="gray-text">Сумма визитов</span>
                                 </div>
                               </div>
@@ -156,7 +156,7 @@ class ClientDetails extends React.Component {
                             {appointment.description ? <span
                               className="visit-description service">Заметка: {appointment.description}</span> : ''}
                             {appointment.clientNotCome ? <span className="visit-description" style={{ color: '#F46A6A' }}>Клиент не пришел</span> : ''}
-                            <span className="price">Цена: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : appointment.price} {appointment.currency}</span>
+                            <span className="price">Цена: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : Math.floor(appointment.price * 100) / 100} {appointment.currency}</span>
 
                           </p>
 

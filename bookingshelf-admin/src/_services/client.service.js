@@ -151,7 +151,7 @@ function getActiveClientAppointments(clientId, pageNum) {
     headers: authHeader(),
   };
 
-  const dateFrom = moment().subtract(1, 'year');
+  const dateFrom = moment().subtract(1, 'year').format('x');
   const dateTo = moment().add(6, 'month').endOf('month').format('x');
 
   return fetch(

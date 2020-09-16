@@ -113,6 +113,7 @@ class CellAppointmentContent extends React.PureComponent {
           maxTextAreaHeight={maxTextAreaHeight}
           resultTextAreaHeight={resultTextAreaHeight}
           extraServiceText={extraServiceText}
+          toggleSelectedNote={this.toggleSelectedNote}
           totalAmount={totalAmount}
         />
       </React.Fragment>
