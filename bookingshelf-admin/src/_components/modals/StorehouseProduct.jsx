@@ -180,7 +180,7 @@ class StorehouseProduct extends React.Component {
       updatedProduct[key] = parseInt(product[key]);
     });
 
-    this.props.dispatch(materialActions.storehouseProduct(updatedProduct, edit));
+    this.props.dispatch(materialActions.storehouseProduct(updatedProduct, edit, this.props.productPageNum || 1));
   };
 
   handleBirthdayChange({ target: { name, value } }) {

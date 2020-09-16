@@ -145,7 +145,7 @@ class ExpenditureProduct extends React.Component {
     const { day, month, year, client, edit, alert, clients }=this.state;
 
     const activeProduct = material.products && material.products.find((item) => item.productId === client.productId);
-    const activeUnit = material.units && material.units.find((item) => item.unitId === activeProduct.unitId);
+    const activeUnit = material.units && material.units.find((item) => item.unitId === activeProduct && activeProduct.unitId);
 
 
     let invalidCount;
@@ -231,7 +231,7 @@ class ExpenditureProduct extends React.Component {
                                 disabled={!(client.amount && client.target && !invalidCount)}
                                 type="button"
                                 // onClick={client.unitName && (edit ? this.updateClient : this.addClient)}
-                                onClick={(client.amount && client.target) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId))}
+                                onClick={(client.amount && client.target) && (() => this.expenditureProduct(client, !!client.storehouseProductExpenditureId, this.props.productPageNum || 1))}
 
                               >Сохранить
                               </button>
@@ -264,7 +264,7 @@ class ExpenditureProduct extends React.Component {
     //     updatedProduct[key] = parseInt(product[key]);
     // })
 
-    this.props.dispatch(materialActions.expenditureProduct(product, edit));
+    this.props.dispatch(materialActions.expenditureProduct(product, edit, this.props.productPageNum || 1));
   };
 
   handleBirthdayChange({ target: { name, value } }) {

@@ -332,7 +332,7 @@ function deleteUnit(id) {
   }
 }
 
-function expenditureProduct(params, edit) {
+function expenditureProduct(params, edit, productPageNum = 1) {
   return (dispatch) => {
     dispatch(request());
     materialService.expenditureProduct(params, edit)
@@ -341,7 +341,7 @@ function expenditureProduct(params, edit) {
           dispatch(success(exProd));
           setTimeout(()=>dispatch(successTime(exProd)), 500);
           dispatch(materialActions.getExpenditureProducts());
-          dispatch(materialActions.getProducts());
+          dispatch(materialActions.getProducts(productPageNum));
         },
       );
   };
@@ -458,7 +458,7 @@ function getExpenditureProducts() {
 }
 
 
-function storehouseProduct(params, edit) {
+function storehouseProduct(params, edit, productPage = 1) {
   return (dispatch) => {
     dispatch(request());
     materialService.storehouseProduct(params, edit)
@@ -467,7 +467,7 @@ function storehouseProduct(params, edit) {
           dispatch(success(product));
           setTimeout(()=>dispatch(successTime(product)), 500);
           dispatch(materialActions.getStoreHouseProducts());
-          dispatch(materialActions.getProducts());
+          dispatch(materialActions.getProducts(productPage));
         },
       );
   };

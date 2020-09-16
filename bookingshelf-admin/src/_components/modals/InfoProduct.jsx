@@ -180,7 +180,7 @@ class InfoProduct extends React.Component {
     const companyTypeId = company.settings && company.settings.companyTypeId;
 
 
-    const isValidPhone = client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
+    const isValidPhone = client && client.phone && isValidNumber(client.phone.startsWith('+') ? client.phone : `+${client.phone}`);
 
     return (
       <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod modal-product-details">
@@ -292,6 +292,7 @@ class InfoProduct extends React.Component {
                   client_working={ex_product_working}
                   addStaffEmail={this.addStaffEmail}
                   onClose={this.onCloseExProd}
+                  productPageNum={this.props.productPageNum || 1}
                 />
         }
         {storehouseProductOpen &&
@@ -301,6 +302,7 @@ class InfoProduct extends React.Component {
                   addStaffEmail={this.addStaffEmail}
                   onClose={this.onCloseStorehouseProduct}
                   suppliers={suppliers}
+                  productPageNum={this.props.productPageNum || 1}
                 />
         }
 
