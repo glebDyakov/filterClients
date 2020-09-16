@@ -6,6 +6,7 @@ import {Editor} from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import {convertToRaw, EditorState} from 'draft-js';
+import { withTranslation } from 'react-i18next';
 
 import Hint from '../_components/Hint';
 import Paginator from '../_components/Paginator';
@@ -30,19 +31,19 @@ class Index extends Component {
         }
 
         if (!props.match.params.activeTab || props.match.params.activeTab === 'auto_notification') {
-            document.title = 'Авто уведомления | Онлайн-запись';
+            document.title = props.t('Авто уведомления | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'smsletter') {
-            document.title = 'SMS Рассылка | Онлайн-запись';
+            document.title = props.t('SMS Рассылка | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'newsletter') {
-            document.title = 'Email Рассылка | Онлайн-запись';
+            document.title = props.t('Email Рассылка | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'balance') {
-            document.title = 'Баланс Email/SMS | Онлайн-запись';
+            document.title = props.t('Баланс Email/SMS | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'history') {
-            document.title = 'История сообщений | Онлайн-запись';
+            document.title = props.t('История сообщений | Онлайн-запись');
         }
 
         this.state = {
@@ -162,24 +163,25 @@ class Index extends Component {
     }
 
     setTab(tab) {
+        const { t } = this.props;
         this.setState({
             activeTab: tab,
         });
 
         if (tab === 'auto_notification') {
-            document.title = 'Авто уведомления | Онлайн-запись';
+            document.title = t('Авто уведомления | Онлайн-запись');
         }
         if (tab === 'smsletter') {
-            document.title = 'SMS Рассылка | Онлайн-запись';
+            document.title = t('SMS Рассылка | Онлайн-запись');
         }
         if (tab === 'newsletter') {
-            document.title = 'Email Рассылка | Онлайн-запись';
+            document.title = t('Email Рассылка | Онлайн-запись');
         }
         if (tab === 'balance') {
-            document.title = 'Баланс Email/SMS | Онлайн-запись';
+            document.title = t('Баланс Email/SMS | Онлайн-запись');
         }
         if (tab === 'history') {
-            document.title = 'История сообщений | Онлайн-запись';
+            document.title = t('История сообщений | Онлайн-запись');
         }
 
         history.pushState(null, '', '/email_sms/' + tab);
@@ -372,27 +374,29 @@ class Index extends Component {
     }
 
     getMessageStatus(messageStatus) {
+        const { t } = this.props;
+
         switch (messageStatus) {
             case 'DELIVERED':
                 return {
-                    text: 'Доставлено',
+                    text: t('Доставлено'),
                     color: '#34C38F',
                 };
             case 'ERROR':
             case 'blocked':
                 return {
-                    text: 'Заблокировано',
+                    text: t('Заблокировано'),
                     color: '#F46A6A',
                 };
             case 'NOT_DELIVERED':
             case 'UNSUCCESS':
                 return {
-                    text: 'Не доставлено',
+                    text: t('Не доставлено'),
                     color: '#F46A6A',
                 };
             case 'PENDING':
                 return {
-                    text: 'Доставляется',
+                    text: t('Доставляется'),
                     color: '#F3933A',
                 };
             default:
@@ -1210,4 +1214,4 @@ function mapStateToProps(store) {
     };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));
