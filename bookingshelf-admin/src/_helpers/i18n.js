@@ -13,12 +13,11 @@ const switchLang = (lng) => {
   }
 };
 
-const localStorageLanguage = localStorage.getItem('language')
 
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
   keySeparator: false,
-  lng: localStorageLanguage ? localStorageLanguage : 'ru',
+  lng: localStorage.getItem("language") || "ru",
 });
 
 i18next.on('languageChanged', function(lng) {
