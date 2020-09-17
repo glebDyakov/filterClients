@@ -774,7 +774,7 @@ class AddAppointment extends React.Component {
                                        	<span
                           className="price">|&nbsp;{service.priceFrom}{service.priceFrom !== service.priceTo && ' - ' + service.priceTo} {service.currency}</span>&nbsp;|&nbsp;
                         <span
-                          className="timing">{moment.duration(parseInt(durationForCurrentStaff), 'seconds').format(`h[ ч] m[ ${this.props.t("минут")}]`)}&nbsp;|</span>
+                          className="timing">{moment.duration(parseInt(durationForCurrentStaff), 'seconds').format(`h[ ${this.props.t("ч")}] m[ ${this.props.t("минут")}]`)}&nbsp;|</span>
                       </span>
                     </span>
                   </span>
@@ -993,7 +993,7 @@ class AddAppointment extends React.Component {
                                             className="price">{serviceCurrent[index].service.priceFrom} {serviceCurrent[index].service.priceFrom !== serviceCurrent[index].service.priceTo && ' - ' + serviceCurrent[index].service.priceTo} {serviceCurrent[index].service.currency}</span>&nbsp;|&nbsp;
                                           <span
                                             className="timing">
-                                            {moment.duration(parseInt(appointment[index].duration), 'seconds').format(`h[ ч] m[ ${t("минут")}]`)}&nbsp;|
+                                            {moment.duration(parseInt(appointment[index].duration), 'seconds').format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}&nbsp;|
                                           </span></span></span></span>
                                     </a>
 
@@ -1177,7 +1177,7 @@ class AddAppointment extends React.Component {
                                     <div style={{ height: '35px' }}
                                       className="name_company_wrapper form-control">
                                       <textarea className="company_input"
-                                        placeholder={t("Например: Без окраски")}
+                                        placeholder={t("Например Без окраски")}
                                         name="description" maxLength={120}
                                         value={appointment[index].description}
                                         onChange={(e) => this.handleChange(e, index)}/>
@@ -1412,7 +1412,7 @@ class AddAppointment extends React.Component {
                                                                   }
 
                                                                   <span
-                                                                    className="timing text-center my-2">{moment.duration(parseInt(appointment.duration), 'seconds').format(`h[ ч] m[ ${t("минут")}]`)}</span>
+                                                                    className="timing text-center my-2">{moment.duration(parseInt(appointment.duration), 'seconds').format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</span>
 
                                                                   <br/>
 
@@ -1514,7 +1514,7 @@ class AddAppointment extends React.Component {
                                     this.setState({ appointmentMessage: null });
                                   }
                                 }
-                              }}>Сохранить
+                              }}>{t("Сохранить")}
                             </button>
                           </div>
                           <div className="mobileButton">

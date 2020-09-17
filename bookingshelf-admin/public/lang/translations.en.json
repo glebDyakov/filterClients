@@ -665,5 +665,6 @@
   "Удалить сотрудника?": "To delete the employee?",
   "руб": "rubles",
   "грн": "hryvnia",
-  "выходной": "day off"
+  "выходной": "day off",
+  "ч": "h"
 }
