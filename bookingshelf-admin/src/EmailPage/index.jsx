@@ -585,7 +585,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.smsOn}
                                                                onChange={() => this.toggleChange('smsOn')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)")}
                                                     </label>
                                                 </div>
@@ -598,7 +598,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.emailOn}
                                                                onChange={() => this.toggleChange('emailOn')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)")}
                                                     </label>
                                                 </div>
@@ -615,7 +615,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.appointmentCreate}
                                                                onChange={() => this.toggleChange('appointmentCreate')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Уведомления при записи")}
                                                     </label>
                                                 </div>
@@ -625,7 +625,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.appointmentMove}
                                                                onChange={() => this.toggleChange('appointmentMove')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Уведомления при переносе визита")}
                                                     </label>
                                                 </div>
@@ -637,7 +637,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.appointmentDelete}
                                                                onChange={() => this.toggleChange('appointmentDelete')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Уведомления при удалении визита")}
                                                     </label>
                                                 </div>
@@ -647,7 +647,7 @@ class Index extends Component {
                                                                checked={notifications && notifications.appointmentRemind}
                                                                onChange={() => this.toggleChange('appointmentRemind')}
                                                                type="checkbox"/>
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                         {t("Напоминания о визитах")}
                                                     </label>
                                                 </div>
@@ -698,7 +698,7 @@ class Index extends Component {
                                                             onChange={() => this.toggleChange('smsSendUrl')}
                                                             type="checkbox"
                                                         />
-                                                        <span className="check"/>
+                                                        <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                     </label>
                                                 </div>
                                             </div>
@@ -755,7 +755,7 @@ class Index extends Component {
                                                                type="checkbox"/>
                                                         <span onClick={() => {
                                                             this.toggleChange('clientVerification');
-                                                        }} className="check"/>
+                                                        }} data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                                                     </label>
                                                 </div>
                                             </div>
@@ -779,7 +779,7 @@ class Index extends Component {
                                         <div className="row">
                                             <div className="col-md-8">
                         <span className="page-warning">
-                          {t("Постарайтесь избегать записи клиентов в журнал в позднее время")} <br/>{t(", т.к. клиенты получают моментальные sms о записи.")}
+                          {t("Постарайтесь избегать записи клиентов в журнал в позднее время")},<br/>{t("т.к. клиенты получают моментальные sms о записи")}
                         </span>
                                             </div>
                                         </div>

@@ -579,7 +579,7 @@ class Index extends Component {
 
                                         <div className="row align-items-center content clients mb-2 search-container">
                                           <div className="search col-8 col-lg-4">
-                                            <input type="search" placeholder="Поиск товаров"
+                                            <input type="search" placeholder={t("Поиск товаров")}
                                               aria-label="Search" ref={(input) => this.productSearch = input}
                                               onChange={() =>
                                                 this.handleSearch('defaultProductsList', 'products', ['productName', 'description'], 'productSearch')}/>
@@ -667,7 +667,7 @@ class Index extends Component {
 
                                         <div className="row align-items-center content clients mb-2">
                                           <div className="search col-6 col-lg-4">
-                                            <input type="search" placeholder="Поиск категорий"
+                                            <input type="search" placeholder={t("Поиск категорий")}
                                               aria-label="Search" ref={(input) => this.categorySearch = input}
                                               onChange={() => this.handleSearch('defaultCategoriesList', 'categories', ['categoryName'], 'categorySearch')}/>
                                             <button className="search-icon" type="submit"/>
@@ -863,7 +863,7 @@ class Index extends Component {
 
                                 <div className="row align-items-center content clients mb-2">
                                   <div className="search col-6 col-lg-4">
-                                    <input type="search" placeholder="Поиск товаров"
+                                    <input type="search" placeholder={t("Поиск товаров")}
                                       aria-label="Search" ref={(input) => this.movingSearch = input}
                                       onChange={() =>
                                         this.handleSearchMoving()}/>
@@ -1012,7 +1012,7 @@ class Index extends Component {
 
                                         <div className="row align-items-center content clients mb-2">
                                           <div className="search col-6 col-lg-4">
-                                            <input type="search" placeholder="Поиск складов"
+                                            <input type="search" placeholder={t("Поиск складов")}
                                               aria-label="Search" ref={(input) => this.storeHouseSearch = input}
                                               onChange={() =>
                                                 this.handleSearch('defaultStoreHousesList', 'storeHouses', ['storehouseName'], 'storeHouseSearch')}/>

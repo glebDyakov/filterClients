@@ -201,7 +201,7 @@ class AddProduct extends React.Component {
                                     value={client.unitId}>
                                     <option value="">{t("Выберите единицу измерения")}</option>
                                     {units.map((brand) => <option
-                                      value={brand.unitId}>{brand.unitName}</option>)}
+                                      value={brand.unitId}>{t(brand.unitName)}</option>)}
                                   </select>
                                 </div>
                                 <div className="col-sm-4">

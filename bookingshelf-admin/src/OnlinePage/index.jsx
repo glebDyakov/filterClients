@@ -270,7 +270,7 @@ class Index extends Component {
                     <Hint
                       customLeft="-1px"
                       hintMessage={
-                        t('Например Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства.')
+                        t('Например Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства')
                       }
                     />
                   </p>
@@ -286,7 +286,7 @@ class Index extends Component {
                     &nbsp;
                     <Hint
                       customLeft="-4px"
-                      hintMessage={t("По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес.")}
+                      hintMessage={t("По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес")}
                     />
                   </p>
 
@@ -298,7 +298,7 @@ class Index extends Component {
                         checked={isOnlineZapisChecked}
                         onChange={() => this.handleCheckboxChange('onlineZapisOn')}
                       />
-                      <span className="check"/>
+                      <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                     </label>
                   </div>
 

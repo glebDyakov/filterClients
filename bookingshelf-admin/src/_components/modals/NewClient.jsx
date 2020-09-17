@@ -237,7 +237,7 @@ class NewClient extends React.Component {
                                           name="carNumber" handleChange={this.handleChange}
                                           withCounter={true} maxLength={128}/>}
 
-                              <InputCounter type="email" placeholder={`Введите email (${t("опционально")})`}
+                              <InputCounter type="email" placeholder={`${t("Введите email")} (${t("Опционально")})`}
                                 value={client.email}
                                 withCounter={true} name="email" title="Email"
                                 handleKeyUp={() => this.setState({

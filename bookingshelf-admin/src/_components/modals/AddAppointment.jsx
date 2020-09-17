@@ -811,7 +811,7 @@ class AddAppointment extends React.Component {
                 checked={isAddCostaff}
                 onChange={() => this.setState({ isAddCostaff: !this.state.isAddCostaff })}
               />
-              <span style={{ margin: '0 0 0 4px' }} className="check"/>
+              <span style={{ margin: '0 0 0 4px' }} data-label-off={this.props.t("Выкл")} data-label-on={this.props.t("Вкл")} className="check"/>
             </label>
           </span>
         </div>

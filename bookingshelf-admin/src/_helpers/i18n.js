@@ -6,8 +6,6 @@ import {userConstants} from "../_constants";
 
 const switchLang = (lng) => {
   switch (lng) {
-    case 'UA':
-      return 'uk';
     case 'EN':
       return 'en-gb';
     default:
@@ -27,7 +25,7 @@ i18next.on('languageChanged', function(lng) {
   import(`../../public/lang/translations.${lng.toLowerCase()}`)
     .then((json) => {
       i18next.addResources(lng, 'common', json);
-      store.dispatch({type: userConstants.UPDATE_LANG, lng});
+      store.dispatch({type: userConstants.UPDATE_LANG, lang: lng.toLowerCase()});
     });
 
   import(`moment/locale/${switchLang(lng)}`).then((localization) => {

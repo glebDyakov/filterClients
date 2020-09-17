@@ -188,7 +188,7 @@ class ManagerSettings extends React.Component {
           </div>
 
           <div className="theme-block lang-block">
-            <h5>Выберите язык</h5>
+            <h5>{t("Выберите язык")}</h5>
             <select value={this.props.i18n.language} onChange={(e) => {
               this.handleChangeLang(e.target.value);
             }} className="custom-select">
@@ -196,7 +196,7 @@ class ManagerSettings extends React.Component {
               <option value="RU">Русский</option>
               <option value="PL">Польский</option>
               <option value="EN">Английский</option>
-              <option value="UA">Украинский</option>
+              <option value="UK">Украинский</option>
             </select>
           </div>
 
