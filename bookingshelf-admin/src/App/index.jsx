@@ -128,11 +128,11 @@ class Index extends React.Component {
             })
         }
 
-        if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
-            this.setState({
-                language: newProps.i18n.language
-            });
-        }
+        // if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
+        //     this.setState({
+        //         language: newProps.i18n.language
+        //     });
+        // }
 
 
         let localStorageUser;
