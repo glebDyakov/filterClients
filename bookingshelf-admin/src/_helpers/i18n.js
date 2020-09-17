@@ -27,7 +27,6 @@ i18next.on('languageChanged', function(lng) {
       i18next.addResources(lng, 'common', json);
       store.dispatch({type: userConstants.UPDATE_LANG, lang: lng.toLowerCase()});
     });
-
   import(`moment/locale/${switchLang(lng)}`).then((localization) => {
     moment.locale(switchLang(lng), localization);
     store.dispatch({type: userConstants.UPDATE_LANG, lng});
