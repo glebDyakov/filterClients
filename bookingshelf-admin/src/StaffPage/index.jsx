@@ -640,7 +640,7 @@ class Index extends Component {
                             onDayClick={this.handleDayClick}
                             onDayMouseEnter={this.handleDayMouseEnter}
                             localeUtils={MomentLocaleUtils}
-                            locale={'ru'}
+                            locale={this.props.i18n.language}
                           />
                         </div>
 
@@ -649,7 +649,7 @@ class Index extends Component {
                           <textarea
                             className="form-control" rows="3" name="description"
                             value={closedDates.description}
-                            placeholder={t("Например: дополнительный выходной в честь дня рождения организации")}
+                            placeholder={t("Например дополнительный выходной в честь дня рождения организации")}
                             onChange={this.handleClosedDate}
                           />
                         </div>

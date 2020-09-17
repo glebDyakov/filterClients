@@ -3,7 +3,7 @@ import {withTranslation} from "react-i18next";
 
 class CalendarSwitch extends PureComponent {
   render() {
-    const { type, selectType, t } = this.props;
+    const { type, selectType, language, t } = this.props;
 
     return (
       <div className="tab-day-week tab-content col-3">

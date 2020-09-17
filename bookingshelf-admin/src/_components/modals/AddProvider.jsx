@@ -250,7 +250,7 @@ class AddProvider extends React.Component {
                                           withCounter={true} name="firstName"handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                       </div>
                                       <div className="col-sm-6">
-                                        <InputCounter title={t("\"Фамилия\"")} placeholder="" value={contactPerson.lastName}
+                                        <InputCounter title={t("Фамилия")} placeholder="" value={contactPerson.lastName}
                                           withCounter={true} name="lastName" handleChange={(e) => this.handleContactChange(e, index)} maxLength={32} />
                                       </div>
                                     </div>

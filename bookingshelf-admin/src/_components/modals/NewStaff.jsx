@@ -194,7 +194,7 @@ class NewStaff extends React.Component {
                 <span className="red-text"> {t("Такой имейл уже используется в системе")}</span>}
         <input
           type="email"
-          placeholder="Введите email (опционально)"
+          placeholder={t("Введите email") + ` (${t("Опционально")})`}
           name="email"
           value={staff.email}
           onChange={this.handleChange}

@@ -3323,7 +3323,7 @@ input {
       transition: 200ms !important;
 
       &::after {
-        content: "Выкл";
+        content: attr(data-label-off);
         font-size: 10px;
         line-height: 16px;
         color: #FFFFFF;
@@ -3360,7 +3360,7 @@ input {
         }
 
         &::after {
-          content: "Вкл";
+          content: attr(data-label-on);
           transition: 200ms;
         }
       }

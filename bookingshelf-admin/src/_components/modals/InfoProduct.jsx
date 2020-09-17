@@ -198,7 +198,7 @@ class InfoProduct extends React.Component {
                         <div className="form-group mr-3 ml-3">
                           <div className="row main-info">
                             <div className="col-sm-8">
-                              <InputCounter title={t("Наименование")} placeholder={t("'Например Средний шампунь'")} value={client.productName}
+                              <InputCounter title={t("Наименование")} placeholder={t("Например Средний шампунь")} value={client.productName}
                                 name="productName" handleChange={this.handleChange} maxLength={128} disabled={true}/>
                               <div className="row">
                                 <div className="col-sm-4">
@@ -206,13 +206,12 @@ class InfoProduct extends React.Component {
                                   <select className="custom-select" name="unitId" onChange={this.handleChange}
                                     value={client.unitId} disabled={true}>
                                     <option value="">{t("Выберите единицу измерения")}</option>
-                                    {units.map((brand) => <option value={brand.unitId}>{brand.unitName}</option>)}
+                                    {units.map((brand) => <option value={brand.unitId}>{t(brand.unitName)}</option>)}
                                   </select>
                                 </div>
                                 <div className="col-sm-4">
                                   <InputCounter title={t("Номинал объем")} placeholder={t("Введите номинальный объем")} value={String(client.nominalAmount)}
                                     name="nominalAmount" handleChange={this.handleChange} maxLength={9} disabled={true} />
-
                                 </div>
                                 <div className="col-sm-4">
                                   <InputCounter title={t("Код товара")} placeholder={t("Введите код")} value={client.productCode}

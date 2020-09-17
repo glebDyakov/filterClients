@@ -184,7 +184,7 @@ class UserSettings extends React.Component {
                   <label>
                     <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}
                       type="checkbox"/>
-                    <span className="check" />
+                    <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check" />
                     {t("Звуковые уведомления для визитов")}
                   </label>
                 </div>

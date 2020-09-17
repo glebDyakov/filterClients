@@ -42,7 +42,7 @@ class ProductsList extends Component {
         <div>
           <p>
             <span className="mob-title">{t("Номинальный объем")}: </span>
-            {product && product.nominalAmount} {activeUnit && activeUnit.unitName}
+            {product && product.nominalAmount} {activeUnit && t(activeUnit.unitName)}
           </p>
         </div>
         <div >

@@ -370,7 +370,7 @@ class Index extends Component {
                   this.handleOpenModal();
                 }}
                 >
-                  Новый клиент
+                  {t("Новый клиент")}
                 </button>
               }
               {activeTab === 'blacklist' &&

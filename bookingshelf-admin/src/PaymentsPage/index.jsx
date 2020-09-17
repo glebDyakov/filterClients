@@ -544,7 +544,7 @@ class Index extends Component {
                           >= moment().format('x'))
                           ? t("Пакет действителен до") + ': ' +
                           moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
-                          : (authentication.user.forceActive ? t('Пробный период продлён') : ''))
+                          : (authentication.user.forceActive ? t('Пробный период') + " " + t('продлён') : ''))
                       }
                     </div>
                   </div>

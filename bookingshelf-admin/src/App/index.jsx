@@ -61,6 +61,7 @@ let socket;
 
 import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
 import {withTranslation} from "react-i18next";
+import {i18next} from "../_helpers/i18n";
 
 const sound = new Audio(`${process.env.CONTEXT}public/mp3/message_sound.mp3`);
 
@@ -95,6 +96,8 @@ class Index extends React.Component {
     } catch (e) {
 
     }
+
+
     const user = this.props.authentication.user || localStorageUser;
 
 
@@ -119,6 +122,12 @@ class Index extends React.Component {
     } else {
       $('body').removeClass('dark-theme');
     };
+
+    if (this.props.authentication.i18nLanguage !== newProps.authentication.i18nLanguage) {
+      this.setState({
+        language: newProps.authentication.i18nLanguage,
+      })
+    }
 
     if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
       this.setState({

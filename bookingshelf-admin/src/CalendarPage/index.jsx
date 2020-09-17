@@ -291,6 +291,12 @@ class Index extends PureComponent {
       this.queryInitData();
     }
 
+    if (this.props.authentication.i18nLanguage !== newProps.authentication.i18nLanguage) {
+      this.setState({
+        language: newProps.i18n.language,
+      })
+    }
+
     if (this.props.i18n.language !== newProps.i18n.language) {
       this.setState({
         language: newProps.i18n.language,
@@ -511,12 +517,13 @@ class Index extends PureComponent {
                 handleDayChange={this.handleDayChange}
                 handleDayClick={this.handleDayClick}
                 handleWeekClick={this.handleWeekClick}
-                language={this.props.i18n.language}
+                language={this.state.language}
               />
             </div>
             <CalendarSwitch
               type={type}
               selectType={this.selectType}
+
             />
           </div>
           <div className={'days-container ' + (isMobile ? 'days-container-mobile' : 'days-container-desktop')}>
