@@ -13,6 +13,7 @@ import { isValidEmailAddress } from '../../_helpers/validators';
 import Hint from '../Hint';
 import { DatePicker } from '../DatePicker';
 import ReactPhoneInput from 'react-phone-input-2';
+import {withTranslation} from "react-i18next";
 
 const staffErrors = {
   emailFound: 'validation.email.found',
@@ -92,7 +93,7 @@ class NewStaff extends React.Component {
   }
 
   render() {
-    const { authentication, staffs, company } = this.props;
+    const { authentication, staffs, company, t } = this.props;
     const { staff, edit, extraSuccessText, selectedStartDayOff, selectedEndDayOff, message } = this.state;
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
@@ -187,12 +188,10 @@ class NewStaff extends React.Component {
 
     const emailInput = (
       <React.Fragment>
-        <p>Email <Hint hintMessage={`Имейл дает доступ к
-аккаунту. Оставьте пустым,
-если доступ не нужен`}/>
+        <p>Email <Hint hintMessage={t(`Имейл дает доступ к аккаунту. Оставьте пустым, если доступ не нужен`)}/>
         </p>
         {staffs.errorMessageKey === staffErrors.emailFound &&
-                <span className="red-text"> Такой имейл уже используется в системе</span>}
+                <span className="red-text"> {t("Такой имейл уже используется в системе")}</span>}
         <input
           type="email"
           placeholder="Введите email (опционально)"
@@ -233,14 +232,14 @@ class NewStaff extends React.Component {
                         <div className="form-group">
                           {!edit ?
                             <div className="modal-header">
-                              <h5 className="modal-title">{(companyTypeId === 2 || companyTypeId === 3) ? 'Новое рабочее место' : 'Новый сотрудник'}</h5>
+                              <h5 className="modal-title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : t('Новый сотрудник')}</h5>
                               <button type="button" className="close" onClick={this.closeModal}>
                                 <span aria-hidden="true"/>
                               </button>
                             </div>
                             :
                             <div className="modal-header">
-                              <h5 className="modal-title">Редактирование {(companyTypeId === 2 || companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</h5>
+                              <h5 className="modal-title">{t("Редактирование")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочего места') : t('сотрудника')}</h5>
                               <button type="button" className="close" onClick={this.closeModal}
                                 aria-label="Close">
                                 <span aria-hidden="true"/>
@@ -253,9 +252,9 @@ class NewStaff extends React.Component {
                                 <div className="row">
                                   <div className="col-md-4">
                                     <div style={{ position: 'relative' }}>
-                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 1' : 'Имя'}</p>
+                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t("Название") + ' 1' : t('Имя')}</p>
                                       <input type="text"
-                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Введите название' : 'Введите имя'}
+                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? t('Введите название') : t('Введите имя')}
                                         value={staff.firstName} name="firstName"
                                         onChange={this.handleChange}
                                         className={!staff.firstName && (staff.phone || staff.email || staff.lastName) ? ' redBorder' : ''}
@@ -265,16 +264,16 @@ class NewStaff extends React.Component {
                                         className="max-count-letters">{staff.firstName ? staff.firstName.length : 0}/100</span>
                                     </div>
                                     <div style={{ position: 'relative' }} className="mobile-visible">
-                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 2' : 'Фамилия'}</p>
+                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t("Название") + ' 2' : t('Фамилия')}</p>
                                       <input type="text"
-                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Введите название' : 'Введите фамилию'}
+                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? t('Введите название') : t('Введите фамилию')}
                                         value={staff.lastName} name="lastName"
                                         onChange={this.handleChange} maxLength="100"/>
                                       <span
                                         className="max-count-letters">{staff.lastName ? staff.lastName.length : 0}/100</span>
                                     </div>
 
-                                    <p>Номер телефона</p>
+                                    <p>{t("Номер телефона")}</p>
                                     <ReactPhoneInput
                                       defaultCountry={'by'}
                                       country={'by'}
@@ -296,9 +295,9 @@ class NewStaff extends React.Component {
                                   </div>
                                   <div className="col-md-4">
                                     <div style={{ position: 'relative' }} className="desktop-visible">
-                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? 'Название 2' : 'Фамилия'}</p>
+                                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t("Название") + ' 2' : t('Фамилия')}</p>
                                       <input type="text"
-                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Площадка 1' : 'Введите фамилию'}
+                                        placeholder={(companyTypeId === 2 || companyTypeId === 3) ? t("'Например: Площадка 1'") : t('Введите фамилию')}
                                         value={staff.lastName} name="lastName"
                                         onChange={this.handleChange} maxLength="100"/>
                                       <span
@@ -311,7 +310,7 @@ class NewStaff extends React.Component {
                                   </div>
                                   <div className="col-md-4">
                                     <div className="upload_container">
-                                      <p>Фотография</p>
+                                      <p>{t("Фотография")}</p>
                                       <div className="setting image_picker">
                                         <div className="settings_wrap">
                                           <label className="drop_target">
@@ -347,13 +346,13 @@ class NewStaff extends React.Component {
 
                                   <div className="col-md-4">
                                     <div className="input_limited_wrapper_3_digital">
-                                      <p>Описание (специализация) <Hint
-                                        hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Шиномонтаж 4 колес, балансировка, снятие установка' : 'Например: Массажист высшей категории'}/>
+                                      <p>{t("Описание (специализация)")} <Hint
+                                        hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? t("'Например Шиномонтаж 4 колес, балансировка, снятие установка'") : t('Например Массажист высшей категории')}/>
                                       </p>
 
                                       <input
                                         type="text"
-                                        placeholder="Например: массажист"
+                                        placeholder={t("Например массажист")}
                                         name="description"
                                         value={staff.description}
                                         onChange={this.handleChange}
@@ -366,19 +365,19 @@ class NewStaff extends React.Component {
 
 
                                     <div>
-                                      <p>Доступ</p>
+                                      <p>{t("Доступ")}</p>
                                       <select className="custom-select" value={staff.roleId}
                                         disabled={staff.roleId === 4 && true} name="roleId"
                                         onChange={this.handleChange}>
-                                        {staff.roleId === 4 && <option value="4">Владелец</option>}
-                                        <option value="1">Низкий</option>
-                                        <option value="2">Средний</option>
-                                        <option value="3">Админ</option>
+                                        {staff.roleId === 4 && <option value="4">{t("Владелец")}</option>}
+                                        <option value="1">{t("Низкий")}</option>
+                                        <option value="2">{t("Средний")}</option>
+                                        <option value="3">{t("Админ")}</option>
                                       </select>
                                     </div>
                                     <div className="helper-input-container">
-                                      <p>Напарник <Hint
-                                        hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? 'Например: Если у вас 1 комплект оборудования на 2 рабочих места' : 'Например: Если у вас 2 сотрудника на 1 кабинет'}/>
+                                      <p>{t("Напарник")} <Hint
+                                        hintMessage={(companyTypeId === 2 || companyTypeId === 3) ? t('Например Если у вас 1 комплект оборудования на 2 рабочих места') : t('Например Если у вас 2 сотрудника на 1 кабинет')}/>
                                       </p>
                                       {/* <select className="custom-select" value={staff.costaffs && staff.costaffs[0] && staff.costaffs[0].staffId} name="costaffs" onChange={this.handleChangeCoStaff}>*/}
                                       {/* <option value="">-</option>*/}
@@ -390,7 +389,7 @@ class NewStaff extends React.Component {
                                         value={option}
                                         isMulti={true}
                                         onChange={this.handleChangeMultiple}
-                                        placeholder="Поиск по имени"
+                                        placeholder={t("Поиск по имени")}
                                         options={options}
                                         styles={colourStyles}
                                       />
@@ -398,14 +397,13 @@ class NewStaff extends React.Component {
 
 
                                     <p className="start-work"
-                                      style={{ margin: '12px 0', textAlign: 'left' }}>Начало
-                                                        работы: {moment(staff.workStartMilis, 'x').startOf('day').format('D MMMM YYYY')}</p>
+                                      style={{ margin: '12px 0', textAlign: 'left' }}>{t("Начало работы")}: {moment(staff.workStartMilis, 'x').startOf('day').format('D MMMM YYYY')}</p>
 
                                     <div className="buttons new-staff-buttons">
                                       <button className={'small-button'} type="button"
                                         onClick={() => {
                                           if (!staff.firstName || (staff.email && !isValidEmailAddress(staff.email)) || staffs.adding) {
-                                            this.setState({ message: 'Необходимо заполнить имя сотрудника' });
+                                            this.setState({ message: t('Необходимо заполнить имя сотрудника') });
                                           } else {
                                             this.setState({ message: '' });
                                             if (edit) {
@@ -415,7 +413,7 @@ class NewStaff extends React.Component {
                                             }
                                           }
                                         }}
-                                      >Сохранить
+                                      >{t("Сохранить")}
                                       </button>
                                     </div>
                                   </div>
@@ -423,7 +421,7 @@ class NewStaff extends React.Component {
 
 
                                     <div className="col-md-6 time-to-online-visit">
-                                      <p>Доступное время для онлайн-записи</p>
+                                      <p>{t("Доступное время для онлайн-записи")}</p>
                                       <select className="custom-select" name="onlineBookingPercent"
                                         onChange={this.handleChange}
                                         value={staff.onlineBookingPercent}>
@@ -442,10 +440,10 @@ class NewStaff extends React.Component {
                                               checked={this.state.staff.onlineBooking}
                                               onChange={() => this.toggleChange('onlineBooking')}/>
                                             <span className="check-box-circle"/>
-                                                                    Включить онлайн запись
+                                                                    {t("Включить онлайн запись")}
                                           </label>&nbsp;
                                           <Hint
-                                            hintMessage={`Включает возможность записи ${(companyTypeId === 2 || companyTypeId === 3) ? 'на рабочее место' : 'к сотруднику'} через онлайн-запись`}/>
+                                            hintMessage={`${t("Включает возможность записи")} ${(companyTypeId === 2 || companyTypeId === 3) ? t('на рабочее место') : t('к сотруднику')} ${t("через онлайн-запись")}`}/>
                                         </div>
 
                                         <div className="check-box">
@@ -454,10 +452,10 @@ class NewStaff extends React.Component {
                                               checked={this.state.staff.adminBooking}
                                               onChange={() => this.toggleChange('adminBooking')}/>
                                             <span className="check-box-circle"/>
-                                                                    Включить отображение в журнале
+                                                                    {t("Включить отображение в журнале")}
                                           </label>&nbsp;
                                           <Hint
-                                            hintMessage={`Включает возможность\nзаписи ${(companyTypeId === 2 || companyTypeId === 3) ? 'на рабочее место' : 'к сотруднику'}\nв журнале`}/>
+                                            hintMessage={`${t("Включает возможность записи")} ${(companyTypeId === 2 || companyTypeId === 3) ? t('на рабочее место') : t('к сотруднику')}\n${t("в журнале")}`}/>
                                         </div>
 
                                         <div className="check-box">
@@ -466,20 +464,21 @@ class NewStaff extends React.Component {
                                               checked={(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis}
                                               onChange={(e) => this.toggleOnlineZapisOffChange(e)}/>
                                             <span className="check-box-circle"/>
-                                                                    Отключить онлайн-запись на определённый период
+                                                                    {t("Отключить онлайн-запись на определённый период")}
                                           </label>&nbsp;
                                         </div>
 
                                         {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis &&
                                                             <div
                                                               className="staff-day-picker online-zapis-date-picker mb-3">
-                                                              <p className="staff-day-picker-title">Начало</p>
+                                                              <p className="staff-day-picker-title">{t("Начало")}</p>
                                                               <DatePicker
                                                                 // closedDates={staffAll.closedDates}
                                                                 type="day"
                                                                 selectedDay={selectedStartDayOff}
                                                                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedStartDayOff')}
                                                                 dayPickerProps={dayPickerProps}
+                                                                language={this.props.i18n.language}
                                                               />
                                                             </div>
                                         }
@@ -487,10 +486,11 @@ class NewStaff extends React.Component {
                                         {(parseInt(moment(this.state.selectedStartDayOff).format('x')) < parseInt(moment(this.state.selectedEndDayOff).format('x'))) && this.state.staff.startDateOffMilis !== this.state.staff.endDateOffMilis &&
                                                             <div
                                                               className="staff-day-picker online-zapis-date-picker mb-3">
-                                                              <p className="staff-day-picker-title">Конец</p>
+                                                              <p className="staff-day-picker-title">{t("Конец")}</p>
                                                               <DatePicker
                                                                 // closedDates={staffAll.closedDates}
                                                                 type="day"
+                                                                language={this.props.i18n.language}
                                                                 selectedDay={selectedEndDayOff}
                                                                 handleDayClick={(day, modifiers) => this.handleDayOffClick(day, modifiers, 'selectedEndDayOff')}
                                                                 dayPickerProps={{
@@ -510,15 +510,13 @@ class NewStaff extends React.Component {
                                       </div>
 
                                       <p className="start-work-mob"
-                                        style={{ marginTop: '12px', textAlign: 'center' }}>Начало
-                                                            работы: {moment(staff.workStartMilis, 'x').startOf('day').format('D MMMM YYYY')}</p>
+                                        style={{ marginTop: '12px', textAlign: 'center' }}>{t("Начало работы")}: {moment(staff.workStartMilis, 'x').startOf('day').format('D MMMM YYYY')}</p>
 
                                       {staffs && staffs.status === 200 &&
-                                                        <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено. {extraSuccessText && 'Доступы для сотрудника высланы на указанный Email'}</p>
+                                                        <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}. {extraSuccessText && t('Доступы для сотрудника высланы на указанный Email')}</p>
                                       }
                                       {staffs && staffs.status === 210 &&
-                                                        <p className="alert-danger p-1 rounded pl-3 mb-2">Такой email
-                                                            существует!</p>
+                                                        <p className="alert-danger p-1 rounded pl-3 mb-2">{t("Такой email существует!")}</p>
                                       }
                                       {staffs && staffs.adding && staffs.status !== 200 &&
                                                         <img style={{ width: '57px' }}
@@ -536,7 +534,7 @@ class NewStaff extends React.Component {
                                       <button className='small-button' type="button"
                                         onClick={() => {
                                           if (!staff.firstName || (staff.email && !isValidEmailAddress(staff.email)) || staffs.adding) {
-                                            this.setState({ message: 'Необходимо заполнить имя сотрудника' });
+                                            this.setState({ message: t('Необходимо заполнить имя сотрудника') });
                                           } else {
                                             this.setState({ message: '' });
                                             if (edit) {
@@ -546,7 +544,7 @@ class NewStaff extends React.Component {
                                             }
                                           }
                                         }}
-                                      >Сохранить
+                                      >{t("Сохранить")}
                                       </button>
                                     </div>
 
@@ -715,5 +713,5 @@ NewStaff.propTypes = {
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(NewStaff);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(NewStaff));
 export { connectedApp as NewStaff };

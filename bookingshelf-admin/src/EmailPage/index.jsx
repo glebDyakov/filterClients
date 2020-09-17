@@ -6,6 +6,7 @@ import {Editor} from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import {convertToRaw, EditorState} from 'draft-js';
+import { withTranslation } from 'react-i18next';
 
 import Hint from '../_components/Hint';
 import Paginator from '../_components/Paginator';
@@ -30,19 +31,19 @@ class Index extends Component {
         }
 
         if (!props.match.params.activeTab || props.match.params.activeTab === 'auto_notification') {
-            document.title = 'Авто уведомления | Онлайн-запись';
+            document.title = props.t('Авто уведомления | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'smsletter') {
-            document.title = 'SMS Рассылка | Онлайн-запись';
+            document.title = props.t('SMS Рассылка | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'newsletter') {
-            document.title = 'Email Рассылка | Онлайн-запись';
+            document.title = props.t('Email Рассылка | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'balance') {
-            document.title = 'Баланс Email/SMS | Онлайн-запись';
+            document.title = props.t('Баланс Email/SMS | Онлайн-запись');
         }
         if (props.match.params.activeTab === 'history') {
-            document.title = 'История сообщений | Онлайн-запись';
+            document.title = props.t('История сообщений | Онлайн-запись');
         }
 
         this.state = {
@@ -141,7 +142,11 @@ class Index extends Component {
         if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
             this.queryInitData();
         }
-        if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+        if (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services) ||
+            JSON.stringify(this.props.client) !== JSON.stringify(newProps.client) ||
+            JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff) ||
+            JSON.stringify(this.props.notification) !== JSON.stringify(newProps.notification) ||
+            JSON.stringify(this.props.notifications) !== JSON.stringify(newProps.notifications)) {
             this.setState({
                 ...this.state,
                 notifications: newProps.notification.notification === ''
@@ -162,24 +167,25 @@ class Index extends Component {
     }
 
     setTab(tab) {
+        const { t } = this.props;
         this.setState({
             activeTab: tab,
         });
 
         if (tab === 'auto_notification') {
-            document.title = 'Авто уведомления | Онлайн-запись';
+            document.title = t('Авто уведомления | Онлайн-запись');
         }
         if (tab === 'smsletter') {
-            document.title = 'SMS Рассылка | Онлайн-запись';
+            document.title = t('SMS Рассылка | Онлайн-запись');
         }
         if (tab === 'newsletter') {
-            document.title = 'Email Рассылка | Онлайн-запись';
+            document.title = t('Email Рассылка | Онлайн-запись');
         }
         if (tab === 'balance') {
-            document.title = 'Баланс Email/SMS | Онлайн-запись';
+            document.title = t('Баланс Email/SMS | Онлайн-запись');
         }
         if (tab === 'history') {
-            document.title = 'История сообщений | Онлайн-запись';
+            document.title = t('История сообщений | Онлайн-запись');
         }
 
         history.pushState(null, '', '/email_sms/' + tab);
@@ -372,27 +378,29 @@ class Index extends Component {
     }
 
     getMessageStatus(messageStatus) {
+        const { t } = this.props;
+
         switch (messageStatus) {
             case 'DELIVERED':
                 return {
-                    text: 'Доставлено',
+                    text: t('Доставлено'),
                     color: '#34C38F',
                 };
             case 'ERROR':
             case 'blocked':
                 return {
-                    text: 'Заблокировано',
+                    text: t('Заблокировано'),
                     color: '#F46A6A',
                 };
             case 'NOT_DELIVERED':
             case 'UNSUCCESS':
                 return {
-                    text: 'Не доставлено',
+                    text: t('Не доставлено'),
                     color: '#F46A6A',
                 };
             case 'PENDING':
                 return {
-                    text: 'Доставляется',
+                    text: t('Доставляется'),
                     color: '#F3933A',
                 };
             default:
@@ -445,6 +453,8 @@ class Index extends Component {
             count_sms_all, receivers_email,
         } = this.state;
 
+        const { t } = this.props;
+
         return (
             <div className="emailPage">
                 {/* {this.state.isLoading ? <div className="zIndex"><Pace color="rgb(42, 81, 132)" height="3"  /></div> : null}*/}
@@ -464,7 +474,7 @@ class Index extends Component {
                                     this.setTab('auto_notification');
                                 }}
                                 >
-                                    Авто уведомления
+                                    {t("Авто уведомления")}
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -478,7 +488,7 @@ class Index extends Component {
                                         this.setTab('smsletter');
                                     }}
                                 >
-                                    Рассылка
+                                    {t("Рассылка")}
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -494,7 +504,7 @@ class Index extends Component {
                                    data-toggle="tab"
                                    href="#history" onClick={() => this.setTab('history')}
                                 >
-                                    История сообщений
+                                    {t("История сообщений")}
                                 </a>
                             </li>
                         </ul>
@@ -505,11 +515,11 @@ class Index extends Component {
                             onClick={this.handleOpenHeaderDropdown}
                             className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
                         >{(activeTab === 'auto_notification' ? 'Авто уведомления'
-                            : (activeTab === 'newsletter' || activeTab === 'smsletter' ? 'Рассылка'
+                            : (activeTab === 'newsletter' || activeTab === 'smsletter' ? t('Рассылка')
                                 : (activeTab === 'balance'
                                     ? `${notification.balance && notification.balance.smsAmount} sms/${notification.balance &&
                                     notification.balance.emailAmount} email`
-                                    : (activeTab === 'history' ? 'История сообщений' : ''))))}
+                                    : (activeTab === 'history' ? t('История сообщений') : ''))))}
                         </p>
 
                         {this.state.isOpenHeaderDropdown &&
@@ -519,7 +529,7 @@ class Index extends Component {
                                    data-toggle="tab" href="#tab1" onClick={() => {
                                     this.setTab('auto_notification');
                                     this.handleOpenHeaderDropdown();
-                                }}>Авто уведомления</a>
+                                }}>{t("Авто уведомления")}</a>
                             </li>
                             <li className="nav-item">
                                 <a className={'nav-link' + (activeTab === 'newsletter' ? ' active show' : '')}
@@ -527,7 +537,7 @@ class Index extends Component {
                                    onClick={() => {
                                        this.setTab('newsletter');
                                        this.handleOpenHeaderDropdown();
-                                   }}>Рассылка</a>
+                                   }}>{t("Рассылка")}</a>
                             </li>
                             <li className="nav-item">
                                 <a className={'nav-link' + (activeTab === 'balance' ? ' active show' : '')}
@@ -546,7 +556,7 @@ class Index extends Component {
                                     this.handleOpenHeaderDropdown();
                                 }}
                                 >
-                                    История сообщений
+                                    {t("История сообщений")}
                                 </a>
                             </li>
                         </ul>
@@ -565,9 +575,8 @@ class Index extends Component {
                                             <div className="col-md-6">
 
                                                 <p className="title_block">
-                                                    SMS
-                                                    уведомления {notification.balance && notification.balance.smsAmount === 0 && (
-                                                    <span>(уведомления отключены. Недостаточный баланс)</span>
+                                                    {t("SMS уведомления")} {notification.balance && notification.balance.smsAmount === 0 && (
+                                                    <span>({t("уведомления отключены. Недостаточный баланс")})</span>
                                                 )}
                                                 </p>
                                                 <div className="check-box">
@@ -577,13 +586,12 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('smsOn')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Авто уведомления (об успешной записи, напоминании о визите,
-                                                        удалении записи, переносе записи)
+                                                        {t("Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)")}
                                                     </label>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
-                                                <p className="title_block">Email уведомления</p>
+                                                <p className="title_block">{t("Email уведомления")}</p>
                                                 <div className="check-box">
                                                     <label>
                                                         <input className="form-check-input"
@@ -591,8 +599,7 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('emailOn')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Авто уведомления (об успешной записи, напоминании о визите,
-                                                        удалении записи, переносе записи)
+                                                        {t("Авто уведомления (об успешной записи, напоминании о визите, удалении записи, переносе записи)")}
                                                     </label>
                                                 </div>
                                             </div>
@@ -609,7 +616,7 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('appointmentCreate')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Уведомления при записи
+                                                        {t("Уведомления при записи")}
                                                     </label>
                                                 </div>
                                                 <div className="check-box">
@@ -619,7 +626,7 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('appointmentMove')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Уведомления при переносе визита
+                                                        {t("Уведомления при переносе визита")}
                                                     </label>
                                                 </div>
                                             </div>
@@ -631,7 +638,7 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('appointmentDelete')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Уведомления при удалении визита
+                                                        {t("Уведомления при удалении визита")}
                                                     </label>
                                                 </div>
                                                 <div className="check-box">
@@ -641,7 +648,7 @@ class Index extends Component {
                                                                onChange={() => this.toggleChange('appointmentRemind')}
                                                                type="checkbox"/>
                                                         <span className="check"/>
-                                                        Напоминания о визитах
+                                                        {t("Напоминания о визитах")}
                                                     </label>
                                                 </div>
                                             </div>
@@ -652,7 +659,7 @@ class Index extends Component {
                                             <div className="col-md-6">
                                                 <div className="selects-block">
                                                     <p className="title-label">
-                                                        Интервал напоминаний о предстоящем визите
+                                                        {t("Интервал напоминаний о предстоящем визите")}
                                                     </p>
 
                                                     <div className="add-block">
@@ -661,19 +668,19 @@ class Index extends Component {
                                                                 value={notifications.notifyBefore} name="notifyBefore"
                                                                 onChange={this.handleChange}
                                                         >
-                                                            <option value={-1}>Выключено</option>
-                                                            <option value="43200">12 часов до</option>
-                                                            <option value="39600">11 часов до</option>
-                                                            <option value="36000">10 часов до</option>
-                                                            <option value="32400">9 часов до</option>
-                                                            <option value="28800">8 часов до</option>
-                                                            <option value="25200">7 часов до</option>
-                                                            <option value="21600">6 часов до</option>
-                                                            <option value="18000">5 часов до</option>
-                                                            <option value="14400">4 часа до</option>
-                                                            <option value="10800">3 часа до</option>
-                                                            <option value="7200">2 часа до</option>
-                                                            <option value="3600">1 час до</option>
+                                                            <option value={-1}>{t("Выключено")}</option>
+                                                            <option value="43200">12 {t("часов до")}</option>
+                                                            <option value="39600">11 {t("часов до")}</option>
+                                                            <option value="36000">10 {t("часов до")}</option>
+                                                            <option value="32400">9 {t("часов до")}</option>
+                                                            <option value="28800">8 {t("часов до")}</option>
+                                                            <option value="25200">7 {t("часов до")}</option>
+                                                            <option value="21600">6 {t("часов до")}</option>
+                                                            <option value="18000">5 {t("часов до")}</option>
+                                                            <option value="14400">4 {t("часа до")}</option>
+                                                            <option value="10800">3 {t("часа до")}</option>
+                                                            <option value="7200">2 {t("часа до")}</option>
+                                                            <option value="3600">1 {t("час до")}</option>
                                                         </select>
                                                         }
                                                     </div>
@@ -683,7 +690,7 @@ class Index extends Component {
                                             <div className="col-md-6">
                                                 <div className="check-box">
                                                     <label className="title-label">
-                                                        Ссылка на визит в СМС
+                                                        {t("Ссылка на визит в СМС")}
 
                                                         <input
                                                             className="form-check-input"
@@ -700,7 +707,7 @@ class Index extends Component {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="selects-block">
-                                                    <p className="title-label">Отправлять за день до:</p>
+                                                    <p className="title-label">{t("Отправлять за день до")}:</p>
                                                     <div className="add-block">
                                                         {notifications && notifications.dailyNotificationHour &&
                                                         <select className="custom-select mb-3"
@@ -708,20 +715,20 @@ class Index extends Component {
                                                                 name="dailyNotificationHour"
                                                                 onChange={this.handleChange}
                                                         >
-                                                            <option value={-1}>Выключено</option>
-                                                            <option value={8}>в 8.00</option>
-                                                            <option value={9}>в 9.00</option>
-                                                            <option value={10}>в 10.00</option>
-                                                            <option value={11}>в 11.00</option>
-                                                            <option value={12}>в 12.00</option>
-                                                            <option value={13}>в 13.00</option>
-                                                            <option value={14}>в 14.00</option>
-                                                            <option value={15}>в 15.00</option>
-                                                            <option value={16}>в 16.00</option>
-                                                            <option value={17}>в 17.00</option>
-                                                            <option value={18}>в 18.00</option>
-                                                            <option value={19}>в 19.00</option>
-                                                            <option value={20}>в 20.00</option>
+                                                            <option value={-1}>{t("Выключено")}</option>
+                                                            <option value={8}>{t("в")} 8.00</option>
+                                                            <option value={9}>{t("в")} 9.00</option>
+                                                            <option value={10}>{t("в")} 10.00</option>
+                                                            <option value={11}>{t("в")} 11.00</option>
+                                                            <option value={12}>{t("в")} 12.00</option>
+                                                            <option value={13}>{t("в")} 13.00</option>
+                                                            <option value={14}>{t("в")} 14.00</option>
+                                                            <option value={15}>{t("в")} 15.00</option>
+                                                            <option value={16}>{t("в")} 16.00</option>
+                                                            <option value={17}>{t("в")} 17.00</option>
+                                                            <option value={18}>{t("в")} 18.00</option>
+                                                            <option value={19}>{t("в")} 19.00</option>
+                                                            <option value={20}>{t("в")} 20.00</option>
                                                         </select>
                                                         }
                                                     </div>
@@ -734,11 +741,10 @@ class Index extends Component {
                                                         e.preventDefault();
                                                     }} className="title-label">
                             <span className="option-new-client">
-                              Опция подтверждения новых клиентов
+                              {t("Опция подтверждения новых клиентов")}
                               <Hint
                                   hintMessage={
-                                      'Прежде чем запись будет создана, клиенту, которого нет в базе,' +
-                                      ' на телефон придет SMS подтверждение.'
+                                      t('Прежде чем запись будет создана, клиенту, которого нет в базе, на телефон придет SMS подтверждение.')
                                   }
                               />
                             </span>
@@ -759,7 +765,7 @@ class Index extends Component {
                                             <div className="col-md-6">
                                                 <div className="selects-block">
                                                     <p className="title-label">
-                                                        Уведомить при балансе SMS и Email ниже:
+                                                        {t("Уведомить при балансе SMS и Email ниже")}:
                                                     </p>
 
                                                     <input className="custom-input" type="number" name="notifyCount"
@@ -773,8 +779,7 @@ class Index extends Component {
                                         <div className="row">
                                             <div className="col-md-8">
                         <span className="page-warning">
-                          Постарайтесь избегать записи клиентов в журнал в позднее время,<br/>
-                          т.к. клиенты получают моментальные sms о записи.
+                          {t("Постарайтесь избегать записи клиентов в журнал в позднее время")} <br/>{t(", т.к. клиенты получают моментальные sms о записи.")}
                         </span>
                                             </div>
                                         </div>
@@ -793,32 +798,32 @@ class Index extends Component {
                                         <a className={'nav-link'} data-toggle="tab"
                                            href="#sms_tab1" onClick={() => {
                                             this.setTab('smsletter');
-                                        }}>SMS рассылка →</a>
+                                        }}>{t("SMS рассылка")} →</a>
                                     )}
 
                                     {activeTab === 'smsletter' && (
                                         <a className={'nav-link'} data-toggle="tab" href="#email_tab2" onClick={() => {
                                             this.setTab('newsletter');
-                                        }}>Email рассылка →</a>
+                                        }}>{t("Email рассылка")} →</a>
                                     )}
                                 </div>
 
                                 <div className={'tab-pane' + (activeTab === 'smsletter' ? ' active' : '')}
                                      id="sms_tab1">
                                     <div className="block-style1">
-                                        <p className="letter-title">SMS рассылка</p>
+                                        <p className="letter-title">{t("SMS рассылка")}</p>
 
                                         <div className="settings-container row">
                       <textarea spellCheck="off" autoCorrect="off"
                                 className="copy-code sms-textarea col-md-6"
-                                placeholder="Введите текст"
+                                placeholder={t("Введите текст")}
                                 name="description" onChange={this.handleChangeSMS_text}
                                 value={sms.description}
                       />
                                             <div className="col-md-6">
                                                 <div className="row">
                                                     <div className="col-sm-12"><p
-                                                        className="title mb">Выбор получателя</p></div>
+                                                        className="title mb">{t("Выбор получателя")}</p></div>
                                                 </div>
 
                                                 <div className="check-box">
@@ -828,7 +833,7 @@ class Index extends Component {
                                                                checked={sms.toClients}
                                                                type="checkbox"/>
                                                         <span className="check-box-circle"/>
-                                                        Все клиенты
+                                                        {t("Все клиенты")}
                                                     </label>
                                                 </div>
 
@@ -839,7 +844,7 @@ class Index extends Component {
                                                                checked={sms.toStaffs}
                                                                type="checkbox"/>
                                                         <span className="check-box-circle"/>
-                                                        Все сотрудники
+                                                        {t("Все сотрудники")}
                                                     </label>
                                                 </div>
                                             </div>
@@ -850,7 +855,7 @@ class Index extends Component {
                                         </p>
 
                                         {notification && notification.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-hiden">Рассылка начата</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-hiden">{t("Рассылка начата")}</p>
                                         }
                                         {notification && notification.adding &&
                                         <img
@@ -866,13 +871,13 @@ class Index extends Component {
                                                 data-toggle="modal"
                                                 data-target={sms.description !== '' && (sms.toClients || sms.toStaffs) && '.start-modal-sms'}
                                         >
-                                            Создать рассылку
+                                            {t("Создать рассылку")}
                                         </button>
                                     </div>
 
                                     <div className="block-style2 container ">
                                         {notification && notification.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-fade">Рассылка начата</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-fade">{t("Рассылка начата")}</p>
                                         }
                                         {notification && notification.adding &&
                                         <img
@@ -888,18 +893,18 @@ class Index extends Component {
                                 <div className={'tab-pane' + (activeTab === 'newsletter' ? ' active' : '')}
                                      id="sms_tab1">
                                     <div className="block-style1">
-                                        <p className="letter-title">Email рассылка</p>
+                                        <p className="letter-title">{t("Email рассылка")}</p>
 
                                         <div className="settings-container email row">
                                             <div className="col-md-6 p-0">
                                                 <InputCounter value={email.title}
-                                                              title="Заголовок сообщения"
-                                                              placeholder="Введите заголовок сообщения"
+                                                              title={t("Заголовок сообщения")}
+                                                              placeholder={t("Введите заголовок сообщения")}
                                                               name="title" handleChange={this.handleSetTitle}
                                                               maxLength={64}
 
                                                 />
-                                                <p className="input-label">Текст Email</p>
+                                                <p className="input-label">{t("Текст")} Email</p>
                                                 <Editor
                                                     editorState={editorState}
                                                     toolbarClassName="toolbarClassName"
@@ -913,7 +918,7 @@ class Index extends Component {
                                             <div className="col-md-6">
                                                 <div className="row">
                                                     <div className="col-sm-12"><p
-                                                        className="title">Выбор получателя</p></div>
+                                                        className="title">{t("Выбор получателя")}</p></div>
                                                 </div>
 
                                                 <div className="check-box">
@@ -923,7 +928,7 @@ class Index extends Component {
                                                                checked={email.toClients}
                                                                type="checkbox"/>
                                                         <span className="check-box-circle"/>
-                                                        Все клиенты
+                                                        {t("Все клиенты")}
                                                     </label>
                                                 </div>
 
@@ -934,14 +939,14 @@ class Index extends Component {
                                                                checked={email.toStaffs}
                                                                type="checkbox"/>
                                                         <span className="check-box-circle"/>
-                                                        Все сотрудники
+                                                        {t("Все сотрудники")}
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {notification && notification.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-hiden">Рассылка начата</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2 mob-hiden">{t("Рассылка начата")}</p>
                                         }
                                         {notification && notification.adding &&
                                         <img
@@ -959,7 +964,7 @@ class Index extends Component {
                                                 data-target={email.title && email.description !== '' && (email.toClients || email.toStaffs) &&
                                                 '.start-modal'}
                                         >
-                                            Создать рассылку
+                                            {t("Создать рассылку")}
                                         </button>
                                     </div>
                                     <div className="block-style2 container">
@@ -984,15 +989,13 @@ class Index extends Component {
                                         <div className="row">
                                             <div className="col-6 col-md-3">
                                                 <p className="count-sms">
-                                                    Количество
-                                                    SMS: {notification.balance && notification.balance.smsAmount}
+                                                    {t("Количество SMS")}: {notification.balance && notification.balance.smsAmount}
                                                 </p>
 
                                             </div>
                                             <div className="col-6 col-md-3">
                                                 <p className="count-email">
-                                                    Количество
-                                                    Email: {notification.balance && notification.balance.emailAmount}
+                                                    {t("Количество Email")}: {notification.balance && notification.balance.emailAmount}
                                                 </p>
                                             </div>
 
@@ -1000,7 +1003,7 @@ class Index extends Component {
                                                 className="col-md-6 d-flex justify-content-center justify-content-md-end">
                                                 <Link to={'/payments'}>
                                                     <a className="link-to-payments">
-                                                        Пополнить баланс
+                                                        {t("Пополнить баланс")}
                                                     </a>
                                                 </Link>
                                             </div>
@@ -1014,7 +1017,7 @@ class Index extends Component {
                             <div className="history_page">
                                 <div className="search d-none dropdown row"> {/* DISPLAY NONE */}
                                     <form className="col-sm-12 form-inline" data-toggle="dropdown">
-                                        <input type="search" placeholder="Поиск по тексту, номеру тел."
+                                        <input type="search" placeholder={t("Поиск по тексту, номеру тел.")}
                                                aria-label="Search" ref={(input) => this.search = input}
                                                onChange={this.handleSearch}/>
                                         <button className="search-icon" type="button"/>
@@ -1037,21 +1040,21 @@ class Index extends Component {
                                                     ID
                                                 </div>
                                                 <div className="tab-content-header">
-                                                    На номер
+                                                    {t("На номер")}
                                                 </div>
                                                 <div className="tab-content-header" style={{width: '45% '}}>
-                                                    Текст
+                                                    {t("Текст")}
                                                 </div>
                                                 <div className="tab-content-header">
-                                                    Дата
+                                                    {t("Дата")}
                                                 </div>
                                                 <div style={{overflow: 'visible'}} data-toggle="modal"
                                                      data-target={'.status-modal'} className="tab-content-header">
-                                                    Статус <Hint customLeft="-1px"/>
+                                                    {t("Статус")} <Hint customLeft="-1px"/>
                                                 </div>
                                                 <div style={{width: '16%'}}
                                                      className="tab-content-header delete dropdown">
-                                                    Кол-во СМС
+                                                    {t("Кол-во СМС")}
                                                 </div>
                                             </div>
 
@@ -1101,15 +1104,15 @@ class Index extends Component {
                     <div className="modal-dialog modal-lg modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Статусы сообщений</h4>
+                                <h4 className="modal-title">{t("Статусы сообщений")}</h4>
                                 <button type="button" className="close" data-dismiss="modal"/>
                             </div>
                             <div className="form-group mr-3 ml-3">
                               <ul>
-                                <li><strong>"Доставлено"</strong> - сообщение доставлено абоненту.</li>
-                                <li><strong>"Не доставлено"</strong> - сообщение не доставлено абоненту, так как абонент находится вне зоны действия сети или аппарат абонента выключен.</li>
-                                <li><strong>"Заблокировано"</strong> - сообщение заблокировано по финансовой причине или по желанию клиента.</li>
-                                <li><strong>"Доставляется"</strong> - сообщение не получило окончательный статус (время жизни смс 24 часа, в течение этого периода статус обновится).</li>
+                                <li><strong>"{t("Доставлено")}"</strong>{t(" - сообщение доставлено абоненту.")}</li>
+                                <li><strong>"{t("Не доставлено")}"</strong>{t(" - сообщение не доставлено абоненту, так как абонент находится вне зоны действия сети или аппарат абонента выключен.")}</li>
+                                <li><strong>"{t("Заблокировано")}"</strong>{t(" - сообщение заблокировано по финансовой причине или по желанию клиента.")}</li>
+                                <li><strong>"{t("Доставляется")}"</strong>{t(" - сообщение не получило окончательный статус (время жизни смс 24 часа, в течение этого периода статус обновится).")}</li>
                               </ul>
                             </div>
                         </div>
@@ -1120,22 +1123,22 @@ class Index extends Component {
                     <div className="modal-dialog modal-lg modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Начать рассылку</h4>
+                                <h4 className="modal-title">{t("Начать рассылку")}</h4>
                                 <button type="button" className="close" data-dismiss="modal"/>
                             </div>
                             <div className="form-group mr-3 ml-3">
                                 <div>
                                     <ul>
                                         <li>
-                                            Количество получателей: {receivers_email}
+                                            {t("Количество получателей")}: {receivers_email}
                                         </li>
                                         <li>
-                                            Количество писем: {receivers_email}
+                                            {t("Количество писем")}: {receivers_email}
                                         </li>
                                     </ul>
                                     {notification.balance && receivers_email > notification.balance.emailAmount &&
                                     <div style={{fontSize: '11px', color: 'red', marginBottom: '17px'}}>
-                                        Недостаточное количество Email. Свяжитесь со службой поддержки Online-zapis
+                                        {t("Недостаточное количество Email. Свяжитесь со службой поддержки Online-zapis")}
                                     </div>
                                     }
                                 </div>
@@ -1148,7 +1151,7 @@ class Index extends Component {
                                                 && this.setEmail()}
                                             data-dismiss="modal"
                                     >
-                                        Начать
+                                        {t("Начать")}
                                     </button>
                                 </div>
                             </div>
@@ -1160,7 +1163,7 @@ class Index extends Component {
                     <div className="modal-dialog modal-lg modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Начать рассылку</h4>
+                                <h4 className="modal-title">{t("Начать рассылку")}</h4>
                                 <button type="button" className="close" data-dismiss="modal"/>
                             </div>
 
@@ -1168,18 +1171,18 @@ class Index extends Component {
                                 <div>
                                     <ul>
                                         <li>
-                                            Количество получателей: {receivers}
+                                            {t("Количество получателей")}: {receivers}
                                         </li>
                                         <li>
-                                            Количество символов в 1 смс: {sms.description.length}
+                                            {t("Количество символов в 1 смс")}: {sms.description.length}
                                         </li>
                                         <li>
-                                            Количество смс: {count_sms_all}
+                                            {t("Количество смс")}: {count_sms_all}
                                         </li>
                                     </ul>
                                     {notification.balance && count_sms_all > notification.balance.smsAmount &&
                                     <div style={{fontSize: '11px', color: 'red', marginBottom: '17px'}}>
-                                        Недостаточное количество sms. Свяжитесь со службой поддержки Online-zapis
+                                        {t("Недостаточное количество sms. Свяжитесь со службой поддержки Online-zapis")}
                                     </div>
                                     }
                                 </div>
@@ -1190,7 +1193,7 @@ class Index extends Component {
                                                 ' disabledField')}
                                             onClick={() => count_sms_all <= (notification.balance && notification.balance.smsAmount) &&
                                                 this.setSMS()}
-                                            data-dismiss="modal">Начать
+                                            data-dismiss="modal">{t("Начать")}
                                     </button>
                                 </div>
                             </div>
@@ -1210,4 +1213,4 @@ function mapStateToProps(store) {
     };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

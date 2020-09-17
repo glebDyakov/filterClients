@@ -9,6 +9,7 @@ import DeleteReserve from './DeleteReserve';
 import { MoveVisit } from './MoveVisit';
 import moment from 'moment';
 import { staffActions } from '../../_actions';
+import {withTranslation} from "react-i18next";
 
 
 class CalendarModals extends Component {
@@ -137,7 +138,7 @@ class CalendarModals extends Component {
     const {
       clients, minutes, appointmentModal: appointmentModalFromProps, infoClient, edit_appointment, adding, status,
       services, staffClicked, appointmentEdited, clickedTime, selectedDayMoment, selectedDay, workingStaff, numbers, type, staff,
-      reserved: reservedFromProps, getByStaffKey, moveVisit, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting,
+      reserved: reservedFromProps, getByStaffKey, moveVisit, minutesReservedtime, reservedTimeEdited, reservedStuffId, appointmentForDeleting, t,
     } = this.props;
 
     const { newClientModal, appointmentModal, reserved, editClient, checkedUser, client_working, isModalShouldPassClient } = this.state;
@@ -160,14 +161,14 @@ class CalendarModals extends Component {
                           this.handleOpenModal(e);
                           this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers);
                         }}
-                        className="button">Визит
+                        className="button">{t("Визит")}
                       </button>
                       <button type="button"
                         onClick={(e) => {
                           this.handleOpenModal(e);
                           this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null);
                         }}
-                        className="button">Резерв времени
+                        className="button">{t("Резерв времени")}
                       </button>
                     </div>
                     <div className="arrow"/>
@@ -238,5 +239,5 @@ class CalendarModals extends Component {
   }
 }
 
-const connectedMainIndexPage = connect(null)(CalendarModals);
+const connectedMainIndexPage = connect(null)(withTranslation("common")(CalendarModals));
 export { connectedMainIndexPage as CalendarModals };

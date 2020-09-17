@@ -12,6 +12,7 @@ import { paymentsActions, companyActions } from '../_actions';
 import { staffActions } from '../_actions/staff.actions';
 
 import '../../public/scss/payments.scss';
+import {withTranslation} from "react-i18next";
 
 class Index extends Component {
   constructor(props) {
@@ -345,7 +346,7 @@ class Index extends Component {
   }
 
   render() {
-    const { authentication } = this.props;
+    const { authentication, t } = this.props;
     const {
       chosenAct, finalPriceMonthDiscount, staffCount, finalPrice, finalPriceMonth,
       chosenInvoice, invoiceSelected, list,
@@ -361,23 +362,23 @@ class Index extends Component {
 
     const { pathname } = this.props.location;
     if (pathname === '/payments') {
-      document.title = 'Оплата | Онлайн-запись';
+      document.title = t('Оплата | Онлайн-запись');
     } else if (pathname === '/invoices') {
-      document.title = 'Счета | Онлайн-запись';
+      document.title = t('Счета | Онлайн-запись');
     }
     const currentPacket = activePacket
       ? activePacket.packetName
       : authentication.user && (authentication.user && authentication.user.forceActive ||
         (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x'))
-        ? 'Пробный период'
-        : 'Нет выбранного пакета'
+        ? t('Пробный период')
+        : t('Нет выбранного пакета')
       );
     const paymentId = authentication && authentication.user && authentication.user.menu
       .find((item) => item.id === 'payments_menu_id');
-    if (!paymentId && currentPacket === 'Нет выбранного пакета') {
+    if (!paymentId && currentPacket === t('Нет выбранного пакета')) {
       return (
         <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
-                    Срок действия лицензии истек
+                    {t("Срок действия лицензии истек")}
         </div>
       );
     }
@@ -392,13 +393,13 @@ class Index extends Component {
         <div id="divIdToPrint">
           <div className="row customer-seller">
             {authentication.user && <div className="col-md-4 col-12 customer">
-              <p>Лицензиат: <strong>{authentication.user.companyName}</strong></p>
-              <p>Представитель: <strong>
+              <p>{t("Лицензиат")}: <strong>{authentication.user.companyName}</strong></p>
+              <p>{t("Представитель")}: <strong>
                 {authentication.user.profile
                   ? authentication.user.profile.lastName
                   : ''} {authentication.user.profile.firstName}
               </strong></p>
-              <p>Адрес: <strong>
+              <p>{t("Адрес")}: <strong>
                 {authentication.user.companyAddress1 || authentication.user.companyAddress2
                 || authentication.user.companyAddress3}
               </strong>
@@ -406,23 +407,23 @@ class Index extends Component {
             </div>}
 
             <div className="col-md-4 col-12 seller">
-              <p>Лицензиар: <strong>СОФТ-МЭЙК. УНП 191644633</strong></p>
-              <p>Адрес: <strong>220034, Беларусь, Минск, Марьевская 7а-1-6</strong></p>
-              <p>Телефон: <strong>+375 44 5655557</strong></p>
+              <p>{t("Лицензиар")}: <strong>{t("СОФТ-МЭЙК. УНП 191644633")}</strong></p>
+              <p>{t("Адрес")}: <strong>{t("220034, Беларусь, Минск, Марьевская 7а-1-6")}</strong></p>
+              <p>{t("Телефон")}: <strong>+375 44 5655557</strong></p>
             </div>
 
             <div className="col-md-4 col-12 payments-type">
-              <p>Способ оплаты: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
+              <p>{t("Способ оплаты")}: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <p>
-                              Заплатить до: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                              {t("Заплатить до")}: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
               </p>}
-              <p>Статус: <span
+              <p>{t("Статус")}: <span
                 className="status"
                 style={{ color: chosenInvoice.invoiceStatus === 'PAID' ? '#34C38F' : '#50A5F1' }}
               >
-                {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                  (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' :
-                    (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))
+                {chosenInvoice.invoiceStatus === 'ISSUED' ? t('Оплатить') :
+                  (chosenInvoice.invoiceStatus === 'PAID' ? t('Оплачено') :
+                    (chosenInvoice.invoiceStatus === 'CANCELLED' ? t('Закрыто') : ''))
                 }
               </span>
               </p>
@@ -433,13 +434,13 @@ class Index extends Component {
 
           <div className="table">
             <div className="table-header row">
-              <div className="col-4 table-description"><p>Описание:</p></div>
+              <div className="col-4 table-description"><p>{t("Описание")}:</p></div>
               <div className="col-4 table-count"><p
-                className="default">Количество:</p>
+                className="default">{t("Количество")}:</p>
               <p
-                className="mob">Кол-во {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
+                className="mob">{t("Количество")} {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
               </div>
-              <div className="col-4 table-price"><p>Стоимость:</p></div>
+                <div className="col-4 table-price"><p>{t("Стоимость")}:</p></div>
             </div>
             {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map((packet, i) => {
               const name = packets && packets.find((item) => item.packetId === packet.packetId);
@@ -466,7 +467,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>Общая сумма:</p>
+                  <p>{t("Общая сумма")}:</p>
                 </div>
                 <div>
                   <p className="bold-text">{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
@@ -476,7 +477,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>Без НДС</p>
+                  <p>{t("Без НДС")}</p>
                 </div>
                 <div>
                   <p className="bold-text">0.00 {chosenInvoice.currency}</p>
@@ -485,7 +486,7 @@ class Index extends Component {
             </div>
             <div className="col-12 col-md-4 payment-button-container">
               <p className="download"
-                onClick={() => this.downloadInPdf(pdfMarkup)}>Скачать в PDF</p>
+                onClick={() => this.downloadInPdf(pdfMarkup)}>{t("Скачать в PDF")}</p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
                 <button className="inv-date" style={{
                   backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
@@ -497,9 +498,9 @@ class Index extends Component {
                   this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId));
                   this.repeatPayment(chosenInvoice.invoiceId);
                 }}>
-                  {chosenInvoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                    (chosenInvoice.invoiceStatus === 'PAID' ? 'Оплачено' :
-                      (chosenInvoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))
+                  {chosenInvoice.invoiceStatus === 'ISSUED' ? t('Оплатить') :
+                    (chosenInvoice.invoiceStatus === 'PAID' ? t('Оплачено') :
+                      (chosenInvoice.invoiceStatus === 'CANCELLED' ? t('Закрыто') : ''))
                   }
                 </button>
               </div>}
@@ -525,25 +526,25 @@ class Index extends Component {
               >
                 <div className="payments-license-block">
                   <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>
-                    Лицензионный договор
+                    {t("Лицензионный договор")}
                   </a>
                   <span data-toggle="modal" data-target=".accountant-modal-in">
-                      Для бухгалтерии
+                      {t("Для бухгалтерии")}
                   </span>
                 </div>
 
                 {authentication.user &&
                   <div className="current-packet-container">
-                    <div className="current-packet text-left text-md-right">Текущий пакет: {currentPacket}</div>
+                    <div className="current-packet text-left text-md-right">{t("Текущий пакет")}: {currentPacket}</div>
                     <div className="current-packet-timing text-left text-md-right">
                       {activePacket
-                        ? 'Пакет действителен до: ' +
+                        ? t("Пакет действителен до") + ': ' +
                           moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY')
                         : ((moment(authentication.user.trialEndDateMillis).format('x')
                           >= moment().format('x'))
-                          ? 'Пакет действителен до: ' +
+                          ? t("Пакет действителен до") + ': ' +
                           moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
-                          : (authentication.user.forceActive ? 'Пробный период продлён' : ''))
+                          : (authentication.user.forceActive ? t('Пробный период продлён') : ''))
                       }
                     </div>
                   </div>
@@ -552,12 +553,12 @@ class Index extends Component {
 
               <div className="payments-inner d-flex flex-column flex-lg-row">
                 <div className="payments-list-block mb-2 mb-md-0">
-                  <p className="title-payments">Пакеты системы</p>
+                  <p className="title-payments">{t("Пакеты системы")}</p>
                   <div id="range-staff">
                     <p className="subtitle-payments mb-3 d-md-none">
                       {(companyTypeId === 2 || companyTypeId === 3)
-                        ? 'Количество рабочих мест'
-                        : 'Количество сотрудников'
+                        ? t('Количество рабочих мест')
+                        : t('Количество сотрудников')
                       }
                     </p>
 
@@ -609,8 +610,8 @@ class Index extends Component {
                   <div className="radio-buttons">
                     <p className="subtitle-payments d-none d-md-flex">
                       {(companyTypeId === 2 || companyTypeId === 3)
-                        ? 'Количество рабочих мест'
-                        : 'Количество сотрудников'
+                        ? t('Количество рабочих мест')
+                        : t('Количество сотрудников')
                       }
                     </p>
 
@@ -619,7 +620,7 @@ class Index extends Component {
                         <input type="radio" className="radio" id="radio2"
                           name="staff-radio"
                           checked={specialWorkersCount === 'to 30'}/>
-                        <label htmlFor="radio2">Больше 5</label>
+                        <label htmlFor="radio2">{t("Больше 5")}</label>
                       </div>
                     ) : (
                       <React.Fragment>
@@ -629,7 +630,7 @@ class Index extends Component {
                             name="staff-radio"
                             checked={specialWorkersCount === 'to 20'}/>
                           <label className={(staffCount) <= 20 ? '' : 'disabledField'}
-                            htmlFor="radio">До 20</label>
+                            htmlFor="radio">{t("До 20")}</label>
                         </div>
                         <div
                           onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
@@ -637,19 +638,19 @@ class Index extends Component {
                             name="staff-radio"
                             checked={specialWorkersCount === 'to 30'}/>
                           <label className={(staffCount) <= 30 ? '' : 'disabledField'}
-                            htmlFor="radio2">До 30</label>
+                            htmlFor="radio2">{t("До 30")}</label>
                         </div>
                         <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                           <input type="radio" className="radio" id="radio3"
                             name="staff-radio"
                             checked={specialWorkersCount === 'from 30'}/>
-                          <label htmlFor="radio3">Больше 30</label>
+                          <label htmlFor="radio3">{t("Больше 30")}</label>
                         </div>
                       </React.Fragment>)}
                   </div>
 
                   <div id="range-month">
-                    <p className="subtitle-payments mb-3 d-md-none">Срок действия лицензии</p>
+                    <p className="subtitle-payments mb-3 d-md-none">{t("Срок действия лицензии")}</p>
 
                     <ul className="range-labels">
                       <li className={period === '1' ? 'active selected' : ''}
@@ -658,7 +659,7 @@ class Index extends Component {
                             ...this.state.rate,
                             period: '1',
                           },
-                        })}>3 месяца
+                        })}>{t("3 месяца")}
                       </li>
                       <li className={period === '2' ? 'active selected' : ''}
                         onClick={() => this.setState({
@@ -666,7 +667,7 @@ class Index extends Component {
                             ...this.state.rate,
                             period: '2',
                           },
-                        })}>6 месяцев <br/> (+1 месяц бесплатно)
+                        })}>{t("6 месяцев")} <br/> ({t("+1 месяц бесплатно")})
                       </li>
                       <li className={period === '3' ? 'active selected' : ''}
                         onClick={() => this.setState({
@@ -674,7 +675,7 @@ class Index extends Component {
                             ...this.state.rate,
                             period: '3',
                           },
-                        })}>12 месяцев <br/> (+3 бесплатно)
+                        })}>{t("12 месяцев")} <br/> ({t("+3 бесплатно")})
                       </li>
                     </ul>
 
@@ -685,48 +686,48 @@ class Index extends Component {
                     </div>
 
                   </div>
-                  <p className="subtitle-payments d-none d-md-flex">Срок действия лицензии</p>
+                  <p className="subtitle-payments d-none d-md-flex">{t("Срок действия лицензии")}</p>
 
                 </div>
 
                 <div className="payments-list-block2 mb-2 mb-md-0">
                   <div className="payments-content">
-                    <p className="title-payments">К оплате</p>
+                    <p className="title-payments">{t("К оплате")}</p>
                     <div>
-                      <p>Срок действия лицензии: </p>
+                      <p>{t("Срок действия лицензии")}: </p>
                       <span style={{ textAlign: 'right' }}>
-                        {period === '1' ? '3 месяца' : (period === '2') ? '6 месяцев' : '12 месяцев'}
+                        {period === '1' ? t('3 месяца') : (period === '2') ? t('6 месяцев') : t('12 месяцев')}
                       </span>
                     </div>
                     <div>
-                      <p>Стоимость в месяц{finalPriceMonthDiscount ? ' без скидки ' : ''}: </p>
+                      <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>
                       <span style={{ textAlign: 'right' }}>
                         {finalPriceMonth} {countryCode ? (countryCode === 'BLR'
-                          ? 'руб'
-                          : (countryCode === 'UKR' ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'
+                          ? t('руб')
+                          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')
                         }
                       </span>
                     </div>
 
                     {finalPriceMonthDiscount ? (
                       <div>
-                        <p style={{ color: '#F46A6A' }}>Стоимость в месяц со скидкой: </p>
+                        <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>
                         <span style={{ color: '#F46A6A', textAlign: 'right' }}>
                           {finalPriceMonthDiscount} {countryCode
-                            ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR'
-                              ? 'грн'
-                              : (countryCode === 'RUS' ? 'руб' : 'руб')))
-                            : 'руб'
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
                           }
                         </span>
                       </div>
                     ) : ''}
                     <div>
-                      <p className="total-price">Итоговая стоимость:
+                      <p className="total-price">{t("Итоговая стоимость")}:
                         <span>
                           {finalPrice} {countryCode
-                            ? (countryCode === 'BLR' ? 'руб' : (countryCode === 'UKR'
-                              ? 'грн' : (countryCode === 'RUS' ? 'руб' : 'руб'))) : 'руб'
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')
                           }
                         </span>
                       </p>
@@ -735,14 +736,13 @@ class Index extends Component {
                     <button className={'button ' + (workersCount === -1 ? 'disabledField' : '')}
                       type="button"
                       disabled={workersCount === -1}
-                      onClick={() => this.AddingInvoiceStaff()}>Оплатить
+                      onClick={() => this.AddingInvoiceStaff()}>{t("Оплатить")}
                     </button>
 
                     {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) &&
                       <div>
                         <p className="description">
-                          (Цены в национальной валюте указаны для ознакомления.
-                          Оплата производится по курсу в рос.рублях)
+                          ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
                         </p>
                       </div>
                     }
@@ -751,7 +751,7 @@ class Index extends Component {
 
                 <div className="payments-list-block3 mb-1 mb-md-0">
                   <div className="payments-content buttons-change">
-                    <p className="title-payments">SMS ПАКЕТЫ</p>
+                    <p className="title-payments">{t("SMS ПАКЕТЫ")}</p>
 
                     {packets && packets.filter((packet) => packet.packetType === 'SMS_PACKET')
                       .sort((a, b) => a.smsAmount - b.smsAmount)
@@ -781,8 +781,7 @@ class Index extends Component {
 
                     {authentication && authentication.user && authentication.user.countryCode !== 'BLR' && (
                       <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold' }}>
-                        Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов,
-                        нажав на знак вопроса в правом верхнем углу.
+                        {t("Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.")}
                       </div>)
                     }
                   </div>
@@ -791,18 +790,17 @@ class Index extends Component {
                     {chosenAct.packetName &&
                       <React.Fragment>
                         <div>
-                          <p className="total-price">Итоговая стоимость: <span>
+                          <p className="total-price">{t("Итоговая стоимость")}: <span>
                             {chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}
                           </span>
                           </p>
                         </div>
                         <button className="button" type="button"
-                          onClick={() => this.AddingInvoice()}>Оплатить
+                          onClick={() => this.AddingInvoice()}>{t("Оплатить")}
                         </button>
                         {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                           <p className="description">
-                            (Цены в национальной валюте указаны для ознакомления.
-                            Оплата производится по курсу в рос. рублях)
+                            ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
                           </p>
                         </div>
                         }
@@ -813,15 +811,15 @@ class Index extends Component {
               </div>
 
               <div id="acts">
-                <h2 className="acts-title">Счета</h2>
+                <h2 className="acts-title">{t("Счета")}</h2>
                 <div className="invoice header-invoice">
                   <div className="inv-number">
-                    <p className="d-none d-md-inline">Номер счета</p>
+                    <p className="d-none d-md-inline">{t("Номер счета")}</p>
                     <p className="d-md-none"># счета</p>
                   </div>
-                  <div className="inv-date"><p>Дата</p></div>
-                  <div className="inv-date"><p>Сумма</p></div>
-                  <div className="inv-status"><p>Статус</p></div>
+                  <div className="inv-date"><p>{t("Дата")}</p></div>
+                  <div className="inv-date"><p>{t("Сумма")}</p></div>
+                  <div className="inv-status"><p>{t("Статус")}</p></div>
                 </div>
 
                 {list.length ? list.sort((a, b) => {
@@ -849,16 +847,16 @@ class Index extends Component {
                         <p style={{
                           color: invoice.invoiceStatus === 'ISSUED' ? '#50A5F1' : '#34C38F',
                         }}>
-                          {invoice.invoiceStatus === 'ISSUED' ? 'Оплатить' :
-                            (invoice.invoiceStatus === 'PAID' ? 'Оплачено' :
-                              (invoice.invoiceStatus === 'CANCELLED' ? 'Закрыто' : ''))
+                          {invoice.invoiceStatus === 'ISSUED' ? t('Оплатить') :
+                            (invoice.invoiceStatus === 'PAID' ? t('Оплачено') :
+                              (invoice.invoiceStatus === 'CANCELLED' ? t('Закрыто') : ''))
                           }
                         </p>
                       </div>
                     </div>
                   );
                 }) : (
-                  <div style={{ textAlign: 'center' }}>Нет счетов для отображения</div>
+                  <div style={{ textAlign: 'center' }}>{t("Нет счетов для отображения")}</div>
                 )}
 
 
@@ -867,7 +865,7 @@ class Index extends Component {
                     <div className="chosen-invoice">
                       <div className="modal-header">
                         <h4 className="modal-title">
-                          Счёт {chosenInvoice.customId}; {
+                          {t("Счет")} {chosenInvoice.customId}; {
                             moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
                           }
                         </h4>
@@ -932,4 +930,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default (withRouter(connect(mapStateToProps, null)(Index)));
+export default (withRouter(connect(mapStateToProps, null)(withTranslation("common")(Index))));

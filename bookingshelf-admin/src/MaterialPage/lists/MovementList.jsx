@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 import ActionModal from '../../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class MovementList extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class MovementList extends Component {
   }
 
   render() {
-    const { movement, deleteMovement, toggleStorehouseProduct, toggleExProd, activeUnit } = this.props;
+    const { movement, deleteMovement, toggleStorehouseProduct, toggleExProd, activeUnit, t } = this.props;
 
     return (
       <div className="tab-content-list mb-2">
@@ -33,7 +34,7 @@ class MovementList extends Component {
         </div>
         <div>
           <p><span
-            className="mob-title">Код товара: </span>{movement && movement.productCode}
+            className="mob-title">{t("Код товара")}: </span>{movement && movement.productCode}
           </p>
         </div>
         <div>
@@ -49,11 +50,11 @@ class MovementList extends Component {
         {/* </div>*/}
         <div className={(movement && movement.targetTranslated) ? '' : 'movement-target-empty'}>
           <p><span
-            className="mob-title">Причина списания: </span>{movement && movement.targetTranslated}
+            className="mob-title">{t("Причина списания")}: </span>{movement && movement.targetTranslated}
           </p>
         </div>
         <div className={(movement && movement.retailPrice) ? '' : 'retail-price-empty'}>
-          <p><span className="mob-title">Цена розн.: </span>{movement && movement.retailPrice}
+          <p><span className="mob-title">{t("Цена розн")}: </span>{movement && movement.retailPrice}
           </p>
         </div>
         {/* <div className={(movement && movement.specialPrice)? "": "retail-price-empty"}>*/}
@@ -64,12 +65,12 @@ class MovementList extends Component {
         {/* </div>*/}
         <div>
           <p><span
-            className="mob-title">Ед. измерения: </span>{activeUnit ? activeUnit.unitName : ''}
+            className="mob-title">{t("Единица измерения")}: </span>{activeUnit ? activeUnit.unitName : ''}
           </p>
         </div>
         <div>
           <p>
-            <span className="mob-title">Дата: </span>
+            <span className="mob-title">{t("Дата")}: </span>
             {movement && moment(movement.deliveryDateMillis
               ? movement.deliveryDateMillis
               : movement.expenditureDateMillis).format('DD.MM HH:mm')
@@ -83,7 +84,7 @@ class MovementList extends Component {
         {/* </div>*/}
         <div>
           <p><span
-            className="mob-title">Остаток: </span>{movement && movement.currentAmount}
+            className="mob-title">{t("Остаток")}: </span>{movement && movement.currentAmount}
           </p>
         </div>
         <div className="delete clientEditWrapper">
@@ -100,18 +101,18 @@ class MovementList extends Component {
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить запись?"
+            title={t("Удалить запись?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteMovement,
               params: movement,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -121,4 +122,4 @@ class MovementList extends Component {
   }
 }
 
-export default MovementList;
+export default withTranslation("common")(MovementList);

@@ -4,6 +4,7 @@ import StarRatings from 'react-star-ratings';
 import {staffActions} from "../../_actions";
 import moment from "moment";
 import Paginator from "./Paginator";
+import {withTranslation} from "react-i18next";
 
 class TabStaffComments extends  PureComponent{
     constructor(props) {
@@ -30,7 +31,7 @@ class TabStaffComments extends  PureComponent{
     }
 
     render() {
-        const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading } = this.props;
+        const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
 
         return(
             <div className="service_selection screen1 screen5">
@@ -38,8 +39,8 @@ class TabStaffComments extends  PureComponent{
                     <span className="prev_block" onClick={() => {
                         setScreen(1);
 
-                    }}><span className="title_block_text">Назад</span></span>
-                    <p className="modal_title">Отзывы</p>
+                    }}><span className="title_block_text">{t("Назад")}</span></span>
+                    <p className="modal_title">{t("Отзывы")}</p>
                 </div>
                 {!isLoading && (
                     <React.Fragment>
@@ -93,9 +94,9 @@ class TabStaffComments extends  PureComponent{
                                 : (
                                     <div className="final-book">
                                         <p style={{ fontSize: '18px' }}>
-                                            Пока нет ни одного отзыва. <span
+                                            {t('Пока нет ни одного отзыва.')} <span
                                             style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px'}}
-                                            onClick={() => setScreen('staff-create-comment')}>Станьте первым!
+                                            onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
                                     </span>
                                         </p>
                                     </div>
@@ -111,7 +112,7 @@ class TabStaffComments extends  PureComponent{
                     />
                 </div>
 
-                <p className="skip_employee" onClick={() =>  setScreen('staff-create-comment')}>Оставить отзыв</p>
+                <p className="skip_employee" onClick={() =>  setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p>
             </div>
         );
     }
@@ -125,4 +126,4 @@ function mapStateToProps(store) {
     };
 }
 
-export default connect(mapStateToProps)(TabStaffComments);
+export default connect(mapStateToProps)(withTranslation("common")(TabStaffComments));

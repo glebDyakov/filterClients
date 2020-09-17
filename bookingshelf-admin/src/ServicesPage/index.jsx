@@ -9,6 +9,7 @@ import ServiceInfo from './ServiceInfo';
 import { servicesActions, staffActions, materialActions } from '../_actions';
 
 import '../../public/scss/services.scss';
+import {withTranslation} from "react-i18next";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -94,7 +95,7 @@ class Index extends Component {
       this.queryInitData();
     }
 
-    document.title = 'Услуги | Онлайн-запись';
+    document.title = this.props.t('Услуги | Онлайн-запись');
     initializeJs();
   }
 
@@ -128,7 +129,7 @@ class Index extends Component {
     if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
       this.queryInitData();
     }
-    if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+    if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
       this.setState({
         services: newProps.services,
         addService: newProps.services.status && newProps.services.status === 209 ? false : this.state.addService,
@@ -221,6 +222,8 @@ class Index extends Component {
     const isLoading = staff.isLoading || services.isLoading;
     const dragDropGroupsItems = [];
 
+    const { t } = this.props;
+
 
     services.services && services.services.forEach((item, keyGroup) => {
       const dragDropServicesItems = [];
@@ -286,12 +289,12 @@ class Index extends Component {
               <div className="row align-items-center search-header-container content clients mb-2">
                 <div className="search">
                   <input className="search-input" type="search"
-                    placeholder="Введите название услуги"
+                    placeholder={t("Введите название услуги")}
                     aria-label="Search" value={this.state.searchInput}
                     onChange={this.handleSearch}/>
 
                   <input className="mob-search-input" type="search"
-                    placeholder="Введите название услуги"
+                    placeholder={t("Введите название услуги")}
                     aria-label="Search" value={this.state.searchInput}
                     onChange={this.handleSearch}/>
                   <button className="search-icon" type="submit"/>
@@ -316,11 +319,11 @@ class Index extends Component {
             <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
               <div className="buttons">
                 <button type="button" className="button" onClick={(e) => this.handleClick(null, false, e)}>
-                  Новая группа услуг
+                  {t("Новая группа услуг")}
                 </button>
 
                 <button type="button" onClick={() => this.setState({ createdService: true })} className="button">
-                  Новая услуга
+                  {t("Новая услуга")}
                 </button>
               </div>
               <div className="arrow" />
@@ -331,11 +334,11 @@ class Index extends Component {
           {(!isLoading && (!services.services || services.services.length === 0)) && !search &&
             <div className="no-holiday">
               <span>
-                            Услуги не добавлены
+                            {t("Услуги не добавлены")}
                 <span className="buttons">
                   <button type="button"
                     className="button"
-                    onClick={(e) => this.handleClick(null, false, e)}>Добавить услугу</button>
+                    onClick={(e) => this.handleClick(null, false, e)}>{t("Добавить услугу")}</button>
                 </span>
               </span>
             </div>
@@ -344,7 +347,7 @@ class Index extends Component {
           {(!isLoading && (!services.services || services.services.length === 0)) && search &&
             <div className="no-holiday">
               <span>
-                  Услуг не найдено
+                  {t("Услуг не найдено")}
               </span>
             </div>
           }
@@ -556,4 +559,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

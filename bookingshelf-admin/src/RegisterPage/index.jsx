@@ -9,6 +9,7 @@ import { origin } from '../_helpers/handle-response';
 import { isValidEmailAddress } from '../_helpers/validators';
 
 import '../../public/scss/log_in.scss';
+import {withTranslation} from "react-i18next";
 
 class Index extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
-    document.title = 'Регистрация в системе Онлайн-запись';
+    document.title = this.props.t('Регистрация в системе Онлайн-запись');
   }
 
 
@@ -162,6 +163,8 @@ class Index extends React.Component {
   render() {
     const { user, emailIsValid, agreed, authentication, invalidFields } = this.state;
 
+    const { t } = this.props;
+
     const modal = this.state.isOpenAuthModal &&
       <div className="message-is-sent-wrapper">
         <div className="message-is-sent-modal">
@@ -169,7 +172,7 @@ class Index extends React.Component {
           <div className="modal-body">
             <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
             <p className="body-text">
-              Проверьте email и завершите регистрацию, перейдя по ссылке в письме
+              {t("Проверьте email и завершите регистрацию, перейдя по ссылке в письме")}
             </p>
           </div>
         </div>
@@ -180,8 +183,8 @@ class Index extends React.Component {
         <div className="sign_up_container content-pages-bg">
           <div className="logo_sign_in">
             <div>
-              <h2 className="logo-title">Добро пожаловать!</h2>
-              <p className="logo-description">Зарегистрируйтесь и получите бесплатный пробный период 14 дней</p>
+              <h2 className="logo-title">{t("Добро пожаловать!")}</h2>
+              <p className="logo-description">{t("Зарегистрируйтесь и получите бесплатный пробный период 14 дней")}</p>
             </div>
             <img
               // eslint-disable-next-line
@@ -194,42 +197,42 @@ class Index extends React.Component {
               <form id="sign-up-form" name="form" className="row justify-content-center" onSubmit={this.handleSubmit}>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>Название компании</span>
+                    <span>{t("Название компании")}</span>
                     <input type="text" className={'' + (invalidFields.companyName ? ' redBorder' : '')}
                       onBlur={this.handleBlur} name="companyName" value={user.companyName}
                       onChange={this.handleChange}/>
                   </div>
                   <div className="col-md-6 mx-auto pr-md-0">
-                    <span>Вид деятельности</span>
+                    <span>{t("Вид деятельности")}</span>
                     <div className="custom-select-wrapper">
 
                       <select className="custom-select" name="companyTypeId" onChange={this.handleChange}
                         value={user.companyTypeId}>
-                        <option value={1}>Салоны красоты, барбершопы, SPA</option>
-                        <option value={2}>СТО, автомойки, шиномонтажи</option>
-                        <option value={3}>Коворкинг</option>
-                        <option value={4}>Медицинские центры</option>
+                        <option value={1}>{t("Салоны красоты, барбершопы, SPA")}</option>
+                        <option value={2}>{t("СТО, автомойки, шиномонтажи")}</option>
+                        <option value={3}>{t("Коворкинг")}</option>
+                        <option value={4}>{t("Медицинские центры")}</option>
                       </select>
                     </div>
                   </div>
                 </div>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>Cтрана</span>
+                    <span>{t("Cтрана")}</span>
                     <div className="custom-select-wrapper">
                       <select
                         className={'custom-select' + ((invalidFields.countryCode ? ' redBorder' : ''))}
                         onBlur={this.handleBlur} value={user.countryCode} name="countryCode"
                         onChange={this.handleChange}>
                         <option value=''></option>
-                        <option value='BLR'>Беларусь</option>
-                        <option value='UKR'>Украина</option>
-                        <option value='RUS'>Россия</option>
+                        <option value='BLR'>{t("Беларусь")}</option>
+                        <option value='UKR'>{t("Украина")}</option>
+                        <option value='RUS'>{t("Россия")}</option>
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6 mx-auto pr-md-0">
-                    <span>Таймзона</span>
+                    <span>{t("Таймзона")}</span>
                     <div className="custom-select-wrapper">
                       {user.countryCode === '' &&
                         <select
@@ -297,7 +300,7 @@ class Index extends React.Component {
                 </div>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>Телефон</span>
+                    <span>{t("Телефон")}</span>
                     <ReactPhoneInput
                       defaultCountry={'by'}
                       country={'by'}
@@ -310,7 +313,7 @@ class Index extends React.Component {
                     />
                   </div>
                   <div className="col-md-6 mx-auto pr-md-0">
-                    <span>Введите email</span>
+                    <span>{t("Введите email")}</span>
                     <input type="text" className={'' + (invalidFields.email ? ' redBorder' : '')}
                       onBlur={this.handleBlur} name="email" value={user.email}
                       onChange={this.handleChange}
@@ -322,13 +325,13 @@ class Index extends React.Component {
                 </div>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>Пароль</span>
+                    <span>{t("Пароль")}</span>
                     <input type="password" className={'' + (invalidFields.password ? ' redBorder' : '')}
                       onBlur={this.handleBlur} name="password" value={user.password}
                       onChange={this.handleChange}/>
                   </div>
                   <div className="col-md-6 mx-auto pr-md-0">
-                    <span>Подтвердите пароль</span>
+                    <span>{t("Подтвердите пароль")}</span>
                     <input
                       type="password"
                       className={'' + (user.password && !user.password_repeated ||
@@ -348,25 +351,25 @@ class Index extends React.Component {
                   invalidFields: { ...invalidFields, agreed: agreed },
                 })} name="agreed" onBlur={this.handleBlur} checked={agreed}/>
                 <span className={'check-box-circle' + (invalidFields.agreed ? ' redBorder' : '')}/>
-                Я принимаю условия&nbsp;
+                {t("Я принимаю условия")}&nbsp;
                 <a
                   href={`http://online-zapis.com/licence_agreement`}
                   target="_blank"
                   onClick={() => this.setState({ openModal: true })}>
-                  пользовательского соглашения
+                  {t("пользовательского соглашения")}
                 </a>
               </label>
 
               {authentication && authentication.error && ((authentication.error.code === 3) ||
                 (authentication.error.length > 0 && authentication.error[1] && authentication.error[1].code === 3)
               ) &&
-                <p className="alert-danger p-1 rounded pl-3 mb-2">Такой email уже зарегистрирован</p>
+                <p className="alert-danger p-1 rounded pl-3 mb-2">{t("Такой email уже зарегистрирован")}</p>
               }
 
               {authentication && authentication.error && ((authentication.error.code === 1) ||
                 (authentication.error.length > 0 && authentication.error[0] && authentication.error[0].code === 1)) &&
                   <p className="alert-danger p-1 rounded pl-3 mb-2">
-                    Название такой компании уже зарегистрировано
+                    {t("Название такой компании уже зарегистрировано")}
                   </p>
               }
 
@@ -380,7 +383,7 @@ class Index extends React.Component {
                 user.timezoneId !== '' && user.password.replace(/[ ]/g, '') !== '' && agreed && 'submit'
                 }
               >
-                Зарегистрироваться
+                {t("Зарегистрироваться")}
               </button>
 
               {authentication.registering &&
@@ -393,14 +396,14 @@ class Index extends React.Component {
             </div>
           </div>
           <div className="block_bottom">
-            <span className="sign_up_text">Уже есть аккаунт?&nbsp;</span>
-            <Link to="/login"><p className="sign_up_open" type="button">Войти</p></Link>
+            <span className="sign_up_text">{t("Уже есть аккаунт?")}&nbsp;</span>
+            <Link to="/login"><p className="sign_up_open" type="button">{t("Войти")}</p></Link>
           </div>
         </div>
 
         {modal}
 
-        <p className="footer">© Онлайн запись</p>
+        <p className="footer">© {t("Онлайн запись")}</p>
       </div>
     );
   }
@@ -413,4 +416,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

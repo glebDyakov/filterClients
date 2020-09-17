@@ -3,13 +3,14 @@ import { isMobile } from 'react-device-detect';
 import StarRatings from 'react-star-ratings';
 
 import AllReviews from './AllReviews';
+import {withTranslation} from "react-i18next";
 
 class FeedStaff extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpenReview: false,
-      rating: 'Отсутствует',
+      rating: props.t('Отсутствует'),
       feeds: [],
     };
 
@@ -19,7 +20,7 @@ class FeedStaff extends Component {
 
   handleAllFeedbackClick(activeStaff) {
     const staffFeeds = this.props.staff.feedback.find((item) => item.staffId === activeStaff.staffId);
-    const staffRating = staffFeeds.averageStaffRating || 'Отсутствует';
+    const staffRating = staffFeeds.averageStaffRating || this.props.t('Отсутствует');
     this.setState({ rating: staffRating });
     this.setState({ feeds: staffFeeds.content });
     this.handleOpenReview();
@@ -30,7 +31,7 @@ class FeedStaff extends Component {
   }
 
   render() {
-    const { activeStaff, feedbackStaff } = this.props;
+    const { activeStaff, feedbackStaff, t } = this.props;
     return (
       <React.Fragment>
         <div className={'holiday-list rating-list' + (this.state.isOpenReview ? ' active' : '')}>
@@ -110,7 +111,7 @@ class FeedStaff extends Component {
                   onClick={() => this.handleAllFeedbackClick(activeStaff)}
                   className={'button desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}
                 >
-                  {this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
+                  {this.state.isOpenReview ? t('Скрыть') : t('Все отзывы')}
                 </button>
 
                 <button
@@ -118,7 +119,7 @@ class FeedStaff extends Component {
                   onClick={() => this.handleAllFeedbackClick(activeStaff)}
                   className={'button mobile-visible desktop-visible' + (this.state.isOpenReview? ' red-text' : '')}
                 >
-                  {this.state.isOpenReview ? 'Скрыть' : 'Все отзывы'}
+                  {this.state.isOpenReview ? t('Скрыть') : t('Все отзывы')}
                 </button>
               </div>
             </React.Fragment>
@@ -136,4 +137,4 @@ class FeedStaff extends Component {
   }
 }
 
-export default FeedStaff;
+export default withTranslation("common")(FeedStaff);

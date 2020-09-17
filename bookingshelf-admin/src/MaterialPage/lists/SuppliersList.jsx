@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ActionModal from '../../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class SuppliersList extends Component {
   constructor(props) {
@@ -23,30 +24,30 @@ class SuppliersList extends Component {
   }
 
   render() {
-    const { supplier, openClientStats, toggleProvider, deleteSupplier } = this.props;
+    const { supplier, openClientStats, toggleProvider, deleteSupplier, t } = this.props;
 
     return (
       <div className="tab-content-list mb-2">
         <div>
           <a onClick={() => openClientStats(supplier)}>
             <p>
-              <span className="mob-title">Поставщик: </span>{supplier.supplierName}
+              <span className="mob-title">{t("Поставщик")}: </span>{supplier.supplierName}
             </p>
           </a>
         </div>
         <div>
           <p>
-            <span className="mob-title">Описание: </span>{supplier.description}
+            <span className="mob-title">{t("Описание")}: </span>{supplier.description}
           </p>
         </div>
         <div>
           <p>
-            <span className="mob-title">Веб-сайт: </span>{supplier.webSite}
+            <span className="mob-title">{t("Веб-сайт")}: </span>{supplier.webSite}
           </p>
         </div>
         <div>
           <p>
-            <span className="mob-title">Город: </span>{supplier.city}
+            <span className="mob-title">{t("Удалить поставщика?")}: </span>{supplier.city}
           </p>
         </div>
 
@@ -61,18 +62,18 @@ class SuppliersList extends Component {
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить поставщика?"
+            title={t("Удалить поставщика?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteSupplier,
               params: supplier.supplierId,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -82,4 +83,4 @@ class SuppliersList extends Component {
   }
 }
 
-export default SuppliersList;
+export default withTranslation("common")(SuppliersList);

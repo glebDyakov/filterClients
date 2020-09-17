@@ -27,6 +27,7 @@ import '../../public/css_admin/date.css';
 
 import '../../public/scss/staff.scss';
 import '../../public/scss/material.scss';
+import {withTranslation} from "react-i18next";
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -62,25 +63,25 @@ class Index extends Component {
 
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
     if (props.match.params.activeTab === 'suppliers') {
-      document.title = 'Поставщики | Онлайн-запись';
+      document.title = this.props.t('Поставщики | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'brands') {
-      document.title = 'Выходные дни | Онлайн-запись';
+      document.title = this.props.t('Выходные дни | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'categories') {
-      document.title = 'Категории | Онлайн-запись';
+      document.title = this.props.t('Категории | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'moving') {
-      document.title = 'Движение товаров | Онлайн-запись';
+      document.title = this.props.t('Движение товаров | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'units') {
-      document.title = 'Еденицы измерения | Онлайн-запись';
+      document.title = this.props.t('Еденицы измерения | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'store-houses') {
-      document.title = 'Склады | Онлайн-запись';
+      document.title = this.props.t('Склады | Онлайн-запись');
     }
     if (!props.match.params.activeTab || props.match.params.activeTab === 'products') {
-      document.title = 'Товары | Онлайн-запись';
+      document.title = this.props.t('Товары | Онлайн-запись');
     }
 
 
@@ -299,27 +300,27 @@ class Index extends Component {
     });
 
     if (tab === 'suppliers') {
-      document.title = 'Поставщики | Онлайн-запись';
+      document.title = this.props.t('Поставщики | Онлайн-запись');
     }
     if (tab === 'brands') {
-      document.title = 'Выходные дни | Онлайн-запись';
+      document.title = this.props.t('Выходные дни | Онлайн-запись');
     }
     if (tab === 'categories') {
-      document.title = 'Категории | Онлайн-запись';
+      document.title = this.props.t('Категории | Онлайн-запись');
     }
     if (tab === 'products') {
-      document.title = 'Товары | Онлайн-запись';
+      document.title = this.props.t('Товары | Онлайн-запись');
       // this.props.dispatch(materialActions.getProducts(this.state.productsCurrentPage));
     }
     if (tab === 'units') {
-      document.title = 'Единицы измерения | Онлайн-запись';
+      document.title = this.props.t('Единицы измерения | Онлайн-запись');
     }
     if (tab === 'store-houses') {
-      document.title = 'Склады | Онлайн-запись';
+      document.title = this.props.t('Склады | Онлайн-запись');
     }
 
     if (tab === 'moving') {
-      document.title = 'Движение товаров | Онлайн-запись';
+      document.title = this.props.t('Движение товаров | Онлайн-запись');
       // this.props.dispatch(materialActions.getProducts());
     }
 
@@ -365,7 +366,7 @@ class Index extends Component {
 
   getNavTabs(activeTab) {
     const activeTabMob = this.getActiveTab(activeTab);
-
+    const { t } = this.props;
     return (
 
       <div
@@ -377,31 +378,31 @@ class Index extends Component {
           <a className={'nav-link' + (activeTab === 'products' ? ' active show' : '')} data-toggle="tab"
             href="#tab1" onClick={() => {
               this.setTab('products');
-            }}>Товары</a>
+            }}>{t("Товары")}</a>
 
 
           <a className={'nav-link' + (activeTab === 'categories' ? ' active show' : '')} data-toggle="tab"
-            href="#tab2" onClick={() => this.setTab('categories')}>Категории</a>
+            href="#tab2" onClick={() => this.setTab('categories')}>{t("Категории")}</a>
 
 
           <a className={'nav-link' + (activeTab === 'brands' ? ' active show' : '')} data-toggle="tab"
-            href="#tab3" onClick={() => this.setTab('brands')}>Бренды</a>
+            href="#tab3" onClick={() => this.setTab('brands')}>{t("Бренды")}</a>
 
           {access(-1) &&
 
                     <a className={'nav-link' + (activeTab === 'suppliers' ? ' active show' : '')} data-toggle="tab"
-                      href="#tab4" onClick={() => this.setTab('suppliers')}>Поставщики</a>
+                      href="#tab4" onClick={() => this.setTab('suppliers')}>{t("Поставщики")}</a>
 
           }
 
           <a className={'nav-link' + (activeTab === 'moving' ? ' active show' : '')} data-toggle="tab"
-            href="#tab5" onClick={() => this.setTab('moving')}>Движение товаров</a>
+            href="#tab5" onClick={() => this.setTab('moving')}>{t("Движение товаров")}</a>
 
           {/* <li className="nav-item">*/}
           {/*    <a className={"nav-link"+(activeTab==='units'?' active show':'')} data-toggle="tab" href="#tab6" onClick={()=>this.setTab('units')}>Еденицы измерения</a>*/}
           {/* </li>*/}
           <a className={'nav-link' + (activeTab === 'store-houses' ? ' active show' : '')} data-toggle="tab"
-            href="#tab7" onClick={() => this.setTab('store-houses')}>Склады</a>
+            href="#tab7" onClick={() => this.setTab('store-houses')}>{t("Склады")}</a>
 
         </div>
         <div className={'header-tabs-mob' + (this.state.isOpenDropdownMenu ? ' opened' : '')}>
@@ -414,31 +415,31 @@ class Index extends Component {
               <a className={'nav-link' + (activeTab === 'products' ? ' active show' : '')}
                 data-toggle="tab" href="#tab1" onClick={() => {
                   this.setTab('products');
-                }}>Товары</a>
+                }}>{t("Товары")}</a>
 
 
               <a className={'nav-link' + (activeTab === 'categories' ? ' active show' : '')}
-                data-toggle="tab" href="#tab2" onClick={() => this.setTab('categories')}>Категории</a>
+                data-toggle="tab" href="#tab2" onClick={() => this.setTab('categories')}>{t("Категории")}</a>
 
 
               <a className={'nav-link' + (activeTab === 'brands' ? ' active show' : '')} data-toggle="tab"
-                href="#tab3" onClick={() => this.setTab('brands')}>Бренды</a>
+                href="#tab3" onClick={() => this.setTab('brands')}>{t("Бренды")}</a>
 
               {access(-1) &&
 
                             <a className={'nav-link' + (activeTab === 'suppliers' ? ' active show' : '')}
-                              data-toggle="tab" href="#tab4" onClick={() => this.setTab('suppliers')}>Поставщики</a>
+                              data-toggle="tab" href="#tab4" onClick={() => this.setTab('suppliers')}>{t("Поставщики")}</a>
 
               }
 
               <a className={'nav-link' + (activeTab === 'moving' ? ' active show' : '')} data-toggle="tab"
-                href="#tab5" onClick={() => this.setTab('moving')}>Движение товаров</a>
+                href="#tab5" onClick={() => this.setTab('moving')}>{t("Движение товаров")}</a>
 
               {/* <li className="nav-item">*/}
               {/*    <a className={"nav-link"+(activeTab==='units'?' active show':'')} data-toggle="tab" href="#tab6" onClick={()=>this.setTab('units')}>Еденицы измерения</a>*/}
               {/* </li>*/}
               <a className={'nav-link' + (activeTab === 'store-houses' ? ' active show' : '')}
-                data-toggle="tab" href="#tab7" onClick={() => this.setTab('store-houses')}>Склады</a>
+                data-toggle="tab" href="#tab7" onClick={() => this.setTab('store-houses')}>{t("Склады")}</a>
 
 
             </div>
@@ -453,25 +454,25 @@ class Index extends Component {
   getActiveTab(activeTab) {
     switch (activeTab) {
       case 'products':
-        return 'Товары';
+        return this.props.t('Товары');
         break;
       case 'categories':
-        return 'Категории';
+        return this.props.t('Категории');
         break;
       case 'brands':
-        return 'Бренды';
+        return this.props.t('Бренды');
         break;
       case 'suppliers':
-        return 'Поставщики';
+        return this.props.t('Поставщики');
         break;
       case 'moving':
-        return 'Движение товаров';
+        return this.props.t('Движение товаров');
         break;
       case 'store-houses':
-        return 'Склады';
+        return this.props.t('Склады');
         break;
       default:
-        return 'Тест';
+        return this.props.t('Тест');
     }
   }
 
@@ -484,7 +485,7 @@ class Index extends Component {
   }
 
   render() {
-    const { staff, material } = this.props;
+    const { staff, material, t } = this.props;
     const {
       product_working, info_product_working, category_working, supplier_working, brand_working, productOpen,
       infoProductOpen, providerOpen, categoryOpen, brandOpen, edit, currentStaff, date,
@@ -506,22 +507,22 @@ class Index extends Component {
       if (item.target) {
         switch (item.target) {
           case 'SALE':
-            item.targetTranslated = 'Продажа';
+            item.targetTranslated = this.props.t('Продажа');
             break;
           case 'INTERNAL':
-            item.targetTranslated = 'Внутреннее списание';
+            item.targetTranslated = this.props.t('Внутреннее списание');
             break;
           case 'DAMAGED':
-            item.targetTranslated = 'Товар поврежден';
+            item.targetTranslated = this.props.t('Товар поврежден');
             break;
           case 'CHANGING':
-            item.targetTranslated = 'Изменение наличия';
+            item.targetTranslated = this.props.t('Изменение наличия');
             break;
           case 'LOST':
-            item.targetTranslated = 'Утеря';
+            item.targetTranslated = this.props.t('Утеря');
             break;
           case 'OTHER':
-            item.targetTranslated = 'Другое';
+            item.targetTranslated = this.props.t('Другое');
             break;
           default:
                     // item.target = '';
@@ -594,19 +595,19 @@ class Index extends Component {
                   <div className="title-and-main-info">
                     <div className="tab-content-list mb-2 title title-product position-sticky">
                       <div>
-                        <p>Наименование</p>
+                        <p>{t("Наименование")}</p>
                       </div>
                       <div>
-                        <p>Код товара</p>
+                        <p>{t("Код товара")}</p>
                       </div>
                       <div>
-                        <p>Категория</p>
+                        <p>{t("Категория")}</p>
                       </div>
                       <div>
-                        <p>Номинальный объем</p>
+                        <p>{t("Номинальный объем")}</p>
                       </div>
                       <div>
-                        <p>Остаток</p>
+                        <p>{t("Остаток")}</p>
                       </div>
 
                       <div className="delete clientEditWrapper"></div>
@@ -637,9 +638,9 @@ class Index extends Component {
                   : (!this.props.material.isLoadingProducts &&
                                         <EmptyContent
                                           img="2box"
-                                          title="Нет товаров"
-                                          text="Добавьте первый товар, чтобы начать работу"
-                                          buttonText="Новый товар"
+                                          title={t("Нет товаров")}
+                                          text={t("Добавьте первый товар, чтобы начать работу")}
+                                          buttonText={t("Новый товар")}
                                           buttonClick={this.toggleProduct}
                                         />)
                 }
@@ -652,7 +653,7 @@ class Index extends Component {
               </div>
               <AddButton
                 handleOpen={this.toggleProduct}
-                buttonText={'Новый товар'}
+                buttonText={t('Новый товар')}
               />
               {this.props.material.isLoadingProducts &&
                             <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
@@ -681,7 +682,7 @@ class Index extends Component {
                   <div className="title-and-main-info">
                     <div className="tab-content-list mb-2 title position-sticky">
                       <div>
-                        <p>Название категории</p>
+                        <p>{t("Название категории")}</p>
                       </div>
                       <div className="delete clientEditWrapper"></div>
                       <div className="delete dropdown">
@@ -702,9 +703,9 @@ class Index extends Component {
                   : (!this.props.material.isLoadingCategories &&
                                         <EmptyContent
                                           img="box"
-                                          title="Нет категорий"
-                                          text="Создайте категории и свяжите их с продуктами"
-                                          buttonText="Новая категория"
+                                          title={t("Нет категорий")}
+                                          text={t("Создайте категории и свяжите их с продуктами")}
+                                          buttonText={t("Новая категория")}
                                           buttonClick={this.toggleCategory}
                                         />
                   )}
@@ -713,7 +714,7 @@ class Index extends Component {
               </div>
               <AddButton
                 handleOpen={this.toggleCategory}
-                buttonText={'Новая категория'}
+                buttonText={t('Новая категория')}
               />
               {this.props.material.isLoadingCategories &&
                             <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
@@ -726,7 +727,7 @@ class Index extends Component {
 
                                         <div className="row align-items-center content clients mb-2">
                                           <div className="search col-6 col-lg-4">
-                                            <input type="search" placeholder="Поиск брендов"
+                                            <input type="search" placeholder={t("Поиск брендов")}
                                               aria-label="Search" ref={(input) => this.brandSearch = input}
                                               onChange={() => this.handleSearch('defaultBrandsList', 'brands', ['brandName'], 'brandSearch')}/>
                                             <button className="search-icon" type="submit"/>
@@ -742,7 +743,7 @@ class Index extends Component {
                   {!!this.state.brands.length &&
                                     <div className="tab-content-list mb-2 title position-sticky">
                                       <div>
-                                        <p>Название бренда</p>
+                                        <p>{t("Название бренда")}</p>
                                       </div>
                                       <div className="delete clientEditWrapper"></div>
                                       <div className="delete dropdown">
@@ -763,9 +764,9 @@ class Index extends Component {
                     ) : (!this.props.material.isLoadingBrands &&
                                             <EmptyContent
                                               img="shopping"
-                                              title="Нет брендов"
-                                              text="Создайте новый бренд и свяжите его с товарами"
-                                              buttonText="Новый бренд"
+                                              title={t("Нет брендов")}
+                                              text={t("Создайте новый бренд и свяжите его с товарами")}
+                                              buttonText={t("Новый бренд")}
                                               buttonClick={this.toggleBrand}
                                             />
                     )}
@@ -773,7 +774,7 @@ class Index extends Component {
               </div>
               <AddButton
                 handleOpen={this.toggleBrand}
-                buttonText={'Новый бренд'}
+                buttonText={t('Новый бренд')}
               />
               {this.props.material.isLoadingBrands &&
                             <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
@@ -787,7 +788,7 @@ class Index extends Component {
 
                                         <div className="row align-items-center content clients mb-2">
                                           <div className="search col-6 col-lg-4">
-                                            <input type="search" placeholder="Поиск поставщика"
+                                            <input type="search" placeholder={t("Поиск поставщика")}
                                               aria-label="Search" ref={(input) => this.supplierSearch = input}
                                               onChange={() =>
                                                 this.handleSearch('defaultSuppliersList', 'suppliers', ['supplierName', 'city', 'webSite', 'description'], 'supplierSearch')}/>
@@ -805,16 +806,16 @@ class Index extends Component {
                                 {!!this.state.suppliers.length &&
                                         <div className="tab-content-list mb-2 title title-supplier position-sticky">
                                           <div>
-                                            <p>Поставщик</p>
+                                            <p>{t("Поставщик")}</p>
                                           </div>
                                           <div>
-                                            <p>Описание</p>
+                                            <p>{t("Описание")}</p>
                                           </div>
                                           <div>
-                                            <p>Веб-сайт</p>
+                                            <p>{t("Веб-сайт")}</p>
                                           </div>
                                           <div>
-                                            <p>Город</p>
+                                            <p>{t("Город")}</p>
                                           </div>
 
                                           <div className="delete clientEditWrapper"></div>
@@ -836,9 +837,9 @@ class Index extends Component {
                                   ) : (!this.props.material.isLoadingSuppliers &&
                                                 <EmptyContent
                                                   img="car"
-                                                  title="Нет поставщиков"
-                                                  text="Добавьте поставщиков, чтобы создавать автоматические ордеры на поставку товаров"
-                                                  buttonText="Новый поставщик"
+                                                  title={t("Нет поставщиков")}
+                                                  text={t("Добавьте поставщиков, чтобы создавать автоматические ордеры на поставку товаров")}
+                                                  buttonText={t("Новый поставщик")}
                                                   buttonClick={this.toggleProvider}
                                                 />
                                   )}
@@ -846,7 +847,7 @@ class Index extends Component {
                             </div>
                             <AddButton
                               handleOpen={this.toggleProvider}
-                              buttonText={'Новый поставщик'}
+                              buttonText={t('Новый поставщик')}
                             />
                           </div>
                           {this.props.material.isLoadingSuppliers &&
@@ -884,31 +885,31 @@ class Index extends Component {
 
                                               </div>
                                               <div>
-                                                <p>Код товара</p>
+                                                <p>{t("Код товара")}</p>
                                               </div>
                                               <div>
-                                                <p>Наименование</p>
+                                                <p>{t("Наименование")}</p>
                                               </div>
                                               {/* <div >*/}
                                               {/*    <p>Склад</p>*/}
                                               {/* </div>*/}
                                               <div>
-                                                <p>Причина списания</p>
+                                                <p>{t("Причина списания")}</p>
                                               </div>
                                               <div>
-                                                <p>Цена розн.</p>
+                                                <p>{t("Цена розн")}</p>
                                               </div>
                                               <div>
-                                                <p>Единицы измерения</p>
+                                                <p>{t("Единицы измерения")}</p>
                                               </div>
                                               <div>
-                                                <p>Дата</p>
+                                                <p>{t("Дата")}</p>
                                               </div>
                                               {/* <div >*/}
                                               {/*    <p>Время</p>*/}
                                               {/* </div>*/}
                                               <div>
-                                                <p>Остаток</p>
+                                                <p>{t("Остаток")}</p>
                                               </div>
 
                                               <div className="delete clientEditWrapper"></div>
@@ -925,9 +926,9 @@ class Index extends Component {
                 (!this.props.material.isLoadingMoving1 && !this.props.material.isLoadingMoving2 && <div>
                   <EmptyContent
                     img="2box"
-                    title="Нет товаров"
-                    text="Добавьте первый товар, чтобы начать работу"
-                    buttonText="Новый товар"
+                    title={t("Нет товаров")}
+                    text={t("Добавьте первый товар, чтобы начать работу")}
+                    buttonText={t("Новый товар")}
                     buttonClick={this.toggleProvider}
                     hideButton={true}
                   />
@@ -1028,7 +1029,7 @@ class Index extends Component {
                   {!!this.state.storeHouses.length &&
                                     <div className="tab-content-list mb-2 title position-sticky">
                                       <div>
-                                        <p>Название склада</p>
+                                        <p>{t("Название склада")}</p>
                                       </div>
                                       <div className="delete clientEditWrapper"></div>
                                       <div className="delete dropdown">
@@ -1048,7 +1049,7 @@ class Index extends Component {
                     ) : (!this.props.material.isLoadingStoreHouses &&
                                             <EmptyContent
                                               img="shopping"
-                                              title="Нет заданных складов"
+                                              title={t("Нет заданных складов")}
                                               // text="Создайте новый склад"
                                               // buttonText="Новый склад"
                                               // buttonClick={() => this.toggleStoreHouse()}
@@ -1298,4 +1299,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

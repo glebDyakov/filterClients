@@ -274,6 +274,10 @@ function getAll() {
   }
 }
 
+function changeLang(lang) {
+  return {type: userConstants.UPDATE_LANG, lang};
+}
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
   return (dispatch) => {

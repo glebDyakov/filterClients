@@ -22,6 +22,7 @@ import Footer from "./components/Footer";
 import TabStaffComments from "./components/TabStaffComments";
 import TabCreateComment from "./components/TabCreateComment";
 import { getFirstScreen } from "../_helpers/common";
+import {withTranslation} from "react-i18next";
 
 class IndexPage extends PureComponent {
     constructor(props) {
@@ -83,6 +84,8 @@ class IndexPage extends PureComponent {
         let {company} = this.props.match.params
         company = company.includes('_') ? company.split('_')[0] : company
 
+        const language = localStorage.getItem("lang") || "ru";
+        this.props.i18n.changeLanguage(language);
 
         this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
@@ -321,7 +324,7 @@ class IndexPage extends PureComponent {
     }
 
     render() {
-        const { history, match } = this.props;
+        const { history, match, t } = this.props;
         const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
 
         const { error, isLoading: isLoadingFromProps, isLoadingServices, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
@@ -335,19 +338,19 @@ class IndexPage extends PureComponent {
 
         if (!info && !error) {
             content = <div className="online-zapis-off">
-                Подождите...
+                {t("Подождите")}...
             </div>
         } else if (error) {
             content =  <div className="online-zapis-off">
                 {error}
-                {(error.startsWith('Онлайн-запись отключена.') && subcompanies.length > 1) && (
+                {(error.startsWith(t('Онлайн-запись отключена.')) && subcompanies.length > 1) && (
                     <button onClick={() => {
                         this.setScreen(0)
                         this.props.dispatch(staffActions.clearError());
                         let {company} = match.params;
                         let url = company.includes('_') ? company.split('_')[0] : company
                         history.push(`/${url}`)
-                    }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                    }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">{t("На страницу выбора филиалов")}</button>
                 )}
             </div>
         } else {
@@ -574,8 +577,8 @@ class IndexPage extends PureComponent {
             )
         }
 
-        const title = `Онлайн-запись в ${info ? info.companyName : ''}`;
-        const description = `${title}. Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.`
+        const title = `${t("Онлайн-запись в")} ${info ? info.companyName : ''}`;
+        const description = `${title}. ${t("Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.")}`;
         return (
           <React.Fragment>
             {info && info.companyName && <Helmet>
@@ -807,5 +810,5 @@ function mapStateToProps(store) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(IndexPage);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(IndexPage));
 export { connectedApp as IndexPage };

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import StarRatings from "react-star-ratings";
 import {staffActions} from "../../_actions";
 import moment from 'moment';
+import {withTranslation} from "react-i18next";
 
 class TabOne extends  PureComponent{
     constructor(props) {
@@ -70,12 +71,12 @@ class TabOne extends  PureComponent{
     }
 
     render() {
-        const {staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
+        const {t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown} = this.props;
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
-                    Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.
+                    {t("Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.")}
                     {(subcompanies.length > 1) && (
                         <button onClick={() => {
                             setScreen(0)
@@ -83,7 +84,7 @@ class TabOne extends  PureComponent{
                             let {company} = match.params;
                             let url = company.includes('_') ? company.split('_')[0] : company
                             history.push(`/${url}`)
-                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">На страницу выбора филиалов</button>
+                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">{t("На страницу выбора филиалов")}</button>
                     )}
                 </div>
             )
@@ -105,14 +106,14 @@ class TabOne extends  PureComponent{
                                 let url = company.includes('_') ? company.split('_')[0] : company
                                 history.push(`/${url}`)
                             }
-                        }}><span className="title_block_text">Назад</span></span>
+                        }}><span className="title_block_text">{t("Назад")}</span></span>
                     )}
-                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Выбор рабочего места' : 'Выбор сотрудника' }</p>
+                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : t('Выбор сотрудника') }</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
                             refreshTimetable();
-                    }}><span className="title_block_text">Далее</span></span>}
+                    }}><span className="title_block_text">{t("Далее")}</span></span>}
                 </div>
                 {!this.state.staff && (
                     <React.Fragment>
@@ -126,7 +127,7 @@ class TabOne extends  PureComponent{
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }} className="img_container">
 
-                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Рабочее место не важно' : 'Сотрудник не важен'}<br/>
+                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Рабочее место не важно') : t('Сотрудник не важен')}<br/>
 
 
                                         </span>
@@ -179,7 +180,7 @@ class TabOne extends  PureComponent{
                                                     starDimension="14px"
                                                     starSpacing="0"
                                                 />
-                                            ) : <p style={{ fontSize: '12px'}}>Нет отзывов</p>}
+                                            ) : <p style={{ fontSize: '12px'}}>{t("Нет отзывов")}</p>}
                                             </div>
 
 
@@ -193,13 +194,13 @@ class TabOne extends  PureComponent{
                                                 time.staffId===staff.staffId && time.availableDays.length!==0 &&
                                                 <React.Fragment>
                                                     <div className="mobile-visible" key={'time'+id}>
-                                                        <span>Ближ. запись</span>
+                                                        <span>{t("Ближ. запись")}</span>
                                                         <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                                     </div>
                                                     <div className="desktop-visible" key={'time'+id}>
 
 
-                                                        <span style={{ fontSize: '11px'}} className="nearest_appointment">Ближайшая запись - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
+                                                        <span style={{ fontSize: '11px'}} className="nearest_appointment">{t("Ближайшая запись")} - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
                                                     </div>
                                                 </React.Fragment>
 
@@ -210,7 +211,7 @@ class TabOne extends  PureComponent{
                                                 time.staffId===staff.staffId && time.availableDays.length!==0
 
                                             ) && <div className="">
-                                                <span style={{fontWeight: 'bold', fontSize: '11px'}}>Нет записи</span>
+                                                <span style={{fontWeight: 'bold', fontSize: '11px'}}>{t("Нет записи")}</span>
                                             </div>
                                             }
 
@@ -241,7 +242,7 @@ class TabOne extends  PureComponent{
                           >
                                 <span className="staff_popup_item">
                                     <div style={{ width: '100%' }} className="img_container">
-                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'Рабочее место не важно' : 'Сотрудник не важен'}<br/>
+                                        <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Рабочее место не важно') : t('Сотрудник не важен')}<br/>
                                         </span>
                                     </div>
                                 </span>
@@ -288,11 +289,11 @@ class TabOne extends  PureComponent{
                                     time.staffId===staff.staffId && time.availableDays.length!==0 &&
                                     <React.Fragment>
                                       <div className="mobile_block mobile-visible" key={'time'+id}>
-                                        <span>Ближ. запись</span>
+                                        <span>{t("Ближ. запись")}</span>
                                         <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                       </div>
                                       <div className="mobile_block desktop-visible" key={'time'+id}>
-                                        <span className="nearest_appointment">Ближайшая запись</span>
+                                        <span className="nearest_appointment">{t("Ближайшая запись")}</span>
                                         <div className="stars" style={{textTransform: 'capitalize'}}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                       </div>
                                     </React.Fragment>
@@ -303,7 +304,7 @@ class TabOne extends  PureComponent{
                                     time.staffId===staff.staffId && time.availableDays.length!==0
 
                                   ) && <div className="mobile_block">
-                                    <span style={{fontWeight: 'bold'}}>Нет записи</span>
+                                    <span style={{fontWeight: 'bold'}}>{t("Нет записи")}</span>
                                   </div>
 
 
@@ -320,7 +321,7 @@ class TabOne extends  PureComponent{
                                                     starDimension="14px"
                                                     starSpacing="0"
                                                 />
-                                            ) : <span style={{ fontSize: '12px' }}>Нет отзывов</span>}
+                                            ) : <span style={{ fontSize: '12px' }}>{t("Нет отзывов")}</span>}
                                   </div>
 
 
@@ -333,7 +334,7 @@ class TabOne extends  PureComponent{
 
                 {!!this.state.staff && (
                     <React.Fragment>
-                        <p className="modal_title">Перенести визит?</p>
+                        <p className="modal_title">{t("Перенести визит?")}</p>
                         <div className="approveF">
 
                             <button className="approveFYes"  onClick={()=>{
@@ -341,7 +342,7 @@ class TabOne extends  PureComponent{
                                 handleMoveVisit()
                                 setDefaultFlag()
                                 this.setState({staff: null})
-                            }}>Да
+                            }}>{t("Да")}
                             </button>
                             <button className="approveFNo" onClick={()=>{
                                 const activeStaff=staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
@@ -352,14 +353,14 @@ class TabOne extends  PureComponent{
                                 setScreen(6)
                                 setDefaultFlag()
                                 this.setState({staff: null})
-                            }}>Нет
+                            }}>{t("Нет")}
                             </button>
                         </div>
                     </React.Fragment>
                 )}
-                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>Пропустить выбор {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? 'рабочего места' : 'сотрудника'}</p>}
+                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : t('сотрудника')}</p>}
             </div>
         );
     }
 }
-export default connect()(TabOne);
+export default connect()(withTranslation("common")(TabOne));

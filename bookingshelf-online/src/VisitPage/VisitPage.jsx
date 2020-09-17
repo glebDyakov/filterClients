@@ -9,6 +9,7 @@ import TabError from "../IndexPage/components/TabError";
 import TabCanceled from "../IndexPage/components/TabCanceled";
 import Header from "../IndexPage/components/Header";
 import { ClientDetails }from '../IndexPage/components/ClientDetails';
+import {withTranslation} from "react-i18next";
 
 class VisitPage extends React.Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class VisitPage extends React.Component {
     componentWillReceiveProps(newProps) {
         if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
             if(newProps.staff.info) {
-                document.title = newProps.staff.info.companyName + " | Онлайн-запись ";
+                document.title = newProps.staff.info.companyName + ` | ${t("Онлайн-запись")} `;
             }
             newProps.staff.info && newProps.staff.info.timezoneId && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
@@ -80,7 +81,7 @@ class VisitPage extends React.Component {
     }
 
     render() {
-        const { staff : { staff } } = this.props;
+        const { staff : { staff }, t } = this.props;
         const {appointment: visitAppointments, info, screen, approveF, allVisits }=this.state;
         const { isLoading, deleted, error } = this.props.staff;
 
@@ -107,17 +108,17 @@ class VisitPage extends React.Component {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(visitAppointments.length===1)?<p>{visitAppointments[0].serviceName}</p>:
-                        (<p>Выбрано услуг: <strong className="service_item_price">{visitAppointments.length}</strong></p>)}
+                        (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{visitAppointments.length}</strong></p>)}
                     <p><strong className="service_item_price">{priceFrom!==priceTo
                         ? priceFrom+" - "+priceTo
                         : price
                     }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ч] m[ ${t("минут")}]`)}</strong>
                         {visitAppointments && visitAppointments[0] && priceFrom===priceTo && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
                         {visitAppointments.map(service => (
                             <p>• {service.serviceName}</p>
                         ))}
@@ -140,7 +141,7 @@ class VisitPage extends React.Component {
                 {!error && !deleted && appointment && screen===1 && !isLoading &&
                     <div className="service_selection final-screen">
                         <div className="final-book">
-                            <p>Ваша запись</p>
+                            <p>{t("Ваша запись")}</p>
                         </div>
                         <div className="specialist">
                             {appointment.staffId &&
@@ -169,7 +170,7 @@ class VisitPage extends React.Component {
                             textAlign: 'center',
                             fontSize: '12px',
                             marginBottom: '8px'
-                        }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
+                        }}>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p>
                         {info && info.appointmentMessage && <p style={{
                             color: 'red',
                             textDecoration: 'underline',
@@ -184,7 +185,7 @@ class VisitPage extends React.Component {
                             textAlign: 'center',
                             fontSize: '18px',
                             marginBottom: '8px'
-                        }}>Ваша персональная скидка составит: {appointment.discountPercent}%</p>
+                        }}>{t("Ваша персональная скидка составит")}: {appointment.discountPercent}%</p>
                         }
 
                         {!(appointment && appointment.coStaffs && appointment.coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
@@ -195,7 +196,7 @@ class VisitPage extends React.Component {
                             <span className="move-white" />
                         </div>}
                         <div style={{ position: 'relative', width: '210px',  margin: '0 auto' }}>
-                            <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()}/>
+                            <input style={{ backgroundColor: '#d41316', marginTop: '16px' }} type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()}/>
                             <span className="cancel-white" />
                         </div>
                         {approveF && <div ref={(el) => {this.approvedButtons = el;}} className="approveF" >
@@ -205,9 +206,9 @@ class VisitPage extends React.Component {
                                     this.setScreen(2)
                                     this._delete(appointment.customId)
                                 }
-                            }}>Да
+                            }}>{t("Да")}
                             </button>
-                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>Нет
+                            <button className="approveFNo" onClick={()=>this.setState({...this.state, approveF: false})}>{t("Нет")}
                             </button>
                         </div>
                         }
@@ -246,7 +247,7 @@ class VisitPage extends React.Component {
                 />
                 }
                 <div className="footer_modal">
-                    <p>Работает на <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
+                    <p>{t("Работает на")} <a href="https://online-zapis.com" target="_blank"><strong>Online-zapis.com</strong></a></p>
                 </div>
             </div>
         );
@@ -267,5 +268,5 @@ function mapStateToProps(store) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(VisitPage);
+const connectedApp = connect(mapStateToProps)(withTranslation(VisitPage));
 export { connectedApp as VisitPage };

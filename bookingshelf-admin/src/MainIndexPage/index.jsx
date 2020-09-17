@@ -6,6 +6,7 @@ import Avatar from 'react-avatar-edit';
 import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min.css';
 import { access } from '../_helpers/access';
 import ReactPhoneInput from 'react-phone-input-2';
+import {withTranslation} from "react-i18next";
 
 class Index extends Component {
   constructor(props) {
@@ -196,7 +197,7 @@ class Index extends Component {
     if (this.props.authentication.loginChecked) {
       this.queryInitData();
     }
-    document.title = 'Настройки компании | Онлайн-запись';
+    document.title = this.props.t('Настройки компании | Онлайн-запись');
     initializeJs();
   }
 
@@ -216,7 +217,7 @@ class Index extends Component {
 
   render() {
     const { adding, submitted, isLoading, saved, status, company, isAvatarOpened, subcompanies } = this.state;
-
+    const {t} = this.props;
     return (
       <div className="settings-page-container">
         {isLoading &&
@@ -229,13 +230,13 @@ class Index extends Component {
           <React.Fragment>
             {subcompanies[0] && <form className="content retreats company_fields" name="form">
               <h2 className="about-company-title">
-                      О компании
+                {t("О компании")}
               </h2>
               <div className="row">
 
                 <div className="col-sm-4">
 
-                  <p>Заголовок компании</p>
+                  <p>{t("Заголовок компании")}</p>
                   <div className="name_company_wrapper form-control">
                     <input type="text" className="company_input" name="onlineCompanyHeader" maxLength="40"
                       value={subcompanies[0].onlineCompanyHeader} onChange={(e) => this.handleChange(e, 0)}/>
@@ -256,18 +257,18 @@ class Index extends Component {
                           }
                         }}
                       >
-                        Сохранить
+                        {t("Сохранить")}
                       </button>
                     }
                   </div>
                 </div>
 
                 <div className="col-sm-8">
-                  <p>Банковские реквизиты</p>
+                  <p>{t("Банковские реквизиты")}</p>
                   <div style={{ height: '80px' }} className="name_company_wrapper bank form-control">
                     <textarea
                       style={{ paddingRight: '55px', height: '110px' }}
-                      placeholder="Введите реквизиты" className="company_input"
+                      placeholder={t("Введите реквизиты")} className="company_input"
                       name="bankDetails"
                       maxLength="1800"
                       value={subcompanies[0].bankDetails} onChange={(e) => this.handleChange(e, 0)}
@@ -288,7 +289,7 @@ class Index extends Component {
                         }
                       }}
                     >
-                      Сохранить
+                      {t("Сохранить")}
                     </button>
                   }
                 </div>
@@ -302,16 +303,16 @@ class Index extends Component {
                 className="content retreats company_fields"
                 name="form"
               >
-                <h3>Филиал {i + 1}</h3>
+                <h3>{t("Филиал")} {i + 1}</h3>
 
                 <div className="row">
                   <div className="col-md-4">
-                    <p>Название компании</p>
+                    <p>{t("Название компании")}</p>
                     <div className="name_company_wrapper form-control">
                       <input
                         type="text"
                         className="company_input"
-                        placeholder="Например: Стоматология"
+                        placeholder={t("Например Стоматология")}
                         name="companyName"
                         maxLength="40"
                         value={subcompany.companyName}
@@ -321,17 +322,17 @@ class Index extends Component {
                     </div>
                   </div>
                   <div className="col-md-4">
-                    <p>Вид деятельности</p>
+                    <p>{t("Вид деятельности")}</p>
                     <select
                       className="custom-select"
                       onChange={(e) => this.handleNotificationChange(e, i)}
                       name="companyTypeId"
                       value={subcompany && subcompany.companyTypeId}
                     >
-                      <option value={1}>Салоны красоты, барбершопы, SPA</option>
-                      <option value={2}>СТО, автомойки, шиномонтажи</option>
-                      <option value={3}>Коворкинг</option>
-                      <option value={4}>Медицинские центры</option>
+                      <option value={1}>{t("Салоны красоты, барбершопы, SPA")}</option>
+                      <option value={2}>{t("СТО, автомойки, шиномонтажи")}</option>
+                      <option value={3}>{t("Коворкинг")}</option>
+                      <option value={4}>{t("Медицинские центры")}</option>
                     </select>
                   </div>
                   <div className="col-md-4">
@@ -340,7 +341,7 @@ class Index extends Component {
                       <div className="input-text2">
                         <input
                           type="email"
-                          placeholder="Например: walkerfrank@gmail.com"
+                          placeholder={t("Например") + ": walkerfrank@gmail.com"}
                           name="companyEmail"
                           disabled
                           className="company_input disabledField"
@@ -359,7 +360,7 @@ class Index extends Component {
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
                       <p>
-                        Номер телефона владельца {subcompany.defaultPhone===1 && '(Будет указан в автоуведомлениях)'}
+                        {t("Номер телефона владельца")} {subcompany.defaultPhone===1 && `(${t("Будет указан в автоуведомлениях")})`}
                       </p>
                     </p>
 
@@ -375,7 +376,7 @@ class Index extends Component {
                           defaultCountry={'by'}
                           country={'by'}
                           regions={['america', 'europe']}
-                          placeholder="Введите номер телефона владельца"
+                          placeholder={t("Введите номер телефона владельца")}
                           value={subcompany.companyPhone1}
                           onChange={(companyPhone1) => {
                             const newSubcompanies = subcompanies;
@@ -387,7 +388,7 @@ class Index extends Component {
                       <span className="company_counter">{subcompany.companyPhone1.length - 2}/20</span>
                     </div>
 
-                    <p>Адрес компании</p>
+                    <p>{t("Адрес компании")}</p>
                     <div className="check-box-group2 form-control">
                       {/* <div className="input-text2">*/}
                       {/*    <input type="radio" aria-label="" name="defaultAddress1"
@@ -398,7 +399,7 @@ class Index extends Component {
                       <input
                         checked={true}
                         type="text"
-                        placeholder="Введите адрес"
+                        placeholder={t("Введите адрес")}
                         name="companyAddress1"
                         className="company_input"
                         value={subcompany.companyAddress1}
@@ -422,7 +423,7 @@ class Index extends Component {
                             }
                           }}
                         >
-                          Сохранить
+                          {t("Сохранить")}
                         </button>
                       }
                     </div>
@@ -458,7 +459,7 @@ class Index extends Component {
 
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>Номер телефона {subcompany.defaultPhone===3 && '(Будет указан в автоуведомлениях)'}</p>
+                      <p>{t("Номер телефона")} {subcompany.defaultPhone===3 && `(${t("Будет указан в автоуведомлениях")})`}</p>
                     </p>
 
                     <div style={{ border: 'none' }} className="name_company_wrapper form-control">
@@ -473,7 +474,7 @@ class Index extends Component {
                           defaultCountry={'by'}
                           country={'by'}
                           regions={['america', 'europe']}
-                          placeholder="Введите номер телефона"
+                          placeholder={t("Введите номер телефона")}
                           value={subcompany.companyPhone3}
                           onChange={(companyPhone3) => {
                             const newSubcompanies = subcompanies;
@@ -485,12 +486,12 @@ class Index extends Component {
                       <span className="company_counter">{subcompany.companyPhone3.length - 2}/20</span>
                     </div>
 
-                    <p className="mt-2">Город</p>
+                    <p className="mt-2">{t("Город")}</p>
                     <div className="name_company_wrapper form-control">
                       <input
                         type="text"
                         className="company_input"
-                        placeholder="Введите название города"
+                        placeholder={t("Введите название города")}
                         name="city"
                         maxLength="40"
                         value={subcompany.city}
@@ -502,7 +503,7 @@ class Index extends Component {
 
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>Номер телефона {subcompany.defaultPhone===2 && '(Будет указан в автоуведомлениях)'}</p>
+                      <p>{t("Номер телефона")} {subcompany.defaultPhone===2 && `(${t("Будет указан в автоуведомлениях")})`}</p>
                     </p>
 
                     <div style={{ border: 'none' }} className="name_company_wrapper form-control">
@@ -516,7 +517,7 @@ class Index extends Component {
                           defaultCountry={'by'}
                           country={'by'}
                           regions={['america', 'europe']}
-                          placeholder="Введите номер телефона"
+                          placeholder={t("Введите номер телефона")}
                           value={subcompany.companyPhone2}
                           onChange={(companyPhone2) => {
                             const newSubcompanies = subcompanies;
@@ -528,7 +529,7 @@ class Index extends Component {
                       <span className="company_counter">{subcompany.companyPhone2.length - 2}/20</span>
                     </div>
 
-                    <p className="text-center">Фото компании</p>
+                    <p className="text-center">{t("Фото компании")}</p>
                     <div className="upload_container">
                       <div className="setting image_picker">
                         <div className="settings_wrap">
@@ -559,7 +560,7 @@ class Index extends Component {
                     </div>
 
                     {saved === i && status === 'saved.settings' &&
-                                  <p className="alert-success p-1 rounded pl-3 mb-2">Настройки сохранены</p>
+                                  <p className="alert-success p-1 rounded pl-3 mb-2">{t("Настройки сохранены")}</p>
                     }
                   </div>
 
@@ -577,7 +578,7 @@ class Index extends Component {
                           }
                         }}
                       >
-                        Сохранить
+                        {t("Сохранить")}
                       </button>
                     }
                   </div>
@@ -617,7 +618,7 @@ class Index extends Component {
                 }
               }}
             >
-              {adding ? 'Сохранить филиал' : 'Добавить филиал +'}
+              {adding ? t('Сохранить филиал') : t("Добавить филиал") + ' +'}
             </button>
           </React.Fragment>
         }
@@ -633,4 +634,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation('common')(Index));
