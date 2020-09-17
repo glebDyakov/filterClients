@@ -118,6 +118,7 @@ export function company(state = initialState, action) {
       };
 
     case companyConstants.CHANGE_THEME:
+      localStorage.setItem("lightTheme", action.isLightTheme);
       return {
         ...state,
         settings: {
