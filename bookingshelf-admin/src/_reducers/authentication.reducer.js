@@ -1,5 +1,6 @@
 import { userConstants } from '../_constants';
 import { userActions } from '../_actions/user.actions';
+import {i18next} from "i18next";
 
 const user = JSON.parse(localStorage.getItem('user'));
 let initialState = {};
@@ -130,6 +131,12 @@ export function authentication(state = initialState, action) {
       return {
         ...state,
         status: 209,
+      };
+
+    case userConstants.UPDATE_LANG:
+      return {
+        ...state,
+        i18nLanguage: action.lang,
       };
     case userConstants.UPDATE_PROFILE_REQUEST:
       return {
