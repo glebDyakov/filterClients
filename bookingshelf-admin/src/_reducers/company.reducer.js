@@ -1,6 +1,11 @@
 import { companyConstants, userConstants } from '../_constants';
+
+const localStorageUser = localStorage.getItem('user')
 const initialState = {
   subcompanies: [],
+  settings: {
+    lightTheme: localStorageUser ? localStorageUser.lightTheme : true,
+  },
 };
 
 export function company(state = initialState, action) {
