@@ -14,9 +14,11 @@ import common_pl from "../public/lang/translations.pl";
 import common_ua from "../public/lang/translations.ua";
 import common_en from "../public/lang/translations.en";
 
+const localStorageLanguage = localStorage.getItem("lang");
+
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
-    lng: 'pl',                              // language to use
+    lng: localStorageLanguage ? localStorageLanguage : 'ru',                              // language to use
     keySeparator: false,
     resources: {
         ru: {
