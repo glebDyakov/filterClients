@@ -350,7 +350,7 @@ class Index extends React.Component {
                 <span className={'check-box-circle' + (invalidFields.agreed ? ' redBorder' : '')}/>
                 Я принимаю условия&nbsp;
                 <a
-                  href={`${origin}/licence_agreement`}
+                  href={`http://online-zapis.com/licence_agreement`}
                   target="_blank"
                   onClick={() => this.setState({ openModal: true })}>
                   пользовательского соглашения

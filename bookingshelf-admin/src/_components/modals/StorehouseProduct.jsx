@@ -102,8 +102,17 @@ class StorehouseProduct extends React.Component {
 
                               <div className="row">
                                 <div className="col-sm-12">
-                                  <InputCounter withCounter={true} title={`Количество товара на пополнение, единиц`} value={String(client.amount ? client.amount : '')}
+                                  <InputCounter withCounter={true} title={`Количество товара на пополнение, ${((client.nominalCheck === 'nominal') && activeUnit) ? ` ${client.nominalAmount + " единиц - " + activeUnit.unitName.toLowerCase()}` : 'единиц'}`} value={String(client.amount ? client.amount : '')}
                                     name="amount" handleChange={this.handleChange} maxLength={9} />
+
+                                  <p>Поступление в </p>
+                                  <select className="custom-select" name="nominalCheck"
+                                          onChange={this.handleChange}
+                                          value={client && client.nominalCheck}
+                                  >
+                                    <option value="amount">Целых единицах</option>
+                                    <option value="nominal">Единицах номинального объема</option>
+                                  </select>
                                 </div>
                               </div>
 
@@ -174,6 +183,16 @@ class StorehouseProduct extends React.Component {
       deliveryDateMillis: moment().format('x'),
       storehouseId: material.storeHouses[0].storehouseId,
     };
+
+    if (product.nominalCheck === undefined) product.nominalCheck = 'amount';
+
+    if (product.nominalCheck === 'amount') {
+      product.nominalAmount *= parseInt(client.amount);
+      product.amount = 0;
+    } else {
+      product.nominalAmount = parseInt(client.amount);
+      product.amount = 0;
+    }
 
     const updatedProduct = {};
     Object.keys(product).forEach((key) => {
