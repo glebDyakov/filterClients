@@ -23,6 +23,24 @@ class ProductsList extends Component {
     this.setState({ isOpenDeleteModal: true });
   }
 
+    getUnitName(unit) {
+        const {t} = this.props;
+        switch (unit) {
+            case "Миллилитр":
+                return t("мл");
+            case "Штука":
+                return t("шт");
+            case "Килограмм":
+                return t("кг");
+            case "Грамм":
+                return t("гр");
+            case "Коробка":
+                return t("кор");
+            default:
+                return "";
+        }
+    }
+
   render() {
     const { activeCategory, activeUnit, toggleProduct, deleteProduct, toggleInfoProduct, product, t } = this.props;
 
@@ -46,7 +64,7 @@ class ProductsList extends Component {
           </p>
         </div>
         <div >
-          <p><span className="mob-title">{t("Остаток")}: </span>{product.currentAmount}</p>
+          <p><span className="mob-title">{t("Остаток")}: </span>{product.currentAmount } шт / {product.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}</p>
         </div>
         <div className="delete clientEditWrapper">
           <a className="clientEdit" onClick={() => toggleProduct(product)}/>
