@@ -64,7 +64,7 @@ class ProductsList extends Component {
           </p>
         </div>
         <div >
-          <p><span className="mob-title">{t("Остаток")}: </span>{product.currentAmount } шт / {product.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}</p>
+          <p><span className="mob-title">{t("Остаток")}: </span>{product.currentAmount } {t("шт")} / {product.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}</p>
         </div>
         <div className="delete clientEditWrapper">
           <a className="clientEdit" onClick={() => toggleProduct(product)}/>

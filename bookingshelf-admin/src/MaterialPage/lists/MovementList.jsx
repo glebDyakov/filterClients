@@ -83,7 +83,7 @@ class MovementList extends Component {
                 {/* </div>*/}
                 <div>
                     <p><span
-                        className="mob-title">{t("Единица измерения")}: </span>{activeUnit ? activeUnit.unitName : ''}
+                        className="mob-title">{t("Единица измерения")}: </span>{activeUnit ? t(activeUnit.unitName) : ''}
                     </p>
                 </div>
                 <div>
@@ -102,7 +102,7 @@ class MovementList extends Component {
                 {/* </div>*/}
                 <div>
                     <p><span
-                        className="mob-title">{t("Остаток")}: </span>{movement && movement.currentAmount} шт / {movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}
+                        className="mob-title">{t("Остаток")}: </span>{movement && movement.currentAmount} {t("шт")} / {movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}
                     </p>
                 </div>
                 <div className="delete clientEditWrapper">
