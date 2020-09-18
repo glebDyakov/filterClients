@@ -13,7 +13,10 @@ class TabThird extends  PureComponent {
         }
     }
 
-    render() {
+
+
+
+        render() {
 
         const {setScreen, setDefaultFlag,refreshTimetable, isStartMovingVisit, selectedDay,selectedStaff,selectedServices, getDurationForCurrentStaff, selectedService,disabledDays,month, handleDayClick, showPrevWeek, showNextWeek ,t } = this.props;
 
@@ -109,4 +112,5 @@ class TabThird extends  PureComponent {
     }
 }
 
-export default withTranslation("common")(TabThird);
+
+export default withTranslation("common")(TabThird)

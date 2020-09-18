@@ -6,35 +6,9 @@ import 'whatwg-fetch';
 import { store } from './_helpers';
 import { App } from './App';
 
-import i18next from "i18next";
 import { I18nextProvider } from "react-i18next";
+import { i18next } from "./_helpers/i18n";
 
-import common_ru from "../public/lang/translations.ru";
-import common_pl from "../public/lang/translations.pl";
-import common_ua from "../public/lang/translations.ua";
-import common_en from "../public/lang/translations.en";
-
-const localStorageLanguage = localStorage.getItem("lang");
-
-i18next.init({
-    interpolation: { escapeValue: false },  // React already does escaping
-    lng: localStorageLanguage ? localStorageLanguage : 'ru',                              // language to use
-    keySeparator: false,
-    resources: {
-        ru: {
-            common: common_ru               // 'common' is our custom namespace
-        },
-        pl: {
-            common: common_pl
-        },
-        en: {
-            common: common_en
-        },
-        ua: {
-            common: common_ua
-        }
-    },
-});
 
 render(
     <I18nextProvider i18n={i18next}>
