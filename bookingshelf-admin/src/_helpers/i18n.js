@@ -29,15 +29,21 @@ const switchWindowLang = (lng) => {
     }
 };
 
+const lang = localStorage.getItem("language") || switchWindowLang(window.navigator.language.toLowerCase()) || "en";
 
 i18next.init({
     interpolation: {escapeValue: false}, // React already does escaping
     keySeparator: false,
     fallbackLng: "en",
-    lng: localStorage.getItem("language") || switchWindowLang(window.navigator.language.toLowerCase()) || "en",
+    lng: lang,
 });
 
 console.log(window.navigator.language)
+
+import(`moment/locale/${switchLang(lang)}`).then((localization) => {
+    moment.locale(switchLang(lang), localization);
+    store.dispatch({type: userConstants.UPDATE_LANG, lang: lang.toLowerCase()});
+});
 
 i18next.on('languageChanged', function (lng) {
     localStorage.setItem("language", lng);

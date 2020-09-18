@@ -170,7 +170,7 @@ class ClientDetails extends React.Component {
                                                         alignItems: 'center'
                                                     }} className="col-9">
                                                         <p className="visit-detail">
-                                                            <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                            <span style={{whiteSpace: 'normal'}}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}</span>
                                                             <span style={{
                                                                 whiteSpace: 'normal',
                                                                 fontSize: '12px'
@@ -192,7 +192,7 @@ class ClientDetails extends React.Component {
                                                             </div>
                                                         }
 
-                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format(`h[ ч] m[ ${t("минут")}]`)}</span>
+                                                        <span className="gray-text">{moment.duration(parseInt(appointment.duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</span>
 
                                                         <br />
 

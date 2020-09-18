@@ -12,11 +12,14 @@ const localStorageLanguage = localStorage.getItem("lang");
 
 const switchWindowLang = (lng) => {
     switch (lng) {
+        case "uk":
         case 'uk-ua':
             return 'UK';
         case "ru":
+        case "ru-ru":
             return 'RU';
         case "pl":
+        case "pl-pl":
             return "PL";
         default:
             return "EN";
@@ -32,9 +35,11 @@ const switchLang = (lng) => {
     }
 };
 
+const lang = localStorageLanguage ? localStorageLanguage : switchWindowLang(window.navigator.language.toLowerCase()) || 'en';
+
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
-    lng: localStorageLanguage ? localStorageLanguage : switchWindowLang(window.navigator.language) || 'en',                              // language to use
+    lng: lang,                              // language to use
     keySeparator: false,
     resources: {
         ru: {
@@ -50,6 +55,11 @@ i18next.init({
             common: common_ua
         }
     },
+});
+
+import(`moment/locale/${switchLang(lang)}`).then((localization) => {
+    moment.locale(lang, localization);
+    store.dispatch({type: staffConstants.CHANGE_LANG, lang: lang.toLowerCase()});
 });
 
 i18next.on('languageChanged', function(lng) {

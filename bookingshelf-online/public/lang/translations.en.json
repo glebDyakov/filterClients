@@ -44,6 +44,7 @@
   "Перенести визит?": "Reschedule the visit?",
   "Нет": "No",
   "Онлайн-запись отключена": "The online registration is turned off. Please, contact the administrator. We apologize for the inconvenience.",
+  "Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.": "The online registration is turned off. Please, contact the administrator. We apologize for the inconvenience.",
   "На страницу выбора филиалов": "To the branch office selection page",
   "Выбор рабочего места": "The workplace selection",
   "Выбор сотрудника": "An employee selection",
@@ -78,5 +79,6 @@
   "Ваша запись": "Your registration",
   "Ваша персональная скидка составит": "Your personal discount will amount",
   "Все визиты": "All visits",
-  "locale": "en"
+  "locale": "en",
+  "ч": "h"
 }

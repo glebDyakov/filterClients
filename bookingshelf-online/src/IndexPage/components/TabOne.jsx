@@ -76,7 +76,7 @@ class TabOne extends  PureComponent{
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
-                    {t("Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.")}
+                    {t("Онлайн-запись отключена")}
                     {(subcompanies.length > 1) && (
                         <button onClick={() => {
                             setScreen(0)

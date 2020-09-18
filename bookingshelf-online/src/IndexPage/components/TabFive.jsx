@@ -46,7 +46,7 @@ class TabFive extends PureComponent {
                         (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ч] m[ ${t("минут")}]`)}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
                     </span>
                     <div className="supperVisDet_info">
                         <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
@@ -90,7 +90,7 @@ class TabFive extends PureComponent {
                     {serviceInfo && serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
-                        <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                        <strong>{moment(selectedDay).format('DD MMMM YYYY')}</strong>
                     </div>
                     }
                     {selectedTime &&
