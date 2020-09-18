@@ -200,7 +200,7 @@ class AddProduct extends React.Component {
                                     onChange={this.handleChange}
                                     value={client.unitId}>
                                     <option value="">{t("Выберите единицу измерения")}</option>
-                                    {units.map((brand) => <option
+                                    {units.filter(brand => brand.unitName !== "Коробка" && brand.unitName !== "Килограмм").map((brand) => <option
                                       value={brand.unitId}>{t(brand.unitName)}</option>)}
                                   </select>
                                 </div>

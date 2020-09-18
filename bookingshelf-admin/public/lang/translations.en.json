@@ -164,7 +164,7 @@
   "Удалить": "Delete",
   "Конец": "The end",
   "Необходимо выбрать начало и конец интервала": "The beginning and end of the interval must be selected",
-  "Онлайн-запись": "Online registration",
+  "Онлайн-запись": "Booking",
   "Запись в журнал": "Log entry",
   "Просмотреть запись": "Check out the entry",
   "Отменено": "Cancelled",
@@ -344,7 +344,7 @@
   "Перемещенные записи": "Displaced records",
   "Отметить всё как прочитано": "Note everything as read",
   "Журнал записи": "The registry",
-  "Клиенты": "Clients",
+  "Клиенты": "Customers",
   "Услуги": "Services",
   "Email и SMS": "Email & SMS",
   "Аналитика": "Analytics",
@@ -673,7 +673,7 @@
   "Описание группы": "Group description",
   "Начать рассылку": "Start mailing",
   "Миллилитр": "Milliliter",
-  "Штука": "Thing",
+  "Штука": "Unit",
   "Килограмм": "Kilogram",
   "Грамм": "Gram",
   "Коробка": "Box",
@@ -688,5 +688,10 @@
   "Филиалы": "Branches",
   "Вкл": "On",
   "Выкл": "Off",
-  "Начните поиск. Если клиента нет в базе, заполните необходимые поля": "Start your search. If the client is not in the database, fill in the required fields"
+  "Начните поиск. Если клиента нет в базе, заполните необходимые поля": "Start your search. If the client is not in the database, fill in the required fields",
+  "мл": "ml",
+  "шт": "unit",
+  "кг": "kg",
+  "гр": "gr",
+  "кор": "box"
 }
