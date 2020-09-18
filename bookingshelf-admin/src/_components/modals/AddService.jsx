@@ -282,7 +282,7 @@ class AddService extends React.Component {
                                                   <li className="search-item">
                                                     <div className="align-items-center clients">
                                                       <div className="search">
-                                                        <input type="search" placeholder={t("Введите название товара")}
+                                                        <input type="search" placeholder={t("Введите название товара") + ", " + t("Код товара").toLowerCase()}
                                                           aria-label="Search"
                                                           value={materialsSearch} onChange={this.handleMaterialsSearch}
                                                         />
@@ -306,7 +306,7 @@ class AddService extends React.Component {
 
                                                           <p className="product-info">
                                                             <span onClick={() => {console.log(product)}} className="product-amount">{t("На складе")}: {product && product.currentAmount} {t("шт")} / ({product && product.currentNominalAmount} {product && this.getActiveUnitName(product)})</span>
-                                                            <span className="product-id">№: {product && product.productCode}</span>
+                                                            <span className="product-id">{t("Код")}: {product && product.productCode}</span>
                                                           </p>
                                                         </li>);
                                                       })}
