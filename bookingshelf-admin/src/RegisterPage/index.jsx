@@ -403,7 +403,7 @@ class Index extends React.Component {
 
         {modal}
 
-        <p className="footer">© {t("Онлайн запись")}</p>
+        <p className="footer">© Online-zapis.com</p>
       </div>
     );
   }
