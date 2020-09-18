@@ -5,8 +5,8 @@
   "scripts": {
     "start": "cross-env CONTEXT=/ webpack-dev-server --open --config webpackDev.config.js",
     "start-prod": "cross-env CONTEXT=/ webpack-dev-server --open --config webpack.config.js",
-    "dev": "cross-env CONTEXT=/ webpack --config webpack.config.js",
-    "build": "cross-env CONTEXT=/ webpack --config webpack.config.js"
+    "dev": "cross-env CONTEXT=/online/ webpack --config webpack.config.js",
+    "build": "cross-env CONTEXT=/online/ webpack --config webpack.config.js"
   },
   "dependencies": {
     "compression-webpack-plugin": "^1.1.12",
