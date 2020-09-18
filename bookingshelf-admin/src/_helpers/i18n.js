@@ -13,12 +13,28 @@ const switchLang = (lng) => {
   }
 };
 
+const switchWindowLang = (lng) => {
+    switch (lng) {
+        case 'uk-ua':
+            return 'UK';
+        case "ru":
+            return 'RU';
+        case "pl":
+            return "PL";
+        default:
+            return "EN";
+    }
+};
+
 
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
   keySeparator: false,
-  lng: localStorage.getItem("language") || "ru",
+  fallbackLng: "en",
+  lng: localStorage.getItem("language") || switchWindowLang(window.navigator.language)|| "en",
 });
+
+console.log(window.navigator.language)
 
 i18next.on('languageChanged', function(lng) {
   localStorage.setItem("language", lng);
