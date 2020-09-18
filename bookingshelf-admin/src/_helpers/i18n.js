@@ -31,10 +31,9 @@ i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
   keySeparator: false,
   fallbackLng: "en",
-  lng: localStorage.getItem("language") || switchWindowLang(window.navigator.language)|| "en",
+  lng: localStorage.getItem("language") || switchWindowLang(window.navigator.language.toLowerCase())|| "en",
 });
 
-console.log(window.navigator.language)
 
 i18next.on('languageChanged', function(lng) {
   localStorage.setItem("language", lng);
@@ -45,7 +44,7 @@ i18next.on('languageChanged', function(lng) {
     });
   import(`moment/locale/${switchLang(lng)}`).then((localization) => {
     moment.locale(switchLang(lng), localization);
-    store.dispatch({type: userConstants.UPDATE_LANG, lng});
+    store.dispatch({type: userConstants.UPDATE_LANG, lang: lng.toLowerCase()});
   });
 });
 
