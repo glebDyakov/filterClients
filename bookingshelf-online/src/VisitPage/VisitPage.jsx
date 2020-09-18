@@ -114,7 +114,7 @@ class VisitPage extends React.Component {
                         : price
                     }</strong>&nbsp;<span>{visitAppointments[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ч] m[ ${t("минут")}]`)}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
                         {visitAppointments && visitAppointments[0] && priceFrom===priceTo && !!visitAppointments[0].discountPercent && <span>({totalAmount} {visitAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
@@ -155,7 +155,7 @@ class VisitPage extends React.Component {
                             {appointment.serviceId && serviceInfo}
                             {appointment.appointmentTimeMillis &&
                             <div className="date_item_popup">
-                                <strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('DD MMMM YYYY')}</strong>
+                                <strong>{moment(appointment.appointmentTimeMillis, 'x').format('DD MMMM YYYY')}</strong>
                             </div>
                             }
                             {appointment.appointmentTimeMillis &&

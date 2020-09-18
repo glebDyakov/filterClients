@@ -347,8 +347,8 @@ class IndexPage extends PureComponent {
             </div>
         } else if (error) {
             content =  <div className="online-zapis-off">
-                {error}
-                {(error.startsWith(t('Онлайн-запись отключена')) && subcompanies.length > 1) && (
+                {t(error)}
+                {(error.startsWith("Онлайн-запись отключена") && subcompanies.length > 1) && (
                     <button onClick={() => {
                         this.setScreen(0)
                         this.props.dispatch(staffActions.clearError());
@@ -794,8 +794,8 @@ class IndexPage extends PureComponent {
     }
 
     roundDown(number, precision) {
-        let date=moment(number, 'x').locale('ru')
-        let time = Math.ceil((parseInt(moment(number, 'x').locale('ru').format('m')))/ 15) * 15
+        let date=moment(number, 'x')
+        let time = Math.ceil((parseInt(moment(number, 'x').format('m')))/ 15) * 15
 
         if(time===60){
             return date.add(1, 'hour').format('MMMM DD');

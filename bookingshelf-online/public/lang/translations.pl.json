@@ -45,6 +45,7 @@
   "минут": "min",
   "Нет": "Nie",
   "Онлайн-запись отключена": "Rezerwacja online została wyłączona. Skontaktuj się z administratorem. Przepraszamy za niedogodności.",
+  "Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.": "Rezerwacja online została wyłączona. Skontaktuj się z administratorem. Przepraszamy za niedogodności.",
   "На страницу выбора филиалов": "Na stronę wyboru oddziałów",
   "Выбор рабочего места": "Wybierz stanowisko pracy",
   "рабочего места": "stanowisko pracy",
@@ -84,5 +85,7 @@
   "Все визиты": "Wszystkie wizyty",
   "Пропустить выбор": "Pomiń wybór",
   "сотрудника": "pracowników",
-  "locale": "pl"
+  "locale": "pl",
+  "ч": "g"
+
 }
