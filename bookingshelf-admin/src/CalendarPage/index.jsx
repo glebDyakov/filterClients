@@ -821,6 +821,7 @@ class Index extends PureComponent {
     selectedDays = this.props.selectedDays,
   ) {
     const { workingStaff, type, selectedStaff } = this.state;
+    const {t} = this.props;
     let newState = {};
     let url;
 
