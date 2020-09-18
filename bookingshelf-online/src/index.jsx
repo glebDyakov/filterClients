@@ -1,13 +1,13 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import 'whatwg-fetch';
 
-import {store} from './_helpers';
-import {App} from './App';
+import { store } from './_helpers';
+import { App } from './App';
 
 import i18next from "i18next";
-import {I18nextProvider} from "react-i18next";
+import { I18nextProvider } from "react-i18next";
 
 import common_ru from "../public/lang/translations.ru";
 import common_pl from "../public/lang/translations.pl";
