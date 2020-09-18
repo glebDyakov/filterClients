@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import ActionModal from '../../_components/modals/ActionModal';
 import {withTranslation} from "react-i18next";
+import Hint from "../../_components/Hint";
 
 class MovementList extends Component {
     constructor(props) {
@@ -100,9 +101,11 @@ class MovementList extends Component {
         moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis)
         .format('HH:mm')}</p>*/}
                 {/* </div>*/}
-                <div>
+                <div className="overflow-visible">
                     <p><span
-                        className="mob-title">{t("Остаток")}: </span>{movement && movement.currentAmount} {t("шт")} / {movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}
+                        className="mob-title">{t("Остаток")} /<span className="red-text"> {t("Резерв")}</span>
+                        <Hint hintMessage={t('Товары, зарезервированные на созданные визиты.')}
+                        />: </span>{movement && movement.currentAmount} {t("шт")} ({movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}) {movement.reserve > 0 ? <span className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</span> : '/ -'}
                     </p>
                 </div>
                 <div className="delete clientEditWrapper">
