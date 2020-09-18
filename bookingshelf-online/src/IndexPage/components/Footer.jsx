@@ -13,8 +13,6 @@ class Footer extends PureComponent {
         const {i18n} = this.props;
 
         i18n.changeLanguage(lang);
-        localStorage.setItem("lang", lang);
-
     }
 
     render() {
@@ -29,7 +27,7 @@ class Footer extends PureComponent {
                 }} value={localStorage.getItem("lang") && localStorage.getItem("lang")} className="w-25 custom-select">
                     <option value="ru">Русский</option>
                     <option value="en">Английский</option>
-                    <option value="ua">Украинский</option>
+                    <option value="uk">Украинский</option>
                     <option value="pl">Польский</option>
                 </select>
             </div>

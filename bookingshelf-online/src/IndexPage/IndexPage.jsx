@@ -50,7 +50,8 @@ class IndexPage extends PureComponent {
             selectedServices: [],
             allPriceFrom: 0,
             allPriceTo: 0,
-            flagAllStaffs: false
+            flagAllStaffs: false,
+            language: "default"
         };
 
         this.selectStaff=this.selectStaff.bind(this);
@@ -92,6 +93,13 @@ class IndexPage extends PureComponent {
     }
 
     componentWillReceiveProps(newProps) {
+
+        if (this.props.staff.i18nLang !== newProps.staff.i18nLang) {
+            this.setState({
+                language: newProps.staff.i18nLang
+            })
+        }
+
         if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
             if(newProps.staff.info) {
                 document.title = newProps.staff.info.companyName + " | Онлайн-запись";
@@ -340,7 +348,7 @@ class IndexPage extends PureComponent {
         } else if (error) {
             content =  <div className="online-zapis-off">
                 {error}
-                {(error.startsWith(t('Онлайн-запись отключена.')) && subcompanies.length > 1) && (
+                {(error.startsWith(t('Онлайн-запись отключена')) && subcompanies.length > 1) && (
                     <button onClick={() => {
                         this.setScreen(0)
                         this.props.dispatch(staffActions.clearError());
