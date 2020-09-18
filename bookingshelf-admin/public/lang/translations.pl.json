@@ -693,7 +693,9 @@
   "Филиалы": "Gałęzie",
   "Вкл": "Włącz",
   "Выкл": "Wyłącz",
-  "Начните поиск. Если клиента нет в базе, заполните необходимые поля": "Rozpocznij wyszukiwanie. Jeśli klienta nie ma w bazie danych, wypełnij wymagane pola"
+  "Начните поиск. Если клиента нет в базе, заполните необходимые поля": "Rozpocznij wyszukiwanie. Jeśli klienta nie ma w bazie danych, wypełnij wymagane pola",
+  "Товары, зарезервированные на созданные визиты.": "Pozycje zarezerwowane dla utworzonych wizyt.",
+  "Резерв": "Zarezerwuj"
 }
 
 
