@@ -131,6 +131,23 @@ class ExpenditureProduct extends React.Component {
     });
   }
 
+  getUnitName(unit) {
+    const { t } = this.props;
+    switch(unit) {
+      case "Миллилитр":
+        return t("мл");
+      case "Штука":
+        return t("шт");
+      case "Килограмм":
+        return t("кг");
+      case "Грамм":
+        return t("гр");
+      case "Коробка":
+        return t("кор");
+      default:
+        return "";
+    }
+  }
 
   getYearOptionList() {
     const options = [];
@@ -195,7 +212,7 @@ class ExpenditureProduct extends React.Component {
                                 value={client.nominalCheck}
                               >
                                 <option value="amount">{t("Целых единицах")}</option>
-                                <option value="nominal">{t("Единицах номинального объема")}</option>
+                                <option value="nominal">{t("Единицах номинального объема")}, {activeUnit && this.getUnitName(activeUnit.unitName)}</option>
                               </select>
                               <p>{t("Причина списания")}</p>
                               <select className="custom-select" name="target" onChange={this.handleChange}

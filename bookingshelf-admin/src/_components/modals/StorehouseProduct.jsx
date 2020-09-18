@@ -69,6 +69,23 @@ class StorehouseProduct extends React.Component {
     }
   }
 
+  getUnitName(unit) {
+    const { t } = this.props;
+    switch(unit) {
+      case "Миллилитр":
+        return t("мл");
+      case "Штука":
+        return t("шт");
+      case "Килограмм":
+        return t("кг");
+      case "Грамм":
+        return t("гр");
+      case "Коробка":
+        return t("кор");
+      default:
+        return "";
+    }
+  }
 
   render() {
     const { company, client_working, material, suppliers, t } = this.props;
@@ -112,7 +129,7 @@ class StorehouseProduct extends React.Component {
                                 value={client && client.nominalCheck}
                         >
                           <option value="amount">{t("Целых единицах")}</option>
-                          <option value="nominal">{t("Единицах номинального объема")}</option>
+                          <option value="nominal">{t("Единицах номинального объема")}, {activeUnit && this.getUnitName(activeUnit.unitName)}</option>
                         </select>
                       </div>
                     </div>
