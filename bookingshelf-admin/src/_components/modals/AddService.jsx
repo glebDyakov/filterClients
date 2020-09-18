@@ -63,6 +63,7 @@ class AddService extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleMaterialsSearch = this.handleMaterialsSearch.bind(this);
     this.handleChooseProduct = this.handleChooseProduct.bind(this);
+    this.getActiveUnitName = this.getActiveUnitName.bind(this);
   }
 
   componentDidMount() {
@@ -96,6 +97,24 @@ class AddService extends React.Component {
         'productId': '',
       }],
       } });
+    }
+  }
+
+  getUnitName(unit) {
+    const {t} = this.props;
+    switch (unit) {
+      case "Миллилитр":
+        return t("мл");
+      case "Штука":
+        return t("шт");
+      case "Килограмм":
+        return t("кг");
+      case "Грамм":
+        return t("гр");
+      case "Коробка":
+        return t("кор");
+      default:
+        return "";
     }
   }
 
@@ -225,7 +244,7 @@ class AddService extends React.Component {
                                 <input className="form-check-input" type="checkbox"
                                   checked={service.usingMaterials}
                                   onChange={this.toggleChangeMaterials}/>
-                                <span className="check"/>
+                                <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
 
                                 <p className="title">{t("Учет материалов")} ({t("Опционально")})</p>
 
@@ -286,7 +305,7 @@ class AddService extends React.Component {
                                                           </a>
 
                                                           <p className="product-info">
-                                                            <span className="product-amount">{t("На складе")}: {product && product.currentAmount}</span>
+                                                            <span onClick={() => {console.log(product)}} className="product-amount">{t("На складе")}: {product && product.currentAmount} {t("шт")} / ({product && product.currentNominalAmount} {product && this.getActiveUnitName(product)})</span>
                                                             <span className="product-id">№: {product && product.productCode}</span>
                                                           </p>
                                                         </li>);
@@ -417,7 +436,7 @@ class AddService extends React.Component {
                               <input className="form-check-input" type="checkbox"
                                 checked={service.onlineBooking}
                                 onChange={this.toggleChange}/>
-                              <span className="check"/>
+                              <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                               {t("Онлайн запись")}
                             </label>
                           </div>
@@ -514,6 +533,11 @@ class AddService extends React.Component {
     const deletedIndex = deletedProductsList.findIndex((item) => item.productId === updatedValue);
     deletedProductsList.splice(deletedIndex, 1);
     this.setState({ service, deletedProductsList });
+  }
+
+  getActiveUnitName(product) {
+    console.log()
+    return this.getUnitName(this.props.material.units.find((currentUnit) => product.unitId === currentUnit.unitId).unitName || '');
   }
 
   handleDurationChange(e) {
