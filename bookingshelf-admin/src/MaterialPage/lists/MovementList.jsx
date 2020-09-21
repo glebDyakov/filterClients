@@ -101,7 +101,7 @@ class MovementList extends Component {
         moment(movement.deliveryDateMillis?movement.deliveryDateMillis:movement.expenditureDateMillis)
         .format('HH:mm')}</p>*/}
                 {/* </div>*/}
-                <div className="overflow-visible">
+                <div className="overflow-visible reserve-title">
                     <p><span
                         className="mob-title">{t("Остаток")} /<span className="red-text"> {t("Резерв")}</span>
                         <Hint hintMessage={t('Товары, зарезервированные на созданные визиты.')}

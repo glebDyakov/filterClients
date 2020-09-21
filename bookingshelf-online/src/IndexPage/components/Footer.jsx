@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {withTranslation} from "react-i18next";
-
+import "./Footer.scss";
 
 class Footer extends PureComponent {
     constructor(props) {
@@ -18,17 +18,17 @@ class Footer extends PureComponent {
     render() {
         const {t} = this.props;
         return (
-            <div className="footer_modal d-flex justify-content-between align-items-center px-5">
+            <div className="footer_modal d-flex justify-content-between align-items-center px-2">
                 <p>{t("Работает на")} <a href="https://online-zapis.com"
                                          target="_blank"><strong>Online-zapis.com</strong></a></p>
 
                 <select onChange={(e) => {
                     this.changeLang(e.target.value)
-                }} value={localStorage.getItem("lang") && localStorage.getItem("lang")} className="w-25 custom-select">
-                    <option value="ru">Русский</option>
-                    <option value="en">Английский</option>
-                    <option value="uk">Украинский</option>
-                    <option value="pl">Польский</option>
+                }} value={localStorage.getItem("lang") && localStorage.getItem("lang")} className="custom-select">
+                    <option value="ru">RU</option>
+                    <option value="en">EN</option>
+                    <option value="uk">UA</option>
+                    <option value="pl">PL</option>
                 </select>
             </div>
         );

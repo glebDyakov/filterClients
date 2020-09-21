@@ -2,7 +2,11 @@
 .material {
   padding-bottom: 50px;
 
-
+  .reserve-title {
+    .questions_black {
+      z-index: 2;
+    }
+  }
 
   .content {
     padding: 0 10px !important;
