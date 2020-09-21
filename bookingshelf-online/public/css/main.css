@@ -40,6 +40,11 @@ q:before, q:after { content:''; }
     clear: both;
     display: block;
 }
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 .container_popups {
     max-width: 910px;
     width: 100%;
@@ -1770,6 +1775,7 @@ input[type="search"]::-moz-placeholder {
         line-height: normal;
     }
 }
+
 .page404 .button:hover {
     opacity: 0.7;
     text-decoration: none;

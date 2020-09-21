@@ -611,7 +611,7 @@ class Index extends Component {
                                             <div>
                                                 <p>{t("Номинальный объем")}</p>
                                             </div>
-                                            <div className="overflow-visible">
+                                            <div className="overflow-visible reserve-title">
                                                 <p>{t("Остаток")}<br/>/<span className="red-text"> {t("Резерв")}</span>
                                                     <Hint hintMessage={
                                                         t('Товары, зарезервированные на созданные визиты.')
@@ -917,7 +917,7 @@ class Index extends Component {
                                                 {/* <div >*/}
                                                 {/*    <p>Время</p>*/}
                                                 {/* </div>*/}
-                                                <div className="overflow-visible">
+                                                <div className="overflow-visible reserve-title">
                                                   <p>{t("Остаток")} <br/>/<span className="red-text"> {t("Резерв")}</span>
                                                     <Hint hintMessage={
                                                       t('Товары, зарезервированные на созданные визиты.')
