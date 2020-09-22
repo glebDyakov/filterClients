@@ -1025,17 +1025,17 @@ class Index extends Component {
             <div className="sum-payments">
               <span className="green-marker"></span>
               <p className="sum-text">{t("Сумма")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b)} BYN</p>
+              <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && Math.floor(analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
             <div className="cash-payments">
               <span className="purple-marker"></span>
               <p className="cash-text">{t("Наличный расчет")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b)} BYN</p>
+              <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
             <div className="card-payments">
               <span className="orange-marker"></span>
               <p className="card-text">{t("Безналичный расчет")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b)} BYN</p>
+              <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
 
           </div>
