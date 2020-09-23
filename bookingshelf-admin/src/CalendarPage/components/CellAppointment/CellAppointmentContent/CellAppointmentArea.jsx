@@ -41,6 +41,7 @@ class CellAppointmentArea extends React.PureComponent {
       </p>
     );
 
+
     return (
       <React.Fragment>
         <p
@@ -63,6 +64,8 @@ class CellAppointmentArea extends React.PureComponent {
                   : t('Без клиента')}</span>
               <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
+            {appointment.clientId && appointment.clientPhone && <span className="client-phone">{appointment.clientPhone}</span>}
+
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
             </ul>
