@@ -30,6 +30,8 @@ const switchLang = (lng) => {
     switch (lng) {
         case 'EN':
             return 'en-gb';
+        case 'en':
+            return 'en-gb';
         default:
             return lng.toLowerCase();
     }

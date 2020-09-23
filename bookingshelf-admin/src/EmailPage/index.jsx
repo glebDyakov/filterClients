@@ -669,6 +669,7 @@ class Index extends Component {
                                                                 onChange={this.handleChange}
                                                         >
                                                             <option value={-1}>{t("Выключено")}</option>
+                                                            <option value="86400">24 {t("часа до")}</option>
                                                             <option value="43200">12 {t("часов до")}</option>
                                                             <option value="39600">11 {t("часов до")}</option>
                                                             <option value="36000">10 {t("часов до")}</option>
