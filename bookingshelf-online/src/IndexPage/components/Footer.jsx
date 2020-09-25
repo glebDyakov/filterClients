@@ -24,7 +24,7 @@ class Footer extends PureComponent {
 
                 <select onChange={(e) => {
                     this.changeLang(e.target.value)
-                }} value={localStorage.getItem("lang") && localStorage.getItem("lang")} className="custom-select">
+                }} value={localStorage.getItem("lang").toLowerCase() && localStorage.getItem("lang").toLowerCase()} className="custom-select">
                     <option value="ru">RU</option>
                     <option value="en">EN</option>
                     <option value="uk">UA</option>
