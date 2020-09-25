@@ -37,9 +37,11 @@ const switchLang = (lng) => {
     }
 };
 
-const lang = localStorageLanguage ? localStorageLanguage : switchWindowLang(window.navigator.language.toLowerCase()) || 'en';
+const lang = localStorageLanguage ? localStorageLanguage.toLowerCase() : switchWindowLang(window.navigator.language.toLowerCase()).toLowerCase() || 'en';
 
 localStorage.setItem("lang", lang);
+
+console.log("init lang: ", lang)
 
 i18next.init({
     interpolation: { escapeValue: false },  // React already does escaping
