@@ -890,31 +890,33 @@ input[type="search"]::-moz-placeholder {
 .screen5 textarea{
     padding-top: 15px;
 }
-.phones_country{
+.phones_country .form-control{
     display: flex;
     align-items: center;
     border-radius: 6px;
-    border: solid 1px rgba(172, 172, 172, 0.2);
-    box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
+    width: 100% !important;
+    border: solid 1px rgba(172, 172, 172, 0.2) !important;
+    box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08) !important;
 }
-.phones_country span{
-    display: inline-block;
-    width: 45px;
-}
-.phones_country input[type="tel"]{
-    display: inline-block;
-    margin-bottom: 0;
-    border: none;
-    box-shadow: 0;
-    width: 100%!important;
-    color: #3b4b5c;
-    padding-left: 10px;
-    margin-left: 5px;
-    border-left: solid 1px rgba(172, 172, 172, 0.2);
-    border: 0px;
-    height: 39px!important;
-    margin-bottom: 10px!important;
-}
+
+/*.phones_country span{*/
+/*    display: inline-block;*/
+/*    width: 45px;*/
+/*}*/
+/*.phones_country input[type="tel"]{*/
+/*    display: inline-block;*/
+/*    margin-bottom: 0;*/
+/*    border: none;*/
+/*    box-shadow: 0;*/
+/*    width: 100%!important;*/
+/*    color: #3b4b5c;*/
+/*    padding-left: 10px;*/
+/*    margin-left: 5px;*/
+/*    border-left: solid 1px rgba(172, 172, 172, 0.2);*/
+/*    border: 0px;*/
+/*    height: 39px!important;*/
+/*    margin-bottom: 10px!important;*/
+/*}*/
 .screen5 .term{
     text-align: center;
     width: 90%;
