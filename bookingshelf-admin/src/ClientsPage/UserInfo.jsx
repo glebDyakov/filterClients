@@ -6,6 +6,8 @@ import moment from 'moment';
 import ActionModal from '../_components/modals/ActionModal';
 
 import { clientActions } from '../_actions';
+import {compose} from "redux";
+import {withTranslation} from "react-i18next";
 
 class UserInfo extends Component {
   constructor(props) {
@@ -49,7 +51,7 @@ class UserInfo extends Component {
   }
 
   render() {
-    const { client_user, activeTab, i, handleClick, openClientsStats } = this.props;
+    const { client_user, activeTab, i, handleClick, openClientsStats, t } = this.props;
     console.log(this.state);
 
     return (
@@ -115,12 +117,12 @@ class UserInfo extends Component {
               buttons={[{
                 handler: this.deleteClient,
                 params: client_user.clientId,
-                innerText: 'Удалить',
+                innerText: this.props.t('Удалить'),
                 className: 'button',
               },
               {
                 handler: this.closeDeleteClientModal,
-                innerText: 'Отмена',
+                innerText: this.props.t('Отмена'),
                 className: 'gray-button',
               }]}
             />
@@ -128,17 +130,17 @@ class UserInfo extends Component {
 
           {this.state.isOpenDeleteClientModal && activeTab === 'blacklist' &&
             <ActionModal
-              title="Удалить клиента из черного списка?"
+              title={t("Удалить клиента из черного списка?")}
               closeHandler={this.closeDeleteClientModal}
               buttons={[{
                 handler: this.deleteClientFromBlacklist,
                 params: client_user,
-                innerText: 'Удалить',
+                innerText: t('Удалить'),
                 className: 'button',
               },
               {
                 handler: this.closeDeleteClientModal,
-                innerText: 'Отмена',
+                innerText: t('Отмена'),
                 className: 'gray-button',
               }]}
             />
@@ -158,4 +160,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(withRouter(UserInfo));
+export default compose(connect(mapStateToProps), withRouter, withTranslation("common"))(UserInfo);

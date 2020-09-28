@@ -15,7 +15,8 @@ const initialState = {
     subcompanies: [],
     sendSmsTimer,
     serviceGroups: [],
-    superCompany: true
+    superCompany: true,
+    i18nLang: 'default'
 }
 
 export function staff(state = initialState, action) {
@@ -29,6 +30,12 @@ export function staff(state = initialState, action) {
             return {
                 ...state,
                 staff: []
+            }
+
+        case staffConstants.CHANGE_LANG:
+            return {
+                ...state,
+                i18Lang: action.lang,
             }
         case staffConstants.GET_SUBCOMPANIES_SUCCESS:
 

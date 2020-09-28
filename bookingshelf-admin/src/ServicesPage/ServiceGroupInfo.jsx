@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import ActionModal from '../_components/modals/ActionModal';
 import DragDrop from '../_components/DragDrop';
+import {withTranslation} from "react-i18next";
 
 class ServiceGroupInfo extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class ServiceGroupInfo extends Component {
   render() {
     const {
       onCollapse, services, item, keyGroup, dragHandleProps, collapse, handleClick,
-      _delete, dragDropServicesItems, handleServicesDrogEnd, newService,
+      _delete, dragDropServicesItems, handleServicesDrogEnd, newService, t,
     } = this.props;
 
     return (
@@ -62,24 +63,24 @@ class ServiceGroupInfo extends Component {
               </a>
 
             </div>
-            <a className="new-service" onClick={(e) => newService(null, item, e, this)}>Новая услуга</a>
+            <a className="new-service" onClick={(e) => newService(null, item, e, this)}>{t("Новая услуга")}</a>
           </div>
         </div>
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title= "Удалить группу услуг?"
+            title={t("Удалить группу услуг?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: _delete,
               params: item.serviceGroupId,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -92,7 +93,7 @@ class ServiceGroupInfo extends Component {
 
         {(collapse.indexOf(item.serviceGroupId) === -1 && (!item.services || item.services.length === 0)) &&
           <div className="services_items d-flex justify-content-center w-100">
-            <p className="not-services">Нет услуг</p>
+            <p className="not-services">{t("Нет услуг")}</p>
           </div>
         }
       </div>
@@ -101,4 +102,4 @@ class ServiceGroupInfo extends Component {
 }
 
 
-export default ServiceGroupInfo;
+export default withTranslation("common")(ServiceGroupInfo);

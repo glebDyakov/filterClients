@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import ActionModal from '../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class StaffInfo extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class StaffInfo extends Component {
   }
 
   render() {
-    const { dragHandleProps, i, isGroup, staff_user, groupIndex, handleClick, deleteStaff, renderSwitch } = this.props;
+    const { dragHandleProps, i, isGroup, staff_user, groupIndex, handleClick, deleteStaff, renderSwitch, t } = this.props;
 
     return (
       <React.Fragment>
@@ -44,7 +45,7 @@ class StaffInfo extends Component {
               </span>
               <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
             </a>
-            {isGroup && <p className="staff-group">Группа напарников {groupIndex + 1}</p>}
+            {isGroup && <p className="staff-group">{t("Группа напарников")} {groupIndex + 1}</p>}
           </div>
           <div>
             {staff_user.phone}
@@ -72,18 +73,18 @@ class StaffInfo extends Component {
 
           {this.state.isOpenDeleteStaffModal && staff_user.roleId !== 4 &&
                     <ActionModal
-                      title="Удалить сотрудника?"
+                      title={t("Удалить сотрудника?")}
                       closeHandler={this.closeDeleteStaffModal}
                       buttons={[{
                         handler: deleteStaff,
                         params: staff_user.staffId,
-                        innerText: 'Удалить',
+                        innerText: t('Удалить'),
                         className: 'button',
                         additionalHandler: this.closeDeleteStaffModal,
                       },
                       {
                         handler: this.closeDeleteStaffModal,
-                        innerText: 'Отмена',
+                        innerText: t('Отмена'),
                         className: 'gray-button',
                       }]}
                     />
@@ -104,7 +105,7 @@ class StaffInfo extends Component {
                 </span>
                 <p>{`${staff_user.firstName} ${staff_user.lastName ? staff_user.lastName : ''}`}</p>
               </a>
-              {isGroup && <p className="staff-group">Группа напарников {groupIndex + 1}</p>}
+              {isGroup && <p className="staff-group">{t("Группа напарников")} {groupIndex + 1}</p>}
             </div>
             <div className="user-phone">
               {staff_user.phone}
@@ -135,18 +136,18 @@ class StaffInfo extends Component {
 
             {this.state.isOpenDeleteStaffModal && staff_user.roleId !== 4 &&
                         <ActionModal
-                          title="Удалить сотрудника?"
+                          title={t("Удалить сотрудника?")}
                           closeHandler={this.closeDeleteStaffModal}
                           buttons={[{
                             handler: deleteStaff,
                             params: staff_user.staffId,
-                            innerText: 'Удалить',
+                            innerText: t('Удалить'),
                             className: 'button',
                             additionalHandler: this.closeDeleteStaffModal,
                           },
                           {
                             handler: this.closeDeleteStaffModal,
-                            innerText: 'Отмена',
+                            innerText: t('Отмена'),
                             className: 'gray-button',
                           }]}
                         />
@@ -168,4 +169,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(withRouter(StaffInfo));
+export default connect(mapStateToProps)(withRouter(withTranslation("common")(StaffInfo)));

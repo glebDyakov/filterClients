@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withTranslation} from "react-i18next";
 
 class StoreHouseList extends Component {
   constructor(props) {
@@ -37,4 +38,4 @@ class StoreHouseList extends Component {
   }
 }
 
-export default StoreHouseList;
+export default withTranslation("common")(StoreHouseList);

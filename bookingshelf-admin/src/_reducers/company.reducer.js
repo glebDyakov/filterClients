@@ -1,6 +1,11 @@
 import { companyConstants, userConstants } from '../_constants';
+
+const localStorageUser = localStorage.getItem('user')
 const initialState = {
   subcompanies: [],
+  settings: {
+    lightTheme: localStorageUser ? localStorageUser.lightTheme : true,
+  },
 };
 
 export function company(state = initialState, action) {
@@ -118,6 +123,7 @@ export function company(state = initialState, action) {
       };
 
     case companyConstants.CHANGE_THEME:
+      localStorage.setItem("lightTheme", action.isLightTheme);
       return {
         ...state,
         settings: {

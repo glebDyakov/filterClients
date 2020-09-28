@@ -5,6 +5,7 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Modal from '@trendmicro/react-modal';
 import InputCounter from '../InputCounter';
 import { servicesActions, materialActions } from '../../_actions';
+import {withTranslation} from "react-i18next";
 
 class AddService extends React.Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class AddService extends React.Component {
     this.toggleChange = this.toggleChange.bind(this);
     this.toggleChangeMaterials = this.toggleChangeMaterials.bind(this);
     this.updateService = this.updateService.bind(this);
+    this.getOptionList = this.getOptionList.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.addService = this.addService.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
@@ -61,6 +63,7 @@ class AddService extends React.Component {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleMaterialsSearch = this.handleMaterialsSearch.bind(this);
     this.handleChooseProduct = this.handleChooseProduct.bind(this);
+    this.getActiveUnitName = this.getActiveUnitName.bind(this);
   }
 
   componentDidMount() {
@@ -97,13 +100,32 @@ class AddService extends React.Component {
     }
   }
 
+  getUnitName(unit) {
+    const {t} = this.props;
+    switch (unit) {
+      case "Миллилитр":
+        return t("мл");
+      case "Штука":
+        return t("шт");
+      case "Килограмм":
+        return t("кг");
+      case "Грамм":
+        return t("гр");
+      case "Коробка":
+        return t("кор");
+      default:
+        return "";
+    }
+  }
+
   getOptionList() {
     const booktimeStep = this.props.company.settings && parseInt(this.props.company.settings.booktimeStep);
+    const t = this.props.t;
     const options = [];
     for (let i = booktimeStep; i <= 54000; i += booktimeStep) {
       const hour = Math.floor(i / 3600);
       const minute = i % 3600;
-      options.push(<option value={i}>{`${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} мин` : '00 мин'}`}</option>);
+      options.push(<option value={i}>{`${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} ${t("минут")}` : `00 ${t("минут")}`}`}</option>);
     }
     return options;
   }
@@ -111,7 +133,7 @@ class AddService extends React.Component {
   render() {
     const { service, editServiceItem, colors, message, staffs, group, allStaffs, services, materialsSearch }=this.state;
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
-
+    const { t } = this.props;
 
     const optionList = this.getOptionList();
 
@@ -122,8 +144,8 @@ class AddService extends React.Component {
                 <div className="modal-dialog modal-dialog-lg">
                   <div className="modal-content">
                     <div className="modal-header">
-                      {editServiceItem ? <h4 className="modal-title">Редактирование услуги</h4>
-                        : <h4 className="modal-title">Новая услуга{group &&
+                      {editServiceItem ? <h4 className="modal-title">{t("Редактирование услуги")}</h4>
+                        : <h4 className="modal-title">{t("Новая услуга")}{group &&
                                 <div className="select-color d-none d-md-flex border-color">
                                   <li><a><span
                                     className={group.color.toLowerCase() + ' ' + 'color-circle ml-0'}/><span
@@ -142,10 +164,10 @@ class AddService extends React.Component {
                     <div className="modal-body">
                       <div className="row d-flex justify-content-between">
                         <div className="left-container">
-                          <p className="title">Общая информация</p>
+                          <p className="title">{t("Общая информация")}</p>
 
                           <div className="input_limited_wrapper_name">
-                            <p>Название услуги</p>
+                            <p>{t("Название услуги")}</p>
                             <input style={{ paddingRight: '60px' }} type="text" placeholder="" name="name" maxLength="128"
                               value={service.name} onChange={this.handleChange} className={((service.priceFrom || service.specialPrice) && service.name===''? ' redBorder' : '')}/>
                             <span className="input_limited_name">
@@ -154,7 +176,7 @@ class AddService extends React.Component {
                           </div>
                           <div className="row d-flex justify-content-between">
                             <div className="col-xl-8 input_limited_wrapper_description">
-                              <p>Детали услуги</p>
+                              <p>{t("Детали услуги")}</p>
                               <input type="text" placeholder="" maxLength="120"
                                 name="details" value={service.details}
                                 onChange={this.handleChange}/>
@@ -163,7 +185,7 @@ class AddService extends React.Component {
                               </span>
                             </div>
                             <div className="col-xl-4 flex-column d-flex justify-content-end">
-                              <p>Местная валюта</p>
+                              <p>{t("Местная валюта")}</p>
 
                               <select className="custom-select" onChange={this.handleChange} name="currency"
                                 value={service.currency}>
@@ -179,11 +201,11 @@ class AddService extends React.Component {
 
                           <hr/>
 
-                          <p className="title">Настройки услуги</p>
+                          <p className="title">{t("Настройки услуги")}</p>
 
                           <div className="row d-flex justify-content-between">
                             <div className="timing-service col-md-6">
-                              <p>Длительность</p>
+                              <p>{t("Длительность")}</p>
                               <select className="custom-select" onChange={this.handleDurationChange} name="duration"
                                 value={service.duration}>
                                 {optionList}
@@ -192,13 +214,13 @@ class AddService extends React.Component {
 
                             <div className="row col-md-6">
                               <div className="price-from col-md-6">
-                                <p>Цена от</p>
+                                <p>{t("Цена от")}</p>
                                 <input type="number" placeholder="" name="priceFrom"
                                   value={service.priceFrom} onChange={this.handleChangePrice} className={(service.specialPrice && service.priceFrom===''? ' redBorder' : '')}/>
                               </div>
 
                               <div className="price-to col-md-6">
-                                <p>Цена до</p>
+                                <p>{t("Цена до")}</p>
                                 <input type="number" placeholder="" name="priceTo"
                                   value={service.priceTo} onChange={this.handleChange} className={(service.priceFrom && service.priceFrom!==0 && service.priceTo!=='' && service.priceTo!==0 && parseInt(service.priceTo)<parseInt(service.priceFrom)? ' redBorder' : '')}/>
 
@@ -222,9 +244,9 @@ class AddService extends React.Component {
                                 <input className="form-check-input" type="checkbox"
                                   checked={service.usingMaterials}
                                   onChange={this.toggleChangeMaterials}/>
-                                <span className="check"/>
+                                <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
 
-                                <p className="title">Учет материалов (опционально)</p>
+                                <p className="title">{t("Учет материалов")} ({t("Опционально")})</p>
 
                               </label>
                             </div>
@@ -250,7 +272,7 @@ class AddService extends React.Component {
                                                           'select-button dropdown-toggle select-material col-9'}
                                                         data-toggle={'dropdown'}>{((item.productId) ? ((item.productCode ? item.productCode : '') + (item.productName ? `, ${item.productName}` : '')
                                                           // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
-                                                          ) :'Выберите необходимый материал') }
+                                                          ) :t('Выберите необходимый материал')) }
                                                           <span
                                                             className="color-circle"/><span
                                                             className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
@@ -260,7 +282,7 @@ class AddService extends React.Component {
                                                   <li className="search-item">
                                                     <div className="align-items-center clients">
                                                       <div className="search">
-                                                        <input type="search" placeholder="Введите название товара"
+                                                        <input type="search" placeholder={t("Введите название товара") + ", " + t("Код товара").toLowerCase()}
                                                           aria-label="Search"
                                                           value={materialsSearch} onChange={this.handleMaterialsSearch}
                                                         />
@@ -283,8 +305,8 @@ class AddService extends React.Component {
                                                           </a>
 
                                                           <p className="product-info">
-                                                            <span className="product-amount">На складе: {product && product.currentAmount}</span>
-                                                            <span className="product-id">№: {product && product.productCode}</span>
+                                                            <span onClick={() => {console.log(product)}} className="product-amount">{t("На складе")}: {product && product.currentAmount} {t("шт")} / ({product && product.currentNominalAmount} {product && this.getActiveUnitName(product)})</span>
+                                                            <span className="product-id">{t("Код")}: {product && product.productCode}</span>
                                                           </p>
                                                         </li>);
                                                       })}
@@ -296,8 +318,8 @@ class AddService extends React.Component {
                                                 <div className="arrow-dropdown"><i></i></div>
 
                                                 <div className="select-material row col-12 col-md-4">
-                                                  <InputCounter placeholder="Например, 100 мл" value={String(this.state.service.serviceProducts[index].amount)}
-                                                    title={`Норма списания, ${item.unitName ? (item.unitName) : ''}`}
+                                                  <InputCounter placeholder={`${t("Например")}, 100 мл`} value={String(this.state.service.serviceProducts[index].amount)}
+                                                    title={`${t("Норма списания")}, ${item.unitName ? (item.unitName) : ''}`}
                                                     name="amount" handleChange={(e) => this.handleChangeProduct(e, index)} maxLength={9} />
                                                 </div>
                                                 {/* {index !== 0 && <button className="close"   onClick={()=>this.removeMaterial(index)}>x</button>}*/}
@@ -321,7 +343,7 @@ class AddService extends React.Component {
                                                 });
                                               }
                                               this.setState({ service: updatedService });
-                                            }}>Добавить +</p>
+                                            }}>{t("Добавить")} +</p>
                                         </React.Fragment>}
 
 
@@ -334,12 +356,12 @@ class AddService extends React.Component {
                           <div className="block-style2 container">
                             <div className="header-container">
                               <div className="row">
-                                <div className="col-sm-12"><p className="title">{(companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места': 'Сотрудники'}, оказывающие <br/> услугу</p></div>
+                                <div className="col-sm-12"><p className="title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места'): t('Сотрудники')}, {t("оказывающие услугу")}</p></div>
                               </div>
                               {allStaffs && allStaffs.length > 0 &&
                                             <div className="search dropdown row">
                                               <form className="col-sm-12 form-inline" data-toggle="dropdown">
-                                                <input type="search" placeholder="Поиск по имени" aria-label="Search" ref={(input) => this.search = input} onChange={this.handleSearch}/>
+                                                <input type="search" placeholder={t("Поиск по имени")} aria-label="Search" ref={(input) => this.search = input} onChange={this.handleSearch}/>
                                                 <button className="search-icon" type="button"></button>
                                                 {/* <ul className="dropdown-menu" role="menu">*/}
                                                 {/* <li role="presentation"><a role="menuitem" tabIndex="-1"*/}
@@ -396,7 +418,7 @@ class AddService extends React.Component {
                         </div>
 
                         {services && services.status === 200 &&
-                                <p className="alert-success w-100 p-1 rounded pl-3 mb-2">Сохранено</p>
+                                <p className="alert-success w-100 p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>
                         }
                         {services && services.adding &&
                                 <img style={{ width: '57px' }}
@@ -414,8 +436,8 @@ class AddService extends React.Component {
                               <input className="form-check-input" type="checkbox"
                                 checked={service.onlineBooking}
                                 onChange={this.toggleChange}/>
-                              <span className="check"/>
-                                            Онлайн запись
+                              <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
+                              {t("Онлайн запись")}
                             </label>
                           </div>
 
@@ -423,7 +445,7 @@ class AddService extends React.Component {
                             disabled={!(!service.usingMaterials || (service.serviceProducts.length && (service.serviceProducts.every((item) => (item.productId && item.amount)))))}
                             onClick={() => {
                               if (services.adding || service.name==='' || service.priceFrom==='' || (String(service.priceFrom) && String(service.priceTo)!=='' && parseInt(service.priceTo)<parseInt(service.priceFrom))) {
-                                this.setState({ message: 'Необходимо заполнить название услуги и цену' });
+                                this.setState({ message: t('Необходимо заполнить название услуги и цену') });
                               } else {
                                 this.setState({ message: '' });
                                 if (editServiceItem) {
@@ -432,7 +454,7 @@ class AddService extends React.Component {
                                   this.addService();
                                 }
                               }
-                            }}>{editServiceItem ? 'Сохранить' : 'Сохранить'}</button>
+                            }}>{editServiceItem ? t('Сохранить') : t('Сохранить')}</button>
                         </div>
                       </div>
                     </div>
@@ -511,6 +533,11 @@ class AddService extends React.Component {
     const deletedIndex = deletedProductsList.findIndex((item) => item.productId === updatedValue);
     deletedProductsList.splice(deletedIndex, 1);
     this.setState({ service, deletedProductsList });
+  }
+
+  getActiveUnitName(product) {
+    console.log()
+    return this.getUnitName(this.props.material.units.find((currentUnit) => product.unitId === currentUnit.unitId).unitName || '');
   }
 
   handleDurationChange(e) {
@@ -671,5 +698,5 @@ AddService.propTypes ={
   group: PropTypes.object,
 };
 
-const connectedApp = connect(mapStateToProps)(AddService);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(AddService));
 export { connectedApp as AddService };

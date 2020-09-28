@@ -19,6 +19,8 @@ import {
   calendarActions, clientActions, companyActions, staffActions, userActions,
 } from '../../_actions';
 import { isValidEmailAddress } from '../../_helpers/validators';
+import {compose} from "redux";
+import {withTranslation} from "react-i18next";
 
 
 class ManagerSettings extends React.Component {
@@ -43,6 +45,7 @@ class ManagerSettings extends React.Component {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleMessageIsSentModal = this.handleMessageIsSentModal.bind(this);
     this.handleChangeTheme = this.handleChangeTheme.bind(this);
+    this.handleChangeLang = this.handleChangeLang.bind(this);
   }
 
 
@@ -85,15 +88,27 @@ class ManagerSettings extends React.Component {
   }
 
   handleChangeTheme(newTheme) {
-    const { dispatch } = this.props;
-    console.log(this.props.authentication.user);
+    console.log(this.props.company.subcompanies[0]);
 
     this.props.dispatch(companyActions.changeTheme(newTheme));
 
-    this.props.dispatch(companyActions.updateCompanySettings({
+    this.props.dispatch(companyActions.updateSubcompany({
       ...this.props.company.subcompanies[0],
       lightTheme: newTheme,
     }, 'isFirstScreenLoading'));
+  }
+
+  handleChangeLang(lang) {
+    const { staff, authentication } = this.props;
+    this.props.i18n.changeLanguage(lang);
+
+    const activeStaff = staff && staff.find((item) =>
+        ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
+    const body = JSON.parse(JSON.stringify(activeStaff));
+    body.languageCode = lang.toUpperCase();
+    this.props.dispatch(staffActions.update(JSON.stringify([body]), activeStaff.staffId));
+
   }
 
   addManager() {
@@ -147,29 +162,44 @@ class ManagerSettings extends React.Component {
   render() {
     const { managers } = this.props.calendar;
     const { message } = this.state;
+    const {t} = this.props;
 
 
     return (
       <div className="managers-settings-wrapper">
         <div ref={this.setWrapperRef} className="managers-settings">
           <div className="modal-header">
-            <h4>Настройки</h4>
+            <h4>{t("Настройки")}</h4>
             <button type="button" className="close"
               onClick={this.closeModal}
             />
 
           </div>
           <div className="theme-block">
-            <h5>Выберите тему:</h5>
-            <p>Белая</p>
+            <h5>{t("Выберите тему")}:</h5>
+            <p>{t("Белая")}</p>
             <div onClick={() => {
               this.handleChangeTheme(true);
             }} className="screen white"></div>
-            <p>Темная</p>
+            <p>{t("Темная")}</p>
             <div onClick={() => {
               this.handleChangeTheme(false);
             }} className="screen black"></div>
           </div>
+
+          <div className="theme-block lang-block">
+            <h5>{t("Выберите язык")}</h5>
+            <select value={this.props.i18n.language} onChange={(e) => {
+              this.handleChangeLang(e.target.value);
+            }} className="custom-select">
+
+              <option value="RU">Русский</option>
+              <option value="PL">Польский</option>
+              <option value="EN">Английский</option>
+              <option value="UK">Украинский</option>
+            </select>
+          </div>
+
           {/* <div className="manager-block">*/}
           {/*    <h5>Ваш менеджер</h5>*/}
           {/*    <div className="contact">*/}
@@ -190,10 +220,10 @@ class ManagerSettings extends React.Component {
           {/*        <a href="mailto:Andrey.skr@online-zapis.com">Andrey.skr@online-zapis.com</a></div>*/}
           {/* </div>*/}
           <div className="send-leader">
-            <h5>Написать руководству</h5>
+            <h5>{t("Написать руководству")}</h5>
             <InputCounter
-              title="Имя"
-              placeholder="Введите Имя"
+              title={t("Имя")}
+              placeholder={t("Введите Имя")}
               value={message.senderName}
               name="senderName"
               handleChange={this.handleChange}
@@ -201,13 +231,13 @@ class ManagerSettings extends React.Component {
               withCounter={false}
             />
 
-            <p>Телефон</p>
+            <p>{t("Телефон")}</p>
             <ReactPhoneInput
               defaultCountry={'by'}
               country={'by'}
               inputClass={'phone-number'}
               regions={['america', 'europe']}
-              placeholder="Введите номер телефона"
+              placeholder={t("Введите номер телефона")}
               disableAreaCodes={true}
               value={message.senderPhone}
               onChange={(phone) => this.setterPhone(phone)}
@@ -215,7 +245,7 @@ class ManagerSettings extends React.Component {
 
             <InputCounter
               type="email"
-              placeholder="Введите email"
+              placeholder={t("Введите email")}
               value={message.senderEmail}
               name="senderEmail"
               title="Email"
@@ -226,10 +256,10 @@ class ManagerSettings extends React.Component {
             />
 
             <div className="appointment-note">
-              <p>Текст</p>
+              <p>{t("Текст")}</p>
               <textarea
                 className="company_input"
-                placeholder="Введите текст"
+                placeholder={t("Введите текст")}
                 name="text"
                 maxLength={120}
                 value={message.text}
@@ -243,7 +273,7 @@ class ManagerSettings extends React.Component {
             disabled={(!(message.senderPhone) || !isValidEmailAddress(message.senderEmail) || !message.senderName || !message.text)}
             className={'send-button' + ((!(message.senderPhone) || !isValidEmailAddress(message.senderEmail) || !message.senderName || !message.text) ? ' disabledField' : '')}
             type="button"
-            onClick={this.sendMessage}>Отправить
+            onClick={this.sendMessage}>{t("Отправить")}
           </button>
         </div>
 
@@ -254,7 +284,7 @@ class ManagerSettings extends React.Component {
                     <div className="modal-body">
                       <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`} alt="message is sent image"/>
                       <p className="body-text">
-                                Сообщение отправлено
+                        {t("Сообщение отправлено")}
                       </p>
                     </div>
                   </div>
@@ -269,10 +299,10 @@ class ManagerSettings extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { authentication, calendar, company } = state;
+  const { authentication, calendar, company, staff } = state;
 
   return {
-    authentication, calendar, company,
+    authentication, calendar, company, staff: staff.staff,
   };
 }
 
@@ -280,4 +310,5 @@ ManagerSettings.proptypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(withRouter(ManagerSettings));
+
+export default compose(connect(mapStateToProps), withRouter, withTranslation("common"))(ManagerSettings);

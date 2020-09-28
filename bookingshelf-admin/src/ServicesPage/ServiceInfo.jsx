@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 import ActionModal from '../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class ServiceInfo extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class ServiceInfo extends Component {
   }
 
   render() {
-    const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup } = this.props;
+    const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup, t } = this.props;
 
 
     return (
@@ -61,18 +62,18 @@ class ServiceInfo extends Component {
 
             {item2 && item2.serviceProducts &&
             // eslint-disable-next-line max-len
-            <span className="item-detail"><br/>Учет материалов: {item2.serviceProducts[0].productName}, {item2.serviceProducts[0].amount} {this.getUnit(item2.serviceProducts[0].unitName)}.</span>
+            <span className="item-detail"><br/>{t("Учет материалов")}: {item2.serviceProducts[0].productName}, {item2.serviceProducts[0].amount} {this.getUnit(item2.serviceProducts[0].unitName)}.</span>
             }
           </span>
           {item2 && item2.details.length > 0 &&
-          <span className="item-detail"><br/>Детали: {item2.details.length !== 0 && item2.details}</span>}
+          <span className="item-detail"><br/>{t("Детали")}: {item2.details.length !== 0 && item2.details}</span>}
 
           <span className="hide-item">
             <span className="price">
               {item2.priceFrom} {item2.priceFrom !== item2.priceTo && ' - ' + item2.priceTo} {item2.currency}
             </span>
             <span
-              className="timing">{moment.duration(parseInt(item2.duration), 'seconds').format('h[ ч] m[ мин]')}</span>
+              className="timing">{moment.duration(parseInt(item2.duration), 'seconds').format(`h[ ч] m[ ${t("минут")}]`)}</span>
           </span>
         </p>
         <div className="list-inner">
@@ -80,7 +81,7 @@ class ServiceInfo extends Component {
             {item2.priceFrom} {item2.priceFrom !== item2.priceTo && ' - ' + item2.priceTo} {item2.currency}
           </span>
           <span className="services_items_time">
-            {moment.duration(parseInt(item2.duration), 'seconds').format('h[ ч] m[ мин]')}
+            {moment.duration(parseInt(item2.duration), 'seconds').format(`h[ ч] m[ ${t("минут")}]`)}
           </span>
           <a className="edit_service" onClick={(e) => newService(item2, item, e, this)}/>
           <a className="delete-icon ml-3" id="menu-delete6633" onClick={this.openDeleteModal}>
@@ -90,19 +91,19 @@ class ServiceInfo extends Component {
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить услугу?"
+            title={t("Удалить услугу?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteService,
               params: item.serviceGroupId,
               additionalParam: item2.serviceId,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -113,4 +114,4 @@ class ServiceInfo extends Component {
   }
 }
 
-export default ServiceInfo;
+export default withTranslation("common")(ServiceInfo);

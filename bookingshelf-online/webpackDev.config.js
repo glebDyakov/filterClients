@@ -1,37 +1,40 @@
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var buildConfigs = [];
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 const CompressionPlugin = require('compression-webpack-plugin');
 
+const externals = require('./externals');
 
 module.exports = {
-    entry: './src/index.jsx',
+    devtool: 'cheap-module-source-map',
+    entry: ['webpack-dev-server/client', 'webpack/hot/dev-server', './src/index.jsx'],
     output: {
         path: path.resolve('dist'),
         filename: 'app-[hash].js',
-        publicPath: process.env.CONTEXT
+        publicPath: process.env.CONTEXT,
     },
     resolve: {
-        extensions: ['.js', '.json', '.jsx']
+        extensions: ['.js', '.json', '.jsx'],
     },
     module: {
-        loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader" },
+        rules: [
+            { test: /\.css$/, loader: 'style-loader!css-loader' },
             {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'url-loader',
                 query: {
-                    name: '[name].[ext]?[hash]'
-                }
+                    name: '[name].[ext]?[hash]',
+                },
             },
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['react', ['es2015', { loose: true, modules: false }], 'stage-3']
-                }
+                options: {
+                    plugins: [require.resolve('react-refresh/babel')],
+                },
             },
             {
                 test: /\.scss$/,
@@ -46,58 +49,43 @@ module.exports = {
                         loader: require.resolve('sass-loader'),
                     },
 
-                ]
-            }
-        ]
+                ],
+            },
+        ],
     },
-    plugins: [new HtmlWebpackPlugin({
-        template: './src/index.html',
-        filename: 'index.html',
-        inject: 'body',
-        vendorsFilename: process.env.CONTEXT
-    }), new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: JSON.stringify('production'),
-            CONTEXT: JSON.stringify(process.env.CONTEXT)
-        }
-    }), new webpack.optimize.UglifyJsPlugin({
-        output: {
-            comments: false
-        },
-        mangle: true,
-        sourcemap: false,
-        debug: false,
-        minimize: true,
-        compress: {
-            warnings: false,
-            screw_ie8: true,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
-            sequences: true,
-            dead_code: true,
-            evaluate: true,
-            if_return: true,
-            join_vars: true
-        }
-    }), new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+            inject: 'body',
+            vendorsFilename: process.env.CONTEXT,
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('development'),
+                CONTEXT: JSON.stringify(process.env.CONTEXT),
+            },
+        }),
         new CompressionPlugin({
-            filename: "[path].gz[query]",
-            algorithm: "gzip",
-            test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/
-        })],
+            filename: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.scss$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+        }),
+
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.IgnorePlugin(/^\.\/auth$/, /firebase$/),
+        new webpack.IgnorePlugin(/^\.\/storage$/, /firebase$/),
+        new webpack.IgnorePlugin(/^\.\/messaging$/, /firebase$/),
+
+        new webpack.HotModuleReplacementPlugin(),
+        new ReactRefreshWebpackPlugin(),
+    ],
     devServer: {
         historyApiFallback: { index: process.env.CONTEXT },
         host: 'localhost',
         port: 8081,
+        hot: true,
         contentBase: './',
     },
-    externals: {
-        // global app config object
-        config: JSON.stringify({
-            apiUrl: '/rest/online/v1',
-            apiUrlv2: '/rest/online/v2'
-        })
-    },
-
-}
+    externals,
+};

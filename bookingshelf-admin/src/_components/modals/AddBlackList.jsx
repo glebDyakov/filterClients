@@ -8,6 +8,7 @@ import ReactPaginate from 'react-paginate';
 import { clientActions } from '../../_actions';
 import Paginator from '../Paginator';
 import BlackListUserItem from './BlackListUserItem';
+import {withTranslation} from "react-i18next";
 
 class AddBlackList extends React.Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class AddBlackList extends React.Component {
   }
 
   render() {
-    const { clients, isLoading } = this.props;
+    const { clients, isLoading, t } = this.props;
     const { client } = this.state;
 
 
@@ -115,7 +116,7 @@ class AddBlackList extends React.Component {
                     <div>
                       <div className="modal-content">
                         <div className="modal-header">
-                          <h4 className="modal-title">Добавление в черный список</h4>
+                          <h4 className="modal-title">{t("Добавление в черный список")}</h4>
 
                           <button type="button" className="close" onClick={this.closeModal}/>
                           {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
@@ -127,7 +128,7 @@ class AddBlackList extends React.Component {
                             <div className="search dropdown">
                               <input type="search"
                                 className="search-input"
-                                placeholder="Поиск по имени, номеру тел., имейлу"
+                                placeholder={t("Поиск по имени номеру тел имейлу")}
                                 aria-label="Search" ref={(input) => this.search = input}
                                 onChange={this.handleSearch}/>
                               <button className="search-icon" type="button"></button>
@@ -146,7 +147,7 @@ class AddBlackList extends React.Component {
                             <div style={{ width: '98px', margin: '0 auto' }}>
 
                               {clients && clients.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2">Добавлено</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2">{t("Добавлено")}</p>
                               }
                               {clients && clients.adding &&
                                         <img style={{ width: '57px', margin: '0 auto', display: 'block' }}
@@ -155,7 +156,7 @@ class AddBlackList extends React.Component {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                               {(this.search && this.search.value.length > 0) && !clients.client &&
-                                        <span>Поиск результатов не дал</span>}
+                                        <span>{t("Поиск результатов не дал")}</span>}
                               {clients.totalPages > 1 &&
                                         <Paginator
 
@@ -168,7 +169,7 @@ class AddBlackList extends React.Component {
                           </div>
 
                           <div className="buttons">
-                            <button onClick={this.addUsersToBlackList} className="button">Сохранить</button>
+                            <button onClick={this.addUsersToBlackList} className="button">{t("Сохранить")}</button>
                           </div>
                         </div>
                       </div>
@@ -228,5 +229,5 @@ AddBlackList.propTypes = {
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(AddBlackList);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(AddBlackList));
 export { connectedApp as AddBlackList };

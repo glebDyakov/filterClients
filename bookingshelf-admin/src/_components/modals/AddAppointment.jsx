@@ -18,6 +18,8 @@ import { clientService } from '../../_services';
 import Hint from '../Hint';
 import { isValidEmailAddress } from '../../_helpers/validators';
 import { isValidNumber } from 'libphonenumber-js';
+import {compose} from "redux";
+import {withTranslation} from "react-i18next";
 
 
 class AddAppointment extends React.Component {
@@ -49,14 +51,14 @@ class AddAppointment extends React.Component {
       selectedTypeahead: [],
       typeAheadOptions: {
         clientFirstName: {
-          label: 'Имя',
+          label: this.props.t("Имя"),
           selectedKey: 'firstName',
           options: [],
           isValid: (clientFirstNameValue) => this.state.clientPhone ? ((clientFirstNameValue && clientFirstNameValue.length) > 0) : true,
         },
         clientPhone: {
-          label: 'Телефон',
-          lableHolder: 'Телефон',
+          label: this.props.t("Телефон"),
+          lableHolder: this.props.t('Телефон'),
           selectedKey: 'phone',
           options: [],
           defaultValue: defaultPhoneValue,
@@ -65,27 +67,27 @@ class AddAppointment extends React.Component {
             : (this.state.clientFirstName ? ((clientPhoneValue && clientPhoneValue.length) > 0) : true),
         },
         clientLastName: {
-          label: 'Фамилия',
-          labelHolder: 'Фамилию',
+          label: this.props.t('Фамилия'),
+          labelHolder: this.props.t('Фамилию'),
           selectedKey: 'lastName',
           options: [],
           isValid: () => true,
         },
         carBrand: {
-          label: 'Марка авто',
+          label: this.props.t('Марка авто'),
           selectedKey: 'carBrand',
           options: [],
           isValid: () => true,
         },
         carNumber: {
-          label: 'Гос. номер',
+          label: this.props.t('Гос. номер'),
           selectedKey: 'carNumber',
           options: [],
-          isValid: () => true,
+          isValid: () => true
         },
         clientEmail: {
           label: 'Email',
-          labelHolder: 'email (опционально)',
+          labelHolder: `email (${this.props.t("опционально")})`,
           selectedKey: 'email',
           options: [],
           isValid: (clientEmailValue) => clientEmailValue ? isValidEmailAddress(clientEmailValue) : true,
@@ -211,8 +213,7 @@ class AddAppointment extends React.Component {
     }
 
 
-    if ((JSON.stringify(this.props) !== JSON.stringify(newProps)
-            && JSON.stringify(this.props.clients) === JSON.stringify(newProps.clients)) ||
+    if (JSON.stringify(this.props.clients) === JSON.stringify(newProps.clients) ||
             newProps.randNum !== this.props.randNum
     ) {
       this.updateAvailableCoStaffs();
@@ -325,7 +326,7 @@ class AddAppointment extends React.Component {
       const minute = i % 3600;
       optionList.push({
         duration: i,
-        label: `${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} мин` : '00 мин'}`,
+        label: `${hour ? `${hour} ч ` : ''}${minute ? `${minute / 60} ${this.props.t("минут")}` : `00 ${this.props.t("минут")}`}`,
       });
     }
 
@@ -409,9 +410,9 @@ class AddAppointment extends React.Component {
       description: '',
       customId: '',
     };
-    let appointmentMessage = 'Невозможно добавить ещё одну услугу';
+    let appointmentMessage = this.props.t('Невозможно добавить ещё одну услугу');
     if (serviceCurrent[appointment.length - 1].id === -1) {
-      appointmentMessage = `Необходимо выбрать услугу`;
+      appointmentMessage = this.props.t(`Необходимо выбрать услугу`);
       this.setState({ appointmentMessage });
       return;
     }
@@ -773,7 +774,7 @@ class AddAppointment extends React.Component {
                                        	<span
                           className="price">|&nbsp;{service.priceFrom}{service.priceFrom !== service.priceTo && ' - ' + service.priceTo} {service.currency}</span>&nbsp;|&nbsp;
                         <span
-                          className="timing">{moment.duration(parseInt(durationForCurrentStaff), 'seconds').format('h[ ч] m[ мин]')}&nbsp;|</span>
+                          className="timing">{moment.duration(parseInt(durationForCurrentStaff), 'seconds').format(`h[ ${this.props.t("ч")}] m[ ${this.props.t("минут")}]`)}&nbsp;|</span>
                       </span>
                     </span>
                   </span>
@@ -784,10 +785,10 @@ class AddAppointment extends React.Component {
       });
     }
     if (filteredServiceListWithoutTime.length) {
-      return <p className="staffAlert-noService">Нет доступных услуг в выбранный диапазон времени</p>;
+      return <p className="staffAlert-noService">{this.props.t("Нет доступных услуг в выбранный диапазон времени")}</p>;
     }
 
-    return <p className="staffAlert-noService">Нет доступных услуг. Выберите сотрудника в настройках услуг</p>;
+    return <p className="staffAlert-noService">{this.props.t("Нет доступных услуг. Выберите сотрудника в настройках услуг")}</p>;
   }
 
   getCoStaffMarkup(wrapperClassName) {
@@ -801,8 +802,8 @@ class AddAppointment extends React.Component {
     }} className={`block-style2 container ${wrapperClassName}`}>
       <div className="row">
         <div style={{ paddingTop: '4px', display: 'flex', padding: 0 }} className="col-sm-12 mt-2">
-          <span className="add-helpers-text">Добавить помощников</span>
-          <Hint hintMessage="При оказании услуги несколькими сотрудниками одновременно"/>
+          <span className="add-helpers-text">{this.props.t("Добавить помощников")}</span>
+          <Hint hintMessage={this.props.t("При оказании услуги несколькими сотрудниками одновременно")}/>
 
           <span style={{ width: 'auto', margin: '0' }} className="justify-content-end check-box">
             <label>
@@ -810,7 +811,7 @@ class AddAppointment extends React.Component {
                 checked={isAddCostaff}
                 onChange={() => this.setState({ isAddCostaff: !this.state.isAddCostaff })}
               />
-              <span style={{ margin: '0 0 0 4px' }} className="check"/>
+              <span style={{ margin: '0 0 0 4px' }} data-label-off={this.props.t("Выкл")} data-label-on={this.props.t("Вкл")} className="check"/>
             </label>
           </span>
         </div>
@@ -910,7 +911,7 @@ class AddAppointment extends React.Component {
   }
 
   render() {
-    const { status, company, adding, staff: staffFromProps, services: servicesFromProps, selectedDay } = this.props;
+    const { status, company, adding, staff: staffFromProps, services: servicesFromProps, selectedDay, t } = this.props;
     const {
       allPrice, appointment, appointmentMessage, staffCurrent, serviceCurrent, staffs,
       services, timeNow, minutes, clients, clientChecked, timeArrange, edit_appointment, visits,
@@ -942,9 +943,8 @@ class AddAppointment extends React.Component {
           <div>
             <div className="modal-content">
               <div className="modal-header">
-                {edit_appointment ? <h4 className="modal-title">Редактировать запись</h4> :
-                  <h4 className="modal-title">Новая
-                                        запись, {moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</h4>}
+                {edit_appointment ? <h4 className="modal-title">{t("Редактировать запись")}</h4> :
+                  <h4 className="modal-title">{t("Новая запись")}, {moment(timeNow, 'x').locale(t("locale")).format('dddd DD MMMM, YYYY')}</h4>}
                 <button type="button" className="close" onClick={this.closeModal}/>
                 {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -957,12 +957,12 @@ class AddAppointment extends React.Component {
                         return <div className="addApointmentEachBlock">
                           {index !== 0 && <hr className="appointments-line"/>}
                           <p style={{ paddingBottom: '18px' }}
-                            className="title">Запись <span>{index + 1}</span></p>
+                            className="title">{t("Запись")} <span>{index + 1}</span></p>
                           <div className="row">
                             {minutes.length !== 0 &&
 
                                                         <div className="appointment-start">
-                                                          <p>Начало</p>
+                                                          <p>{t("Начало")}</p>
                                                           <TimePicker
                                                             value={appointmentItem.appointmentTimeMillis && moment(appointmentItem.appointmentTimeMillis, 'x')}
                                                             clearIcon={<div/>}
@@ -978,7 +978,7 @@ class AddAppointment extends React.Component {
                             }
 
                             <div className="appointment-service">
-                              <p className={!servicesDisabling && 'disabledField'}>Услуга</p>
+                              <p className={!servicesDisabling && 'disabledField'}>{t("Услуга")}</p>
                               <div className="select-color dropdown border-color">
 
                                 {
@@ -993,7 +993,7 @@ class AddAppointment extends React.Component {
                                             className="price">{serviceCurrent[index].service.priceFrom} {serviceCurrent[index].service.priceFrom !== serviceCurrent[index].service.priceTo && ' - ' + serviceCurrent[index].service.priceTo} {serviceCurrent[index].service.currency}</span>&nbsp;|&nbsp;
                                           <span
                                             className="timing">
-                                            {moment.duration(parseInt(appointment[index].duration), 'seconds').format('h[ ч] m[ мин]')}&nbsp;|
+                                            {moment.duration(parseInt(appointment[index].duration), 'seconds').format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}&nbsp;|
                                           </span></span></span></span>
                                     </a>
 
@@ -1003,7 +1003,7 @@ class AddAppointment extends React.Component {
                                       data-toggle={(servicesDisabling && hasAddedServices) && 'dropdown'}><span
                                         className=""/><span
                                         className=""><span
-                                          className="items-color"><span>{hasAddedServices ? 'Выберите услугу' : 'Услуги не добавлены'}</span>    <span></span>  <span></span></span></span>
+                                          className="items-color"><span>{hasAddedServices ? t('Выберите услугу') : t('Услуги не добавлены')}</span>    <span></span>  <span></span></span></span>
                                     </a>
                                 }
                                 <ul className="dropdown-menu">
@@ -1017,7 +1017,7 @@ class AddAppointment extends React.Component {
                                       }}>
                                       <div className="search">
                                         <input type="search"
-                                          placeholder="Введите название услуги"
+                                          placeholder={t("Введите название услуги")}
                                           style={{
                                             width: '185%',
                                             border: 'none',
@@ -1046,7 +1046,7 @@ class AddAppointment extends React.Component {
                           <div className="row">
 
                             <div className="appointment-timing">
-                              <p className={!servicesDisabling && 'disabledField'}>Длительность</p>
+                              <p className={!servicesDisabling && 'disabledField'}>{t("Длительность")}</p>
                               <select disabled={serviceCurrent[index].id === -1}
                                 className="custom-select"
                                 onChange={(e) => this.handleDurationChange(e, appointment, index)}
@@ -1060,7 +1060,7 @@ class AddAppointment extends React.Component {
                               <div className="second-service-container">
                                 {String(serviceCurrent[index].service.priceTo) && (index !== 0) && (
                                   <div className="appointment-price">
-                                    <p>Фактич. цена</p>
+                                    <p>{t("Фактич цена")}</p>
                                     <input type="text" name="price"
                                       value={appointment[index].price}
                                       onChange={(e) => this.handleChange(e, index)}/>
@@ -1069,7 +1069,7 @@ class AddAppointment extends React.Component {
 
                                 {index !== 0 && (
                                   <div className="appointment-discont">
-                                    <p>Однораз. скидка</p>
+                                    <p>{t("Однораз скидка")}</p>
                                     <input type="text" placeholder="0%"
                                       name="discountPercent"
                                       value={appointment[index].discountPercent}
@@ -1081,7 +1081,7 @@ class AddAppointment extends React.Component {
 
                             {index === 0 && (
                               <div className="appointment-staff add_appointment_staff">
-                                <p>Исполнитель</p>
+                                <p>{t("Исполнитель")}</p>
                                 <div className="dropdown add-staff">
                                   <a className={edit_appointment || timeArrange === 0 ? 'disabledField dropdown-toggle drop_menu_personal' : 'dropdown-toggle drop_menu_personal'}
                                     data-toggle={(!edit_appointment && timeArrange !== 0) && 'dropdown'}
@@ -1149,7 +1149,7 @@ class AddAppointment extends React.Component {
 
                             {index === 0 && (
                               <div className="appointment-discont">
-                                <p>Однораз. скидка</p>
+                                <p>{t("Однораз скидка")}</p>
                                 <input type="text" placeholder="0%"
                                   name="discountPercent"
                                   value={appointment[index].discountPercent}
@@ -1159,7 +1159,7 @@ class AddAppointment extends React.Component {
 
                             {String(serviceCurrent[index].service.priceTo) && (index === 0) && (
                               <div className="appointment-price">
-                                <p>Фактич. цена</p>
+                                <p>{t("Фактич цена")}</p>
                                 <input type="text" name="price"
                                   value={appointment[index].price}
                                   onChange={(e) => {
@@ -1172,12 +1172,12 @@ class AddAppointment extends React.Component {
                             {index === 0 && (
                               <React.Fragment>
                                 <div className="appointment-note">
-                                  <p>Заметка</p>
+                                  <p>{t("Заметка")}</p>
                                   <div className="company_fields">
                                     <div style={{ height: '35px' }}
                                       className="name_company_wrapper form-control">
                                       <textarea className="company_input"
-                                        placeholder="Например: Без окраски"
+                                        placeholder={t("Например Без окраски")}
                                         name="description" maxLength={120}
                                         value={appointment[index].description}
                                         onChange={(e) => this.handleChange(e, index)}/>
@@ -1191,15 +1191,14 @@ class AddAppointment extends React.Component {
                           </div>
                           {
                             status === 200 &&
-                                                        <p className="alert-success p-1 rounded pl-3 mb-2">Запись
-                                                            сохранена</p>
+                                                        <p className="alert-success p-1 rounded pl-3 mb-2">{t("Запись сохранена")}</p>
                           }
 
                         </div>;
                       })}
                       <div className="addServiceButton"
                         onClick={() => this.addNewService()}>
-                        <p className="text-center button-absolute">Добавить услугу +</p>
+                        <p className="text-center button-absolute">{t("Добавить услугу")} +</p>
                       </div>
                       <hr/>
                       {this.getCoStaffMarkup('desktop-visible')}
@@ -1225,12 +1224,11 @@ class AddAppointment extends React.Component {
 
                                               <div className="row">
                                                 <div className="col-sm-12">
-                                                  <p className="add-helpers-text mobile-visible">Добавление клиента <Hint
-                                                    hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/>
+                                                  <p className="add-helpers-text mobile-visible">{t("Добавление клиента")} <Hint
+                                                    hintMessage={t("Начните поиск. Если клиента нет в базе, заполните необходимые поля")}/>
                                                   </p>
-                                                  <p className="add-helpers-text mb-3 desktop-visible">Добавление
-                                                            клиента <Hint
-                                                    hintMessage="Начните поиск. Если клиента нет в базе, заполните необходимые поля"/>
+                                                  <p className="add-helpers-text mb-3 desktop-visible">{t("Добавление клиента")} <Hint
+                                                    hintMessage={t("Начните поиск. Если клиента нет в базе, заполните необходимые поля")}/>
                                                   </p>
                                                 </div>
 
@@ -1262,7 +1260,7 @@ class AddAppointment extends React.Component {
                                                         options={value.options}
                                                         labelKey={value.selectedKey}
                                                         minLength={3}
-                                                        placeholder={`Введите ${value.label.toLowerCase()}`}
+                                                        placeholder={`${t("Введите")} ${value.label.toLowerCase()}`}
                                                         onSearch={(value) => this.handleTypeaheadSearch(key, value)}
                                                         selected={selectedTypeahead}
                                                         renderMenuItemChildren={this.renderMenuItemChildren}
@@ -1309,16 +1307,16 @@ class AddAppointment extends React.Component {
                                                     {!edit_appointment &&
                                                         <React.Fragment>
                                                           <span className="button-clients"
-                                                            onClick={this.removeCheckedUser}>Удалить из встречи
+                                                            onClick={this.removeCheckedUser}>{t("Удалить из встречи")}
                                                           </span>
                                                           <span className="button-clients"
-                                                            onClick={() => this.editClient(cl)}>Редактировать
+                                                            onClick={() => this.editClient(cl)}>{t("Редактировать")}
                                                           </span>
                                                         </React.Fragment>
                                                     }
 
                                                     <span className="button-clients"
-                                                      onClick={() => this.toggleVisits()}>Визиты
+                                                      onClick={() => this.toggleVisits()}>{t("Визиты")}
                                                     </span>
                                                   </div>
 
@@ -1342,12 +1340,12 @@ class AddAppointment extends React.Component {
                                                         <div style={{ overflow: 'hidden' }} className="row">
                                                           <div className="col-6">
                                                             <strong>{cl.appointments && cl.appointments.length}</strong>
-                                                            <span className="gray-text">Всего визитов</span>
+                                                            <span className="gray-text">{t("Всего визитов")}</span>
                                                           </div>
 
                                                           <div className="col-6">
                                                             <strong>{allPrice} {cl.appointments && cl.appointments[0] && cl.appointments[0].currency}</strong>
-                                                            <span className="gray-text">Сумма визитов</span>
+                                                            <span className="gray-text">{t("Сумма визитов")}</span>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -1355,9 +1353,9 @@ class AddAppointment extends React.Component {
                                                       <hr className="gray"/>
                                                       {cl.appointments && cl.appointments.length !== 0 ?
                                                         <p style={{ textAlign: 'center', paddingBottom: 0 }}
-                                                          className="pl-4 pr-4">Все визиты</p> :
+                                                          className="pl-4 pr-4">{t("Все визиты")}</p> :
                                                         <p style={{ textAlign: 'center', paddingBottom: 0 }}
-                                                          className="pl-4 pr-4">Нет визитов</p>
+                                                          className="pl-4 pr-4">{t("Нет визитов")}</p>
                                                       }
 
                                                       <hr className="gray"/>
@@ -1382,19 +1380,19 @@ class AddAppointment extends React.Component {
                                                                 }} className="col-8">
                                                                   <p className="visit-detail">
                                                                     <span
-                                                                      style={{ whiteSpace: 'normal' }}><strong>Время: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
-                                                                    <span><strong>Исполнитель: </strong>{appointment.staffName}</span>
+                                                                      style={{ whiteSpace: 'normal' }}><strong>{t("Время")}: </strong>{moment(appointment.appointmentTimeMillis, 'x').locale('ru').format('dd, DD MMMM YYYY, HH:mm')}</span>
+                                                                    <span><strong>{t("Исполнитель")}: </strong>{appointment.staffName}</span>
                                                                     <span
                                                                       style={{ fontSize: '13px' }}>{appointment.serviceName}</span>
                                                                     {(activeService && activeService.details) ?
                                                                       <span>{activeService.details}</span> : ''}
                                                                     {appointment.description ? <span
-                                                                      className="visit-description">Заметка: {appointment.description}</span> : ''}
+                                                                      className="visit-description">{t("Заметка")}: {appointment.description}</span> : ''}
                                                                     {appointment.clientNotCome ? <span
                                                                       style={{ fontSize: '14px' }}
-                                                                      className="visit-description red-text">Клиент не пришел</span> : ''}
+                                                                      className="visit-description red-text">{t("Клиент не пришел")}</span> : ''}
                                                                     <span
-                                                                      className="visit-price">Цена:&nbsp;{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : appointment.price} {appointment.currency}</span>
+                                                                      className="visit-price">{t("Цена")}:&nbsp;{appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : appointment.price} {appointment.currency}</span>
 
                                                                   </p>
                                                                 </div>
@@ -1414,7 +1412,7 @@ class AddAppointment extends React.Component {
                                                                   }
 
                                                                   <span
-                                                                    className="timing text-center my-2">{moment.duration(parseInt(appointment.duration), 'seconds').format('h[ ч] m[ мин]')}</span>
+                                                                    className="timing text-center my-2">{moment.duration(parseInt(appointment.duration), 'seconds').format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</span>
 
                                                                   <br/>
 
@@ -1433,7 +1431,7 @@ class AddAppointment extends React.Component {
                                                           textAlign: 'center',
                                                           color: '#F46A6A',
                                                           margin: '16px 0',
-                                                        }}>Персональная скидка клиента: {cl.discountPercent}%</div>
+                                                        }}>{t("Персональная скидка клиента")}: {cl.discountPercent}%</div>
                                                       }
                                                       <hr/>
 
@@ -1446,7 +1444,7 @@ class AddAppointment extends React.Component {
                                               <hr className="gray-line"/>
 
                                               <p className="appointments-all-price">
-                                                    Общая сумма: {appointmentsAllPrice} BYN
+                                                {t("Общая сумма")}: {appointmentsAllPrice} BYN
                                               </p>
 
                                               <div className="calendar_modal_buttons text-center">
@@ -1456,7 +1454,7 @@ class AddAppointment extends React.Component {
                                                   type="button"
                                                   onClick={() => {
                                                     if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
-                                                      this.setState({ appointmentMessage: 'Необходимо выбрать услугу' });
+                                                      this.setState({ appointmentMessage: t('Необходимо выбрать услугу') });
                                                     } else {
                                                       if (edit_appointment) {
                                                         this.editAppointment();
@@ -1467,7 +1465,7 @@ class AddAppointment extends React.Component {
                                                         this.setState({ appointmentMessage: null });
                                                       }
                                                     }
-                                                  }}>Сохранить
+                                                  }}>{t("Сохранить")}
                                                 </button>
                                               </div>
                                               <div className="mobileButton">
@@ -1477,7 +1475,7 @@ class AddAppointment extends React.Component {
                                                   type="button"
                                                   onClick={() => {
                                                     if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
-                                                      this.setState({ appointmentMessage: 'Необходимо выбрать услугу' });
+                                                      this.setState({ appointmentMessage: t('Необходимо выбрать услугу') });
                                                     } else {
                                                       if (edit_appointment) {
                                                         this.editAppointment();
@@ -1489,7 +1487,7 @@ class AddAppointment extends React.Component {
                                                       }
                                                     }
                                                   }}>
-                                                  {edit_appointment ? 'Сохранить' : 'Сохранить'}
+                                                  {edit_appointment ? t('Сохранить') : t('Сохранить')}
                                                 </button>
                                               </div>
 
@@ -1505,7 +1503,7 @@ class AddAppointment extends React.Component {
                               type="button"
                               onClick={() => {
                                 if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
-                                  this.setState({ appointmentMessage: 'Необходимо выбрать услугу' });
+                                  this.setState({ appointmentMessage: t('Необходимо выбрать услугу') });
                                 } else {
                                   if (edit_appointment) {
                                     this.editAppointment();
@@ -1516,7 +1514,7 @@ class AddAppointment extends React.Component {
                                     this.setState({ appointmentMessage: null });
                                   }
                                 }
-                              }}>Сохранить
+                              }}>{t("Сохранить")}
                             </button>
                           </div>
                           <div className="mobileButton">
@@ -1526,7 +1524,7 @@ class AddAppointment extends React.Component {
                               type="button"
                               onClick={() => {
                                 if (status === 208 || (!edit_appointment && Object.entries(typeAheadOptions).some(([key, value]) => !value.isValid(this.state[key]))) || serviceCurrent.some((elem) => elem.service.length === 0) || !staffCurrent.staffId || !appointment[0] || !appointment[0].appointmentTimeMillis) {
-                                  this.setState({ appointmentMessage: 'Необходимо выбрать услугу' });
+                                  this.setState({ appointmentMessage: t('Необходимо выбрать услугу') });
                                 } else {
                                   if (edit_appointment) {
                                     this.editAppointment();
@@ -1538,7 +1536,7 @@ class AddAppointment extends React.Component {
                                   }
                                 }
                               }}>
-                              {edit_appointment ? 'Сохранить' : 'Сохранить'}
+                              {edit_appointment ? t('Сохранить') : t('Сохранить')}
                             </button>
                           </div>
                         </div>
@@ -1791,7 +1789,7 @@ class AddAppointment extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { alert, company, services, staff: { staff }, authentication, calendar: { appointments, reservedTime } } = state;
+  const { alert, company, services, staff: { staff }, authentication, calendar: { appointments, reservedTime }} = state;
   return {
     alert,
     company,
@@ -1817,5 +1815,5 @@ AddAppointment.propTypes = {
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(withRouter(AddAppointment));
+const connectedApp = compose(connect(mapStateToProps), withRouter, withTranslation("common"))(AddAppointment);
 export { connectedApp as AddAppointment };

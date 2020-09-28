@@ -12,6 +12,7 @@ import { clientActions } from '../_actions';
 import { access } from '../_helpers/access';
 
 import '../../public/scss/clients.scss';
+import {withTranslation} from "react-i18next";
 
 class Index extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class Index extends Component {
     if (!access(4)) {
       props.history.push('/denied');
     }
-    document.title = 'Клиенты | Онлайн-запись';
+    document.title = props.t('Клиенты | Онлайн-запись');
 
     this.state = {
       client: props.client,
@@ -209,6 +210,8 @@ class Index extends Component {
     const finalClients = activeTab === 'blacklist' ? client.blacklistedClients : client.client;
     const finalTotalPages = activeTab === 'blacklist' ? client.blacklistedTotalPages : client.totalPages;
 
+    const { t } = this.props;
+
     return (
       <div className="clients-page">
         {isLoading &&
@@ -227,7 +230,7 @@ class Index extends Component {
             {/* />*/}
 
             <div className="search">
-              <input type="search" placeholder="Поиск клиента"
+              <input type="search" placeholder={t("Поиск клиента")}
                 aria-label="Search" ref={(input) => this.search = input} onChange={this.handleSearch}/>
               <button className="search-icon" type="submit"/>
             </div>
@@ -236,14 +239,14 @@ class Index extends Component {
               <a className={'nav-link' + (activeTab === 'clients' ? ' active show' : '')}
                 data-toggle="tab" href="#tab1" onClick={() => {
                   this.setTab('clients');
-                }}>Клиенты</a>
+                }}>{t("Клиенты")}</a>
               <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
-                data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>Черный список</a>
+                data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>{t("Черный список")}</a>
             </div>
 
             <div className={'header-tabs-mob' + (this.state.isOpenDropdownMenu ? ' opened' : '')}>
               <p onClick={this.handleOpenDropdownMenu}
-                className="dropdown-button">{activeTab === 'clients' ? 'Клиенты' : 'Черный список'}</p>
+                className="dropdown-button">{activeTab === 'clients' ? t('Клиенты') : t('Черный список')}</p>
 
               {this.state.isOpenDropdownMenu && (
                 <div className="dropdown-buttons">
@@ -251,12 +254,12 @@ class Index extends Component {
                     data-toggle="tab" href="#tab1" onClick={() => {
                       this.setTab('clients');
                       this.handleOpenDropdownMenu();
-                    }}>Клиенты</a>
+                    }}>{t("Клиенты")}</a>
                   <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
                     data-toggle="tab" href="#tab2" onClick={() => {
                       this.setTab('blacklist');
                       this.handleOpenDropdownMenu();
-                    }}>Черный список</a>
+                    }}>{t("Черный список")}</a>
                 </div>
               )}
             </div>
@@ -273,7 +276,7 @@ class Index extends Component {
               {access(5) &&
                 <div className="export">
                   <button onClick={this.downloadFile} type="button" className="button client-download">
-                    Скачать CSV
+                    {t("Скачать CSV")}
                   </button>
                 </div>
               }
@@ -282,12 +285,12 @@ class Index extends Component {
 
           <div className="final-clients">
             <div className="tab-content-list" style={{ position: 'relative' }}>
-              <div className="column-header">Имя клиента</div>
-              <div className="column-header">Телефон/Email</div>
-              <div className="column-header">Адрес</div>
-              <div className="column-header">Последний визит</div>
-              <div className="column-header">Скидка</div>
-              <div className="column-header">День Рождения</div>
+              <div className="column-header">{t("Имя клиента")}</div>
+              <div className="column-header">{t("Телефон/Email")}</div>
+              <div className="column-header">{t("Адрес")}</div>
+              <div className="column-header">{t("Последний визит")}</div>
+              <div className="column-header">{t("Скидка")}</div>
+              <div className="column-header">{t("День Рождения")}</div>
             </div>
 
             {finalClients && finalClients.sort((a, b) => {
@@ -319,17 +322,17 @@ class Index extends Component {
               || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
                 <div className="no-holiday">
                   {(this.search && this.search.value.length > 0)
-                    ? <span>Поиск результатов не дал</span>
+                    ? <span>{t("Поиск результатов не дал")}</span>
                     : (
                       <span>
-                        {client.error ? client.error : 'Клиенты не добавлены'}
+                        {client.error ? client.error : t('Клиенты не добавлены')}
                         {activeTab === 'clients' &&
                                 <button
                                   type="button"
                                   className="button mt-3 p-3"
                                   onClick={(e) => this.handleClick(null, e)}
                                 >
-                                    Добавить нового клиента
+                                    {t("Добавить нового клиента")}
                                 </button>
                         }
                         {activeTab === 'blacklist' &&
@@ -340,7 +343,7 @@ class Index extends Component {
                                   data-toggle="modal"
                                   onClick={this.addToBlackList}
                                 >
-                                    Добавить в черный список
+                                  {t("Добавить в черный список")}
                                 </button>
                         }
                       </span>
@@ -367,7 +370,7 @@ class Index extends Component {
                   this.handleOpenModal();
                 }}
                 >
-                  Новый клиент
+                  {t("Новый клиент")}
                 </button>
               }
               {activeTab === 'blacklist' &&
@@ -376,7 +379,7 @@ class Index extends Component {
                   data-toggle="modal"
                   onClick={this.addToBlackList}
                 >
-                  Добавить в черный список
+                  {t("Добавить в черный список")}
                 </button>
               }
             </div>
@@ -497,4 +500,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

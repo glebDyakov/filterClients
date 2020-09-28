@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
+import {withTranslation} from "react-i18next";
 
 class CalendarSwitch extends PureComponent {
   render() {
-    const { type, selectType } = this.props;
+    const { type, selectType, language, t } = this.props;
 
     return (
       <div className="tab-day-week tab-content col-3">
@@ -13,7 +14,7 @@ class CalendarSwitch extends PureComponent {
               onClick={()=>selectType('day')}
               data-toggle="tab"
             >
-                            День
+                            {t("День")}
             </a>
           </li>
           <li className="nav-item no-bg">
@@ -21,7 +22,7 @@ class CalendarSwitch extends PureComponent {
               className={'nav-link' + (type==='week' ? ' active show' : '')}
               onClick={()=>selectType('week')}
             >
-                            Неделя
+                            {t("Неделя")}
             </a>
           </li>
         </ul>
@@ -29,4 +30,5 @@ class CalendarSwitch extends PureComponent {
     );
   }
 }
-export default CalendarSwitch;
+
+export default withTranslation("common")(CalendarSwitch);

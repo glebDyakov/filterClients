@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from '@trendmicro/react-modal';
+import {withTranslation} from "react-i18next";
 
 class AddGroup extends React.Component {
   constructor(props) {
@@ -22,67 +23,67 @@ class AddGroup extends React.Component {
       colors: {
         'LIME': {
           'key': 'lime',
-          'name': 'Лаймовый',
+          'name': this.props.t('Лаймовый'),
         },
         'YELLOW': {
           'key': 'yellow',
-          'name': 'Желтый',
+          'name': this.props.t('Желтый'),
         },
         'GREEN': {
           'key': 'green',
-          'name': 'Зеленый',
+          'name': this.props.t('Зеленый'),
         },
         'TURQUOISE': {
           'key': 'turquoise',
-          'name': 'Бирюзовый',
+          'name': this.props.t('Бирюзовый'),
         },
         'PURPLE': {
           'key': 'purple',
-          'name': 'Фиолетовый',
+          'name': this.props.t('Фиолетовый'),
         },
         'BLUE': {
           'key': 'blue',
-          'name': 'Голубой',
+          'name': this.props.t('Голубой'),
         },
         'RED': {
           'key': 'red',
-          'name': 'Красный',
+          'name': this.props.t('Красный'),
         },
         'ORANGE': {
           'key': 'orange',
-          'name': 'Оранжевый',
+          'name': this.props.t('Оранжевый'),
         },
         'PINK': {
           'key': 'pink',
-          'name': 'Розовый',
+          'name': this.props.t('Розовый'),
         },
         'ROSE': {
           'key': 'rose',
-          'name': 'Розовый',
+          'name': this.props.t('Розовый'),
         },
         'WHITE': {
           'key': 'white',
-          'name': 'Белый',
+          'name': this.props.t('Белый'),
         },
         'SKY': {
           'key': 'sky',
-          'name': 'Бирюзовый',
+          'name': this.props.t('Бирюзовый'),
         },
         'VIOLET': {
           'key': 'violet',
-          'name': 'Фиолетовый',
+          'name': this.props.t('Фиолетовый'),
         },
         'GREY': {
           'key': 'grey',
-          'name': 'Серый',
+          'name': this.props.t('Серый'),
         },
         'GREEN_LIGHT': {
           'key': 'light-green',
-          'name': 'Салатовый',
+          'name': this.props.t('Салатовый'),
         },
         'DARK_BLUE': {
           'key': 'dark-blue',
-          'name': 'Синий',
+          'name': this.props.t('Синий'),
         },
       },
       availableColors: [
@@ -116,6 +117,7 @@ class AddGroup extends React.Component {
 
   render() {
     const { group, edit, colors, availableColors, newSet, services }=this.state;
+    const {t} = this.props;
 
     return (
       <Modal size="sm" style={{ maxWidth: '480px' }} onClose={this.closeModal} showCloseButton={false} className="mod">
@@ -125,8 +127,8 @@ class AddGroup extends React.Component {
             <div className="modal-content visibleDropdown">
               <div className="modal-header">
                 {
-                  edit ? <h4 className="modal-title">Редактирование группы услуг</h4>
-                    : <h4 className="modal-title">Создание группы услуг</h4>
+                  edit ? <h4 className="modal-title">{t("Редактирование группы услуг")}</h4>
+                    : <h4 className="modal-title">{t("Создание группы услуг")}</h4>
                 }
 
                 <button type="button" className="close" onClick={this.closeModal} aria-label="Close">
@@ -137,14 +139,14 @@ class AddGroup extends React.Component {
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
               </div>
               <div className="modal-inner">
-                <p>Название группы</p>
+                <p>{t("Название группы")}</p>
                 <div style={{ position: 'relative' }}>
-                  <input type="text" placeholder="Введите название" name="name" value={group.name} onChange={this.handleChange}/>
+                  <input type="text" placeholder={t("Введите название")} name="name" value={group.name} onChange={this.handleChange}/>
                   <span className="name-length-text">
                     {group.name.length}/60
                   </span>
                 </div>
-                <p>Цвет группы</p>
+                <p>{t("Цвет группы")}</p>
 
                 <div className="select-color dropdown mb-3 color-radius">
                   <a className="select-button dropdown-toggle yellow" id="dropdownMenuButton"
@@ -188,15 +190,15 @@ class AddGroup extends React.Component {
                     {/* </li>*/}
                   </ul>
                 </div>
-                <p>Описание</p>
+                <p>{t("Описание")}</p>
                 <div className="mb-3" style={{ position: 'relative' }}>
-                  <textarea className="comments" placeholder="Описание группы" name="description" value={group.description} onChange={this.handleChange}/>
+                  <textarea className="comments" placeholder={t("Описание группы")} name="description" value={group.description} onChange={this.handleChange}/>
                   <span className="textarea-length">
                     {group.description.length}/120
                   </span>
                 </div>
                 {services && services.status === 200 &&
-                                <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>
                 }
                 {services && services.adding &&
                                 <img style={{ width: '57px' }}
@@ -210,7 +212,7 @@ class AddGroup extends React.Component {
                         !services.adding && (edit ? this.updateGroup() : this.addGroup());
                       }
                     }}
-                  >{edit ? 'Обновить' : 'Сохранить'} </button>
+                  >{edit ? t('Обновить') : t('Сохранить')} </button>
                 </div>
               </div>
             </div>
@@ -289,5 +291,5 @@ AddGroup.propTypes ={
   newSet: PropTypes.bool,
 };
 
-const connectedApp = connect(mapStateToProps)(AddGroup);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(AddGroup));
 export { connectedApp as AddGroup };

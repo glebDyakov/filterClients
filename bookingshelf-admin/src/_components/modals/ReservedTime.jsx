@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { clientActions } from '../../_actions';
 import { roundQuarterTime } from '../../_helpers';
 import Modal from '@trendmicro/react-modal';
+import {withTranslation} from "react-i18next";
 
 
 class ReservedTime extends React.Component {
@@ -197,7 +198,7 @@ class ReservedTime extends React.Component {
   }
 
   render() {
-    const { timetable, staff: staffFromProps } = this.props;
+    const { timetable, staff: staffFromProps, t } = this.props;
     const { edit_reservedTime, staffCurrent, reservedTime, timeNow, calendar, message }=this.state;
 
     const activeStaffCurrent = staffFromProps && staffFromProps.find((staffItem) => staffItem.staffId === staffCurrent.staffId) || {};
@@ -209,7 +210,7 @@ class ReservedTime extends React.Component {
           <div>
             <div className="modal-content reserved-time-modal">
               <div className="modal-header">
-                <h4 className="modal-title">Зарезервированное время</h4>
+                <h4 className="modal-title">{t("Зарезервированное время")}</h4>
                 <button type="button" className="close" onClick={this.closeModal} />
                 {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -217,7 +218,7 @@ class ReservedTime extends React.Component {
               <div className="modal-body">
                 <p className="title text-capitalize">{moment(timeNow, 'x').locale('ru').format('dddd DD MMMM, YYYY')}</p>
 
-                <p>Сотрудники</p>
+                <p>{t("Сотрудники")}</p>
                 <div className="dropdown add-staff mb-3">
                   <a className={edit_reservedTime?'disabledField dropdown-toggle drop_menu_personal':'dropdown-toggle drop_menu_personal'} data-toggle={!edit_reservedTime&&'dropdown'}
                     aria-haspopup="true" aria-expanded="false">
@@ -249,7 +250,7 @@ class ReservedTime extends React.Component {
 
                   </ul>
                 </div>
-                <p>Начало</p>
+                <p>{t("Начало")}</p>
                 <TimePicker
                   key={'start'}
                   className={staffCurrent.id && staffCurrent.id===-1 ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
@@ -261,7 +262,7 @@ class ReservedTime extends React.Component {
                   disabledMinutes={(h) => this.disabledMinutes(h, 'start')}
                   onChange={(startTimeMillis)=>this.setTime(startTimeMillis, 'startTimeMillis')}
                 />
-                <p>Конец</p>
+                <p>{t("Конец")}</p>
                 <TimePicker
                   key={'end'}
                   className={(staffCurrent.id && staffCurrent.id===-1) || !reservedTime.startTimeMillis ? 'disabledField col-md-12 p-0': 'col-md-12 p-0'}
@@ -273,11 +274,11 @@ class ReservedTime extends React.Component {
                   disabledMinutes={(h) => this.disabledMinutes(h, 'end')}
                   onChange={(endTimeMillis)=>this.setTime(endTimeMillis, 'endTimeMillis')}
                 />
-                <p>Описание</p>
-                <input className="description-input" type="email" placeholder="Введите описание" name="description" value={reservedTime.description} onChange={this.handleChange} onChange={this.handleChange}/>
+                <p>{t("Описание")}</p>
+                <input className="description-input" type="email" placeholder={t("Введите описание")} name="description" value={reservedTime.description} onChange={this.handleChange} onChange={this.handleChange}/>
                 {
                   calendar.status === 200 &&
-                                    <p className="alert-success p-1 rounded pl-3 mb-2">Время сохранено</p>
+                                    <p className="alert-success p-1 rounded pl-3 mb-2">{t("Время сохранено")}</p>
                 }
                 {calendar.adding &&
                                 <img style={{ width: '57px' }}
@@ -290,13 +291,13 @@ class ReservedTime extends React.Component {
                   <button className={'small-button'} type="button"
                     onClick={() => {
                       if (calendar.adding || !staffCurrent.staffId || !reservedTime.endTimeMillis || !reservedTime.startTimeMillis) {
-                        this.setState({ message: 'Необходимо выбрать сотрудника, начало и конец интервала' });
+                        this.setState({ message: t('Необходимо выбрать сотрудника, начало и конец интервала') });
                       } else if (staffCurrent.staffId && reservedTime.endTimeMillis && reservedTime.startTimeMillis) {
                         this.addReservedTime();
                         this.setState({ message: '' });
                       }
                     }}
-                  >Сохранить</button>
+                  >{t("Сохранить")}</button>
                 </div>
               </div>
             </div>
@@ -371,5 +372,5 @@ ReservedTime.propTypes ={
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(ReservedTime);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(ReservedTime));
 export { connectedApp as ReservedTime };

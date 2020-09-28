@@ -13,6 +13,8 @@ import { isValidNumber } from 'libphonenumber-js';
 import { isValidEmailAddress } from '../_helpers/validators';
 import ManagerSettings from './modals/ManagerSettings';
 import { access } from '../_helpers/access';
+import {compose} from "redux";
+import {withTranslation} from "react-i18next";
 
 
 class HeaderMain extends React.PureComponent {
@@ -25,7 +27,7 @@ class HeaderMain extends React.PureComponent {
       selectedTypeahead: [],
       typeAheadOptions: {
         clientFirstName: {
-          label: 'Имя',
+          label: this.props.t('Имя'),
           selectedKey: 'firstName',
           options: [],
         },
@@ -53,9 +55,17 @@ class HeaderMain extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, staff, authentication } = this.props;
 
     dispatch(staffActions.get());
+
+    const activeStaff = staff && staff.find((item) =>
+        ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
+
+    if (activeStaff) {
+      this.props.i18n.changeLanguage(activeStaff.languageCode)
+    }
+
 
     $('.mob-menu').click(function(e) {
       e.preventDefault();
@@ -65,7 +75,7 @@ class HeaderMain extends React.PureComponent {
   }
 
   componentWillReceiveProps(newProps) {
-    if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+    if (JSON.stringify(this.props.authentication) !== JSON.stringify(newProps.authentication)) {
       this.setState({
         authentication: newProps.authentication,
       });
@@ -75,6 +85,7 @@ class HeaderMain extends React.PureComponent {
         company: newProps.company,
       });
     }
+
   }
 
   componentDidUpdate() {
@@ -188,7 +199,7 @@ class HeaderMain extends React.PureComponent {
   }
 
   render() {
-    const { location, staff, clients } = this.props;
+    const { location, staff, clients, t } = this.props;
     const { authentication, newClientModal, client_working, editClient, isModalShouldPassClient, company, search, infoClient, collapse, isSearchDropdown } = this.state;
 
 
@@ -202,13 +213,13 @@ class HeaderMain extends React.PureComponent {
       switch (authentication.user.profile.roleId) {
         case 1:
         case 2:
-          staffType = 'Сотрудник';
+          staffType = t('Сотрудник');
           break;
         case 3:
-          staffType = 'Админ';
+          staffType = t('Админ');
           break;
         case 4:
-          staffType = 'Владелец';
+          staffType = t('Владелец');
           break;
         default:
       }
@@ -239,10 +250,10 @@ class HeaderMain extends React.PureComponent {
 
               <div className="col search-col">
                 <div className="search-header search col-9 col-md-12">
-                  <input className="search-input" type="search" placeholder="Поиск по имени, номеру тел, Email"
+                  <input className="search-input" type="search" placeholder={t("Поиск по имени, номеру тел, Email")}
                     aria-label="Search" value={search} onChange={this.handleSearch}/>
 
-                  <input className="mob-search-input" type="search" placeholder="Поиск по имени, номеру тел, Email"
+                  <input className="mob-search-input" type="search" placeholder={t("Поиск по имени, номеру тел, Email")}
                     aria-label="Search" value={search} onChange={this.handleSearch}/>
                   <button className="search-icon" type="submit"/>
                 </div>
@@ -323,7 +334,7 @@ class HeaderMain extends React.PureComponent {
                   }} className="bth dropdown-toggle rounded-button select-menu" data-toggle="dropdown"
                   role="menu" aria-haspopup="true" aria-expanded="true">
                     <p className="firm-name">{company && company.settings && company.settings.companyName}<span>{(company.settings && company.settings.city) ? (company.settings.city + ', ') : ''}{company && company.settings && company.settings['companyAddress' + company.settings.defaultAddress]}</span><span
-                      className="change-biz">Выбрать филиал</span></p>
+                      className="change-biz">{t("Выбрать филиал")}</span></p>
                   </div>
 
                   <ul className="dropdown-menu">
@@ -409,7 +420,7 @@ class HeaderMain extends React.PureComponent {
                   {this.state.openUserSettings &&
                                     <div className="user-settings-dropdown">
                                       <ul>
-                                        <li onClick={this.openModal}>Настройки профиля</li>
+                                        <li onClick={this.openModal}>{t("Настройки профиля")}</li>
                                         <LogoutPage/>
                                       </ul>
                                     </div>
@@ -512,5 +523,5 @@ HeaderMain.proptypes = {
   onOpen: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(withRouter(HeaderMain));
+const connectedApp = compose(connect(mapStateToProps), withRouter, withTranslation("common"))(HeaderMain);
 export { connectedApp as HeaderMain };

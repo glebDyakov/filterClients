@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment'
 import DayPicker from "react-day-picker";
 import {staffActions} from "../../_actions";
+import {withTranslation} from "react-i18next";
 
 class TabFour extends  PureComponent {
     constructor(props) {
@@ -14,7 +15,7 @@ class TabFour extends  PureComponent {
 
     render() {
 
-        const {selectedTime, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime} = this.props;
+        const {t ,selectedTime, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable,selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime} = this.props;
 
         const availableTimes = []
 
@@ -91,13 +92,13 @@ class TabFour extends  PureComponent {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                        (<p>Выбрано услуг: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
+                        (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
                     </span>
                     <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
                         {selectedServices.map(service => (
                             <p>• {service.name}</p>
                         ))}
@@ -116,9 +117,9 @@ class TabFour extends  PureComponent {
                                 //if (!isStartMovingVisit) {
                                     refreshTimetable()
                                 //}
-                            }}><span className="title_block_text">Назад</span>
+                            }}><span className="title_block_text">{t("Назад")}</span>
                             </span>
-                    <p className="modal_title">Выбор времени</p>
+                    <p className="modal_title">{t("Выбор времени")}</p>
                     {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         if (flagAllStaffs) {
                             setScreen(1);
@@ -126,7 +127,7 @@ class TabFour extends  PureComponent {
                             setScreen(5);
                             refreshTimetable();
                         }
-                    }}><span className="title_block_text">Далее</span>
+                    }}><span className="title_block_text">{t("Далее")}</span>
                     </span>}
                 </div>
                 <div className="specialist">
@@ -144,19 +145,19 @@ class TabFour extends  PureComponent {
                     {serviceInfo && serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
-                        <strong>{moment(selectedDay).utc().locale('ru').format('DD MMMM YYYY')}</strong>
+                        <strong>{moment(selectedDay).utc().format('DD MMMM YYYY')}</strong>
                     </div>
                     }
                 </div>
                 {!!this.state.arrayTime && (
                     <React.Fragment>
-                        <p className="modal_title">Перенести визит?</p>
+                        <p className="modal_title">{t("Перенести визит?")}</p>
                         <div className="approveF">
 
                             <button className="approveFYes"  onClick={()=>{
                                 setTime(this.state.arrayTime, true)
                                 this.setState({arrayTime: 0})
-                            }}>Да
+                            }}>{t("Да")}
                             </button>
                             <button className="approveFNo" onClick={()=>{
                                 const activeStaff=staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
@@ -165,7 +166,7 @@ class TabFour extends  PureComponent {
                                 this.props.dispatch(staffActions.toggleStartMovingVisit(false))
                                 this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
                                 setScreen(6)
-                            }}>Нет
+                            }}>{t("Нет")}
                             </button>
                         </div>
                     </React.Fragment>
@@ -179,4 +180,4 @@ class TabFour extends  PureComponent {
         );
     }
 }
-export default connect()(TabFour);
+export default connect()(withTranslation("common")(TabFour));

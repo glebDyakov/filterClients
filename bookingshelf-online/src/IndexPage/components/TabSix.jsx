@@ -4,6 +4,7 @@ import moment from 'moment';
 import {withRouter} from "react-router-dom";
 import {ClientDetails} from "./ClientDetails";
 import {staffActions} from "../../_actions";
+import {withTranslation} from "react-i18next";
 
 class TabSix extends  PureComponent {
     constructor(props){
@@ -29,7 +30,7 @@ class TabSix extends  PureComponent {
     render() {
 
         const {selectedStaff,selectedService,selectedServices,selectedDay,selectedTime,newAppointments, getDurationForCurrentStaff,
-            info,_delete, _move, movedVisitSuccess, movingVisit} = this.props;
+            info,_delete, _move, movedVisitSuccess, movingVisit, t} = this.props;
         const {approveF} = this.state;
 
         let serviceInfo = null
@@ -50,14 +51,14 @@ class TabSix extends  PureComponent {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                        (<p>Выбрано услуг: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
+                        (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
                         {newAppointments && newAppointments[0] && priceFrom===priceTo && !!newAppointments[0].discountPercent && <span>({totalAmount} {newAppointments[0].currency})</span>}
                     </span>
                     <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
                         {selectedServices.map(service => (
                             <p>• {service.name}</p>
                         ))}
@@ -72,7 +73,7 @@ class TabSix extends  PureComponent {
             <div className="service_selection final-screen">
 
                 <div className="final-book">
-                    <p>Запись успешно {movedVisitSuccess ? 'перенесена' : 'создана'}</p>
+                    <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&
@@ -93,7 +94,7 @@ class TabSix extends  PureComponent {
                     {serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
-                        <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                        <strong>{moment(selectedDay).format('DD MMMM YYYY')}</strong>
                     </div>
                     }
                     {selectedTime &&
@@ -108,7 +109,7 @@ class TabSix extends  PureComponent {
                     textAlign: 'center',
                     fontSize: '12px',
                     marginBottom: '8px'
-                }}>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p>
+                }}>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p>
 
                 {info && info.appointmentMessage && <p style={{
                     color: 'red',
@@ -124,10 +125,10 @@ class TabSix extends  PureComponent {
                         textAlign: 'center',
                         fontSize: '18px',
                         marginBottom: '8px'
-                    }}>Ваша персональная скидка составит: {newAppointments[0].discountPercent}%</p>
+                    }}>{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
                 }
                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
-                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
+                    <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
                         const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
                         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
@@ -150,7 +151,7 @@ class TabSix extends  PureComponent {
                         }
                     }}>Да
                     </button>
-                    <button className="approveFNo" onClick={()=>this.setterApproveF()}>Нет
+                    <button className="approveFNo" onClick={()=>this.setterApproveF()}>{t("Нет")}
                     </button>
                 </div>
                 }
@@ -163,9 +164,9 @@ class TabSix extends  PureComponent {
                 {/*}}> Создать запись</p>*/}
                 <a href={`/online/${this.props.match.params.company}`} onClick={() => {
                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                }} className="skip_employee" >Создать запись</a>
+                }} className="skip_employee" >{t("Создать запись")}</a>
             </div>
         );
     }
 }
-export default connect()(withRouter(TabSix));
+export default connect()(withTranslation("common")(TabSix));

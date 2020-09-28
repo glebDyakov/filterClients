@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { calendarActions } from '../../_actions';
+import {withTranslation} from "react-i18next";
 
 class DeleteReserve extends React.Component {
   constructor(props) {
@@ -11,19 +12,20 @@ class DeleteReserve extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <span className="modal delete-reserve-modal">
         <span className="action-modal d-flex h-100">
           <span className="modal-content">
             <span className="modal-header">
-              <h4 className="modal-title">Удалить резерв времени?</h4>
+              <h4 className="modal-title">{t("Удалить резерв времени?")}</h4>
               <button type="button" className="close" data-dismiss="modal"/>
             </span>
             <span className="modal-body">
               <div className="form-group mr-3 ml-3">
                 <button type="button" className="button" onClick={this.cancel}
-                  data-dismiss="modal">Удалить</button>
-                <button type="button" className="gray-button" data-dismiss="modal">Отмена</button>
+                  data-dismiss="modal">{t("Удалить")}</button>
+                <button type="button" className="gray-button" data-dismiss="modal">{t("Отмена")}</button>
               </div>
             </span>
           </span>
@@ -50,4 +52,4 @@ function mapStateToProps(state) {
   return { reservedTimeId, reservedTimeStaffId };
 }
 
-export default connect(mapStateToProps)(DeleteReserve);
+export default connect(mapStateToProps)(withTranslation("common")(DeleteReserve));

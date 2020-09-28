@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../_actions';
+import {withTranslation} from "react-i18next";
 
 class ForgotPass extends React.Component {
   constructor(props) {
@@ -16,13 +17,13 @@ class ForgotPass extends React.Component {
 
   render() {
     const { email, submitted } = this.state;
-
+    const {t} = this.props;
     return (
       <div className="modal2 forgot_password">
         <div className="sign_in">
           <form name="form" onSubmit={this.handleSubmit}>
-            <p className="modal_title">Забыли пароль?</p>
-            <p>Введите Ваш E-mail и мы отправим письмо с инструкцией по изменению пароля</p>
+            <p className="modal_title">{t("Забыли пароль?")}</p>
+            <p>{t("Введите Ваш E-mail и мы отправим письмо с инструкцией по изменению пароля")}</p>
             <span>E-mail</span>
             <input type="text"
               className={'form-group' + (submitted && !email ? ' redBorder' : '')}
@@ -67,5 +68,5 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedApp = connect(mapStateToProps)(ForgotPass);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(ForgotPass));
 export { connectedApp as ForgotPass };

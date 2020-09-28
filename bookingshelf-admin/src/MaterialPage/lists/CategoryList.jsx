@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ActionModal from '../../_components/modals/ActionModal';
+import {withTranslation} from "react-i18next";
 
 class CategoryList extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class CategoryList extends Component {
   }
 
   render() {
-    const { openClientStats, deleteCategory, category, toggleCategory } = this.props;
+    const { openClientStats, deleteCategory, category, toggleCategory, t } = this.props;
 
     return (
       <div className="tab-content-list mb-2">
@@ -43,18 +44,18 @@ class CategoryList extends Component {
 
         {this.state.isOpenDeleteModal &&
           <ActionModal
-            title="Удалить категорию?"
+            title={t("Удалить категорию?")}
             closeHandler={this.closeDeleteModal}
             buttons={[{
               handler: deleteCategory,
               params: category.categoryId,
-              innerText: 'Удалить',
+              innerText: t('Удалить'),
               className: 'button',
               additionalHandler: this.closeDeleteModal,
             },
             {
               handler: this.closeDeleteModal,
-              innerText: 'Отмена',
+              innerText: t('Отмена'),
               className: 'gray-button',
             }]}
           />
@@ -64,4 +65,4 @@ class CategoryList extends Component {
   }
 }
 
-export default CategoryList;
+export default withTranslation("common")(CategoryList);

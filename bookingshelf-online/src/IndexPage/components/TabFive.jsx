@@ -3,6 +3,8 @@ import moment from 'moment'
 import ReactPhoneInput from "react-phone-input-2";
 import {isValidNumber} from "libphonenumber-js";
 import {origin} from "../../_helpers/handle-response";
+import {withTranslation} from "react-i18next";
+import 'react-phone-input-2/lib/style.css';
 
 
 class TabFive extends PureComponent {
@@ -21,7 +23,7 @@ class TabFive extends PureComponent {
     render() {
 
         const {setScreen, info, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff,serviceId,selectedDay,selectedServices,selectedTime, getDurationForCurrentStaff,
-            group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError } = this.props;
+            group,handleChange,isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone,setterEmail,handleSave, clientActivationId, enteredCodeError, t } = this.props;
         const { enteredCode } = this.state;
 
         if (!clientActivationId) {
@@ -42,13 +44,13 @@ class TabFive extends PureComponent {
             serviceInfo = (
                 <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
                     {(selectedServices.length===1)?<p>{selectedServices[0].name}</p>:
-                        (<p>Выбрано услуг: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
+                        (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
                     <p className={selectedServices.some((service) => service.priceFrom!==service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom!==priceTo && " - "+priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
                     <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format("h[ ч] m[ мин]")}</strong>
+                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
                     </span>
                     <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">Список услуг:</p>
+                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
                         {selectedServices.map(service => (
                             <p>• {service.name}</p>
                         ))}
@@ -73,9 +75,9 @@ class TabFive extends PureComponent {
                             }
                             }
                             >
-                                <span className="title_block_text">Назад</span>
+                                <span className="title_block_text">{t("Назад")}</span>
                             </span>
-                    <p className="modal_title">Запись</p>
+                    <p className="modal_title">{t("Запись")}</p>
                 </div>
                 <div className="specialist">
                     {selectedStaff.staffId &&
@@ -89,7 +91,7 @@ class TabFive extends PureComponent {
                     {serviceInfo && serviceInfo}
                     {selectedDay &&
                     <div className="date_item_popup">
-                        <strong>{moment(selectedDay).locale('ru').format('DD MMMM YYYY')}</strong>
+                        <strong>{moment(selectedDay).format('DD MMMM YYYY')}</strong>
                     </div>
                     }
                     {selectedTime &&
@@ -100,66 +102,65 @@ class TabFive extends PureComponent {
                 </div>
                 {clientActivationId ? (
                   <React.Fragment>
-                    <p style={{ marginBottom: '0' }} className="modal_title">Подтверждение нового клиента</p>
+                    <p style={{ marginBottom: '0' }} className="modal_title">{t("Подтверждение нового клиента")}</p>
                     <p style={{ display: 'flex', alignItems: 'center' }}>
                         <img style={{ height: '22px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                        /> <span>Код подтверждения был отправлен на номер {group.phone}. Введите код ниже:</span>
+                        /> <span>{t("Код подтверждения был отправлен на номер")} {group.phone}. {t("Введите код ниже")}:</span>
                     </p>
-                    <input type="text" placeholder="Код" name="enteredCode" onChange={this.handleActivationChange}
+                    <input type="text" placeholder={t("Код")} name="enteredCode" onChange={this.handleActivationChange}
                            value={enteredCode}
                            className={(enteredCodeError ? ' redBorder' : '')}
                     />
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <p>Имя</p>
-                    <input type="text" placeholder="Введите имя" name="clientName" onChange={handleChange}
+                    <p>{t("Имя")}</p>
+                    <input type="text" placeholder={t("Введите имя")} name="clientName" onChange={handleChange}
                            value={group.clientName && group.clientName}
                            className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
-                    <p>Телефон</p>
+                    <p>{t("Телефон")}</p>
                     <p style={{ display: 'flex' }}>
                         <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                       /> <span>На этот номер вы получите SMS с кодом подтверждения и информацию о записи</span>
+                       /> <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span>
                     </p>
                     <div className="phones_country">
                       <ReactPhoneInput
                         regions={['america', 'europe']}
-                        disableAreaCodes={true}
-
+                        disableAreaCodes={false}
                         inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => setterPhone(phone)}
                       />
 
                     </div>
                     <br/>
                     <p>Email</p>
-                    <input type="text" placeholder="Введите email" name="email" onChange={handleChange}
+                    <input type="text" placeholder={t("Введите email")} name="email" onChange={handleChange}
                            onKeyUp={() => setterEmail()}
                            value={group.email}
                            className={'' + ((group.email && group.email!=='' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
                     />
                     {info.companyTypeId === 2 && (
                       <React.Fragment>
-                          <p>Марка авто</p>
-                          <input type="text" placeholder="Введите марку авто" name="carBrand" onChange={handleChange}
+                          <p>{t("Марка авто")}</p>
+                          <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
                                  value={group.carBrand && group.carBrand}
                           />
 
-                          <p>Гос. номер</p>
-                          <input type="text" placeholder="Введите гос. номер" name="carNumber" onChange={handleChange}
+                          <p>{t("Гос. номер")}</p>
+                          <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
                                  value={group.carNumber && group.carNumber}
                           />
                       </React.Fragment>
                     )}
-                    <p>Комментарии</p>
-                    <textarea placeholder="Комментарии к записи"  name="description" onChange={handleChange} value={group.description}/>
-                    <p className="term">Нажимая кнопку &laquo;записаться&raquo;, вы соглашаетесь с <a href={`${origin}/user_agreement`} target="_blank">условиями пользовательского соглашения</a></p>
+                    <p>{t("Комментарии")}</p>
+                    <textarea placeholder={t("Комментарии к записи")}  name="description" onChange={handleChange} value={group.description}/>
+                    <p className="term">{t("Нажимая кнопку записаться, вы соглашаетесь с")} <a href={`${origin}/user_agreement`} target="_blank">{t("условиями пользовательского соглашения")}</a></p>
                   </React.Fragment>
                 )}
                 <input
                     className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField': '')+" book_button"}
                     disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-                    type="submit" value={clientActivationId ? 'Подтвердить код' : 'ЗАПИСАТЬСЯ'} onClick={
+                    type="submit" value={clientActivationId ? t("Подтвердить код") : t('ЗАПИСАТЬСЯ')} onClick={
                     ()=> {
                       if (clientActivationId) {
                           handleSave({
@@ -177,4 +178,5 @@ class TabFive extends PureComponent {
         );
     }
 }
-export default TabFive;
+
+export default withTranslation("common")(TabFive);

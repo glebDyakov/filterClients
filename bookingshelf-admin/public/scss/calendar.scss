@@ -445,7 +445,7 @@
       padding-left: 4px;
 
       &.days-container-mobile {
-        height: 65vh;
+        height: 70vh;
       }
 
       &.days-container-desktop {
@@ -1821,6 +1821,12 @@
                 font-weight: 600;
                 font-size: 11px;
                 line-height: 18px;
+                color: #495057;
+              }
+
+              .client-phone {
+                font-size: 9px;
+                line-height: 14px;
                 color: #495057;
               }
 

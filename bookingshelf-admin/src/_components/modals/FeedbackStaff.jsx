@@ -8,6 +8,7 @@ import { calendarActions, clientActions } from '../../_actions';
 import { staffActions } from '../../_actions/staff.actions';
 import StarRatings from 'react-star-ratings';
 import Paginator from '../Paginator';
+import {withTranslation} from "react-i18next";
 
 class FeedbackStaff extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class FeedbackStaff extends React.Component {
   };
 
   render() {
-    const { editClient, services, staff, feedbackStaff, feedback }=this.props;
+    const { editClient, services, staff, feedbackStaff, feedback, t }=this.props;
     const activeFeedbackStaff = feedback && feedback.find((item) => item.staffId === feedbackStaff.staffId);
 
     return (
@@ -33,7 +34,7 @@ class FeedbackStaff extends React.Component {
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content client-detail">
             <div className="modal-header">
-              <h4 className="modal-title">Отзывы</h4>
+              <h4 className="modal-title">{t("Отзывы")}</h4>
               <button type="button" className="close" data-dismiss="modal" />
             </div>
             <div className="client-info content-pages-bg">
@@ -57,19 +58,19 @@ class FeedbackStaff extends React.Component {
                               <div className="row">
                                 <div className="col-6" style={{ textAlign: 'center' }}>
                                   <strong>{activeFeedbackStaff && activeFeedbackStaff.totalNumber} </strong><br/>
-                                  <span className="gray-text">Всего отзывов</span>
+                                  <span className="gray-text">{t("Всего отзывов")}</span>
                                 </div>
 
                                 <div className="col-6" style={{ textAlign: 'center' }}>
-                                  <strong>{(activeFeedbackStaff && activeFeedbackStaff.averageStaffRating && activeFeedbackStaff.averageStaffRating.toFixed(2)) || 'Нет оценок'} </strong><br/>
-                                  <span className="gray-text">Средняя оценка</span>
+                                  <strong>{(activeFeedbackStaff && activeFeedbackStaff.averageStaffRating && activeFeedbackStaff.averageStaffRating.toFixed(2)) || t('Нет оценок')} </strong><br/>
+                                  <span className="gray-text">{t("Средняя оценка")}</span>
                                 </div>
                               </div>
                             </div>
               }
               <hr className="gray"/>
               {activeFeedbackStaff && activeFeedbackStaff.content.length!==0 ?
-                <p className="pl-4 pr-4">Список отзывов</p> : <p className="pl-4 pr-4">Нет отзывов</p>
+                <p className="pl-4 pr-4">{t("Список отзывов")}</p> : <p className="pl-4 pr-4">{t("Нет отзывов")}</p>
               }
 
               <div className="visit-info-wrapper">
@@ -126,4 +127,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(FeedbackStaff); ;
+export default connect(mapStateToProps)(withTranslation("common")(FeedbackStaff));

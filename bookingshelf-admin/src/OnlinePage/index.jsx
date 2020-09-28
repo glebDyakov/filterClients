@@ -10,6 +10,7 @@ import { companyActions } from '../_actions';
 import { access } from '../_helpers/access';
 
 import '../../public/scss/online_booking.scss';
+import {withTranslation} from "react-i18next";
 
 class Index extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class Index extends Component {
       this.queryInitData();
     }
 
-    if (JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+    if (JSON.stringify(this.props.company.booking) !== JSON.stringify(newProps.company.booking)) {
       this.setState({
         booking: newProps.company.booking,
       });
@@ -160,7 +161,7 @@ class Index extends Component {
     if (this.props.authentication.loginChecked) {
       this.queryInitData();
     }
-    document.title = 'Онлайн-запись | Онлайн-запись';
+    document.title = this.props.t('Онлайн-запись | Онлайн-запись');
 
     initializeJs();
   }
@@ -215,7 +216,7 @@ class Index extends Component {
   };
 
   render() {
-    const { company } = this.props;
+    const { company, t } = this.props;
     const {
       booking, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status,
     } = this.state;
@@ -245,11 +246,9 @@ class Index extends Component {
             <div className="row h-100 justify-content-between">
               <div className="col-xl-4 block-h p-0">
                 <div className=" content-pages-bg mb-0 h-auto p-zapis your-page">
-                  <p className="title mb-3">Ваша страница</p>
+                  <p className="title mb-3">{t('Ваша страница')}</p>
                   <p className="text">
-                    Перейдите по ссылке для того, чтобы открыть вашу персональную
-                    страницу онлайн-записи, вы увидите страницу всех ваших онлайн бронирований. Также вы
-                    можете открыть данную страницу с помощью кнопки онлайн-бронирования на вашем сайте.
+                    {t("Перейдите по ссылке для того, чтобы открыть вашу персональную страницу онлайн-записи, вы увидите страницу всех ваших онлайн бронирований. Также вы можете открыть данную страницу с помощью кнопки онлайн-бронирования на вашем сайте.")}
                   </p>
                   <div className="booking-page">
                     <a
@@ -267,11 +266,11 @@ class Index extends Component {
                 </div>
                 <div className=" content-pages-bg mb-0 p-zapis h-auto extra-messages">
                   <p className="title">
-                    Дополнительное сообщение в онлайн-записи
+                    {t("Дополнительное сообщение в онлайн-записи")}
                     <Hint
                       customLeft="-1px"
                       hintMessage={
-                        'Например: Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства.'
+                        t('Например Оплата карточкой временно недоступна, приносим извинения за доставленные неудобства')
                       }
                     />
                   </p>
@@ -283,11 +282,11 @@ class Index extends Component {
                   />
 
                   <p className="title limit-time">
-                    Ограничить время онлайн-записи
+                    {t("Ограничить время онлайн-записи")}
                     &nbsp;
                     <Hint
                       customLeft="-4px"
-                      hintMessage="По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес."
+                      hintMessage={t("По умолчанию (если выключено), открытый период онлайн-записи составляет 6 мес")}
                     />
                   </p>
 
@@ -299,7 +298,7 @@ class Index extends Component {
                         checked={isOnlineZapisChecked}
                         onChange={() => this.handleCheckboxChange('onlineZapisOn')}
                       />
-                      <span className="check"/>
+                      <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
                     </label>
                   </div>
 
@@ -311,17 +310,18 @@ class Index extends Component {
                         selectedDay={selectedDay}
                         handleDayClick={this.handleDayClick}
                         dayPickerProps={dayPickerProps}
+                        language={this.props.i18n.language}
                       />
                     </div>
                   }
-                  {status === 'saved.settings' && <p className="alert-success p-1 rounded pl-3">Сохранено</p>}
+                  {status === 'saved.settings' && <p className="alert-success p-1 rounded pl-3">{t("Сохранено")}</p>}
                   <button className="ahref button button-save" onClick={this.handleSubmit}>
-                    Сохранить
+                    {t("Сохранить")}
                   </button>
                 </div>
 
                 <div className=" content-pages-bg p-zapis h-auto start-window">
-                  <p className="title">Начальное окно в онлайн-записи</p>
+                  <p className="title">{t("Начальное окно в онлайн-записи")}</p>
                   <div className="check-box">
                     <label>
                       {isFirstScreenLoading
@@ -340,7 +340,7 @@ class Index extends Component {
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      Сотрудники
+                      {t("Сотрудники")}
                     </label>
                   </div>
                   <div className="check-box">
@@ -361,13 +361,13 @@ class Index extends Component {
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      Услуги
+                      {t("Услуги")}
                     </label>
                   </div>
                 </div>
 
                 <div className=" content-pages-bg mb-0 h-auto p-zapis online-interval">
-                  <p className="title mb-3">Интервал онлайн-записи</p>
+                  <p className="title mb-3">{t("Интервал онлайн-записи")}</p>
                   <div className="check-box">
                     <label>
                       {isServiceIntervalLoading
@@ -386,7 +386,7 @@ class Index extends Component {
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      15 минут
+                      15 {t("минут")}
                     </label>
                   </div>
 
@@ -405,41 +405,40 @@ class Index extends Component {
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      Равен времени услуги
+                      {t("Равен времени услуги")}
                     </label>
                   </div>
                 </div>
 
                 <div className="content-pages-bg mb-0 h-auto p-zapis journal-interval">
-                  <p className="title">Интервал записи в журнал</p>
+                  <p className="title">{t("Интервал записи в журнал")}</p>
                   <select
                     className="custom-select"
                     name="booktimeStep"
                     onChange={this.handleStepChange}
                     value={booktimeStep}
                   >
-                    <option value={300}>5 мин</option>
-                    <option value={600}>10 мин</option>
-                    <option value={900}>15 мин</option>
+                    <option value={300}>5 {t("минут")}</option>
+                    <option value={600}>10 {t("минут")}</option>
+                    <option value={900}>15 {t("минут")}</option>
                   </select>
-                  {saved === 'stepSaved' && <p className="alert-success p-1 rounded pl-3">Сохранено</p>}
+                  {saved === 'stepSaved' && <p className="alert-success p-1 rounded pl-3">{t("Сохранено")}</p>}
                   <button className="ahref button button-save" onClick={this.handleStepSubmit}>
-                    Сохранить
+                    {t("Сохранить")}
                   </button>
                 </div>
               </div>
 
               <div className="col-xl-8 content-pages-bg main-tab">
-                <p className="title mb-3">Стили кнопок</p>
+                <p className="title mb-3">{t("Стили кнопок")}</p>
                 <p className="text">
-                  Чтобы установить кнопку онлайн-записи на сайт, выберите цвет и форму кнопки,
-                  скопируйте код и поместите на сайт.
+                  {t("Чтобы установить кнопку онлайн-записи на сайт, выберите цвет и форму кнопки, скопируйте код и поместите на сайт")}
                 </p>
 
                 <hr/>
                 <div className="form-button">
                   <div>
-                    <p className="sub-title">Форма кнопки</p>
+                    <p className="sub-title">{t("Форма кнопки")}</p>
                   </div>
                   <div className="buttons">
                     <button
@@ -508,7 +507,7 @@ class Index extends Component {
                     />
                   </div>
                 </div>
-                <p className="sub-title m-20">Выберите цвет</p>
+                <p className="sub-title m-20">{t("Выберите цвет")}</p>
                 <div className="chose_button">
                   <a
                     className={(booking.bookingColor.toString(16) === '39434f' && 'active') +
@@ -584,7 +583,7 @@ class Index extends Component {
 
                 <div className="form-button">
                   <div>
-                    <p className="sub-title position-button">Расположение кнопки</p>
+                    <p className="sub-title position-button">{t("Расположение кнопки")}</p>
                   </div>
 
                   <div className="row position-button">
@@ -603,7 +602,7 @@ class Index extends Component {
                             <span className="check-box-circle"/>
                           </React.Fragment>
                         }
-                        Слева
+                        {t("Слева")}
                       </label>
                     </div>
                     <div className="check-box">
@@ -621,7 +620,7 @@ class Index extends Component {
                             <span className="check-box-circle"/>
                           </React.Fragment>
                         }
-                        Справа
+                        {t("Справа")}
                       </label>
                     </div>
                   </div>
@@ -631,7 +630,7 @@ class Index extends Component {
                   {/* <p className="sub-title mb-3">Название кнопки</p>*/}
                   {/* <input type="text" placeholder="Например: Онлайн-запись" value={booking.bookingButton}
                   name="bookingButton" onChange={this.handleChange}/>*/}
-                  <strong className="sub-title text-example">Пример</strong>
+                  <strong className="sub-title text-example">{t("Пример")}</strong>
                   <div style={{
                     display: 'flex',
                     justifyContent: (booking.bookingCode.includes('left') ? 'flex-start' : 'flex-end'),
@@ -641,12 +640,12 @@ class Index extends Component {
                       className={'exemple-buton ' + booking.bookingCode + ' color' +
                       booking.bookingColor.toString(16)}
                     >
-                      Онлайн запись
+                      {t("Онлайн запись")}
                     </button>
                   </div>
 
                   <div className="row code-buttons">
-                    <p className="sub-title">Код: </p>
+                    <p className="sub-title">{t("Код")}: </p>
                     <div className="check-box">
                       <label>
                         {isBookingInfoLoading
@@ -665,7 +664,7 @@ class Index extends Component {
                             <span className="check-box-circle"/>
                           </React.Fragment>
                         }
-                        Код кнопки на сайт
+                       {t("Код кнопки на сайт")}
                       </label>
                     </div>
 
@@ -687,7 +686,7 @@ class Index extends Component {
                             <span className="check-box-circle"/>
                           </React.Fragment>
                         }
-                        Код ссылки на сайт
+                        {t("Код ссылки на сайт")}
                       </label>
                     </div>
 
@@ -698,18 +697,18 @@ class Index extends Component {
                       autoCorrect="off" className="copy-code" value={'' +
                     '<button type="button" onclick="displayFrame()" id=\'bb\' class=\'' + booking.bookingCode +
                     ' color' + booking.bookingColor.toString(16).toUpperCase() + '\' code=\'' +
-                    booking.bookingPage + '\' style=\'visibility: hidden\'>Онлайн запись</button>\n' +
+                    booking.bookingPage + '\' style=\'visibility: hidden\'>' + t("Онлайн запись") + '</button>\n' +
                     '<script type="text/javascript" src="https://online-zapis.com/bb/frame.js"></script>'}/>
                   }
                   {urlButton &&
                     <textarea ref={(textarea) => this.textArea = textarea} spellCheck="off"
                       autoCorrect="off" className="copy-code" value={'' +
                     '<a type="button" onclick="displayFrame()" id=\'bb\' class=\'url\' code=\'' +
-                    booking.bookingPage + '\' style=\'visibility: hidden\'>Онлайн запись</a>\n' +
+                    booking.bookingPage + '\' style=\'visibility: hidden\'>'+ t("Онлайн запись") +'</a>\n' +
                     '<script type="text/javascript" src="https://online-zapis.com/bb/frame.js"></script>'}/>
                   }
                   <p onClick={(e) => this.copyToClipboard(e, 'textArea')}
-                    className="copy-code">Скопировать код</p>
+                    className="copy-code">{t("Скопировать код")}</p>
                 </div>
               </div>
             </div>
@@ -721,7 +720,7 @@ class Index extends Component {
                     <img src={`${process.env.CONTEXT}public/img/icons/Check_mark.svg`}
                       alt="message is sent image"/>
                     <p className="body-text">
-                      Скопировано!
+                      {t("Скопировано!")}
                     </p>
                   </div>
                 </div>
@@ -754,4 +753,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(withTranslation("common")(Index));

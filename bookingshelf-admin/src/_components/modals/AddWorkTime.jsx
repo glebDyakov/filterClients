@@ -6,6 +6,7 @@ import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import Modal from '@trendmicro/react-modal';
+import {withTranslation} from "react-i18next";
 
 class AddWorkTime extends React.Component {
   constructor(props) {
@@ -132,7 +133,7 @@ class AddWorkTime extends React.Component {
   render() {
     const { countTimes, staff, repeat, date, editWorkingHours, editing_object, message, times, staffs }=this.state;
 
-    const { company } = this.props;
+    const { company, t } = this.props;
 
     return (
       <Modal size="md" onClose={this.closeModal} showCloseButton={false} className={'mod modal-dates'}>
@@ -140,7 +141,7 @@ class AddWorkTime extends React.Component {
           <div className="">
             <div className="modal-content">
               <div className="modal-header">
-                <p className="modal-title">{!editWorkingHours ? 'Добавить часы работы': 'Изменить рабочие часы'}</p>
+                <p className="modal-title">{!editWorkingHours ? t('Добавить часы работы'): t('Изменить рабочие часы')}</p>
                 <button type="button" className="close" onClick={this.closeModal}></button>
                 {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -150,17 +151,16 @@ class AddWorkTime extends React.Component {
                 <div className="form-group">
                   <div className="mr-3 ml-3">
                     <div className="check-box">
-                      <p>Повтор</p>
+                      <p>{t('Повтор')}</p>
                       <div className="form-check-inline">
                         <input type="radio" className="form-check-input" name="radio22" id="radio100" checked={repeat==='ONCE'}
                           onChange={() => this.setState({ ...this.state, repeat: 'ONCE' })}/>
-                        <label className="form-check-label" htmlFor="radio100">Разовый</label>
+                        <label className="form-check-label" htmlFor="radio100">{t("Разовый")}</label>
                       </div>
                       <div className="form-check-inline">
                         <input type="radio" className="form-check-input" name="radio22" id="radio101" checked={repeat==='WEEKLY'}
                           onChange={() => this.setState({ ...this.state, repeat: 'WEEKLY' })}/>
-                        <label className="form-check-label" htmlFor="radio101">Повторять каждую
-                                                    неделю</label>
+                        <label className="form-check-label" htmlFor="radio101">{t("Повторять каждую неделю")}</label>
                       </div>
                     </div>
 
@@ -168,9 +168,9 @@ class AddWorkTime extends React.Component {
 
                     {countTimes && countTimes.map((item, key) =>
                       <div key={key} className="time-element border-bottom mb-2">
-                        <span className="remove-time" onClick={() => this.onRemoveTime(key)}>Удалить</span>
+                        <span className="remove-time" onClick={() => this.onRemoveTime(key)}>{t("Удалить")}</span>
 
-                        <p>Начало</p>
+                        <p>{t("Начало")}</p>
                         <TimePicker
                           id={'startTimeMillis' + key}
                           key={'startTimeMillis' + key}
@@ -183,7 +183,7 @@ class AddWorkTime extends React.Component {
                           disabledMinutes={this.disabledMinutes}
                           onChange={(startTimeMillis, q, w, e) => this.onChangeTime('startTimeMillis', key, moment(startTimeMillis).format('x'), q, w, e)}
                         />
-                        <p>Конец</p>
+                        <p>{t("Конец")}</p>
                         <TimePicker
                           id={'endTimeMillis' + key}
                           value={item!=1 ? item.endTimeMillis ? moment(parseInt(item.endTimeMillis), 'x'): '' :times[key]&&times[key].endTimeMillis?moment(times[key].endTimeMillis, 'x'):''}
@@ -198,10 +198,10 @@ class AddWorkTime extends React.Component {
                         />
                       </div>,
                     )}
-                    {countTimes.length<=5 && <a className="add-work-time" onClick={() => this.onAddTime()}>Добавить часы работы +</a>
+                    {countTimes.length<=5 && <a className="add-work-time" onClick={() => this.onAddTime()}>{t("Добавить часы работы")} +</a>
                     }
                     {staffs && staffs.status === 200 &&
-                                        <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                        <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>
                     }
                     {staffs && staffs.adding && staffs.status !== 200 &&
                                         <img style={{ width: '57px' }}
@@ -214,14 +214,14 @@ class AddWorkTime extends React.Component {
                       <button className="button" type="button"
                         onClick={() => {
                           if ((countTimes.length !== times.length) || times.some((item) => !item.startTimeMillis || !item.endTimeMillis)) {
-                            this.setState({ message: 'Необходимо выбрать начало и конец интервала' });
+                            this.setState({ message: t('Необходимо выбрать начало и конец интервала') });
                           } else {
                             this.setState({ message: '' });
                             this.onSaveTime();
                           }
-                        }} data-dismiss="modal">Сохранить
+                        }} data-dismiss="modal">{t("Сохранить")}
                       </button>
-                      {editWorkingHours && <button className="delete-button" type="button" onClick={() => this.onDelete(moment(date, 'DD/MM/YYYY').startOf('day').format('x'), moment(date, 'DD/MM/YYYY').endOf('day').format('x'))} data-dismiss="modal">Удалить</button>}
+                      {editWorkingHours && <button className="delete-button" type="button" onClick={() => this.onDelete(moment(date, 'DD/MM/YYYY').startOf('day').format('x'), moment(date, 'DD/MM/YYYY').endOf('day').format('x'))} data-dismiss="modal">{t("Удалить")}</button>}
 
                     </div>
                   </div>
@@ -318,5 +318,5 @@ AddWorkTime.propTypes = {
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(AddWorkTime);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(AddWorkTime));
 export { connectedApp as AddWorkTime };

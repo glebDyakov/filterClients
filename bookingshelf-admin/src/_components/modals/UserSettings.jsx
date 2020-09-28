@@ -8,6 +8,7 @@ import Modal from '@trendmicro/react-modal';
 import PhoneInput from '../PhoneInput';
 import ReactPhoneInput from 'react-phone-input-2';
 import { isValidNumber } from 'libphonenumber-js';
+import {withTranslation} from "react-i18next";
 
 class UserSettings extends React.Component {
   constructor(props) {
@@ -72,12 +73,12 @@ class UserSettings extends React.Component {
 
     if (profile.firstName && ((!profile.phone ||profile.phone.length <=4) || isValidPhone) && profile.email) {
       if (profile.password && !profile.newPassword) {
-        this.setState({ error: 'Поле "Новый пароль" не может быть пустым когда введён текущий пароль' });
+        this.setState({ error: this.props.t('Поле Новый пароль не может быть пустым когда введён текущий пароль') });
         return false;
       }
       if (profile.password || profile.newPasswordRepeat || profile.newPassword) {
         if (!profile.newPasswordRepeat || !profile.newPassword || profile.newPasswordRepeat !== profile.newPassword) {
-          this.setState({ error: 'Повторите пароль верно' });
+          this.setState({ error: this.props.t('Повторите пароль верно') });
           return false;
         } else {
 
@@ -99,7 +100,7 @@ class UserSettings extends React.Component {
   }
 
   render() {
-    const { authentication } = this.props;
+    const { authentication, t } = this.props;
     const { profile, error } = this.state;
     const { firstName, lastName, email, phone, newPassword, newPasswordRepeat } = profile;
 
@@ -109,7 +110,7 @@ class UserSettings extends React.Component {
           <div className="modal-content">
             <div className="form-group">
               <div className="modal-header">
-                <h4 className="modal-title">Настройки профиля</h4>
+                <h4 className="modal-title">{t("Настройки профиля")}</h4>
                 <button type="button" className="close" onClick={this.closeModal} />
                 {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
@@ -117,17 +118,17 @@ class UserSettings extends React.Component {
               <form className="form-group form-user-setting pr-3 pl-3 pb-3" name="form">
                 <div className="row">
                   <div style={{ position: 'relative' }} className="calendar col-xl-12">
-                    <p>Имя</p>
-                    <input style={{ paddingRight: '56px' }} type="text" name="firstName" value={firstName} onChange={this.handleChange} maxLength="100" placeholder="Введите имя"/>
+                    <p>{t("Имя")}</p>
+                    <input style={{ paddingRight: '56px' }} type="text" name="firstName" value={firstName} onChange={this.handleChange} maxLength="100" placeholder={t("Введите имя")}/>
                     <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7 }}>{firstName.length}/100</span>
                   </div>
                   <div className="calendar col-xl-12">
-                    <p>Номер телефона</p>
+                    <p>{t("Номер телефона")}</p>
                     <ReactPhoneInput
                       defaultCountry={'by'}
                       country={'by'}
                       regions={['america', 'europe']}
-                      placeholder="Введите номер телефона"
+                      placeholder={t("Введите номер телефона")}
                       value={phone}
                       onChange={(phone) => {
                         this.setState({
@@ -139,29 +140,29 @@ class UserSettings extends React.Component {
                 </div>
                 <div className="row">
                   <div style={{ position: 'relative' }} className="calendar col-xl-12">
-                    <p>Фамилия</p>
-                    <input style={{ paddingRight: '56px' }} type="text" name="lastName" value={lastName} onChange={this.handleChange} maxLength="100" placeholder="Введите фамилию"/>
+                    <p>{t("Фамилия")}</p>
+                    <input style={{ paddingRight: '56px' }} type="text" name="lastName" value={lastName} onChange={this.handleChange} maxLength="100" placeholder={t("Введите фамилию")}/>
                     <span style={{ bottom: '17px', right: '20px', position: 'absolute', opacity: 0.7 }}>{lastName ? lastName.length : 0}/100</span>
                   </div>
                   <div className="calendar col-xl-12">
-                    <p>Электронный адрес</p>
-                    <input type="text" name="email" disabled={true} className="disabledField" value={email} onChange={this.handleChange} placeholder="Введите Email"/>
+                    <p>{t("Электронный адрес")}</p>
+                    <input type="text" name="email" disabled={true} className="disabledField" value={email} onChange={this.handleChange} placeholder={t("Введите Email")}/>
                   </div>
                 </div>
 
                 <hr/>
                 <p className="change-password-block--title">
-                                    Изменить пароль
+                                    {t("Изменить пароль")}
                 </p>
 
                 <div className="row">
                   <div className="col-xl-12">
-                    <p>Текущий пароль</p>
+                    <p>{t("Текущий пароль")}</p>
                     <p>
                       <input name="passwd" type="password" style={{ display: 'none' }}/>
 
                       <input type="password"
-                        placeholder="Введите текущий пароль"
+                        placeholder={t("Введите текущий пароль")}
                         autoComplete="new-password"
                         value={profile.password && profile.password}
                         name="password" onChange={this.handleChange}/>
@@ -171,29 +172,29 @@ class UserSettings extends React.Component {
                 </div>
                 <div className="row">
                   <div className="calendar col-xl-12">
-                    <p>Новый пароль</p>
-                    <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPassword && profile.newPassword} onChange={this.handleChange} placeholder="Введите новый пароль"/>
+                    <p>{t("Новый пароль")}</p>
+                    <input type="password" name="newPassword" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPassword && profile.newPassword} onChange={this.handleChange} placeholder={t("Введите новый пароль")}/>
                   </div>
                   <div className="calendar col-xl-12">
-                    <p>Повторите пароль</p>
-                    <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPasswordRepeat && profile.newPasswordRepeat} onChange={this.handleChange} placeholder="Повторите новый пароль"/>
+                    <p>{t("Повторите пароль")}</p>
+                    <input type="password" name="newPasswordRepeat" className={'' + (newPassword && newPassword!==newPasswordRepeat ? ' redBorder' : '')} value={authentication.status && profile.newPasswordRepeat && profile.newPasswordRepeat} onChange={this.handleChange} placeholder={t("Повторите новый пароль")}/>
                   </div>
                 </div>
                 <div className="check-box">
                   <label>
                     <input className="form-check-input" onChange={(e)=>this.changeSound(e)} checked={this.state.sound}
                       type="checkbox"/>
-                    <span className="check" />
-                                        Звуковые уведомления для визитов
+                    <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check" />
+                    {t("Звуковые уведомления для визитов")}
                   </label>
                 </div>
 
 
                 {authentication && authentication.status === 200 &&
-                                <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>
+                                <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>
                 }
                 {authentication && authentication.status=== 406 && authentication.errorPass &&
-                                <p className="alert-danger p-1 rounded pl-3 mb-2">Старый пароль введен неверно</p>
+                                <p className="alert-danger p-1 rounded pl-3 mb-2">{t("Старый пароль введен неверно")}</p>
                 }
                 {error &&
                                 <p className="alert-danger p-1 rounded pl-3 mb-2">{error}</p>
@@ -204,7 +205,7 @@ class UserSettings extends React.Component {
                 }
 
                 <div className="buttons">
-                  <button className={'button text-center '+(authentication.adding && 'disabledField')} type="button" onClick={!authentication.adding && this.handleSubmit}>Сохранить</button>
+                  <button className={'button text-center '+(authentication.adding && 'disabledField')} type="button" onClick={!authentication.adding && this.handleSubmit}>{t("Сохранить")}</button>
                 </div>
 
               </form>
@@ -234,5 +235,5 @@ UserSettings.propTypes ={
   onClose: PropTypes.func,
 };
 
-const connectedApp = connect(mapStateToProps)(UserSettings);
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(UserSettings));
 export { connectedApp as UserSettings };

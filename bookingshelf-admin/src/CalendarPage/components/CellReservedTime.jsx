@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { modalsActions } from '../../_actions/modals.actions';
+import {withTranslation} from "react-i18next";
 
 const CellReservedTime = (props) => {
-  const { cell: reservedTime, workingStaffElement, dispatch, step, cellHeight } = props;
+  const { cell: reservedTime, workingStaffElement, dispatch, step, cellHeight, t } = props;
   const textAreaHeight = (parseInt(((
     moment.utc(reservedTime.endTimeMillis - reservedTime.startTimeMillis, 'x').format('x')
     / 60000 / step) - 1) * cellHeight));
@@ -19,7 +20,7 @@ const CellReservedTime = (props) => {
             style={{ right: '5px' }}
             data-toggle="modal"
             data-target=".delete-reserve-modal"
-            title="Удалить"
+            title={t("Удалить")}
             onClick={() =>
               dispatch(modalsActions.togglePayload({
                 reservedTimeId: reservedTime.reservedTimeId,
@@ -27,7 +28,7 @@ const CellReservedTime = (props) => {
               }),
               )}
           />
-          <span className="" title="Онлайн-запись"/>
+          <span className="" title={t("Онлайн-запись")}/>
           <span
             className="service_time"
           >
@@ -53,4 +54,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CellReservedTime);
+export default connect(mapStateToProps)(withTranslation("common")(CellReservedTime));

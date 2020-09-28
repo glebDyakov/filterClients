@@ -1,12 +1,13 @@
 import React, {PureComponent} from 'react';
 import {withRouter} from "react-router-dom";
+import {withTranslation} from "react-i18next";
 
 
 class TabError extends  PureComponent {
 
     render() {
 
-        const {setScreen,error,isVisitPage, companyId} = this.props;
+        const {setScreen,error,isVisitPage, companyId, t} = this.props;
 
 
         return (
@@ -15,9 +16,9 @@ class TabError extends  PureComponent {
                     <p>{error}</p>
                 </div>
                 {/*{isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}*/}
-                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >Создать запись</a>
+                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >{t("Создать запись")}</a>
             </div>
         );
     }
 }
-export default withRouter(TabError);
+export default withTranslation(TabError);
