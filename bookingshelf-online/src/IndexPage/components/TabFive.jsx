@@ -4,6 +4,7 @@ import ReactPhoneInput from "react-phone-input-2";
 import {isValidNumber} from "libphonenumber-js";
 import {origin} from "../../_helpers/handle-response";
 import {withTranslation} from "react-i18next";
+import 'react-phone-input-2/lib/style.css';
 
 
 class TabFive extends PureComponent {
@@ -126,8 +127,7 @@ class TabFive extends PureComponent {
                     <div className="phones_country">
                       <ReactPhoneInput
                         regions={['america', 'europe']}
-                        disableAreaCodes={true}
-
+                        disableAreaCodes={false}
                         inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => setterPhone(phone)}
                       />
 
