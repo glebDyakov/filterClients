@@ -123,6 +123,7 @@ class Index extends Component {
     this.props.dispatch(servicesActions.get());
     this.props.dispatch(staffActions.get());
     this.props.dispatch(materialActions.getProducts());
+    this.props.dispatch(materialActions.getUnits());
   }
 
   componentWillReceiveProps(newProps) {
@@ -551,7 +552,7 @@ class Index extends Component {
 }
 
 function mapStateToProps(store) {
-  const { services, staff, authentication } = store;
+  const { services, staff, authentication, material } = store;
   return {
     services,
     staff,
