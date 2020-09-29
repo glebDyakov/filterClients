@@ -269,7 +269,7 @@ class AddService extends React.Component {
                                                         }}
                                                         className={
                                                           // serviceCurrent[index].service.color && serviceCurrent[index].service.color.toLowerCase() + " "+
-                                                          'select-button dropdown-toggle select-material col-9'}
+                                                          'select-button dropdown-toggle select-material col-12 col-md-9'}
                                                         data-toggle={'dropdown'}>{((item.productId) ? ((item.productCode ? item.productCode : '') + (item.productName ? `, ${item.productName}` : '')
                                                           // + (activeUnit ? `, ${activeUnit.unitName}` : '' )
                                                           ) :t('Выберите необходимый материал')) }
@@ -278,7 +278,7 @@ class AddService extends React.Component {
                                                             className="yellow"><span className="items-color"><span></span>    <span></span>  <span></span></span></span>
                                                         </a>}
 
-                                                <ul className="dropdown-menu w-auto col-9">
+                                                <ul className="dropdown-menu w-auto col-12 col-md-9">
                                                   <li className="search-item">
                                                     <div className="align-items-center clients">
                                                       <div className="search">
@@ -536,8 +536,10 @@ class AddService extends React.Component {
   }
 
   getActiveUnitName(product) {
-    console.log()
-    return this.getUnitName(this.props.material.units.find((currentUnit) => product.unitId === currentUnit.unitId).unitName || '');
+    if (this.props.material && this.props.material.units) {
+      return this.getUnitName(this.props.material.units.find((currentUnit) => product.unitId === currentUnit.unitId).unitName || '');
+    }
+    return "";
   }
 
   handleDurationChange(e) {
