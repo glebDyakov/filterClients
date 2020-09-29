@@ -30,6 +30,10 @@ class TabFive extends PureComponent {
           $('.phones_country').css({ display: 'flex' })
         }
 
+        if (group.phone > 0 && group.phone[0] !== "+"){
+            group.phone = "+" + group.phone
+        }
+
         let serviceInfo = null
         if (selectedServices[0]) {
             let priceFrom = 0;
@@ -127,8 +131,8 @@ class TabFive extends PureComponent {
                     <div className="phones_country">
                       <ReactPhoneInput
                         regions={['america', 'europe']}
-                        disableAreaCodes={false}
-                        inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  defaultCountry={'by'} onChange={phone => setterPhone(phone)}
+                        disableAreaCodes={true}
+                        inputClass={((!group.phone && group.email && group.email!=='' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={ group.phone }  country={'by'} onChange={phone => setterPhone(phone)}
                       />
 
                     </div>
