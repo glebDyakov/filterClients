@@ -536,7 +536,7 @@ class AddService extends React.Component {
   }
 
   getActiveUnitName(product) {
-    if (this.props.material && this.props.material.units) {
+    if (this.props.material && this.props.material.units && this.props.material.units.length > 0) {
       return this.getUnitName(this.props.material.units.find((currentUnit) => product.unitId === currentUnit.unitId).unitName || '');
     }
     return "";
