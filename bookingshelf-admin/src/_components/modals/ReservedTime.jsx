@@ -46,21 +46,18 @@ class ReservedTime extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if ( JSON.stringify(this.props) !== JSON.stringify(newProps)) {
-      this.setState({ ...this.state, staffs: newProps.staffs,
-        minutesReservedtime: newProps.minutesReservedtime,
-        reservedTime: newProps.calendar.status === 200 ? {
-          startTimeMillis: '',
-          endTimeMillis: '',
-          description: '',
-        } : this.state.reservedTime,
-        calendar: newProps.calendar,
-        timeNow: newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
-        reservedStuffId: newProps.reservedStuffId,
-        staffCurrent: newProps.calendar.status === 200 ?
-          { id: -1 } : this.state.staffCurrent,
-      });
-    }
+    this.setState({
+      staffs: newProps.staffs,
+      minutesReservedtime: newProps.minutesReservedtime,
+      reservedTime: newProps.calendar.status === 200 ? {
+        startTimeMillis: '',
+        endTimeMillis: '',
+        description: '',
+      } : this.state.reservedTime,
+      calendar: newProps.calendar,
+      timeNow: newProps.clickedTime===0?moment().format('x'):newProps.clickedTime,
+      reservedStuffId: newProps.reservedStuffId,
+    });
   }
 
   disabledMinutes(h, str) {
@@ -115,7 +112,7 @@ class ReservedTime extends React.Component {
       });
 
       for (let i=0; i <= 45; i+=15) {
-        if ((h !==selectedHour && h === parseInt(findTime.split(':')[0]) && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i) || (h === parseInt(findTime.split(':')[0]) && findTime.split(':')[1] < i)) {
+        if (findTime && ((h !==selectedHour && h === parseInt(findTime.split(':')[0]) && i > findTime.split(':')[1]) || (h === selectedHour && selectedMinute >= i) || (h === parseInt(findTime.split(':')[0]) && findTime.split(':')[1] < i))) {
           minutesArray.push(i);
         }
       }
@@ -235,7 +232,7 @@ class ReservedTime extends React.Component {
                     {
                       timetable && timetable.map((staff, key)=>{
                         const activeStaff = staffFromProps && staffFromProps.find((staffItem) => staffItem.staffId === staff.staffId);
-                        return (<li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={key}>
+                        return (<li onClick={()=>this.setStaff(staff, staff.firstName, staff.lastName, staff.imageBase64)} key={`reserved-time-staff-item-${key}`}>
                           <a>
                             <div className="img-container">
                               <img className="rounded-circle"
@@ -326,7 +323,8 @@ class ReservedTime extends React.Component {
   }
 
   setStaff(staffId, firstName, lastName, imageBase64) {
-    this.setState({ ...this.state, minutesReservedtime: this.getHours(staffId),
+    this.setState({
+      minutesReservedtime: this.getHours(staffId),
       staffCurrent: { staffId: staffId.staffId, firstName: firstName, lastName: lastName, imageBase64: imageBase64,
         reservedTime: { startTimeMillis: '',
           endTimeMills: '',
