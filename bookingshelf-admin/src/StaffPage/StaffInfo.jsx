@@ -31,10 +31,10 @@ class StaffInfo extends Component {
 
     return (
       <React.Fragment>
-        <div {...dragHandleProps} className="staffs tab-content-list" key={i}>
+        <div {...dragHandleProps} className="staffs tab-content-list">
           {/* {staffGroup.length > i + 1 && <span className="line_connect"/>}*/}
           <div className="client-name">
-            <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }} key={i}>
+            <a style={{ paddingBottom: isGroup ? '4px' : '10px', cursor: 'grab' }}>
               <span className="img-container">
                 <img className="rounded-circle"
                   src={staff_user.imageBase64
