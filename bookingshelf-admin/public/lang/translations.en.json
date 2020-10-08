@@ -693,7 +693,9 @@
   "шт": "unit",
   "кг": "kg",
   "гр": "gr",
-  "кор": "box",
+  "кор": "box",e
   "Товары, зарезервированные на созданные визиты.": "Items reserved for created visits.",
-  "Резерв": "Reserve"
+  "Резерв": "Reserve",
+  "Сантиметр": "Centimeter",
+  "см": "cm"
 }
