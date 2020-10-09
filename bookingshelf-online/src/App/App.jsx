@@ -26,8 +26,8 @@ class App extends React.Component {
             <Router history={history}>
                 <div>
                     <Switch>
-                        <Route path="/visits/:company/:visit" component={VisitPage} />
-                        <Route path="/:company" component={IndexPage} />
+                        <Route exact={true} path="/:company" component={IndexPage} />
+                        <Route exact={true} path="/visits/:company/:visit" component={VisitPage} />
                         <Route component={NoPage} />
                     </Switch>
                 </div>
@@ -46,4 +46,4 @@ function mapStateToProps(state) {
 }
 
 const connectedApp = connect(mapStateToProps)(App);
-export { connectedApp as App }; 
+export { connectedApp as App };
