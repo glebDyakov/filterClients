@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import ItemTypes from './ItemTypes';
 import BaseCellContent from '../../CalendarPage/components/BaseCellContent';
+import { access } from '../../_helpers/access';
 
 const Dustbin = ({ time, staffKey, selectedDaysKey, isStartMovingVisit, addVisit, moveVisit }) => {
   const wrapperClick = isStartMovingVisit ? moveVisit : addVisit;

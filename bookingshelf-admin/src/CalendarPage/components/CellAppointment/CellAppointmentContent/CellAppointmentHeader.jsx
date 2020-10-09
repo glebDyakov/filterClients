@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import Popover from '../../../../_components/Popover';
 import {withTranslation} from "react-i18next";
+import { access } from '../../../../_helpers/access';
 
 class CellAppointmentHeader extends React.PureComponent {
   render() {
@@ -43,7 +44,7 @@ class CellAppointmentHeader extends React.PureComponent {
             : { className: 'no-cash-payment', title: t('Оплата картой'), minWidth: '55px' }}
           />
 
-          {!appointment.coappointment && (
+          {access(15) && !appointment.coappointment && (
             <React.Fragment>
               <Popover props={{
                 'className': 'delete',
