@@ -152,8 +152,10 @@ const CellAppointmentModal = (props) => {
           <p
             data-target=".client-detail"
             onClick={(e) => {
+              if (access(4)) {
                 $('.client-detail').modal('show');
                 handleUpdateClient(appointment.clientId);
+              }
             }}
             className="name"
           >
