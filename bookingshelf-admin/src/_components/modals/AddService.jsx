@@ -481,6 +481,7 @@ class AddService extends React.Component {
                           } else {
                             this.addService();
                           }
+                          this.closeModal();
                         }
                       }}>{editServiceItem ? t('Сохранить') : t('Сохранить')}</button>
                   </div>

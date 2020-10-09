@@ -289,6 +289,10 @@ export function staff(state = initialState, action) {
             'permissionCode': 1,
           },
           {
+            'name': 'Редактирование визитов',
+            'permissionCode': 15,
+          },
+          {
             'name': 'Календарь других сотрудников',
             'permissionCode': 2,
           },

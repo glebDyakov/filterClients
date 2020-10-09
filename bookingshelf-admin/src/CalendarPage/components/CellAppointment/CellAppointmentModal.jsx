@@ -152,8 +152,10 @@ const CellAppointmentModal = (props) => {
           <p
             data-target=".client-detail"
             onClick={(e) => {
-              $('.client-detail').modal('show');
-              handleUpdateClient(appointment.clientId);
+              if (access(4)) {
+                $('.client-detail').modal('show');
+                handleUpdateClient(appointment.clientId);
+              }
             }}
             className="name"
           >
@@ -323,7 +325,7 @@ const CellAppointmentModal = (props) => {
 
         {appointment.description &&
         <p className="visit-note"><p className="bold-text">{t("Заметка")}:</p>&nbsp;{appointment.description}</p>}
-        {isWeekBefore && (
+        {access(15) && isWeekBefore && (
           <div className="msg-inner-buttons">
             <div
               onClick={startMovingVisit}

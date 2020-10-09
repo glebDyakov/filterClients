@@ -689,6 +689,7 @@
   "Календарь других сотрудников": "Kalendarz innych pracowników",
   "Клиенты с контактами": "Klienci z kontaktami",
   "Скачивание базы даных клиентов": "Pobieranie bazy danych klientów",
+  "Редактирование визитов": "Edycja wizyt",
   "Импорт базы даных клиентов": "Import bazy danych klientów",
   "Филиалы": "Gałęzie",
   "Вкл": "Włącz",
@@ -697,7 +698,9 @@
   "Товары, зарезервированные на созданные визиты.": "Pozycje zarezerwowane dla utworzonych wizyt.",
   "Резерв": "Zarezerwuj",
   "Сантиметр": "Centymetr",
-  "см": "cm"
+  "см": "cm",
+  "Все": "Wszyscy",
+  "Клиент подтвердил": "Klient potwierdził"
 }
 
 

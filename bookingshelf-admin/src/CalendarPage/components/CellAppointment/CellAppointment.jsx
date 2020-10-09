@@ -9,6 +9,7 @@ import Box from '../../../_components/dragAndDrop/Box';
 import { getCurrentCellTime } from '../../../_helpers';
 import CellAppointmentModal from './CellAppointmentModal';
 import CellAppointmentContent from './CellAppointmentContent/CellAppointmentContent';
+import { access } from '../../../_helpers/access';
 
 class CellAppointment extends React.PureComponent {
   constructor(props) {
@@ -194,7 +195,7 @@ class CellAppointment extends React.PureComponent {
     );
 
     return <div className="cell-appointment">
-      {(!appointment.coappointment && !isMobile)
+      {access(15) && (!appointment.coappointment && !isMobile)
         ? (
           <Box
             moveVisit={moveVisit}

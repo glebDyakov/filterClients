@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions } from '../../../../_actions';
 import {withTranslation} from "react-i18next";
+import { access } from '../../../../_helpers/access';
 
 class CellAppointmentArea extends React.PureComponent {
   constructor(props) {
@@ -77,7 +78,7 @@ class CellAppointmentArea extends React.PureComponent {
 
           </span>
         </p>
-        {dragVert}
+        {access(15) && dragVert}
       </React.Fragment>
     );
   };
