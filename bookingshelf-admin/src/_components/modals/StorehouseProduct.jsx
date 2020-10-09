@@ -82,6 +82,8 @@ class StorehouseProduct extends React.Component {
         return t("гр");
       case "Коробка":
         return t("кор");
+      case "Сантиметр":
+        return t("см");
       default:
         return "";
     }
