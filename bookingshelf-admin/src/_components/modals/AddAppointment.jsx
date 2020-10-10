@@ -317,7 +317,7 @@ class AddAppointment extends React.Component {
 
   getOptionList(index) {
     const { appointmentsFromProps, reservedTimeFromProps, staff } = this.props;
-    let { appointment, staffs, staffCurrent, edit_appointment } = this.state;
+    const { appointment, staffs, staffCurrent, edit_appointment } = this.state;
     const optionList = [];
 
     const booktimeStep = this.props.company.settings && parseInt(this.props.company.settings.booktimeStep);
@@ -343,20 +343,6 @@ class AddAppointment extends React.Component {
 
         return isAvailableTime(startTime, endTime, activeStaffTimetable, appointmentsFromProps, reservedTimeFromProps, staff, (i) => (edit_appointment && (i < lastAppointmentEndTime)));
       });
-    }
-
-    let appointmentChanged = false;
-    appointment = appointment.map(localAppointment => {
-      const activeOption = finalOptionList.find(item => item.duration === localAppointment.duration);
-      if (!activeOption) {
-        localAppointment.duration = finalOptionList[0].duration;
-        appointmentChanged = true;
-      }
-      return localAppointment;
-    });
-
-    if (appointmentChanged) {
-      this.setState({ appointment });
     }
 
     return finalOptionList.map((option) => <option value={option.duration}>{option.label}</option>);
@@ -1065,8 +1051,7 @@ class AddAppointment extends React.Component {
                                 className="custom-select"
                                 onChange={(e) => this.handleDurationChange(e, appointment, index)}
                                 name="duration"
-                                value={appointment[index].duration}
-                              >
+                                value={appointment[index].duration}>
                                 {this.getOptionList(index)}
                               </select>
                             </div>
@@ -1621,7 +1606,6 @@ class AddAppointment extends React.Component {
         clientEmail,
       };
     }
-    debugger
     const appointmentNew = appointment.map((item, i) => {
       return {
         ...item,
