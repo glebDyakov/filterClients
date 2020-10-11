@@ -26,6 +26,7 @@ class TabScroll extends React.Component {
   }
 
 
+
   componentWillReceiveProps(newProps) {
     $('.msg-client-info').css({ 'visibility': 'visible', 'cursor': 'default' });
     if (newProps.timetable && (JSON.stringify(newProps.timetable) !== JSON.stringify(this.props.timetable))) {
@@ -152,7 +153,7 @@ class TabScroll extends React.Component {
           {this.renderTable({ step, cellHeight })}
         </DndProvider>
 
-        <DragVertController step={step} cellHeight={cellHeight} />
+        <DragVertController booktimeStep={booktimeStep} step={step} cellHeight={cellHeight} />
       </div>
     );
   }

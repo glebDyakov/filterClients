@@ -20,6 +20,7 @@ class CellAppointment extends React.PureComponent {
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
+
   updateAppointmentInfo(props) {
     const {
       services, appointment, appointments, blickClientId, selectedNote,
@@ -171,7 +172,7 @@ class CellAppointment extends React.PureComponent {
           totalAmount={Math.floor(totalAmount * 100) / 100}
         />
 
-        {appointment.appointmentId === selectedNote && !appointment.coappointment &&
+        {access(15) && appointment.appointmentId === selectedNote && !appointment.coappointment &&
           <CellAppointmentModal
             isWeekBefore={isWeekBefore}
             isStartMovingVisit={isStartMovingVisit}
