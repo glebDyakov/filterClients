@@ -511,7 +511,7 @@ class AddAppointment extends React.Component {
       }
     }
 
-    if (time && minutes.length != 0) {
+    if (time && minutes.length !== 0) {
       const minuteStart = time;
       let minute = time;
 

@@ -61,7 +61,6 @@ const CellAppointmentModal = (props) => {
           }} className="close"/>
         </p>
 
-        {appointment.clientId &&
         <div className="dropdown-client-container">
           <p
             onClick={isOpenDropdownSelectClientStatus ? handleCloseSelectDropdown : handleOpenSelectDropdown}
@@ -136,7 +135,6 @@ const CellAppointmentModal = (props) => {
           </div>
           }
         </div>
-        }
 
         <p
           style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
