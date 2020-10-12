@@ -970,6 +970,11 @@
 
       .red-text {
         color: #F46A6A !important;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+
       }
 
       .addHoliday-wrapper {
@@ -1305,7 +1310,7 @@
           color: #495057;
           padding: 14px 0;
           border-radius: 2px;
-          
+
           @media screen {
             @media (max-width: $mob-width) {
               font-style: normal;
@@ -1324,7 +1329,7 @@
                 line-height: 14px;
               }
 
-            }           
+            }
           }
 
           &:not(:last-child) {

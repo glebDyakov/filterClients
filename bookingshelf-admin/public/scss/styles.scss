@@ -630,7 +630,11 @@ input {
 }
 
 .red-text {
-  color: red;
+  color: #F46A6A !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
 }
 
 .settings-page-container {
