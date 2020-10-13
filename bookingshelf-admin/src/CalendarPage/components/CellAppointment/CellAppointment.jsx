@@ -9,6 +9,7 @@ import Box from '../../../_components/dragAndDrop/Box';
 import { getCurrentCellTime } from '../../../_helpers';
 import CellAppointmentModal from './CellAppointmentModal';
 import CellAppointmentContent from './CellAppointmentContent/CellAppointmentContent';
+import { access } from '../../../_helpers/access';
 
 class CellAppointment extends React.PureComponent {
   constructor(props) {
@@ -18,6 +19,7 @@ class CellAppointment extends React.PureComponent {
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
+
 
   updateAppointmentInfo(props) {
     const {
@@ -170,7 +172,7 @@ class CellAppointment extends React.PureComponent {
           totalAmount={Math.floor(totalAmount * 100) / 100}
         />
 
-        {appointment.appointmentId === selectedNote && !appointment.coappointment &&
+        {access(15) && appointment.appointmentId === selectedNote && !appointment.coappointment &&
           <CellAppointmentModal
             isWeekBefore={isWeekBefore}
             isStartMovingVisit={isStartMovingVisit}
@@ -194,7 +196,7 @@ class CellAppointment extends React.PureComponent {
     );
 
     return <div className="cell-appointment">
-      {(!appointment.coappointment && !isMobile)
+      {access(15) && (!appointment.coappointment && !isMobile)
         ? (
           <Box
             moveVisit={moveVisit}

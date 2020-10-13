@@ -689,13 +689,20 @@
   "Календарь других сотрудников": "Kalendarz innych pracowników",
   "Клиенты с контактами": "Klienci z kontaktami",
   "Скачивание базы даных клиентов": "Pobieranie bazy danych klientów",
+  "Редактирование визитов": "Edycja wizyt",
   "Импорт базы даных клиентов": "Import bazy danych klientów",
   "Филиалы": "Gałęzie",
   "Вкл": "Włącz",
   "Выкл": "Wyłącz",
   "Начните поиск. Если клиента нет в базе, заполните необходимые поля": "Rozpocznij wyszukiwanie. Jeśli klienta nie ma w bazie danych, wypełnij wymagane pola",
   "Товары, зарезервированные на созданные визиты.": "Pozycje zarezerwowane dla utworzonych wizyt.",
-  "Резерв": "Zarezerwuj"
+  "Резерв": "Zarezerwuj",
+  "Сантиметр": "Centymetr",
+  "см": "cm",
+  "Все": "Wszyscy",
+  "Клиент подтвердил": "Klient potwierdził",
+  "Цена ед. / ед. объема": "Cena jednostkowa / jednostka nominalna"
+
 }
 
 

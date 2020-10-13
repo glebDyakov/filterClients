@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import { withRouter } from 'react-router-dom';
+import {withTranslation} from "react-i18next";
 
 
 class TabCanceled extends  PureComponent {
@@ -16,9 +17,9 @@ class TabCanceled extends  PureComponent {
                 </div>
 
                 {/*{isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}*/}
-                <a href={`/online/${this.props.match.params.company}`} className="skip_employee" >{t("Создать запись")}</a>
+                <a href={`/online/${companyId}`} className="skip_employee" >{t("Создать запись")}</a>
             </div>
         );
     }
 }
-export default withRouter(TabCanceled);
+export default withTranslation("common")(TabCanceled);

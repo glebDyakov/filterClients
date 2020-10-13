@@ -47,10 +47,10 @@ class CellAppointmentContent extends React.PureComponent {
   }
 
   toggleSelectedNote() {
-    const { appointment, selectedNote, dispatch } = this.props;
-    dispatch(appointmentActions.toggleSelectedNote(
-      appointment.appointmentId === selectedNote ? null : appointment.appointmentId),
-    );
+      const { appointment, selectedNote, dispatch } = this.props;
+      dispatch(appointmentActions.toggleSelectedNote(
+        appointment.appointmentId === selectedNote ? null : appointment.appointmentId),
+      );
   }
 
   render() {

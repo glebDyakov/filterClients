@@ -31,7 +31,6 @@ class VisitPage extends React.Component {
     componentDidMount () {
         const {company, visit} = this.props.match.params
 
-
         this.props.dispatch(staffActions.get(company));
         this.props.dispatch(staffActions.getByCustomId(visit));
         this.props.dispatch(staffActions.getInfo(company));
@@ -40,6 +39,7 @@ class VisitPage extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        const {t} = this.props;
         if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
             if(newProps.staff.info) {
                 document.title = newProps.staff.info.companyName + ` | ${t("Онлайн-запись")} `;
@@ -84,6 +84,7 @@ class VisitPage extends React.Component {
         const { staff : { staff }, t } = this.props;
         const {appointment: visitAppointments, info, screen, approveF, allVisits }=this.state;
         const { isLoading, deleted, error } = this.props.staff;
+
 
         const activeAppointment = visitAppointments && visitAppointments[0] && staff && staff.find(item => item.staffId === visitAppointments[0].staffId);
 
@@ -189,7 +190,7 @@ class VisitPage extends React.Component {
                         }
 
                         {!(appointment && appointment.coStaffs && appointment.coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
-                            <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value="Перенести визит" onClick={() => {
+                            <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
                                 this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, appointment.clientId, 1))
                                 this._move(visitAppointments)
                             }}/>
@@ -216,7 +217,7 @@ class VisitPage extends React.Component {
                         <input style={{ background: 'transparent '}} type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
                         {allVisits && <ClientDetails />}
                         {/*<p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>*/}
-                        <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>Создать запись</a>
+                        <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>{t("Создать запись")}</a>
 
                     </div>
                 }
@@ -268,5 +269,5 @@ function mapStateToProps(store) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(withTranslation(VisitPage));
+const connectedApp = connect(mapStateToProps)(withTranslation("common")(VisitPage));
 export { connectedApp as VisitPage };

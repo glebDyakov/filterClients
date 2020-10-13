@@ -9,7 +9,8 @@ import DeleteReserve from './DeleteReserve';
 import { MoveVisit } from './MoveVisit';
 import moment from 'moment';
 import { staffActions } from '../../_actions';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
+import { access } from '../../_helpers/access';
 
 
 class CalendarModals extends Component {
@@ -122,7 +123,8 @@ class CalendarModals extends Component {
 
   checkAvaibleTime() {
     const { selectedDayMoment, selectedDays, type } = this.props;
-    let startTime; let endTime;
+    let startTime;
+    let endTime;
 
     if (type === 'day') {
       startTime = selectedDayMoment.startOf('day').format('x');
@@ -149,95 +151,95 @@ class CalendarModals extends Component {
 
 
     return (<React.Fragment>
-      {type === 'day' && !clDate && workingStaff.timetable && workingStaff.timetable[0] &&
-                <div>
-                  <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
-                    onClick={this.handleOpenModal}/>
+        {access(15) && type === 'day' && !clDate && workingStaff.timetable && workingStaff.timetable[0] &&
+        <div>
+          <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
+             onClick={this.handleOpenModal}/>
 
-                  <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
-                    <div className="buttons">
-                      <button type="button"
-                        onClick={(e) => {
-                          this.handleOpenModal(e);
-                          this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers);
-                        }}
-                        className="button">{t("Визит")}
-                      </button>
-                      <button type="button"
-                        onClick={(e) => {
-                          this.handleOpenModal(e);
-                          this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null);
-                        }}
-                        className="button">{t("Резерв времени")}
-                      </button>
-                    </div>
-                    <div className="arrow"/>
-                  </div>
-                </div>}
-      {newClientModal &&
-                <NewClient
-                  client_working={client_working}
-                  edit={editClient}
-                  isModalShouldPassClient={isModalShouldPassClient}
-                  updateClient={this.updateClient}
-                  checkUser={this.checkUser}
-                  addClient={this.addClient}
-                  onClose={this.onCloseClient}
-                />
-      }
-      {(appointmentModal || appointmentModalFromProps) &&
-                <AddAppointment
-                  clients={clients}
-                  checkedUser={checkedUser}
-                  staff={staff && staff.staff}
-                  staffs={staff}
-                  randNum={Math.random()}
-                  addAppointment={this.newAppointment}
-                  editAppointment={this.editAppointment}
-                  adding={adding}
-                  status={status}
-                  handleEditClient={this.handleEditClient}
-                  services={services}
-                  clickedTime={clickedTime}
-                  minutes={minutes}
-                  staffId={staffClicked}
-                  selectedDayMoment={selectedDayMoment}
-                  selectedDay={selectedDay}
-                  appointmentEdited={appointmentEdited}
-                  getHours={this.changeTime}
-                  edit_appointment={edit_appointment}
-                  onClose={this.onCloseAppointment}
-                  type={type}
-                />
-      }
-      <ClientDetails
-        clientId={infoClient}
-        editClient={this.handleEditClient}
-      />
-      {(reservedFromProps || reserved) &&
-                <ReservedTime
-                  timetable={workingStaff.timetable}
-                  staffs={staff}
-                  minutesReservedtime={minutesReservedtime}
-                  getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
-                  staff={staff && staff.staff}
-                  newReservedTime={this.newReservedTime}
-                  reservedTimeEdited={reservedTimeEdited}
-                  clickedTime={clickedTime}
-                  reservedStuffId={reservedStuffId}
-                  onClose={this.onCloseReserved}
-                />
-      }
-      <MoveVisit getByStaffKey={getByStaffKey} moveVisit={moveVisit}/>
-      <DeleteAppointment
-        appointmentForDeleting={appointmentForDeleting}
-      />
-      <DeleteReserve/>
+          <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
+            <div className="buttons">
+              <button type="button"
+                      onClick={(e) => {
+                        this.handleOpenModal(e);
+                        this.changeTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], numbers);
+                      }}
+                      className="button">{t('Визит')}
+              </button>
+              <button type="button"
+                      onClick={(e) => {
+                        this.handleOpenModal(e);
+                        this.changeReservedTime(selectedDayMoment.startOf('day').format('x'), workingStaff.timetable[0], null);
+                      }}
+                      className="button">{t('Резерв времени')}
+              </button>
+            </div>
+            <div className="arrow"/>
+          </div>
+        </div>}
+        {newClientModal &&
+        <NewClient
+          client_working={client_working}
+          edit={editClient}
+          isModalShouldPassClient={isModalShouldPassClient}
+          updateClient={this.updateClient}
+          checkUser={this.checkUser}
+          addClient={this.addClient}
+          onClose={this.onCloseClient}
+        />
+        }
+        {access(15) && (appointmentModal || appointmentModalFromProps) &&
+        <AddAppointment
+          clients={clients}
+          checkedUser={checkedUser}
+          staff={staff && staff.staff}
+          staffs={staff}
+          randNum={Math.random()}
+          addAppointment={this.newAppointment}
+          editAppointment={this.editAppointment}
+          adding={adding}
+          status={status}
+          handleEditClient={this.handleEditClient}
+          services={services}
+          clickedTime={clickedTime}
+          minutes={minutes}
+          staffId={staffClicked}
+          selectedDayMoment={selectedDayMoment}
+          selectedDay={selectedDay}
+          appointmentEdited={appointmentEdited}
+          getHours={this.changeTime}
+          edit_appointment={edit_appointment}
+          onClose={this.onCloseAppointment}
+          type={type}
+        />
+        }
+        <ClientDetails
+          clientId={infoClient}
+          editClient={this.handleEditClient}
+        />
+        {(reservedFromProps || reserved) &&
+        <ReservedTime
+          timetable={workingStaff.timetable}
+          staffs={staff}
+          minutesReservedtime={minutesReservedtime}
+          getHours={(minutesReservedtime, staffId, newTime) => this.changeReservedTime(minutesReservedtime, staffId, newTime)}
+          staff={staff && staff.staff}
+          newReservedTime={this.newReservedTime}
+          reservedTimeEdited={reservedTimeEdited}
+          clickedTime={clickedTime}
+          reservedStuffId={reservedStuffId}
+          onClose={this.onCloseReserved}
+        />
+        }
+        <MoveVisit getByStaffKey={getByStaffKey} moveVisit={moveVisit}/>
+        <DeleteAppointment
+          appointmentForDeleting={appointmentForDeleting}
+        />
+        <DeleteReserve/>
 
-    </React.Fragment>
+      </React.Fragment>
     );
   }
 }
 
-const connectedMainIndexPage = connect(null)(withTranslation("common")(CalendarModals));
+const connectedMainIndexPage = connect(null)(withTranslation('common')(CalendarModals));
 export { connectedMainIndexPage as CalendarModals };

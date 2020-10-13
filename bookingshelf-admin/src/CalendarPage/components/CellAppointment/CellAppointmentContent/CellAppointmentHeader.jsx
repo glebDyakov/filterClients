@@ -2,21 +2,29 @@ import React from 'react';
 import moment from 'moment';
 
 import Popover from '../../../../_components/Popover';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
+import { access } from '../../../../_helpers/access';
 
 class CellAppointmentHeader extends React.PureComponent {
+  componentDidUpdate(prevProps) {
+    if (this.props.appointment.appointmentTimeMillis !== prevProps.appointment.appointmentTimeMillis || this.props.totalDuration !== prevProps.totalDuration) {
+      document.getElementById(`${this.props.appointment.appointmentId}-service-time`).innerHTML = `${moment(this.props.appointment.appointmentTimeMillis, 'x').format('HH:mm')} - ${moment(this.props.appointment.appointmentTimeMillis, 'x').add(this.props.totalDuration, 'seconds').format('HH:mm')}`;
+    }
+  }
+
   render() {
     const {
       toggleSelectedNote, appointment, resultTextAreaHeight, totalDuration,
       updateAppointmentForDeleting, workingStaffElement, t,
     } = this.props;
 
+
     return (
       <p
         className={`notes-title${appointment.clientNotCome
           ? ' client-not-come-background'
           : (appointment.clientConfirmed ? ' client-confirmed-background' : '')} ${
-          appointment.duration === 900 ? ' notes-title-bordered' : ''
+          appointment.duration <= 900 ? ' notes-title-bordered' : ''
         }`}
         onClick={toggleSelectedNote}
         style={{
@@ -27,11 +35,11 @@ class CellAppointmentHeader extends React.PureComponent {
           {appointment.online && <Popover props={{ className: 'globus', title: t('Онлайн-запись') }}/>}
 
           {!!appointment.discountPercent &&
-            <Popover props={{ className: 'percentage', title: `${appointment.discountPercent}%`, minWidth: '30px' }}/>
+          <Popover props={{ className: 'percentage', title: `${appointment.discountPercent}%`, minWidth: '30px' }}/>
           }
 
           {!appointment.clientId &&
-            <Popover props={{ className: 'no-client-icon', title: t('Визит от двери'), minWidth: '55px' }}/>
+          <Popover props={{ className: 'no-client-icon', title: t('Визит от двери'), minWidth: '55px' }}/>
           }
 
           {!appointment.online && <Popover props={{ className: 'pen', title: t('Запись через журнал') }}/>}
@@ -43,7 +51,7 @@ class CellAppointmentHeader extends React.PureComponent {
             : { className: 'no-cash-payment', title: t('Оплата картой'), minWidth: '55px' }}
           />
 
-          {!appointment.coappointment && (
+          {access(15) && !appointment.coappointment && (
             <React.Fragment>
               <Popover props={{
                 'className': 'delete',
@@ -67,12 +75,12 @@ class CellAppointmentHeader extends React.PureComponent {
 
         <span id={`${appointment.appointmentId}-service-time`} className="service_time">
           {moment(appointment.appointmentTimeMillis, 'x').format('HH:mm')}&nbsp;-&nbsp;{
-            moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')
-          }
+          moment(appointment.appointmentTimeMillis, 'x').add(totalDuration, 'seconds').format('HH:mm')
+        }
         </span>
       </p>
     );
   };
 }
 
-export default withTranslation("common")(CellAppointmentHeader);
+export default withTranslation('common')(CellAppointmentHeader);

@@ -42,20 +42,22 @@ class DragVertController extends React.Component {
       for (let i = 0; i < resultSecondTime; i++) {
         firstTimeMoment.add(step, 'minutes');
       }
+
       const updatedSecondTime = firstTimeMoment.format('HH:mm');
 
-      serviceTimeNode.innerHTML = `${firstTime}-${updatedSecondTime}`;
+      serviceTimeNode.innerHTML = `${firstTime}- ${updatedSecondTime}`;
     }
   }
 
   handleMouseUp() {
     const {
-      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step
+      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step, booktimeStep,
     } = this.props;
     const newOffsetHeight = document.getElementById(textAreaId).offsetHeight;
     const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / cellHeight);
 
     let newDuration = (step * 60 * offsetDifference);
+
 
     let currentTotalDuration = changingVisit.duration;
     if (changingVisit.hasCoAppointments) {

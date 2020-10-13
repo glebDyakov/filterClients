@@ -395,6 +395,7 @@
   "Отменить встречу": "Cancel the meeting",
   "Запись": "Record",
   "Клиент подтвержден": "The client is confirmed",
+  "Клиент подтвердил": "Customer confirmed",
   "Ожидание клиента": "Waiting for the client",
   "Список услуг": "The list of services",
   "Скидка клиента": "Client’s discount",
@@ -684,6 +685,7 @@
   "Календарь других сотрудников": "Other employees' calendar",
   "Клиенты с контактами": "Customers with contacts",
   "Скачивание базы даных клиентов": "Downloading customer database",
+  "Редактирование визитов": "Editing visits",
   "Импорт базы даных клиентов": "Importing customer database",
   "Филиалы": "Branches",
   "Вкл": "On",
@@ -695,5 +697,9 @@
   "гр": "gr",
   "кор": "box",
   "Товары, зарезервированные на созданные визиты.": "Items reserved for created visits.",
-  "Резерв": "Reserve"
+  "Резерв": "Reserve",
+  "Все": "All",
+  "Сантиметр": "Centimeter",
+  "см": "cm",
+  "Цена ед. / ед. объема": "Unit price / unit amount"
 }
