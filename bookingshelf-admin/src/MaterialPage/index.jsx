@@ -611,6 +611,13 @@ class Index extends Component {
                                             <div>
                                                 <p>{t("Номинальный объем")}</p>
                                             </div>
+                                            {/*<div className="overflow-visible reserve-title">*/}
+                                            {/*    <p>{t("Стоимость ед. обьема")}*/}
+                                            {/*        <Hint hintMessage={*/}
+                                            {/*            t('За 1 ед. номинального объема.')*/}
+                                            {/*        }*/}
+                                            {/*        /></p>*/}
+                                            {/*</div>*/}
                                             <div className="overflow-visible reserve-title">
                                                 <p>{t("Остаток")}<br/>/<span className="red-text"> {t("Резерв")}</span>
                                                     <Hint hintMessage={
@@ -906,7 +913,7 @@ class Index extends Component {
                                                     <p>{t("Причина списания")}</p>
                                                 </div>
                                                 <div>
-                                                    <p>{t("Цена розн")}</p>
+                                                    <p>{t("Цена ед. / ед. объема")}</p>
                                                 </div>
                                                 <div>
                                                     <p>{t("Единицы измерения")}</p>

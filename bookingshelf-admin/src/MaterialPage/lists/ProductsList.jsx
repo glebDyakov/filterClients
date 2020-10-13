@@ -69,6 +69,15 @@ class ProductsList extends Component {
             {product && product.nominalAmount} {activeUnit && t(activeUnit.unitName)}
           </p>
         </div>
+        {/*<div className="overflow-visible reserve-title">*/}
+        {/*  <p><span className="mob-title">{t('Стоимость ед. объема')}*/}
+        {/*    <Hint hintMessage={t('За 1 ед. номинального объема.')}/>: </span>*/}
+        {/*    {product && product.nominalUnitPrice}*/}
+
+
+        {/*  </p>*/}
+        {/*</div>*/}
+
         <div className="overflow-visible reserve-title">
           <p><span className="mob-title">{t('Остаток')} /<span className="red-text"> {t('Резерв')}</span>
                         <Hint hintMessage={t('Товары, зарезервированные на созданные визиты.')}
