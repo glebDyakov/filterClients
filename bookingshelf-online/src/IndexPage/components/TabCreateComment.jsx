@@ -215,7 +215,7 @@ class TabCreateComment extends  PureComponent{
                                         <div className="phones_country">
                                             <PhoneInput
                                                 value={loginPhone}
-                                                handleChange={clientPhone => this.handleChange({target: { name: 'loginPhone', value: clientPhone} })}
+                                                handleChange={clientPhone => this.handleChange({target: { name: 'loginPhone', value: clientPhone[0] === "+" ? clientPhone : "+" + clientPhone} })}
                                                 getIsValidPhone={isValidLoginPhone => this.setState({ isValidLoginPhone })}
                                             />
                                         </div>
