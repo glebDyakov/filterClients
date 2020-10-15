@@ -440,7 +440,8 @@ class AddAppointment extends React.Component {
     const newServicesList = this.getFilteredServicesList(appointment.length - 1, true)
       .filter((service) => {
         return this.state.serviceCurrent[0].service.currency === service.currency;
-      });
+      })
+      .filter((service) => service.duration >= this.props.company.settings.booktimeStep);
 
 
     if (newServicesList.length) {
