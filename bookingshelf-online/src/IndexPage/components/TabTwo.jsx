@@ -155,6 +155,10 @@ class TabTwo extends Component {
                                     )
                                 }
 
+                                if (condition && info && finalServices && finalServices.length > 0) {
+                                    finalServices = finalServices.filter(service => info.booktimeStep <= service.duration);
+                                }
+
                                 return condition && finalServices && finalServices.length > 0 && (
                                     <ul className="service_list">
                                         <h3 style={{ fontSize: '22px', fontWeight: 'bold', textDecoration: 'underline'}}>{serviceGroup.name}</h3>

@@ -204,6 +204,8 @@ class StorehouseProduct extends React.Component {
       storehouseId: material.storeHouses[0].storehouseId,
     };
 
+
+
     if (product.nominalCheck === undefined) product.nominalCheck = 'amount';
 
     if (product.nominalCheck === 'amount') {
@@ -216,8 +218,9 @@ class StorehouseProduct extends React.Component {
 
     const updatedProduct = {};
     Object.keys(product).forEach((key) => {
-      updatedProduct[key] = parseInt(product[key]);
+      updatedProduct[key] = parseFloat(product[key]);
     });
+
 
     this.props.dispatch(materialActions.storehouseProduct(updatedProduct, edit, this.props.productPageNum || 1));
   };
