@@ -1037,16 +1037,19 @@
                       opacity: 1 !important;
                     }
 
-                    &.default {
-                      background: #F1B44C;
+                    &.waitClient {
+                      background: #2A3042;
                     }
 
                     &.clientConfirmed {
-                      background: #009088;
+                      background: #F1B44C;
                     }
 
                     &.clientNotCome {
                       background: #F46A6A;
+                    }
+                    &.clientIsCome {
+                      background: #009088;
                     }
                   }
 
@@ -1466,12 +1469,18 @@
             box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
             border-radius: 5px 5px 0px 0px;
 
-            &.client-not-come-background {
+            &.clientNotCome-background {
               background-color: #F46A6A !important;
             }
 
-            &.client-confirmed-background {
+            &.clientIsCome-background {
               background: #009088 !important;
+            }
+            &.clientConfirmed-background {
+              background: #F1B44C !important;
+            }
+            &.waitClient-background {
+              background: #2A3042 !important;
             }
 
             &-bordered {

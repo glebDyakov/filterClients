@@ -12,6 +12,21 @@ class CellAppointmentHeader extends React.PureComponent {
     }
   }
 
+  isVisitStarted(visitTime) {
+    return +moment().format('x') >= visitTime;
+  }
+
+  getColorClass() {
+    const { appointment } = this.props;
+    if (this.isVisitStarted(appointment.appointmentTimeMillis)) {
+      if (!appointment.clientNotCome) return 'clientIsCome';
+      else if (appointment.clientNotCome) return 'clientNotCome';
+    } else {
+      if (!appointment.clientNotCome && !appointment.clientConfirmed) return 'waitClient';
+      else if (!appointment.clientNotCome && appointment.clientConfirmed) return 'clientConfirmed';
+    }
+  }
+
   render() {
     const {
       toggleSelectedNote, appointment, resultTextAreaHeight, totalDuration,
@@ -21,9 +36,7 @@ class CellAppointmentHeader extends React.PureComponent {
 
     return (
       <p
-        className={`notes-title${appointment.clientNotCome
-          ? ' client-not-come-background'
-          : (appointment.clientConfirmed ? ' client-confirmed-background' : '')} ${
+        className={`notes-title ${this.getColorClass() + "-background"}${
           appointment.duration <= 900 ? ' notes-title-bordered' : ''
         }`}
         onClick={toggleSelectedNote}
