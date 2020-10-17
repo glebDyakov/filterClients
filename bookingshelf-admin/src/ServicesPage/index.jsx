@@ -6,7 +6,7 @@ import DragDrop from '../_components/DragDrop';
 import ServiceGroupInfo from './ServiceGroupInfo';
 import ServiceInfo from './ServiceInfo';
 
-import { servicesActions, staffActions, materialActions } from '../_actions';
+import { servicesActions, staffActions, materialActions, companyActions } from '../_actions';
 
 import '../../public/scss/services.scss';
 import {withTranslation} from "react-i18next";
@@ -66,6 +66,7 @@ class Index extends Component {
       createdService: false,
       dragDropItems: [],
       handleOpen: false,
+      company: props.company
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -124,6 +125,7 @@ class Index extends Component {
     this.props.dispatch(staffActions.get());
     this.props.dispatch(materialActions.getProducts());
     this.props.dispatch(materialActions.getUnits());
+    this.props.dispatch(companyActions.get());
   }
 
   componentWillReceiveProps(newProps) {
@@ -148,6 +150,10 @@ class Index extends Component {
       setTimeout(() => {
         this.forceUpdate();
       }, 400);
+    }
+
+    if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
+      this.setState({company: newProps.company});
     }
   }
 
@@ -218,7 +224,7 @@ class Index extends Component {
   render() {
     const {
       services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet,
-      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search,
+      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search, company
     } = this.state;
     const isLoading = staff.isLoading || services.isLoading;
     const dragDropGroupsItems = [];
@@ -235,6 +241,7 @@ class Index extends Component {
             id: `service-${keyGroup}-${keyService}`,
             getContent: (dragHandleProps) => (
               <ServiceInfo
+                company={company}
                 keyGroup={keyGroup}
                 dragHandleProps={dragHandleProps}
                 keyService={keyService}
@@ -552,11 +559,12 @@ class Index extends Component {
 }
 
 function mapStateToProps(store) {
-  const { services, staff, authentication, material } = store;
+  const { services, staff, authentication, company } = store;
   return {
     services,
     staff,
     authentication,
+    company,
   };
 }
 

@@ -701,5 +701,8 @@
   "Все": "All",
   "Сантиметр": "Centimeter",
   "см": "cm",
-  "Цена ед. / ед. объема": "Unit price / unit amount"
+  "Цена ед. / ед. объема": "Unit price / unit amount",
+  "Невозможно использовать услугу на текущем интервале календаря": "Unable to use the service during the current calendar interval",
+  "Измените время услуги, или выберите другой интервал календаря": "Change the service time, or choose a different calendar interval",
+  "Детали": "Details"
 }
