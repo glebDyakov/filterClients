@@ -13,6 +13,15 @@
     overflow-x: hidden;
   }
 
+  .false-time-service.red-text {
+    font-size: 13px;
+    line-height: 23px;
+
+    .questions_black {
+      z-index: 1;
+    }
+  }
+
   .service_one {
     justify-content: space-between;
     border-left: 3px solid;
@@ -425,6 +434,8 @@
 
         font-weight: normal;
         font-size: 13px;
+
+        overflow: visible;
         line-height: 18px;
 
         color: #495057;
