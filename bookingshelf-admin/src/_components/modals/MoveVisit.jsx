@@ -32,12 +32,14 @@ class MoveVisit extends React.Component {
     }
 
     const newStaffId = getByStaffKey(staffKey);
-    const isExtraText = allVisits.some((appointment) => {
-      const activeService = servicesList && servicesList.find((serviceListItem) => serviceListItem.serviceId === appointment.serviceId);
-      return activeService.staffs.every((staff) => staff.staffId !== newStaffId);
-    });
+    if (newStaffId) {
+      const isExtraText = allVisits.some((appointment) => {
+        const activeService = servicesList && servicesList.find((serviceListItem) => serviceListItem.serviceId === appointment.serviceId);
+        return activeService.staffs.every((staff) => staff.staffId !== newStaffId);
+      });
+      this.setState({ isExtraText });
+    };
 
-    this.setState({ isExtraText });
   }
 
   render() {

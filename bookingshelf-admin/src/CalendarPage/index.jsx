@@ -367,7 +367,9 @@ class Index extends PureComponent {
   }
 
   getByStaffKey(staffKey) {
-    return this.state.workingStaff.timetable[staffKey].staffId;
+    if (staffKey && this.state.workingStaff && this.state.workingStaff.timetable && this.state.workingStaff.timetable.length > 0 && this.state.workingStaff.timetable[staffKey]) {
+      return this.state.workingStaff.timetable[staffKey].staffId;
+    }
   }
 
   moveVisit({ movingVisit, movingVisitDuration, selectedDaysKey, staffKey, prevVisitStaffId, time }) {
