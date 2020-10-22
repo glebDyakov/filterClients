@@ -147,6 +147,8 @@ class Index extends React.Component {
     const { user, agreed, authentication, emailIsValid } = this.state;
     const body = JSON.parse(JSON.stringify(user));
     body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+    body.languageCode = this.props.i18n.language;
+    console.log(body);
 
     const { dispatch } = this.props;
     if (emailIsValid && user.companyName && user.email && user.password && user.password === user.password_repeated &&
