@@ -106,7 +106,9 @@ function addWorkingHours(timing, id) {
       .then(
         (timing) => {
           dispatch(success(timing, id));
-          setTimeout(()=>dispatch(successTime(0)), 500);
+          setTimeout(() => {
+            dispatch(successTime(0));
+          }, 500);
         },
         (error) => {
           dispatch(failure(error.toString()));
@@ -126,6 +128,7 @@ function addWorkingHours(timing, id) {
     return { type: staffConstants.STAFF_FAILURE_TIME, id };
   }
   function success(timing, id) {
+
     return { type: staffConstants.ADD_WORKING_HOURS_SUCCESS, timing, id };
   }
   function failure(error) {
