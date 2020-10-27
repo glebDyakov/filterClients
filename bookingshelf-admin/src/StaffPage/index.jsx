@@ -817,6 +817,7 @@ class Index extends Component {
             editWorkingHours={editWorkingHours}
             editing_object={editing_object}
             onClose={this.onClose}
+            updateTimetable={this.updateTimetable}
           />
         }
         {newStaff &&
