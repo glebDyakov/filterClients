@@ -339,21 +339,21 @@ class AddWorkTime extends React.Component {
       return item;
     });
     this.finalRemove();
-    console.log(timing);
+    console.log(timing, staff.staffId);
 
     addWorkingHours(timing, staff.staffId);
-    if (period === 4 || period === 2) {
+    if (period === 4) {
       setTimeout(async () => {
-        if (period === 4) {
           timing.map(item => {
             item.endTimeMillis = String(+item.endTimeMillis + 24 * 60 * 60 * 1000);
             item.startTimeMillis = String(+item.startTimeMillis + 24 * 60 * 60 * 1000);
             return item;
           });
           await addWorkingHours(timing, staff.staffId);
-        }
-        this.props.updateTimetable();
+          this.props.updateTimetable();
       });
+    } else if (period === 2) {
+      this.props.updateTimetable();
     }
 
 
@@ -364,14 +364,6 @@ class AddWorkTime extends React.Component {
     const { staff, period } = this.state;
 
     deleteWorkingHours(staff.staffId, startDay, endOfDay, staffTimetableId);
-
-    if (period === 4) {
-      deleteWorkingHours(
-        staff.staffId,
-        String(+startDay + 24 * 60 * 60 * 1000),
-        String(+endOfDay + 24 * 60 * 60 * 1000),
-        staffTimetableId);
-    }
   }
 
   closeModal() {

@@ -358,7 +358,7 @@ function storehouseProduct(params, edit) {
   ).then((data) => handleResponse(data, requestOptions));
 }
 
-function getStoreHouseProducts() {
+function getStoreHouseProducts(pageNum = 1, pageSize = 10) {
   const requestOptions = {
     method: 'GET',
     crossDomain: true,
@@ -370,11 +370,11 @@ function getStoreHouseProducts() {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
+  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts?pageNum=${pageNum}&pageSize=${pageSize}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
-function getExpenditureProducts() {
+function getExpenditureProducts(pageNum = 1, pageSize = 10) {
   const requestOptions = {
     method: 'GET',
     crossDomain: true,
@@ -386,7 +386,7 @@ function getExpenditureProducts() {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
+  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures?pageNum=${pageNum}&pageSize=${pageSize}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

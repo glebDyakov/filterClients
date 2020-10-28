@@ -18,7 +18,7 @@ import SuppliersList from './lists/SuppliersList';
 import MovementList from './lists/MovementList';
 import StoreHouseList from './lists/StoreHouseList';
 
-import {materialActions} from '../_actions';
+import { materialActions, staffActions } from '../_actions';
 
 import {getWeekRange} from '../_helpers/time';
 import {access} from '../_helpers/access';
@@ -535,6 +535,7 @@ class Index extends Component {
             }
         });
 
+        console.log(movingArrray);
         const movingList = (
             <React.Fragment>
                 {
@@ -551,6 +552,7 @@ class Index extends Component {
                                     toggleExProd={this.toggleExProd}
                                     activeUnit={activeUnit}
                                     activeStorehouse={activeStorehouse}
+                                    staffs={this.props.staff.staff}
                                 />
                             );
                         },
@@ -898,7 +900,9 @@ class Index extends Component {
                                             {!!(movingArrray.length) &&
                                             <div className="tab-content-list mb-2 title title-moving position-sticky">
                                                 <div className="empty-block">
-
+                                                </div>
+                                                <div>
+                                                    <p>{t("Сотрудник")}</p>
                                                 </div>
                                                 <div>
                                                     <p>{t("Код товара")}</p>
