@@ -38,7 +38,7 @@ function getWeekDays(weekStart) {
   const days = [weekStart];
   for (let i = 1; i < 7; i += 1) {
     days.push(
-      moment(weekStart).locale('ru')
+      moment(weekStart)
         .add(i, 'days')
         .toDate(),
     );
@@ -50,9 +50,9 @@ function getWeekDays(weekStart) {
 
 function getDayRange(date) {
   return {
-    from: moment(date).locale('ru')
+    from: moment(date)
       .toDate(),
-    to: moment(date).locale('ru')
+    to: moment(date)
       .endOf('day')
       .toDate(),
   };
@@ -519,7 +519,11 @@ class Index extends PureComponent {
                 handleDayChange={this.handleDayChange}
                 handleDayClick={this.handleDayClick}
                 handleWeekClick={this.handleWeekClick}
+                staff={this.props.staff}
+                selectedStaff={this.state.staffFromUrl}
+                authentication={this.props.authentication}
                 language={this.state.language}
+                typeSelected={this.state.typeSelected === 3}
               />
             </div>
             <CalendarSwitch
@@ -820,7 +824,7 @@ class Index extends PureComponent {
 
   setWorkingStaff(
     staffEl = null, typeSelected = this.state.typeSelected, timetable = this.props.staff.timetable,
-    selectedDays = this.props.selectedDays,
+    selectedDays = this.props.selectedDays, isChooseStaff
   ) {
     const { workingStaff, type, selectedStaff } = this.state;
     const {t} = this.props;
@@ -872,6 +876,7 @@ class Index extends PureComponent {
       }
 
       newState = {
+
         workingStaff: { ...workingStaff, timetable: staffEl },
         timetableMessage: staffEl.length ? '' : t('Нет работающих сотрудников'),
         selectedStaff: selectedStaff

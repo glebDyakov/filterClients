@@ -173,7 +173,7 @@ class AddWorkTime extends React.Component {
                       <div className="form-check-inline">
                         <input type="radio" className="form-check-input" name="radio33"
                                id="radio100" checked={period === 0}
-                               onChange={() => this.setState({ ...this.state, period: 0 })}/>
+                               onChange={() => this.setState({ ...this.state, period: 0, repeat: "ONCE" })}/>
                         <label className="form-check-label"
                                htmlFor="radio100">{t('Разовый')}</label>
                       </div>
@@ -203,6 +203,7 @@ class AddWorkTime extends React.Component {
                                onChange={() => this.setState({
                                  ...this.state,
                                  period: 7,
+                                 repeat: "WEEKLY"
                                })}/>
                         <label className="form-check-label"
                                htmlFor="radio101">{t('Повторять каждую неделю')}</label>
@@ -334,12 +335,15 @@ class AddWorkTime extends React.Component {
     const { times, repeat, period, staff } = this.state;
 
     const timing = [];
-    times && times.map((time) => timing.push({ ...time, period })).map(item => {
+    times && times.map((time) => timing.push({ ...time, period }));
+
+    this.finalRemove();
+    timing.map(item => {
       delete item.repeat;
       return item;
     });
-    this.finalRemove();
-    console.log(timing, staff.staffId);
+
+
 
     addWorkingHours(timing, staff.staffId);
     if (period === 4) {

@@ -11,11 +11,19 @@ export function diffTime(end, start) {
 }
 
 export function getWeekRange(date) {
-  return {
-    from: moment(date)
+  console.log({
+    from: moment(date).utc().startOf("day")
       .startOf('week')
       .toDate(),
-    to: moment(date)
+    to: moment(date).startOf("day")
+      .endOf('week')
+      .toDate(),
+  });
+  return {
+    from: moment(date).utc().startOf("day")
+      .startOf('week')
+      .toDate(),
+    to: moment(date).startOf("day")
       .endOf('week')
       .toDate(),
   };
