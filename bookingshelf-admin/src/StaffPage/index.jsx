@@ -23,6 +23,7 @@ import { access } from '../_helpers/access';
 
 import '../../public/scss/staff.scss';
 import {withTranslation} from "react-i18next";
+import WorkTimeModal from '../_components/modals/WorkTimeModal';
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -807,6 +808,8 @@ class Index extends Component {
             }
           </div>
         }
+
+        {/*<WorkTimeModal/>*/}
 
         {addWorkTime &&
           <AddWorkTime

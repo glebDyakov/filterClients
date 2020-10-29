@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 
 import '../../public/scss/calendar.scss';
 
@@ -8,162 +8,184 @@ import DayPicker from 'react-day-picker';
 import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css';
 import classNames from 'classnames';
-import {getWeekRange} from '../_helpers/time';
+import { getWeekRange } from '../_helpers/time';
 
 class DatePicker extends PureComponent {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            opacity: false,
-            hoverRange: undefined,
-          language: 'ru'
-        };
-        this.handleOutsideClick = this.handleOutsideClick.bind(this);
-        this.handleLocalDayClick = this.handleLocalDayClick.bind(this);
-        this.handleLeftArrowClick = this.handleLeftArrowClick.bind(this);
-        this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
-        this.handleDayEnter = this.handleDayEnter.bind(this);
-        this.handleDayLeave = this.handleDayLeave.bind(this);
-    }
-
-    componentDidUpdate() {
-        if (this.state.opacity) {
-            document.addEventListener('click', this.handleOutsideClick, false);
-        } else {
-            document.removeEventListener('click', this.handleOutsideClick, false);
-        }
-    }
-
-    showCalendar(opacity) {
-        this.setState({
-            opacity: opacity,
-        });
-    }
-
-    handleOutsideClick(e) {
-        if (e.target.parentElement.className !== 'DayPicker-NavBar') {
-            this.showCalendar(false);
-        }
-    }
-
-    handleLocalDayClick(date) {
-        const {type} = this.props;
-        this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(date);
-        } else {
-            this.props.handleDayChange(date);
-        }
-    }
-
-    handleLeftArrowClick() {
-        const {type, selectedDay} = this.props;
-        this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
-        } else {
-            this.props.showPrevWeek();
-        }
-    }
-
-    handleRightArrowClick() {
-        const {type, selectedDay} = this.props;
-        this.showCalendar(false);
-        if (type === 'day') {
-            this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
-        } else {
-            this.props.showNextWeek();
-        }
-    }
-
-    handleDayEnter(date) {
-        const hoverRange = getWeekRange(date);
-        this.setState({
-            hoverRange,
-        });
+    this.state = {
+      opacity: false,
+      hoverRange: undefined,
+      language: 'ru',
     };
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.handleLocalDayClick = this.handleLocalDayClick.bind(this);
+    this.handleLeftArrowClick = this.handleLeftArrowClick.bind(this);
+    this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
+    this.handleDayEnter = this.handleDayEnter.bind(this);
+    this.handleDayLeave = this.handleDayLeave.bind(this);
+  }
 
-    handleDayLeave() {
-        this.setState({
-            hoverRange: undefined,
-        });
-    };
+  componentDidUpdate() {
+    if (this.state.opacity) {
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
+  }
 
-    render() {
-        const {type, selectedDay, selectedDays, closedDates, dayPickerProps = {}} = this.props;
-        const {opacity, hoverRange} = this.state;
-        let weekProps = {};
-        let selectedDaysText;
+  showCalendar(opacity) {
+    this.setState({
+      opacity: opacity,
+    });
+  }
 
-        if (type === 'day') {
-            const clDates = closedDates && closedDates.some((st) =>
-                parseInt(moment(st.startDateMillis, 'x').startOf('day').format('x')) <= parseInt(moment(selectedDays[0]).startOf('day').format('x')) &&
-                parseInt(moment(st.endDateMillis, 'x').endOf('day').format('x')) >= parseInt(moment(selectedDays[0]).endOf('day').format('x')));
+  handleOutsideClick(e) {
+    if (e.target.parentElement.className !== 'DayPicker-NavBar') {
+      this.showCalendar(false);
+    }
+  }
 
-            selectedDaysText = (
-                <React.Fragment>
-                    {moment(selectedDay).format('dd, DD MMMM YYYY')}
-                    {clDates && <span className="closedDate-color"
-                                      style={{textTransform: 'none', marginLeft: '5px'}}> (выходной)</span>}
-                </React.Fragment>
-            );
-        } else {
-            selectedDaysText = (
-                moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') + ' - ' + moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
-            );
-        }
+  handleLocalDayClick(date) {
+    const { type } = this.props;
+    this.showCalendar(false);
+    if (type === 'day') {
+      this.props.handleDayClick(date);
+    } else {
+      this.props.handleDayChange(date);
+    }
+  }
+
+  handleLeftArrowClick() {
+    const { type, selectedDay } = this.props;
+    this.showCalendar(false);
+    if (type === 'day') {
+      this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
+    } else {
+      this.props.showPrevWeek();
+    }
+  }
+
+  handleRightArrowClick() {
+    const { type, selectedDay } = this.props;
+    this.showCalendar(false);
+    if (type === 'day') {
+      this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
+    } else {
+      this.props.showNextWeek();
+    }
+  }
+
+  handleDayEnter(date) {
+    console.log("DATE: ", date);
+    const hoverRange = getWeekRange(date);
+    this.setState({
+      hoverRange,
+    });
+  };
+
+  handleDayLeave() {
+    this.setState({
+      hoverRange: undefined,
+    });
+  };
+
+  render() {
+
+    const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
+    const { opacity, hoverRange } = this.state;
+    let weekProps = {};
+    let selectedDaysText;
+    let newSelectedDays = [];
+    if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
+      const currentStaff = this.props.staff.timetable.find(timetable => timetable.staffId === this.props.selectedStaff);
+
+      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map(item => moment(item.startTimeMillis)._d));
+    }
 
 
-        if (type === 'week') {
-            const daysAreSelected = selectedDays && selectedDays.length > 0;
+    if (type === 'day') {
+      const clDates = closedDates && closedDates.some((st) =>
+        parseInt(moment(st.startDateMillis, 'x').startOf('day').format('x')) <= parseInt(moment(selectedDays[0]).startOf('day').format('x')) &&
+        parseInt(moment(st.endDateMillis, 'x').endOf('day').format('x')) >= parseInt(moment(selectedDays[0]).endOf('day').format('x')));
 
-            const modifiers = {
-                hoverRange,
-                selectedRange: daysAreSelected && {
-                    from: selectedDays[0],
-                    to: selectedDays[6],
-                },
-                hoverRangeStart: hoverRange && hoverRange.from,
-                hoverRangeEnd: hoverRange && hoverRange.to,
-                selectedRangeStart: daysAreSelected && selectedDays[0],
-                selectedRangeEnd: daysAreSelected && selectedDays[6],
-            };
-
-            weekProps = {
-                modifiers,
-                onDayMouseEnter: this.handleDayEnter,
-                onDayMouseLeave: this.handleDayLeave,
-                onWeekClick: this.props.handleWeekClick,
-            };
-        }
+      selectedDaysText = (
+        <React.Fragment>
+          {moment(selectedDay).format('dd, DD MMMM YYYY')}
+          {clDates && <span className="closedDate-color"
+                            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
+        </React.Fragment>
+      );
+    } else {
+      selectedDaysText = (
+        moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') + ' - ' + moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
+      );
+    }
 
 
-        return (
-            <div className="select-date">
-                <div className="select-inner">
-                    <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
-                    <div className="button-calendar" onClick={() => this.showCalendar(true)}>
+    if (type === 'week') {
+      const daysAreSelected = selectedDays && selectedDays.length > 0;
+
+      const modifiers = {
+        hoverRange,
+        working: newSelectedDays,
+        selectedRange: daysAreSelected && {
+          from: selectedDays[0],
+          to: selectedDays[6],
+        },
+        hoverRangeStart: hoverRange && hoverRange.from,
+        hoverRangeEnd: hoverRange && hoverRange.to,
+        selectedRangeStart: daysAreSelected && selectedDays[0],
+        selectedRangeEnd: daysAreSelected && selectedDays[6],
+      };
+
+      weekProps = {
+        modifiers,
+        onDayMouseEnter: this.handleDayEnter,
+        onDayMouseLeave: this.handleDayLeave,
+        onWeekClick: this.props.handleWeekClick,
+      };
+    }
+
+    let modifiers;
+
+    if (this.props.typeSelected === true && type !== "week") {
+      modifiers = {
+        working: newSelectedDays,
+      }
+    } else if (type !== "week") {
+      modifiers = {
+        working: day => true,
+      }
+    }
+
+    return (
+      <div className="select-date">
+        <div className="select-inner">
+          <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
+          <div className="button-calendar" onClick={() => this.showCalendar(true)}>
             <span className="dates-full-width text-capitalize date-num">
               {selectedDaysText}
             </span>
-                        <div className={classNames('SelectedWeekExample', {'visibility': !opacity})}>
-                            <DayPicker
-                                selectedDays={selectedDays}
-                                onDayClick={(date) => this.handleLocalDayClick(date)}
-                                localeUtils={MomentLocaleUtils}
-                                showOutsideDays
-                                locale={this.props.language.toLowerCase()}
-                                {...weekProps}
-                                {...dayPickerProps}
-                            />
-                        </div>
-                    </div>
-                    <span className="arrow-right" onClick={() => this.handleRightArrowClick()}/>
-                </div>
+            <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
+              <DayPicker
+                selectedDays={selectedDays}
+                modifiers={modifiers}
+                onDayClick={(date) => this.handleLocalDayClick(date)}
+                localeUtils={MomentLocaleUtils}
+                showOutsideDays
+                locale={this.props.language.toLowerCase()}
+                {...weekProps}
+                {...dayPickerProps}
+              />
             </div>
-        );
-    }
+          </div>
+          <span className="arrow-right" onClick={() => this.handleRightArrowClick()}/>
+        </div>
+      </div>
+    );
+  }
 }
 
 export { DatePicker };

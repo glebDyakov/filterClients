@@ -173,7 +173,7 @@ class AddWorkTime extends React.Component {
                       <div className="form-check-inline">
                         <input type="radio" className="form-check-input" name="radio33"
                                id="radio100" checked={period === 0}
-                               onChange={() => this.setState({ ...this.state, period: 0 })}/>
+                               onChange={() => this.setState({ ...this.state, period: 0, repeat: "ONCE" })}/>
                         <label className="form-check-label"
                                htmlFor="radio100">{t('Разовый')}</label>
                       </div>
@@ -203,6 +203,7 @@ class AddWorkTime extends React.Component {
                                onChange={() => this.setState({
                                  ...this.state,
                                  period: 7,
+                                 repeat: "WEEKLY"
                                })}/>
                         <label className="form-check-label"
                                htmlFor="radio101">{t('Повторять каждую неделю')}</label>
@@ -334,26 +335,29 @@ class AddWorkTime extends React.Component {
     const { times, repeat, period, staff } = this.state;
 
     const timing = [];
-    times && times.map((time) => timing.push({ ...time, period })).map(item => {
+    times && times.map((time) => timing.push({ ...time, period }));
+
+    this.finalRemove();
+    timing.map(item => {
       delete item.repeat;
       return item;
     });
-    this.finalRemove();
-    console.log(timing);
+
+
 
     addWorkingHours(timing, staff.staffId);
-    if (period === 4 || period === 2) {
+    if (period === 4) {
       setTimeout(async () => {
-        if (period === 4) {
           timing.map(item => {
             item.endTimeMillis = String(+item.endTimeMillis + 24 * 60 * 60 * 1000);
             item.startTimeMillis = String(+item.startTimeMillis + 24 * 60 * 60 * 1000);
             return item;
           });
           await addWorkingHours(timing, staff.staffId);
-        }
-        this.props.updateTimetable();
+          this.props.updateTimetable();
       });
+    } else if (period === 2) {
+      this.props.updateTimetable();
     }
 
 
@@ -364,14 +368,6 @@ class AddWorkTime extends React.Component {
     const { staff, period } = this.state;
 
     deleteWorkingHours(staff.staffId, startDay, endOfDay, staffTimetableId);
-
-    if (period === 4) {
-      deleteWorkingHours(
-        staff.staffId,
-        String(+startDay + 24 * 60 * 60 * 1000),
-        String(+endOfDay + 24 * 60 * 60 * 1000),
-        staffTimetableId);
-    }
   }
 
   closeModal() {

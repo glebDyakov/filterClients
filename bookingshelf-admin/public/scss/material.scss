@@ -23,6 +23,35 @@
     position: relative;
   }
 
+
+
+    .staff-field {
+    overflow: visible !important;
+    .staff-container {
+      padding: 0 !important;
+      text-align: center;
+      width: 100% !important;
+      flex-direction: row;
+      justify-content: start;
+      position: relative;
+      overflow: visible !important;
+
+      @media screen and(max-width: 720px) {
+        text-align: left;
+        display: flex !important;
+      }
+      .staff-image {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+
+      .staff-credit {
+        width: 40px;
+      }
+    }
+  }
+
   .title {
     position: relative;
     min-height: 50px !important;

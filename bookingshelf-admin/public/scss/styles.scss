@@ -6985,6 +6985,12 @@ textarea {
   }
 }
 
+.DayPicker-Day.DayPicker-Day--working {
+  opacity: 1;
+  color: #555B6D;
+
+}
+
 .DayPicker-NavButton--next,
 .DayPicker-NavButton--prev {
   background-image: url(../img/arrow.svg);
@@ -7012,6 +7018,7 @@ textarea {
   //background-color: #fff !important;
   background-size: 27px;
   color: #fff;
+  opacity: 1;
 
 }
 
@@ -7036,6 +7043,7 @@ textarea {
   line-height: 18px;
   text-align: center;
   color: #555B6D;
+  opacity: 0.25;
 }
 
 .DayPicker-Day:hover {
@@ -7051,6 +7059,10 @@ textarea {
   line-height: 18px;
   text-align: center;
   color: #555B6D;
+  opacity: 0.25;
+}
+
+.DayPicker-Day.DayPicker-Day--outside.DayPicker-Day--working {
   opacity: 0.25;
 }
 
