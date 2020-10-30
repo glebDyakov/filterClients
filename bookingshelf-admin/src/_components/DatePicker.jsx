@@ -125,17 +125,20 @@ class DatePicker extends PureComponent {
       );
     }
 
-    const startOfMonth = moment(newSelectedDays[0]).startOf('month');
-    const endOfMonth = moment(newSelectedDays[newSelectedDays.length-1]).endOf('month');
-
     const days = [];
-    let day = startOfMonth;
 
-    while (day <= endOfMonth) {
-      if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format("x"))) {
-        days.push(day.utc().toDate());
+    if (newSelectedDays && newSelectedDays.length > 0) {
+      const startOfMonth = moment(newSelectedDays[0]).startOf('month');
+      const endOfMonth = moment(newSelectedDays[newSelectedDays.length-1]).endOf('month');
+
+      let day = startOfMonth;
+
+      while (day <= endOfMonth) {
+        if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format("x"))) {
+          days.push(day.utc().toDate());
+        }
+        day = day.clone().add(1, 'd');
       }
-      day = day.clone().add(1, 'd');
     }
 
     if (type === 'week') {
