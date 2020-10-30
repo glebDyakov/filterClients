@@ -338,6 +338,15 @@ class Index extends Component {
         this.props.dispatch(materialActions.getProducts(currentPage));
     };
 
+    handleMovingPageClick(data) {
+        const {selected} = data;
+        const currentPage = selected + 1;
+        this.setState({
+            movingCurrentPage: currentPage,
+        });
+        this.props.dispatch(materialActions.getProducts(currentPage));
+    }
+
     toggleProvider(supplier_working) {
         this.setState({supplier_working, providerOpen: true});
     }
@@ -502,11 +511,11 @@ class Index extends Component {
         const {products, finalTotalProductsPages, categories, suppliers, units, storeHouses} = material;
 
 
-        const movingArrray = this.state.storeHouseProducts
+        const movingArrray = this.state.storeHouseProducts.content && this.state.storeHouseProducts.content
             .concat(this.state.expenditureProducts)
             .sort((b, a) =>
                 (a.expenditureDateMillis ? a.expenditureDateMillis : a.deliveryDateMillis) - (b.expenditureDateMillis ? b.expenditureDateMillis : b.deliveryDateMillis),
-            );
+            ) || [];
 
         movingArrray.forEach((item) => {
             if (item.target) {
@@ -515,7 +524,7 @@ class Index extends Component {
                         item.targetTranslated = this.props.t('Продажа');
                         break;
                     case 'INTERNAL':
-                        item.targetTranslated = this.props.t('Внутреннее списание');
+                        item.targetTranslated = this.props.t('Списание на услугу');
                         break;
                     case 'DAMAGED':
                         item.targetTranslated = this.props.t('Товар поврежден');
@@ -917,6 +926,9 @@ class Index extends Component {
                                                     <p>{t("Причина списания")}</p>
                                                 </div>
                                                 <div>
+                                                    <p>{t("Количество списания / поступления")}</p>
+                                                </div>
+                                                <div>
                                                     <p>{t("Цена ед. / ед. объема")}</p>
                                                 </div>
                                                 <div>
@@ -943,6 +955,12 @@ class Index extends Component {
                                                 </div>
                                             </div>}
                                             {movingList}
+                                        </div>
+                                        <div className="paginator-wrapper">
+                                            <Paginator
+                                              // finalTotalPages={}
+                                              onPageChange={this.handlePageClick}
+                                            />
                                         </div>
                                     </React.Fragment>
 
@@ -1314,7 +1332,29 @@ class Index extends Component {
     onCloseStoreHouse() {
         this.setState({storeHouseOpen: false});
     }
+
+    getUnitName(unit) {
+        const { t } = this.props;
+        switch (unit) {
+            case 'Миллилитр':
+                return t('мл');
+            case 'Штука':
+                return t('шт');
+            case 'Килограмм':
+                return t('кг');
+            case 'Грамм':
+                return t('гр');
+            case 'Коробка':
+                return t('кор');
+            case 'Сантиметр':
+                return t('см');
+            default:
+                return '';
+        }
+    }
 }
+
+
 
 function mapStateToProps(store) {
     const {staff, company, timetable, authentication, material} = store;

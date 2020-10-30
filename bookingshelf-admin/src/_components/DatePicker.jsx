@@ -9,6 +9,7 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import '../../public/css_admin/date.css';
 import classNames from 'classnames';
 import { getWeekRange } from '../_helpers/time';
+import { cloneWithRef } from 'react-dnd/lib/utils/cloneWithRef';
 
 class DatePicker extends PureComponent {
   constructor(props) {
@@ -78,7 +79,7 @@ class DatePicker extends PureComponent {
   }
 
   handleDayEnter(date) {
-    console.log("DATE: ", date);
+    console.log('DATE: ', date);
     const hoverRange = getWeekRange(date);
     this.setState({
       hoverRange,
@@ -92,16 +93,17 @@ class DatePicker extends PureComponent {
   };
 
   render() {
-
     const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
     const { opacity, hoverRange } = this.state;
     let weekProps = {};
     let selectedDaysText;
     let newSelectedDays = [];
-    if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
-      const currentStaff = this.props.staff.timetable.find(timetable => timetable.staffId === this.props.selectedStaff);
 
-      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map(item => moment(item.startTimeMillis)._d));
+
+    if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
+      const currentStaff = this.props.staff.timetable.find((timetable) => timetable.staffId === this.props.selectedStaff);
+
+      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.startTimeMillis).utc().startOf('day').toDate()));
     }
 
 
@@ -114,7 +116,7 @@ class DatePicker extends PureComponent {
         <React.Fragment>
           {moment(selectedDay).format('dd, DD MMMM YYYY')}
           {clDates && <span className="closedDate-color"
-                            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
+            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
         </React.Fragment>
       );
     } else {
@@ -123,13 +125,25 @@ class DatePicker extends PureComponent {
       );
     }
 
+    const startOfMonth = moment(newSelectedDays[0]).startOf('month');
+    const endOfMonth = moment(newSelectedDays[newSelectedDays.length-1]).endOf('month');
+
+    const days = [];
+    let day = startOfMonth;
+
+    while (day <= endOfMonth) {
+      if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format("x"))) {
+        days.push(day.utc().toDate());
+      }
+      day = day.clone().add(1, 'd');
+    }
 
     if (type === 'week') {
       const daysAreSelected = selectedDays && selectedDays.length > 0;
 
       const modifiers = {
         hoverRange,
-        working: newSelectedDays,
+        notWorking: days,
         selectedRange: daysAreSelected && {
           from: selectedDays[0],
           to: selectedDays[6],
@@ -150,15 +164,16 @@ class DatePicker extends PureComponent {
 
     let modifiers;
 
-    if (this.props.typeSelected === true && type !== "week") {
+    if (this.props.typeSelected === true && type !== 'week') {
       modifiers = {
-        working: newSelectedDays,
-      }
-    } else if (type !== "week") {
+        notWorking: days,
+      };
+    } else if (type !== 'week') {
       modifiers = {
-        working: day => true,
-      }
+        notWorking: days,
+      };
     }
+
 
     return (
       <div className="select-date">

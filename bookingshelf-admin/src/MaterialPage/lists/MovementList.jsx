@@ -101,6 +101,12 @@ class MovementList extends Component {
           </p>
         </div>
 
+        <div>
+          <p><span
+            className="mob-title">{t('Количество списания / поступления')}: </span>{movement && movement.amount && (movement.amount + (activeUnit ? " " + this.getUnitName(activeUnit.unitName) : ''))}
+          </p>
+        </div>
+
         <div className={(movement && movement.retailPrice) ? '' : 'retail-price-empty'}>
           <p><span
             className="mob-title">{t('Цена ед. / ед. объема')}: </span>{movement && movement.retailPrice && (movement.retailPrice + ' / ' + movement.nominalUnitPrice)}

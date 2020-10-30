@@ -7043,7 +7043,6 @@ textarea {
   line-height: 18px;
   text-align: center;
   color: #555B6D;
-  opacity: 0.25;
 }
 
 .DayPicker-Day:hover {
@@ -7062,8 +7061,8 @@ textarea {
   opacity: 0.25;
 }
 
-.DayPicker-Day.DayPicker-Day--outside.DayPicker-Day--working {
-  opacity: 0.25;
+.DayPicker-Day.DayPicker-Day--notWorking{
+  opacity: 0.25 !important;
 }
 
 .DayPicker-Day.DayPicker-Day--today {
