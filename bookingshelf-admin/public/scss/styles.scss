@@ -1476,9 +1476,11 @@ input {
         color: #495057;
         overflow: hidden;
         white-space: pre;
+
         &:hover {
           overflow: auto;
         }
+
         margin-bottom: 0;
         padding-left: 0;
         @media screen and(max-width: $tablet-width) {
@@ -1528,6 +1530,7 @@ input {
         margin-bottom: 0;
         overflow: hidden;
         white-space: pre;
+
         &:hover {
           overflow: auto;
         }
@@ -7061,7 +7064,7 @@ textarea {
   opacity: 0.25;
 }
 
-.DayPicker-Day.DayPicker-Day--notWorking{
+.DayPicker-Day.DayPicker-Day--notWorking {
   opacity: 0.25 !important;
 }
 
@@ -7080,6 +7083,293 @@ textarea {
 .DayPicker-wrapper {
   padding: 0;
 }
+
+.add-work-time-modal {
+  max-width: unset;
+
+  .modal-content {
+    border-radius: 10px 10px 0px 0px !important;
+  }
+
+  .form-group {
+    margin-top: 8px;
+    margin-bottom: 0;
+
+    .check-box.repeat .form-check-inline {
+      width: unset;
+      margin-right: 50px;
+      margin-bottom: 50px;
+
+      label {
+        margin-bottom: 0;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        /* identical to box height */
+
+
+        color: #495057;
+
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+
+    .check-box.days-of-week {
+      .form-check-inline {
+        margin-bottom: 15px;
+
+        label {
+          font-weight: normal;
+          font-size: 13px;
+          margin: 0;
+          line-height: 18px;
+          color: #495057;
+
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+    }
+
+    .add-work-time {
+      border: none;
+      font-weight: normal;
+      font-size: 13px;
+      margin: 5px 0;
+      color: #50A5F1 !important;
+      text-align: left;
+    }
+
+    .button-container {
+      padding-top: 25px;
+      padding-right: 25px;
+      margin-top: 80px;
+      align-items: center;
+
+      .cancel {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        /* identical to box height */
+        background: none;
+        text-align: center;
+        border: unset;
+        margin-right: 30px;
+        padding: 0;
+
+        color: #F46A6A;
+
+      }
+
+      .button {
+        height: 42px;
+        padding: 10px 64px;
+        border: none;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
+        background: #50A5F1;
+        border-radius: 30px;
+        transition: ease-out 200ms;
+
+        &:hover {
+          opacity: 1;
+          transition: ease-in 200ms;
+        }
+      }
+    }
+
+    .choose-staff-container, .days-of-week {
+      .check-box {
+        text-align: left;
+
+        label {
+          padding: 0 0 0 25px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #495057;
+        }
+
+        .form-check-input[type="checkbox"] {
+          display: none;
+
+
+          + .check-box-circle {
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0) !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: 0;
+            transition: 200ms !important;
+            box-sizing: border-box;
+            border: 1px solid rgba(128, 128, 128, 0.3);
+
+          }
+
+          &:checked {
+
+            + .check-box-circle {
+              transition: 200ms;
+              background: #FFFFFF;
+              border: 4px solid #50A5F1;
+              box-sizing: border-box;
+            }
+          }
+        }
+      }
+
+    }
+
+    .choose-staff-container {
+      background: #FFFFFF;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 0px;
+      margin-right: 15px;
+      min-width: 298px;
+      padding: 0;
+
+
+
+      .staff-container-header {
+        padding: 22px 10px;
+        box-sizing: border-box;
+
+        .check-all {
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #50A5F1;
+          cursor: pointer;
+        }
+
+        .clear-all {
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #F46A6A;
+          cursor: pointer;
+        }
+      }
+
+      .staffs-list {
+        max-height: 537px;
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+          width: 2px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+          border-radius: 10px;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: #2A3042;
+          border-radius: 4px;
+        }
+
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+          background: #b30000;
+        }
+      }
+
+      .staffs-list .staff-container-item {
+        padding: 15px 10px;
+        border-top: 1px solid #EAEBED;
+
+        .staff-image {
+          margin-right: 11px;
+          width: 24px;
+          height: 24px;
+        }
+
+        .staff-name {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #495057;
+
+        }
+      }
+    }
+
+    .work-time-container {
+      background: #FFFFFF;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 5px 0px 0px 0px;
+      padding: 37px 50px 25px 30px;
+      min-width: 819px;
+
+      .work-time-title {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+        color: #2A3042;
+        margin-bottom: 25px;
+      }
+
+
+      .days {
+        min-width: 160px;
+      }
+
+      .gap {
+        width: 100%;
+
+        .gap-item {
+
+          padding: 0 0 25px 0;
+          width: 100%;
+          border-bottom: 1px solid #EAEBED;
+
+          .gap-item-timepicker {
+            margin-right: 30px;
+
+            input {
+              margin-bottom: 0;
+            }
+          }
+
+          .delete-gap {
+            font-weight: normal;
+            font-size: 13px;
+            line-height: 18px;
+            text-align: right;
+            color: #F46A6A;
+            margin-top: 25px;
+            cursor: pointer;
+          }
+        }
+      }
+
+    }
+  }
+}
+
 
 //.holiday-tab {
 //

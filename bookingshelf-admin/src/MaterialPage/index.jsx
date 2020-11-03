@@ -106,6 +106,7 @@ class Index extends Component {
             newStaff: false,
 
             productsCurrentPage: 1,
+            movingCurrentPage: 1,
 
             isOpenDropdownMenu: false,
 
@@ -123,10 +124,12 @@ class Index extends Component {
             defaultStoreHousesList: props.material.storeHouses,
 
 
-            storeHouseProducts: props.material.storeHouseProducts,
-            defaultStoreHouseProductsList: props.material.storeHouseProducts,
-            expenditureProducts: props.material.expenditureProducts,
-            defaultExpenditureProductsList: props.material.expenditureProducts,
+            movementsProducts: props.material.movements,
+
+            // storeHouseProducts: props.material.storeHouseProducts,
+            // defaultStoreHouseProductsList: props.material.storeHouseProducts,
+            // expenditureProducts: props.material.expenditureProducts,
+            // defaultExpenditureProductsList: props.material.expenditureProducts,
 
         };
 
@@ -140,6 +143,7 @@ class Index extends Component {
         this.onCloseBrand = this.onCloseBrand.bind(this);
         this.onCloseCategory = this.onCloseCategory.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
+        this.handleMovingPageClick = this.handleMovingPageClick.bind(this);
         this.setTab = this.setTab.bind(this);
         this.queryInitData = this.queryInitData.bind(this);
         this.toggleUnit = this.toggleUnit.bind(this);
@@ -189,8 +193,9 @@ class Index extends Component {
         this.props.dispatch(materialActions.getSuppliers());
         this.props.dispatch(materialActions.getStoreHouses());
         this.props.dispatch(materialActions.getUnits());
-        this.props.dispatch(materialActions.getStoreHouseProducts());
-        this.props.dispatch(materialActions.getExpenditureProducts());
+        // this.props.dispatch(materialActions.getStoreHouseProducts());
+        // this.props.dispatch(materialActions.getExpenditureProducts());
+        this.props.dispatch(materialActions.getMovements());
     }
 
     componentWillReceiveProps(newProps) {
@@ -221,6 +226,12 @@ class Index extends Component {
             if (staff_working) {
                 this.setState({staff_working});
             }
+        }
+
+        if (JSON.stringify(this.props.material.movements) !== JSON.stringify(newProps.material.movements)) {
+            this.setState({
+                movementsProducts: newProps.material.movements,
+            })
         }
 
         if (JSON.stringify(this.props.material.products) !== JSON.stringify(newProps.material.products)) {
@@ -335,6 +346,7 @@ class Index extends Component {
         this.setState({
             productsCurrentPage: currentPage,
         });
+
         this.props.dispatch(materialActions.getProducts(currentPage));
     };
 
@@ -344,7 +356,7 @@ class Index extends Component {
         this.setState({
             movingCurrentPage: currentPage,
         });
-        this.props.dispatch(materialActions.getProducts(currentPage));
+        this.props.dispatch(materialActions.getMovements(currentPage));
     }
 
     toggleProvider(supplier_working) {
@@ -508,16 +520,16 @@ class Index extends Component {
         } = this.state;
 
 
-        const {products, finalTotalProductsPages, categories, suppliers, units, storeHouses} = material;
+        const {products, finalTotalProductsPages, finalTotalMovementsPages, categories, suppliers, units, storeHouses} = material;
 
 
-        const movingArrray = this.state.storeHouseProducts.content && this.state.storeHouseProducts.content
-            .concat(this.state.expenditureProducts)
+
+        const movingArray = !this.props.material.isLoadingMovements && this.state.movementsProducts.content
             .sort((b, a) =>
                 (a.expenditureDateMillis ? a.expenditureDateMillis : a.deliveryDateMillis) - (b.expenditureDateMillis ? b.expenditureDateMillis : b.deliveryDateMillis),
             ) || [];
 
-        movingArrray.forEach((item) => {
+        movingArray.forEach((item) => {
             if (item.target) {
                 switch (item.target) {
                     case 'SALE':
@@ -544,26 +556,28 @@ class Index extends Component {
             }
         });
 
-        console.log(movingArrray);
+
         const movingList = (
             <React.Fragment>
                 {
-                    movingArrray.map((movement) => {
+                    movingArray.map((movement) => {
                             const activeProduct = products && products.find((item) => item.productId === movement.productId);
                             const activeStorehouse = storeHouses && storeHouses.find((item) => item.storehouseId === movement.storehouseId);
                             const activeUnit = units.find((unit) => unit.unitId === movement.unitId);
-                            return (
-                                <MovementList
-                                    movement={movement}
-                                    activeProduct={activeProduct}
-                                    deleteMovement={this.deleteMovement}
-                                    toggleStorehouseProduct={this.toggleStorehouseProduct}
-                                    toggleExProd={this.toggleExProd}
-                                    activeUnit={activeUnit}
-                                    activeStorehouse={activeStorehouse}
-                                    staffs={this.props.staff.staff}
-                                />
-                            );
+                                return (
+                                          <MovementList
+                                            movement={movement}
+                                            activeProduct={activeProduct}
+                                            deleteMovement={this.deleteMovement}
+                                            toggleStorehouseProduct={this.toggleStorehouseProduct}
+                                            toggleExProd={this.toggleExProd}
+                                            activeUnit={activeUnit}
+                                            activeStorehouse={activeStorehouse}
+                                            staffs={this.props.staff.staff}
+                                          />
+
+                                );
+
                         },
                     )
 
@@ -885,8 +899,7 @@ class Index extends Component {
 
                         <div className={'tab-pane' + (activeTab === 'moving' ? ' active' : '')} id="tab5">
                             {
-                                ((this.state.defaultStoreHouseProductsList && this.state.defaultStoreHouseProductsList !== '') ||
-                                    (this.state.defaultExpenditureProductsList && this.state.defaultExpenditureProductsList !== '')) &&
+                                (this.state.movementsProducts.content && this.state.movementsProducts.content !== '' &&
 
                                 <div className="row align-items-center content clients mb-2">
                                     <div className="search col-6 col-lg-4">
@@ -902,11 +915,11 @@ class Index extends Component {
                                     </div>
                                 </div>
 
-                            }
-                            {movingArrray.length ? (
+                                )}
+                            {movingArray.length ? (
                                     <React.Fragment>
                                         <div className="title-and-main-info">
-                                            {!!(movingArrray.length) &&
+                                            {!!(movingArray.length) &&
                                             <div className="tab-content-list mb-2 title title-moving position-sticky">
                                                 <div className="empty-block">
                                                 </div>
@@ -954,18 +967,15 @@ class Index extends Component {
                                                     <div className="dropdown-menu delete-menu"></div>
                                                 </div>
                                             </div>}
+
                                             {movingList}
+
                                         </div>
-                                        <div className="paginator-wrapper">
-                                            <Paginator
-                                              // finalTotalPages={}
-                                              onPageChange={this.handlePageClick}
-                                            />
-                                        </div>
+
                                     </React.Fragment>
 
                                 ) :
-                                (!this.props.material.isLoadingMoving1 && !this.props.material.isLoadingMoving2 && <div>
+                                (!this.props.material.isLoadingMovements && <div>
                                     <EmptyContent
                                         img="2box"
                                         title={t("Нет товаров")}
@@ -975,7 +985,12 @@ class Index extends Component {
                                         hideButton={true}
                                     />
                                 </div>)}
-
+                            <div style={{opacity: this.props.material.isLoadingMovements ? 0 : 1}}>
+                                {this.state.movementsProducts && this.state.movementsProducts.content.length > 0 && <Paginator
+                                  finalTotalPages={finalTotalMovementsPages}
+                                  onPageChange={this.handleMovingPageClick}
+                                />}
+                            </div>
                             {/* <a className="add"/>*/}
                             {/* <div className="hide buttons-container">*/}
                             {/*    <div className="p-4">*/}
@@ -983,7 +998,7 @@ class Index extends Component {
                             {/*    </div>*/}
                             {/*    <div className="arrow"></div>*/}
                             {/* </div>*/}
-                            {this.props.material.isLoadingMoving1 && this.props.material.isLoadingMoving2 &&
+                            {this.props.material.isLoadingMovements &&
                             <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
                             </div>}
                         </div>

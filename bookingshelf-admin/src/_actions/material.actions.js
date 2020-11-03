@@ -25,6 +25,7 @@ export const materialActions = {
   getStoreHouseProducts,
   getExpenditureProducts,
   deleteMovement,
+  getMovements,
 
 };
 
@@ -454,6 +455,23 @@ function getExpenditureProducts() {
   }
   function success(expenditureProducts) {
     return { type: materialConstants.GET_EXPENDITURE_PRODUCTS_SUCCESS, expenditureProducts };
+  }
+}
+
+function getMovements(pageNum = 1, searchValue = "", pageSize = 10) {
+  return (dispatch) => {
+    dispatch(request());
+    materialService.getMovements(pageNum, searchValue, pageSize)
+      .then(
+        (movements) => dispatch(success(movements)),
+      );
+  };
+
+  function request(movements) {
+    return { type: materialConstants.GET_MOVEMENTS, movements };
+  }
+  function success(movements) {
+    return { type: materialConstants.GET_MOVEMENTS_SUCCESS, movements };
   }
 }
 
