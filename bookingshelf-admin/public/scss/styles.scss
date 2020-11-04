@@ -7477,15 +7477,17 @@ textarea {
 
 .DayPicker-Day .percent {
   position: absolute;
-  bottom: -5px;
+  bottom: -2px;
   left: 50%;
   transform: translateX(-50%);
   font-style: normal;
   font-weight: normal;
   font-size: 9px;
-  line-height: 14px;
+  line-height: 9px;
   text-align: center;
   color: #555B6D;
+  background-color: #fff;
+  z-index: 5;
 }
 
 .hue-picker {

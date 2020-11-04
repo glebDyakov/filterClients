@@ -190,9 +190,9 @@ class Index extends PureComponent {
     }
 
     if (this.state.staffFromUrl) {
-      this.updateAnalytic(this.props.match.params.dateFrom, this.state.staffFromUrl, true);
+      this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true);
     } else {
-      this.updateAnalytic(this.props.match.params.dateFrom);
+      this.updateAnalytic(this.props.match.params.dateFrom || moment());
     }
 
     this.props.dispatch(staffActions.get());
@@ -810,10 +810,14 @@ class Index extends PureComponent {
         typeSelected: typeSelected,
       };
 
+
       if (typeSelected === 3) {
-        url = `staff/${JSON.parse(selectedStaff).staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}`;
+        const staffId = JSON.parse(selectedStaff).staffId;
+        url = `staff/${staffId}/${moment(weeks[0]).format('DD-MM-YYYY')}`;
+        this.updateAnalytic(moment(weeks[0]), staffId, true);
       } else {
         url = `workingstaff/0/${moment().format('DD-MM-YYYY')}`;
+        this.updateAnalytic(moment());
       }
 
 
@@ -839,6 +843,9 @@ class Index extends PureComponent {
       };
 
       this.getTimetable(prevDay, selectedDays[0]);
+
+      this.updateAnalytic(selectedDays[0], currentWorkingStaff.staffId, true);
+
 
       url = `staff/${JSON.parse((selectedStaff && selectedStaff.length)
         ? selectedStaff

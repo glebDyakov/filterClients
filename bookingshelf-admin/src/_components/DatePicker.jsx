@@ -53,12 +53,10 @@ class DatePicker extends PureComponent {
     const { type } = this.props;
     this.showCalendar(false);
 
-    if (this.props.calendar) {
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(date).format("YYYY-MM")) {
       if (this.props.typeSelected && this.props.selectedStaff) {
-        console.log("selected staff", this.props.selectedStaff);
         this.props.updateAnalytic(date, this.props.selectedStaff, true);
       } else {
-        console.log("DATE A: ", date);
         this.props.updateAnalytic(date);
       }
     }
@@ -209,12 +207,10 @@ class DatePicker extends PureComponent {
       const date = day.getDate();
       const percent = this.getPercent(day);
 
-      const isWorkDay = daysToPercent.some(d => moment(d).format('DD/MM/YYYY') === moment(day).format('DD/MM/YYYY'));
-
       return (
         <React.Fragment>
           {date}
-          {this.props.calendar && percent !== 0 && <span className="percent">{percent}%</span>}
+          {this.props.calendar && percent !== 0 && <span style={{color: (percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
         </React.Fragment>
       );
     };
