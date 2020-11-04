@@ -30,7 +30,7 @@ export const materialService = {
 
 };
 
-function getMovements(pageNum = 1, searchValue = "", pageSize = 10) {
+function getMovements(pageNum = 1, searchValue, pageSize = 10) {
   const requestOptions = {
     method: 'GET',
     crossDomain: true,
@@ -40,6 +40,8 @@ function getMovements(pageNum = 1, searchValue = "", pageSize = 10) {
     },
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
+
+  console.log(searchValue);
 
   return fetch(`${origin}${config.warehouseApiUrl}/products/movements?pageSize=${pageSize}&pageNum=${pageNum}&searchValue=${searchValue}&dateFrom=${moment().startOf("year").format("x")}&dateTo=${moment().format('x')}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));

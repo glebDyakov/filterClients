@@ -905,8 +905,8 @@ class Index extends Component {
                                     <div className="search col-6 col-lg-4">
                                         <input type="search" placeholder={t("Поиск товаров")}
                                                aria-label="Search" ref={(input) => this.movingSearch = input}
-                                               onChange={() =>
-                                                   this.handleSearchMoving()}/>
+                                               onChange={(e) =>
+                                                   this.handleSearchMoving(e)}/>
                                         <button className="search-icon" type="submit"/>
                                     </div>
 
@@ -986,7 +986,7 @@ class Index extends Component {
                                     />
                                 </div>)}
                             <div style={{opacity: this.props.material.isLoadingMovements ? 0 : 1}}>
-                                {this.state.movementsProducts && this.state.movementsProducts.content.length > 0 && <Paginator
+                                {this.state.movementsProducts && this.state.movementsProducts.content && this.state.movementsProducts.content.length > 0 && <Paginator
                                   finalTotalPages={finalTotalMovementsPages}
                                   onPageChange={this.handleMovingPageClick}
                                 />}
@@ -1245,35 +1245,8 @@ class Index extends Component {
         }
     }
 
-    handleSearchMoving(fields = ['productName', 'description', 'productCode']) {
-        const {products} = this.props.material;
-        const {defaultStoreHouseProductsList: defaultListPlus, defaultExpenditureProductsList: defaultListMinus} = this.state;
-        const searchListPlus = defaultListPlus.filter((item) => {
-            const activeProduct = products && products.find((product) => item.productId === product.productId);
-            return activeProduct && fields.some((field) => {
-                return String(activeProduct[field]).toLowerCase().includes(this.movingSearch.value.toLowerCase());
-            });
-        });
-        const searchListMinus = defaultListMinus.filter((item) => {
-            const activeProduct = products && products.find((product) => item.productId === product.productId);
-            return activeProduct && fields.some((field) => {
-                return String(activeProduct[field]).toLowerCase().includes(this.movingSearch.value.toLowerCase());
-            });
-        });
-
-        this.setState({
-            search: true,
-            storeHouseProducts: searchListPlus,
-            expenditureProducts: searchListMinus,
-        });
-
-        if (this.movingSearch.value === '') {
-            this.setState({
-                search: true,
-                defaultStoreHouseProductsList: defaultListPlus,
-                defaultExpenditureProductsList: defaultListMinus,
-            });
-        }
+    handleSearchMoving(e) {
+        this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value));
     }
 
     deleteCategory(id) {

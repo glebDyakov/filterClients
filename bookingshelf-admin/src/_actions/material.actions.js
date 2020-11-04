@@ -458,7 +458,7 @@ function getExpenditureProducts() {
   }
 }
 
-function getMovements(pageNum = 1, searchValue = "", pageSize = 10) {
+function getMovements(pageNum = 1, searchValue="", pageSize = 10) {
   return (dispatch) => {
     dispatch(request());
     materialService.getMovements(pageNum, searchValue, pageSize)
