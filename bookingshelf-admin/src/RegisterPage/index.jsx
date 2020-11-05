@@ -220,7 +220,7 @@ class Index extends React.Component {
                 </div>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>{t("Cтрана")}</span>
+                    <span>{t("Страна")}</span>
                     <div className="custom-select-wrapper">
                       <select
                         className={'custom-select' + ((invalidFields.countryCode ? ' redBorder' : ''))}
@@ -230,6 +230,9 @@ class Index extends React.Component {
                         <option value='BLR'>{t("Беларусь")}</option>
                         <option value='UKR'>{t("Украина")}</option>
                         <option value='RUS'>{t("Россия")}</option>
+                        <option value='POL'>{t("Польша")}</option>
+                        <option value='CZE'>{t("Чехия")}</option>
+                        <option value='GBR'>{t("UK")}</option>
                       </select>
                     </div>
                   </div>
@@ -296,6 +299,36 @@ class Index extends React.Component {
                           <option value='Asia/Yakutsk'>Asia/Yakutsk</option>
                           <option value='Asia/Yekaterinburg'>Asia/Yekaterinburg</option>
                         </select>
+                      }
+                      {user.countryCode === 'POL' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/Warsaw'>Europe/Warsaw</option>
+                      </select>
+                      }
+                      {user.countryCode === 'CZE' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/Prague'>Europe/Prague</option>
+                      </select>
+                      }
+                      {user.countryCode === 'GBR' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/London'>Europe/London</option>
+                      </select>
                       }
                     </div>
                   </div>

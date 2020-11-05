@@ -71,7 +71,7 @@ class MovementList extends Component {
     return (
       <div className="tab-content-list mb-2">
         <div className="plus-or-minus-field">
-          <div className={movement.storehouseProductId ? 'plus' : 'minus'}/>
+          <div className={movement.movementType && movement.movementType === "ARRIVAL" ? 'plus' : 'minus'}/>
         </div>
         <div className="staff-field">
           <div className="staff-container">
@@ -149,7 +149,7 @@ class MovementList extends Component {
         <div className="delete clientEditWrapper">
           <a
             className="clientEdit"
-            onClick={() => (movement.storehouseProductId) ? toggleStorehouseProduct(movement) : toggleExProd(movement)}
+            onClick={() => movement.movementType && movement.movementType === "ARRIVAL"  ? toggleStorehouseProduct(movement) : toggleExProd(movement)}
           />
         </div>
         <div className="delete dropdown">

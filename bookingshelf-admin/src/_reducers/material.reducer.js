@@ -6,17 +6,19 @@ const initialState = {
   brands: [],
   suppliers: [],
   units: [],
+  movements: [],
   storeHouses: [],
-  storeHouseProducts: [],
-  expenditureProducts: [],
+  // storeHouseProducts: [],
+  // expenditureProducts: [],
   adding: false,
   status: 209,
   isLoadingProducts: true,
   isLoadingCategories: true,
   isLoadingBrands: true,
   isLoadingSuppliers: true,
-  isLoadingMoving1: true,
-  isLoadingMoving2: true,
+  isLoadingMovements: true,
+  // isLoadingMoving1: true,
+  // isLoadingMoving2: true,
   isLoadingStoreHouses: true,
 
 };
@@ -165,6 +167,13 @@ export function material(state= initialState, action) {
         isLoadingMoving2: false,
       };
 
+    case materialConstants.GET_MOVEMENTS_SUCCESS:
+      return {
+        ...state,
+        movements: action.movements,
+        finalTotalMovementsPages: (action.movements && action.movements.totalPages) || 0,
+        isLoadingMovements: false,
+      };
 
     case materialConstants.EXPEND_PRODUCT:
       return {
@@ -203,6 +212,13 @@ export function material(state= initialState, action) {
         ...state,
         isLoadingMoving1: true,
       };
+
+    case materialConstants.GET_MOVEMENTS:
+      return {
+        ...state,
+        isLoadingMovements: true,
+      };
+
     case materialConstants.GET_EXPENDITURE_PRODUCTS:
       return {
         ...state,

@@ -8,6 +8,7 @@ const initialState = {
   appointmentsCount: [],
   appointmentsCanceled: [],
   managers: [],
+  analytic: {},
 };
 
 export function calendar(state = initialState, action) {
@@ -655,6 +656,16 @@ export function calendar(state = initialState, action) {
         ...state,
         managers: action.managers,
       };
+    case calendarConstants.GET_USER_CALENDAR_LOAD_SUCCESS:
+      return {
+        ...state,
+        analytic: action.analytics
+      }
+    case calendarConstants.GET_CALENDAR_LOAD_SUCCESS:
+      return {
+        ...state,
+        analytic: action.analytics
+      }
     default:
       return state;
   }

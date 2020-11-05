@@ -97,6 +97,7 @@ class Index extends Component {
       newStaff: false,
       handleOpen: false,
       isOpenHeaderDropdown: false,
+      workTimeModal: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -132,6 +133,7 @@ class Index extends Component {
     this.queryInitData = this.queryInitData.bind(this);
     this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
     this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.setWorkTimeWrapperRef = this.setWorkTimeWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.closeDropdownMenu = this.closeDropdownMenu.bind(this);
     this.isLeapYear = this.isLeapYear.bind(this);
@@ -163,9 +165,19 @@ class Index extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.closeDropdownMenu();
+    if (this.state.activeTab === "workinghours") {
+
+      if (this.workTimeWrapperRef && !this.workTimeWrapperRef.contains(event.target)) {
+        this.closeDropdownMenu();
+      }
+    } else {
+      if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+        this.closeDropdownMenu();
+      }
     }
+
+
+
   }
 
   isLeapYear(year) {
@@ -201,6 +213,10 @@ class Index extends Component {
 
   setWrapperRef(node) {
     this.wrapperRef = node;
+  }
+
+  setWorkTimeWrapperRef(node) {
+    this.workTimeWrapperRef = node;
   }
 
   closeDropdownMenu() {
@@ -401,6 +417,24 @@ class Index extends Component {
             </ul>
 
             {activeTab === 'workinghours' &&
+            <div ref={this.setWorkTimeWrapperRef}>
+              <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
+                 onClick={this.handleOpenDropdownMenu}/>
+              <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
+                <div className="buttons">
+                  <button type="button" onClick={() => {
+                    this.setState({workTimeModal: true})
+                  }} className="button new-holiday">
+                    {t("Добавить часы работы")}
+                  </button>
+                </div>
+                <div className="arrow"></div>
+              </div>
+            </div>}
+
+
+
+            {activeTab === 'workinghours' &&
                         <DatePicker
                           type={'week'}
                           // selectedDay={selectedDay}
@@ -557,7 +591,7 @@ class Index extends Component {
                                     date: moment(day, 'x').format('DD/MM/YYYY'),
                                     editWorkingHours: false,
                                     editing_object: null,
-                                    addWorkTime: true,
+                                    workTimeModal: true,
                                   })
                                   }/> :
                                 <div className="dates-container" key={dayKey}
@@ -567,7 +601,7 @@ class Index extends Component {
                                     date: moment(day, 'x').format('DD/MM/YYYY'),
                                     editWorkingHours: true,
                                     editing_object: times,
-                                    addWorkTime: true,
+                                    workTimeModal: true,
                                   })}>
                                   <a>
                                     {times.map((time, i) =>
@@ -809,7 +843,6 @@ class Index extends Component {
           </div>
         }
 
-        {/*<WorkTimeModal/>*/}
 
         {addWorkTime &&
           <AddWorkTime
@@ -822,6 +855,17 @@ class Index extends Component {
             onClose={this.onClose}
             updateTimetable={this.updateTimetable}
           />
+        }
+
+        {this.state.workTimeModal &&
+        <WorkTimeModal
+          onClose={() => this.setState({workTimeModal: false})}
+          activeStaffId={currentStaff.staffId}
+          date={date}
+          editWorkingHours={editWorkingHours}
+          editing_object={editing_object}
+          edit={editing_object && editing_object.length > 0}
+        />
         }
         {newStaff &&
           <NewStaff

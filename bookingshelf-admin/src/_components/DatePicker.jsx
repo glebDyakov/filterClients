@@ -26,6 +26,7 @@ class DatePicker extends PureComponent {
     this.handleRightArrowClick = this.handleRightArrowClick.bind(this);
     this.handleDayEnter = this.handleDayEnter.bind(this);
     this.handleDayLeave = this.handleDayLeave.bind(this);
+    this.getPercent = this.getPercent.bind(this);
   }
 
   componentDidUpdate() {
@@ -51,6 +52,16 @@ class DatePicker extends PureComponent {
   handleLocalDayClick(date) {
     const { type } = this.props;
     this.showCalendar(false);
+
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(date).format("YYYY-MM")) {
+      if (this.props.typeSelected && this.props.selectedStaff) {
+        this.props.updateAnalytic(date, this.props.selectedStaff, true);
+      } else {
+        this.props.updateAnalytic(date);
+      }
+    }
+
+    console.log('DATE: ', date);
     if (type === 'day') {
       this.props.handleDayClick(date);
     } else {
@@ -61,6 +72,14 @@ class DatePicker extends PureComponent {
   handleLeftArrowClick() {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).subtract(1, 'day')).format("YYYY-MM")) {
+      if (this.props.typeSelected && this.props.selectedStaff) {
+        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'), this.props.selectedStaff, true);
+      } else {
+        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'));
+      }
+    }
+
     if (type === 'day') {
       this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
     } else {
@@ -71,6 +90,15 @@ class DatePicker extends PureComponent {
   handleRightArrowClick() {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
+
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).add(1, 'day')).format("YYYY-MM")) {
+      if (this.props.typeSelected && this.props.selectedStaff) {
+        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'), this.props.selectedStaff, true);
+      } else {
+        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'));
+      }
+    }
+
     if (type === 'day') {
       this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
     } else {
@@ -92,6 +120,17 @@ class DatePicker extends PureComponent {
     });
   };
 
+  getPercent(day) {
+    const { analytic } = this.props;
+
+    if (analytic && day && Object.keys(analytic).length > 0) {
+
+      return Math.ceil((analytic[moment(day).format('YYYY-MM-DD')] && analytic[moment(day).format('YYYY-MM-DD')].percentWorkload || 0) * 10) / 10;
+    }
+    return 0;
+  }
+
+
   render() {
     const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
     const { opacity, hoverRange } = this.state;
@@ -103,7 +142,7 @@ class DatePicker extends PureComponent {
     if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
       const currentStaff = this.props.staff.timetable.find((timetable) => timetable.staffId === this.props.selectedStaff);
 
-      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.startTimeMillis).utc().startOf('day').toDate()));
+      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.endTimeMillis).utc().startOf('day').toDate()));
     }
 
 
@@ -116,7 +155,7 @@ class DatePicker extends PureComponent {
         <React.Fragment>
           {moment(selectedDay).format('dd, DD MMMM YYYY')}
           {clDates && <span className="closedDate-color"
-            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
+                            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
         </React.Fragment>
       );
     } else {
@@ -126,16 +165,19 @@ class DatePicker extends PureComponent {
     }
 
     const days = [];
+    const daysToPercent = [];
 
     if (newSelectedDays && newSelectedDays.length > 0) {
       const startOfMonth = moment(newSelectedDays[0]).startOf('month');
-      const endOfMonth = moment(newSelectedDays[newSelectedDays.length-1]).endOf('month');
+      const endOfMonth = moment(newSelectedDays[newSelectedDays.length - 1]).endOf('month');
 
       let day = startOfMonth;
 
       while (day <= endOfMonth) {
-        if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format("x"))) {
+        if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format('x'))) {
           days.push(day.utc().toDate());
+        } else {
+          daysToPercent.push(day.utc().toDate());
         }
         day = day.clone().add(1, 'd');
       }
@@ -178,6 +220,18 @@ class DatePicker extends PureComponent {
     }
 
 
+    const renderDay = (day, dayModifiers) => {
+      const date = day.getDate();
+      const percent = this.getPercent(day);
+
+      return (
+        <React.Fragment>
+          {date}
+          {this.props.calendar && percent !== 0 && <span style={{color: (percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
+        </React.Fragment>
+      );
+    };
+
     return (
       <div className="select-date">
         <div className="select-inner">
@@ -194,6 +248,7 @@ class DatePicker extends PureComponent {
                 localeUtils={MomentLocaleUtils}
                 showOutsideDays
                 locale={this.props.language.toLowerCase()}
+                renderDay={renderDay}
                 {...weekProps}
                 {...dayPickerProps}
               />

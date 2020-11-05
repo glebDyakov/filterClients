@@ -1,4 +1,5 @@
 import config from 'config';
+import moment from 'moment';
 import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const materialService = {
@@ -25,8 +26,26 @@ export const materialService = {
   getStoreHouseProducts,
   getExpenditureProducts,
   deleteMovement,
+  getMovements,
 
 };
+
+function getMovements(pageNum = 1, searchValue, pageSize = 10) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  console.log(searchValue);
+
+  return fetch(`${origin}${config.warehouseApiUrl}/products/movements?pageSize=${pageSize}&pageNum=${pageNum}&searchValue=${searchValue}&dateFrom=${moment().startOf("year").format("x")}&dateTo=${moment().format('x')}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
 
 function toggleCategory(params, edit) {
   const requestOptions = {

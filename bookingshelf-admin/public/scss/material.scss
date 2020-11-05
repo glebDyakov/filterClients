@@ -24,6 +24,13 @@
   }
 
 
+  #tab5 {
+    position: relative;
+    .paginator-container {
+      bottom: -80px;
+    }
+  }
+
 
     .staff-field {
     overflow: visible !important;
@@ -391,7 +398,6 @@
   #tab1, #tab4, #tab5 {
     //.material-products {
     .tab-content-list {
-      word-break: break-word;
       justify-content: space-between;
       display: flex;
       margin-bottom: 5px;

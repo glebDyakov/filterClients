@@ -2182,14 +2182,16 @@
 .addApointmentEachBlock {
   .removeService-button {
     position: relative;
-
+    width: 40px;
+    height: 40px;
+    right: 0px;
     &::before {
       width: 15px;
       height: 1px;
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      top: 50%;
+      bottom: 50%;
       background: #2A3042;
       transform: translate(-50%, -50%) rotate(45deg);
 
@@ -2200,10 +2202,10 @@
       height: 15px;
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      top: 50%;
+      bottom: 50%;
       background: #2A3042;
-      transform: translate(-50%, 40%) rotate(45deg);
+      transform: translate(-50%, -50%) rotate(45deg);
     }
   }
 
@@ -3103,8 +3105,8 @@
 
   .close {
     position: absolute;
-    top: -10px;
-    right: 10px;
+    top: 0px;
+    right: -10px;
     min-width: unset;
   }
 
