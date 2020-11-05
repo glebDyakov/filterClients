@@ -19,6 +19,7 @@ class WorkTimeModal extends Component {
       period: 0,
       days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
       date: props.date ? props.date : moment().format('DD/MM/YYYY'),
+      isOpenMobileSelectStaff: true,
     };
 
     this.toggleSelectStaff = this.toggleSelectStaff.bind(this);
@@ -205,7 +206,7 @@ class WorkTimeModal extends Component {
 
   render() {
     const weekDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-    const { times, period, edit, activeStaffId } = this.state;
+    const { times, period, edit, activeStaffId, isOpenMobileSelectStaff } = this.state;
 
 
     const staffs = this.props.staff && this.props.staff.staff && this.props.staff.staff.map((item) => {
@@ -219,8 +220,10 @@ class WorkTimeModal extends Component {
 
     console.log(moment(this.props.date, 'DD/MM/YYYY').day());
 
+    console.log(isOpenMobileSelectStaff);
+
     return (
-      <Modal size="md" onClose={this.closeModal} showCloseButton={false} className="mod">
+      <Modal size="md" onClose={this.onClose} showCloseButton={false} className={(isOpenMobileSelectStaff ? "scroll-hidden ": '') +  'mod'}>
 
         <div className="modal-dialog add-work-time-modal">
           <div className="modal-content">
@@ -386,6 +389,53 @@ class WorkTimeModal extends Component {
                 </div>
               </div>
             </div>
+
+            {isOpenMobileSelectStaff &&
+            <div className="mobile-select-staff-modal_wrapper">
+              <div className="mobile-select-staff-modal">
+                <div className="modal-header">
+                  <h4 className="modal-title">Выбор сотрудника</h4>
+                  <button onClick={() => {
+                    this.setState({isOpenMobileSelectStaff: false})
+                  }} className="close"></button>
+                </div>
+                <div className="choose-staff-container">
+                  <div className="staff-container-header d-flex justify-content-between align-items-center">
+                    <a onClick={this.selectAllStaffs} className={'check-all' + (this.props.edit ? ' disabledField' : '')}>Выбрать
+                      всех</a>
+                    <a onClick={this.clearSelectedStaffs}
+                       className={'clear-all' + (this.props.edit ? ' disabledField' : '')}>Очистить</a>
+                  </div>
+
+                  <div className="staffs-list">
+                    {staffs && staffs.map((item) => (
+                      <div className="staff-container-item d-flex justify-content-between align-items-center">
+                        <div className="user-credit d-flex align-items-center">
+                          <img className="staff-image"
+                               src={item.image ? 'data:image/png;base64,' + item.image : `${process.env.CONTEXT}public/img/avatar.svg`}
+                               alt=""/>
+                          <p className="staff-name mb-0">{item.name} {item.surname}</p>
+                        </div>
+                        <div className="col-1 justify-content-end check-box">
+                          <label>
+                            <input disabled={this.props.edit}
+                                   className={'form-check-input' + (this.props.edit ? ' disabledField' : '')}
+                                   type="checkbox"
+                                   checked={this.state.selectedStaffs.includes(item.staffId)}
+                                   onChange={() => this.toggleSelectStaff(item.staffId)}
+                            />
+                            <span className="check-box-circle"></span>
+                          </label>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            }
+
           </div>
         </div>
       </Modal>

@@ -191,8 +191,6 @@ class Index extends PureComponent {
 
     if (this.state.staffFromUrl) {
       this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true);
-    } else {
-      this.updateAnalytic(this.props.match.params.dateFrom || moment());
     }
 
     this.props.dispatch(staffActions.get());
@@ -817,7 +815,6 @@ class Index extends PureComponent {
         this.updateAnalytic(moment(weeks[0]), staffId, true);
       } else {
         url = `workingstaff/0/${moment().format('DD-MM-YYYY')}`;
-        this.updateAnalytic(moment());
       }
 
 
@@ -844,7 +841,9 @@ class Index extends PureComponent {
 
       this.getTimetable(prevDay, selectedDays[0]);
 
-      this.updateAnalytic(selectedDays[0], currentWorkingStaff.staffId, true);
+      this.updateAnalytic(selectedDays[0], JSON.parse((selectedStaff && selectedStaff.length)
+        ? selectedStaff
+        : JSON.stringify(currentWorkingStaff)).staffId, true);
 
 
       url = `staff/${JSON.parse((selectedStaff && selectedStaff.length)
@@ -869,10 +868,6 @@ class Index extends PureComponent {
     let url;
 
     if (typeSelected === 1) {
-      if (updateAnalytic) {
-        this.updateAnalytic(selectedDays[0]);
-      }
-
       const staffWorking = timetable.filter((item) => item.timetables && item.timetables.some((time) => {
         const checkingDay = moment(time.startTimeMillis, 'x').format('DD MM YYYY');
         const currentDay = moment(selectedDays[0]).format('DD MM YYYY');
@@ -891,10 +886,6 @@ class Index extends PureComponent {
       };
       url = `/calendar/workingstaff/0/${moment(selectedDays[0]).format('DD-MM-YYYY')}`;
     } else if (typeSelected === 2) {
-      if (updateAnalytic) {
-        this.updateAnalytic(selectedDays[0]);
-      }
-
       newState = {
         workingStaff: { ...workingStaff, timetable: timetable },
         timetableMessage: timetable.length ? '' : t('Нет работающих сотрудников'),
@@ -911,7 +902,7 @@ class Index extends PureComponent {
         : JSON.stringify(timetable.filter((staff) => staff.staffId === JSON.parse(selectedStaff).staffId));
 
       if (updateAnalytic) {
-        this.updateAnalytic(this.props.match.params.dateFrom, JSON.parse(staff).staffId, true);
+        this.updateAnalytic(moment(selectedDays[0]), JSON.parse(staff).staffId, true);
       }
 
       if (type === 'week') {
