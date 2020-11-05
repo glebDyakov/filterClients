@@ -72,6 +72,14 @@ class DatePicker extends PureComponent {
   handleLeftArrowClick() {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).subtract(1, 'day')).format("YYYY-MM")) {
+      if (this.props.typeSelected && this.props.selectedStaff) {
+        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'), this.props.selectedStaff, true);
+      } else {
+        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'));
+      }
+    }
+
     if (type === 'day') {
       this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
     } else {
@@ -82,6 +90,15 @@ class DatePicker extends PureComponent {
   handleRightArrowClick() {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
+
+    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).add(1, 'day')).format("YYYY-MM")) {
+      if (this.props.typeSelected && this.props.selectedStaff) {
+        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'), this.props.selectedStaff, true);
+      } else {
+        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'));
+      }
+    }
+
     if (type === 'day') {
       this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
     } else {

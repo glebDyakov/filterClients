@@ -374,7 +374,7 @@ class WorkTimeModal extends Component {
                     <a onClick={this.onAddTime} className="add-work-time">Добавить промежуток +</a>}
                   </div>
                 </div>
-                <div className="button-container text-right">
+                <div className="button-container text-center text-md-right">
                   <button onClick={this.props.onClose} className="cancel">Отменить</button>
                   <button
                     disabled={this.state.selectedStaffs.length < 1 || this.state.days.length < 1 || (this.state.countTimes.length !== this.state.times.length) || this.state.times.some((item) => !item.startTimeMillis || !item.endTimeMillis)}

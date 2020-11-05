@@ -7138,6 +7138,46 @@ textarea {
 
     }
 
+    @media screen and (max-width: $mob-width) {
+
+      .inline-group.d-flex {
+        flex-direction: column-reverse;
+      }
+
+      .button-container {
+        max-width: 100%;
+        padding-right: 0 !important;
+        .cancel {
+          display: none;
+        }
+      }
+
+      .work-time-container {
+        min-width: unset !important;
+        padding: 20px 10px 30px !important;
+        max-width: 100%;
+
+
+        .repeat {
+          display: grid;
+          grid-template-columns:140px 300px;
+          grid-template-rows: 40px 30px;
+          grid-column-gap: 0px;
+          grid-row-gap: 0px;
+          max-width: 600px;
+
+          .form-check-inline {
+            max-width: 200px;
+          }
+
+          .form-check-inline:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+          .form-check-inline:nth-child(2) { grid-area: 2 / 2 / 1 / 2; }
+          .form-check-inline:nth-child(3) { grid-area: 2 / 1 / 2 / 2; }
+          .form-check-inline:nth-child(4) { grid-area: 2 / 2 / 3 / 3; }
+        }
+      }
+    }
+
     .add-work-time {
       border: none;
       font-weight: normal;
@@ -7187,6 +7227,7 @@ textarea {
         }
       }
     }
+
 
     .choose-staff-container, .days-of-week {
       .check-box {
@@ -7247,6 +7288,9 @@ textarea {
       min-width: 298px;
       padding: 0;
 
+      @media screen and (max-width: $mob-width) {
+        display: none;
+      }
 
 
       .staff-container-header {
