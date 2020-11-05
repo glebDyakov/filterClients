@@ -194,9 +194,9 @@ class ManagerSettings extends React.Component {
             }} className="custom-select">
 
               <option value="RU">Русский</option>
-              <option value="PL">Польский</option>
-              <option value="EN">Английский</option>
-              <option value="UK">Украинский</option>
+              <option value="PL">Polski</option>
+              <option value="EN">English</option>
+              <option value="UK">Українська</option>
             </select>
           </div>
 
