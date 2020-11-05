@@ -56,8 +56,6 @@ class DatePicker extends PureComponent {
     if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(date).format("YYYY-MM")) {
       if (this.props.typeSelected && this.props.selectedStaff) {
         this.props.updateAnalytic(date, this.props.selectedStaff, true);
-      } else {
-        this.props.updateAnalytic(date);
       }
     }
 
@@ -75,8 +73,6 @@ class DatePicker extends PureComponent {
     if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).subtract(1, 'day')).format("YYYY-MM")) {
       if (this.props.typeSelected && this.props.selectedStaff) {
         this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'), this.props.selectedStaff, true);
-      } else {
-        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'));
       }
     }
 
@@ -94,8 +90,6 @@ class DatePicker extends PureComponent {
     if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).add(1, 'day')).format("YYYY-MM")) {
       if (this.props.typeSelected && this.props.selectedStaff) {
         this.props.updateAnalytic(moment(selectedDay).add(1, 'day'), this.props.selectedStaff, true);
-      } else {
-        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'));
       }
     }
 
@@ -227,7 +221,7 @@ class DatePicker extends PureComponent {
       return (
         <React.Fragment>
           {date}
-          {this.props.calendar && percent !== 0 && <span style={{color: (percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
+          {this.props.typeSelected && this.props.calendar && percent !== 0 && <span style={{color: (percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
         </React.Fragment>
       );
     };

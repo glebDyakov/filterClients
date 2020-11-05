@@ -334,11 +334,11 @@ class Index extends Component {
       resStaff.firstName = staffOptions.firstName;
       resStaff.lastName = staffOptions.lastName;
 
-      if (type === 'week') {
-        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedWeekStart, selectedWeekEnd));
-      } else {
-        this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
-      }
+      // if (type === 'week') {
+      //   this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedWeekStart, selectedWeekEnd));
+      // } else {
+      //   this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(selectedDay, 0));
+      // }
     } else {
       resStaff = staff;
 
