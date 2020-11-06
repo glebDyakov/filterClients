@@ -3,6 +3,7 @@ import Modal from '@trendmicro/react-modal';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { staffActions } from '../../_actions';
 
 
 class WorkTimeModal extends Component {
@@ -15,7 +16,7 @@ class WorkTimeModal extends Component {
       editing_object: props.editing_object && props.editing_object,
       activeStaffId: props.activeStaffId ? props.activeStaffId : -1,
       edit: props.edit,
-      selectedStaffs: props.activeStaffId && props.edit ? [props.activeStaffId] : [],
+      selectedStaffs: props.activeStaffId ? [props.activeStaffId] : [],
       period: 0,
       days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
       date: props.date ? props.date : moment().format('DD/MM/YYYY'),
@@ -54,6 +55,33 @@ class WorkTimeModal extends Component {
   onSaveTime() {
     const { times, date, selectedStaffs, period, days } = this.state;
 
+    const data = selectedStaffs.map((staff) => {
+      return {
+        staffId: staff,
+        timetables: days.flatMap((d) => {
+          const startDate = moment(date, 'DD-MM-YYYY');
+          const matchDay = Number(d);
+          const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
+          const proposedDate = moment(startDate).startOf('week').add(daysToAdd - 1, 'd');
+
+          return times.map((t) => {
+            return {
+              period,
+              endTimeMillis: proposedDate.set({
+                'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                'minute': moment(t.endTimeMillis, 'x').get('minute'),
+              }).format('x'),
+              startTimeMillis: proposedDate.set({
+                'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                'minute': moment(t.startTimeMillis, 'x').get('minute'),
+              }).format('x'),
+            };
+          });
+        }),
+      };
+    });
+
+    this.props.dispatch(staffActions.addArrayWorkingHours(data));
   }
 
   disabledHours(num, key, str) {
@@ -223,7 +251,8 @@ class WorkTimeModal extends Component {
     console.log(isOpenMobileSelectStaff);
 
     return (
-      <Modal size="md" onClose={this.onClose} showCloseButton={false} className={(isOpenMobileSelectStaff ? "scroll-hidden ": '') +  'mod'}>
+      <Modal size="md" onClose={this.onClose} showCloseButton={false}
+             className={(isOpenMobileSelectStaff ? 'scroll-hidden ' : '') + 'mod'}>
 
         <div className="modal-dialog add-work-time-modal">
           <div className="modal-content">
@@ -396,12 +425,13 @@ class WorkTimeModal extends Component {
                 <div className="modal-header">
                   <h4 className="modal-title">Выбор сотрудника</h4>
                   <button onClick={() => {
-                    this.setState({isOpenMobileSelectStaff: false})
+                    this.setState({ isOpenMobileSelectStaff: false });
                   }} className="close"></button>
                 </div>
                 <div className="choose-staff-container">
                   <div className="staff-container-header d-flex justify-content-between align-items-center">
-                    <a onClick={this.selectAllStaffs} className={'check-all' + (this.props.edit ? ' disabledField' : '')}>Выбрать
+                    <a onClick={this.selectAllStaffs}
+                       className={'check-all' + (this.props.edit ? ' disabledField' : '')}>Выбрать
                       всех</a>
                     <a onClick={this.clearSelectedStaffs}
                        className={'clear-all' + (this.props.edit ? ' disabledField' : '')}>Очистить</a>

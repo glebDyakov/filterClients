@@ -19,6 +19,7 @@ export const staffActions = {
   deleteClosedDates,
   getTimetable,
   addWorkingHours,
+  addArrayWorkingHours,
   updateWorkingHours,
   deleteWorkingHours,
   deleteStaff,
@@ -135,6 +136,45 @@ function addWorkingHours(timing, id) {
     return { type: staffConstants.ADD_WORKING_HOURS_FAILURE, error };
   }
 }
+
+function addArrayWorkingHours(workingHours) {
+  return (dispatch) => {
+    // dispatch(request(0));
+
+    staffService.addArrayWorkingHours(workingHours)
+      .then(
+        (timing) => {
+          // dispatch(success(timing, id));
+          console.log(timing);
+          setTimeout(() => {
+            // dispatch(successTime(0));
+          }, 500);
+        },
+        (error) => {
+          // dispatch(failure(error.toString()));
+          // dispatch(alertActions.error(error.toString()));
+          // setTimeout(()=>dispatch(failureTime(0)), 500);
+        },
+      );
+  };
+
+  // function request(id) {
+  //   return { type: staffConstants.STAFF_REQUEST, id };
+  // }
+  // function successTime(id) {
+  //   return { type: staffConstants.STAFF_SUCCESS_TIME, id };
+  // }
+  // function failureTime(id) {
+  //   return { type: staffConstants.STAFF_FAILURE_TIME, id };
+  // }
+  // function success() {
+  //   return { type: staffConstants.ADD_WORKING_HOURS_SUCCESS,};
+  // }
+  // function failure(error) {
+  //   return { type: staffConstants.ADD_WORKING_HOURS_FAILURE, error };
+  // }
+}
+
 
 function updateWorkingHours(timing, id) {
   return (dispatch) => {

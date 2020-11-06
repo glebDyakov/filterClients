@@ -14,6 +14,7 @@ export const staffService = {
   deleteWorkingHours,
   getTimetable,
   addWorkingHours,
+  addArrayWorkingHours,
   updateWorkingHours,
   deleteStaff,
   addUSerByEmail,
@@ -72,6 +73,25 @@ function addWorkingHours(timing, id) {
   };
 
   return fetch(`${origin}${config.apiUrl}/staffs/${id}/timetables`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions))
+    .then((timing) => {
+      return timing;
+    });
+}
+
+function addArrayWorkingHours(workingHours) {
+  const requestOptions = {
+    method: 'POST',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(workingHours),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/staffs/timetables`, requestOptions)
     .then((data) => handleResponse(data, requestOptions))
     .then((timing) => {
       return timing;
