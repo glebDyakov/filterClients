@@ -81,7 +81,7 @@ class WorkTimeModal extends Component {
       };
     });
 
-    this.props.dispatch(staffActions.addArrayWorkingHours(data));
+    // this.props.dispatch(staffActions.addArrayWorkingHours(data));
   }
 
   disabledHours(num, key, str) {
@@ -357,7 +357,7 @@ class WorkTimeModal extends Component {
                     </div>
                   </div>
                   <div className="gap w-100">
-                    <h2 className="work-time-title">Промежуток</h2>
+                    <h2 className="work-time-title">Интервал</h2>
                     {this.state.countTimes.map((item, key) => {
                       return (
                         <div className="gap-item d-flex align-items-center justify-content-between">
@@ -396,14 +396,14 @@ class WorkTimeModal extends Component {
 
                           <a onClick={() => {
                             this.onRemoveTime(key);
-                          }} className="delete-gap">Удалить промежуток</a>
+                          }} className="delete-gap">Удалить интервал</a>
 
                         </div>
 
                       );
                     })}
                     {this.state.countTimes.length < 5 &&
-                    <a onClick={this.onAddTime} className="add-work-time">Добавить промежуток +</a>}
+                    <a onClick={this.onAddTime} className="add-work-time">Добавить интервал +</a>}
                   </div>
                 </div>
                 <div className="button-container text-center text-md-right">
