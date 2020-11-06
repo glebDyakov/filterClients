@@ -130,7 +130,7 @@
   }
   .title-and-main-info{
     overflow: auto;
-    max-height: calc(90vh - 160px);
+    max-height: calc(90vh - 120px);
     @media screen and(max-width: $mob-width) {
       max-height: calc(90vh - 160px);
     }
@@ -402,6 +402,7 @@
       display: flex;
       margin-bottom: 5px;
       position: relative;
+      min-height: 49px;
 
       @media screen and(max-width: 720px) {
         display: block;
