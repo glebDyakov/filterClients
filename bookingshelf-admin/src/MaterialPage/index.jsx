@@ -1287,8 +1287,8 @@ class Index extends Component {
 
     deleteMovement(movement) {
         const {dispatch} = this.props;
-        const type = !!movement.storehouseProductId;
-        const id = type ? movement.storehouseProductId : movement.storehouseProductExpenditureId;
+        const type = movement.movementType === "ARRIVAL";
+        const id = movement.movementType === "ARRIVAL" ? movement.storehouseProductId : movement.storehouseProductExpenditureId;
         console.log('type', type);
         dispatch(materialActions.deleteMovement(id, type));
     }

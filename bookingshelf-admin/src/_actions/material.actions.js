@@ -343,6 +343,7 @@ function expenditureProduct(params, edit, productPageNum = 1) {
           setTimeout(()=>dispatch(successTime(exProd)), 500);
           dispatch(materialActions.getExpenditureProducts());
           dispatch(materialActions.getProducts(productPageNum));
+          dispatch(materialActions.getMovements(productPageNum));
         },
       );
   };
@@ -485,6 +486,7 @@ function storehouseProduct(params, edit, productPage = 1) {
           dispatch(success(product));
           setTimeout(()=>dispatch(successTime(product)), 500);
           dispatch(materialActions.getStoreHouseProducts());
+          dispatch(materialActions.getMovements(productPage));
           dispatch(materialActions.getProducts(productPage));
         },
       );
@@ -506,8 +508,7 @@ function deleteMovement(id, type) {
     materialService.deleteMovement(id, type)
       .then(
         (closedDates) => {
-          dispatch(materialActions.getStoreHouseProducts());
-          dispatch(materialActions.getExpenditureProducts());
+          dispatch(materialActions.getMovements());
         },
         (error) => dispatch(failure(id, error)),
       );
