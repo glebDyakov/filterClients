@@ -453,7 +453,7 @@ class Index extends Component {
               onClick={this.handleOpenHeaderDropdown}
               className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
             >{(activeTab === 'workinghours' ? t('Рабочие часы')
-                : (activeTab === 'staff' ? t('Сотрудники')
+                : (activeTab === 'staff' ? (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')
                   : (activeTab === 'holidays' ? t('Выходные дни')
                     : (activeTab === 'permissions' ? t('Доступ')
                       : (activeTab === 'feedback' ? t('Отзывы') : '')))))}</p>
