@@ -146,17 +146,17 @@ class MovementList extends Component {
               className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</span> : '/ -'}
           </p>
         </div>
-        <div className="delete clientEditWrapper">
-          <a
-            className="clientEdit"
-            onClick={() => movement.movementType && movement.movementType === "ARRIVAL"  ? toggleStorehouseProduct(movement) : toggleExProd(movement)}
-          />
-        </div>
-        <div className="delete dropdown">
-          <a className="delete-icon menu-delete-icon" onClick={this.openDeleteModal}>
-            <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>
-          </a>
-        </div>
+        {/*<div className="delete clientEditWrapper">*/}
+        {/*  <a*/}
+        {/*    className="clientEdit"*/}
+        {/*    onClick={() => movement.movementType && movement.movementType === "ARRIVAL"  ? toggleStorehouseProduct(movement) : toggleExProd(movement)}*/}
+        {/*  />*/}
+        {/*</div>*/}
+        {/*<div className="delete dropdown">*/}
+        {/*  <a className="delete-icon menu-delete-icon" onClick={this.openDeleteModal}>*/}
+        {/*    <img src={`${process.env.CONTEXT}public/img/delete_new.svg`} alt=""/>*/}
+        {/*  </a>*/}
+        {/*</div>*/}
 
         {this.state.isOpenDeleteModal &&
         <ActionModal
