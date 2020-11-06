@@ -16,6 +16,21 @@
   }
 }
 
+.sidebar .beta {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: 'Beta';
+    top: -5px;
+    right: -20px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 14px;
+  }
+}
+
 .delimiter {
   p, span {
     font-weight: normal;

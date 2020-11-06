@@ -961,11 +961,11 @@ class Index extends Component {
                                                     /></p>
                                                 </div>
 
-                                                <div className="delete clientEditWrapper"></div>
-                                                <div className="delete dropdown">
+                                                {/*<div className="delete clientEditWrapper"></div>*/}
+                                                {/*<div className="delete dropdown">*/}
 
-                                                    <div className="dropdown-menu delete-menu"></div>
-                                                </div>
+                                                {/*    <div className="dropdown-menu delete-menu"></div>*/}
+                                                {/*</div>*/}
                                             </div>}
 
                                             {movingList}

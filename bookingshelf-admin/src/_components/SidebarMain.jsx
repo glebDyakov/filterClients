@@ -625,9 +625,10 @@ class SidebarMain extends React.Component {
                                         <img
                                           src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                           alt=""/>
-                                        <span>{item.id === 'staff_menu_id' ? (
+                                        <span className={item.id === 'warehouse_menu_id' ? "beta": ''}>{item.id === 'staff_menu_id' ? (
                                           (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')
                                         ) : t(item.name)}</span>
+
                                         {keyStore === 0 &&
                                             ((count && count.appointments && count.appointments.count > 0) ||
                                                 (count && count.canceled && count.canceled.count > 0) ||
