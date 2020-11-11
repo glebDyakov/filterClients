@@ -241,14 +241,14 @@
   }
 
 
-  .new-staff-modal {
+  .add-work-time-modal, .new-staff-modal {
     .modal-body {
       background-color: #2A3042 !important;
 
       .container-fluid {
         background-color: #2A3042 !important;
 
-        p, label, input, select, select option {
+        h1, h2, h3, h4, h5, h6, p, label, input, select, select option {
           color: #fff !important;
         }
 

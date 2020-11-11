@@ -707,5 +707,20 @@
   "Детали": "Details",
   "Списание на услугу": "Write-off for the service",
   "Польша": "Poland",
-  "Чехия": "Czech"
+  "Чехия": "Czech",
+  "Отменить": "Cancel",
+  "Добавить интервал +": "Add spacing +",
+  "Удалить интервал": "Delete interval",
+  "Интервал": "Interval",
+  "Дни недели": "Days of the week",
+  "1 через 1": "1 through 1",
+  "2 через 2": "2 through 2",
+  "Редактировать часы работы": "Edit opening hours",
+  "Вс": "Sun",
+  "Пн": "Mon",
+  "Вт": "Tue",
+  "Ср": "Wed",
+  "Чт": "Thu",
+  "Пт": "Fri",
+  "Сб": "Sat"
 }

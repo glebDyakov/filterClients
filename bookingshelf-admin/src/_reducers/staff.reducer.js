@@ -41,7 +41,6 @@ export function staff(state = initialState, action) {
         status: 209,
       }
     case staffConstants.ADD_ARRAY_WORKING_HOURS_REQUEST:
-      debugger
       return {
         ...state,
         status: 208,

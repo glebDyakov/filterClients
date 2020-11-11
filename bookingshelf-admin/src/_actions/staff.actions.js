@@ -141,7 +141,6 @@ function addWorkingHours(timing, id) {
 function addArrayWorkingHours(workingHours) {
   return (dispatch) => {
     dispatch(request());
-    debugger
 
     staffService.addArrayWorkingHours(workingHours)
       .then(
