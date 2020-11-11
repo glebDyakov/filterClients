@@ -108,7 +108,6 @@ class ManagerSettings extends React.Component {
     const body = JSON.parse(JSON.stringify(activeStaff));
     body.languageCode = lang.toUpperCase();
     this.props.dispatch(staffActions.update(JSON.stringify([body]), activeStaff.staffId));
-
   }
 
   addManager() {

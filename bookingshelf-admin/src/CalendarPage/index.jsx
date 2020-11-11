@@ -326,6 +326,12 @@ class Index extends PureComponent {
       });
     }
 
+    if (JSON.stringify(this.props.appointments) !== JSON.stringify(newProps.appointments)) {
+      if (this.state.staffFromUrl) {
+        setTimeout(() => this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true));
+      }
+    }
+
     // const isLoading = newProps.staff.isLoading || newProps.staff.isLoadingTimetable
     // || newProps.staff.isLoadingAvailableTime;
     if ((newProps.selectedDays[0] !== this.props.selectedDays[0]) ||
