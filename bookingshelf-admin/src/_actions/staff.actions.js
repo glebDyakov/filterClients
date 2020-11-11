@@ -20,7 +20,7 @@ export const staffActions = {
   getTimetable,
   addWorkingHours,
   addArrayWorkingHours,
-  addArrayWorkingTimeSuccess,
+  addArrayWorkingHoursSuccess,
   updateWorkingHours,
   deleteWorkingHours,
   deleteStaff,
@@ -140,13 +140,13 @@ function addWorkingHours(timing, id) {
 
 function addArrayWorkingHours(workingHours) {
   return (dispatch) => {
-    // dispatch(request(0));
+    dispatch(request());
+    debugger
 
     staffService.addArrayWorkingHours(workingHours)
       .then(
         (timing) => {
-          // dispatch(success(timing, id));
-          console.log(timing);
+          dispatch(success());
           setTimeout(() => {
             dispatch(successTime(0));
           }, 500);
@@ -159,25 +159,25 @@ function addArrayWorkingHours(workingHours) {
       );
   };
 
-  // function request(id) {
-  //   return { type: staffConstants.STAFF_REQUEST, id };
-  // }
+  function request() {
+    return { type: staffConstants.ADD_ARRAY_WORKING_HOURS_REQUEST };
+  }
   function successTime() {
-    return { type: staffConstants.ADD_ARRAY_WORKING_TIME };
+    return { type: staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS_TIME };
   }
   // function failureTime(id) {
   //   return { type: staffConstants.STAFF_FAILURE_TIME, id };
   // }
-  // function success() {
-  //   return { type: staffConstants.ADD_WORKING_HOURS_SUCCESS,};
-  // }
+  function success() {
+    return { type: staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS };
+  }
   // function failure(error) {
   //   return { type: staffConstants.ADD_WORKING_HOURS_FAILURE, error };
   // }
 }
 
-function addArrayWorkingTimeSuccess() {
-  return { type: staffConstants.ADD_ARRAY_WORKING_TIME_SUCCESS };
+function addArrayWorkingHoursSuccess() {
+  return { type: staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS_TIME };
 }
 function updateWorkingHours(timing, id) {
   return (dispatch) => {

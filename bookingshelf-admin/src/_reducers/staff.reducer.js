@@ -35,15 +35,24 @@ export function staff(state = initialState, action) {
         adding: true,
         isLoadingStaff: true,
       };
-    case staffConstants.ADD_ARRAY_WORKING_TIME_SUCCESS:
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS_TIME:
       return {
         ...state,
-        addArrayWorkingTime: false,
+        status: 209,
       }
-    case staffConstants.ADD_ARRAY_WORKING_TIME:
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_REQUEST:
+      debugger
       return {
         ...state,
-        addArrayWorkingTime: true,
+        status: 208,
+        adding: true,
+      }
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS:
+      return {
+        ...state,
+        status: 200,
+        addArrayWorkingHours: true,
+        adding: false,
       }
     case staffConstants.STAFF_REQUEST:
       return {

@@ -228,13 +228,6 @@ class Index extends Component {
       this.queryInitData();
     }
 
-    if ( newProps.staff.addArrayWorkingTime && (this.props.staff.addArrayWorkingTime !== newProps.staff.addArrayWorkingTime)) {
-      this.updateTimetable();
-      this.setState({ workTimeModalMessage: true });
-      setTimeout(() => this.setState({ workTimeModal: false, workTimeModalMessage: false }), 3000);
-      this.props.dispatch(staffActions.addArrayWorkingTimeSuccess());
-    }
-
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
@@ -247,6 +240,7 @@ class Index extends Component {
     if (this.props.staff.status !== newProps.staff.status) {
       this.setState({
         addWorkTime: newProps.staff.status && newProps.staff.status === 209 ? false : this.state.addWorkTime,
+        workTimeModal: newProps.staff.status && newProps.staff.status === 209 ? false : this.state.workTimeModal,
       });
     }
 
