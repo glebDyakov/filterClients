@@ -228,6 +228,13 @@ class Index extends Component {
       this.queryInitData();
     }
 
+    if ( newProps.staff.addArrayWorkingTime && (this.props.staff.addArrayWorkingTime !== newProps.staff.addArrayWorkingTime)) {
+      this.updateTimetable();
+      this.setState({ workTimeModalMessage: true });
+      setTimeout(() => this.setState({ workTimeModal: false, workTimeModalMessage: false }), 3000);
+      this.props.dispatch(staffActions.addArrayWorkingTimeSuccess());
+    }
+
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
@@ -416,21 +423,21 @@ class Index extends Component {
               </li>
             </ul>
 
-            {activeTab === 'workinghours' &&
-            <div ref={this.setWorkTimeWrapperRef}>
-              <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"
-                 onClick={this.handleOpenDropdownMenu}/>
-              <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
-                <div className="buttons">
-                  <button type="button" onClick={() => {
-                    this.setState({workTimeModal: true})
-                  }} className="button new-holiday">
-                    {t("Добавить часы работы")}
-                  </button>
-                </div>
-                <div className="arrow"></div>
-              </div>
-            </div>}
+            {/*{activeTab === 'workinghours' &&*/}
+            {/*<div ref={this.setWorkTimeWrapperRef}>*/}
+            {/*  <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"*/}
+            {/*     onClick={this.handleOpenDropdownMenu}/>*/}
+            {/*  <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>*/}
+            {/*    <div className="buttons">*/}
+            {/*      <button type="button" onClick={() => {*/}
+            {/*        this.setState({workTimeModal: true})*/}
+            {/*      }} className="button new-holiday">*/}
+            {/*        {t("Добавить часы работы")}*/}
+            {/*      </button>*/}
+            {/*    </div>*/}
+            {/*    <div className="arrow"></div>*/}
+            {/*  </div>*/}
+            {/*</div>}*/}
 
 
 
@@ -823,13 +830,13 @@ class Index extends Component {
             {activeTab === 'staff' &&
               <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
                 <div className="buttons">
-                  {!(companyTypeId === 2 || companyTypeId === 3) &&
-                      <button className="button new-staff" type="button"
-                        onClick={() => this.handleClick(null, true)}
-                      >
-                        {t("Пригласить по Email")}
-                      </button>
-                  }
+                  {/*{!(companyTypeId === 2 || companyTypeId === 3) &&*/}
+                  {/*    <button className="button new-staff" type="button"*/}
+                  {/*      onClick={() => this.handleClick(null, true)}*/}
+                  {/*    >*/}
+                  {/*      {t("Пригласить по Email")}*/}
+                  {/*    </button>*/}
+                  {/*}*/}
                   <button className="button new-staff" type="button"
                     onClick={() => this.handleClick(null, false)}
                   >
@@ -859,6 +866,8 @@ class Index extends Component {
 
         {this.state.workTimeModal &&
         <WorkTimeModal
+          t={t}
+          workTimeModalMessage={this.state.workTimeModalMessage}
           onClose={() => this.setState({workTimeModal: false})}
           activeStaffId={currentStaff.staffId}
           date={date}

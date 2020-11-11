@@ -81,7 +81,7 @@ class WorkTimeModal extends Component {
       };
     });
 
-    // this.props.dispatch(staffActions.addArrayWorkingHours(data));
+    this.props.dispatch(staffActions.addArrayWorkingHours(data));
   }
 
   disabledHours(num, key, str) {
@@ -233,6 +233,7 @@ class WorkTimeModal extends Component {
 
 
   render() {
+    const { workTimeModalMessage, t } = this.props;
     const weekDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
     const { times, period, edit, activeStaffId, isOpenMobileSelectStaff } = this.state;
 
@@ -262,40 +263,40 @@ class WorkTimeModal extends Component {
             </div>
             <div className="form-group d-flex">
 
-              <div className="choose-staff-container col-12 col-md-3">
-                <div className="staff-container-header d-flex justify-content-between align-items-center">
-                  <a onClick={this.selectAllStaffs} className={'check-all' + (this.props.edit ? ' disabledField' : '')}>Выбрать
-                    всех</a>
-                  <a onClick={this.clearSelectedStaffs}
-                     className={'clear-all' + (this.props.edit ? ' disabledField' : '')}>Очистить</a>
-                </div>
+              {/*<div className="choose-staff-container col-12 col-md-3">*/}
+              {/*  <div className="staff-container-header d-flex justify-content-between align-items-center">*/}
+              {/*    <a onClick={this.selectAllStaffs} className={'check-all' + (this.props.edit ? ' disabledField' : '')}>Выбрать*/}
+              {/*      всех</a>*/}
+              {/*    <a onClick={this.clearSelectedStaffs}*/}
+              {/*       className={'clear-all' + (this.props.edit ? ' disabledField' : '')}>Очистить</a>*/}
+              {/*  </div>*/}
 
-                <div className="staffs-list">
-                  {staffs && staffs.map((item) => (
-                    <div className="staff-container-item d-flex justify-content-between align-items-center">
-                      <div className="user-credit d-flex align-items-center">
-                        <img className="staff-image"
-                             src={item.image ? 'data:image/png;base64,' + item.image : `${process.env.CONTEXT}public/img/avatar.svg`}
-                             alt=""/>
-                        <p className="staff-name mb-0">{item.name} {item.surname}</p>
-                      </div>
-                      <div className="col-2 justify-content-end check-box">
-                        <label>
-                          <input disabled={this.props.edit}
-                                 className={'form-check-input' + (this.props.edit ? ' disabledField' : '')}
-                                 type="checkbox"
-                                 checked={this.state.selectedStaffs.includes(item.staffId)}
-                                 onChange={() => this.toggleSelectStaff(item.staffId)}
-                          />
-                          <span className="check-box-circle"></span>
-                        </label>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/*  <div className="staffs-list">*/}
+              {/*    {staffs && staffs.map((item) => (*/}
+              {/*      <div className="staff-container-item d-flex justify-content-between align-items-center">*/}
+              {/*        <div className="user-credit d-flex align-items-center">*/}
+              {/*          <img className="staff-image"*/}
+              {/*               src={item.image ? 'data:image/png;base64,' + item.image : `${process.env.CONTEXT}public/img/avatar.svg`}*/}
+              {/*               alt=""/>*/}
+              {/*          <p className="staff-name mb-0">{item.name} {item.surname}</p>*/}
+              {/*        </div>*/}
+              {/*        <div className="col-2 justify-content-end check-box">*/}
+              {/*          <label>*/}
+              {/*            <input disabled={this.props.edit}*/}
+              {/*                   className={'form-check-input' + (this.props.edit ? ' disabledField' : '')}*/}
+              {/*                   type="checkbox"*/}
+              {/*                   checked={this.state.selectedStaffs.includes(item.staffId)}*/}
+              {/*                   onChange={() => this.toggleSelectStaff(item.staffId)}*/}
+              {/*            />*/}
+              {/*            <span className="check-box-circle"></span>*/}
+              {/*          </label>*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    ))}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
 
-              <div className="work-time-container col-12 col-md-9">
+              <div className="work-time-container col-12 col-md-12">
                 <h2 className="work-time-title">Повтор</h2>
                 <div className="check-box repeat">
                   <div className="form-check-inline">
@@ -407,11 +408,14 @@ class WorkTimeModal extends Component {
                   </div>
                 </div>
                 <div className="button-container text-center text-md-right">
+                  {workTimeModalMessage &&
+                  <p className="alert-success text-left p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>
+                  }
                   <button onClick={this.props.onClose} className="cancel">Отменить</button>
                   <button
-                    disabled={this.state.selectedStaffs.length < 1 || this.state.days.length < 1 || (this.state.countTimes.length !== this.state.times.length) || this.state.times.some((item) => !item.startTimeMillis || !item.endTimeMillis)}
+                    disabled={this.state.selectedStaffs.length < 1 || (this.state.countTimes.length !== this.state.times.length) || this.state.times.some((item) => !item.startTimeMillis || !item.endTimeMillis)}
                     onClick={this.onSaveTime}
-                    className={'button ml-auto' + (this.state.selectedStaffs.length < 1 || this.state.days.length < 1 || (this.state.countTimes.length !== this.state.times.length) || this.state.times.some((item) => !item.startTimeMillis || !item.endTimeMillis) ? ' disabledField' : '')}
+                    className={'button ml-auto' + (this.state.selectedStaffs.length < 1 || (this.state.countTimes.length !== this.state.times.length) || this.state.times.some((item) => !item.startTimeMillis || !item.endTimeMillis) ? ' disabledField' : '')}
                     type="button"
                     data-dismiss="modal">Сохранить
                   </button>

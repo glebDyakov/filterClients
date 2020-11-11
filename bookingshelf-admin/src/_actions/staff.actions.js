@@ -20,6 +20,7 @@ export const staffActions = {
   getTimetable,
   addWorkingHours,
   addArrayWorkingHours,
+  addArrayWorkingTimeSuccess,
   updateWorkingHours,
   deleteWorkingHours,
   deleteStaff,
@@ -147,7 +148,7 @@ function addArrayWorkingHours(workingHours) {
           // dispatch(success(timing, id));
           console.log(timing);
           setTimeout(() => {
-            // dispatch(successTime(0));
+            dispatch(successTime(0));
           }, 500);
         },
         (error) => {
@@ -161,9 +162,9 @@ function addArrayWorkingHours(workingHours) {
   // function request(id) {
   //   return { type: staffConstants.STAFF_REQUEST, id };
   // }
-  // function successTime(id) {
-  //   return { type: staffConstants.STAFF_SUCCESS_TIME, id };
-  // }
+  function successTime() {
+    return { type: staffConstants.ADD_ARRAY_WORKING_TIME };
+  }
   // function failureTime(id) {
   //   return { type: staffConstants.STAFF_FAILURE_TIME, id };
   // }
@@ -175,7 +176,9 @@ function addArrayWorkingHours(workingHours) {
   // }
 }
 
-
+function addArrayWorkingTimeSuccess() {
+  return { type: staffConstants.ADD_ARRAY_WORKING_TIME_SUCCESS };
+}
 function updateWorkingHours(timing, id) {
   return (dispatch) => {
     dispatch(request(0));

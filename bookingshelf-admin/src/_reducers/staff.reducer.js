@@ -35,6 +35,16 @@ export function staff(state = initialState, action) {
         adding: true,
         isLoadingStaff: true,
       };
+    case staffConstants.ADD_ARRAY_WORKING_TIME_SUCCESS:
+      return {
+        ...state,
+        addArrayWorkingTime: false,
+      }
+    case staffConstants.ADD_ARRAY_WORKING_TIME:
+      return {
+        ...state,
+        addArrayWorkingTime: true,
+      }
     case staffConstants.STAFF_REQUEST:
       return {
         ...state,
