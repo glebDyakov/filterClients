@@ -237,6 +237,11 @@ class Index extends Component {
       }
     }
 
+    if (newProps.staff.addArrayWorkingHours &&
+      (this.props.staff.addArrayWorkingHours !== newProps.staff.addArrayWorkingHours)) {
+      this.updateTimetable();
+    }
+
     if (this.props.staff.status !== newProps.staff.status) {
       this.setState({
         addWorkTime: newProps.staff.status && newProps.staff.status === 209 ? false : this.state.addWorkTime,

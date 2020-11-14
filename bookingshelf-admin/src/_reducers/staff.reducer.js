@@ -39,10 +39,12 @@ export function staff(state = initialState, action) {
       return {
         ...state,
         status: 209,
+        addArrayWorkingHours: true,
       }
     case staffConstants.ADD_ARRAY_WORKING_HOURS_REQUEST:
       return {
         ...state,
+        addArrayWorkingHours: false,
         status: 208,
         adding: true,
       }
@@ -50,7 +52,6 @@ export function staff(state = initialState, action) {
       return {
         ...state,
         status: 200,
-        addArrayWorkingHours: true,
         adding: false,
       }
     case staffConstants.STAFF_REQUEST:

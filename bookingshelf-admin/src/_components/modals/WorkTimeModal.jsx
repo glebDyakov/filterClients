@@ -16,6 +16,7 @@ class WorkTimeModal extends Component {
       editing_object: props.editing_object && props.editing_object,
       activeStaffId: props.activeStaffId ? props.activeStaffId : -1,
       edit: props.edit,
+      deletedCountTimes: [],
       selectedStaffs: props.activeStaffId ? [props.activeStaffId] : [],
       period: 0,
       days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
