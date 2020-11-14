@@ -398,6 +398,7 @@ class WorkTimeModal extends Component {
                                 <input className="form-check-input" type="checkbox"
                                        checked={this.state.days.includes(key)}
                                        onChange={() => this.toggleDays(key)}
+                                       disabled={this.state.edit}
                                 />
                                 <span className="check-box-circle" />
                               </label>
