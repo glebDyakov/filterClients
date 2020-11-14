@@ -60,8 +60,26 @@ class WorkTimeModal extends Component {
     }
   }
 
+  finalRemove() {
+    const { deletedCountTimes } = this.state;
+    deletedCountTimes.forEach((item, i) => {
+      setTimeout(() => {
+        this.onDelete(item.startTimeMillis, item.endTimeMillis, item.staffTimetableId);
+      }, (i * 100));
+    });
+  }
+
+  onDelete(startDay, endOfDay, staffTimetableId) {
+    const { deleteWorkingHours } = this.props;
+    const { selectedStaffs, period } = this.state;
+
+    deleteWorkingHours(selectedStaffs[0], startDay, endOfDay, staffTimetableId);
+  }
+
   onSaveTime() {
-    const { times, date, selectedStaffs, period, days } = this.state;
+    const { times, date, selectedStaffs, period, days, edit } = this.state;
+
+    this.finalRemove()
 
     const data = selectedStaffs.map((staff) => {
       return {
@@ -75,6 +93,7 @@ class WorkTimeModal extends Component {
           const updatedTimetables = [];
           times.forEach((t) => {
             updatedTimetables.push({
+              staffTimetableId: edit ? t.staffTimetableId : null,
               period,
               endTimeMillis: proposedDate.set({
                 'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -88,6 +107,7 @@ class WorkTimeModal extends Component {
             if (period === 4) {
               const updatedDate = moment(proposedDate.format('x'), 'x').add(1, 'day');
               updatedTimetables.push({
+                staffTimetableId: edit ? t.staffTimetableId : null,
                 period,
                 endTimeMillis: updatedDate.set({
                   'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -105,7 +125,11 @@ class WorkTimeModal extends Component {
       };
     });
 
-    this.props.dispatch(staffActions.addArrayWorkingHours(data));
+    if (edit) {
+      this.props.dispatch(staffActions.updateArrayWorkingHours(data));
+    } else {
+      this.props.dispatch(staffActions.addArrayWorkingHours(data));
+    }
   }
 
   disabledHours(num, key, str) {

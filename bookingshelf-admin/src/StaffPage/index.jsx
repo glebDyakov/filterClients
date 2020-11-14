@@ -870,6 +870,7 @@ class Index extends Component {
           onClose={() => this.setState({workTimeModal: false})}
           activeStaffId={currentStaff.staffId}
           date={date}
+          deleteWorkingHours={this.deleteWorkingHours}
           editWorkingHours={editWorkingHours}
           editing_object={editing_object}
           edit={editing_object && editing_object.length > 0}
