@@ -72,8 +72,9 @@ class WorkTimeModal extends Component {
           const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
           const proposedDate = moment(startDate).startOf('week').add(daysToAdd - 1, 'd');
 
-          return times.map((t) => {
-            return {
+          const updatedTimetables = [];
+          times.forEach((t) => {
+            updatedTimetables.push({
               period,
               endTimeMillis: proposedDate.set({
                 'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -83,8 +84,23 @@ class WorkTimeModal extends Component {
                 'hour': moment(t.startTimeMillis, 'x').get('hour'),
                 'minute': moment(t.startTimeMillis, 'x').get('minute'),
               }).format('x'),
-            };
+            });
+            if (period === 4) {
+              const updatedDate = moment(proposedDate.format('x'), 'x').add(1, 'day');
+              updatedTimetables.push({
+                period,
+                endTimeMillis: updatedDate.set({
+                  'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                  'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                }).format('x'),
+                startTimeMillis: updatedDate.set({
+                  'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                  'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                }).format('x'),
+              });
+            }
           });
+          return updatedTimetables;
         }),
       };
     });
