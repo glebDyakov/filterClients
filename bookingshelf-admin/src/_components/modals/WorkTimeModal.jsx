@@ -351,6 +351,7 @@ class WorkTimeModal extends Component {
                   <div className="check-box repeat">
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
+                             disabled={this.state.edit}
                              id="radio100" checked={period === 0} onChange={() => {
                         this.setState({ period: 0 });
                       }}/>
@@ -359,6 +360,7 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
+                             disabled={this.state.edit}
                              id="radio101" checked={period === 7} onChange={() => {
                         this.setState({ period: 7 });
                       }}/>
@@ -367,6 +369,7 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
+                             disabled={this.state.edit}
                              id="radio106" checked={period === 2} onChange={() => {
                         this.setState({ period: 2, days: [moment(this.props.date, 'DD/MM/YYYY').day()] });
                       }}
@@ -376,6 +379,7 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
+                             disabled={this.state.edit}
                              id="radio105" checked={period === 4} onChange={() => {
                         this.setState({ period: 4, days: [moment(this.props.date, 'DD/MM/YYYY').day()] });
                       }}/>
