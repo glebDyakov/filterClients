@@ -76,7 +76,7 @@ const CellAppointmentModal = (props) => {
 
           {isOpenDropdownSelectClientStatus &&
           <div className="dropdown-selected">
-            {!isStartedVisit && appointment.clientConfirmed &&
+            {!isStartedVisit && appointment.status === 'O' &&
             <p className="dropdown-item" onClick={() => {
               setSelectedItem(true);
               const params = currentAppointments.map((item) => {
@@ -85,7 +85,7 @@ const CellAppointmentModal = (props) => {
                   clientConfirmed: false,
                 };
               });
-              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
 
               handleCloseSelectDropdown();
             }
@@ -95,7 +95,7 @@ const CellAppointmentModal = (props) => {
             }
 
 
-            {!isStartedVisit && !appointment.clientConfirmed &&
+            {!isStartedVisit && appointment.status === 'W' &&
             <p className="dropdown-item" onClick={() => {
               setSelectedItem('clientConfirm');
               const params = currentAppointments.map((item) => {
@@ -104,14 +104,14 @@ const CellAppointmentModal = (props) => {
                   clientConfirmed: true,
                 };
               });
-              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }
             }>
               {t('Клиент подтвердил')}
             </p>}
 
-            {isStartedVisit && !appointment.clientNotCome &&
+            {isStartedVisit && appointment.status === 'C' &&
             <p className="dropdown-item" onClick={() => {
               setSelectedItem('clientNotCome');
               const newClientNotCome = true;
@@ -121,13 +121,13 @@ const CellAppointmentModal = (props) => {
                   clientNotCome: newClientNotCome,
                 };
               });
-              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
               {t('Клиент не пришел')}
             </p>}
 
-            {isStartedVisit && appointment.clientNotCome &&
+            {isStartedVisit && appointment.status === 'N' &&
             <p className="dropdown-item" onClick={() => {
               setSelectedItem('clientNotCome');
               const newClientNotCome = false;
@@ -137,7 +137,7 @@ const CellAppointmentModal = (props) => {
                   clientNotCome: newClientNotCome,
                 };
               });
-              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
               {t('Клиент пришел')}
