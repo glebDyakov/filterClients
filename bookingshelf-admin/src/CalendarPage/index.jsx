@@ -211,9 +211,9 @@ class Index extends PureComponent {
 
   updateAnalytic(date, staffId, isStaff = false) {
     if (isStaff) {
-      this.props.dispatch(calendarActions.getStaffCalendarLoad(moment(date, 'DD-MM-YYYY').startOf('month').format('x'), moment(date, 'DD-MM-YYYY').endOf('month').format('x'), staffId));
+      this.props.dispatch(calendarActions.getStaffCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x'), staffId));
     } else {
-      this.props.dispatch(calendarActions.getCalendarLoad(moment(date, 'DD-MM-YYYY').startOf('month').format('x'), moment(date, 'DD-MM-YYYY').endOf('month').format('x')));
+      this.props.dispatch(calendarActions.getCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x')));
     }
   }
 

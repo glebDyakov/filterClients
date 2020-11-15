@@ -119,25 +119,31 @@ class DatePicker extends PureComponent {
 
     if (analytic && day && Object.keys(analytic).length > 0) {
 
-      return Math.ceil((analytic[moment(day).format('YYYY-MM-DD')] && analytic[moment(day).format('YYYY-MM-DD')].percentWorkload || 0) * 10) / 10;
+
+      const analyticDay = analytic[moment(day).format('YYYY-MM-DD')]
+      if (!analyticDay || !analyticDay.availableTime) {
+        return null;
+      }
+
+      return Math.ceil((analyticDay && analyticDay.percentWorkload || 0) * 10) / 10;
     }
     return 0;
   }
 
 
   render() {
-    const { type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
+    const { analytic, type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
     const { opacity, hoverRange } = this.state;
     let weekProps = {};
     let selectedDaysText;
-    let newSelectedDays = [];
-
-
-    if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
-      const currentStaff = this.props.staff.timetable.find((timetable) => timetable.staffId === this.props.selectedStaff);
-
-      newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.endTimeMillis).utc().startOf('day').toDate()));
-    }
+    // let newSelectedDays = [];
+    //
+    //
+    // if (this.props.staff && this.props.typeSelected === true && this.props.selectedStaff && this.props.staff.timetable && this.props.authentication) {
+    //   const currentStaff = this.props.staff.timetable.find((timetable) => timetable.staffId === this.props.selectedStaff);
+    //
+    //   newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.endTimeMillis).utc().startOf('day').toDate()));
+    // }
 
 
     if (type === 'day') {
@@ -159,23 +165,33 @@ class DatePicker extends PureComponent {
     }
 
     const days = [];
-    const daysToPercent = [];
+    // const daysToPercent = [];
 
-    if (newSelectedDays && newSelectedDays.length > 0) {
-      const startOfMonth = moment(newSelectedDays[0]).startOf('month');
-      const endOfMonth = moment(newSelectedDays[newSelectedDays.length - 1]).endOf('month');
+    // if (newSelectedDays && newSelectedDays.length > 0) {
+    //   const startOfMonth = moment(newSelectedDays[0]).startOf('month');
+    //   const endOfMonth = moment(newSelectedDays[newSelectedDays.length - 1]).endOf('month');
+    //
+    //   let day = startOfMonth;
+    //
+    //   while (day <= endOfMonth) {
+    //     if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format('x'))) {
+    //       days.push(day.utc().toDate());
+    //     } else {
+    //       daysToPercent.push(day.utc().toDate());
+    //     }
+    //     day = day.clone().add(1, 'd');
+    //   }
+    // }
 
-      let day = startOfMonth;
-
-      while (day <= endOfMonth) {
-        if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format('x'))) {
-          days.push(day.utc().toDate());
-        } else {
-          daysToPercent.push(day.utc().toDate());
+    if (this.props.typeSelected && analytic) {
+      Object.entries(analytic).forEach(([key, value]) => {
+        if (!value.availableTime) {
+          days.push(moment(key, 'YYYY-MM-DD').endOf('day').toDate());
         }
-        day = day.clone().add(1, 'd');
-      }
+      });
     }
+
+    debugger
 
     if (type === 'week') {
       const daysAreSelected = selectedDays && selectedDays.length > 0;
@@ -220,13 +236,13 @@ class DatePicker extends PureComponent {
 
       console.log("DAYS", days, date);
 
-     const isWorkingDay = newSelectedDays.some(d => moment(d).format("DD-MM-YYYY") === moment(day).format("DD-MM-YYYY"));
-      console.log(isWorkingDay);
+     // const isWorkingDay = newSelectedDays.some(d => moment(d).format("DD-MM-YYYY") === moment(day).format("DD-MM-YYYY"));
+     //  console.log(isWorkingDay);
 
       return (
         <React.Fragment>
           {date}
-          {this.props.typeSelected && this.props.calendar && isWorkingDay && <span style={{color: (percent === 0 ? "#555B6D" : percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
+          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span style={{color: (percent === 0 ? "#555B6D" : percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
         </React.Fragment>
       );
     };
