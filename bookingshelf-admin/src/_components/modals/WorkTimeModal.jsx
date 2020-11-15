@@ -18,7 +18,7 @@ class WorkTimeModal extends Component {
       edit: props.edit,
       deletedCountTimes: [],
       selectedStaffs: props.activeStaffId ? [props.activeStaffId] : [],
-      period: 0,
+      period: props.edit ? props.editing_object[0].period : 0,
       days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
       date: props.date ? props.date : moment().format('DD/MM/YYYY'),
       isOpenMobileSelectStaff: true,
@@ -60,8 +60,7 @@ class WorkTimeModal extends Component {
     }
   }
 
-  finalRemove() {
-    const { deletedCountTimes } = this.state;
+  finalRemove(deletedCountTimes = this.state.deletedCountTimes) {
     deletedCountTimes.forEach((item, i) => {
       setTimeout(() => {
         this.onDelete(item.startTimeMillis, item.endTimeMillis, item.staffTimetableId);
@@ -126,7 +125,10 @@ class WorkTimeModal extends Component {
     });
 
     if (edit) {
-      this.props.dispatch(staffActions.updateArrayWorkingHours(data));
+      this.finalRemove(this.props.editing_object)
+      setTimeout(() => {
+        this.props.dispatch(staffActions.addArrayWorkingHours(data));
+      }, 150 * data.length);
     } else {
       this.props.dispatch(staffActions.addArrayWorkingHours(data));
     }
@@ -351,7 +353,6 @@ class WorkTimeModal extends Component {
                   <div className="check-box repeat">
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
-                             disabled={this.state.edit}
                              id="radio100" checked={period === 0} onChange={() => {
                         this.setState({ period: 0 });
                       }}/>
@@ -360,7 +361,6 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
-                             disabled={this.state.edit}
                              id="radio101" checked={period === 7} onChange={() => {
                         this.setState({ period: 7 });
                       }}/>
@@ -369,7 +369,6 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
-                             disabled={this.state.edit}
                              id="radio106" checked={period === 2} onChange={() => {
                         this.setState({ period: 2, days: [moment(this.props.date, 'DD/MM/YYYY').day()] });
                       }}
@@ -379,7 +378,6 @@ class WorkTimeModal extends Component {
                     </div>
                     <div className="form-check-inline">
                       <input type="radio" className="form-check-input" name="radio33"
-                             disabled={this.state.edit}
                              id="radio105" checked={period === 4} onChange={() => {
                         this.setState({ period: 4, days: [moment(this.props.date, 'DD/MM/YYYY').day()] });
                       }}/>
@@ -402,7 +400,6 @@ class WorkTimeModal extends Component {
                                 <input className="form-check-input" type="checkbox"
                                        checked={this.state.days.includes(key)}
                                        onChange={() => this.toggleDays(key)}
-                                       disabled={this.state.edit}
                                 />
                                 <span className="check-box-circle" />
                               </label>
