@@ -12,18 +12,19 @@ class CellAppointmentHeader extends React.PureComponent {
     }
   }
 
-  isVisitStarted(visitTime) {
-    return +moment().format('x') >= visitTime;
-  }
 
   getColorClass() {
     const { appointment } = this.props;
-    if (this.isVisitStarted(appointment.appointmentTimeMillis)) {
-      if (!appointment.clientNotCome) return 'clientIsCome';
-      else if (appointment.clientNotCome) return 'clientNotCome';
-    } else {
-      if (!appointment.clientNotCome && !appointment.clientConfirmed) return 'waitClient';
-      else if (!appointment.clientNotCome && appointment.clientConfirmed) return 'clientConfirmed';
+
+    switch (appointment.status) {
+      case 'C':
+        return 'clientIsCome';
+      case 'N':
+        return 'clientNotCome';
+      case 'O':
+        return 'clientConfirmed';
+      case 'W':
+        return 'waitClient';
     }
   }
 
