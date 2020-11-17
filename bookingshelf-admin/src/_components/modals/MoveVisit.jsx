@@ -14,7 +14,7 @@ class MoveVisit extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.movingVisit && (newProps.staffKey !== null && newProps.staffKey > -1)) {
+    if (newProps.movingVisit && (newProps.staffKey !== null && newProps.staffKey > -1) && newProps.servicesList) {
       this.checkForWarning(newProps);
     }
   }
@@ -35,7 +35,7 @@ class MoveVisit extends React.Component {
     if (newStaffId) {
       const isExtraText = allVisits.some((appointment) => {
         const activeService = servicesList && servicesList.find((serviceListItem) => serviceListItem.serviceId === appointment.serviceId);
-        return activeService.staffs.every((staff) => staff.staffId !== newStaffId);
+        return activeService && activeService.staffs && activeService.staffs.length > 0 && activeService.staffs.every((staff) => staff.staffId !== newStaffId);
       });
       this.setState({ isExtraText });
     };
