@@ -73,7 +73,7 @@ const CellAppointmentModal = (props) => {
 
           {isOpenDropdownSelectClientStatus &&
           <div className="dropdown-selected">
-            {appointment.appointmentStatus !== 'W' &&
+            {appointment.status !== 'W' &&
             <p className="dropdown-item" onClick={() => {
               const params = currentAppointments.map((item) => {
                 return {
@@ -91,7 +91,7 @@ const CellAppointmentModal = (props) => {
             }
 
 
-            {appointment.appointmentStatus !== 'O' &&
+            {appointment.status !== 'O' &&
             <p className="dropdown-item" onClick={() => {
               const params = currentAppointments.map((item) => {
                 return {
@@ -120,7 +120,7 @@ const CellAppointmentModal = (props) => {
               {t('Клиент не пришел')}
             </p>}
 
-            {appointment.appointmentStatus !== 'С' &&
+            {appointment.status !== 'C' &&
             <p className="dropdown-item" onClick={() => {
               const params = currentAppointments.map((item) => {
                 return {
