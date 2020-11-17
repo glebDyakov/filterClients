@@ -33,8 +33,6 @@ const CellAppointmentModal = (props) => {
   const companyTypeId = settings && settings.companyTypeId;
 
   const [isOpenDropdownSelectClientStatus, setOpenDropdown] = useState();
-  const [dropdownSelectedItem, setSelectedItem] = useState(appointment.clientConfirmed);
-
 
   const handleOpenSelectDropdown = () => {
     setOpenDropdown(true);
@@ -46,7 +44,6 @@ const CellAppointmentModal = (props) => {
 
   const currentAppointmentStatus = getCurrentAppointmentStatus(appointment);
   const currentAppointmentStatusString = getCurrentAppointmentStatusToString(currentAppointmentStatus);
-  const isStartedVisit = isVisitStarted(appointment.appointmentTimeMillis);
 
   return (!isStartMovingVisit &&
     <div onMouseDown={(e) => e.preventDefault()} className="cell msg-client-info">
@@ -76,16 +73,15 @@ const CellAppointmentModal = (props) => {
 
           {isOpenDropdownSelectClientStatus &&
           <div className="dropdown-selected">
-            {!isStartedVisit && appointment.status === 'O' &&
+            {appointment.appointmentStatus !== 'W' &&
             <p className="dropdown-item" onClick={() => {
-              setSelectedItem(true);
               const params = currentAppointments.map((item) => {
                 return {
                   ...item,
-                  clientConfirmed: false,
+                  status: "W",
                 };
               });
-              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
 
               handleCloseSelectDropdown();
             }
@@ -95,49 +91,44 @@ const CellAppointmentModal = (props) => {
             }
 
 
-            {!isStartedVisit && appointment.status === 'W' &&
+            {appointment.appointmentStatus !== 'O' &&
             <p className="dropdown-item" onClick={() => {
-              setSelectedItem('clientConfirm');
               const params = currentAppointments.map((item) => {
                 return {
                   ...item,
-                  clientConfirmed: true,
+                  status: "O",
                 };
               });
-              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }
             }>
               {t('Клиент подтвердил')}
             </p>}
 
-            {isStartedVisit && appointment.status === 'C' &&
+            {appointment.status !== 'N' &&
             <p className="dropdown-item" onClick={() => {
-              setSelectedItem('clientNotCome');
-              const newClientNotCome = true;
               const params = currentAppointments.map((item) => {
                 return {
                   ...item,
-                  clientNotCome: newClientNotCome,
+                  status: "N",
                 };
               });
-              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
               {t('Клиент не пришел')}
             </p>}
 
-            {isStartedVisit && appointment.status === 'N' &&
+            {appointment.appointmentStatus !== 'С' &&
             <p className="dropdown-item" onClick={() => {
-              setSelectedItem('clientNotCome');
-              const newClientNotCome = false;
               const params = currentAppointments.map((item) => {
                 return {
                   ...item,
-                  clientNotCome: newClientNotCome,
+                  status: "C",
                 };
               });
-              // dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
+              dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
               {t('Клиент пришел')}
@@ -379,17 +370,16 @@ const CellAppointmentModal = (props) => {
   );
 };
 
-function isVisitStarted(visitTime) {
-  return +moment().format('x') >= visitTime;
-}
-
 function getCurrentAppointmentStatus(appointment) {
-  if (isVisitStarted(appointment.appointmentTimeMillis)) {
-    if (!appointment.clientNotCome) return 'clientIsCome';
-    else if (appointment.clientNotCome) return 'clientNotCome';
-  } else {
-    if (!appointment.clientNotCome && !appointment.clientConfirmed) return 'waitClient';
-    else if (!appointment.clientNotCome && appointment.clientConfirmed) return 'clientConfirmed';
+  switch (appointment.status) {
+    case 'C':
+      return 'clientIsCome';
+    case 'N':
+      return 'clientNotCome';
+    case 'O':
+      return 'clientConfirmed';
+    case 'W':
+      return 'waitClient';
   }
 }
 
