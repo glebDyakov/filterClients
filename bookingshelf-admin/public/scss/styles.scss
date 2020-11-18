@@ -4554,8 +4554,10 @@ select {
   height: 8px;
   position: absolute;
   bottom: 4px;
-  width: 100%;
+  width: 30px;
   z-index: 9990;
+  left: 50%;
+  transform: translateX(-50%);
 
   .drag-vert {
     height: 14px;
