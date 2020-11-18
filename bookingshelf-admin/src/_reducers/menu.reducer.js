@@ -58,6 +58,12 @@ export function menu(state = initialState, action) {
             'name': 'Учет материалов',
           },
           {
+            'id': 'payroll_menu_id',
+            'url': '/payroll',
+            'icon': '20.svg',
+            'name': 'Расчет зарплат',
+          },
+          {
             'id': 'booking_menu_id',
             'url': '/online_booking',
             'icon': '9.svg',

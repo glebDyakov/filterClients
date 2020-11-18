@@ -1,0 +1,56 @@
+#payroll {
+  .staffs-list {
+    max-width: 236px;
+    width: 236px;
+    background: #FFFFFF;
+    max-height: calc(100vh - 80px);
+    overflow-x: auto;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border-radius: 2px;
+
+
+
+    .list-item {
+      padding: 15px 11px;
+      border-bottom: 1px solid #EAEBED;
+      transition: 200ms linear;
+      cursor: pointer;
+
+      &:hover {
+        background: #50A5F1;
+        transition: 200ms linear;
+        border-color: #50A5F1;
+
+        .staff-credit {
+          color: #fff;
+        }
+      }
+
+      .staff-image {
+        width: 24px;
+        height: 24px;
+      }
+
+      .staff-credit {
+        margin-left: 10px;
+        color: #495057;
+
+        .staff-name {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: inherit;
+        }
+
+        .staff-role {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 10px;
+          line-height: 14px;
+          color: inherit;
+        }
+      }
+    }
+  }
+}
