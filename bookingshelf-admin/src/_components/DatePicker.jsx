@@ -59,7 +59,6 @@ class DatePicker extends PureComponent {
       }
     }
 
-    console.log('DATE: ', date);
     if (type === 'day') {
       this.props.handleDayClick(date);
     } else {
@@ -101,7 +100,6 @@ class DatePicker extends PureComponent {
   }
 
   handleDayEnter(date) {
-    console.log('DATE: ', date);
     const hoverRange = getWeekRange(date);
     this.setState({
       hoverRange,

@@ -722,5 +722,6 @@
   "Ср": "Wed",
   "Чт": "Thu",
   "Пт": "Fri",
-  "Сб": "Sat"
+  "Сб": "Sat",
+  "Начиная с выбранного дня": "Starting from the selected day"
 }
