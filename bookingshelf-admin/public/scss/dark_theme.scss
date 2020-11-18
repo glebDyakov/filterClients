@@ -16,6 +16,18 @@
 
   }
 
+  .calendar .calendar-container {
+    .select-date {
+      span.percent {
+        background: #2A3042 !important;
+
+        &.default-percent {
+          color: #fff;
+        }
+      }
+    }
+  }
+
   .status-modal {
     .form-group {
       ul {
@@ -23,6 +35,7 @@
           strong {
             color: #fff !important;
           }
+
           color: #fff !important;
         }
       }
@@ -1243,17 +1256,19 @@
   .calendar {
 
     .cell.expired {
-        background-color: #262B3C !important;
+      background-color: #262B3C !important;
     }
 
     .cell.reserve {
       background: #222736 !important;
+
       .notes.color-grey {
         background-color: unset !important;
       }
+
       .notes-container {
         background: #222736 !important;
-        box-shadow: 0 2px 6px 0 rgba(0,0,0,0.5);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5);
 
       }
     }
@@ -1655,9 +1670,11 @@
     .chosen-invoice-wrapper {
       .chosen-invoice {
         background: #222736 !important;
+
         .modal-header {
           background-color: #2A3042 !important;
           border: none;
+
           h4 {
             color: #fff !important;
           }
@@ -1666,6 +1683,7 @@
 
         .acts-body {
           background-color: #2A3042 !important;
+
           p, strong {
             color: #fff !important;
           }
@@ -1738,7 +1756,6 @@
       }
     }
   }
-
 
 
   .material {

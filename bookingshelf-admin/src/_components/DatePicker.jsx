@@ -238,7 +238,7 @@ class DatePicker extends PureComponent {
       return (
         <React.Fragment>
           {date}
-          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span style={{color: (percent === 0 ? "#555B6D" : percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
+          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span className={"percent" + (percent === 0 ? " default-percent" : percent <= 40 ? " green-percent" : (percent <= 80 ? " orange-percent" : " red-percent"))}>{percent}%</span>}
         </React.Fragment>
       );
     };

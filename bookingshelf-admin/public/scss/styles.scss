@@ -7688,6 +7688,18 @@ textarea {
   background-color: #fff;
   z-index: 5;
   width: 100%;
+
+  &.green-percent {
+    color: #34C38F !important;
+  }
+
+  &.orange-percent {
+    color: #F3933A !important;
+  }
+
+  &.red-percent {
+    color: #F46A6A !important;
+  }
 }
 
 .hue-picker {
