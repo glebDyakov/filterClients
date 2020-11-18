@@ -91,9 +91,20 @@ class CellAppointment extends React.PureComponent {
       currentTime >= moment().subtract(step, 'minutes').format('x') ? 'present-time ' : '') +
       (appointment.appointmentId === selectedNote ? 'selectedNote' : '');
 
+    let clientAppointmentsCount = 0;
+    if (appointment.clientId) {
+      appointments && appointments.forEach((localAppointment) => {
+        localAppointment.appointments && localAppointment.appointments.forEach((item) => {
+          if (item.clientId === appointment.clientId) {
+            clientAppointmentsCount++;
+          }
+        });
+      });
+    }
+
     return {
       totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments, wrapperClassName,
-      contentClassName, currentTime, contentId,
+      contentClassName, currentTime, contentId, clientAppointmentsCount
     };
   }
 
@@ -141,7 +152,7 @@ class CellAppointment extends React.PureComponent {
     } = this.props;
 
     const {
-      totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
+      clientAppointmentsCount, totalDuration, totalCount, totalAmount, appointmentServices, currentAppointments,
       contentClassName, wrapperClassName, currentTime, contentId,
     } = this.updateAppointmentInfo({
       services, appointment, appointments, blickClientId, selectedNote,
@@ -156,6 +167,7 @@ class CellAppointment extends React.PureComponent {
         onMouseLeave={this.handleMouseLeave}
       >
         <CellAppointmentContent
+          clientAppointmentsCount={clientAppointmentsCount}
           isWeekBefore={isWeekBefore}
           cellHeight={cellHeight}
           step={step}

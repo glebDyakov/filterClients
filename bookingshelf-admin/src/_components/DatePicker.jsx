@@ -191,8 +191,6 @@ class DatePicker extends PureComponent {
       });
     }
 
-    debugger
-
     if (type === 'week') {
       const daysAreSelected = selectedDays && selectedDays.length > 0;
 
