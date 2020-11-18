@@ -1,3 +1,5 @@
+@import "styles-group";
+
 #payroll {
   .staffs-list {
     max-width: 236px;
@@ -16,7 +18,7 @@
       transition: 200ms linear;
       cursor: pointer;
 
-      &:hover {
+      &.selected, &:hover { // IF SELECTED OR HOVER
         background: #50A5F1;
         transition: 200ms linear;
         border-color: #50A5F1;
@@ -52,5 +54,92 @@
         }
       }
     }
+  }
+
+  .main-container {
+    margin-left: 13px;
+
+    .header-nav-tabs {
+      background: #FFFFFF;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 2px;
+      margin-bottom: 10px;
+    }
+
+    .stats-container {
+      background: #FFFFFF;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 2px;
+      margin-bottom: 10px;
+
+      .col {
+        padding: 10px 20px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+
+        .title {
+          font-style: normal;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 18px;
+          color: #2A3042;
+          margin-bottom: 8px;
+        }
+
+        .stat {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 32px;
+          line-height: 44px;
+          color: #495057;
+          margin: 0;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: -1px;
+          top: 50%;
+          transform: translateY(-50%);
+
+          border-radius: 5px;
+          width: 1px;
+          height: 59px;
+          background-color: #EAEBED;
+
+        }
+      }
+    }
+  }
+
+  .table-container {
+    background: #FFFFFF;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border-radius: 5px 0px 0px 0px;
+    height: 100%;
+
+    .table {
+      .table-header-title {
+        padding: 13px 20px;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+        vertical-align: middle;
+        border-top: none;
+      }
+      thead {
+        border-bottom: 1px solid #EAEBED;
+      }
+    }
+
+  }
+
+
+  @media screen and (max-width: $mob-width) {
+    flex-direction: column;
   }
 }

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class StaffList extends Component {
     render() {
         return (
-            <div className="staffs-list">
+            <div className="staffs-list col p-0">
 
                 {/*// LIST OF STAFFS*/}
 
