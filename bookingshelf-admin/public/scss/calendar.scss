@@ -1822,11 +1822,18 @@
               line-height: 18px;
               color: #495057;
 
+              .appointment-body-icon {
+                width: 12px;
+                height: 12px;
+              }
+
               ul {
                 margin-bottom: 2px;
               }
 
               .client-name {
+                align-items: center;
+                width: auto;
                 font-weight: 600;
                 font-size: 11px;
                 line-height: 18px;

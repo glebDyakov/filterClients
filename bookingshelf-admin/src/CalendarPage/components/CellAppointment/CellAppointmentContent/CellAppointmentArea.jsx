@@ -28,8 +28,8 @@ class CellAppointmentArea extends React.PureComponent {
 
   render() {
     const {
-      isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote, t
+      isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight, clientAppointmentsCount,
+      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote, t,
     } = this.props;
 
     const serviceDetails = services && services.servicesList &&
@@ -41,7 +41,6 @@ class CellAppointmentArea extends React.PureComponent {
         <span className="drag-vert"/>
       </p>
     );
-
 
     return (
       <React.Fragment>
@@ -62,7 +61,10 @@ class CellAppointmentArea extends React.PureComponent {
               <span className="client-name">{appointment.clientFirstName
                   ? (`${t('Клиент')}: ` + appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
-                  : t('Без клиента')}</span>
+                  : t('Без клиента')}
+              </span>
+              {clientAppointmentsCount > 1 && <img title={`${t('У клиента')} ${clientAppointmentsCount} ${t('визитов сегодня')}`} className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`} alt=""/>}
+
               <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
             {appointment.clientId && appointment.clientPhone && <span className="client-phone">{appointment.clientPhone}</span>}

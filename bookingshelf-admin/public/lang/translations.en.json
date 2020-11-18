@@ -723,5 +723,7 @@
   "Чт": "Thu",
   "Пт": "Fri",
   "Сб": "Sat",
-  "Начиная с выбранного дня": "Starting from the selected day"
+  "Начиная с выбранного дня": "Starting from the selected day",
+  "У клиента": "The client has",
+  "визитов сегодня": "visits today"
 }
