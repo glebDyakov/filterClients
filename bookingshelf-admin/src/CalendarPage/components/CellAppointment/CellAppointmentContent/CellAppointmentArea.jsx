@@ -43,10 +43,10 @@ class CellAppointmentArea extends React.PureComponent {
       );
 
     const countAppointmentsText = () => {
-      if (clientAppointmentsCount >= 1 && clientAppointmentsCount <= 4) {
-        return '1-4';
+      if (clientAppointmentsCount >= 2 && clientAppointmentsCount <= 4) {
+        return 'визита сегодня';
       } else {
-        return '5+';
+        return 'визитов сегодня';
       }
     };
 
@@ -71,7 +71,7 @@ class CellAppointmentArea extends React.PureComponent {
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
                 : t('Без клиента')}
                 {clientAppointmentsCount > 1 &&
-                <img title={`${t('У клиента')} ${countAppointmentsText()} ${t('визитов сегодня')}`}
+                <img title={`${t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
                      className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
                      alt=""/>}
 
