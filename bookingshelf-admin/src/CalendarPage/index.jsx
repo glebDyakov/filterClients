@@ -510,8 +510,6 @@ class Index extends PureComponent {
     const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments ||
       isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
 
-    console.log('PROPS: ', this.props);
-
     return (
       <React.Fragment>
         {/* <p className="red-title-block mob-setting">*/}
