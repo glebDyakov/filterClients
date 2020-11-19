@@ -232,11 +232,6 @@ class DatePicker extends PureComponent {
       const date = day.getDate();
       const percent = this.getPercent(day);
 
-      console.log("DAYS", days, date);
-
-     // const isWorkingDay = newSelectedDays.some(d => moment(d).format("DD-MM-YYYY") === moment(day).format("DD-MM-YYYY"));
-     //  console.log(isWorkingDay);
-
       return (
         <React.Fragment>
           {date}
