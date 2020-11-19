@@ -169,14 +169,27 @@ class WorkTimeModal extends Component {
         times && times.map((time, keyTime) => {
             let timeEnd = parseInt(moment(time.endTimeMillis, 'x').format('k'));
             let timeStart = parseInt(moment(time.startTimeMillis, 'x').format('k'));
+            timeStart = timeStart === 24 ? 0 : timeStart;
 
             if (time.startTimeMillis && keyTime !== key) {
-                if (times[key] && times[key].startTimeMillis && parseInt(moment(times[key].startTimeMillis, 'x').format('k')) < parseInt(moment(time.startTimeMillis, 'x').format('k'))) {
-                    timeEnd = 24;
+                if (times[key] && times[key].startTimeMillis ) {
+                    let time1 = parseInt(moment(times[key].startTimeMillis, 'x').format('k'))
+                    let time2 = parseInt(moment(time.startTimeMillis, 'x').format('k'))
+                    time1 = time1 === 24 ? 0 : time1
+                    // time2 = time2 === 24 ? 0 : time2
+                    if (time1 < time2) {
+                        timeEnd = 24;
+                    }
                 }
 
-                if (times[key] && times[key].endTimeMillis && parseInt(moment(times[key].endTimeMillis, 'x').format('k')) > parseInt(moment(time.endTimeMillis, 'x').format('k'))) {
-                    timeStart = 0;
+                if (times[key] && times[key].endTimeMillis) {
+                    let time1 = parseInt(moment(times[key].endTimeMillis, 'x').format('k'))
+                    let time2 = parseInt(moment(time.endTimeMillis, 'x').format('k'));
+                    time1 = time1 === 24 ? 0 : time1
+                    // time2 = time2 === 24 ? 0 : time2
+                    if (time1 > time2) {
+                        timeStart = 0;
+                    }
                 }
 
                 for (let iTime = timeStart; iTime <= timeEnd; iTime++) {
