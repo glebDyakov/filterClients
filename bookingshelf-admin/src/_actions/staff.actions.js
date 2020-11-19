@@ -38,13 +38,13 @@ function add(params) {
       .then(
         (staff) => {
           dispatch(success(staff));
-          setTimeout(()=>dispatch(successTime(0)), 10000);
+          setTimeout(()=>dispatch(successTime(0)), 1000);
           dispatch(staffActions.get());
         },
         (error) => {
           dispatch(failure(error.toString()));
           dispatch(alertActions.error(error.toString()));
-          setTimeout(()=>dispatch(failureTime(0)), 10000);
+          setTimeout(()=>dispatch(failureTime(0)), 2000);
         },
       );
   };
