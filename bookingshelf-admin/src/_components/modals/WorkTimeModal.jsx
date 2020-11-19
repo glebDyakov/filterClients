@@ -93,7 +93,7 @@ class WorkTimeModal extends Component {
                     const updatedTimetables = [];
                     times.forEach((t) => {
                         updatedTimetables.push({
-                            staffTimetableId: edit ? t.staffTimetableId : null,
+                            // staffTimetableId: edit ? t.staffTimetableId : null,
                             period,
                             endTimeMillis: proposedDate.set({
                                 'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -107,7 +107,7 @@ class WorkTimeModal extends Component {
                         if (period === 4) {
                             const updatedDate = moment(proposedDate.format('x'), 'x').add(1, 'day');
                             updatedTimetables.push({
-                                staffTimetableId: edit ? t.staffTimetableId : null,
+                                // staffTimetableId: edit ? t.staffTimetableId : null,
                                 period,
                                 endTimeMillis: updatedDate.set({
                                     'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -130,7 +130,7 @@ class WorkTimeModal extends Component {
             if (this.state.countTimes.length > 0 && this.state.times.length > 0) {
                 setTimeout(() => {
                     this.props.dispatch(staffActions.addArrayWorkingHours(data));
-                }, 150 * data.length);
+                }, 150 * this.props.editing_object.length);
             }
             // this.props.onClose();
         } else {
