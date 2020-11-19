@@ -4,6 +4,7 @@ import StaffList from './_components/StaffList';
 import '../../public/scss/payroll.scss';
 import { access } from '../_helpers/access';
 import { DatePicker } from '../_components/DatePicker';
+import PayrollDay from './_components/PayrollDay';
 
 class Index extends Component {
   constructor(props) {
@@ -85,17 +86,13 @@ class Index extends Component {
               </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>4</td>
-                  <td>4</td>
-                  <td>4</td>
-                  <td>4</td>
-                  <td>5</td>
-                </tr>
+              <PayrollDay/>
+              <PayrollDay/>
+              <PayrollDay/>
+              <PayrollDay/>
+              <PayrollDay/>
+              <PayrollDay/>
+              <PayrollDay/>
               </tbody>
             </table>
           </div>
