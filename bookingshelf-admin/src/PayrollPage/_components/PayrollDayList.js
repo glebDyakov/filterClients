@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 
 class PayrollDayList extends Component {
   render() {
+    const { t } = this.props;
+
     return (
       <React.Fragment>
         <tr className="payroll-day-list opened">
@@ -9,7 +12,7 @@ class PayrollDayList extends Component {
             <p className="list-text text-center">6:30</p>
           </td>
           <td>
-            <p className="list-text text-center">1ч 30 мин</p>
+            <p className="list-text text-center">1{t("ч")} 30 {t("минут")}</p>
           </td>
           <td>
             <p className="list-text">Укладка волос феном очень (короткие) длинное название</p>
@@ -38,4 +41,4 @@ class PayrollDayList extends Component {
   }
 }
 
-export default PayrollDayList;
+export default withTranslation("common")(PayrollDayList);

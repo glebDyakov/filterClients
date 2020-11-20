@@ -238,8 +238,6 @@
           }
 
           &.opened {
-            background: #fff;
-            z-index: 1;
             .open-handler-container {
               .open-handler {
                 &::after {
@@ -330,6 +328,7 @@
         .payroll-day-list {
           border-bottom: 1px solid #EAEBED;
           td {
+            border: none;
             vertical-align: middle;
             padding: 13px 20px;
             .list-text {
@@ -342,6 +341,67 @@
 
           }
         }
+      }
+    }
+
+  }
+
+
+
+  .payroll-tab {
+    height: 100%;
+  }
+
+  .setting-container {
+    max-height: calc(100vh - 80px);
+    background: #FFFFFF;
+    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    border-radius: 2px;
+    height: 100%;
+    padding: 20px 15px;
+
+    .settings-title {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 33px;
+      color: #495057;
+      margin-bottom: 20px;
+
+    }
+
+    .salary-container {
+      display: flex;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #EAEBED;
+      .col {
+        padding: 0;
+      }
+    }
+
+    label {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 13px;
+      line-height: 18px;
+      color: #495057;
+      display: flex;
+      flex-direction: column;
+
+      input {
+        margin-top: 7px;
+        background: #F3F3F9;
+        border-radius: 2px;
+        width: 250px;
+        height: 36px;
+        border: none;
+        padding: 9px 10px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
       }
     }
 

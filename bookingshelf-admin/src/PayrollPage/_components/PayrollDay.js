@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PayrollDayList from './PayrollDayList';
+import { withTranslation } from 'react-i18next';
 
 class PayrollDay extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ class PayrollDay extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <React.Fragment>
           <tr className={'payroll-day' + (this.state.isOpened ? ' opened' : '')}>
@@ -36,16 +39,16 @@ class PayrollDay extends Component {
               </div>
             </td>
             <td className="service-container">
-              <p>Услуг оказано: 6</p>
-              <p>Сумма услуг: 1230 BYN</p>
+              <p>{t("Услуг оказано")}: 6</p>
+              <p>{t("Сумма услуг")}: 1230 BYN</p>
             </td>
             <td className="product-container">
-              <p>Продано товаров: 123</p>
-              <p>Сумма товаров: 1230 BYN</p>
+              <p>{t("Продано товаров")}: 123</p>
+              <p>{t("Сумма товаров")}: 1230 BYN</p>
             </td>
             <td className="income-container" colSpan={5}>
-              <p>Доход сотрудника: 230 BYN</p>
-              <p>Доход компании: 1000 BYN</p>
+              <p>{t("Доход сотрудника")}: 230 BYN</p>
+              <p>{t("Доход компании")}: 1000 BYN</p>
               <p></p>
             </td>
           </tr>
@@ -56,4 +59,4 @@ class PayrollDay extends Component {
   }
 }
 
-export default PayrollDay;
+export default withTranslation("common")(PayrollDay);
