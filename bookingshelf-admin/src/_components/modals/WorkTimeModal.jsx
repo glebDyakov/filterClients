@@ -182,6 +182,7 @@ class WorkTimeModal extends Component {
                     }
                 }
 
+
                 if (times[key] && times[key].endTimeMillis) {
                     let time1 = parseInt(moment(times[key].endTimeMillis, 'x').format('k'))
                     let time2 = parseInt(moment(time.endTimeMillis, 'x').format('k'));
