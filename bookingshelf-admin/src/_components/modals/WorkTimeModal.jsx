@@ -176,7 +176,7 @@ class WorkTimeModal extends Component {
                     let time1 = parseInt(moment(times[key].startTimeMillis, 'x').format('k'))
                     let time2 = parseInt(moment(time.startTimeMillis, 'x').format('k'))
                     time1 = time1 === 24 ? 0 : time1
-                    // time2 = time2 === 24 ? 0 : time2
+                    time2 = time2 === 24 ? 0 : time2
                     if (time1 < time2) {
                         timeEnd = 24;
                     }
@@ -186,7 +186,7 @@ class WorkTimeModal extends Component {
                     let time1 = parseInt(moment(times[key].endTimeMillis, 'x').format('k'))
                     let time2 = parseInt(moment(time.endTimeMillis, 'x').format('k'));
                     time1 = time1 === 24 ? 0 : time1
-                    // time2 = time2 === 24 ? 0 : time2
+                    time2 = time2 === 24 ? 0 : time2
                     if (time1 > time2) {
                         timeStart = 0;
                     }
