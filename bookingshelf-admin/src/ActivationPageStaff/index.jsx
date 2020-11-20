@@ -29,15 +29,11 @@ class Index extends React.Component {
   render() {
     return <div id="outer">
       <div id="table-container">
-        <div id="table-cell" className="loader">
+        <div className="loader">
           <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
         </div>
       </div>
     </div>;
-
-    {/* <div>*/}
-
-    {/* </div>*/}
   }
 }
 

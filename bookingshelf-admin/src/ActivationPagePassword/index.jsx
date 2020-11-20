@@ -24,21 +24,16 @@ class Index extends React.Component {
     const { token } = this.props.match.params;
     this.props.dispatch(userActions.logout());
     this.props.dispatch(userActions.activatePassword(token));
-    console.log(this.props.match.params);
   }
 
   render() {
     return <div id="outer">
       <div id="table-container">
-        <div id="table-cell" className="loader">
+        <div className="loader">
           <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
         </div>
       </div>
     </div>;
-
-    {/* <div>*/}
-
-    {/* </div>*/}
   }
 }
 
