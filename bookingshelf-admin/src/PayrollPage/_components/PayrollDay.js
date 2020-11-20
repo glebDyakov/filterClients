@@ -46,7 +46,7 @@ class PayrollDay extends Component {
               <p>{t("Продано товаров")}: 123</p>
               <p>{t("Сумма товаров")}: 1230 BYN</p>
             </td>
-            <td className="income-container" colSpan={5}>
+            <td className="income-container" colSpan={4}>
               <p>{t("Доход сотрудника")}: 230 BYN</p>
               <p>{t("Доход компании")}: 1000 BYN</p>
               <p></p>

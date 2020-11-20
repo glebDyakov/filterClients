@@ -60,14 +60,18 @@
     }
 
     .setting-tab {
+      .salary-container {
+        border-color: #3F4455;
+      }
+
       .setting-container {
         background-color: #2A3042;
 
-        .settings-title, label, input {
+        .settings-title, label, input, select, option {
           color: #fff;
         }
 
-        input {
+        input, select {
           background-color: #222736;
         }
       }

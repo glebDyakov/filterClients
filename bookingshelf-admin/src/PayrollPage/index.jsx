@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import StaffList from './_components/StaffList';
 import '../../public/scss/payroll.scss';
 import PayrollDay from './_components/PayrollDay';
-import CustomSelect from './_components/CustomSelect';
 import { withTranslation } from 'react-i18next';
+import PercentOfSales from './_components/PercentOfSales';
 
 class Index extends Component {
   constructor(props) {
@@ -122,8 +122,12 @@ class Index extends Component {
                 <h2 className="settings-title">{t("Настройки зарплаты")}</h2>
 
                 <div className="salary-container">
-                  <CustomSelect placeholder="Выберите ставку"/>  {/*TODO*/}
-
+                  <label className="col">{t("Выбор ставки")}
+                    <select className="custom-select mb-0 salary-input" name="" id="">
+                      <option defaultChecked={true} value="0">{t('Выберите ставку')}</option>
+                      <option value="test">test</option>
+                    </select>
+                  </label>
                   <label className="col">{t("Оклад за месяц")}
                     <input className="salary-input" type="number" placeholder={t('Введите оклад')}/>
                   </label>
@@ -138,7 +142,12 @@ class Index extends Component {
               <div className="percent-settings">
                 <h2 className="settings-title">{t("Процент от реализации")}</h2>
                 <div className="percent-container">
-
+                  <PercentOfSales/>
+                  <PercentOfSales/>
+                  <PercentOfSales/>
+                  <PercentOfSales/>
+                  <PercentOfSales/>
+                  <PercentOfSales/>
                 </div>
               </div>
             </div>
