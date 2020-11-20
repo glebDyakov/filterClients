@@ -16,6 +16,7 @@ export const userActions = {
   activate,
   clearErrors,
   activateStaff,
+  activatePassword,
 };
 
 function login(login, password) {
@@ -129,6 +130,30 @@ function activateStaff(id) {
 
   function failure(error) {
     return { type: userConstants.LOGIN_FAILURE, error };
+  }
+}
+
+function activatePassword(token) {
+  return (dispatch) => {
+    userService.activatePassword(token)
+      .then(
+        (user) => {
+          dispatch(success(user));
+          history.push('/calendar');
+        },
+        (error) => {
+          dispatch(failure(error.toString()));
+          dispatch(alertActions.error(error.toString()));
+        },
+      );
+  };
+
+  function success(user) {
+    return { type: userConstants.LOGIN_SUCCESS, payload: { user } };
+  }
+
+  function failure(error) {
+    return { type: userConstants.LOGIN_FAILURE, payload: { error } };
   }
 }
 
