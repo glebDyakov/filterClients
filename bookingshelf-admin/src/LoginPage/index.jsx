@@ -50,7 +50,6 @@ class Index extends React.Component {
         newProps.authentication.error===-1) {
         this.setState({isOpenSuccessForgotModal: true}, () => {
           setTimeout(() => {
-            // $('.modal_reset_password').modal('hide')
             this.setState({
               'login': newProps.authentication.email,
               'password': '',
@@ -59,6 +58,7 @@ class Index extends React.Component {
               'forgottenEmail': '',
             }, () => {
               this.setState({isOpenSuccessForgotModal: false, resetPasswordModal: false});
+              $('.modal_reset_password').modal('hide');
             });
           }, 3000);
         });
