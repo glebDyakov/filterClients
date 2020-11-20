@@ -231,7 +231,7 @@ function getTimetable(from, to) {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}${config.apiUrl}/staffs/timetables?dateFrom=${from}&dateTo=${to}`, requestOptions)
+  return fetch(`${origin}${config.apiUrl}/staffs/timetables?dateFrom=${from - 1}&dateTo=${to}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

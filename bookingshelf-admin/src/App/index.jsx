@@ -285,9 +285,10 @@ class Index extends React.Component {
 
     render() {
         const {authentication, company, paymentsOnly} = this.state;
-        {
-            company && company.settings && authentication.menu && authentication.loggedIn &&
+        if (company && company.settings && company.settings.timezoneId) {
             moment.tz.setDefault(company.settings.timezoneId);
+        } else {
+            return null;
         }
 
 
