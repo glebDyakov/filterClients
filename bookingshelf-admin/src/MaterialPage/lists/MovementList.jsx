@@ -126,9 +126,7 @@ class MovementList extends Component {
         <div>
           <p>
             <span className="mob-title">{t('Дата')}: </span>
-            {movement && moment(movement.deliveryDateMillis
-              ? movement.deliveryDateMillis
-              : movement.expenditureDateMillis).format('DD.MM HH:mm')
+            {movement && moment(movement.date).format('DD.MM HH:mm')
             }
           </p>
         </div>

@@ -526,7 +526,7 @@ class Index extends Component {
 
         const movingArray = !this.props.material.isLoadingMovements && this.state.movementsProducts.content
             .sort((b, a) =>
-                (a.expenditureDateMillis ? a.expenditureDateMillis : a.deliveryDateMillis) - (b.expenditureDateMillis ? b.expenditureDateMillis : b.deliveryDateMillis),
+                moment(a.date).format('x') - moment(b.date).format('x'),
             ) || [];
 
         movingArray.forEach((item) => {
