@@ -22,7 +22,7 @@ class MovementList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (JSON.stringify(this.props.staffs) !== JSON.stringify(nextProps.staffs) && nextProps.movement.staffId) {
-      this.setState({staff: nextProps.staffs.find((staff) => staff.staffId === nextProps.movement.staffId) || undefined})
+      this.setState({ staff: nextProps.staffs.find((staff) => staff.staffId === nextProps.movement.staffId) || undefined });
     }
   }
 
@@ -41,8 +41,8 @@ class MovementList extends Component {
 
   componentDidMount() {
     this.setState({
-      staff: this.getStaff()
-    })
+      staff: this.getStaff(),
+    });
   }
 
   getUnitName(unit) {
@@ -67,16 +67,19 @@ class MovementList extends Component {
 
   render() {
     const { movement, deleteMovement, toggleStorehouseProduct, toggleExProd, activeUnit, t } = this.props;
-    const {staff} = this.state;
+    const { staff } = this.state;
     return (
       <div className="tab-content-list mb-2">
         <div className="plus-or-minus-field">
-          <div className={movement.movementType && movement.movementType === "ARRIVAL" ? 'plus' : 'minus'}/>
+          <div className={movement.movementType && movement.movementType === 'ARRIVAL' ? 'plus' : 'minus'}/>
         </div>
         <div className="staff-field">
           <div className="staff-container">
-            <img className="staff-image" src={staff && movement.staffId && staff.imageBase64 && staff.imageBase64 !== '' ? ('data:image/png;base64,' + staff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`} alt="staff image"/>
-            <p className="staff-credit">{staff && movement.staffId && staff.firstName && (staff.firstName.length >= 9 ? String(staff.firstName).slice(0, 8) + ".." : staff.firstName)} {staff && movement.staffId && staff.lastName ? (staff.lastName.length >= 9 ? String(staff.lastName).slice(0, 8) + ".." : staff.lastName) : ''}</p>
+            <img className="staff-image"
+                 src={staff && movement.staffId && staff.imageBase64 && staff.imageBase64 !== '' ? ('data:image/png;base64,' + staff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
+                 alt="staff image"/>
+            <p
+              className="staff-credit">{staff && movement.staffId && staff.firstName && (staff.firstName.length >= 9 ? String(staff.firstName).slice(0, 8) + '..' : staff.firstName)} {staff && movement.staffId && staff.lastName ? (staff.lastName.length >= 9 ? String(staff.lastName).slice(0, 8) + '..' : staff.lastName) : ''}</p>
           </div>
         </div>
         <div>
@@ -103,7 +106,7 @@ class MovementList extends Component {
 
         <div>
           <p><span
-            className="mob-title">{t('Количество списания / поступления')}: </span>{movement && movement.amount && (movement.amount + (activeUnit ? " " + this.getUnitName(activeUnit.unitName) : ''))}
+            className="mob-title">{t('Количество списания / поступления')}: </span>{movement && movement.amount && (movement.amount + ' ' + (t('шт')) + ' (' + (movement && movement.nominalAmount + (activeUnit ? ' ' + this.getUnitName(activeUnit.unitName) : '') + ')'))}
           </p>
         </div>
 
