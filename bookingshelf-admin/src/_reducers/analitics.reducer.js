@@ -172,16 +172,17 @@ export function analitics(state = initialState, action) {
       let appointmentTime = 0;
       let percentWorkload = 0;
       let ratioToYesterday = 0;
-      for (let i = 0; i < Object.keys(action.count).length; i++) {
-        appointmentTime += action.count[Object.keys(action.count)[i]].appointmentTime;
-        percentWorkload += action.count[Object.keys(action.count)[i]].percentWorkload;
-        ratioToYesterday += action.count[Object.keys(action.count)[i]].ratioToYesterday;
+      for (let i = 0; i < Object.keys(action.count.analyticsROs).length; i++) {
+        appointmentTime += action.count.analyticsROs[Object.keys(action.count.analyticsROs)[i]].appointmentTime;
+        percentWorkload += action.count.analyticsROs[Object.keys(action.count.analyticsROs)[i]].percentWorkload;
+        ratioToYesterday += action.count.analyticsROs[Object.keys(action.count.analyticsROs)[i]].ratioToYesterday;
       }
-      percentWorkload /= Object.keys(action.count).length;
+      percentWorkload /= Object.keys(action.count.analyticsROs).length;
 
       return {
         ...state,
         staffsAnalytic: {
+          returningClientsPercent: action.count.returningClientsPercent,
           appointmentTime,
           percentWorkload,
           ratioToYesterday,
