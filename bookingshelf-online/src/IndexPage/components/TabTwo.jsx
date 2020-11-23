@@ -169,7 +169,7 @@ class TabTwo extends Component {
                                 }
 
                                 if (condition && info && finalServices && finalServices.length > 0) {
-                                    finalServices = finalServices.filter(service => info.booktimeStep <= service.duration);
+                                    finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                 }
 
                                 return condition && finalServices && finalServices.length > 0 && (
