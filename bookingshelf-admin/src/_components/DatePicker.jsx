@@ -163,23 +163,6 @@ class DatePicker extends PureComponent {
     }
 
     const days = [];
-    // const daysToPercent = [];
-
-    // if (newSelectedDays && newSelectedDays.length > 0) {
-    //   const startOfMonth = moment(newSelectedDays[0]).startOf('month');
-    //   const endOfMonth = moment(newSelectedDays[newSelectedDays.length - 1]).endOf('month');
-    //
-    //   let day = startOfMonth;
-    //
-    //   while (day <= endOfMonth) {
-    //     if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format('x'))) {
-    //       days.push(day.utc().toDate());
-    //     } else {
-    //       daysToPercent.push(day.utc().toDate());
-    //     }
-    //     day = day.clone().add(1, 'd');
-    //   }
-    // }
 
     if (this.props.typeSelected && analytic) {
       Object.entries(analytic).forEach(([key, value]) => {
@@ -223,6 +206,11 @@ class DatePicker extends PureComponent {
       modifiers = {
         notWorking: days,
       };
+    }
+
+    modifiers = {
+      ...modifiers,
+      selected: selectedDay
     }
 
 
