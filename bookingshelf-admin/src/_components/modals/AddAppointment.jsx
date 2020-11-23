@@ -370,7 +370,7 @@ class AddAppointment extends React.Component {
         }
         return true;
       })
-      .filter((service) => service.duration >= this.props.company.settings.booktimeStep);
+      .filter((service) => service.duration >= this.props.company.settings.booktimeStep && service.duration % this.props.company.settings.booktimeStep === 0);
   }
 
   handleTypeaheadInputChange(name, value) {
