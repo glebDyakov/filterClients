@@ -14,7 +14,8 @@
     background: #FFFFFF;
     /* Drop Shadow */
 
-    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    //box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    box-shadow: none;
     border: none;
     border-radius: 0 !important;
   }
@@ -25,6 +26,65 @@
 
 
   #tab5 {
+
+
+
+    .movements-day-picker {
+      max-width: 275px !important;
+      min-width: unset;
+      margin-left: auto;
+
+
+      .button-calendar {
+        min-width: unset;
+        max-width: 275px;
+
+        .SelectedWeekExample {
+          transform: translateX(-17%);
+        }
+      }
+    }
+
+    .mobile-movements-day-picker {
+      background-color: #fff;
+      margin-bottom: 7px;
+      max-width: 100% !important;
+      min-width: unset;
+      margin-left: auto;
+
+      .arrow-left, .arrow-right {
+        box-shadow: none;
+      }
+
+      .button-calendar {
+        min-width: unset;
+        max-width: 275px;
+
+        .SelectedWeekExample {
+          transform: translateX(-10%);
+        }
+      }
+    }
+
+    .mobile-movements-day-picker {
+      display: none !important;
+    }
+
+    .movements-day-picker {
+      display: block !important;
+    }
+
+    @media screen and (max-width: $mob-width) {
+      .mobile-movements-day-picker {
+        display: block !important;
+      }
+
+      .movements-day-picker {
+        display: none !important;
+      }
+    }
+
+
     position: relative;
     .paginator-container {
       bottom: -75px;
@@ -140,6 +200,9 @@
     z-index: 1;
   }
   .search-container{
+
+
+
     //margin: 0 -7px;
     //width: calc(100% + 7px);
     @media(max-width: $tablet-width){
@@ -155,7 +218,7 @@
   .search{
 
     background-color: transparent !important;
-    border-bottom: 1px solid #eaeaec !important;
+    border-bottom: 1px solid #495057 !important;
     width: 288px;
     padding: 0;
     @media(max-width: $tablet-width){
@@ -167,14 +230,14 @@
       border: none ;
       font-size: 11px;
       line-height: 18px;
-      color: #555B6D;
-      padding: 10px 35px 10px 5px;
+      color: #495057;
+      padding: 10px 35px 10px 0;
       height: 18px;
       margin: 0;
     }
   .search-icon{
     left: auto;
-    right: 1rem  !important;
+    right: 0  !important;
     background-color: transparent;
   }
   }

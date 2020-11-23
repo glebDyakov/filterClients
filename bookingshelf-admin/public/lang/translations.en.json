@@ -727,5 +727,7 @@
   "У клиента": "The client has",
   "визитов сегодня": "visits today",
   "визита сегодня": "visits today",
-  "визитов": "visits"
+  "визитов": "visits",
+  "Нет движения товаров": "No movement of goods",
+  "Произведите списание или движение для отображения информации": "Write off or move to display information"
 }

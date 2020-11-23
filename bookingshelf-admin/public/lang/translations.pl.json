@@ -727,7 +727,9 @@
   "У клиента": "klient ma dziś",
   "визитов сегодня": "wizyty",
   "визита сегодня": "wizyty",
-  "визитов": "odwiedziny"
+  "визитов": "odwiedziny",
+  "Нет движения товаров": "Brak przepływu towarów",
+  "Произведите списание или движение для отображения информации": "Zapisz lub przejdź, aby wyświetlić informacje"
 }
 
 

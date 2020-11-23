@@ -988,8 +988,7 @@ class Index extends Component {
               <Hint hintMessage={t("Сумма стоимости визитов в журнале записи")}/>
             </span>
 
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
               <p className="staff-day-picker-title">{t("Начало")}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
@@ -1000,9 +999,7 @@ class Index extends Component {
                 language={this.props.i18n.language}
               />
             </div>
-
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
               <p className="staff-day-picker-title">{t("Конец")}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
