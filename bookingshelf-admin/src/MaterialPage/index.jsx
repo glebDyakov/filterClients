@@ -925,7 +925,7 @@ class Index extends Component {
                 (this.state.movementsProducts.content && this.state.movementsProducts.content !== '' &&
 
                   <React.Fragment>
-                    <div className="row align-items-center content clients mb-2">
+                    <div className="row align-items-center justify-content-center content clients mb-2">
                       <div className="search col-6 col-lg-2">
                         <input type="search" placeholder={t('Поиск товаров')}
                                aria-label="Search" ref={(input) => this.movingSearch = input}

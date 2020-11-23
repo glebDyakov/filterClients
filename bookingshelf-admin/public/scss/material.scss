@@ -10,6 +10,7 @@
 
   .content {
     padding: 0 10px !important;
+    justify-content: center;
 
     background: #FFFFFF;
     /* Drop Shadow */
@@ -269,7 +270,7 @@
           position: absolute;
           top: calc(50% - 2px);
           transform: translateY(-50%);
-          right: -10px;
+          right: -15px;
           content: url("../img/icons/arrow.svg");
           @media screen and(max-width: $tablet-width) {
             top: calc(50% + 2px);
