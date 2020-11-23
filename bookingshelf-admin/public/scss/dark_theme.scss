@@ -1760,6 +1760,10 @@
 
   .material {
 
+    .mobile-movements-day-picker {
+      background-color: #2A3042 !important;
+    }
+
     .empty-content-img {
       filter: grayscale(1) invert(1);
     }
@@ -1852,7 +1856,7 @@
         border: none !important;
       }
 
-      textarea, select {
+      textarea, select, select option {
         color: #fff;
       }
     }

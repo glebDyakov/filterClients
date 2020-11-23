@@ -10,7 +10,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { analiticsActions } from '../_actions';
+import {analiticsActions, staffActions} from '../_actions';
 import Hint from '../_components/Hint';
 import {compose} from "redux";
 import {withTranslation} from "react-i18next";
@@ -499,7 +499,11 @@ class Index extends Component {
     const cashFinancialChart = this.props.analitics.financialAnalyticChart.cashPaymentChart;
     const cardFinancialChart = this.props.analitics.financialAnalyticChart.cardPaymentChart;
 
+
+
     const { analitics, staff } = this.props;
+
+
     const chartOptions = {
       fill: false,
       lineTension: 0,
@@ -828,7 +832,7 @@ class Index extends Component {
                 <div className="bth dropdown-toggle rounded-button select-menu"
                   data-toggle="dropdown" role="menu" aria-haspopup="true"
                   aria-expanded="false">
-                  <p>{currentSelectedStaff.firstName + ' ' + currentSelectedStaff.lastName}</p>
+                  <p>{currentSelectedStaff.firstName + (currentSelectedStaff.lastName ? " " + currentSelectedStaff.lastName : '')}</p>
                 </div>
                 <ul className="dropdown-menu">
                   <li onClick={() => this.setCurrentSelectedStaff(2)}>
@@ -836,7 +840,7 @@ class Index extends Component {
                       <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
                     </a>
                   </li>
-                  {staff && staff.timetable && staff.timetable.map((staffEl) => {
+                  {staff && staff.staff && staff.staff.map((staffEl) => {
                     const activeStaff = staff && staff.staff && staff.staff.find((staffItem) => staffItem.staffId === staffEl.staffId);
                     return (
                       <li onClick={() => this.setCurrentSelectedStaff(staffEl)}>
@@ -850,7 +854,7 @@ class Index extends Component {
                                 : `${process.env.CONTEXT}public/img/avatar.svg`}
                               alt=""/>
                           </span>
-                          <p>{staffEl.firstName + ' ' + staffEl.lastName}</p>
+                          <p>{staffEl.firstName + (staffEl.lastName ? ' ' + staffEl.lastName : '')}</p>
                         </a>
                       </li>
                     );
@@ -984,8 +988,7 @@ class Index extends Component {
               <Hint hintMessage={t("Сумма стоимости визитов в журнале записи")}/>
             </span>
 
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
               <p className="staff-day-picker-title">{t("Начало")}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
@@ -996,9 +999,7 @@ class Index extends Component {
                 language={this.props.i18n.language}
               />
             </div>
-
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
               <p className="staff-day-picker-title">{t("Конец")}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
