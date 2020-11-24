@@ -164,7 +164,7 @@ class Index extends Component {
     this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
     this.getActiveTab = this.getActiveTab.bind(this);
     this.handleOutsideDropdownClick = this.handleOutsideDropdownClick.bind(this);
-    this.handleDayChooseClick = this.handleDayChooseClick.bind(this);
+    // this.handleDayChooseClick = this.handleDayChooseClick.bind(this);
 
     this.deleteProduct = this.deleteProduct.bind(this);
     this.deleteCategory = this.deleteCategory.bind(this);
@@ -309,17 +309,17 @@ class Index extends Component {
     this.setState({ isOpenDropdownMenu: false });
   }
 
-  handleDayChooseClick(day, modifiers = {}, dayKey) {
-    const { selectedMovementDay } = this.state;
-    const daySelected = moment(day);
-
-    this.props.dispatch(materialActions.getMovements(1, '', 11,
-      moment(daySelected.startOf('day')).format('x'),
-      moment(daySelected.endOf('day')).format('x'),
-    ));
-
-    this.setState({ selectedMovementDay: daySelected.utc().startOf('day').toDate() });
-  }
+  // handleDayChooseClick(day, modifiers = {}, dayKey) {
+  //   const { selectedMovementDay } = this.state;
+  //   const daySelected = moment(day);
+  //
+  //   this.props.dispatch(materialActions.getMovements(1, '', 11,
+  //     moment(daySelected.startOf('day')).format('x'),
+  //     moment(daySelected.endOf('day')).format('x'),
+  //   ));
+  //
+  //   this.setState({ selectedMovementDay: daySelected.utc().startOf('day').toDate() });
+  // }
 
 
   setTab(tab) {
@@ -372,7 +372,8 @@ class Index extends Component {
     this.setState({
       movingCurrentPage: currentPage,
     });
-    this.props.dispatch(materialActions.getMovements(currentPage, '', 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
+    // this.props.dispatch(materialActions.getMovements(currentPage, '', 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
+    this.props.dispatch(materialActions.getMovements(currentPage, '', 11));
   }
 
   toggleProvider(supplier_working) {
@@ -925,8 +926,9 @@ class Index extends Component {
                 (this.state.movementsProducts.content && this.state.movementsProducts.content !== '' &&
 
                   <React.Fragment>
-                    <div className="row align-items-center justify-content-center content clients mb-2">
-                      <div className="search col-6 col-lg-2">
+                    <div className="row align-items-center justify-content-between content clients mb-2">
+                      {/*<div className="search col-6 col-lg-2">*/}
+                      <div className="search col-6 col-lg-4">
                         <input type="search" placeholder={t('Поиск товаров')}
                                aria-label="Search" ref={(input) => this.movingSearch = input}
                                onChange={(e) =>
@@ -938,27 +940,27 @@ class Index extends Component {
                         {navTabs}
                       </div>
 
-                      <div className="col-lg-3 staff-day-picker movements-day-picker online-zapis-date-picker">
-                        <DatePicker
-                          type="day"
-                          selectedDay={this.state.selectedMovementDay}
-                          handleDayClick={(day, modifiers) => this.handleDayChooseClick(day, modifiers, 'selectedMovementDay')}
-                          dayPickerProps={dayPickerProps}
-                          language={this.props.i18n.language}
-                        />
-                      </div>
+                      {/*<div className="col-lg-3 staff-day-picker movements-day-picker online-zapis-date-picker">*/}
+                      {/*  <DatePicker*/}
+                      {/*    type="day"*/}
+                      {/*    selectedDay={this.state.selectedMovementDay}*/}
+                      {/*    handleDayClick={(day, modifiers) => this.handleDayChooseClick(day, modifiers, 'selectedMovementDay')}*/}
+                      {/*    dayPickerProps={dayPickerProps}*/}
+                      {/*    language={this.props.i18n.language}*/}
+                      {/*  />*/}
+                      {/*</div>*/}
 
                     </div>
 
-                    <div className="col-12 staff-day-picker mobile-movements-day-picker online-zapis-date-picker">
-                      <DatePicker
-                        type="day"
-                        selectedDay={this.state.selectedMovementDay}
-                        handleDayClick={(day, modifiers) => this.handleDayChooseClick(day, modifiers, 'selectedMovementDay')}
-                        dayPickerProps={dayPickerProps}
-                        language={this.props.i18n.language}
-                      />
-                    </div>
+                    {/*<div className="col-12 staff-day-picker mobile-movements-day-picker online-zapis-date-picker">*/}
+                    {/*  <DatePicker*/}
+                    {/*    type="day"*/}
+                    {/*    selectedDay={this.state.selectedMovementDay}*/}
+                    {/*    handleDayClick={(day, modifiers) => this.handleDayChooseClick(day, modifiers, 'selectedMovementDay')}*/}
+                    {/*    dayPickerProps={dayPickerProps}*/}
+                    {/*    language={this.props.i18n.language}*/}
+                    {/*  />*/}
+                    {/*</div>*/}
                   </React.Fragment>
 
                 )}
@@ -1293,7 +1295,8 @@ class Index extends Component {
   }
 
   handleSearchMoving(e) {
-    this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value, 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
+    // this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value, 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
+    this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value, 11, moment().subtract(1, 'year').utc().startOf('day').format('x'), moment().utc().endOf('day').format('x')));
   }
 
   deleteCategory(id) {

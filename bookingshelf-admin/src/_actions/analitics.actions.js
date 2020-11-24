@@ -11,6 +11,7 @@ export const analiticsActions = {
   getStaffsAnalyticChart,
   getStaffsAnalyticForAllChart,
   updateChartStatsFor,
+  getStaffsReturning
 };
 
 function getStaff() {
@@ -88,6 +89,20 @@ function getStaffsAnalytic(staffId, daySelected, dayLast) {
     return { type: analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS, count };
   }
 }
+
+function getStaffsReturning(dateFrom, dateTo) {
+  return (dispatch) => {
+    analiticsService.getStaffsReturning(dateFrom, dateTo)
+      .then(
+        (count) => dispatch(success(count)),
+      );
+  };
+
+  function success(count) {
+    return { type: analiticsConstants.GET_RETURNING_ANALYTICS_SUCCESS, count };
+  }
+}
+
 
 function getStaffsAnalyticForAll(daySelected, dayLast) {
   return (dispatch) => {

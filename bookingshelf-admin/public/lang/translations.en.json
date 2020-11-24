@@ -729,5 +729,9 @@
   "визита сегодня": "visits today",
   "визитов": "visits",
   "Нет движения товаров": "No movement of goods",
-  "Произведите списание или движение для отображения информации": "Write off or move to display information"
+  "Произведите списание или движение для отображения информации": "Write off or move to display information",
+  "Возвращаемость клиентов": "Customer Returns",
+  "месяц": "month",
+  "месяца": "months",
+  "месяцев": "months"
 }
