@@ -1425,6 +1425,37 @@
 
   .analytics_container {
 
+    .analytics_list.returning-list {
+      .list-group-statistics {
+        .select-container {
+          select, option {
+            color: #fff;
+          }
+        }
+
+
+        .staffs {
+          .staff-item {
+            .credit-container {
+                img {
+                  border: 1px solid #3F4455;
+                  box-sizing: border-box;
+                }
+              .staff-name {
+                text-align: center;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 18px;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
+
     .dropdown-menu {
       background: #222736 !important;
 

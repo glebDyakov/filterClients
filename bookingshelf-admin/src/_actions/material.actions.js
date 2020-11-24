@@ -482,7 +482,7 @@ function getExpenditureProducts() {
   }
 }
 
-function getMovements(pageNum = 1, searchValue = '', pageSize = 11, dateFrom = moment().startOf('day').format('x'), dateTo = moment().endOf('day').format('x')) {
+function getMovements(pageNum = 1, searchValue = '', pageSize = 11, dateFrom = moment().startOf('day').subtract(1, 'year').format('x'), dateTo = moment().endOf('day').format('x')) {
   return (dispatch) => {
     dispatch(request());
     materialService.getMovements(pageNum, searchValue, pageSize, dateFrom, dateTo)
