@@ -15,6 +15,11 @@
 
       .select-container {
         position: relative;
+
+        .custom-select {
+          height: 30px;
+        }
+
         &::after {
           content: url("../img/icons/arrow.svg");
           position: absolute;

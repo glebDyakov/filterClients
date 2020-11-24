@@ -901,7 +901,7 @@ class Index extends Component {
           <div style={{ marginRight: 0 }} className="analytics_list returning-list w-100 tablet-full">
             <div className="list-group-statistics d-flex flex-column">
 
-              <div className="header-container d-flex align-items-center justify-content-between">
+              <div className="header-container d-flex justify-content-between">
                 <strong className="group-title">{t('Возвращаемость клиентов')}</strong>
                 <div className="select-container">
                   <select id="returningSelect" onChange={e => this.chooseReturningPeriod(e)}
