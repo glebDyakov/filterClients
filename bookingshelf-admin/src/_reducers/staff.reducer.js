@@ -21,6 +21,7 @@ export function staff(state = initialState, action) {
     case staffConstants.STAFF_SUCCESS_TIME:
       return {
         ...state,
+        adding: false,
         status: 209,
       };
     case staffConstants.GET_FEEDBACK_SUCCESS:
@@ -35,6 +36,25 @@ export function staff(state = initialState, action) {
         adding: true,
         isLoadingStaff: true,
       };
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS_TIME:
+      return {
+        ...state,
+        status: 209,
+        addArrayWorkingHours: true,
+      }
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_REQUEST:
+      return {
+        ...state,
+        addArrayWorkingHours: false,
+        status: 208,
+        adding: true,
+      }
+    case staffConstants.ADD_ARRAY_WORKING_HOURS_SUCCESS:
+      return {
+        ...state,
+        status: 200,
+        adding: false,
+      }
     case staffConstants.STAFF_REQUEST:
       return {
         ...state,
@@ -359,10 +379,12 @@ export function staff(state = initialState, action) {
     case staffConstants.DELETE_WORKING_HOURS_SUCCESS:
       return {
         ...state,
+
       };
     case staffConstants.DELETE_WORKING_HOURS_FAILURE:
       return {
         ...state,
+
       };
     case staffConstants.DELETE_CLOSED_DATES_FAILURE:
       return {

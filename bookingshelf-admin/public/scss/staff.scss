@@ -3,6 +3,8 @@
 .staff {
 
 
+
+
   .staffs.tab-content-list {
     @media screen and (max-width: $mob-width) {
       display: none !important;
@@ -1428,6 +1430,8 @@
 
 
 
+
+
   .new-staff-modal {
 
 
@@ -1616,5 +1620,11 @@
     .buttons-mob {
       display: flex !important;
     }
+  }
+}
+
+.add-work-time-modal {
+  .questions_black {
+    left: 3px;
   }
 }

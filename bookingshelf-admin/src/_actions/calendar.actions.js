@@ -2,6 +2,7 @@ import { calendarConstants } from '../_constants';
 import { calendarService } from '../_services';
 import { alertActions, companyActions } from './';
 import moment from 'moment';
+import { staff } from '../_reducers/staff.reducer';
 
 export const calendarActions = {
   addAppointment,
@@ -31,7 +32,8 @@ export const calendarActions = {
   addManager,
   sendMessage,
   getManagers,
-
+  getCalendarLoad,
+  getStaffCalendarLoad
 
 };
 
@@ -619,5 +621,38 @@ function getManagers() {
   }
   function failure() {
     return { type: calendarConstants.GET_MANAGERS_FAILURE };
+  }
+}
+
+
+function getCalendarLoad(from, to) {
+  return (dispatch) => {
+    dispatch(request());
+    calendarService.getCalendarLoad(from, to)
+      .then(
+        (analytics) => dispatch(success(analytics)),
+      );
+  };
+  function request() {
+    return { type: calendarConstants.GET_CALENDAR_LOAD };
+  }
+  function success(analytics) {
+    return { type: calendarConstants.GET_CALENDAR_LOAD_SUCCESS, analytics };
+  }
+}
+
+function getStaffCalendarLoad(from, to, staffId) {
+  return (dispatch) => {
+    dispatch(request());
+    calendarService.getStaffCalendarLoad(from, to, staffId)
+      .then(
+        (analytics) => dispatch(success(analytics)),
+      );
+  };
+  function request() {
+    return { type: calendarConstants.GET_USER_CALENDAR_LOAD };
+  }
+  function success(analytics) {
+    return { type: calendarConstants.GET_USER_CALENDAR_LOAD_SUCCESS, analytics };
   }
 }

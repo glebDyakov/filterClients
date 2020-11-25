@@ -1037,16 +1037,19 @@
                       opacity: 1 !important;
                     }
 
-                    &.default {
-                      background: #F1B44C;
+                    &.waitClient {
+                      background: #2A3042;
                     }
 
                     &.clientConfirmed {
-                      background: #009088;
+                      background: #F1B44C;
                     }
 
                     &.clientNotCome {
                       background: #F46A6A;
+                    }
+                    &.clientIsCome {
+                      background: #009088;
                     }
                   }
 
@@ -1466,12 +1469,18 @@
             box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
             border-radius: 5px 5px 0px 0px;
 
-            &.client-not-come-background {
+            &.clientNotCome-background {
               background-color: #F46A6A !important;
             }
 
-            &.client-confirmed-background {
+            &.clientIsCome-background {
               background: #009088 !important;
+            }
+            &.clientConfirmed-background {
+              background: #F1B44C !important;
+            }
+            &.waitClient-background {
+              background: #2A3042 !important;
             }
 
             &-bordered {
@@ -1813,11 +1822,19 @@
               line-height: 18px;
               color: #495057;
 
+              .appointment-body-icon {
+                width: 12px;
+                height: 12px;
+                margin-left: 5px;
+              }
+
               ul {
                 margin-bottom: 2px;
               }
 
               .client-name {
+                align-items: center;
+                width: auto;
                 font-weight: 600;
                 font-size: 11px;
                 line-height: 18px;
@@ -2173,14 +2190,16 @@
 .addApointmentEachBlock {
   .removeService-button {
     position: relative;
-
+    width: 40px;
+    height: 40px;
+    right: 0px;
     &::before {
       width: 15px;
       height: 1px;
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      top: 50%;
+      bottom: 50%;
       background: #2A3042;
       transform: translate(-50%, -50%) rotate(45deg);
 
@@ -2191,10 +2210,10 @@
       height: 15px;
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      top: 50%;
+      bottom: 50%;
       background: #2A3042;
-      transform: translate(-50%, 40%) rotate(45deg);
+      transform: translate(-50%, -50%) rotate(45deg);
     }
   }
 
@@ -3094,8 +3113,8 @@
 
   .close {
     position: absolute;
-    top: -10px;
-    right: 10px;
+    top: 0px;
+    right: -10px;
     min-width: unset;
   }
 

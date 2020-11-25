@@ -23,6 +23,7 @@ import { access } from '../_helpers/access';
 
 import '../../public/scss/staff.scss';
 import {withTranslation} from "react-i18next";
+import WorkTimeModal from '../_components/modals/WorkTimeModal';
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -96,6 +97,7 @@ class Index extends Component {
       newStaff: false,
       handleOpen: false,
       isOpenHeaderDropdown: false,
+      workTimeModal: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -131,6 +133,7 @@ class Index extends Component {
     this.queryInitData = this.queryInitData.bind(this);
     this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
     this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.setWorkTimeWrapperRef = this.setWorkTimeWrapperRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.closeDropdownMenu = this.closeDropdownMenu.bind(this);
     this.isLeapYear = this.isLeapYear.bind(this);
@@ -162,9 +165,19 @@ class Index extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.closeDropdownMenu();
+    if (this.state.activeTab === "workinghours") {
+
+      if (this.workTimeWrapperRef && !this.workTimeWrapperRef.contains(event.target)) {
+        this.closeDropdownMenu();
+      }
+    } else {
+      if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+        this.closeDropdownMenu();
+      }
     }
+
+
+
   }
 
   isLeapYear(year) {
@@ -202,6 +215,10 @@ class Index extends Component {
     this.wrapperRef = node;
   }
 
+  setWorkTimeWrapperRef(node) {
+    this.workTimeWrapperRef = node;
+  }
+
   closeDropdownMenu() {
     this.setState({ handleOpen: false });
   }
@@ -220,9 +237,15 @@ class Index extends Component {
       }
     }
 
+    if (newProps.staff.addArrayWorkingHours &&
+      (this.props.staff.addArrayWorkingHours !== newProps.staff.addArrayWorkingHours)) {
+      this.updateTimetable();
+    }
+
     if (this.props.staff.status !== newProps.staff.status) {
       this.setState({
         addWorkTime: newProps.staff.status && newProps.staff.status === 209 ? false : this.state.addWorkTime,
+        workTimeModal: newProps.staff.status && newProps.staff.status === 209 ? false : this.state.workTimeModal,
       });
     }
 
@@ -399,6 +422,24 @@ class Index extends Component {
               </li>
             </ul>
 
+            {/*{activeTab === 'workinghours' &&*/}
+            {/*<div ref={this.setWorkTimeWrapperRef}>*/}
+            {/*  <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#"*/}
+            {/*     onClick={this.handleOpenDropdownMenu}/>*/}
+            {/*  <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>*/}
+            {/*    <div className="buttons">*/}
+            {/*      <button type="button" onClick={() => {*/}
+            {/*        this.setState({workTimeModal: true})*/}
+            {/*      }} className="button new-holiday">*/}
+            {/*        {t("Добавить часы работы")}*/}
+            {/*      </button>*/}
+            {/*    </div>*/}
+            {/*    <div className="arrow"></div>*/}
+            {/*  </div>*/}
+            {/*</div>}*/}
+
+
+
             {activeTab === 'workinghours' &&
                         <DatePicker
                           type={'week'}
@@ -418,7 +459,7 @@ class Index extends Component {
               onClick={this.handleOpenHeaderDropdown}
               className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
             >{(activeTab === 'workinghours' ? t('Рабочие часы')
-                : (activeTab === 'staff' ? t('Сотрудники')
+                : (activeTab === 'staff' ? (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')
                   : (activeTab === 'holidays' ? t('Выходные дни')
                     : (activeTab === 'permissions' ? t('Доступ')
                       : (activeTab === 'feedback' ? t('Отзывы') : '')))))}</p>
@@ -556,7 +597,7 @@ class Index extends Component {
                                     date: moment(day, 'x').format('DD/MM/YYYY'),
                                     editWorkingHours: false,
                                     editing_object: null,
-                                    addWorkTime: true,
+                                    workTimeModal: true,
                                   })
                                   }/> :
                                 <div className="dates-container" key={dayKey}
@@ -566,7 +607,7 @@ class Index extends Component {
                                     date: moment(day, 'x').format('DD/MM/YYYY'),
                                     editWorkingHours: true,
                                     editing_object: times,
-                                    addWorkTime: true,
+                                    workTimeModal: true,
                                   })}>
                                   <a>
                                     {times.map((time, i) =>
@@ -788,13 +829,13 @@ class Index extends Component {
             {activeTab === 'staff' &&
               <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
                 <div className="buttons">
-                  {!(companyTypeId === 2 || companyTypeId === 3) &&
-                      <button className="button new-staff" type="button"
-                        onClick={() => this.handleClick(null, true)}
-                      >
-                        {t("Пригласить по Email")}
-                      </button>
-                  }
+                  {/*{!(companyTypeId === 2 || companyTypeId === 3) &&*/}
+                  {/*    <button className="button new-staff" type="button"*/}
+                  {/*      onClick={() => this.handleClick(null, true)}*/}
+                  {/*    >*/}
+                  {/*      {t("Пригласить по Email")}*/}
+                  {/*    </button>*/}
+                  {/*}*/}
                   <button className="button new-staff" type="button"
                     onClick={() => this.handleClick(null, false)}
                   >
@@ -808,6 +849,7 @@ class Index extends Component {
           </div>
         }
 
+
         {addWorkTime &&
           <AddWorkTime
             addWorkingHours={this.addWorkingHours}
@@ -817,7 +859,22 @@ class Index extends Component {
             editWorkingHours={editWorkingHours}
             editing_object={editing_object}
             onClose={this.onClose}
+            updateTimetable={this.updateTimetable}
           />
+        }
+
+        {this.state.workTimeModal &&
+        <WorkTimeModal
+          t={t}
+          workTimeModalMessage={this.state.workTimeModalMessage}
+          onClose={() => this.setState({workTimeModal: false})}
+          activeStaffId={currentStaff.staffId}
+          date={date}
+          deleteWorkingHours={this.deleteWorkingHours}
+          editWorkingHours={editWorkingHours}
+          editing_object={editing_object}
+          edit={editing_object && editing_object.length > 0}
+        />
         }
         {newStaff &&
           <NewStaff

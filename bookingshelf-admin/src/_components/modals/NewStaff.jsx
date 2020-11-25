@@ -98,7 +98,8 @@ class NewStaff extends React.Component {
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
     const isOwner = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 4;
-    const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email);
+    const isAdmin = (authentication && authentication.user && authentication.user.profile && authentication.user.profile.roleId) === 3;
+    const canUpdateEmail = isOwner && (authentication.user.profile.email !== staff.email) || isAdmin && staff.roleId !== 4;
 
     const options = [];
     const option = [];

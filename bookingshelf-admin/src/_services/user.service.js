@@ -14,6 +14,7 @@ export const userService = {
   delete: _delete,
   activate,
   activateStaff,
+  activatePassword
 };
 
 function login(login, password) {
@@ -90,6 +91,28 @@ function activateStaff(activationCode) {
       return user;
     });
 }
+
+
+function activatePassword(token) {
+  const requestOptions = {
+    method: 'PUT',
+    crossDomain: true,
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}${config.apiUrl}/activation/password/${token}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions))
+    .then((user) => {
+
+      console.log(user);
+      // login successful if there's a jwt token in the response
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem('user', JSON.stringify(user));
+      return user;
+    });
+}
+
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('user');

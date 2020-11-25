@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactPhoneInput from 'react-phone-input-2';
 
-import { userActions } from '../_actions';
+import { staffActions, userActions } from '../_actions';
 
 import { origin } from '../_helpers/handle-response';
 import { isValidEmailAddress } from '../_helpers/validators';
@@ -100,6 +100,32 @@ class Index extends React.Component {
     }
   }
 
+  handleChangeLang(lang) {
+    let formattedLang = 'EN';
+    switch (lang) {
+      case 'BLR':
+        formattedLang = 'RU';
+        break;
+      case 'UKR':
+        formattedLang = 'UK';
+        break;
+      case 'RUS':
+        formattedLang = 'RU';
+        break;
+      case 'POL':
+        formattedLang = 'PL';
+        break;
+      case 'CZE':
+        formattedLang = 'EN';
+        break;
+      case 'GBR':
+        formattedLang = 'EN';
+        break;
+      default:
+    }
+    this.props.i18n.changeLanguage(formattedLang);
+  }
+
 
   handleChange(event) {
     const { name, value } = event.target;
@@ -110,6 +136,7 @@ class Index extends React.Component {
         invalidFields.timezoneId = true;
       }
       user.timezoneId = '';
+      this.handleChangeLang(value)
     }
 
     if (touchedFields[name]) {
@@ -147,6 +174,8 @@ class Index extends React.Component {
     const { user, agreed, authentication, emailIsValid } = this.state;
     const body = JSON.parse(JSON.stringify(user));
     body.phone = body.phone.startsWith('+') ? body.phone : `+${body.phone}`;
+    body.languageCode = this.props.i18n.language;
+    console.log(body);
 
     const { dispatch } = this.props;
     if (emailIsValid && user.companyName && user.email && user.password && user.password === user.password_repeated &&
@@ -218,7 +247,7 @@ class Index extends React.Component {
                 </div>
                 <div className="row col-12 p-0">
                   <div className="col-md-6 mx-auto pl-md-0">
-                    <span>{t("Cтрана")}</span>
+                    <span>{t("Страна")}</span>
                     <div className="custom-select-wrapper">
                       <select
                         className={'custom-select' + ((invalidFields.countryCode ? ' redBorder' : ''))}
@@ -228,6 +257,9 @@ class Index extends React.Component {
                         <option value='BLR'>{t("Беларусь")}</option>
                         <option value='UKR'>{t("Украина")}</option>
                         <option value='RUS'>{t("Россия")}</option>
+                        <option value='POL'>{t("Польша")}</option>
+                        <option value='CZE'>{t("Чехия")}</option>
+                        <option value='GBR'>{t("UK")}</option>
                       </select>
                     </div>
                   </div>
@@ -294,6 +326,36 @@ class Index extends React.Component {
                           <option value='Asia/Yakutsk'>Asia/Yakutsk</option>
                           <option value='Asia/Yekaterinburg'>Asia/Yekaterinburg</option>
                         </select>
+                      }
+                      {user.countryCode === 'POL' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/Warsaw'>Europe/Warsaw</option>
+                      </select>
+                      }
+                      {user.countryCode === 'CZE' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/Prague'>Europe/Prague</option>
+                      </select>
+                      }
+                      {user.countryCode === 'GBR' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Europe/London'>Europe/London</option>
+                      </select>
                       }
                     </div>
                   </div>

@@ -9,7 +9,7 @@ import { I18nextProvider } from 'react-i18next';
 import { i18next } from './_helpers/i18n';
 
 render(
-  <Suspense fallback="loading">
+  <Suspense fallback="">
       <I18nextProvider i18n={i18next}>
           <Provider store={store}>
               <App/>

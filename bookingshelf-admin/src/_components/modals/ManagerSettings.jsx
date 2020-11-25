@@ -108,7 +108,6 @@ class ManagerSettings extends React.Component {
     const body = JSON.parse(JSON.stringify(activeStaff));
     body.languageCode = lang.toUpperCase();
     this.props.dispatch(staffActions.update(JSON.stringify([body]), activeStaff.staffId));
-
   }
 
   addManager() {
@@ -194,9 +193,9 @@ class ManagerSettings extends React.Component {
             }} className="custom-select">
 
               <option value="RU">Русский</option>
-              <option value="PL">Польский</option>
-              <option value="EN">Английский</option>
-              <option value="UK">Украинский</option>
+              <option value="PL">Polski</option>
+              <option value="EN">English</option>
+              <option value="UK">Українська</option>
             </select>
           </div>
 

@@ -21,6 +21,8 @@ export const calendarService = {
   addManager,
   sendMessage,
   getManagers,
+  getCalendarLoad,
+  getStaffCalendarLoad
 };
 
 function addAppointment(params, serviceId, staffId, clientId, coStaffs) {
@@ -352,6 +354,36 @@ function getManagers(dateFrom, dateTo) {
   };
 
   return fetch(`${origin}${config.apiUrl}/managers`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getCalendarLoad(dateFrom, dateTo) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/analytics/time?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getStaffCalendarLoad(dateFrom, dateTo, staffId) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/analytics/time/staffs/${staffId}?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

@@ -1,4 +1,5 @@
 import config from 'config';
+import moment from 'moment';
 import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const materialService = {
@@ -25,8 +26,26 @@ export const materialService = {
   getStoreHouseProducts,
   getExpenditureProducts,
   deleteMovement,
+  getMovements,
 
 };
+
+function getMovements(pageNum = 1, searchValue, pageSize = 10, dateFrom, dateTo) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  console.log(searchValue);
+
+  return fetch(`${origin}${config.warehouseApiUrl}/products/movements?pageSize=${pageSize}&pageNum=${pageNum}&searchValue=${searchValue}&dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
 
 function toggleCategory(params, edit) {
   const requestOptions = {
@@ -358,7 +377,7 @@ function storehouseProduct(params, edit) {
   ).then((data) => handleResponse(data, requestOptions));
 }
 
-function getStoreHouseProducts() {
+function getStoreHouseProducts(pageNum = 1, pageSize = 10) {
   const requestOptions = {
     method: 'GET',
     crossDomain: true,
@@ -370,11 +389,11 @@ function getStoreHouseProducts() {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts`, requestOptions)
+  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproducts?pageNum=${pageNum}&pageSize=${pageSize}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
-function getExpenditureProducts() {
+function getExpenditureProducts(pageNum = 1, pageSize = 10) {
   const requestOptions = {
     method: 'GET',
     crossDomain: true,
@@ -386,7 +405,7 @@ function getExpenditureProducts() {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures`, requestOptions)
+  return fetch(`${origin}${config.warehouseApiUrl}/storehouseproductexpenditures?pageNum=${pageNum}&pageSize=${pageSize}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

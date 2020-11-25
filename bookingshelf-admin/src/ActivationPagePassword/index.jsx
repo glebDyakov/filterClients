@@ -5,11 +5,25 @@ import { userActions } from '../_actions/user.actions';
 class Index extends React.Component {
   constructor(props) {
     super(props);
+    this.queryInitData = this.queryInitData.bind(this);
   }
 
   componentDidMount() {
-    const { company } = this.props.match.params;
-    this.props.dispatch(userActions.activate(company));
+    if (this.props.authentication.loginChecked) {
+      this.queryInitData();
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.authentication.loginChecked !== newProps.authentication.loginChecked) {
+      this.queryInitData();
+    }
+  }
+
+  queryInitData() {
+    const { token } = this.props.match.params;
+    this.props.dispatch(userActions.logout());
+    this.props.dispatch(userActions.activatePassword(token));
   }
 
   render() {
@@ -24,9 +38,9 @@ class Index extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { registering, loginChecked } = state.authentication;
+  const { authentication } = state;
   return {
-    registering, loginChecked,
+    authentication,
   };
 }
 

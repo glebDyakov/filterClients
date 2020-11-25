@@ -10,17 +10,114 @@
 
   .content {
     padding: 0 10px !important;
+    justify-content: center;
 
     background: #FFFFFF;
     /* Drop Shadow */
 
-    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    //box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+    box-shadow: none;
     border: none;
     border-radius: 0 !important;
   }
 
   .material-products {
     position: relative;
+  }
+
+
+  #tab5 {
+
+
+
+    .movements-day-picker {
+      max-width: 275px !important;
+      min-width: unset;
+      margin-left: auto;
+
+
+      .button-calendar {
+        min-width: unset;
+        max-width: 275px;
+
+        .SelectedWeekExample {
+          transform: translateX(-17%);
+        }
+      }
+    }
+
+    .mobile-movements-day-picker {
+      background-color: #fff;
+      margin-bottom: 7px;
+      max-width: 100% !important;
+      min-width: unset;
+      margin-left: auto;
+
+      .arrow-left, .arrow-right {
+        box-shadow: none;
+      }
+
+      .button-calendar {
+        min-width: unset;
+        max-width: 275px;
+
+        .SelectedWeekExample {
+          transform: translateX(-10%);
+        }
+      }
+    }
+
+    .mobile-movements-day-picker {
+      display: none !important;
+    }
+
+    .movements-day-picker {
+      display: block !important;
+    }
+
+    @media screen and (max-width: $mob-width) {
+      .mobile-movements-day-picker {
+        display: block !important;
+      }
+
+      .movements-day-picker {
+        display: none !important;
+      }
+    }
+
+
+    position: relative;
+    .paginator-container {
+      bottom: -75px;
+    }
+  }
+
+
+    .staff-field {
+    overflow: visible !important;
+    .staff-container {
+      padding: 0 !important;
+      text-align: center;
+      width: 100% !important;
+      flex-direction: row;
+      justify-content: start;
+      position: relative;
+      overflow: visible !important;
+
+      @media screen and(max-width: 720px) {
+        text-align: left;
+        display: flex !important;
+      }
+      .staff-image {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+
+      .staff-credit {
+        width: 40px;
+      }
+    }
   }
 
   .title {
@@ -94,7 +191,7 @@
   }
   .title-and-main-info{
     overflow: auto;
-    max-height: calc(90vh - 160px);
+    max-height: calc(90vh - 120px);
     @media screen and(max-width: $mob-width) {
       max-height: calc(90vh - 160px);
     }
@@ -104,6 +201,9 @@
     z-index: 1;
   }
   .search-container{
+
+
+
     //margin: 0 -7px;
     //width: calc(100% + 7px);
     @media(max-width: $tablet-width){
@@ -131,14 +231,14 @@
       border: none ;
       font-size: 11px;
       line-height: 18px;
-      color: #555B6D;
-      padding: 10px 35px 10px 5px;
+      color: #495057;
+      padding: 10px 35px 10px 0;
       height: 18px;
       margin: 0;
     }
   .search-icon{
     left: auto;
-    right: 1rem  !important;
+    right: 0  !important;
     background-color: transparent;
   }
   }
@@ -170,7 +270,7 @@
           position: absolute;
           top: calc(50% - 2px);
           transform: translateY(-50%);
-          right: -10px;
+          right: -15px;
           content: url("../img/icons/arrow.svg");
           @media screen and(max-width: $tablet-width) {
             top: calc(50% + 2px);
@@ -362,11 +462,11 @@
   #tab1, #tab4, #tab5 {
     //.material-products {
     .tab-content-list {
-      word-break: break-word;
       justify-content: space-between;
       display: flex;
       margin-bottom: 5px;
       position: relative;
+      min-height: 49px;
 
       @media screen and(max-width: 720px) {
         display: block;

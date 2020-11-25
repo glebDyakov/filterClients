@@ -1,5 +1,6 @@
 import { analiticsConstants } from '../_constants';
 import moment from 'moment';
+import { whenMapStateToPropsIsMissing } from 'react-redux/lib/connect/mapStateToProps';
 
 const initialState = {
   charStatsFor: 'allRecordsToday',
@@ -17,6 +18,7 @@ const initialState = {
     dateArrayChart: [],
     recordsArrayChart: [],
   },
+  staffsReturning: [],
   isLoadingFirst: false,
   isLoadingSecond: false,
 
@@ -57,17 +59,17 @@ export function analitics(state = initialState, action) {
       let approvedRecordsToday = 0;
       let withoutClientPercent = 0;
       let withoutClientToday = 0;
-      let withoutClientYesterday= 0;
+      let withoutClientYesterday = 0;
       let clientNotComePercent = 0;
       let clientNotComeToday = 0;
-      let clientNotComeYesterday= 0;
+      let clientNotComeYesterday = 0;
       const countRecAndCli = action.count;
       const countLength = Object.keys(action.count).length;
 
       // let dateNormalCheck = moment(Object.keys(action.count)[0]).format("D MMM");
       // let dateTodayCheck = moment().format("D MMM");
 
-      for (let i = 0; i< countLength; i++) {
+      for (let i = 0; i < countLength; i++) {
         allRecordsPercent += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsPercent;
         allRecordsToday += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsToday;
         allRecordsTodayCanceled += countRecAndCli[Object.keys(countRecAndCli)[i]].allRecordsTodayCanceled;
@@ -106,13 +108,13 @@ export function analitics(state = initialState, action) {
         // }
       }
 
-      allRecordsPercent /=countLength;
-      newClientsPercent /=countLength;
-      permanentClientsPercent/=countLength;
-      recordsOnlinePercent/=countLength;
-      recordsPercent/=countLength;
-      withoutClientPercent/=countLength;
-      clientNotComePercent/=countLength;
+      allRecordsPercent /= countLength;
+      newClientsPercent /= countLength;
+      permanentClientsPercent /= countLength;
+      recordsOnlinePercent /= countLength;
+      recordsPercent /= countLength;
+      withoutClientPercent /= countLength;
+      clientNotComePercent /= countLength;
 
 
       return {
@@ -144,28 +146,28 @@ export function analitics(state = initialState, action) {
 
         },
       };
-      // case analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS:
-      //
-      //
-      //     dateNormal = moment(Object.keys(action.approvedCount)[0]).format("D MMM");
-      //     let dateToday = moment().format("D MMM");
-      //     if(dateNormal === dateToday) {
-      //         approvedAllRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].allRecordsToday;
-      //         approvedRecordsOnlineToday =
-      //            action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
-      //         approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
-      //     }
-      //     return{
-      //         ...state,
-      //         counter: {
-      //             ...state.counter,
-      //             approvedAllRecordsToday,
-      //             approvedRecordsOnlineToday,
-      //             approvedRecordsToday
-      //         }
-      //
-      //
-      // };
+    // case analiticsConstants.GET_RECORDS_AND_CLIENTS_TODAY_SUCCESS:
+    //
+    //
+    //     dateNormal = moment(Object.keys(action.approvedCount)[0]).format("D MMM");
+    //     let dateToday = moment().format("D MMM");
+    //     if(dateNormal === dateToday) {
+    //         approvedAllRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].allRecordsToday;
+    //         approvedRecordsOnlineToday =
+    //            action.approvedCount[Object.keys(action.approvedCount)[0]].recordsOnlineToday;
+    //         approvedRecordsToday = action.approvedCount[Object.keys(action.approvedCount)[0]].recordsToday;
+    //     }
+    //     return{
+    //         ...state,
+    //         counter: {
+    //             ...state.counter,
+    //             approvedAllRecordsToday,
+    //             approvedRecordsOnlineToday,
+    //             approvedRecordsToday
+    //         }
+    //
+    //
+    // };
 
 
     case analiticsConstants.GET_STAFFS_ANALYTICS_SUCCESS:
@@ -187,6 +189,12 @@ export function analitics(state = initialState, action) {
           ratioToYesterday,
 
         },
+      };
+
+    case analiticsConstants.GET_RETURNING_ANALYTICS_SUCCESS:
+      return {
+        ...state,
+        staffsReturning: action.count,
       };
 
 
@@ -250,8 +258,11 @@ export function analitics(state = initialState, action) {
         isLoadingSecond: false,
       };
     case analiticsConstants.GET_FINANCIAL_ANALYTICS_CHART_SUCCESS:
-      let dateArrayChart = []; let recordsArrayChart = []; const cashPaymentChart = [];
-      const cardPaymentChart = []; let dateNormal = '';
+      let dateArrayChart = [];
+      let recordsArrayChart = [];
+      const cashPaymentChart = [];
+      const cardPaymentChart = [];
+      let dateNormal = '';
 
       let length = Object.keys(action.count).length;
 
@@ -295,11 +306,11 @@ export function analitics(state = initialState, action) {
         },
       };
     case analiticsConstants.GET_STAFFS_ANALYTICS_FOR_ALL_CHART_SUCCESS:
-      dateArrayChart= [];
+      dateArrayChart = [];
       recordsArrayChart = [];
       dateNormal = '';
       length = Object.keys(action.count).length;
-      let i=0;
+      let i = 0;
       for (i = 0; i < length; i++) {
         dateNormal = moment(Object.keys(action.count)[i]).format('D MMM');
         dateArrayChart.push(dateNormal);

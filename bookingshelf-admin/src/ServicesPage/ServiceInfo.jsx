@@ -3,6 +3,7 @@ import moment from 'moment';
 
 import ActionModal from '../_components/modals/ActionModal';
 import { withTranslation } from 'react-i18next';
+import Hint from '../_components/Hint';
 
 class ServiceInfo extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class ServiceInfo extends Component {
   }
 
   render() {
-    const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup, t } = this.props;
+    const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup, t, company } = this.props;
 
 
     return (
@@ -73,7 +74,9 @@ class ServiceInfo extends Component {
           </span>
           {item2 && item2.details.length > 0 &&
           <span className="item-detail"><br/>{t('Детали')}: {item2.details.length !== 0 && item2.details}</span>}
-
+          {item2 && company && item2.duration < company.settings.booktimeStep &&
+            <span style={{display: "block"}} className="false-time-service red-text">{t("Невозможно использовать услугу на текущем интервале календаря")} <Hint hintMessage={t("Измените время услуги, или выберите другой интервал календаря")}/></span>
+          }
           <span className="hide-item">
             <span className="price">
               {item2.priceFrom} {item2.priceFrom !== item2.priceTo && ' - ' + item2.priceTo} {item2.currency}

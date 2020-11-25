@@ -5,6 +5,10 @@
   position: relative;
   background-color: #222736 !important;
 
+  .material .search {
+    border-color: #383D4A !important
+  }
+
   .questions_dropdown {
     background: #2A3042 !important;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3) !important;
@@ -16,6 +20,18 @@
 
   }
 
+  .calendar .calendar-container {
+    .select-date {
+      span.percent {
+        background: #2A3042 !important;
+
+        &.default-percent {
+          color: #fff;
+        }
+      }
+    }
+  }
+
   .status-modal {
     .form-group {
       ul {
@@ -23,6 +39,7 @@
           strong {
             color: #fff !important;
           }
+
           color: #fff !important;
         }
       }
@@ -241,14 +258,14 @@
   }
 
 
-  .new-staff-modal {
+  .add-work-time-modal, .new-staff-modal {
     .modal-body {
       background-color: #2A3042 !important;
 
       .container-fluid {
         background-color: #2A3042 !important;
 
-        p, label, input, select, select option {
+        h1, h2, h3, h4, h5, h6, p, label, input, select, select option {
           color: #fff !important;
         }
 
@@ -1243,17 +1260,19 @@
   .calendar {
 
     .cell.expired {
-        background-color: #262B3C !important;
+      background-color: #262B3C !important;
     }
 
     .cell.reserve {
       background: #222736 !important;
+
       .notes.color-grey {
         background-color: unset !important;
       }
+
       .notes-container {
         background: #222736 !important;
-        box-shadow: 0 2px 6px 0 rgba(0,0,0,0.5);
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5);
 
       }
     }
@@ -1409,6 +1428,37 @@
   }
 
   .analytics_container {
+
+    .analytics_list.returning-list {
+      .list-group-statistics {
+        .select-container {
+          select, option {
+            color: #fff;
+          }
+        }
+
+
+        .staffs {
+          .staff-item {
+            .credit-container {
+                img {
+                  border: 1px solid #3F4455;
+                  box-sizing: border-box;
+                }
+              .staff-name {
+                text-align: center;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 18px;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
 
     .dropdown-menu {
       background: #222736 !important;
@@ -1655,9 +1705,11 @@
     .chosen-invoice-wrapper {
       .chosen-invoice {
         background: #222736 !important;
+
         .modal-header {
           background-color: #2A3042 !important;
           border: none;
+
           h4 {
             color: #fff !important;
           }
@@ -1666,6 +1718,7 @@
 
         .acts-body {
           background-color: #2A3042 !important;
+
           p, strong {
             color: #fff !important;
           }
@@ -1740,8 +1793,11 @@
   }
 
 
-
   .material {
+
+    .mobile-movements-day-picker {
+      background-color: #2A3042 !important;
+    }
 
     .empty-content-img {
       filter: grayscale(1) invert(1);
@@ -1835,7 +1891,7 @@
         border: none !important;
       }
 
-      textarea, select {
+      textarea, select, select option {
         color: #fff;
       }
     }
