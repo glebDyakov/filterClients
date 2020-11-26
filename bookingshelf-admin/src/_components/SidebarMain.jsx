@@ -101,7 +101,7 @@ class SidebarMain extends React.Component {
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
-        document.title = (companyTypeId === 2 || companyTypeId === 3) ? this.props.t('Рабочие места | Онлайн-запись') : this.props.t('Сотрудники | Онлайн-запись');
+        document.title = (companyTypeId === 2 || companyTypeId === 3) ? this.props.t('Рабочие места | Онлайн-запись') : (companyTypeId === 4 ? t("Врачи | Онлайн-запись") : t('Сотрудники | Онлайн-запись'));
       }
       this.setState({
         company: newProps.company,
@@ -624,7 +624,7 @@ class SidebarMain extends React.Component {
                                           src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
                                           alt=""/>
                                         <span className={item.id === 'warehouse_menu_id' ? "beta": ''}>{item.id === 'staff_menu_id' ? (
-                                          (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')
+                                          (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t("Врачи") : t('Сотрудники'))
                                         ) : t(item.name)}</span>
 
                                         {keyStore === 0 &&

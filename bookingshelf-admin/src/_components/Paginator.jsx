@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate';
 import '../../public/scss/paginator.scss';
 
 const Paginator = (props) => {
-  const { finalTotalPages = 0, onPageChange } = props;
+  const { finalTotalPages = 0, onPageChange} = props;
 
   if (finalTotalPages <= 1) {
     return null;
