@@ -108,7 +108,7 @@ class TabOne extends  PureComponent{
                             }
                         }}><span className="title_block_text">{t("Назад")}</span></span>
                     )}
-                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : t('Выбор сотрудника') }</p>
+                    <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : (info.companyTypeId === 4 ? t('Выбор врача') : t('Выбор сотрудника')) }</p>
                     {staffId &&
                     <span className="next_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 3 : 2);
@@ -358,7 +358,7 @@ class TabOne extends  PureComponent{
                         </div>
                     </React.Fragment>
                 )}
-                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : t('сотрудника')}</p>}
+                {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}</p>}
             </div>
         );
     }
