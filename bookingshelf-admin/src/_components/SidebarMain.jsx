@@ -160,8 +160,6 @@ class SidebarMain extends React.Component {
 
     // this.props.dispatch(companyActions.getNewAppointments());
     this.props.dispatch(menuActions.getMenu());
-    this.props.dispatch(staffActions.get());
-
     // this.props.dispatch(clientActions.getClientWithInfo());
   }
 

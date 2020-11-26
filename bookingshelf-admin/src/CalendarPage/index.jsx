@@ -193,7 +193,6 @@ class Index extends PureComponent {
       this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true);
     }
 
-    this.props.dispatch(staffActions.get());
     this.props.dispatch(staffActions.getClosedDates());
     this.refreshTable(startTime, endTime);
 
