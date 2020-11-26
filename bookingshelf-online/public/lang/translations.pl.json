@@ -60,7 +60,7 @@
   "Запись успешно": "Rezerwacja została pomyślnie",
   "перенесена": "przełożona",
   "создана": "utworzona",
-"Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.": "Ceny są podane na podstawie cennika. Ostateczny koszt jest określany w miejscu wykonania usługi.",
+  "Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.": "Ceny są podane na podstawie cennika. Ostateczny koszt jest określany w miejscu wykonania usługi.",
   "Перенести визит": "Przełóż wizytę",
   "Отменить визит": "Anuluj wizytę",
   "Пока нет ни одного отзыва.": "Na razie nie ma recenzji.",
@@ -88,5 +88,7 @@
   "ч": "g",
   "Подождите": "Czekać",
   "сотрудника": "pracowników",
-  "Комментарии к записи": "Dodaj Komentarze"
+  "Комментарии к записи": "Dodaj Komentarze",
+  "Выбор врача": "Wybór lekarza",
+  "врача": "lekarz"
 }

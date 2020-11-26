@@ -29,11 +29,11 @@ class StaffChoice extends PureComponent {
                 />
               </span>
             )}
-            {typeSelected && typeSelected===1 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>}
+            {typeSelected && typeSelected===1 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t("Работающие врачи") : t('Работающие сотрудники'))}</p>}
             {typeSelected && !!currentSelectedStaff && typeSelected===3 && (
               <p>{currentSelectedStaff.firstName + ' ' + (currentSelectedStaff.lastName ? currentSelectedStaff.lastName : '')}</p>)
             }
-            {typeSelected && typeSelected===2 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Все рабочие места') : t('Все сотрудники')} </p>}
+            {typeSelected && typeSelected===2 && < p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Все рабочие места') : (companyTypeId === 4 ? t("Все врачи") : t('Все сотрудники'))} </p>}
 
           </div>
         )}
@@ -55,12 +55,12 @@ class StaffChoice extends PureComponent {
           <ul className="dropdown-menu">
             <li>
               <a onClick={() => setWorkingStaff(timetable, 2)}>
-                <p>{t("Все")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочие места' ) : t('сотрудники')}</p>
+                <p>{t("Все")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочие места' ) : (companyTypeId === 4 ? t("врачи") : t('сотрудники'))}</p>
               </a>
             </li>
             {!hideWorkingStaff && <li>
               <a onClick={() => setWorkingStaff(timetable, 1)}>
-                <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
+                <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t("Работающие врачи") : t('Работающие сотрудники'))}</p>
               </a>
             </li>}
 

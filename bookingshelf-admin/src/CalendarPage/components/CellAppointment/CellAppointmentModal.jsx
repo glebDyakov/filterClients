@@ -86,7 +86,7 @@ const CellAppointmentModal = (props) => {
               handleCloseSelectDropdown();
             }
             }>
-              {t('Ожидание клиента')}
+              {companyTypeId === 4 ? t('Ожидание пациента') : t('Ожидание клиента')}
             </p>
             }
 
@@ -103,7 +103,7 @@ const CellAppointmentModal = (props) => {
               handleCloseSelectDropdown();
             }
             }>
-              {t('Клиент подтвердил')}
+              {companyTypeId === 4 ? t('Пациент подтвердил') : t('Клиент подтвердил')}
             </p>}
 
             {appointment.status !== 'N' &&
@@ -117,7 +117,7 @@ const CellAppointmentModal = (props) => {
               dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
-              {t('Клиент не пришел')}
+              {companyTypeId === 4 ? t('Пациент не пришел') : t('Клиент не пришел')}
             </p>}
 
             {appointment.status !== 'C' &&
@@ -131,7 +131,7 @@ const CellAppointmentModal = (props) => {
               dispatch(calendarActions.editAppointment2(JSON.stringify(params), currentAppointments[0].appointmentId));
               handleCloseSelectDropdown();
             }}>
-              {t('Клиент пришел')}
+              {companyTypeId === 4 ? t('Пациент пришел') : t('Клиент пришел')}
             </p>}
           </div>
           }
@@ -141,11 +141,11 @@ const CellAppointmentModal = (props) => {
           style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           className="client-name-book"
         >
-          <span className="client-title">{t('Клиент')}:</span>
+          <span className="client-title">{companyTypeId === 4 ? t("Пациент") : t('Клиент')}:</span>
         </p>
 
         {!appointment.clientId &&
-        <p className="name">{t('Без клиента')}</p>}
+        <p className="name">{companyTypeId === 4 ? t('Без пациента') : t('Без клиента')}</p>}
 
         {appointment.clientId &&
         <p
@@ -160,7 +160,7 @@ const CellAppointmentModal = (props) => {
         >
           {appointment.clientFirstName
             ? (appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
-            : t('Без клиента')
+            : (companyTypeId === 4 ? t('Без пациента') : t('Без клиента'))
           }
         </p>
         }
@@ -305,7 +305,7 @@ const CellAppointmentModal = (props) => {
           className="price">{totalAmount}&nbsp;{appointment && appointment.currency}</span></p>
         <hr className="block-line"/>
 
-        <p className="staff-block-title">{t('Мастер')}</p>
+        <p className="staff-block-title">{companyTypeId === 4 ? t('Врач') : t('Мастер')}</p>
         <div className="staff-block">
           <span className="img-container">
             <img
@@ -368,34 +368,38 @@ const CellAppointmentModal = (props) => {
       </div>
     </div>
   );
+
+  function getCurrentAppointmentStatusToString(status) {
+    const companyTypeId = props.settings && props.settings.companyTypeId;
+    console.log(status);
+    switch (status) {
+      case 'clientNotCome':
+        return companyTypeId === 4 ? "Пациент не пришел" : "Клиент не пришел";
+      case 'clientIsCome':
+        return companyTypeId === 4 ? "Пациент пришел" : "Клиент пришел";
+      case 'waitClient':
+        return companyTypeId === 4 ? "Ожидание пациента": "Ожидание клиента";
+      case 'clientConfirmed':
+        return companyTypeId === 4 ? "Пациент подтвердил" : "Клиент подтвердил";
+    }
+  }
+  function getCurrentAppointmentStatus(appointment) {
+    switch (appointment.status) {
+      case 'C':
+        return 'clientIsCome';
+      case 'N':
+        return 'clientNotCome';
+      case 'O':
+        return 'clientConfirmed';
+      case 'W':
+        return 'waitClient';
+    }
 };
 
-function getCurrentAppointmentStatus(appointment) {
-  switch (appointment.status) {
-    case 'C':
-      return 'clientIsCome';
-    case 'N':
-      return 'clientNotCome';
-    case 'O':
-      return 'clientConfirmed';
-    case 'W':
-      return 'waitClient';
-  }
+
 }
 
-function getCurrentAppointmentStatusToString(status) {
-  console.log(status);
-  switch (status) {
-    case 'clientNotCome':
-      return "Клиент не пришел";
-    case 'clientIsCome':
-      return "Клиент пришел";
-    case 'waitClient':
-      return "Ожидание клиента";
-    case 'clientConfirmed':
-      return "Клиент подтвердил";
-  }
-}
+
 
 function mapStateToProps(state) {
   const {

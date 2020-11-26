@@ -84,7 +84,9 @@ class MovementList extends Component {
         </div>
         <div>
           <p><span
-            className="mob-title">{t('Код товара')}: </span>{movement && movement.productCode}
+            className="mob-title">{t('Код товара')} / <span className="red-text">{t("Партия")}</span>: </span>{movement && movement.productCode} /
+            <p className="red-text code_part">{movement && movement.storehouseProductExpenditureId ? movement.storehouseProductExpenditureId : movement.storehouseProductId}</p>
+
           </p>
         </div>
         <div>
@@ -98,9 +100,9 @@ class MovementList extends Component {
         {/*        <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>
         {activeStorehouse && activeStorehouse.storehouseName}</p>*/}
         {/* </div>*/}
-        <div className={(movement && movement.targetTranslated) ? '' : 'movement-target-empty'}>
+        <div>
           <p><span
-            className="mob-title">{t('Причина списания')}: </span>{movement && movement.targetTranslated}
+            className="mob-title">{t('Операция')}: </span>{movement && movement.targetTranslated ? movement.targetTranslated : t("Поступление")}
           </p>
         </div>
 
@@ -143,8 +145,8 @@ class MovementList extends Component {
             className="mob-title">{t('Остаток')} /<span className="red-text"> {t('Резерв')}</span>
                         <Hint hintMessage={t('Товары, зарезервированные на созданные визиты.')}
                         />: </span>{movement && movement.currentAmount} {t('шт')} ({movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}) {movement.reserve > 0 ?
-            <span
-              className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</span> : '/ -'}
+            <p
+              className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</p> : '/ -'}
           </p>
         </div>
         {/*<div className="delete clientEditWrapper">*/}
