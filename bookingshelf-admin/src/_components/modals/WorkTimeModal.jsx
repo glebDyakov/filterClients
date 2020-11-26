@@ -88,7 +88,15 @@ class WorkTimeModal extends Component {
                     const startDate = moment(date, 'DD-MM-YYYY');
                     const matchDay = Number(d);
                     const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
-                    const proposedDate = moment(startDate).startOf('week').add(daysToAdd - 1, 'd');
+                    const proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+
+
+                    // console.log("start week: ", moment(startDate).startOf('week'));
+                    // console.log("start week add 1: ", moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd'));
+                    // console.log("startDate: ", startDate);
+                    // console.log("matchDay: ", matchDay);
+                    // console.log("daysToAdd: ", daysToAdd);
+                    // console.log("PROPOSED DATE: ", proposedDate);
 
                     const updatedTimetables = [];
                     times.forEach((t) => {
@@ -172,7 +180,7 @@ class WorkTimeModal extends Component {
             timeStart = timeStart === 24 ? 0 : timeStart;
 
             if (time.startTimeMillis && keyTime !== key) {
-                if (times[key] && times[key].startTimeMillis ) {
+                if (times[key] && times[key].startTimeMillis) {
                     let time1 = parseInt(moment(times[key].startTimeMillis, 'x').format('k'))
                     let time2 = parseInt(moment(time.startTimeMillis, 'x').format('k'))
                     time1 = time1 === 24 ? 0 : time1
