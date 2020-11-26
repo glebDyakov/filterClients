@@ -733,7 +733,11 @@
   "Возвращаемость клиентов": "Zwroty klientów",
   "месяц": "miesiąc",
   "месяца": "miesiące",
-  "месяцев": "miesiące"
+  "месяцев": "miesiące",
+  "Партия": "Przesyłka",
+  "Операция": "Operacja",
+  "Количество списания / поступления": "Ilość podlegająca umorzeniu / przyjęciu"
+
 }
 
 

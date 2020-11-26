@@ -975,7 +975,7 @@ class Index extends Component {
                           <p>{t('Сотрудник')}</p>
                         </div>
                         <div>
-                          <p>{t('Код товара')}</p>
+                          <p>{t('Код товара')} / <span className="red-text">{t("Партия")}</span></p>
                         </div>
                         <div>
                           <p>{t('Наименование')}</p>
@@ -984,7 +984,7 @@ class Index extends Component {
                         {/*    <p>Склад</p>*/}
                         {/* </div>*/}
                         <div>
-                          <p>{t('Причина списания')}</p>
+                          <p>{t('Операция')}</p>
                         </div>
                         <div>
                           <p>{t('Количество списания / поступления')}</p>

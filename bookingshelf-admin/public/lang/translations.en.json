@@ -733,5 +733,9 @@
   "Возвращаемость клиентов": "Customer Returns",
   "месяц": "month",
   "месяца": "months",
-  "месяцев": "months"
+  "месяцев": "months",
+  "Партия": "The consignment",
+  "Операция": "Operation",
+  "Количество списания / поступления": "Write-off / receipt quantity"
+
 }
