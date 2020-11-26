@@ -346,7 +346,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -356,7 +356,7 @@ class SidebarMain extends React.Component {
                 </div>
                 <div className="d-flex flex-column" style={{ wordBreak: 'break-word' }}>
                   {appointment.clientFirstName ? <React.Fragment><p>
-                    <strong>{t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                    <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
                   {appointment.clientPhone &&
                                     <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
@@ -388,7 +388,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -496,7 +496,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -506,7 +506,7 @@ class SidebarMain extends React.Component {
                 </div>
                 <div className="d-flex flex-column" style={{ wordBreak: 'break-word' }}>
                   {appointment.clientFirstName ? <React.Fragment><p>
-                    <strong>{t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                    <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
                   {appointment.clientPhone &&
                                     <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
@@ -538,7 +538,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -625,7 +625,7 @@ class SidebarMain extends React.Component {
                                           alt=""/>
                                         <span className={item.id === 'warehouse_menu_id' ? "beta": ''}>{item.id === 'staff_menu_id' ? (
                                           (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t("Врачи") : t('Сотрудники'))
-                                        ) : t(item.name)}</span>
+                                        ) : (item.id === 'clients_menu_id' && companyTypeId === 4 ? t('Пациенты') : t(item.name))}</span>
 
                                         {keyStore === 0 &&
                                             ((count && count.appointments && count.appointments.count > 0) ||
@@ -789,7 +789,7 @@ class SidebarMain extends React.Component {
                                                           className="img"/></div>
 
                                                       <div className="d-flex flex-column">
-                                                        <p><strong>{t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
+                                                        <p><strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
 
                                                         <p style={{ float: 'none' }}
                                                           className="user-name d-flex align-items-center">
@@ -807,7 +807,7 @@ class SidebarMain extends React.Component {
                                                     <div className="d-flex flex-column"
                                                       style={{ wordBreak: 'break-word' }}>
                                                       {appointment.clientFirstName ? <React.Fragment><p>
-                                                        <strong>{t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                                                        <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                                       </p></React.Fragment> : ''}
                                                       {appointment.clientPhone &&
                                                             <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
@@ -843,7 +843,7 @@ class SidebarMain extends React.Component {
                                                             <img
                                                               src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                                                               className="img"/></div>
-                                                          <p><strong>{t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
+                                                          <p><strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
                                                         </p>
                                                       </div>
                                                       <p className="service_name">

@@ -502,7 +502,7 @@ class Index extends PureComponent {
           redTitle = authentication.menu[0][titleKey].name;
         }
         if (redTitle === 'Сотрудники') {
-          redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники';
+          redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : (companyTypeId === 4 ? 'Врачи' : 'Сотрудники');
         }
       }
     }

@@ -233,14 +233,14 @@ class NewStaff extends React.Component {
                         <div className="form-group">
                           {!edit ?
                             <div className="modal-header">
-                              <h5 className="modal-title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : t('Новый сотрудник')}</h5>
+                              <h5 className="modal-title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : (companyTypeId === 4 ? t('Новый врач') : t('Новый сотрудник'))}</h5>
                               <button type="button" className="close" onClick={this.closeModal}>
                                 <span aria-hidden="true"/>
                               </button>
                             </div>
                             :
                             <div className="modal-header">
-                              <h5 className="modal-title">{t("Редактирование")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочего места') : t('сотрудника')}</h5>
+                              <h5 className="modal-title">{t("Редактирование")} {(companyTypeId === 2 || companyTypeId === 3) ? t('рабочего места') : (companyTypeId === 4 ? t('врача'): t('сотрудника'))}</h5>
                               <button type="button" className="close" onClick={this.closeModal}
                                 aria-label="Close">
                                 <span aria-hidden="true"/>

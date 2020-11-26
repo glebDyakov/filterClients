@@ -69,7 +69,7 @@ class Index extends Component {
       document.title = t('Выходные дни | Онлайн-запись');
     }
     if (props.match.params.activeTab === 'staff') {
-      document.title = (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места | Онлайн-запись') : t('Сотрудники | Онлайн-запись');
+      document.title = (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места | Онлайн-запись') : (companyTypeId === 4 ? t('Врачи | Онлайн-запись') : t('Сотрудники | Онлайн-запись'));
     }
     if (props.match.params.activeTab === 'feedback') {
       document.title = t('Отзывы | Онлайн-запись');
@@ -233,7 +233,7 @@ class Index extends Component {
       if (newProps.match.params.activeTab === 'staff') {
         document.title = (companyTypeId === 2 || companyTypeId === 3)
           ? this.props.t('Рабочие места | Онлайн-запись')
-          : this.props.t('Сотрудники | Онлайн-запись');
+          : (companyTypeId === 4 ? this.props.t('Врачи | Онлайн-запись') : this.props.t('Сотрудники | Онлайн-запись'));
       }
     }
 
@@ -280,7 +280,7 @@ class Index extends Component {
     if (tab === 'staff') {
       document.title = (companyTypeId === 2 || companyTypeId === 3)
         ? t('Рабочие места | Онлайн-запись')
-        : t('Сотрудники | Онлайн-запись');
+        : (companyTypeId === 4 ? t('Врачи | Онлайн-запись') : t('Сотрудники | Онлайн-запись'));
     }
     if (tab === 'workinghours') {
       document.title = t('Рабочие часы | Онлайн-запись');
@@ -315,9 +315,11 @@ class Index extends Component {
       case 2:
         return (companyTypeId === 2 || companyTypeId === 3)
           ? t('Календарь других рабочих мест')
-          : t('Календарь других сотрудников');
+          : (companyTypeId === 4 ? t('Календарь других врачей') : t('Календарь других сотрудников'));
+      case 3:
+        return (companyTypeId === 4) ? t("Пациенты"): t("Клиенты");
       case 10:
-        return (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники');
+        return (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'));
       default:
         return t(itemList.name);
     }
@@ -403,7 +405,7 @@ class Index extends Component {
                   data-toggle="tab" href="#tab2"
                   onClick={() => this.setTab('staff')}
                 >
-                  {(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')}
+                  {(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'))}
                 </a>
               </li>
               <li className="nav-item">
@@ -459,7 +461,7 @@ class Index extends Component {
               onClick={this.handleOpenHeaderDropdown}
               className={'mobile-selected-tab' + (this.state.isOpenHeaderDropdown ? ' opened' : '')}
             >{(activeTab === 'workinghours' ? t('Рабочие часы')
-                : (activeTab === 'staff' ? (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')
+                : (activeTab === 'staff' ? (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'))
                   : (activeTab === 'holidays' ? t('Выходные дни')
                     : (activeTab === 'permissions' ? t('Доступ')
                       : (activeTab === 'feedback' ? t('Отзывы') : '')))))}</p>
@@ -480,7 +482,7 @@ class Index extends Component {
                     onClick={() => {
                       this.setTab('staff');
                       this.handleOpenHeaderDropdown();
-                    }}>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')}</a>
+                    }}>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'))}</a>
                 </li>
                 <li className="nav-item">
                   <a className={'nav-link' + (activeTab === 'holidays' ? ' active show' : '')}
@@ -533,7 +535,7 @@ class Index extends Component {
                   <div style={{ position: 'sticky', top: 0, zIndex: 5, width: '100%' }}
                     className="tab-content-inner">
                     <div className="tab-content-list">
-                      <div>{t("Сотрудники")}</div>
+                      <div>{companyTypeId === 4 ? t("Врачи") : t("Сотрудники")}</div>
                       {
                         timetableFrom && this.enumerateDaysBetweenDates(timetableFrom, timetableTo)
                           .map((item, weekKey) =>
@@ -636,7 +638,7 @@ class Index extends Component {
               id="tab2"
             >
               <div className="tab-content-list header-content-list">
-                <div className="tab-content-header-item client-name"><p>{t("Сотрудники")}</p></div>
+                <div className="tab-content-header-item client-name"><p>{companyTypeId === 4 ? t("Врачи") : t("Сотрудники")}</p></div>
                 <div className="tab-content-header-item">{t("Мобильный телефон")}</div>
                 <div className="tab-content-header-item">{t("Email адрес")}</div>
                 <div className="tab-content-header-item">{t("Категория доступа")}</div>
@@ -839,7 +841,7 @@ class Index extends Component {
                   <button className="button new-staff" type="button"
                     onClick={() => this.handleClick(null, false)}
                   >
-                    {(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : t('Новый сотрудник')}
+                    {(companyTypeId === 2 || companyTypeId === 3) ? t('Новое рабочее место') : (companyTypeId === 4 ? t('Новый врач') : t('Новый сотрудник'))}
                   </button>
 
                 </div>

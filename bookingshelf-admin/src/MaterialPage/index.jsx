@@ -218,7 +218,7 @@ class Index extends Component {
       //     }
       // }
       if (newProps.match.params.activeTab === 'staff') {
-        document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : 'Сотрудники | Онлайн-запись';
+        document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : (companyTypeId === 4 ? 'Врачи | Онлайн-запись' : 'Сотрудники | Онлайн-запись');
       }
     }
 
@@ -614,6 +614,7 @@ class Index extends Component {
 
 
     const navTabs = this.getNavTabs(activeTab);
+    const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
     return (
       <div className="material" ref={(node) => {
@@ -975,7 +976,7 @@ class Index extends Component {
                         <div className="empty-block">
                         </div>
                         <div>
-                          <p>{t('Сотрудник')}</p>
+                          <p>{companyTypeId === 4 ? t('Врач') : t('Сотрудник')}</p>
                         </div>
                         <div>
                           <p>{t('Код товара')} / <span className="red-text">{t("Партия")}</span></p>

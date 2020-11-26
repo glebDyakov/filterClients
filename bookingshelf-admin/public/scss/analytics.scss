@@ -10,7 +10,6 @@
 
     .list-group-statistics {
       .header-container {
-        z-index: 1;
       }
       strong.group-title {
         width: auto !important;
@@ -18,10 +17,8 @@
 
       .select-container {
         position: relative;
-        z-index: 1;
 
         .custom-select {
-          z-index: 1;
           height: auto;
         }
 
