@@ -41,6 +41,8 @@ class CellAppointmentArea extends React.PureComponent {
           <span className="drag-vert"/>
         </p>
       );
+    const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
 
     const countAppointmentsText = () => {
       if (clientAppointmentsCount >= 2 && clientAppointmentsCount <= 4) {
@@ -67,11 +69,11 @@ class CellAppointmentArea extends React.PureComponent {
           <span className="notes-container-message">
             <span className="client-name w-100 d-flex justify-content-between">
               <span className="client-name">{appointment.clientFirstName
-                ? (`${t('Клиент')}: ` + appointment.clientFirstName +
+                ? (`${companyTypeId === 4 ? t("Пациент") : t('Клиент')}: ` + appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
                 : t('Без клиента')}
                 {clientAppointmentsCount > 1 &&
-                <img title={`${t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
+                <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
                      className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
                      alt=""/>}
 
@@ -104,6 +106,7 @@ class CellAppointmentArea extends React.PureComponent {
 function mapStateToProps(state) {
   const {
     services,
+    company,
     appointment: {
       movingVisit,
     },
@@ -112,6 +115,7 @@ function mapStateToProps(state) {
   return {
     services,
     movingVisit,
+    company
   };
 }
 

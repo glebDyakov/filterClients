@@ -558,7 +558,7 @@ class Index extends Component {
                     <p className="subtitle-payments mb-3 d-md-none">
                       {(companyTypeId === 2 || companyTypeId === 3)
                         ? t('Количество рабочих мест')
-                        : t('Количество сотрудников')
+                        : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))
                       }
                     </p>
 
@@ -611,7 +611,7 @@ class Index extends Component {
                     <p className="subtitle-payments d-none d-md-flex">
                       {(companyTypeId === 2 || companyTypeId === 3)
                         ? t('Количество рабочих мест')
-                        : t('Количество сотрудников')
+                        : (companyTypeId === 4 ? t("Количество врачей") : t('Количество сотрудников'))
                       }
                     </p>
 

@@ -78,7 +78,7 @@ class Index extends Component {
       lastName: this.props.t('рабочие места'),
     } : {
       firstName: this.props.t('Работающие'),
-      lastName: this.props.t('сотрудники'),
+      lastName: companyTypeId === 4 ? this.props.t('врачи') : this.props.t('сотрудники')
     };
 
     this.state = {
@@ -796,7 +796,7 @@ class Index extends Component {
         <div className="group-container">
           <div className="analytics_list tablet-right">
             <div className="list-group-statistics">
-              <strong>{t('Новые клиенты')}</strong>
+              <strong>{companyTypeId === 4 ? t('Новые пациенты') : t('Новые клиенты')}</strong>
               <span className="stat-number-small">
                 {analitics.counter && analitics.counter.newClientsToday}
                 <span
@@ -808,7 +808,7 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list tablet-right">
             <div className="list-group-statistics">
-              <strong>{t('Постоянные клиенты')}</strong>
+              <strong>{companyTypeId === 4 ? t('Постоянные пациенты') : t('Постоянные клиенты')}</strong>
               <span className="stat-number-small no-color">
                 {analitics.counter && analitics.counter.permanentClientsToday}
                 <span
@@ -820,7 +820,7 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list tablet-full">
             <div className="list-group-statistics">
-              <strong>{t('Без клиентов')}</strong>
+              <strong>{companyTypeId === 4 ? t('Без пациентов') : t('Без клиентов')}</strong>
               <span className="stat-number-small red">
                 {analitics.counter && analitics.counter.withoutClientToday}
                 <span
@@ -834,7 +834,7 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div style={{ margin: '15px 0 0 15px' }} className="analytics_list tablet-full">
             <div className="list-group-statistics">
-              <strong>{t('Клиенты не пришли')}</strong>
+              <strong>{companyTypeId === 4 ? t('Пациенты не пришли') : t('Клиенты не пришли')}</strong>
               <span className="stat-number-small red">
                 {analitics.counter && analitics.counter.clientNotComeToday}
                 <span
@@ -859,7 +859,7 @@ class Index extends Component {
                 <ul className="dropdown-menu">
                   <li onClick={() => this.setCurrentSelectedStaff(2)}>
                     <a>
-                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
+                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t('Работающие врачи')  : t('Работающие сотрудники'))}</p>
                     </a>
                   </li>
                   {staff && staff.staff && staff.staff.map((staffEl) => {
@@ -902,7 +902,7 @@ class Index extends Component {
             <div className="list-group-statistics d-flex flex-column">
 
               <div className="header-container d-flex justify-content-between">
-                <strong className="group-title">{t('Возвращаемость клиентов')}</strong>
+                <strong className="group-title">{companyTypeId === 4 ? t('Возвращаемость пациентов') : t('Возвращаемость клиентов')}</strong>
                 <div className="select-container">
                   <select id="returningSelect" onChange={e => this.chooseReturningPeriod(e)}
                           className="custom-select mb-0">
@@ -996,7 +996,7 @@ class Index extends Component {
                   <ul className="dropdown-menu">
                     <li onClick={() => this.setCurrentSelectedStaffChart(2)}>
                       <a>
-                        <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
+                        <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t('Работающие врачи') : t('Работающие сотрудники'))}</p>
                       </a>
                     </li>
                     {staff && staff.timetable && staff.timetable.map((staffEl) => {

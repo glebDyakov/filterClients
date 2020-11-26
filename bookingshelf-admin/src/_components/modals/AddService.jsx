@@ -378,7 +378,7 @@ class AddService extends React.Component {
                       <div className="header-container">
                         <div className="row">
                           <div className="col-sm-12"><p
-                            className="title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : t('Сотрудники')}, {t('оказывающие услугу')}</p>
+                            className="title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t("Врачи") : t('Сотрудники'))}, {t('оказывающие услугу')}</p>
                           </div>
                         </div>
                         {allStaffs && allStaffs.length > 0 &&

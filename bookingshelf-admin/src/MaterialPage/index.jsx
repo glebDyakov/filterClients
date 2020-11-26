@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import moment from 'moment';
 
 
@@ -18,19 +18,20 @@ import SuppliersList from './lists/SuppliersList';
 import MovementList from './lists/MovementList';
 import StoreHouseList from './lists/StoreHouseList';
 
-import { analiticsActions, materialActions, staffActions } from '../_actions';
+import {analiticsActions, materialActions, staffActions} from '../_actions';
 
-import { getWeekRange } from '../_helpers/time';
-import { access } from '../_helpers/access';
+import {getWeekRange} from '../_helpers/time';
+import {access} from '../_helpers/access';
 
 import 'react-day-picker/lib/style.css';
 import '../../public/css_admin/date.css';
 
 import '../../public/scss/staff.scss';
 import '../../public/scss/material.scss';
-import { withTranslation } from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import Hint from '../_components/Hint';
-import { DatePicker } from '../_components/DatePicker';
+import {DatePicker} from '../_components/DatePicker';
+import ReactPaginate from "react-paginate";
 
 function getWeekDays(weekStart) {
   const days = [weekStart];
@@ -106,6 +107,8 @@ class Index extends Component {
       newStaffByMail: false,
       newStaff: false,
 
+      movingSearchValue: '',
+
       productsCurrentPage: 1,
       movingCurrentPage: 1,
 
@@ -177,7 +180,7 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    const { selectedDays } = this.state;
+    const {selectedDays} = this.state;
     if (this.props.authentication.loginChecked) {
       this.queryInitData();
     }
@@ -190,7 +193,7 @@ class Index extends Component {
   }
 
   queryInitData() {
-    const { selectedDays } = this.state;
+    const {selectedDays} = this.state;
     this.props.dispatch(materialActions.getProducts());
     this.props.dispatch(materialActions.getCategories());
     this.props.dispatch(materialActions.getBrands());
@@ -215,7 +218,7 @@ class Index extends Component {
       //     }
       // }
       if (newProps.match.params.activeTab === 'staff') {
-        document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : 'Сотрудники | Онлайн-запись';
+        document.title = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места | Онлайн-запись' : (companyTypeId === 4 ? 'Врачи | Онлайн-запись' : 'Сотрудники | Онлайн-запись');
       }
     }
 
@@ -228,7 +231,7 @@ class Index extends Component {
     if (this.state.staff_working.staffId && JSON.stringify(newProps.staff.staff) !== (JSON.stringify(this.props.staff.staff))) {
       const staff_working = newProps.staff.staff.find((item) => item.staffId === this.state.staff_working.staffId);
       if (staff_working) {
-        this.setState({ staff_working });
+        this.setState({staff_working});
       }
     }
 
@@ -306,7 +309,7 @@ class Index extends Component {
   }
 
   handleOutsideDropdownClick() {
-    this.setState({ isOpenDropdownMenu: false });
+    this.setState({isOpenDropdownMenu: false});
   }
 
   // handleDayChooseClick(day, modifiers = {}, dayKey) {
@@ -357,7 +360,7 @@ class Index extends Component {
   }
 
   handlePageClick(data) {
-    const { selected } = data;
+    const {selected} = data;
     const currentPage = selected + 1;
     this.setState({
       productsCurrentPage: currentPage,
@@ -367,46 +370,46 @@ class Index extends Component {
   };
 
   handleMovingPageClick(data) {
-    const { selected } = data;
+    const {selected} = data;
     const currentPage = selected + 1;
     this.setState({
       movingCurrentPage: currentPage,
     });
     // this.props.dispatch(materialActions.getMovements(currentPage, '', 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
-    this.props.dispatch(materialActions.getMovements(currentPage, '', 11));
+    this.props.dispatch(materialActions.getMovements(currentPage, this.state.movingSearchValue, 11));
   }
 
   toggleProvider(supplier_working) {
-    this.setState({ supplier_working, providerOpen: true });
+    this.setState({supplier_working, providerOpen: true});
   }
 
   toggleProduct(product_working) {
-    this.setState({ product_working, productOpen: true });
+    this.setState({product_working, productOpen: true});
   }
 
   toggleInfoProduct(info_product_working) {
-    this.setState({ info_product_working, infoProductOpen: true });
+    this.setState({info_product_working, infoProductOpen: true});
   }
 
   toggleBrand(brand_working) {
-    this.setState({ brand_working, brandOpen: true });
+    this.setState({brand_working, brandOpen: true});
   }
 
   toggleUnit(unit_working) {
-    this.setState({ unit_working, unitOpen: true });
+    this.setState({unit_working, unitOpen: true});
   }
 
   toggleStoreHouse(storeHouse_working) {
-    this.setState({ storeHouse_working, storeHouseOpen: true });
+    this.setState({storeHouse_working, storeHouseOpen: true});
   }
 
   toggleCategory(category_working) {
-    this.setState({ category_working, categoryOpen: true });
+    this.setState({category_working, categoryOpen: true});
   }
 
   getNavTabs(activeTab) {
     const activeTabMob = this.getActiveTab(activeTab);
-    const { t } = this.props;
+    const {t} = this.props;
     return (
 
       <div className="row align-items-center content clients mb-0 search-container">
@@ -519,14 +522,14 @@ class Index extends Component {
 
   handleOpenDropdownMenu() {
     if (this.state.isOpenDropdownMenu) {
-      this.setState({ isOpenDropdownMenu: false });
+      this.setState({isOpenDropdownMenu: false});
     } else {
-      this.setState({ isOpenDropdownMenu: true });
+      this.setState({isOpenDropdownMenu: true});
     }
   }
 
   render() {
-    const { staff, material, t } = this.props;
+    const {staff, material, t} = this.props;
     const {
       product_working, info_product_working, category_working, supplier_working, brand_working, productOpen,
       infoProductOpen, providerOpen, categoryOpen, brandOpen, edit, currentStaff, date,
@@ -535,7 +538,7 @@ class Index extends Component {
     } = this.state;
 
 
-    const { products, finalTotalProductsPages, finalTotalMovementsPages, categories, suppliers, units, storeHouses } = material;
+    const {products, finalTotalProductsPages, finalTotalMovementsPages, categories, suppliers, units, storeHouses} = material;
 
     const dayPickerProps = {
       month: new Date(),
@@ -611,6 +614,7 @@ class Index extends Component {
 
 
     const navTabs = this.getNavTabs(activeTab);
+    const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
 
     return (
       <div className="material" ref={(node) => {
@@ -929,7 +933,7 @@ class Index extends Component {
                     <div className="row align-items-center justify-content-between content clients mb-2">
                       {/*<div className="search col-6 col-lg-2">*/}
                       <div className="search col-6 col-lg-4">
-                        <input type="search" placeholder={t('Поиск товаров')}
+                        <input type="search" value={this.state.movingSearchValue} placeholder={t('Поиск товаров')}
                                aria-label="Search" ref={(input) => this.movingSearch = input}
                                onChange={(e) =>
                                  this.handleSearchMoving(e)}/>
@@ -972,7 +976,7 @@ class Index extends Component {
                         <div className="empty-block">
                         </div>
                         <div>
-                          <p>{t('Сотрудник')}</p>
+                          <p>{companyTypeId === 4 ? t('Врач') : t('Сотрудник')}</p>
                         </div>
                         <div>
                           <p>{t('Код товара')} / <span className="red-text">{t("Партия")}</span></p>
@@ -1033,8 +1037,8 @@ class Index extends Component {
                     hideButton={true}
                   />
                 </div>)}
-              <div style={{ opacity: this.props.material.isLoadingMovements ? 0 : 1 }}>
-                {this.state.movementsProducts && this.state.movementsProducts.content && this.state.movementsProducts.content.length > 0 &&
+              <div style={{opacity: this.props.material.isLoadingMovements ? 0 : 1}}>
+                {this.state.movingCurrentPage > 0 && this.state.movementsProducts && this.state.movementsProducts.content && this.state.movementsProducts.content.length > 0 &&
                 <Paginator
                   finalTotalPages={finalTotalMovementsPages}
                   onPageChange={this.handleMovingPageClick}
@@ -1255,23 +1259,23 @@ class Index extends Component {
   }
 
   toggleExProd(ex_product_working) {
-    this.setState({ ex_product_working, exProdOpen: true });
+    this.setState({ex_product_working, exProdOpen: true});
   }
 
   onCloseExProd() {
-    this.setState({ exProdOpen: false });
+    this.setState({exProdOpen: false});
   }
 
   toggleStorehouseProduct(storehouseProduct_working) {
-    this.setState({ storehouseProduct_working, storehouseProductOpen: true });
+    this.setState({storehouseProduct_working, storehouseProductOpen: true});
   }
 
   onCloseStorehouseProduct() {
-    this.setState({ storehouseProductOpen: false });
+    this.setState({storehouseProductOpen: false});
   }
 
   handleSearch(defaultKey = 'defaultCategoriesList', key = 'categoriesList', fields = ['categoryName'], searchKey = 'categorySearch') {
-    const { [defaultKey]: defaultList } = this.state;
+    const {[defaultKey]: defaultList} = this.state;
 
 
     const searchServicesList = defaultList.filter((item) => {
@@ -1296,47 +1300,58 @@ class Index extends Component {
 
   handleSearchMoving(e) {
     // this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value, 11, moment(this.state.selectedMovementDay).utc().startOf('day').format('x'), moment(this.state.selectedMovementDay).utc().endOf('day').format('x')));
-    this.props.dispatch(materialActions.getMovements(this.state.movingCurrentPage, e.target.value, 11, moment().subtract(1, 'year').utc().startOf('day').format('x'), moment().utc().endOf('day').format('x')));
+    const {dispatch} = this.props;
+    const {value} = e.target;
+
+    this.setState({movingSearchValue: value})
+
+    this.setState({movingCurrentPage: 0}, () => {
+      this.setState({movingCurrentPage: 1}, () => {
+        dispatch(materialActions.getMovements(this.state.movingCurrentPage, value, 11, moment().subtract(1, 'year').utc().startOf('day').format('x'), moment().utc().endOf('day').format('x')));
+      });
+    });
+
+
   }
 
   deleteCategory(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteCategory(id));
   }
 
   deleteBrand(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteBrand(id));
   }
 
   deleteSupplier(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteSupplier(id));
   }
 
   deleteUnit(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteUnit(id));
   }
 
   deleteStoreHouse(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteStoreHouse(id));
   }
 
   deleteProduct(id) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     dispatch(materialActions.deleteProduct(id));
   }
 
   deleteMovement(movement) {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     const type = movement.movementType === 'ARRIVAL';
     const id = movement.movementType === 'ARRIVAL' ? movement.storehouseProductId : movement.storehouseProductExpenditureId;
     console.log('type', type);
@@ -1344,35 +1359,35 @@ class Index extends Component {
   }
 
   onCloseProvider() {
-    this.setState({ providerOpen: false });
+    this.setState({providerOpen: false});
   }
 
   onCloseProducts() {
-    this.setState({ productOpen: false });
+    this.setState({productOpen: false});
   }
 
   onCloseInfoProducts() {
-    this.setState({ infoProductOpen: false });
+    this.setState({infoProductOpen: false});
   }
 
   onCloseCategory() {
-    this.setState({ categoryOpen: false });
+    this.setState({categoryOpen: false});
   }
 
   onCloseBrand() {
-    this.setState({ brandOpen: false });
+    this.setState({brandOpen: false});
   }
 
   onCloseUnit() {
-    this.setState({ unitOpen: false });
+    this.setState({unitOpen: false});
   }
 
   onCloseStoreHouse() {
-    this.setState({ storeHouseOpen: false });
+    this.setState({storeHouseOpen: false});
   }
 
   getUnitName(unit) {
-    const { t } = this.props;
+    const {t} = this.props;
     switch (unit) {
       case 'Миллилитр':
         return t('мл');
@@ -1394,7 +1409,7 @@ class Index extends Component {
 
 
 function mapStateToProps(store) {
-  const { staff, company, timetable, authentication, material } = store;
+  const {staff, company, timetable, authentication, material} = store;
 
   return {
     staff, company, timetable, authentication, material,

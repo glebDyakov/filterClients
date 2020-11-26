@@ -166,8 +166,8 @@ class NewClient extends React.Component {
                     <div>
                       <div className="modal-content">
                         <div className="modal-header">
-                          {!edit ? <h4 className="modal-title">{t("Новый клиент")}</h4>
-                            : <h4 className="modal-title">{t("Редактирование клиента")}</h4>
+                          {!edit ? <h4 className="modal-title">{companyTypeId === 4 ? t("Новый пациент") : t("Новый клиент")}</h4>
+                            : <h4 className="modal-title">{companyTypeId === 4 ? t("Редактирование пациента") :  t("Редактирование клиента")}</h4>
                           }
                           <button type="button" className="close" onClick={this.closeModal}/>
                           {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
