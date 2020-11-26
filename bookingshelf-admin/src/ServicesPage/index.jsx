@@ -9,7 +9,7 @@ import ServiceInfo from './ServiceInfo';
 import { servicesActions, staffActions, materialActions, companyActions } from '../_actions';
 
 import '../../public/scss/services.scss';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -66,7 +66,7 @@ class Index extends Component {
       createdService: false,
       dragDropItems: [],
       handleOpen: false,
-      company: props.company
+      company: props.company,
     };
 
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -153,7 +153,7 @@ class Index extends Component {
     }
 
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
-      this.setState({company: newProps.company});
+      this.setState({ company: newProps.company });
     }
   }
 
@@ -224,7 +224,7 @@ class Index extends Component {
   render() {
     const {
       services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet,
-      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search, company
+      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search, company,
     } = this.state;
     const isLoading = staff.isLoading || services.isLoading;
     const dragDropGroupsItems = [];
@@ -286,28 +286,28 @@ class Index extends Component {
           : null}*/
         }
         {isLoading &&
-          <div className="loader loader-service">
-            <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
-          </div>
+                <div className="loader loader-service">
+                  <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
+                </div>
         }
 
         <div className="pages-content">
           <div className="services_list" id="sortable_list">
             {(defaultServicesList.services && defaultServicesList !== '' &&
-              <div className="row align-items-center search-header-container content clients mb-2">
-                <div className="search">
-                  <input className="search-input" type="search"
-                    placeholder={t("Введите название услуги")}
-                    aria-label="Search" value={this.state.searchInput}
-                    onChange={this.handleSearch}/>
+                            <div className="row align-items-center search-header-container content clients mb-2">
+                              <div className="search">
+                                <input className="search-input" type="search"
+                                  placeholder={t('Введите название услуги')}
+                                  aria-label="Search" value={this.state.searchInput}
+                                  onChange={this.handleSearch}/>
 
-                  <input className="mob-search-input" type="search"
-                    placeholder={t("Введите название услуги")}
-                    aria-label="Search" value={this.state.searchInput}
-                    onChange={this.handleSearch}/>
-                  <button className="search-icon" type="submit"/>
-                </div>
-              </div>
+                                <input className="mob-search-input" type="search"
+                                  placeholder={t('Введите название услуги')}
+                                  aria-label="Search" value={this.state.searchInput}
+                                  onChange={this.handleSearch}/>
+                                <button className="search-icon" type="submit"/>
+                              </div>
+                            </div>
             )}
 
             <div className="services_wrapper">
@@ -326,72 +326,74 @@ class Index extends Component {
 
             <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
               <div className="buttons">
-                <button type="button" className="button" onClick={(e) => this.handleClick(null, false, e)}>
-                  {t("Новая группа услуг")}
+                <button type="button" className="button"
+                  onClick={(e) => this.handleClick(null, false, e)}>
+                  {t('Новая группа услуг')}
                 </button>
 
-                <button type="button" onClick={() => this.setState({ createdService: true })} className="button">
-                  {t("Новая услуга")}
+                <button type="button" onClick={() => this.setState({ createdService: true })}
+                  className="button">
+                  {t('Новая услуга')}
                 </button>
               </div>
-              <div className="arrow" />
+              <div className="arrow"/>
             </div>
           </div>
         </div>
         <div className="tab-content">
           {(!isLoading && (!services.services || services.services.length === 0)) && !search &&
-            <div className="no-holiday">
-              <span>
-                            {t("Услуги не добавлены")}
-                <span className="buttons">
-                  <button type="button"
-                    className="button"
-                    onClick={(e) => this.handleClick(null, false, e)}>{t("Добавить услугу")}</button>
-                </span>
-              </span>
-            </div>
+                    <div className="no-holiday">
+                      <span>
+                        {t('Услуги не добавлены')}
+                        <span className="buttons">
+                          <button type="button"
+                            className="button"
+                            onClick={(e) => this.handleClick(null, false, e)}>{t('Добавить услугу')}</button>
+                        </span>
+                      </span>
+                    </div>
           }
 
           {(!isLoading && (!services.services || services.services.length === 0)) && search &&
-            <div className="no-holiday">
-              <span>
-                  {t("Услуг не найдено")}
-              </span>
-            </div>
+                    <div className="no-holiday">
+                      <span>
+                        {t('Услуг не найдено')}
+                      </span>
+                    </div>
           }
         </div>
 
         {addGroup &&
-          <AddGroup
-            group_workingGroup={group_workingGroup}
-            edit={edit}
-            update={this.update}
-            add={this.add}
-            newSet={newSet}
-            onClose={this.onClose}
-          />
+                <AddGroup
+                  group_workingGroup={group_workingGroup}
+                  edit={edit}
+                  update={this.update}
+                  add={this.add}
+                  newSet={newSet}
+                  onClose={this.onClose}
+                />
         }
 
         {addService &&
-          <AddService
-            group_working={group_working}
-            editServiceItem={editServiceItem}
-            updateService={this.updateService}
-            addService={this.addService}
-            staffs={staff.staff}
-            group={idGroupEditable}
-            onClose={this.onClose}
-          />
+                <AddService
+                  group_working={group_working}
+                  editServiceItem={editServiceItem}
+                  updateService={this.updateService}
+                  addService={this.addService}
+                  staffs={staff.staff}
+                  group={idGroupEditable}
+                  onClose={this.onClose}
+                />
         }
 
         {createdService &&
-          <CreatedService
-            services={services}
-            newServiceGroup={this.handleClick}
-            newServiceFromGroup={this.newService}
-            serviceCurrent={this.state.newSetElement}
-            onClose={this.onClose}
-          />
+                <CreatedService
+                  services={services}
+                  newServiceGroup={this.handleClick}
+                  newServiceFromGroup={this.newService}
+                  serviceCurrent={this.state.newSetElement}
+                  onClose={this.onClose}
+                />
         }
       </div>
     );
@@ -536,12 +538,35 @@ class Index extends Component {
     const { value } = e.target;
     const { defaultServicesList } = this.state;
 
-    const searchServicesList = defaultServicesList.services.filter((item) => {
-      return (item.services && item.services.some((item) => item.name.toLowerCase().includes(value.toLowerCase())))
-        || (item.services && item.services.some((item) => item.details.toLowerCase().includes(value.toLowerCase())));
-      // || item.name.toLowerCase().includes(value.toLowerCase())
-      // || item.description.toLowerCase().includes(value.toLowerCase())
-    });
+    // const searchServicesList = defaultServicesList.services.filter((item) => {
+    //   return (item.services && item.services.some((item) => item.name.toLowerCase().includes(value.toLowerCase())))
+    //     || (item.services && item.services.some((item) => item.details.toLowerCase().includes(value.toLowerCase())));
+    //   // || item.name.toLowerCase().includes(value.toLowerCase())
+    //   // || item.description.toLowerCase().includes(value.toLowerCase())
+    // });
+
+    const searchServicesList = defaultServicesList.services.reduce((filtered, group) => {
+      if (group.name.toLowerCase().includes(value)) {
+        filtered.push(group);
+      } else {
+        const services = group.services.filter((s) => {
+          if (group.name.toLowerCase().includes(value.toLowerCase())) return true;
+          return (s.name.toLowerCase().includes(value.toLowerCase()) || s.details.toLowerCase().includes(value.toLowerCase()));
+        });
+
+        if (services.length > 0) {
+          filtered.push({
+            ...group,
+            services,
+          });
+        }
+      }
+      return filtered;
+    }, [],
+    );
+
+    console.log('searchServicesList: ', searchServicesList);
+
 
     this.setState({
       searchInput: value,
@@ -568,4 +593,4 @@ function mapStateToProps(store) {
   };
 }
 
-export default connect(mapStateToProps)(withTranslation("common")(Index));
+export default connect(mapStateToProps)(withTranslation('common')(Index));
