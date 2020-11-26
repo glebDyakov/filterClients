@@ -763,6 +763,7 @@
   "Новый врач": "New doctor",
   "У пациента": "Patient",
   "Удален врачем": "Removed by a physician",
-  "Удален пациентом": "Removed by patient"
+  "Удален пациентом": "Removed by patient",
+  "Пациенты с контактами": "Patients with contacts"
 
 }
