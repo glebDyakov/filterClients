@@ -515,7 +515,7 @@ class Index extends Component {
     const { t } = this.props;
 
     const dateArrayChart = this.props.analitics.staffsAnalyticChart.dateArrayChart;
-    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart;
+    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart.map(i => i.toFixed(1));
 
     const dateFinancialChart = this.props.analitics.financialAnalyticChart.dateArrayChart;
     const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
