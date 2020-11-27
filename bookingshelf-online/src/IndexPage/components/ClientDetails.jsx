@@ -29,6 +29,8 @@ class ClientDetails extends React.Component {
 
     componentDidMount() {
         const clientId = (this.props.staff.appointment && this.props.staff.appointment[0] && this.props.staff.appointment[0].clientId) || (this.props.staff.newAppointment && this.props.staff.newAppointment[0] && this.props.staff.newAppointment[0].clientId)
+        console.log(this.props)
+
         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
     }
 
@@ -226,5 +228,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedApp = connect(mapStateToProps)(withTranslation("common")(ClientDetails));
+const connectedApp = connect(mapStateToProps)(withRouter(withTranslation("common")(ClientDetails)));
 export { connectedApp as ClientDetails };
