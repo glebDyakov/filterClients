@@ -20,7 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d1292d8b-3515-40a0-8ad6-b328dabbd121" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/bookingshelf-online/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bookingshelf-online/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookingshelf-admin/public/scss/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/bookingshelf-admin/public/scss/styles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookingshelf-admin/src/AnalyticsPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookingshelf-admin/src/AnalyticsPage/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,11 +76,16 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="320" y="187" key="Vcs.Push.Dialog.v2" timestamp="1606412420070">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="320" y="187" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1606412420070" />
+    <state x="421" y="205" width="597" height="490" key="find.popup" timestamp="1606466777686">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="421" y="205" width="597" height="490" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1606466777686" />
   </component>
 </project>
