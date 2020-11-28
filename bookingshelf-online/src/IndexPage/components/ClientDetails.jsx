@@ -25,6 +25,7 @@ class ClientDetails extends React.Component {
         this.handleSearchAppointmentsAppointments = this.handleSearchAppointmentsAppointments.bind(this);
         this.updateAppointments = this.updateAppointments.bind(this);
         this.handlePageClickAppointments = this.handlePageClickAppointments.bind(this);
+        this.handleSearchAppointments = this.handleSearchAppointments.bind(this);
     }
 
     componentDidMount() {
@@ -150,7 +151,7 @@ class ClientDetails extends React.Component {
                                             <div className="search col-7">
                                                 <input type="search" placeholder={t("Введите название услуги")}
                                                        aria-label="Search" ref={input => this.search = input} onChange={this.handleSearchAppointments}/>
-                                                <button className="search-icon" type="submit"/>
+                                                {/*<button className="search-icon" type="submit"/>*/}
                                             </div>
                                         </div>
                                     )}
