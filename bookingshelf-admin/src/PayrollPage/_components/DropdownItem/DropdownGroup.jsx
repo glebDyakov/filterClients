@@ -2,13 +2,29 @@ import React, {Component} from 'react';
 import DropdownGroupItem from "./DropdownGroupItem";
 
 class DropdownGroup extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isOpenGroup: false
+    }
+
+    this.handleOpenGroup = this.handleOpenGroup.bind(this);
+  }
+
+  handleOpenGroup() {
+    this.setState((state) => {
+      return {isOpenGroup: !state.isOpenGroup}
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="dropdown-group d-flex justify-content-between align-items-center">
           <div className="left-container">
             <div className="open-handler-container">
-              <button className="open-handler"></button>
+              <button onClick={this.handleOpenGroup} className={"open-handler" + (this.state.isOpenGroup ? " opened" : '')}></button>
               <h2 className="group-title">Крема</h2>
             </div>
           </div>
@@ -18,9 +34,13 @@ class DropdownGroup extends Component {
 
         </div>
 
+        {this.state.isOpenGroup &&
         <div className="dropdown-group-items">
           <DropdownGroupItem/>
-        </div>
+          <DropdownGroupItem/>
+          <DropdownGroupItem/>
+        </div>}
+
       </React.Fragment>
     );
   }

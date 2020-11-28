@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import DropdownGroup from './DropdownItem/DropdownGroup';
+import Hint from "../../_components/Hint";
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -41,15 +42,25 @@ class PercentOfSales extends Component {
                 <input placeholder="Введите название категории" className="search-input" type="text"/>
               </li>
 
-              <li className="dropdown-item">test</li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
+              <li className="dropdown-item"><DropdownGroup/></li>
             </ul>}
             <label className="percent mr-4 text-center">%
               <input placeholder="%" type="number" min="0" max="100"/>
             </label>
+            <Hint customLeft={-15} hintMessage={"message"} />
           </div>
           <div className="products-container col">
             <label className="products">Все товары
-              <a onClick={this.handleOpenProductsDropdown} className="product-select">Женские крема со второй строчкой</a>
+              <a onClick={this.handleOpenProductsDropdown} className="product-select">Женские крема со второй
+                строчкой</a>
             </label>
 
             {this.state.isOpenProductsDropdown &&
@@ -66,8 +77,8 @@ class PercentOfSales extends Component {
 
             <label className="percent text-center">%
               <input placeholder="%" type="number" min="0" max="100"/>
-
             </label>
+            <Hint customLeft={-15} hintMessage={"message"} />
 
 
           </div>

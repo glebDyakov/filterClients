@@ -379,6 +379,9 @@
         position: relative;
 
         .dropdown {
+          z-index: 1001;
+          max-height: 442px;
+          overflow-y: auto;
           position: absolute;
           width: 100%;
           top: 70px;
@@ -387,14 +390,51 @@
           background: #FFFFFF;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
           border-radius: 5px;
-          z-index: 1;
 
 
           .dropdown-item {
-            padding: 15px;
-            &:not(:last-of-type){
-              border-bottom: 1px solid #EEEFF1;
+            padding: 0;
+
+            &:active, &:hover {
+              background: #fff;
             }
+            &.search-item {
+              padding: 15px;
+              position: sticky;
+              top: 0;
+              z-index: 1;
+              background-color: #fff;
+              &:active, &:hover {
+                background: #fff !important;
+              }
+            }
+
+            .dropdown-group {
+              padding: 15px;
+              border-bottom: 1px solid #EEEFF1;
+
+
+
+            }
+            .dropdown-group-items {
+              .dropdown-item {
+                padding: 12px 15px;
+                border-bottom: 1px solid #EEEFF1;
+                cursor: pointer;
+
+                .item-name {
+                  font-style: normal;
+                  font-weight: normal;
+                  font-size: 13px;
+                  line-height: 20px;
+                  color: #495057;
+                  max-width: 130px;
+
+                }
+
+              }
+            }
+
 
             &.search-item {
               border-bottom: 1px solid #EEEFF1;
@@ -440,6 +480,14 @@
 
         .services-container {
           margin-right: 25px;
+        }
+
+        .products-container {
+          .questions_dropdown {
+            transform: unset !important;
+            left: unset !important;
+            right: 0;
+          }
         }
 
         .services-container, .products-container {
@@ -532,6 +580,19 @@
       border-bottom: 1px solid #EAEBED;
       .col {
         padding: 0;
+        justify-content: end;
+
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #495057;
+        }
+
+        select {
+          margin-bottom: 10px !important;
+        }
       }
 
       .salary-input {
@@ -539,6 +600,8 @@
         margin-top: 7px;
         height: 36px;
       }
+
+
 
 
 
@@ -571,6 +634,20 @@
         color: #2A3042;
       }
     }
+    .right-container {
+      .right-container__percent {
+        padding: 9px 11px;
+        background: #F3F3F9;
+        border-radius: 2px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        text-align: center;
+        color: #2A3042;
+      }
+    }
+
 
     .dropdown-group {
       .group-title {
@@ -582,6 +659,7 @@
         margin-left: 15px;
         margin-bottom: 0;
       }
+
 
       .open-handler-container {
         display: flex;

@@ -5,6 +5,7 @@ import '../../public/scss/payroll.scss';
 import PayrollDay from './_components/PayrollDay';
 import { withTranslation } from 'react-i18next';
 import PercentOfSales from './_components/PercentOfSales';
+import Hint from "../_components/Hint";
 
 class Index extends Component {
   constructor(props) {
@@ -122,19 +123,20 @@ class Index extends Component {
                 <h2 className="settings-title">{t("Настройки зарплаты")}</h2>
 
                 <div className="salary-container">
-                  <label className="col">{t("Выбор ставки")}
+                  <label className="col"><p>{t("Выбор ставки")}</p>
                     <select className="custom-select mb-0 salary-input" name="" id="">
                       <option defaultChecked={true} value="0">{t('Выберите ставку')}</option>
                       <option value="test">test</option>
                     </select>
                   </label>
-                  <label className="col">{t("Оклад за месяц")}
+                  <label className="col"><p>{t("Оклад за месяц")}</p>
                     <input className="salary-input" type="number" placeholder={t('Введите оклад')}/>
                   </label>
-                  <label className="col">{t("Гарантированный оклад")}
+                  <label className="col"><p>{t("Гарантированный оклад")}<Hint hintMessage={"message"} /></p>
+
                     <input className="salary-input" type="number" placeholder={t('Введите оклад')}/>
                   </label>
-                  <label className="col">% {t("от реализации")}
+                  <label className="col"><p>% {t("от реализации")}</p>
                     <input className="salary-input" type="number" min="0" max="100" placeholder="0%"/>
                   </label>
                 </div>
