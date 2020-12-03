@@ -141,7 +141,7 @@ class AddGroup extends React.Component {
               <div className="modal-inner">
                 <p>{t("Название группы")}</p>
                 <div style={{ position: 'relative' }}>
-                  <input type="text" placeholder={t("Введите название")} name="name" value={group.name} onChange={this.handleChange}/>
+                  <input style={{paddingRight: 50 + 'px'}} type="text" placeholder={t("Введите название")} name="name" value={group.name} onChange={this.handleChange}/>
                   <span className="name-length-text">
                     {group.name.length}/60
                   </span>

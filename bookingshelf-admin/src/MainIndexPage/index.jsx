@@ -8,6 +8,7 @@ import { access } from '../_helpers/access';
 import ReactPhoneInput from 'react-phone-input-2';
 import {withTranslation} from "react-i18next";
 
+
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -359,9 +360,8 @@ class Index extends Component {
                 <div className="row">
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>
-                        {t("Номер телефона владельца")} {subcompany.defaultPhone===1 && `(${t("Будет указан в автоуведомлениях")})`}
-                      </p>
+                      <p>{t("Номер телефона")}</p>
+                      {subcompany.defaultPhone===1 && <p>({t("Будет указан в автоуведомлениях")})</p>}
                     </p>
 
                     <div style={{ border: 'none' }} className="name_company_wrapper form-control">
@@ -459,7 +459,8 @@ class Index extends Component {
 
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>{t("Номер телефона")} {subcompany.defaultPhone===3 && `(${t("Будет указан в автоуведомлениях")})`}</p>
+                      <p>{t("Номер телефона")}</p>
+                      {subcompany.defaultPhone===2 && <p>({t("Будет указан в автоуведомлениях")})</p>}
                     </p>
 
                     <div style={{ border: 'none' }} className="name_company_wrapper form-control">
@@ -503,7 +504,8 @@ class Index extends Component {
 
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>{t("Номер телефона")} {subcompany.defaultPhone===2 && `(${t("Будет указан в автоуведомлениях")})`}</p>
+                      <p>{t("Номер телефона")}</p>
+                      {subcompany.defaultPhone===3 && <p>({t("Будет указан в автоуведомлениях")})</p>}
                     </p>
 
                     <div style={{ border: 'none' }} className="name_company_wrapper form-control">
