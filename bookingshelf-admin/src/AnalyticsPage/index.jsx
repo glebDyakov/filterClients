@@ -515,7 +515,7 @@ class Index extends Component {
     const { t } = this.props;
 
     const dateArrayChart = this.props.analitics.staffsAnalyticChart.dateArrayChart;
-    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart;
+    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart.map(i => i.toFixed(1));
 
     const dateFinancialChart = this.props.analitics.financialAnalyticChart.dateArrayChart;
     const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
@@ -678,10 +678,10 @@ class Index extends Component {
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.approvedAllRecordsToday !== 0 ? (analitics.counter.approvedAllRecordsToday / analitics.counter.allRecordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.approvedAllRecordsToday !== 0 ? (analitics.counter.approvedAllRecordsToday / (analitics.counter.approvedAllRecordsToday + analitics.counter.allRecordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.allRecordsTodayCanceled !== 0 ? (analitics.counter.allRecordsTodayCanceled / analitics.counter.allRecordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.allRecordsTodayCanceled !== 0 ? (analitics.counter.allRecordsTodayCanceled / (analitics.counter.approvedAllRecordsToday + analitics.counter.allRecordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
 
@@ -721,10 +721,10 @@ class Index extends Component {
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.approvedRecordsOnlineToday / analitics.counter.recordsOnlineToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.approvedRecordsOnlineToday / (analitics.counter.approvedRecordsOnlineToday + analitics.counter.recordsOnlineTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.recordsOnlineTodayCanceled / analitics.counter.recordsOnlineToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.recordsOnlineTodayCanceled / (analitics.counter.approvedRecordsOnlineToday + analitics.counter.recordsOnlineTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
                 <div className="numbers-container">
@@ -765,10 +765,10 @@ class Index extends Component {
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.approvedRecordsToday / analitics.counter.recordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.approvedRecordsToday / (analitics.counter.approvedRecordsToday + analitics.counter.recordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.recordsTodayCanceled / analitics.counter.recordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.recordsTodayCanceled / (analitics.counter.approvedRecordsToday + analitics.counter.recordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
 
