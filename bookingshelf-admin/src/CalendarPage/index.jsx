@@ -211,7 +211,10 @@ class Index extends PureComponent {
 
   updateAnalytic(date, staffId, isStaff = false) {
     if (isStaff) {
-      this.props.dispatch(calendarActions.getStaffCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x'), staffId));
+      console.log(date)
+      if (!this.props.analytic[moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")] || staffId !== this.props.analyticStaffId) {
+        this.props.dispatch(calendarActions.getStaffCalendarLoad(moment(date, "DD-MM-YYYY").startOf('month').format('x'), moment(date, "DD-MM-YYYY").endOf('month').format('x'), staffId));
+      }
     } else {
       this.props.dispatch(calendarActions.getCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x')));
     }
@@ -1026,6 +1029,7 @@ function mapStateToProps(store) {
       isLoadingAppointments,
       isLoadingReservedTime,
       analytic,
+      analyticStaffId,
     },
     cell: {
       selectedDays,
@@ -1053,6 +1057,7 @@ function mapStateToProps(store) {
     isLoadingAppointments,
     isLoadingReservedTime,
     analytic,
+    analyticStaffId
   };
 }
 
