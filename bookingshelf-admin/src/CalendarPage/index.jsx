@@ -116,7 +116,7 @@ class Index extends PureComponent {
       scrollableAppointmentAction: true,
       appointmentMarkerActionCalled: false,
       scrolledToRight: false,
-      language: 'ru',
+      language: 'ru'
     };
 
     this.newAppointment = this.newAppointment.bind(this);
@@ -208,9 +208,13 @@ class Index extends PureComponent {
     }, 500);
   }
 
+
   updateAnalytic(date, staffId, isStaff = false) {
     if (isStaff) {
-      this.props.dispatch(calendarActions.getStaffCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x'), staffId));
+      console.log(date)
+      if (!this.props.analytic[moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")] || staffId !== this.props.analyticStaffId) {
+        this.props.dispatch(calendarActions.getStaffCalendarLoad(moment(date, "DD-MM-YYYY").startOf('month').format('x'), moment(date, "DD-MM-YYYY").endOf('month').format('x'), staffId));
+      }
     } else {
       this.props.dispatch(calendarActions.getCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x')));
     }
@@ -310,7 +314,6 @@ class Index extends PureComponent {
         language: newProps.i18n.language,
       });
     }
-
 
     if (this.props.i18n.language !== newProps.i18n.language) {
       this.setState({
@@ -577,7 +580,7 @@ class Index extends PureComponent {
                   type={type}
                 />
 
-                {company.settings && (
+                {company.settings && company.settings.booktimeStep && (
                   <TabScrollContent
                     company={company}
                     checkForCostaffs={this.checkForCostaffs}
@@ -1026,6 +1029,7 @@ function mapStateToProps(store) {
       isLoadingAppointments,
       isLoadingReservedTime,
       analytic,
+      analyticStaffId,
     },
     cell: {
       selectedDays,
@@ -1053,6 +1057,7 @@ function mapStateToProps(store) {
     isLoadingAppointments,
     isLoadingReservedTime,
     analytic,
+    analyticStaffId
   };
 }
 

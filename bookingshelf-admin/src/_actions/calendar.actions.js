@@ -653,6 +653,6 @@ function getStaffCalendarLoad(from, to, staffId) {
     return { type: calendarConstants.GET_USER_CALENDAR_LOAD };
   }
   function success(analytics) {
-    return { type: calendarConstants.GET_USER_CALENDAR_LOAD_SUCCESS, analytics };
+    return { type: calendarConstants.GET_USER_CALENDAR_LOAD_SUCCESS, payload: {analytics, staffId} };
   }
 }

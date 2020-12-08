@@ -191,7 +191,7 @@ class VisitPage extends React.Component {
 
                         {!(appointment && appointment.coStaffs && appointment.coStaffs.length > 0) && <div style={{ position: 'relative', width: '210px', margin: '0 auto' }}>
                             <input style={{ backgroundColor: '#f3a410' }} type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
-                                this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, appointment.clientId, 1))
+                                // this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, appointment.clientId, 1))
                                 this._move(visitAppointments)
                             }}/>
                             <span className="move-white" />
@@ -214,8 +214,8 @@ class VisitPage extends React.Component {
                         </div>
                         }
 
-                        <input style={{ background: 'transparent '}} type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>
-                        {allVisits && <ClientDetails />}
+                        {/*<input style={{ background: 'transparent '}} type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>*/}
+                        {/*{allVisits && <ClientDetails />}*/}
                         {/*<p className="skip_employee"  onClick={() => this.setScreen(2)}> Создать запись</p>*/}
                         <a className="skip_employee"  href={`/online/${this.props.match.params.company}`}>{t("Создать запись")}</a>
 
