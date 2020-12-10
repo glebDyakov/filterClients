@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
-import DropdownGroup from './DropdownItem/DropdownGroup';
+import React, {Component} from 'react';
+import DropdownSearchItem from "./Dropdown/DropdownSearchItem";
+import Dropdown from "./Dropdown/Dropdown";
+import DropdownListItems from "./Dropdown/DropdownListItems";
+import DropdownItem from "./Dropdown/DropdownItem";
+import Hint from '../../_components/Hint';
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -36,35 +40,57 @@ class PercentOfSales extends Component {
             </label>
 
             {this.state.isOpenServicesDropdown &&
-            <ul className="dropdown">
-              <li className="dropdown-item search-item">
-                <input placeholder="Введите название категории" className="search-input" type="text"/>
-              </li>
-
-              <li className="dropdown-item">test</li>
-            </ul>}
-            <label className="percent mr-4 text-center">%
-              <input placeholder="%" type="number" min="0" max="100"/>
+            <Dropdown onClose={() => {
+              this.setState({isOpenServicesDropdown: false})
+            }}>
+              <DropdownSearchItem>
+                Введите название категории
+              </DropdownSearchItem>
+              <DropdownListItems>
+                <DropdownItem>
+                  <div className="dropdown-item d-flex justify-content-between align-items-center">
+                    <div className="left-container d-flex align-items-center">
+                      <button className="button-collapse"/>
+                      <p className="service-group-name">text</p>
+                    </div>
+                    <label className="percent"><input disabled value="50%" type="text"/></label>
+                  </div>
+                </DropdownItem>
+                {/* map and create dromdown items  */}
+              </DropdownListItems>
+            </Dropdown>}
+            <label className="percent mr-4 text-center"><span>%</span>
+              <input placeholder="%" type="text" min="0" max="100"/>
             </label>
           </div>
           <div className="products-container col">
             <label className="products">Все товары
-              <a onClick={this.handleOpenProductsDropdown} className="product-select">Женские крема со второй строчкой</a>
+              <a onClick={this.handleOpenProductsDropdown} className="product-select">Женские крема со второй
+                строчкой</a>
             </label>
 
             {this.state.isOpenProductsDropdown &&
-            <ul className="dropdown">
-              <li className="dropdown-item search-item">
-                <input placeholder="Введите название категории" className="search-input" type="text"/>
-              </li>
+            <Dropdown onClose={() => {
+              this.setState({isOpenProductsDropdown: false})
+            }}>
+              <DropdownSearchItem>
+                Введите название категории
+              </DropdownSearchItem>
+              <DropdownListItems>
+                <DropdownItem>
+                  <div className="dropdown-item d-flex justify-content-between align-items-center">
+                    <div className="left-container d-flex align-items-center">
+                      <button className="button-collapse"/>
+                      <p className="service-group-name">text</p>
+                    </div>
+                    <label className="percent"><input disabled value="50%" type="text"/></label>
+                  </div>
+                </DropdownItem>
+                {/* map and create dromdown items  */}
+              </DropdownListItems>
+            </Dropdown>}
 
-              <li className="dropdown-item"><DropdownGroup/></li>
-              <li className="dropdown-item"><DropdownGroup/></li>
-              <li className="dropdown-item"><DropdownGroup/></li>
-              <li className="dropdown-item"><DropdownGroup/></li>
-            </ul>}
-
-            <label className="percent text-center">%
+            <label className="percent text-center"><span>%</span>
               <input placeholder="%" type="number" min="0" max="100"/>
 
             </label>

@@ -5,6 +5,7 @@ import '../../public/scss/payroll.scss';
 import PayrollDay from './_components/PayrollDay';
 import { withTranslation } from 'react-i18next';
 import PercentOfSales from './_components/PercentOfSales';
+import Hint from '../_components/Hint';
 
 class Index extends Component {
   constructor(props) {
