@@ -67,6 +67,13 @@
       }
     }
 
+    .header-item {
+      display: none !important;
+
+      @media screen and (max-width: $mob-width) {
+        display: block !important;
+      }
+    }
 
     .staffs-list {
       background: #FFFFFF;
@@ -74,6 +81,8 @@
       overflow-x: auto;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 2px;
+
+      height: 100%;
 
 
       .list-item {
@@ -433,6 +442,7 @@
     overflow-y: auto;
 
 
+
     .percent-of-sales-container {
       border-bottom: 1px solid #EAEBED;
       padding-bottom: 5px;
@@ -656,11 +666,15 @@
       background: #F3F3F9 url("../img/icons/arrow-down.svg") no-repeat center right 10px;
     }
 
-    .salary-container {
-      display: flex;
+    .salary-settings {
+      border-bottom: 1px solid #EAEBED;
       padding-bottom: 5px;
       margin-bottom: 20px;
-      border-bottom: 1px solid #EAEBED;
+    }
+
+    .salary-container {
+      display: flex;
+
       .col {
         padding: 0;
       }

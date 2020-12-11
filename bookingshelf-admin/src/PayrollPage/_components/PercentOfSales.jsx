@@ -3,7 +3,6 @@ import DropdownSearchItem from "./Dropdown/DropdownSearchItem";
 import Dropdown from "./Dropdown/Dropdown";
 import DropdownListItems from "./Dropdown/DropdownListItems";
 import DropdownItem from "./Dropdown/DropdownItem";
-import Hint from '../../_components/Hint';
 
 class PercentOfSales extends Component {
   constructor(props) {
