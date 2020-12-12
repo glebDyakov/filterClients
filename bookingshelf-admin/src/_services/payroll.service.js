@@ -29,7 +29,7 @@ function addPayoutType(params) {
     xhrFields: {
       withCredentials: true,
     },
-    body: params,
+    body: JSON.stringify(params),
     headers: authHeader(),
   };
 

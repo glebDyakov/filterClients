@@ -31,6 +31,10 @@ class Index extends Component {
         },
         rate: 0,
       },
+
+      serviceGroups: [],
+      categories: [],
+      products: [],
     };
 
     this.setTab = this.setTab.bind(this);
@@ -51,7 +55,10 @@ class Index extends Component {
       this.setState({ selectedStaff: nextProps.authentication.user.profile.staffId }, () => {
         this.initStaffData(this.state.selectedStaff);
       });
+    }
 
+    if (nextProps.services.services && JSON.stringify(this.state.serviceGroups) !== JSON.stringify(nextProps.services.services)) {
+      this.setState({ serviceGroups: nextProps.services.services });
     }
   }
 
@@ -78,20 +85,23 @@ class Index extends Component {
   handleSubmitSettings() {
     this.props.dispatch(payrollActions.addPayoutType({
       rate: this.state.settings.rate,
+      payoutType: 'MONTHLY_SALARY',
       staffId: this.state.selectedStaff,
-      ...this.state.settings.MONTHLY_SALARY
+      ...this.state.settings.MONTHLY_SALARY,
     }));
 
     this.props.dispatch(payrollActions.addPayoutType({
       rate: this.state.settings.rate,
+      payoutType: 'GUARANTEED_SALARY',
       staffId: this.state.selectedStaff,
-      ...this.state.settings.GUARANTEED_SALARY
+      ...this.state.settings.GUARANTEED_SALARY,
     }));
 
     this.props.dispatch(payrollActions.addPayoutType({
       rate: this.state.settings.rate,
+      payoutType: 'SERVICE_PERCENT',
       staffId: this.state.selectedStaff,
-      ...this.state.settings.SERVICE_PERCENT
+      ...this.state.settings.SERVICE_PERCENT,
     }));
   }
 
@@ -127,6 +137,8 @@ class Index extends Component {
   render() {
     const { activeTab } = this.state;
     const { staff, t } = this.props;
+
+    console.log(this.props.services);
 
     return (
       <div id="payroll" className="d-flex">
@@ -255,14 +267,16 @@ class Index extends Component {
                   </label>
                 </div>
                 <div className="button-container">
-                  <button disabled={this.state.settings.rate === 0} className="button-save border-0">Сохранить</button>
+                  <button onClick={this.handleSubmitSettings} disabled={this.state.settings.rate === 0}
+                          className="button-save border-0">Сохранить
+                  </button>
                 </div>
 
               </div>
               <div className="percent-settings">
                 <h2 className="settings-title">{t('Процент от реализации')}</h2>
                 <div className="percent-container">
-                  <PercentOfSales/>
+                  <PercentOfSales material={this.props.material} serviceGroups={this.state.serviceGroups}/>
                 </div>
               </div>
             </div>
@@ -274,11 +288,11 @@ class Index extends Component {
 }
 
 function mapStateToProps(store) {
-  const { staff, service, material, authentication } = store;
+  const { staff, services, material, authentication } = store;
 
   return {
     staff,
-    service,
+    services,
     material,
     authentication,
   };

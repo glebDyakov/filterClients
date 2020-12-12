@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import DropdownSearchItem from "./Dropdown/DropdownSearchItem";
-import Dropdown from "./Dropdown/Dropdown";
-import DropdownListItems from "./Dropdown/DropdownListItems";
-import DropdownItem from "./Dropdown/DropdownItem";
+import React, { Component } from 'react';
+import DropdownSearchItem from './Dropdown/DropdownSearchItem';
+import Dropdown from './Dropdown/Dropdown';
+import DropdownListItems from './Dropdown/DropdownListItems';
+import DropdownItem from './Dropdown/DropdownItem';
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class PercentOfSales extends Component {
     this.state = {
       isOpenServicesDropdown: false,
       isOpenProductsDropdown: false,
-    }
+    };
 
     this.handleOpenServicesDropdown = this.handleOpenServicesDropdown.bind(this);
     this.handleOpenProductsDropdown = this.handleOpenProductsDropdown.bind(this);
@@ -19,17 +19,19 @@ class PercentOfSales extends Component {
 
   handleOpenServicesDropdown() {
     this.setState(state => {
-      return {isOpenServicesDropdown: !state.isOpenServicesDropdown};
+      return { isOpenServicesDropdown: !state.isOpenServicesDropdown };
     });
   }
 
   handleOpenProductsDropdown() {
     this.setState(state => {
-      return {isOpenProductsDropdown: !state.isOpenProductsDropdown};
+      return { isOpenProductsDropdown: !state.isOpenProductsDropdown };
     });
   }
 
   render() {
+    console.log(this.props);
+
     return (
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
@@ -40,22 +42,24 @@ class PercentOfSales extends Component {
 
             {this.state.isOpenServicesDropdown &&
             <Dropdown onClose={() => {
-              this.setState({isOpenServicesDropdown: false})
+              this.setState({ isOpenServicesDropdown: false });
             }}>
               <DropdownSearchItem>
                 Введите название категории
               </DropdownSearchItem>
               <DropdownListItems>
-                <DropdownItem>
-                  <div className="dropdown-item d-flex justify-content-between align-items-center">
-                    <div className="left-container d-flex align-items-center">
-                      <button className="button-collapse"/>
-                      <p className="service-group-name">text</p>
+                {this.props.serviceGroups.map((serviceGroup) =>
+                  <DropdownItem>
+                    <div className="dropdown-item d-flex justify-content-between align-items-center">
+                      <div className="left-container d-flex align-items-center">
+                        <button className={serviceGroup.color.toLowerCase() + 'ButtonEdit ' + 'button-collapse'}/>
+                        <p className="service-group-name">{serviceGroup.name}</p>
+                      </div>
+                      <label className="percent"><input disabled value="50%" type="text"/></label>
                     </div>
-                    <label className="percent"><input disabled value="50%" type="text"/></label>
-                  </div>
-                </DropdownItem>
+                  </DropdownItem>)}
                 {/* map and create dromdown items  */}
+
               </DropdownListItems>
             </Dropdown>}
             <label className="percent mr-4 text-center"><span>%</span>
@@ -70,21 +74,22 @@ class PercentOfSales extends Component {
 
             {this.state.isOpenProductsDropdown &&
             <Dropdown onClose={() => {
-              this.setState({isOpenProductsDropdown: false})
+              this.setState({ isOpenProductsDropdown: false });
             }}>
               <DropdownSearchItem>
                 Введите название категории
               </DropdownSearchItem>
               <DropdownListItems>
-                <DropdownItem>
-                  <div className="dropdown-item d-flex justify-content-between align-items-center">
-                    <div className="left-container d-flex align-items-center">
-                      <button className="button-collapse"/>
-                      <p className="service-group-name">text</p>
+                {this.props.material.categories.map((category) =>
+                  <DropdownItem>
+                    <div className="dropdown-item d-flex justify-content-between align-items-center">
+                      <div className="left-container d-flex align-items-center">
+                        <button className="button-collapse"/>
+                        <p className="service-group-name">{category.categoryName}</p>
+                      </div>
+                      <label className="percent"><input disabled value="50%" type="text"/></label>
                     </div>
-                    <label className="percent"><input disabled value="50%" type="text"/></label>
-                  </div>
-                </DropdownItem>
+                  </DropdownItem>)}
                 {/* map and create dromdown items  */}
               </DropdownListItems>
             </Dropdown>}
