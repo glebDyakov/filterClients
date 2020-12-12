@@ -8,6 +8,11 @@ import PercentOfSales from './_components/PercentOfSales';
 import Hint from '../_components/Hint';
 import moment from 'moment';
 import { materialActions, payrollActions, servicesActions } from '../_actions';
+import MomentLocaleUtils from 'react-day-picker/moment';
+import DayPicker, { DateUtils } from 'react-day-picker';
+import { getWeekRange } from '../_helpers';
+import { getWeekDays } from '../StaffPage';
+import { DatePicker } from '../_components/DatePicker';
 
 class Index extends Component {
   constructor(props) {
@@ -32,9 +37,26 @@ class Index extends Component {
         rate: 0,
       },
 
+
+      selectedDays: getWeekDays(getWeekRange(moment().format()).from),
+      from: null,
+      to: null,
+      enteredTo: null,
+
       serviceGroups: [],
       categories: [],
       products: [],
+
+      analytic: {
+        companyRevenue: 0,
+        productCount: 0,
+        productsPricesAmount: 0,
+        servicesAmount: 0,
+        servicesCount: 0,
+        staffRevenue: 0,
+        workedDays: 0,
+        workedHours: 0,
+      },
     };
 
     this.setTab = this.setTab.bind(this);
@@ -42,23 +64,41 @@ class Index extends Component {
     this.selectStaff = this.selectStaff.bind(this);
     this.handleChangeSettings = this.handleChangeSettings.bind(this);
     this.handleSubmitSettings = this.handleSubmitSettings.bind(this);
+
+    this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
+    this.handleResetClick = this.handleResetClick.bind(this);
+
   }
 
   componentDidMount() {
     if (this.props.authentication.loginChecked) {
       this.queryInitData();
     }
+
+    initializeJs();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (this.props.authentication.loginChecked !== nextProps.authentication.loginChecked) {
+      this.queryInitData();
+    }
+
     if (nextProps.authentication.user && nextProps.authentication.user.profile && nextProps.authentication.user.profile.staffId !== this.state.selectedStaff) {
       this.setState({ selectedStaff: nextProps.authentication.user.profile.staffId }, () => {
         this.initStaffData(this.state.selectedStaff);
       });
     }
 
-    if (nextProps.services.services && JSON.stringify(this.state.serviceGroups) !== JSON.stringify(nextProps.services.services)) {
+
+    if (nextProps.services.services && (JSON.stringify(this.props.services.services) !== JSON.stringify(nextProps.services.services))) {
       this.setState({ serviceGroups: nextProps.services.services });
+    }
+
+    if (JSON.stringify(this.props.payroll.analytic) !== JSON.stringify(nextProps.payroll.analytic)) {
+      this.setState({
+        analytic: nextProps.payroll.analytic
+      });
     }
   }
 
@@ -133,12 +173,62 @@ class Index extends Component {
     }
   }
 
+  handleDayMouseEnter(day) {
+    const { from, to } = this.state;
+    if (!this.isSelectingFirstDay(from, to, day)) {
+      this.setState({
+        enteredTo: day,
+      });
+    }
+  }
+
+  handleDayClick(day) {
+    const { from, to } = this.state;
+    if (from && to && day >= from && day <= to) {
+      this.handleResetClick();
+      return;
+    }
+    if (this.isSelectingFirstDay(from, to, day)) {
+      this.setState({
+        ...this.state,
+        from: day,
+        to: null,
+        enteredTo: day,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        to: day,
+        enteredTo: day,
+      }, () => {
+        this.props.dispatch(payrollActions.getPayoutAnalytic(this.state.selectedStaff, moment(this.state.from).startOf('day').format('x'), moment(this.state.to).endOf('day').format('x')));
+      });
+    }
+  }
+
+  isSelectingFirstDay(from, to, day) {
+    const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from);
+    const isRangeSelected = from && to;
+    return !from || isBeforeFirstDay || isRangeSelected;
+  }
+
+  handleResetClick() {
+    this.setState({
+      ...this.state, from: null,
+      to: null,
+      enteredTo: null,
+    });
+  }
 
   render() {
-    const { activeTab } = this.state;
+    const { activeTab, analytic } = this.state;
     const { staff, t } = this.props;
 
-    console.log(this.props.services);
+    const { from, to, enteredTo } = this.state;
+    const modifiersClosed = { start: from, end: enteredTo };
+    const disabledDays = { before: this.state.from };
+    const selectedDaysClosed = [from, { from, to: enteredTo }];
+
 
     return (
       <div id="payroll" className="d-flex">
@@ -161,6 +251,19 @@ class Index extends Component {
                   </a>
                 </li>
               </ul>
+
+              {this.state.activeTab == 'payroll' &&
+              <DayPicker
+                className="SelectedWeekExample"
+                fromMonth={from}
+                selectedDays={selectedDaysClosed}
+                disabledDays={[disabledDays, { after: moment().utc().toDate() }]}
+                modifiers={modifiersClosed}
+                onDayClick={this.handleDayClick}
+                onDayMouseEnter={this.handleDayMouseEnter}
+                localeUtils={MomentLocaleUtils}
+                language={this.props.i18n.language}
+              />}
             </div>
 
           </div>
@@ -170,33 +273,34 @@ class Index extends Component {
             <div className="stats-container d-flex">
               <div className="col">
                 <h3 className="title">{t('Отработано дней')}:</h3>
-                <h2 className="stat">12</h2>
+                <h2 className="stat">{analytic.workedDays}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Отработано часов')}:</h3>
-                <h2 className="stat">88</h2>
+                <h2 className="stat">{analytic.workedHours}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Услуг проведено')}:</h3>
-                <h2 className="stat">12</h2>
+                <h2 className="stat">{analytic.servicesCount}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Сумма услуг')}:</h3>
-                <h2 className="stat with-currency">1000 <span className="currency">(BYN)</span></h2>
+                <h2 className="stat with-currency">{analytic.servicesAmount.toFixed(2)} <span
+                  className="currency">(BYN)</span></h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Товаров')}:</h3>
-                <h2 className="stat">0</h2>
+                <h2 className="stat">{analytic.productCount}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Сумма товаров')}:</h3>
-                <h2 className="stat">0</h2>
+                <h2 className="stat">{analytic.productsPricesAmount.toFixed(2)}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Доход')}</h3>
                 <h2 className="stat">
-                  <p className="income">1000 (BYN) {t('сотруд')}.</p>
-                  <p className="income">1500 (BYN) {t('компан')}.</p>
+                  <p className="income">{analytic.staffRevenue.toFixed(2)} (BYN) {t('сотруд')}.</p>
+                  <p className="income">{analytic.companyRevenue.toFixed(2)} (BYN) {t('компан')}.</p>
                   <br/>
                   <p></p>
                 </h2>
@@ -288,10 +392,11 @@ class Index extends Component {
 }
 
 function mapStateToProps(store) {
-  const { staff, services, material, authentication } = store;
+  const { staff, payroll, services, material, authentication } = store;
 
   return {
     staff,
+    payroll,
     services,
     material,
     authentication,

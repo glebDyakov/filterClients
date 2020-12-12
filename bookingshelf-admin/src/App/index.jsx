@@ -319,8 +319,7 @@ class Index extends React.Component {
                             <PrivateRoute exact path="/material/:activeTab?" component={MaterialPage} wrapped
                                           refresh={false}/>}
                             {!paymentsOnly &&
-                            <PrivateRoute exact path="/payroll" component={PayrollPage} wrapped
-                                          refresh={false}/>}
+                            <PrivateRoute exact path="/payroll" component={PayrollPage} wrapped/>}
                             {!paymentsOnly &&
                             <PrivateRoute exact path="/clients" component={ClientsPage} wrapped refresh={false}/>}
                             {!paymentsOnly && access(0) &&

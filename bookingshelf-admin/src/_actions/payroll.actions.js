@@ -4,7 +4,8 @@ import { payrollConstants } from '../_constants';
 
 export const payrollActions = {
   getPayoutTypes,
-  addPayoutType
+  addPayoutType,
+  getPayoutAnalytic
 };
 
 function getPayoutTypes(staffId) {
@@ -23,6 +24,25 @@ function getPayoutTypes(staffId) {
   }
   function failure() {
     return { type: payrollConstants.GET_PAYOUT_TYPES_FAILURE };
+  }
+}
+
+function getPayoutAnalytic(staffId, dateFrom, dateTo) {
+  return (dispatch) => {
+    payrollService.getPayoutAnalytic(staffId, dateFrom, dateTo)
+      .then(
+        (payoutAnalytic) => {
+          dispatch(success(payoutAnalytic));
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(payoutAnalytic) {
+    return { type: payrollConstants.GET_PAYOUT_STATS_SUCCESS, payload: { payoutAnalytic } };
+  }
+  function failure() {
+    return { type: payrollConstants.GET_PAYOUT_STATS_FAILURE };
   }
 }
 

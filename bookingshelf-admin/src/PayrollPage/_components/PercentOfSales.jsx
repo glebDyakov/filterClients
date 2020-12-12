@@ -3,6 +3,8 @@ import DropdownSearchItem from './Dropdown/DropdownSearchItem';
 import Dropdown from './Dropdown/Dropdown';
 import DropdownListItems from './Dropdown/DropdownListItems';
 import DropdownItem from './Dropdown/DropdownItem';
+import ServiceDropdownItem from './Dropdown/ServiceDropdown';
+import ProductDropdownItem from './Dropdown/ProductDropdown';
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -48,18 +50,11 @@ class PercentOfSales extends Component {
                 Введите название категории
               </DropdownSearchItem>
               <DropdownListItems>
-                {this.props.serviceGroups.map((serviceGroup) =>
-                  <DropdownItem>
-                    <div className="dropdown-item d-flex justify-content-between align-items-center">
-                      <div className="left-container d-flex align-items-center">
-                        <button className={serviceGroup.color.toLowerCase() + 'ButtonEdit ' + 'button-collapse'}/>
-                        <p className="service-group-name">{serviceGroup.name}</p>
-                      </div>
-                      <label className="percent"><input disabled value="50%" type="text"/></label>
-                    </div>
-                  </DropdownItem>)}
-                {/* map and create dromdown items  */}
-
+                {this.props.serviceGroups && this.props.serviceGroups.map((serviceGroup) =>
+                  <ServiceDropdownItem
+                    key={serviceGroup.serviceGroupId}
+                    serviceGroup={serviceGroup}
+                  />)}
               </DropdownListItems>
             </Dropdown>}
             <label className="percent mr-4 text-center"><span>%</span>
@@ -81,22 +76,17 @@ class PercentOfSales extends Component {
               </DropdownSearchItem>
               <DropdownListItems>
                 {this.props.material.categories.map((category) =>
-                  <DropdownItem>
-                    <div className="dropdown-item d-flex justify-content-between align-items-center">
-                      <div className="left-container d-flex align-items-center">
-                        <button className="button-collapse"/>
-                        <p className="service-group-name">{category.categoryName}</p>
-                      </div>
-                      <label className="percent"><input disabled value="50%" type="text"/></label>
-                    </div>
-                  </DropdownItem>)}
-                {/* map and create dromdown items  */}
+                  <ProductDropdownItem
+                    key={category.categoryId}
+                    category={category}
+                    products={this.props.material.products}
+                  />,
+                )}
               </DropdownListItems>
             </Dropdown>}
 
             <label className="percent text-center"><span>%</span>
               <input placeholder="%" type="number" min="0" max="100"/>
-
             </label>
 
 
