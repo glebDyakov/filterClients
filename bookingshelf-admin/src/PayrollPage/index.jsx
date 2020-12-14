@@ -12,7 +12,6 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import { getWeekRange } from '../_helpers';
 import { getWeekDays } from '../StaffPage';
-import { DatePicker } from '../_components/DatePicker';
 
 class Index extends Component {
   constructor(props) {
@@ -20,6 +19,8 @@ class Index extends Component {
     this.state = {
       activeTab: 'payroll',
       selectedStaff: 0,
+      percentIndex: 0,
+      percentList: [],
 
       settings: {
         MONTHLY_SALARY: {
@@ -57,6 +58,8 @@ class Index extends Component {
         workedDays: 0,
         workedHours: 0,
       },
+
+
     };
 
     this.setTab = this.setTab.bind(this);
@@ -84,20 +87,38 @@ class Index extends Component {
       this.queryInitData();
     }
 
-    if (nextProps.authentication.user && nextProps.authentication.user.profile && nextProps.authentication.user.profile.staffId !== this.state.selectedStaff) {
+    if (JSON.stringify(this.props.authentication.user) !== JSON.stringify(nextProps.authentication.user)) {
       this.setState({ selectedStaff: nextProps.authentication.user.profile.staffId }, () => {
         this.initStaffData(this.state.selectedStaff);
       });
     }
 
+    if (JSON.stringify(this.props.payroll.payoutTypes) !== JSON.stringify(nextProps.payroll.payoutTypes)) {
+      this.setState({
+        settings: nextProps.payroll.payoutTypes.reduce((acc, payout) => {
+          acc[payout.payoutType] = {
+            amount: payout.amount,
+            staffId: payout.staffId,
+            staffPayoutTypeId: payout.staffPayoutTypeId,
+          };
 
-    if (nextProps.services.services && (JSON.stringify(this.props.services.services) !== JSON.stringify(nextProps.services.services))) {
+          acc.rate = payout.rate;
+          console.log(payout);
+          return acc;
+        }, {}),
+      }, () => {
+        console.log('payout', this.state);
+
+      });
+    }
+
+    if (nextProps.services && (JSON.stringify(this.props.services) !== JSON.stringify(nextProps.services))) {
       this.setState({ serviceGroups: nextProps.services.services });
     }
 
     if (JSON.stringify(this.props.payroll.analytic) !== JSON.stringify(nextProps.payroll.analytic)) {
       this.setState({
-        analytic: nextProps.payroll.analytic
+        analytic: nextProps.payroll.analytic,
       });
     }
   }
@@ -110,6 +131,9 @@ class Index extends Component {
 
   initStaffData(staffId) {
     this.props.dispatch(payrollActions.getPayoutTypes(staffId));
+    this.props.dispatch(payrollActions.getPercentProducts(staffId));
+    this.props.dispatch(payrollActions.getPercentServiceGroups(staffId));
+    this.props.dispatch(payrollActions.getPercentServices(staffId));
   }
 
   selectStaff(staffId) {
@@ -252,7 +276,7 @@ class Index extends Component {
                 </li>
               </ul>
 
-              {this.state.activeTab == 'payroll' &&
+              {this.state.activeTab === 'payroll' &&
               <DayPicker
                 className="SelectedWeekExample"
                 fromMonth={from}
@@ -380,7 +404,11 @@ class Index extends Component {
               <div className="percent-settings">
                 <h2 className="settings-title">{t('Процент от реализации')}</h2>
                 <div className="percent-container">
-                  <PercentOfSales material={this.props.material} serviceGroups={this.state.serviceGroups}/>
+                  {this.props.payroll.percentServices && this.props.payroll.percentServiceGroups &&
+                  <PercentOfSales servicesPercent={this.props.payroll.percentServices}
+                                  serviceGroupsPercent={this.props.payroll.percentServiceGroups}
+                                  material={this.props.material}
+                                  serviceGroups={this.state.serviceGroups}/>}
                 </div>
               </div>
             </div>

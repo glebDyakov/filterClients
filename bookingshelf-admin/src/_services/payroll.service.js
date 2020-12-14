@@ -4,7 +4,10 @@ import { authHeader, handleResponse, origin } from '../_helpers';
 export const payrollService = {
   getPayoutTypes,
   addPayoutType,
-  getPayoutAnalytic
+  getPayoutAnalytic,
+  getPercentServiceGroups,
+  getPercentServices,
+  getPercentProducts,
 };
 
 function getPayoutTypes(staffId) {
@@ -35,7 +38,7 @@ function addPayoutType(params) {
 
   };
 
-  return fetch(`${origin}/salary${config.apiUrl}/staffs${params.staffPayoutTypeId ? '/' + params.staffPayoutTypeId : ''}/payouttypes`, requestOptions)
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/payouttypes${params.staffPayoutTypeId ? '/' + params.staffPayoutTypeId : ''}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -51,5 +54,50 @@ function getPayoutAnalytic(staffId, dateFrom, dateTo) {
   };
 
   return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getPercentServiceGroups(staffId) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/staffs/${staffId}/servicegroups`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getPercentServices(staffId) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/services`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getPercentProducts(staffId) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/products`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }

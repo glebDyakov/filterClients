@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import DropdownItem from './DropdownItem';
 import DropdownListItems from './DropdownListItems';
 
-class ProductDropdownItem extends Component {
+class ProductDropdown extends Component {
   constructor(props) {
     super(props);
 
@@ -19,13 +19,15 @@ class ProductDropdownItem extends Component {
       };
     });
   }
+
   render() {
     const { category, products } = this.props;
 
     return (
       <React.Fragment>
         <DropdownItem>
-          <div onClick={this.handleCollapse} className="dropdown-item d-flex justify-content-between align-items-center">
+          <div onClick={this.handleCollapse}
+               className="dropdown_item d-flex justify-content-between align-items-center">
             <div className="left-container d-flex align-items-center">
               <button className={'button-collapse' + (this.state.isOpened ? ' collapsed' : '')}/>
               <p className="service-group-name">{category.categoryName}</p>
@@ -36,9 +38,9 @@ class ProductDropdownItem extends Component {
 
         {this.state.isOpened &&
         <div className="nested-dropdown">
-          {products.filter(p => p.categoryId === category.categoryId).map((product) =>
+          {products.filter((p) => p.categoryId === category.categoryId).map((product) =>
             <DropdownListItems key={product.productId}>
-              <div className="dropdown-item d-flex justify-content-between align-items-center">
+              <div className="dropdown_item d-flex justify-content-between align-items-center">
                 <div className="left-container d-flex align-items-center">
                   <p className="service-name">{product.productName}</p>
                 </div>
@@ -52,4 +54,4 @@ class ProductDropdownItem extends Component {
   }
 }
 
-export default ProductDropdownItem;
+export default ProductDropdown;

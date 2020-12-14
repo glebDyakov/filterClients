@@ -9,7 +9,7 @@ class DropdownSearchItem extends Component {
     const { children } = this.props;
 
     return (
-      <li className="dropdown-item search-item">
+      <li className="dropdown_item search-item">
         <input placeholder={children} className="search-input" type="text"/>
       </li>
     );

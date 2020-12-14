@@ -12,6 +12,9 @@ const initialState = {
     workedDays: 0,
     workedHours: 0,
   },
+  percentServiceGroups: [],
+  percentServices: [],
+  percentProducts: [],
 };
 
 export function payroll(state = initialState, action) {
@@ -39,6 +42,69 @@ export function payroll(state = initialState, action) {
 
     case payrollConstants.ADD_PAYOUT_TYPE_FAILURE:
       return state;
+
+    case payrollConstants.GET_PERCENT_SERVICE_GROUPS_SUCCESS:
+      return {
+        ...state,
+        percentServiceGroups: action.payload.percentServiceGroups,
+      };
+
+    case payrollConstants.GET_PERCENT_SERVICE_GROUPS_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.GET_PERCENT_SERVICES_SUCCESS:
+      return {
+        ...state,
+        percentServices: action.payload.percentServices,
+      };
+
+    case payrollConstants.GET_PERCENT_SERVICES_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.GET_PERCENT_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        percentProducts: action.payload.percentProducts,
+      };
+
+    case payrollConstants.GET_PERCENT_PRODUCTS_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_SERVICE_GROUP_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_SERVICE_GROUP_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_SERVICE_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_SERVICE_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_PRODUCT_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.ADD_PERCENT_PRODUCT_FAILURE:
+      return {
+        ...state,
+      };
     default:
       return state;
   }

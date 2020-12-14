@@ -549,7 +549,7 @@ class Index extends Component {
       services: { services: searchServicesList },
     });
 
-    if (this.search.value === '') {
+    if (this.state.search.value === '') {
       this.setState({
         search: true,
         services: defaultServicesList,
