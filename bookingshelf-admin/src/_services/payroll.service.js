@@ -3,11 +3,15 @@ import { authHeader, handleResponse, origin } from '../_helpers';
 
 export const payrollService = {
   getPayoutTypes,
-  addPayoutType,
+  addPayoutTypes,
   getPayoutAnalytic,
   getPercentServiceGroups,
   getPercentServices,
   getPercentProducts,
+
+  updatePercentProducts,
+  updatePercentServices,
+  updatePercentServiceGroups
 };
 
 function getPayoutTypes(staffId) {
@@ -25,7 +29,7 @@ function getPayoutTypes(staffId) {
     .then((data) => handleResponse(data, requestOptions));
 }
 
-function addPayoutType(params) {
+function addPayoutTypes(params) {
   const requestOptions = {
     method: params.staffPayoutTypeId ? 'PUT' : 'POST',
     crossDomain: true,
@@ -99,5 +103,53 @@ function getPercentProducts(staffId) {
   };
 
   return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/products`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function updatePercentProducts(staffId, percentProducts) {
+  const requestOptions = {
+    method: 'PUT',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    body: percentProducts,
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/products`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function updatePercentServices(staffId, percentServices) {
+  const requestOptions = {
+    method: 'PUT',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    body: percentServices,
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/services`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function updatePercentServiceGroups(staffId, percentServiceGroups) {
+  const requestOptions = {
+    method: 'PUT',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    body: percentServiceGroups,
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/servicegroups`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }

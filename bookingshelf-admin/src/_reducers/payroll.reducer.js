@@ -28,7 +28,7 @@ export function payroll(state = initialState, action) {
     case payrollConstants.GET_PAYOUT_TYPES_FAILURE:
       return state;
 
-    case payrollConstants.ADD_PAYOUT_TYPE_SUCCESS:
+    case payrollConstants.ADD_PAYOUT_TYPES_SUCCESS:
       return {
         ...state,
         payoutTypes: [...state.payoutTypes, action.payload.payoutType],
@@ -40,7 +40,7 @@ export function payroll(state = initialState, action) {
         analytic: action.payload.payoutAnalytic,
       };
 
-    case payrollConstants.ADD_PAYOUT_TYPE_FAILURE:
+    case payrollConstants.ADD_PAYOUT_TYPES_FAILURE:
       return state;
 
     case payrollConstants.GET_PERCENT_SERVICE_GROUPS_SUCCESS:
@@ -76,32 +76,59 @@ export function payroll(state = initialState, action) {
         ...state,
       };
 
-    case payrollConstants.ADD_PERCENT_SERVICE_GROUP_SUCCESS:
+    case payrollConstants.UPDATE_PERCENT_SERVICE_GROUPS_SUCCESS:
+      const biggerSGArray = action.payload.percentServiceGroups.length > state.percentServiceGroups.length
+        ? action.payload.percentServiceGroups
+        : state.percentServiceGroups;
+
+      const lesserSGArray = action.payload.percentServiceGroups.length <= state.percentServiceGroups.length
+        ? action.payload.percentServiceGroups
+        : state.percentServiceGroups;
+
+      return {
+        ...state,
+        percentServiceGroups: biggerSGArray.map(bsg => lesserSGArray.find(lsg => lsg.serviceGroupId === bsg.serviceGroupId) || bsg),
+      };
+
+    case payrollConstants.UPDATE_PERCENT_SERVICE_GROUPS_FAILURE:
       return {
         ...state,
       };
 
-    case payrollConstants.ADD_PERCENT_SERVICE_GROUP_FAILURE:
+    case payrollConstants.UPDATE_PERCENT_SERVICES_SUCCESS:
+      const biggerSArray = action.payload.percentServices.length > state.percentServices.length
+        ? action.payload.percentServices
+        : state.percentServices;
+
+      const lesserSArray = action.payload.percentServices.length <= state.percentServices.length
+        ? action.payload.percentServices
+        : state.percentServices;
+
+      return {
+        ...state,
+        percentServices: biggerSArray.map(bsg => lesserSArray.find(lsg => lsg.serviceId === bsg.serviceId) || bsg),
+      };
+
+    case payrollConstants.UPDATE_PERCENT_SERVICES_FAILURE:
       return {
         ...state,
       };
 
-    case payrollConstants.ADD_PERCENT_SERVICE_SUCCESS:
+    case payrollConstants.UPDATE_PERCENT_PRODUCTS_SUCCESS:
+      const biggerPArray = action.payload.percentProducts.length > state.percentProducts.length
+        ? action.payload.percentProducts
+        : state.percentProducts;
+
+      const lesserPArray = action.payload.percentProducts.length <= state.percentProducts.length
+        ? action.payload.percentProducts
+        : state.percentProducts;
+
       return {
         ...state,
+        percentProducts: biggerPArray.map(bsg => lesserPArray.find(lsg => lsg.serviceId === bsg.serviceId) || bsg),
       };
 
-    case payrollConstants.ADD_PERCENT_SERVICE_FAILURE:
-      return {
-        ...state,
-      };
-
-    case payrollConstants.ADD_PERCENT_PRODUCT_SUCCESS:
-      return {
-        ...state,
-      };
-
-    case payrollConstants.ADD_PERCENT_PRODUCT_FAILURE:
+    case payrollConstants.UPDATE_PERCENT_PRODUCTS_FAILURE:
       return {
         ...state,
       };

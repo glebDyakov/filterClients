@@ -58,8 +58,6 @@ class Index extends Component {
         workedDays: 0,
         workedHours: 0,
       },
-
-
     };
 
     this.setTab = this.setTab.bind(this);
@@ -71,6 +69,7 @@ class Index extends Component {
     this.handleDayClick = this.handleDayClick.bind(this);
     this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
+    this.handleSubmitPercents = this.handleSubmitPercents.bind(this);
 
   }
 
@@ -244,6 +243,20 @@ class Index extends Component {
     });
   }
 
+  handleSubmitPercents(type, arr) {
+    switch (type) {
+      case 'percentServiceGroups':
+        this.props.dispatch(payrollActions.updatePercentServiceGroups(arr));
+        break;
+      case 'percentServices':
+        this.props.dispatch(payrollActions.updatePercentServices(arr));
+        break;
+      case 'percentProducts':
+        this.props.dispatch(payrollActions.updatePercentProducts(arr));
+        break;
+    }
+  }
+
   render() {
     const { activeTab, analytic } = this.state;
     const { staff, t } = this.props;
@@ -408,7 +421,8 @@ class Index extends Component {
                   <PercentOfSales servicesPercent={this.props.payroll.percentServices}
                                   serviceGroupsPercent={this.props.payroll.percentServiceGroups}
                                   material={this.props.material}
-                                  serviceGroups={this.state.serviceGroups}/>}
+                                  serviceGroups={this.state.serviceGroups}
+                                  handleSubmitPercents={this.handleSubmitPercents}/>}
                 </div>
               </div>
             </div>

@@ -97,11 +97,7 @@ class PercentOfSales extends Component {
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
           <div className="services-container col">
-            {/*<label className="services">*/}
-            {/*  <a*/}
-            {/*     className="service-select">Все услуги</a>*/}
-            {/*</label>*/}
-
+            <button>save</button>
             <Dropdown>
               <DropdownSearchItem>
                 Введите название категории
@@ -118,14 +114,8 @@ class PercentOfSales extends Component {
                   />)}
               </DropdownListItems>
             </Dropdown>
-            {/*<label className="percent mr-4 text-center"><span>%</span>*/}
-            {/*  <input placeholder="%" type="text" min="0" max="100"/>*/}
-            {/*</label>*/}
           </div>
           <div className="products-container col">
-            {/*<label className="products">&nbsp;*/}
-            {/*  <a className="product-select">Все товары</a>*/}
-            {/*</label>*/}
 
             <Dropdown>
               <DropdownSearchItem>

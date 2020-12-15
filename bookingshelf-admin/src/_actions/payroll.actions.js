@@ -4,11 +4,15 @@ import { payrollConstants } from '../_constants';
 
 export const payrollActions = {
   getPayoutTypes,
-  addPayoutType,
+  addPayoutTypes,
   getPayoutAnalytic,
   getPercentServiceGroups,
   getPercentServices,
   getPercentProducts,
+
+  updatePercentProducts,
+  updatePercentServices,
+  updatePercentServiceGroups
 };
 
 function getPayoutTypes(staffId) {
@@ -51,23 +55,23 @@ function getPayoutAnalytic(staffId, dateFrom, dateTo) {
   }
 }
 
-function addPayoutType(payout) {
+function addPayoutTypes(payout) {
   return (dispatch) => {
-    payrollService.addPayoutType(payout)
+    payrollService.addPayoutTypes(payout)
       .then(
-        (payoutType) => {
-          dispatch(success(payoutType));
+        (payoutTypes) => {
+          dispatch(success(payoutTypes));
         },
         () => dispatch(failure()),
       );
   };
 
   function success(payoutType) {
-    return { type: payrollConstants.ADD_PAYOUT_TYPE_SUCCESS, payload: { payoutType } };
+    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS, payload: { payoutType } };
   }
 
   function failure() {
-    return { type: payrollConstants.ADD_PAYOUT_TYPE_FAILURE };
+    return { type: payrollConstants.ADD_PAYOUT_TYPES_FAILURE };
   }
 }
 
@@ -133,3 +137,81 @@ function getPercentProducts(staffId) {
     return { type: payrollConstants.GET_PERCENT_PRODUCTS_FAILURE };
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function updatePercentProducts(staffId, percentProducts) {
+  return (dispatch) => {
+    payrollService.updatePercentProducts(staffId, percentProducts)
+      .then(
+        (percentProducts) => {
+          dispatch(success(percentProducts));
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(percentProducts) {
+    return { type: payrollConstants.UPDATE_PERCENT_PRODUCTS_SUCCESS, payload: { percentProducts } };
+  }
+
+  function failure() {
+    return { type: payrollConstants.UPDATE_PERCENT_PRODUCTS_FAILURE };
+  }
+}
+
+function updatePercentServices(staffId, percentServices) {
+  return (dispatch) => {
+    payrollService.updatePercentServices(staffId, percentServices)
+      .then(
+        (percentServices) => {
+          dispatch(success(percentServices));
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(percentServices) {
+    return { type: payrollConstants.UPDATE_PERCENT_SERVICES_SUCCESS, payload: { percentServices } };
+  }
+
+  function failure() {
+    return { type: payrollConstants.UPDATE_PERCENT_SERVICES_FAILURE };
+  }
+}
+
+function updatePercentServiceGroups(staffId, percentServiceGroups) {
+  return (dispatch) => {
+    payrollService.updatePercentServiceGroups(staffId, percentServiceGroups)
+      .then(
+        (percentServiceGroups) => {
+          dispatch(success(percentServiceGroups));
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(percentServiceGroups) {
+    return { type: payrollConstants.UPDATE_PERCENT_SERVICE_GROUPS_SUCCESS, payload: { percentServiceGroups } };
+  }
+
+  function failure() {
+    return { type: payrollConstants.UPDATE_PERCENT_SERVICE_GROUPS_FAILURE };
+  }
+}
+
