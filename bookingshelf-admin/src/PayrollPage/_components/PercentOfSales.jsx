@@ -10,32 +10,16 @@ class PercentOfSales extends Component {
     super(props);
 
     this.state = {
-      isOpenServicesDropdown: false,
-      isOpenProductsDropdown: false,
-
       servicesPercent: props.servicesPercent,
       serviceGroupsPercent: props.serviceGroupsPercent,
 
     };
 
-    this.handleOpenServicesDropdown = this.handleOpenServicesDropdown.bind(this);
-    this.handleOpenProductsDropdown = this.handleOpenProductsDropdown.bind(this);
     this.changeServicePercent = this.changeServicePercent.bind(this);
     this.changeGroupServicePercent = this.changeGroupServicePercent.bind(this);
     this.getServiceGroupPercent = this.getServiceGroupPercent.bind(this);
   }
 
-  handleOpenServicesDropdown() {
-    this.setState(state => {
-      return { isOpenServicesDropdown: !state.isOpenServicesDropdown };
-    });
-  }
-
-  handleOpenProductsDropdown() {
-    this.setState(state => {
-      return { isOpenProductsDropdown: !state.isOpenProductsDropdown };
-    });
-  }
 
   changeServicePercent(e, serviceId) {
     const { value } = e.target;
@@ -113,15 +97,12 @@ class PercentOfSales extends Component {
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
           <div className="services-container col">
-            <label className="services">Все услуги
-              <a onClick={this.handleOpenServicesDropdown}
-                 className="service-select">Выберите услугу</a>
-            </label>
+            {/*<label className="services">*/}
+            {/*  <a*/}
+            {/*     className="service-select">Все услуги</a>*/}
+            {/*</label>*/}
 
-            {this.state.isOpenServicesDropdown &&
-            <Dropdown onClose={() => {
-              this.setState({ isOpenServicesDropdown: false });
-            }}>
+            <Dropdown>
               <DropdownSearchItem>
                 Введите название категории
               </DropdownSearchItem>
@@ -136,20 +117,17 @@ class PercentOfSales extends Component {
                     changeGroupServicePercent={this.changeGroupServicePercent}
                   />)}
               </DropdownListItems>
-            </Dropdown>}
-            <label className="percent mr-4 text-center"><span>%</span>
-              <input placeholder="%" type="text" min="0" max="100"/>
-            </label>
+            </Dropdown>
+            {/*<label className="percent mr-4 text-center"><span>%</span>*/}
+            {/*  <input placeholder="%" type="text" min="0" max="100"/>*/}
+            {/*</label>*/}
           </div>
           <div className="products-container col">
-            <label className="products">Все товары
-              <a onClick={this.handleOpenProductsDropdown} className="product-select">Выберите товар</a>
-            </label>
+            {/*<label className="products">&nbsp;*/}
+            {/*  <a className="product-select">Все товары</a>*/}
+            {/*</label>*/}
 
-            {this.state.isOpenProductsDropdown &&
-            <Dropdown onClose={() => {
-              this.setState({ isOpenProductsDropdown: false });
-            }}>
+            <Dropdown>
               <DropdownSearchItem>
                 Введите название категории
               </DropdownSearchItem>
@@ -162,10 +140,10 @@ class PercentOfSales extends Component {
                   />,
                 )}
               </DropdownListItems>
-            </Dropdown>}
-            <label className="percent text-center"><span>%</span>
-              <input placeholder="%" type="number" min="0" max="100"/>
-            </label>
+            </Dropdown>
+            {/*<label className="percent text-center"><span>%</span>*/}
+            {/*  <input placeholder="%" type="number" min="0" max="100"/>*/}
+            {/*</label>*/}
           </div>
         </div>
       </div>

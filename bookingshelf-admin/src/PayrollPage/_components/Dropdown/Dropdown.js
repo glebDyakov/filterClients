@@ -4,21 +4,6 @@ class Dropdown extends Component {
   constructor(props) {
     super(props);
 
-    this.closeDropdown = this.closeDropdown.bind(this);
-  }
-
-  componentDidMount() {
-    document.addEventListener("click", this.closeDropdown, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("click", this.closeDropdown, false);
-  }
-
-  closeDropdown(e) {
-    if (this.dropdown && !this.dropdown.contains(e.target)) {
-      this.props.onClose();
-    }
   }
 
   render() {
