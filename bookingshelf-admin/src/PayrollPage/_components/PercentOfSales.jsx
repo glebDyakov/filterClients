@@ -13,11 +13,63 @@ class PercentOfSales extends Component {
       servicesPercent: props.servicesPercent,
       serviceGroupsPercent: props.serviceGroupsPercent,
 
+      productsPercent: props.productsPercent,
     };
 
     this.changeServicePercent = this.changeServicePercent.bind(this);
     this.changeGroupServicePercent = this.changeGroupServicePercent.bind(this);
     this.getServiceGroupPercent = this.getServiceGroupPercent.bind(this);
+    this.changeProductsPercent = this.changeProductsPercent.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(this.props.servicesPercent) !== JSON.stringify(nextProps.servicesPercent)) {
+      this.setState({
+        servicesPercent: nextProps.servicesPercent,
+      });
+    }
+    if (JSON.stringify(this.props.serviceGroupsPercent) !== JSON.stringify(nextProps.serviceGroupsPercent)) {
+      this.setState({
+        serviceGroupsPercent: nextProps.serviceGroupsPercent,
+      });
+    }
+
+    if (JSON.stringify(this.props.productsPercent) !== JSON.stringify(nextProps.productsPercent)) {
+      this.setState({
+        productsPercent: nextProps.productsPercent,
+      });
+    }
+  }
+
+  changeProductsPercent(e, productId) {
+    const { value } = e.target;
+    if (value >= 0 && value <= 100 || value === '') {
+      this.state.productsPercent.some((sp) => sp.productId === productId)
+        ? this.setState((state) => {
+          const productsPercent = state.productsPercent.map(sp => sp.productId === productId
+            ? {
+              ...sp,
+              percent: value === '' ? 0 : parseInt(value, 10),
+            }
+            : sp);
+
+          return {
+            productsPercent,
+          };
+        })
+        : this.setState((state) => {
+          const productsPercent = state.productsPercent;
+
+          productsPercent.push({
+            productId,
+            percent: value,
+          });
+
+          return {
+            productsPercent,
+          };
+        });
+    }
   }
 
 
@@ -97,7 +149,12 @@ class PercentOfSales extends Component {
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
           <div className="services-container col">
-            <button>save</button>
+            <button onClick={() => {
+              this.props.handleSubmitPercents('percentServices', this.state.servicesPercent);
+              this.props.handleSubmitPercents('percentServiceGroups', this.state.serviceGroupsPercent);
+            }}>save
+            </button>
+
             <Dropdown>
               <DropdownSearchItem>
                 Введите название категории
@@ -117,6 +174,10 @@ class PercentOfSales extends Component {
           </div>
           <div className="products-container col">
 
+            <button onClick={() => {
+              this.props.handleSubmitPercents('percentProducts', this.state.productsPercent);
+            }}>save
+            </button>
             <Dropdown>
               <DropdownSearchItem>
                 Введите название категории
@@ -127,13 +188,12 @@ class PercentOfSales extends Component {
                     key={category.categoryId}
                     category={category}
                     products={this.props.material.products}
+                    productsPercent={this.state.productsPercent}
+                    handleChangeProductPercent={this.changeProductsPercent}
                   />,
                 )}
               </DropdownListItems>
             </Dropdown>
-            {/*<label className="percent text-center"><span>%</span>*/}
-            {/*  <input placeholder="%" type="number" min="0" max="100"/>*/}
-            {/*</label>*/}
           </div>
         </div>
       </div>

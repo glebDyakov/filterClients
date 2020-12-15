@@ -19,24 +19,19 @@ class Index extends Component {
     this.state = {
       activeTab: 'payroll',
       selectedStaff: 0,
-      percentIndex: 0,
-      percentList: [],
 
       settings: {
         MONTHLY_SALARY: {
           amount: 0,
-          staffPayoutTypeId: undefined,
         },
         GUARANTEED_SALARY: {
           amount: 0,
-          staffPayoutTypeId: undefined,
         },
         SERVICE_PERCENT: {
           amount: 0,
-          staffPayoutTypeId: undefined,
         },
-        rate: 0,
       },
+      rate: 0,
 
 
       selectedDays: getWeekDays(getWeekRange(moment().format()).from),
@@ -47,6 +42,10 @@ class Index extends Component {
       serviceGroups: [],
       categories: [],
       products: [],
+
+      percentServices: [],
+      percentServiceGroups: [],
+      percentProducts: [],
 
       analytic: {
         companyRevenue: 0,
@@ -78,6 +77,12 @@ class Index extends Component {
       this.queryInitData();
     }
 
+    if (this.props.authentication.user) {
+      this.setState({ selectedStaff: this.props.authentication.user.profile.staffId }, () => {
+        this.initStaffData(this.state.selectedStaff);
+      });
+    }
+
     initializeJs();
   }
 
@@ -92,22 +97,38 @@ class Index extends Component {
       });
     }
 
-    if (JSON.stringify(this.props.payroll.payoutTypes) !== JSON.stringify(nextProps.payroll.payoutTypes)) {
+    if (JSON.stringify(this.props.payroll.percentServiceGroups) !== JSON.stringify(nextProps.payroll.percentServiceGroups)) {
       this.setState({
-        settings: nextProps.payroll.payoutTypes.reduce((acc, payout) => {
-          acc[payout.payoutType] = {
-            amount: payout.amount,
-            staffId: payout.staffId,
-            staffPayoutTypeId: payout.staffPayoutTypeId,
-          };
+        percentServiceGroups: nextProps.payroll.percentServiceGroups,
+      });
+    }
+    if (JSON.stringify(this.props.payroll.percentServices) !== JSON.stringify(nextProps.payroll.percentServices)) {
+      this.setState({
+        percentServices: nextProps.payroll.percentServices,
+      });
+    }
+    if (JSON.stringify(this.props.payroll.percentProducts) !== JSON.stringify(nextProps.payroll.percentProducts)) {
+      this.setState({
+        percentProducts: nextProps.payroll.percentProducts,
+      });
+    }
 
-          acc.rate = payout.rate;
-          console.log(payout);
-          return acc;
-        }, {}),
-      }, () => {
-        console.log('payout', this.state);
+    if (JSON.stringify(this.props.payroll.payoutTypes) !== JSON.stringify(nextProps.payroll.payoutTypes)) {
+      let rate = 0;
+      const settings = nextProps.payroll.payoutTypes.reduce((acc, payout) => {
+        acc[payout.payoutType] = {
+          amount: payout.amount,
+          staffId: payout.staffId,
+          staffPayoutTypeId: payout.staffPayoutTypeId,
+        };
 
+        rate = payout.rate;
+        return acc;
+      }, {});
+
+      this.setState({
+        rate,
+        settings,
       });
     }
 
@@ -146,26 +167,15 @@ class Index extends Component {
   }
 
   handleSubmitSettings() {
-    this.props.dispatch(payrollActions.addPayoutType({
-      rate: this.state.settings.rate,
-      payoutType: 'MONTHLY_SALARY',
-      staffId: this.state.selectedStaff,
-      ...this.state.settings.MONTHLY_SALARY,
-    }));
-
-    this.props.dispatch(payrollActions.addPayoutType({
-      rate: this.state.settings.rate,
-      payoutType: 'GUARANTEED_SALARY',
-      staffId: this.state.selectedStaff,
-      ...this.state.settings.GUARANTEED_SALARY,
-    }));
-
-    this.props.dispatch(payrollActions.addPayoutType({
-      rate: this.state.settings.rate,
-      payoutType: 'SERVICE_PERCENT',
-      staffId: this.state.selectedStaff,
-      ...this.state.settings.SERVICE_PERCENT,
-    }));
+    const settings = Object.keys(this.state.settings).map((type) => {
+      return {
+        ...this.state.settings[type],
+        rate: this.state.rate,
+        payoutType: type,
+        staffId: this.state.selectedStaff,
+      };
+    });
+    this.props.dispatch(payrollActions.addPayoutTypes(this.state.selectedStaff, settings));
   }
 
   handleChangeSettings(e) {
@@ -187,10 +197,7 @@ class Index extends Component {
         break;
       case 'rate':
         this.setState({
-          settings: {
-            ...this.state.settings,
-            rate: parseFloat(e.target.value),
-          },
+          rate: parseFloat(e.target.value),
         });
         break;
     }
@@ -246,13 +253,31 @@ class Index extends Component {
   handleSubmitPercents(type, arr) {
     switch (type) {
       case 'percentServiceGroups':
-        this.props.dispatch(payrollActions.updatePercentServiceGroups(arr));
+        const percentServiceGroups = arr.map(psg => {
+          return {
+            ...psg,
+            staffId: this.state.selectedStaff,
+          };
+        });
+        this.props.dispatch(payrollActions.updatePercentServiceGroups(this.state.selectedStaff, percentServiceGroups));
         break;
       case 'percentServices':
-        this.props.dispatch(payrollActions.updatePercentServices(arr));
+        const percentServices = arr.map(ps => {
+          return {
+            ...ps,
+            staffId: this.state.selectedStaff,
+          };
+        });
+        this.props.dispatch(payrollActions.updatePercentServices(this.state.selectedStaff, percentServices));
         break;
       case 'percentProducts':
-        this.props.dispatch(payrollActions.updatePercentProducts(arr));
+        const percentProducts = arr.map(pp => {
+          return {
+            ...pp,
+            staffId: this.state.selectedStaff,
+          };
+        });
+        this.props.dispatch(payrollActions.updatePercentProducts(this.state.selectedStaff, percentProducts));
         break;
     }
   }
@@ -379,7 +404,7 @@ class Index extends Component {
 
                 <div className="salary-container">
                   <label className="col"><p>{t('Выбор ставки')}</p>
-                    <select onChange={this.handleChangeSettings} value={this.state.settings.rate}
+                    <select onChange={this.handleChangeSettings} value={this.state.rate || 0}
                             className="custom-select mb-0 salary-input" name="rate"
                             id="">
                       <option defaultChecked={true} value="0">{t('Выберите ставку')}</option>
@@ -391,24 +416,24 @@ class Index extends Component {
                     </select>
                   </label>
                   <label className="col"><p>{t('Оклад за месяц')}</p>
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.MONTHLY_SALARY.amount}
+                    <input onChange={this.handleChangeSettings} value={this.state.settings.MONTHLY_SALARY && this.state.settings.MONTHLY_SALARY.amount || 0}
                            name="MONTHLY_SALARY"
                            className="salary-input" placeholder={t('Введите оклад')}/>
                   </label>
                   <label className="col"><p>{t('Гарантированный оклад')}<Hint hintMessage={'message'}/></p>
 
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.GUARANTEED_SALARY.amount}
+                    <input onChange={this.handleChangeSettings} value={this.state.settings.GUARANTEED_SALARY && this.state.settings.GUARANTEED_SALARY.amount || 0}
                            name="GUARANTEED_SALARY"
                            className="salary-input" placeholder={t('Введите оклад')}/>
                   </label>
                   <label className="col"><p>% {t('от реализации')}</p>
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.SERVICE_PERCENT.amount}
+                    <input onChange={this.handleChangeSettings} value={this.state.settings.SERVICE_PERCENT && this.state.settings.SERVICE_PERCENT.amount || 0}
                            name="SERVICE_PERCENT"
                            className="salary-input" min="0" max="100" placeholder="0%"/>
                   </label>
                 </div>
                 <div className="button-container">
-                  <button onClick={this.handleSubmitSettings} disabled={this.state.settings.rate === 0}
+                  <button onClick={this.handleSubmitSettings} disabled={this.state.rate === 0}
                           className="button-save border-0">Сохранить
                   </button>
                 </div>
@@ -418,8 +443,9 @@ class Index extends Component {
                 <h2 className="settings-title">{t('Процент от реализации')}</h2>
                 <div className="percent-container">
                   {this.props.payroll.percentServices && this.props.payroll.percentServiceGroups &&
-                  <PercentOfSales servicesPercent={this.props.payroll.percentServices}
-                                  serviceGroupsPercent={this.props.payroll.percentServiceGroups}
+                  <PercentOfSales servicesPercent={this.state.percentServices}
+                                  serviceGroupsPercent={this.state.percentServiceGroups}
+                                  productsPercent={this.state.percentProducts}
                                   material={this.props.material}
                                   serviceGroups={this.state.serviceGroups}
                                   handleSubmitPercents={this.handleSubmitPercents}/>}

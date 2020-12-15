@@ -29,9 +29,10 @@ function getPayoutTypes(staffId) {
     .then((data) => handleResponse(data, requestOptions));
 }
 
-function addPayoutTypes(params) {
+function addPayoutTypes(staffId, params) {
+  console.log(params);
   const requestOptions = {
-    method: params.staffPayoutTypeId ? 'PUT' : 'POST',
+    method: 'PUT',
     crossDomain: true,
     credentials: 'include',
     xhrFields: {
@@ -42,7 +43,7 @@ function addPayoutTypes(params) {
 
   };
 
-  return fetch(`${origin}/salary${config.apiUrl}/staffs/payouttypes${params.staffPayoutTypeId ? '/' + params.staffPayoutTypeId : ''}`, requestOptions)
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/payouttypes`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -72,7 +73,7 @@ function getPercentServiceGroups(staffId) {
     headers: authHeader(),
   };
 
-  return fetch(`${origin}/salary${config.apiUrl}/staffs/staffs/${staffId}/servicegroups`, requestOptions)
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/servicegroups`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -114,7 +115,7 @@ function updatePercentProducts(staffId, percentProducts) {
     xhrFields: {
       withCredentials: true,
     },
-    body: percentProducts,
+    body: JSON.stringify(percentProducts),
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
 
@@ -130,7 +131,7 @@ function updatePercentServices(staffId, percentServices) {
     xhrFields: {
       withCredentials: true,
     },
-    body: percentServices,
+    body: JSON.stringify(percentServices),
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
 
@@ -146,7 +147,7 @@ function updatePercentServiceGroups(staffId, percentServiceGroups) {
     xhrFields: {
       withCredentials: true,
     },
-    body: percentServiceGroups,
+    body: JSON.stringify(percentServiceGroups),
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
 

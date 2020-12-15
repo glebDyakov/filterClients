@@ -7,11 +7,11 @@ class ServiceDropdown extends Component {
 
     this.state = {
       isOpened: false,
-      groupPercent: 0,
+      servicesPercent: this.props.servicesPercent,
+      serviceGroupsPercent: this.props.serviceGroupsPercent,
     };
 
     this.handleCollapse = this.handleCollapse.bind(this);
-    this.changeGroupPercent = this.changeGroupPercent.bind(this);
   }
 
   handleCollapse() {
@@ -22,9 +22,17 @@ class ServiceDropdown extends Component {
     });
   }
 
-  changeGroupPercent(e) {
-    const { value } = e.target;
-    if (value >= 0 && value <= 100) {
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(this.props.servicesPercent) !== JSON.stringify(nextProps.servicesPercent)) {
+      this.setState({
+        servicesPercent: nextProps.servicesPercent,
+      });
+    }
+
+    if (JSON.stringify(this.props.serviceGroupsPercent) !== JSON.stringify(nextProps.serviceGroupsPercent)) {
+      this.setState({
+        serviceGroupsPercent: nextProps.serviceGroupsPercent,
+      });
     }
   }
 
@@ -50,7 +58,7 @@ class ServiceDropdown extends Component {
           {this.state.isOpened &&
           <div className="nested-dropdown">
             {serviceGroup.services.map((service) => {
-                const servicePercent = this.props.servicesPercent.find(sp => sp.serviceId === service.serviceId) || { percent: '' };
+                const servicePercent = this.state.servicesPercent.find(sp => sp.serviceId === service.serviceId) || { percent: '' };
 
                 return (
                   <DropdownItem key={service.serviceId}>
@@ -58,7 +66,7 @@ class ServiceDropdown extends Component {
                       <div className="left-container d-flex align-items-center">
                         <p className="service-name">{service.name}</p>
                       </div>
-                      <label className="percent"><input placeholder="%"  onChange={(e) => {
+                      <label className="percent"><input placeholder="%" onChange={(e) => {
                         this.props.handleChangeServicePercent(e, service.serviceId);
                       }} value={servicePercent.percent} type="text"/></label>
                     </div>

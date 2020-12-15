@@ -1,5 +1,6 @@
 import { payrollService } from '../_services';
 import { payrollConstants } from '../_constants';
+import { staff } from '../_reducers/staff.reducer';
 
 
 export const payrollActions = {
@@ -12,7 +13,7 @@ export const payrollActions = {
 
   updatePercentProducts,
   updatePercentServices,
-  updatePercentServiceGroups
+  updatePercentServiceGroups,
 };
 
 function getPayoutTypes(staffId) {
@@ -55,19 +56,20 @@ function getPayoutAnalytic(staffId, dateFrom, dateTo) {
   }
 }
 
-function addPayoutTypes(payout) {
+function addPayoutTypes(staffId, payout) {
   return (dispatch) => {
-    payrollService.addPayoutTypes(payout)
+    payrollService.addPayoutTypes(staffId, payout)
       .then(
         (payoutTypes) => {
-          dispatch(success(payoutTypes));
+          // dispatch(success(payoutTypes));
+          dispatch(payrollActions.getPayoutTypes(staffId));
         },
         () => dispatch(failure()),
       );
   };
 
-  function success(payoutType) {
-    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS, payload: { payoutType } };
+  function success(payoutTypes) {
+    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS, payload: { payoutTypes } };
   }
 
   function failure() {
@@ -138,29 +140,13 @@ function getPercentProducts(staffId) {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function updatePercentProducts(staffId, percentProducts) {
   return (dispatch) => {
     payrollService.updatePercentProducts(staffId, percentProducts)
       .then(
         (percentProducts) => {
-          dispatch(success(percentProducts));
+          // dispatch(success(percentProducts));
+          dispatch(payrollActions.getPercentProducts(staffId));
         },
         () => dispatch(failure()),
       );
@@ -180,7 +166,9 @@ function updatePercentServices(staffId, percentServices) {
     payrollService.updatePercentServices(staffId, percentServices)
       .then(
         (percentServices) => {
-          dispatch(success(percentServices));
+          // dispatch(success(percentServices));
+          dispatch(payrollActions.getPercentServices(staffId));
+
         },
         () => dispatch(failure()),
       );
@@ -200,7 +188,8 @@ function updatePercentServiceGroups(staffId, percentServiceGroups) {
     payrollService.updatePercentServiceGroups(staffId, percentServiceGroups)
       .then(
         (percentServiceGroups) => {
-          dispatch(success(percentServiceGroups));
+          // dispatch(success(percentServiceGroups));
+          dispatch(payrollActions.getPercentServiceGroups(staffId));
         },
         () => dispatch(failure()),
       );
