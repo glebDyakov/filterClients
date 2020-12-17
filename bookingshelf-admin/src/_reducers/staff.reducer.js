@@ -313,6 +313,10 @@ export function staff(state = initialState, action) {
             'permissionCode': 15,
           },
           {
+            'name': 'Расчет зарплат',
+            'permissionCode': 16,
+          },
+          {
             'name': 'Календарь других сотрудников',
             'permissionCode': 2,
           },

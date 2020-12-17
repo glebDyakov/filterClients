@@ -707,22 +707,22 @@ class Index extends Component {
                   <div className="row cards-container">
                     <div className="col card">
                       <div className="card-inner">
-                        <span className="label">хит</span>
+                        <span className="label">{t('хит')}</span>
 
                         <img alt="24 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/24.svg`}/>
-                        <p className="unit">Месяца</p>
-                        <p className="additional">(9 <span className="blue_text">бесплатно</span>)</p>
+                        <p className="unit">{t('Месяца')}</p>
+                        <p className="additional">(9 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
+                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
                             : t('BYN')
                           }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
+                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -731,25 +731,25 @@ class Index extends Component {
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff("4")
-                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                            alt="Попробовать бесплатно"/></a>
                     </div>
                     <div className="col card">
                       <div className="card-inner">
                         <img alt="12 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/12.svg`}/>
-                        <p className="unit">Месяцев</p>
-                        <p className="additional">(3 <span className="blue_text">бесплатно</span>)</p>
+                        <p className="unit">{t('Месяцев')}</p>
+                        <p className="additional">(3 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
+                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
                           : t('BYN')
                         }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
+                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -758,26 +758,26 @@ class Index extends Component {
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff("3")
-                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
 
                     <div className="col card">
                       <div className="card-inner">
                         <img alt="6 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/6.svg`}/>
-                        <p className="unit">Месяцев</p>
-                        <p className="additional">(1 <span className="blue_text">бесплатно</span>)</p>
+                        <p className="unit">{t('Месяцев')}</p>
+                        <p className="additional">(1 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
+                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
                             : t('BYN')
                           }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
+                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -786,26 +786,26 @@ class Index extends Component {
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff("2")
-                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
 
                     <div className="col card">
                       <div className="card-inner">
                         <img alt="3 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/3.svg`}/>
-                        <p className="unit">Месяца</p>
+                        <p className="unit">{t('Месяца')}</p>
                         <p className="additional"><br/></p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
+                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
                             : t('BYN')
                           }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
+                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
                             ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                               ? t('грн')
                               : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -814,7 +814,7 @@ class Index extends Component {
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff("1")
-                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
                   </div>
