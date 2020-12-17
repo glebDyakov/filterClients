@@ -51,14 +51,17 @@
       background: #FFFFFF;
 
       border: 2px solid #F6F6F6;
-      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      //box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
 
-      border-radius: 20px;
+      //border-radius: 20px;
       min-height: 288px;
       justify-content: stretch;
       position: relative;
       overflow: hidden;
       padding: 0;
+
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 4px;
 
       @media screen and (max-width: $laptop-width){
         width: 180px;
@@ -79,7 +82,8 @@
         font-size: 16px;
         line-height: 22px;
         background: #50A5F1;
-        border-radius: 0 0 20px 20px;
+        //border-radius: 0 0 20px 20px;
+        border-radius: 0 0 2px 2px;
         color: #FFFFFF;
         margin: 0;
         cursor: pointer;
