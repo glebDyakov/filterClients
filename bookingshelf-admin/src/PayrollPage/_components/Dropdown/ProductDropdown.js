@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DropdownItem from './DropdownItem';
 import DropdownListItems from './DropdownListItems';
+import IntervalInput from '../IntervalInput';
 
 class ProductDropdown extends Component {
   constructor(props) {
@@ -28,7 +29,6 @@ class ProductDropdown extends Component {
         productsPercent: nextProps.productsPercent,
       });
     }
-
   }
 
 
@@ -38,13 +38,16 @@ class ProductDropdown extends Component {
     return (
       <React.Fragment>
         <DropdownItem>
-          <div onClick={this.handleCollapse}
-               className="dropdown_item d-flex justify-content-between align-items-center">
+          <div
+            className="dropdown_item d-flex justify-content-between align-items-center">
             <div className="left-container d-flex align-items-center">
-              <button className={'button-collapse' + (this.state.isOpened ? ' collapsed' : '')}/>
+              <button onClick={this.handleCollapse}
+                      className={'button-collapse' + (this.state.isOpened ? ' collapsed' : '')}/>
               <p className="service-group-name">{category.categoryName}</p>
             </div>
-            <label className="percent"><input disabled value="50%" type="text"/></label>
+            <label className="percent"><input onChange={(e) => {
+              this.props.handleChangeCategoryPercent(e, category.categoryId);
+            }} placeholder="%" type="number"/></label>
           </div>
         </DropdownItem>
 
@@ -59,9 +62,13 @@ class ProductDropdown extends Component {
                     <div className="left-container d-flex align-items-center">
                       <p className="service-name">{product.productName}</p>
                     </div>
-                    <label className="percent"><input onChange={(e) => {
-                      this.props.handleChangeProductPercent(e, product.productId);
-                    }} placeholder="%" value={productPercent.percent} type="text"/></label>
+                    <label className="percent">
+                      <input
+                        placeholder="%"
+                        onChange={(e) => {
+                          this.props.handleChangeProductPercent(e, product.productId);
+                        }}
+                        value={productPercent.percent}/></label>
                   </div>
                 </DropdownListItems>
               );

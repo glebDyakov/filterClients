@@ -8,10 +8,10 @@ import PercentOfSales from './_components/PercentOfSales';
 import Hint from '../_components/Hint';
 import moment from 'moment';
 import { materialActions, payrollActions, servicesActions } from '../_actions';
-import MomentLocaleUtils from 'react-day-picker/moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import { getWeekRange } from '../_helpers';
 import { getWeekDays } from '../StaffPage';
+import MomentLocaleUtils from 'react-day-picker/moment';
 
 class Index extends Component {
   constructor(props) {
@@ -33,15 +33,18 @@ class Index extends Component {
       },
       rate: 0,
 
+      isOpenedDatePicker: false,
 
-      selectedDays: getWeekDays(getWeekRange(moment().format()).from),
-      from: null,
-      to: null,
-      enteredTo: null,
+      selectedDays: getWeekDays(getWeekRange(moment().subtract(7, 'days').format()).from),
+      from: moment().subtract(7, 'days').startOf('day').utc().toDate(),
+      to: moment().toDate(),
+      enteredTo: moment().toDate(),
 
       serviceGroups: [],
       categories: [],
       products: [],
+
+      payoutByPeriod: [],
 
       percentServices: [],
       percentServiceGroups: [],
@@ -49,9 +52,9 @@ class Index extends Component {
 
       analytic: {
         companyRevenue: 0,
-        productCount: 0,
-        productsPricesAmount: 0,
-        servicesAmount: 0,
+        productsCost: 0,
+        productsCount: 0,
+        servicesCost: 0,
         servicesCount: 0,
         staffRevenue: 0,
         workedDays: 0,
@@ -69,6 +72,8 @@ class Index extends Component {
     this.handleDayMouseEnter = this.handleDayMouseEnter.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
     this.handleSubmitPercents = this.handleSubmitPercents.bind(this);
+    this.handleOpenCalendar = this.handleOpenCalendar.bind(this);
+    this.submitProduct = this.submitProduct.bind(this);
 
   }
 
@@ -83,17 +88,64 @@ class Index extends Component {
       });
     }
 
+    document.addEventListener('mousedown', this.handleClickOutsideCalendar);
+
     initializeJs();
+  }
+
+  submitProduct(productId, percent) {
+    const product = {
+      productId,
+      percent,
+      staffId: this.state.selectedStaff,
+    };
+
+    this.props.dispatch(payrollActions.updateOneProductPercent(this.state.selectedStaff, [product]));
+  }
+
+  submitService(serviceId, percent) {
+    const service = {
+      serviceId,
+      percent,
+      staffId: this.state.selectedStaff,
+    };
+
+    this.props.dispatch(payrollActions.updateOneServicePercent(this.state.selectedStaff, [service]));
+  }
+
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutsideCalendar);
+  }
+
+  handleClickOutsideCalendar(event) {
+    if (this.calendarRef && !this.calendarRef.current.contains(event.target)) {
+      this.setState({
+        isOpenedDatePicker: false,
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (this.props.authentication.loginChecked !== nextProps.authentication.loginChecked) {
       this.queryInitData();
+
+      if (nextProps.authentication.user) {
+        this.setState({ selectedStaff: nextProps.authentication.user.profile.staffId }, () => {
+          this.initStaffData(this.state.selectedStaff);
+        });
+      }
     }
 
     if (JSON.stringify(this.props.authentication.user) !== JSON.stringify(nextProps.authentication.user)) {
       this.setState({ selectedStaff: nextProps.authentication.user.profile.staffId }, () => {
         this.initStaffData(this.state.selectedStaff);
+      });
+    }
+
+    if (JSON.stringify(this.props.payroll.payoutByPeriod) !== JSON.stringify(nextProps.payroll.payoutByPeriod)) {
+      this.setState({
+        payoutByPeriod: nextProps.payroll.payoutByPeriod,
       });
     }
 
@@ -154,6 +206,9 @@ class Index extends Component {
     this.props.dispatch(payrollActions.getPercentProducts(staffId));
     this.props.dispatch(payrollActions.getPercentServiceGroups(staffId));
     this.props.dispatch(payrollActions.getPercentServices(staffId));
+
+    this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(this.state.from).subtract(7, 'days').format('x'), moment(this.state.to).format('x')));
+    this.props.dispatch(payrollActions.getPayoutByPeriod(staffId, moment(this.state.from).subtract(7, 'days').format('x'), moment(this.state.to).format('x')));
   }
 
   selectStaff(staffId) {
@@ -212,6 +267,14 @@ class Index extends Component {
     }
   }
 
+  handleOpenCalendar() {
+    this.setState((state) => {
+      return {
+        isOpenedDatePicker: !state.isOpenedDatePicker,
+      };
+    });
+  }
+
   handleDayClick(day) {
     const { from, to } = this.state;
     if (from && to && day >= from && day <= to) {
@@ -231,10 +294,12 @@ class Index extends Component {
         to: day,
         enteredTo: day,
       }, () => {
-        this.props.dispatch(payrollActions.getPayoutAnalytic(this.state.selectedStaff, moment(this.state.from).startOf('day').format('x'), moment(this.state.to).endOf('day').format('x')));
+        this.props.dispatch(payrollActions.getPayoutAnalytic(this.state.selectedStaff, moment(this.state.from).format('x'), moment(this.state.to).format('x')));
+        this.props.dispatch(payrollActions.getPayoutByPeriod(this.state.selectedStaff, moment(this.state.from).format('x'), moment(this.state.to).format('x')));
       });
     }
   }
+
 
   isSelectingFirstDay(from, to, day) {
     const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from);
@@ -297,7 +362,7 @@ class Index extends Component {
         <StaffList selectedStaff={this.state.selectedStaff} selectStaff={this.selectStaff} staffs={staff.staff}/>
         <div className="main-container col p-0">
           <div className="header-nav-tabs">
-            <div className="header-tabs-container">
+            <div className="header-tabs-container d-flex align-items-center justify-content-center">
               <ul className="nav nav-tabs">
                 <li className="nav-item">
                   <a onClick={() => {
@@ -312,22 +377,37 @@ class Index extends Component {
                   >{t('Настройки зарплат')}
                   </a>
                 </li>
+
               </ul>
-
               {this.state.activeTab === 'payroll' &&
-              <DayPicker
-                className="SelectedWeekExample"
-                fromMonth={from}
-                selectedDays={selectedDaysClosed}
-                disabledDays={[disabledDays, { after: moment().utc().toDate() }]}
-                modifiers={modifiersClosed}
-                onDayClick={this.handleDayClick}
-                onDayMouseEnter={this.handleDayMouseEnter}
-                localeUtils={MomentLocaleUtils}
-                language={this.props.i18n.language}
-              />}
-            </div>
+              <div className="calendar">
+                <div onClick={this.handleOpenCalendar} className="button-calendar">
+                  <input type="button" data-range="true"
+                         value={
+                           (from && from !== 0 ? moment(from).format('dd, DD MMMM YYYY') : '') +
+                           (to ? ' - ' + moment(to).format('dd DD MMMM') : '')
+                         }
+                         data-multiple-dates-separator=" - " name="date"
+                         ref={(input) => this.startClosedDate = input}/>
+                </div>
 
+                {this.state.isOpenedDatePicker &&
+                <DayPicker
+                  ref={(node) => this.calendarRef = node}
+                  className="SelectedWeekExample"
+                  fromMonth={from}
+                  selectedDays={selectedDaysClosed}
+                  disabledDays={[disabledDays, { after: moment().utc().toDate() }]}
+                  modifiers={modifiersClosed}
+                  onDayClick={this.handleDayClick}
+                  onDayMouseEnter={this.handleDayMouseEnter}
+                  localeUtils={MomentLocaleUtils}
+                  locale={this.props.i18n.language}
+                />}
+              </div>}
+
+
+            </div>
           </div>
 
           {activeTab === 'payroll' &&
@@ -347,16 +427,16 @@ class Index extends Component {
               </div>
               <div className="col">
                 <h3 className="title">{t('Сумма услуг')}:</h3>
-                <h2 className="stat with-currency">{analytic.servicesAmount.toFixed(2)} <span
+                <h2 className="stat with-currency">{analytic.servicesCost.toFixed(2)} <span
                   className="currency">(BYN)</span></h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Товаров')}:</h3>
-                <h2 className="stat">{analytic.productCount}</h2>
+                <h2 className="stat">{analytic.productsCount}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Сумма товаров')}:</h3>
-                <h2 className="stat">{analytic.productsPricesAmount.toFixed(2)}</h2>
+                <h2 className="stat">{analytic.productsCost.toFixed(2)}</h2>
               </div>
               <div className="col">
                 <h3 className="title">{t('Доход')}</h3>
@@ -372,25 +452,25 @@ class Index extends Component {
               <table className="table">
                 <thead>
                 <tr>
-                  <td className="table-header-title">{t('Время начала')}</td>
-                  <td className="table-header-title">{t('Время услуги')}</td>
+                  <td className="table-header-title text-center">{t('Время начала')}</td>
+                  <td className="table-header-title text-center">{t('Время услуги')}</td>
                   <td className="table-header-title">{t('Услуга')}</td>
-                  <td className="table-header-title">{t('Товар')}</td>
-                  <td className="table-header-title">{t('Цена товара')}</td>
-                  <td className="table-header-title">{t('Сумма')}</td>
                   <td className="table-header-title">% {t('от услуги')}</td>
+                  <td className="table-header-title">{t('Товар')}</td>
+                  <td className="table-header-title">% {t('от товара')}</td>
                   <td className="table-header-title">{t('Доход Сотруд')}.</td>
                   <td className="table-header-title">{t('Доход Компании')}</td>
                 </tr>
                 </thead>
                 <tbody>
-                <PayrollDay/>
-                <PayrollDay/>
-                <PayrollDay/>
-                <PayrollDay/>
-                <PayrollDay/>
-                <PayrollDay/>
-                <PayrollDay/>
+                {!this.props.payroll.isLoadingPeriod && !this.props.payroll.isLoadingPayoutStats ? this.state.payoutByPeriod.map(pb => {
+                    return (
+                      <PayrollDay payout={pb}/>
+                    );
+                  }) :
+                  <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                                                            alt=""/>
+                  </div>}
                 </tbody>
               </table>
             </div>
@@ -416,18 +496,21 @@ class Index extends Component {
                     </select>
                   </label>
                   <label className="col"><p>{t('Оклад за месяц')}</p>
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.MONTHLY_SALARY && this.state.settings.MONTHLY_SALARY.amount || 0}
+                    <input onChange={this.handleChangeSettings}
+                           value={this.state.settings.MONTHLY_SALARY && this.state.settings.MONTHLY_SALARY.amount || 0}
                            name="MONTHLY_SALARY"
                            className="salary-input" placeholder={t('Введите оклад')}/>
                   </label>
                   <label className="col"><p>{t('Гарантированный оклад')}<Hint hintMessage={'message'}/></p>
 
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.GUARANTEED_SALARY && this.state.settings.GUARANTEED_SALARY.amount || 0}
+                    <input onChange={this.handleChangeSettings}
+                           value={this.state.settings.GUARANTEED_SALARY && this.state.settings.GUARANTEED_SALARY.amount || 0}
                            name="GUARANTEED_SALARY"
                            className="salary-input" placeholder={t('Введите оклад')}/>
                   </label>
                   <label className="col"><p>% {t('от реализации')}</p>
-                    <input onChange={this.handleChangeSettings} value={this.state.settings.SERVICE_PERCENT && this.state.settings.SERVICE_PERCENT.amount || 0}
+                    <input onChange={this.handleChangeSettings}
+                           value={this.state.settings.SERVICE_PERCENT && this.state.settings.SERVICE_PERCENT.amount || 0}
                            name="SERVICE_PERCENT"
                            className="salary-input" min="0" max="100" placeholder="0%"/>
                   </label>
@@ -448,7 +531,9 @@ class Index extends Component {
                                   productsPercent={this.state.percentProducts}
                                   material={this.props.material}
                                   serviceGroups={this.state.serviceGroups}
-                                  handleSubmitPercents={this.handleSubmitPercents}/>}
+                                  handleSubmitPercents={this.handleSubmitPercents}
+                                  submitProduct={this.submitProduct}/>}
+
                 </div>
               </div>
             </div>

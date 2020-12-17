@@ -8,10 +8,13 @@ export const payrollService = {
   getPercentServiceGroups,
   getPercentServices,
   getPercentProducts,
+  getPayoutByPeriod,
+
 
   updatePercentProducts,
   updatePercentServices,
-  updatePercentServiceGroups
+  updatePercentServiceGroups,
+
 };
 
 function getPayoutTypes(staffId) {
@@ -74,6 +77,22 @@ function getPercentServiceGroups(staffId) {
   };
 
   return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/servicegroups`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getPayoutByPeriod(staffId, dateFrom, dateTo) {
+
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}/salary${config.apiUrl}/staffs/${staffId}/days?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

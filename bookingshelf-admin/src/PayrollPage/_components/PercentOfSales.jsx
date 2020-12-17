@@ -14,12 +14,18 @@ class PercentOfSales extends Component {
       serviceGroupsPercent: props.serviceGroupsPercent,
 
       productsPercent: props.productsPercent,
+
+      searchCategory: '',
+      searchServiceGroup: ''
     };
 
     this.changeServicePercent = this.changeServicePercent.bind(this);
     this.changeGroupServicePercent = this.changeGroupServicePercent.bind(this);
     this.getServiceGroupPercent = this.getServiceGroupPercent.bind(this);
     this.changeProductsPercent = this.changeProductsPercent.bind(this);
+    this.changeCategoryPercent = this.changeCategoryPercent.bind(this);
+    this.handleSearchCategory = this.handleSearchCategory.bind(this);
+    this.handleSearchServiceGroup = this.handleSearchServiceGroup.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,6 +46,20 @@ class PercentOfSales extends Component {
       });
     }
   }
+
+
+  handleSearchCategory(e) {
+    this.setState({
+      searchCategory: e.target.value,
+    })
+  }
+
+  handleSearchServiceGroup(e) {
+    this.setState({
+      searchServiceGroup: e.target.value
+    })
+  }
+
 
   changeProductsPercent(e, productId) {
     const { value } = e.target;
@@ -71,7 +91,6 @@ class PercentOfSales extends Component {
         });
     }
   }
-
 
   changeServicePercent(e, serviceId) {
     const { value } = e.target;
@@ -140,6 +159,14 @@ class PercentOfSales extends Component {
     }
   }
 
+  changeCategoryPercent(e, categoryId) {
+    const { value } = e.target;
+    if (value >= 0 && value <= 100 || value === '') {
+      this.props.material.products.filter(pp => pp.categoryId === categoryId)
+        .map(product => this.changeProductsPercent(e, product.productId));
+    }
+  }
+
   getServiceGroupPercent(serviceGroup) {
     return this.state.serviceGroupsPercent.find(sp => sp.serviceGroupId === serviceGroup.serviceGroupId) || { percent: '' };
   }
@@ -156,12 +183,13 @@ class PercentOfSales extends Component {
             </button>
 
             <Dropdown>
-              <DropdownSearchItem>
+              <DropdownSearchItem onChange={this.handleSearchServiceGroup}>
                 Введите название категории
               </DropdownSearchItem>
               <DropdownListItems>
-                {this.props.serviceGroups && this.props.serviceGroups.map((serviceGroup) =>
+                {this.props.serviceGroups && this.props.serviceGroups.filter(serviceGroup => serviceGroup.name.toLowerCase().includes(this.state.searchServiceGroup.toLowerCase())).map((serviceGroup, i) =>
                   <ServiceDropdown
+                    isOpened={i === 0}
                     key={serviceGroup.serviceGroupId}
                     serviceGroup={serviceGroup}
                     servicesPercent={this.state.servicesPercent}
@@ -179,17 +207,19 @@ class PercentOfSales extends Component {
             }}>save
             </button>
             <Dropdown>
-              <DropdownSearchItem>
+              <DropdownSearchItem onChange={this.handleSearchCategory}>
                 Введите название категории
               </DropdownSearchItem>
               <DropdownListItems>
-                {this.props.material.categories.map((category) =>
+                {this.props.material.categories.filter(category => category.categoryName.toLowerCase().includes(this.state.searchCategory.toLowerCase())).map((category) =>
                   <ProductDropdown
                     key={category.categoryId}
                     category={category}
                     products={this.props.material.products}
                     productsPercent={this.state.productsPercent}
                     handleChangeProductPercent={this.changeProductsPercent}
+                    handleChangeCategoryPercent={this.changeCategoryPercent}
+                    submitProduct={this.props.submitProduct}
                   />,
                 )}
               </DropdownListItems>

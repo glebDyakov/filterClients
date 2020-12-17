@@ -6,11 +6,12 @@ class DropdownSearchItem extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, onChange } = this.props;
+
 
     return (
       <li className="dropdown_item search-item">
-        <input placeholder={children} className="search-input" type="text"/>
+        <input onChange={onChange} placeholder={children} className="search-input" type="text"/>
       </li>
     );
   }

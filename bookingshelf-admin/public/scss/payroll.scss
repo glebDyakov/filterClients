@@ -6,6 +6,51 @@
   overflow-y: hidden;
   height: 100%;
 
+  .calendar {
+    margin-right: 20px;
+
+    position: relative;
+    .button-calendar {
+      background: #F3F3F9;
+      /* Drop Shadow */
+
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      border-radius: 5px;
+
+      input {
+        cursor: pointer;
+
+        background: none;
+        border: none;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        text-align: center;
+        color: #495057;
+        margin: 0;
+
+      }
+      height: 40px;
+      width: 349px;
+
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .SelectedWeekExample {
+      position: absolute;
+      right: 50%;
+      left: 50%;
+      top: 58px;
+      width: 349px;
+
+      transform: translate(-50%);
+    }
+  }
+
+
   .button-collapse {
     width: 33px;
     height: 33px;
@@ -284,6 +329,7 @@
     max-height: calc(100% - 175px);
 
     .table {
+      margin-bottom: 0;
 
       .table-header-title {
         padding: 13px 20px;
@@ -293,19 +339,41 @@
         line-height: 18px;
         color: #2A3042;
         vertical-align: middle;
-        border-top: none;
       }
 
       thead {
-        border-bottom: 1px solid #EAEBED;
+        box-sizing: border-box;
         position: sticky;
         top: 0;
         background: #fff;
         z-index: 2;
+
+        &::after {
+          content: '';
+          background-color: #EAEBED;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          position: absolute;
+        }
+
       }
 
       tbody {
         .payroll-day {
+          position: relative;
+
+          &::after {
+            content: '';
+            background: #50A5F1;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            width: 4px;
+          }
+
           &:not(:last-of-type) {
             border-bottom: 1px solid #EAEBED;
           }

@@ -172,6 +172,9 @@ class Index extends Component {
       case '3':
         amount = 12;
         break;
+      case '4':
+        amount = 24;
+        break;
     }
     let staffAmount;
     if (rate.specialWorkersCount === '') {
@@ -200,6 +203,9 @@ class Index extends Component {
         break;
       case 12:
         discountAmount = 3;
+        break;
+      case 24:
+        discountAmount = 9;
         break;
       default:
         discountAmount = 0;
@@ -299,6 +305,11 @@ class Index extends Component {
         finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 9;
         finalPriceMonth *= 9 / 12;
         finalPriceMonthDiscount *= 9 / 12;
+        break;
+      case '4':
+        finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 15;
+        finalPriceMonth *= 15 / 24;
+        finalPriceMonthDiscount *= 15 / 24;
         break;
     }
 
@@ -649,105 +660,182 @@ class Index extends Component {
                       </React.Fragment>)}
                   </div>
 
-                  <div id="range-month">
-                    <p className="subtitle-payments mb-3 d-md-none">{t("Срок действия лицензии")}</p>
+                  {/*<div id="range-month">*/}
+                  {/*  <p className="subtitle-payments mb-3 d-md-none">{t("Срок действия лицензии")}</p>*/}
 
-                    <ul className="range-labels">
-                      <li className={period === '1' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '1',
-                          },
-                        })}>{t("3 месяца")}
-                      </li>
-                      <li className={period === '2' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '2',
-                          },
-                        })}>{t("6 месяцев")} <br/> ({t("+1 месяц бесплатно")})
-                      </li>
-                      <li className={period === '3' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '3',
-                          },
-                        })}>{t("12 месяцев")} <br/> ({t("+3 бесплатно")})
-                      </li>
-                    </ul>
+                  {/*  <ul className="range-labels">*/}
+                  {/*    <li className={period === '1' ? 'active selected' : ''}*/}
+                  {/*      onClick={() => this.setState({*/}
+                  {/*        rate: {*/}
+                  {/*          ...this.state.rate,*/}
+                  {/*          period: '1',*/}
+                  {/*        },*/}
+                  {/*      })}>{t("3 месяца")}*/}
+                  {/*    </li>*/}
+                  {/*    <li className={period === '2' ? 'active selected' : ''}*/}
+                  {/*      onClick={() => this.setState({*/}
+                  {/*        rate: {*/}
+                  {/*          ...this.state.rate,*/}
+                  {/*          period: '2',*/}
+                  {/*        },*/}
+                  {/*      })}>{t("6 месяцев")} <br/> ({t("+1 месяц бесплатно")})*/}
+                  {/*    </li>*/}
+                  {/*    <li className={period === '3' ? 'active selected' : ''}*/}
+                  {/*      onClick={() => this.setState({*/}
+                  {/*        rate: {*/}
+                  {/*          ...this.state.rate,*/}
+                  {/*          period: '3',*/}
+                  {/*        },*/}
+                  {/*      })}>{t("12 месяцев")} <br/> ({t("+3 бесплатно")})*/}
+                  {/*    </li>*/}
+                  {/*    <li className={period === '4' ? 'active selected' : ''}*/}
+                  {/*        onClick={() => this.setState({*/}
+                  {/*          rate: {*/}
+                  {/*            ...this.state.rate,*/}
+                  {/*            period: '4',*/}
+                  {/*          },*/}
+                  {/*        })}>{t("24 месяца")} <br/> ({t("+9 бесплатно")})*/}
+                  {/*    </li>*/}
+                  {/*  </ul>*/}
+                  {/*  */}
+                  {/*  <div className="range" style={{ position: 'relative' }}>*/}
+                  {/*    <input type="range" min="1" max="4" value={period}*/}
+                  {/*      onChange={(e) => this.rateChangePeriod(e)}/>*/}
+                  {/*    <div className="rateLine" style={{ width: ((period - 1) * 50) + '%' }}/>*/}
+                  {/*  </div>*/}
 
-                    <div className="range" style={{ position: 'relative' }}>
-                      <input type="range" min="1" max="3" value={period}
-                        onChange={(e) => this.rateChangePeriod(e)}/>
-                      <div className="rateLine" style={{ width: ((period - 1) * 50) + '%' }}/>
-                    </div>
+                  {/*</div>*/}
 
-                  </div>
-                  <p className="subtitle-payments d-none d-md-flex">{t("Срок действия лицензии")}</p>
+                  {/*<p className="subtitle-payments d-none d-md-flex">{t("Срок действия лицензии")}</p>*/}
 
-                </div>
+                  <div className="row cards-container">
+                    <div className="col card">
+                      <div className="card-inner">
+                        <span className="label">хит</span>
 
-                <div className="payments-list-block2 mb-2 mb-md-0">
-                  <div className="payments-content">
-                    <p className="title-payments">{t("К оплате")}</p>
-                    <div>
-                      <p>{t("Срок действия лицензии")}: </p>
-                      <span style={{ textAlign: 'right' }}>
-                        {period === '1' ? t('3 месяца') : (period === '2') ? t('6 месяцев') : t('12 месяцев')}
-                      </span>
-                    </div>
-                    <div>
-                      <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>
-                      <span style={{ textAlign: 'right' }}>
-                        {finalPriceMonth} {countryCode ? (countryCode === 'BLR'
-                          ? t('руб')
-                          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')
-                        }
-                      </span>
-                    </div>
+                        <img alt="24 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/24.svg`}/>
+                        <p className="unit">Месяца</p>
+                        <p className="additional">(9 <span className="blue_text">бесплатно</span>)</p>
 
-                    {finalPriceMonthDiscount ? (
-                      <div>
-                        <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>
-                        <span style={{ color: '#F46A6A', textAlign: 'right' }}>
-                          {finalPriceMonthDiscount} {countryCode
-                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('руб')
-                          }
-                        </span>
-                      </div>
-                    ) : ''}
-                    <div>
-                      <p className="total-price">{t("Итоговая стоимость")}:
-                        <span>
-                          {finalPrice} {countryCode
-                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
-                              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')
-                          }
-                        </span>
-                      </p>
-                    </div>
+                        <hr/>
 
-                    <button className={'button ' + (workersCount === -1 ? 'disabledField' : '')}
-                      type="button"
-                      disabled={workersCount === -1}
-                      onClick={() => this.AddingInvoiceStaff()}>{t("Оплатить")}
-                    </button>
-
-                    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) &&
-                      <div>
-                        <p className="description">
-                          ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
                         </p>
+                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
                       </div>
-                    }
+                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                                                                                                                           alt="Попробовать бесплатно"/></a>
+                    </div>
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="12 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/12.svg`}/>
+                        <p className="unit">Месяцев</p>
+                        <p className="additional">(3 <span className="blue_text">бесплатно</span>)</p>
+
+                        <hr/>
+
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        </p>
+                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                      </div>
+                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                                                                                                                    alt="Попробовать бесплатно"/></a>
+                    </div>
+
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="6 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/6.svg`}/>
+                        <p className="unit">Месяцев</p>
+                        <p className="additional">(1 <span className="blue_text">бесплатно</span>)</p>
+
+                        <hr/>
+
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        </p>
+                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                      </div>
+                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                                                                                                                    alt="Попробовать бесплатно"/></a>
+                    </div>
+
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="3 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/3.svg`}/>
+                        <p className="unit">Месяца</p>
+                        <p className="additional"><br/></p>
+
+                        <hr/>
+
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        </p>
+                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                      </div>
+                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                                                                                                                    alt="Попробовать бесплатно"/></a>
+                    </div>
                   </div>
+
+
                 </div>
+
+                {/*<div className="payments-list-block2 mb-2 mb-md-0">*/}
+                {/*  <div className="payments-content">*/}
+                {/*    <p className="title-payments">{t("К оплате")}</p>*/}
+                {/*    <div>*/}
+                {/*      <p>{t("Срок действия лицензии")}: </p>*/}
+                {/*      <span style={{ textAlign: 'right' }}>*/}
+                {/*        {period === '1' ? t('3 месяца') : (period === '2') ? t('6 месяцев') : t('12 месяцев')}*/}
+                {/*      </span>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*      <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>*/}
+                {/*      <span style={{ textAlign: 'right' }}>*/}
+                {/*        {finalPriceMonth} {countryCode ? (countryCode === 'BLR'*/}
+                {/*          ? t('руб')*/}
+                {/*          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')*/}
+                {/*        }*/}
+                {/*      </span>*/}
+                {/*    </div>*/}
+
+                {/*    {finalPriceMonthDiscount ? (*/}
+                {/*      <div>*/}
+                {/*        <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>*/}
+                {/*        <span style={{ color: '#F46A6A', textAlign: 'right' }}>*/}
+                {/*          {finalPriceMonthDiscount} {countryCode*/}
+                {/*            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'*/}
+                {/*              ? t('грн')*/}
+                {/*              : (countryCode === 'RUS' ? t('руб') : t('руб'))))*/}
+                {/*            : t('руб')*/}
+                {/*          }*/}
+                {/*        </span>*/}
+                {/*      </div>*/}
+                {/*    ) : ''}*/}
+                {/*    <div>*/}
+                {/*      <p className="total-price">{t("Итоговая стоимость")}:*/}
+                {/*        <span>*/}
+                {/*          {finalPrice} {countryCode*/}
+                {/*            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'*/}
+                {/*              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')*/}
+                {/*          }*/}
+                {/*        </span>*/}
+                {/*      </p>*/}
+                {/*    </div>*/}
+
+                {/*    <button className={'button ' + (workersCount === -1 ? 'disabledField' : '')}*/}
+                {/*      type="button"*/}
+                {/*      disabled={workersCount === -1}*/}
+                {/*      onClick={() => this.AddingInvoiceStaff()}>{t("Оплатить")}*/}
+                {/*    </button>*/}
+
+                {/*    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) &&*/}
+                {/*      <div>*/}
+                {/*        <p className="description">*/}
+                {/*          ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})*/}
+                {/*        </p>*/}
+                {/*      </div>*/}
+                {/*    }*/}
+                {/*  </div>*/}
+                {/*</div>*/}
 
                 <div className="payments-list-block3 mb-1 mb-md-0">
                   <div className="payments-content buttons-change">
