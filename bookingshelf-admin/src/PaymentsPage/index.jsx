@@ -12,7 +12,7 @@ import { paymentsActions, companyActions } from '../_actions';
 import { staffActions } from '../_actions/staff.actions';
 
 import '../../public/scss/payments.scss';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
 
 class Index extends Component {
   constructor(props) {
@@ -95,8 +95,8 @@ class Index extends Component {
 
     const { user } = this.props.authentication;
     if (user && (user.forceActive
-            || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
-            || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+      || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+      || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
     )) {
     } else {
       this.setDefaultWorkersCount(this.props.staff.staff);
@@ -166,13 +166,13 @@ class Index extends Component {
     const { chosenAct } = this.state;
     if (chosenAct && chosenAct.packetId) {
       this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
-        {
-          packetId: chosenAct.packetId,
-          amount: 1,
-          discountAmount: 0,
-          startDateMillis: moment().format('x'),
-        },
-      ],
+          {
+            packetId: chosenAct.packetId,
+            amount: 1,
+            discountAmount: 0,
+            startDateMillis: moment().format('x'),
+          },
+        ],
       )));
     }
   }
@@ -232,13 +232,13 @@ class Index extends Component {
     }
 
     this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
-      {
-        packetId: packetId,
-        amount: amount,
-        discountAmount,
-        startDateMillis: moment().format('x'),
-      },
-    ],
+        {
+          packetId: packetId,
+          amount: amount,
+          discountAmount,
+          startDateMillis: moment().format('x'),
+        },
+      ],
     )));
   }
 
@@ -253,8 +253,14 @@ class Index extends Component {
   downloadInPdf(pdfMarkup) {
     html2canvas(document.getElementById('divIdToPrint')).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
+      console.log(canvas.toDataURL('image/png'));
+      const pdf = new jsPDF('p', "mm", "a4");
+
+      const imgProps= pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('invoice.pdf');
     });
   }
@@ -289,7 +295,9 @@ class Index extends Component {
     const priceTo30packet = (packets && packets.find((item) => item.packetId === 12) || {});
     const priceFrom30packet = (packets && packets.find((item) => item.packetId === 13) || {});
 
-    let finalPrice = 0; let finalPriceMonth = 0; let finalPriceMonthDiscount = 0;
+    let finalPrice = 0;
+    let finalPriceMonth = 0;
+    let finalPriceMonthDiscount = 0;
 
     switch (specialWorkersCount) {
       case 'to 20':
@@ -419,16 +427,16 @@ class Index extends Component {
     const currentPacket = activePacket
       ? activePacket.packetName
       : authentication.user && (authentication.user && authentication.user.forceActive ||
-        (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x'))
+      (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x'))
         ? t('Пробный период')
         : t('Нет выбранного пакета')
-      );
+    );
     const paymentId = authentication && authentication.user && authentication.user.menu
       .find((item) => item.id === 'payments_menu_id');
     if (!paymentId && currentPacket === t('Нет выбранного пакета')) {
       return (
         <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
-                    {t("Срок действия лицензии истек")}
+          {t('Срок действия лицензии истек')}
         </div>
       );
     }
@@ -443,13 +451,13 @@ class Index extends Component {
         <div id="divIdToPrint">
           <div className="row customer-seller">
             {authentication.user && <div className="col-md-4 col-12 customer">
-              <p>{t("Лицензиат")}: <strong>{authentication.user.companyName}</strong></p>
-              <p>{t("Представитель")}: <strong>
+              <p>{t('Лицензиат')}: <strong>{authentication.user.companyName}</strong></p>
+              <p>{t('Представитель')}: <strong>
                 {authentication.user.profile
                   ? authentication.user.profile.lastName
                   : ''} {authentication.user.profile.firstName}
               </strong></p>
-              <p>{t("Адрес")}: <strong>
+              <p>{t('Адрес')}: <strong>
                 {authentication.user.companyAddress1 || authentication.user.companyAddress2
                 || authentication.user.companyAddress3}
               </strong>
@@ -457,17 +465,17 @@ class Index extends Component {
             </div>}
 
             <div className="col-md-4 col-12 seller">
-              <p>{t("Лицензиар")}: <strong>{t("СОФТ-МЭЙК. УНП 191644633")}</strong></p>
-              <p>{t("Адрес")}: <strong>{t("220034, Беларусь, Минск, Марьевская 7а-1-6")}</strong></p>
-              <p>{t("Телефон")}: <strong>+375 44 5655557</strong></p>
+              <p>{t('Лицензиар')}: <strong>{t('СОФТ-МЭЙК. УНП 191644633')}</strong></p>
+              <p>{t('Адрес')}: <strong>{t('220034, Беларусь, Минск, Марьевская 7а-1-6')}</strong></p>
+              <p>{t('Телефон')}: <strong>+375 44 5655557</strong></p>
             </div>
 
             <div className="col-md-4 col-12 payments-type">
-              <p>{t("Способ оплаты")}: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
+              <p>{t('Способ оплаты')}: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <p>
-                              {t("Заплатить до")}: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                {t('Заплатить до')}: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
               </p>}
-              <p>{t("Статус")}: <span
+              <p>{t('Статус')}: <span
                 className="status"
                 style={{ color: chosenInvoice.invoiceStatus === 'PAID' ? '#34C38F' : '#50A5F1' }}
               >
@@ -484,13 +492,13 @@ class Index extends Component {
 
           <div className="table">
             <div className="table-header row">
-              <div className="col-4 table-description"><p>{t("Описание")}:</p></div>
+              <div className="col-4 table-description"><p>{t('Описание')}:</p></div>
               <div className="col-4 table-count"><p
-                className="default">{t("Количество")}:</p>
-              <p
-                className="mob">{t("Количество")} {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
+                className="default">{t('Количество')}:</p>
+                <p
+                  className="mob">{t('Количество')} {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
               </div>
-                <div className="col-4 table-price"><p>{t("Стоимость")}:</p></div>
+              <div className="col-4 table-price"><p>{t('Стоимость')}:</p></div>
             </div>
             {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map((packet, i) => {
               const name = packets && packets.find((item) => item.packetId === packet.packetId);
@@ -517,7 +525,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>{t("Общая сумма")}:</p>
+                  <p>{t('Общая сумма')}:</p>
                 </div>
                 <div>
                   <p className="bold-text">{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
@@ -527,7 +535,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>{t("Без НДС")}</p>
+                  <p>{t('Без НДС')}</p>
                 </div>
                 <div>
                   <p className="bold-text">0.00 {chosenInvoice.currency}</p>
@@ -536,18 +544,18 @@ class Index extends Component {
             </div>
             <div className="col-12 col-md-4 payment-button-container">
               <p className="download"
-                onClick={() => this.downloadInPdf(pdfMarkup)}>{t("Скачать в PDF")}</p>
+                 onClick={() => this.downloadInPdf(pdfMarkup)}>{t('Скачать в PDF')}</p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
                 <button className="inv-date" style={{
                   backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
                   color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff' : '#000',
                 }}
-                data-target=".make-payment-modal"
-                data-toggle="modal"
-                onClick={() => {
-                  this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId));
-                  this.repeatPayment(chosenInvoice.invoiceId);
-                }}>
+                        data-target=".make-payment-modal"
+                        data-toggle="modal"
+                        onClick={() => {
+                          this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId));
+                          this.repeatPayment(chosenInvoice.invoiceId);
+                        }}>
                   {chosenInvoice.invoiceStatus === 'ISSUED' ? t('Оплатить') :
                     (chosenInvoice.invoiceStatus === 'PAID' ? t('Оплачено') :
                       (chosenInvoice.invoiceStatus === 'CANCELLED' ? t('Закрыто') : ''))
@@ -564,40 +572,40 @@ class Index extends Component {
     return (
       <React.Fragment>
         {isLoading &&
-                <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+        <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
         {!isLoading && <div className="h-100 retreats">
 
 
           <div className="tab-content">
             <div className={'tab-pane ' + (pathname === '/payments' ? 'active' : '')} id="payments">
 
-              <div className={'d-flex flex-column-reverse flex-md-row align-items-start'+
-                ' justify-content-between align-items-md-center mb-2'}
+              <div className={'d-flex flex-column-reverse flex-md-row align-items-start' +
+              ' justify-content-between align-items-md-center mb-2'}
               >
                 <div className="payments-license-block">
                   <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>
-                    {t("Лицензионный договор")}
+                    {t('Лицензионный договор')}
                   </a>
                   <span data-toggle="modal" data-target=".accountant-modal-in">
-                      {t("Для бухгалтерии")}
+                      {t('Для бухгалтерии')}
                   </span>
                 </div>
 
                 {authentication.user &&
-                  <div className="current-packet-container">
-                    <div className="current-packet text-left text-md-right">{t("Текущий пакет")}: {currentPacket}</div>
-                    <div className="current-packet-timing text-left text-md-right">
-                      {activePacket
-                        ? t("Пакет действителен до") + ': ' +
-                          moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY')
-                        : ((moment(authentication.user.trialEndDateMillis).format('x')
-                          >= moment().format('x'))
-                          ? t("Пакет действителен до") + ': ' +
-                          moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
-                          : (authentication.user.forceActive ? t('Пробный период') + " " + t('продлён') : ''))
-                      }
-                    </div>
+                <div className="current-packet-container">
+                  <div className="current-packet text-left text-md-right">{t('Текущий пакет')}: {currentPacket}</div>
+                  <div className="current-packet-timing text-left text-md-right">
+                    {activePacket
+                      ? t('Пакет действителен до') + ': ' +
+                      moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY')
+                      : ((moment(authentication.user.trialEndDateMillis).format('x')
+                        >= moment().format('x'))
+                        ? t('Пакет действителен до') + ': ' +
+                        moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
+                        : (authentication.user.forceActive ? t('Пробный период') + ' ' + t('продлён') : ''))
+                    }
                   </div>
+                </div>
                 }
               </div>
 
@@ -671,85 +679,61 @@ class Index extends Component {
                     {(companyTypeId === 2) ? (
                       <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
                         <input type="radio" className="radio" id="radio2"
-                          name="staff-radio"
-                          checked={specialWorkersCount === 'to 30'}/>
-                        <label htmlFor="radio2">{t("Больше 5")}</label>
+                               name="staff-radio"
+                               checked={specialWorkersCount === 'to 30'}/>
+                        <label htmlFor="radio2">{t('Больше 5')}</label>
                       </div>
                     ) : (
                       <React.Fragment>
                         <div
                           onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                           <input type="radio" className="radio" id="radio"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'to 20'}/>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'to 20'}/>
                           <label className={(staffCount) <= 20 ? '' : 'disabledField'}
-                            htmlFor="radio">{t("До 20")}</label>
+                                 htmlFor="radio">{t('До 20')}</label>
                         </div>
                         <div
                           onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                           <input type="radio" className="radio" id="radio2"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'to 30'}/>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'to 30'}/>
                           <label className={(staffCount) <= 30 ? '' : 'disabledField'}
-                            htmlFor="radio2">{t("До 30")}</label>
+                                 htmlFor="radio2">{t('До 30')}</label>
                         </div>
                         <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                           <input type="radio" className="radio" id="radio3"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'from 30'}/>
-                          <label htmlFor="radio3">{t("Больше 30")}</label>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'from 30'}/>
+                          <label htmlFor="radio3">{t('Больше 30')}</label>
                         </div>
                       </React.Fragment>)}
                   </div>
 
-                  <hr style={{maxWidth: 565 + 'px'}}/>
+                  <hr style={{ maxWidth: 565 + 'px' }}/>
 
                   <div className="row cards-container">
                     <div className="col card">
                       <div className="card-inner">
                         <span className="label">{t('хит')}</span>
 
-                        <img alt="24 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/24.svg`}/>
+                        <img alt="24 месяца" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/24.svg`}/>
                         <p className="unit">{t('Месяца')}</p>
                         <p className="additional">(9 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }
-                        </p>
-                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }</p>
-                      </div>
-                      <a onClick={() => {
-                        this.AddingInvoiceStaff("4")
-                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
-                                                                                                                           alt="Попробовать бесплатно"/></a>
-                    </div>
-                    <div className="col card">
-                      <div className="card-inner">
-                        <img alt="12 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/12.svg`}/>
-                        <p className="unit">{t('Месяцев')}</p>
-                        <p className="additional">(3 <span className="blue_text">{t('бесплатно')}</span>)</p>
-
-                        <hr/>
-
-                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
                           : t('BYN')
                         }
                         </p>
-                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -757,70 +741,110 @@ class Index extends Component {
                         }</p>
                       </div>
                       <a onClick={() => {
-                        this.AddingInvoiceStaff("3")
-                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
-                                                                                                                    alt="Попробовать бесплатно"/></a>
+                        this.AddingInvoiceStaff('4');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
+                    </div>
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="12 месяцев" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/12.svg`}/>
+                        <p className="unit">{t('Месяцев')}</p>
+                        <p className="additional">(3 <span className="blue_text">{t('бесплатно')}</span>)</p>
+
+                        <hr/>
+
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
+                      </div>
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff('3');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
                     </div>
 
                     <div className="col card">
                       <div className="card-inner">
-                        <img alt="6 месяцев" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/6.svg`}/>
+                        <img alt="6 месяцев" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/6.svg`}/>
                         <p className="unit">{t('Месяцев')}</p>
                         <p className="additional">(1 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
                         </p>
-                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }</p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
                       </div>
                       <a onClick={() => {
-                        this.AddingInvoiceStaff("2")
-                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
-                                                                                                                    alt="Попробовать бесплатно"/></a>
+                        this.AddingInvoiceStaff('2');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
                     </div>
 
                     <div className="col card">
                       <div className="card-inner">
-                        <img alt="3 месяца" className="count-months" src={`${process.env.CONTEXT}public/img/svg_number/3.svg`}/>
+                        <img alt="3 месяца" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/3.svg`}/>
                         <p className="unit">{t('Месяца')}</p>
                         <p className="additional"><br/></p>
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
                         </p>
-                        <p className="total"><span className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
-                            ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('BYN')
-                          }</p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
                       </div>
                       <a onClick={() => {
-                        this.AddingInvoiceStaff("1")
-                      }} className="card-button">{t('Оплатить пакет')} <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
-                                                                                                                    alt="Попробовать бесплатно"/></a>
+                        this.AddingInvoiceStaff('1');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
                     </div>
                   </div>
                   {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                     <p className="description-currency">
-                      ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
+                      ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
                     </p>
                   </div>
                   }
@@ -889,7 +913,7 @@ class Index extends Component {
 
                 <div className="payments-list-block3 mb-1 mb-md-0">
                   <div className="payments-content buttons-change">
-                    <p className="title-payments">{t("SMS ПАКЕТЫ")}</p>
+                    <p className="title-payments">{t('SMS ПАКЕТЫ')}</p>
 
                     {packets && packets.filter((packet) => packet.packetType === 'SMS_PACKET')
                       .sort((a, b) => a.smsAmount - b.smsAmount)
@@ -904,7 +928,7 @@ class Index extends Component {
                                 className=""
                                 name="sms-price-radio"
                               />
-                              <span className="check-box-circle" />
+                              <span className="check-box-circle"/>
                               <span className="packets-container">
                                 <span className="packet-name">{packet.packetName}: <span className="sms-amount">
                                   {packet.smsAmount} SMS</span>
@@ -919,45 +943,45 @@ class Index extends Component {
 
                     {authentication && authentication.user && authentication.user.countryCode !== 'BLR' && (
                       <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold' }}>
-                        {t("Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.")}
+                        {t('Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.')}
                       </div>)
                     }
                   </div>
 
                   <div className="payments-content total-price">
                     {chosenAct.packetName &&
-                      <React.Fragment>
-                        <div>
-                          <p className="total-price">{t("Итоговая стоимость")}: <span>
+                    <React.Fragment>
+                      <div>
+                        <p className="total-price">{t('Итоговая стоимость')}: <span>
                             {chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}
                           </span>
-                          </p>
-                        </div>
-                        <button className="button" type="button"
-                          onClick={() => this.AddingInvoice()}>{t("Оплатить")}
-                        </button>
-                        {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                          <p className="description">
-                            ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
-                          </p>
-                        </div>
-                        }
-                      </React.Fragment>
+                        </p>
+                      </div>
+                      <button className="button" type="button"
+                              onClick={() => this.AddingInvoice()}>{t('Оплатить')}
+                      </button>
+                      {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                        <p className="description">
+                          ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
+                        </p>
+                      </div>
+                      }
+                    </React.Fragment>
                     }
                   </div>
                 </div>
               </div>
 
               <div id="acts">
-                <h2 className="acts-title">{t("Счета")}</h2>
+                <h2 className="acts-title">{t('Счета')}</h2>
                 <div className="invoice header-invoice">
                   <div className="inv-number">
-                    <p className="d-none d-md-inline">{t("Номер счета")}</p>
+                    <p className="d-none d-md-inline">{t('Номер счета')}</p>
                     <p className="d-md-none"># счета</p>
                   </div>
-                  <div className="inv-date"><p>{t("Дата")}</p></div>
-                  <div className="inv-date"><p>{t("Сумма")}</p></div>
-                  <div className="inv-status"><p>{t("Статус")}</p></div>
+                  <div className="inv-date"><p>{t('Дата')}</p></div>
+                  <div className="inv-date"><p>{t('Сумма')}</p></div>
+                  <div className="inv-status"><p>{t('Статус')}</p></div>
                 </div>
 
                 {list.length ? list.sort((a, b) => {
@@ -994,31 +1018,31 @@ class Index extends Component {
                     </div>
                   );
                 }) : (
-                  <div style={{ textAlign: 'center' }}>{t("Нет счетов для отображения")}</div>
+                  <div style={{ textAlign: 'center' }}>{t('Нет счетов для отображения')}</div>
                 )}
 
 
                 {invoiceSelected &&
-                  <div className="chosen-invoice-wrapper">
-                    <div className="chosen-invoice">
-                      <div className="modal-header">
-                        <h4 className="modal-title">
-                          {t("Счет")} {chosenInvoice.customId}; {
-                            moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
-                          }
-                        </h4>
-                        <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
-                          className="close" style={{ height: '50px' }}
-                          onClick={() => this.closeModalActs()}
-                        />
-                      </div>
-                      <div className="act-body-wrapper">
-                        <div className="acts-body">
-                          {pdfMarkup}
-                        </div>
+                <div className="chosen-invoice-wrapper">
+                  <div className="chosen-invoice">
+                    <div className="modal-header">
+                      <h4 className="modal-title">
+                        {t('Счет')} {chosenInvoice.customId}; {
+                        moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
+                      }
+                      </h4>
+                      <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
+                           className="close" style={{ height: '50px' }}
+                           onClick={() => this.closeModalActs()}
+                      />
+                    </div>
+                    <div className="act-body-wrapper">
+                      <div className="acts-body">
+                        {pdfMarkup}
                       </div>
                     </div>
                   </div>
+                </div>
                 }
               </div>
             </div>
@@ -1026,7 +1050,7 @@ class Index extends Component {
         </div>
         }
 
-        <ForAccountant />
+        <ForAccountant/>
         <MakePayment/>
       </React.Fragment>
     );
@@ -1068,4 +1092,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default (withRouter(connect(mapStateToProps, null)(withTranslation("common")(Index))));
+export default (withRouter(connect(mapStateToProps, null)(withTranslation('common')(Index))));
