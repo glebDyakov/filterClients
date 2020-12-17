@@ -19,7 +19,7 @@ export const payrollActions = {
 
   updateOneServicePercent,
   updateOneProductPercent,
-  updateOneServiceGroupPercent
+  updateOneServiceGroupPercent,
 };
 
 function getPayoutTypes(staffId) {
@@ -77,15 +77,22 @@ function addPayoutTypes(staffId, payout) {
     payrollService.addPayoutTypes(staffId, payout)
       .then(
         (payoutTypes) => {
-          // dispatch(success(payoutTypes));
           dispatch(payrollActions.getPayoutTypes(staffId));
+          dispatch(success());
+          setTimeout(() => {
+            dispatch(success_time());
+          }, 500)
         },
         () => dispatch(failure()),
       );
   };
 
   function success(payoutTypes) {
-    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS, payload: { payoutTypes } };
+    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS };
+  }
+
+  function success_time(payoutTypes) {
+    return { type: payrollConstants.ADD_PAYOUT_TYPES_SUCCESS_TIME };
   }
 
   function failure() {
@@ -285,7 +292,7 @@ function updateOneServicePercent(staffId, percentService) {
       .then(
         (percentService) => {
           dispatch(success(percentService));
-        }
+        },
       );
   };
 
@@ -300,7 +307,7 @@ function updateOneProductPercent(staffId, percentProduct) {
       .then(
         (percentProduct) => {
           dispatch(success(percentProduct));
-        }
+        },
       );
   };
 
@@ -315,7 +322,7 @@ function updateOneServiceGroupPercent(staffId, serviceGroup) {
       .then(
         (serviceGroup) => {
           dispatch(success(serviceGroup));
-        }
+        },
       );
   };
 

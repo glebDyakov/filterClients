@@ -4,7 +4,6 @@ import Dropdown from './Dropdown/Dropdown';
 import DropdownListItems from './Dropdown/DropdownListItems';
 import ServiceDropdown from './Dropdown/ServiceDropdown';
 import ProductDropdown from './Dropdown/ProductDropdown';
-import { payrollActions } from '../../_actions';
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -169,7 +168,7 @@ class PercentOfSales extends Component {
     if (value >= 0 && value <= 100 || value === '') {
       this.props.material.products.filter(pp => pp.categoryId === categoryId)
         .map(product => {
-          this.changeProductsPercent(e, product.productId)
+          this.changeProductsPercent(e, product.productId);
         });
     }
   }
@@ -183,16 +182,12 @@ class PercentOfSales extends Component {
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
           <div className="services-container col">
-            <button onClick={() => {
-              this.props.handleSubmitPercents('percentServices', this.state.servicesPercent);
-              this.props.handleSubmitPercents('percentServiceGroups', this.state.serviceGroupsPercent);
-            }}>save
-            </button>
-
             <Dropdown>
+
               <DropdownSearchItem onChange={this.handleSearchServiceGroup}>
                 Введите название категории
               </DropdownSearchItem>
+
               <DropdownListItems>
                 {this.props.serviceGroups && this.props.serviceGroups.filter(serviceGroup => serviceGroup.name.toLowerCase().includes(this.state.searchServiceGroup.toLowerCase())).map((serviceGroup, i) =>
                   <ServiceDropdown
@@ -204,8 +199,15 @@ class PercentOfSales extends Component {
                     handleChangeServicePercent={this.changeServicePercent}
                     changeGroupServicePercent={this.changeGroupServicePercent}
                   />)}
+                <button onClick={() => {
+                  this.props.handleSubmitPercents('percentServices', this.state.servicesPercent);
+                  this.props.handleSubmitPercents('percentServiceGroups', this.state.serviceGroupsPercent);
+                }}>save
+                </button>
               </DropdownListItems>
+
             </Dropdown>
+
           </div>
           <div className="products-container col">
 
