@@ -25,7 +25,7 @@ class StaffList extends Component {
                 <div className="staff-name">{staff.firstName + (staff.lastName ? ' ' + staff.lastName : '')}</div>
                 <div className="staff-role">{t('Администратор')}</div>
               </div>
-            </div>) || <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+            </div>)}
         </div>
       </div>
     );

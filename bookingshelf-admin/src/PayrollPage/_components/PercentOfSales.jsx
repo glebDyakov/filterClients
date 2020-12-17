@@ -4,6 +4,7 @@ import Dropdown from './Dropdown/Dropdown';
 import DropdownListItems from './Dropdown/DropdownListItems';
 import ServiceDropdown from './Dropdown/ServiceDropdown';
 import ProductDropdown from './Dropdown/ProductDropdown';
+import { payrollActions } from '../../_actions';
 
 class PercentOfSales extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class PercentOfSales extends Component {
       productsPercent: props.productsPercent,
 
       searchCategory: '',
-      searchServiceGroup: ''
+      searchServiceGroup: '',
     };
 
     this.changeServicePercent = this.changeServicePercent.bind(this);
@@ -51,18 +52,22 @@ class PercentOfSales extends Component {
   handleSearchCategory(e) {
     this.setState({
       searchCategory: e.target.value,
-    })
+    });
   }
 
   handleSearchServiceGroup(e) {
     this.setState({
-      searchServiceGroup: e.target.value
-    })
+      searchServiceGroup: e.target.value,
+    });
   }
 
 
   changeProductsPercent(e, productId) {
     const { value } = e.target;
+    const { dispatch } = this.props;
+
+    console.log(dispatch);
+
     if (value >= 0 && value <= 100 || value === '') {
       this.state.productsPercent.some((sp) => sp.productId === productId)
         ? this.setState((state) => {
@@ -163,7 +168,9 @@ class PercentOfSales extends Component {
     const { value } = e.target;
     if (value >= 0 && value <= 100 || value === '') {
       this.props.material.products.filter(pp => pp.categoryId === categoryId)
-        .map(product => this.changeProductsPercent(e, product.productId));
+        .map(product => {
+          this.changeProductsPercent(e, product.productId)
+        });
     }
   }
 
