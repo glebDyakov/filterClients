@@ -16,6 +16,15 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 class Index extends Component {
   constructor(props) {
     super(props);
+
+    console.log("TAB", props.match.params.activeTab);
+    if (props.match.params.activeTab &&
+      props.match.params.activeTab !== 'setting' &&
+      props.match.params.activeTab !== ''
+    ) {
+      props.history.push('/nopage');
+    }
+
     this.state = {
       activeTab: 'payroll',
       selectedStaff: 0,
