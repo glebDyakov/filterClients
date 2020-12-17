@@ -201,14 +201,16 @@ class Index extends Component {
     this.props.dispatch(materialActions.getProducts());
   }
 
-  initStaffData(staffId) {
+  initStaffData(staffId, from = this.state.from, to = this.state.to) {
     this.props.dispatch(payrollActions.getPayoutTypes(staffId));
     this.props.dispatch(payrollActions.getPercentProducts(staffId));
     this.props.dispatch(payrollActions.getPercentServiceGroups(staffId));
     this.props.dispatch(payrollActions.getPercentServices(staffId));
 
-    this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(this.state.from).subtract(7, 'days').format('x'), moment(this.state.to).format('x')));
-    this.props.dispatch(payrollActions.getPayoutByPeriod(staffId, moment(this.state.from).subtract(7, 'days').format('x'), moment(this.state.to).format('x')));
+    console.log(this.state.from);
+
+    this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
+    this.props.dispatch(payrollActions.getPayoutByPeriod(staffId, moment(from).format('x'), moment(to).format('x')));
   }
 
   selectStaff(staffId) {
@@ -468,7 +470,7 @@ class Index extends Component {
                       <PayrollDay payout={pb}/>
                     );
                   }) :
-                  <div className="loader loader-email"><img src={`${process.env.CONTEXT}public/img/spinner.gif`}
+                  <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`}
                                                             alt=""/>
                   </div>}
                 </tbody>
