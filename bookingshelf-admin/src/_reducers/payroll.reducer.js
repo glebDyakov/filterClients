@@ -17,6 +17,9 @@ const initialState = {
   isLoadingPayoutStats: false,
   isLoadingPeriod: false,
 
+  statusSavePercent: 0,
+  statusSavePayouttypes: 0,
+
   percentServiceGroups: [],
   percentServices: [],
   percentProducts: [],
@@ -58,7 +61,13 @@ export function payroll(state = initialState, action) {
     case payrollConstants.ADD_PAYOUT_TYPES_SUCCESS:
       return {
         ...state,
-        // payoutTypes: biggerTArray.map(bsg => lesserTArray.find(lsg => lsg.staffPayoutTypeId === bsg.staffPayoutTypeId) || bsg),
+        statusSavePayouttypes: 200,
+      };
+
+    case payrollConstants.ADD_PAYOUT_TYPES_SUCCESS_TIME:
+      return {
+        ...state,
+        statusSavePayouttypes: 0,
       };
 
     case payrollConstants.GET_PAYOUT_STATS_SUCCESS:

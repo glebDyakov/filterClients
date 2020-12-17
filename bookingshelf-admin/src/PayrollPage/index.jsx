@@ -516,9 +516,13 @@ class Index extends Component {
                   </label>
                 </div>
                 <div className="button-container">
+                  {this.props.payroll.statusSavePayouttypes === 200 &&
+                  <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>}
                   <button onClick={this.handleSubmitSettings} disabled={this.state.rate === 0}
-                          className="button-save border-0">Сохранить
+                          className={"button-save border-0" + (this.state.rate === 0 ? " disabledField" : '')}>Сохранить
                   </button>
+
+
                 </div>
 
               </div>

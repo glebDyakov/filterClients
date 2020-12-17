@@ -4,17 +4,17 @@ class IntervalInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      interval: undefined,
+      timeout: undefined,
     };
   }
 
   onChangeInput(e) {
     const { action, duration } = this.props;
-    clearInterval(this.state.interval);
+    clearTimeout(this.state.timeout);
     this.setState({
-      interval: setInterval(() => {
+      timeout: setTimeout(() => {
         action();
-        clearInterval(this.state.interval);
+        clearTimeout(this.state.timeout);
       }, 2000),
     });
   }
