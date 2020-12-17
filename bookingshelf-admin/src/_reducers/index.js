@@ -15,8 +15,9 @@ import { modals } from './modals.reducer';
 import { menu } from './menu.reducer';
 import { calendar } from './calendar.reducer';
 import { notification } from './notification.reducer';
-import { analitics } from '././analitics.reducer';
-import { payments } from '././payments.reducer';
+import { analitics } from './analitics.reducer';
+import { payments } from './payments.reducer';
+import { payroll } from './payroll.reducer';
 
 
 const rootReducer = combineReducers({
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   notification,
   analitics,
   payments,
+  payroll
 });
 
 export default rootReducer;

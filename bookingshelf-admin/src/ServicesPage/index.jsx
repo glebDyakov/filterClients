@@ -9,7 +9,7 @@ import ServiceInfo from './ServiceInfo';
 import { servicesActions, staffActions, materialActions, companyActions } from '../_actions';
 
 import '../../public/scss/services.scss';
-import { withTranslation } from 'react-i18next';
+import {withTranslation} from "react-i18next";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -224,7 +224,7 @@ class Index extends Component {
   render() {
     const {
       services, edit, group_working, staff, group_workingGroup, editServiceItem, collapse, newSet,
-      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search, company,
+      idGroupEditable, addService, addGroup, createdService, defaultServicesList, search, company
     } = this.state;
     const isLoading = staff.isLoading || services.isLoading;
     const dragDropGroupsItems = [];

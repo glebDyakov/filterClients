@@ -5,11 +5,11 @@ import CellAppointmentHeader from './CellAppointmentHeader';
 import CellAppointmentArea from './CellAppointmentArea';
 import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.toggleSelectedNote = this.toggleSelectedNote.bind(this);
   }
@@ -26,13 +26,14 @@ class CellAppointmentContent extends React.PureComponent {
       step,
       cellHeight,
     } = props;
+
     const staffList = appointments && appointments.filter((item) => item.appointments && item.appointments
       .some((localAppointment) => localAppointment.appointmentId === appointment.appointmentId),
     );
 
     const timetableItems = timetable && timetable
       .filter((item) => item.staffId === workingStaffElement.staffId ||
-        (appointment.coStaffs && staffList.some((coStaff) => coStaff.staff.staffId === item.staffId)),
+        (appointment.coStaffs && staffList && staffList.some((coStaff) => coStaff.staff.staffId === item.staffId)),
       );
 
     const isOwnInterval = (i) => appointment.appointmentTimeMillis <= i && (appointment.appointmentTimeMillis +
@@ -47,10 +48,10 @@ class CellAppointmentContent extends React.PureComponent {
   }
 
   toggleSelectedNote() {
-      const { appointment, selectedNote, dispatch } = this.props;
-      dispatch(appointmentActions.toggleSelectedNote(
-        appointment.appointmentId === selectedNote ? null : appointment.appointmentId),
-      );
+    const { appointment, selectedNote, dispatch } = this.props;
+    dispatch(appointmentActions.toggleSelectedNote(
+      appointment.appointmentId === selectedNote ? null : appointment.appointmentId),
+    );
   }
 
   render() {
@@ -139,4 +140,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(withTranslation("common")(CellAppointmentContent));
+export default connect(mapStateToProps)(withTranslation('common')(CellAppointmentContent));

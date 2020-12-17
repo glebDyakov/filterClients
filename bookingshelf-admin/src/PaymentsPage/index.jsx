@@ -12,7 +12,7 @@ import { paymentsActions, companyActions } from '../_actions';
 import { staffActions } from '../_actions/staff.actions';
 
 import '../../public/scss/payments.scss';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
 
 class Index extends Component {
   constructor(props) {
@@ -46,6 +46,26 @@ class Index extends Component {
         specialWorkersCount: '',
         period: '1',
       },
+
+      finalPriceObject: {
+        m3: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m6: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m12: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m24: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+      },
+
       finalPrice: this.props.company.settings ? ((this.props.company.settings.countryCode) ?
         ((this.props.company.settings.countryCode) === 'BLR' ?
           '15' : ((this.props.company.settings.countryCode) === 'UKR' ?
@@ -75,8 +95,8 @@ class Index extends Component {
 
     const { user } = this.props.authentication;
     if (user && (user.forceActive
-            || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
-            || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+      || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+      || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
     )) {
     } else {
       this.setDefaultWorkersCount(this.props.staff.staff);
@@ -146,23 +166,23 @@ class Index extends Component {
     const { chosenAct } = this.state;
     if (chosenAct && chosenAct.packetId) {
       this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
-        {
-          packetId: chosenAct.packetId,
-          amount: 1,
-          discountAmount: 0,
-          startDateMillis: moment().format('x'),
-        },
-      ],
+          {
+            packetId: chosenAct.packetId,
+            amount: 1,
+            discountAmount: 0,
+            startDateMillis: moment().format('x'),
+          },
+        ],
       )));
     }
   }
 
-  AddingInvoiceStaff() {
+  AddingInvoiceStaff(period) {
     const { rate } = this.state;
     const { packets } = this.props.payments;
 
     let amount;
-    switch (rate.period) {
+    switch (period) {
       case '1':
         amount = 3;
         break;
@@ -171,6 +191,9 @@ class Index extends Component {
         break;
       case '3':
         amount = 12;
+        break;
+      case '4':
+        amount = 24;
         break;
     }
     let staffAmount;
@@ -201,18 +224,21 @@ class Index extends Component {
       case 12:
         discountAmount = 3;
         break;
+      case 24:
+        discountAmount = 9;
+        break;
       default:
         discountAmount = 0;
     }
 
     this.props.dispatch(paymentsActions.addInvoice(JSON.stringify([
-      {
-        packetId: packetId,
-        amount: amount,
-        discountAmount,
-        startDateMillis: moment().format('x'),
-      },
-    ],
+        {
+          packetId: packetId,
+          amount: amount,
+          discountAmount,
+          startDateMillis: moment().format('x'),
+        },
+      ],
     )));
   }
 
@@ -227,8 +253,14 @@ class Index extends Component {
   downloadInPdf(pdfMarkup) {
     html2canvas(document.getElementById('divIdToPrint')).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, 'PNG', 0, 0);
+      console.log(canvas.toDataURL('image/png'));
+      const pdf = new jsPDF('p', "mm", "a4");
+
+      const imgProps= pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       pdf.save('invoice.pdf');
     });
   }
@@ -263,7 +295,9 @@ class Index extends Component {
     const priceTo30packet = (packets && packets.find((item) => item.packetId === 12) || {});
     const priceFrom30packet = (packets && packets.find((item) => item.packetId === 13) || {});
 
-    let finalPrice = 0; let finalPriceMonth = 0; let finalPriceMonthDiscount = 0;
+    let finalPrice = 0;
+    let finalPriceMonth = 0;
+    let finalPriceMonthDiscount = 0;
 
     switch (specialWorkersCount) {
       case 'to 20':
@@ -300,9 +334,33 @@ class Index extends Component {
         finalPriceMonth *= 9 / 12;
         finalPriceMonthDiscount *= 9 / 12;
         break;
+      case '4':
+        finalPrice = (finalPriceMonthDiscount || finalPriceMonth) * 15;
+        finalPriceMonth *= 15 / 24;
+        finalPriceMonthDiscount *= 15 / 24;
+        break;
     }
 
     this.setState({
+      finalPriceObject: {
+        m3: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 3,
+          finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
+        },
+        m6: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 5,
+          finalPriceMonth: finalPriceMonth * 5 / 6,
+        },
+        m12: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 9,
+          finalPriceMonth: finalPriceMonth * 9 / 12,
+        },
+        m24: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 15,
+          finalPriceMonth: finalPriceMonth * 15 / 24,
+        },
+      },
+
       finalPrice: finalPrice.toFixed(2),
       finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
       finalPriceMonthDiscount: finalPriceMonthDiscount && finalPriceMonthDiscount.toFixed(2),
@@ -369,16 +427,16 @@ class Index extends Component {
     const currentPacket = activePacket
       ? activePacket.packetName
       : authentication.user && (authentication.user && authentication.user.forceActive ||
-        (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x'))
+      (moment(authentication.user.trialEndDateMillis).format('x') >= moment().format('x'))
         ? t('Пробный период')
         : t('Нет выбранного пакета')
-      );
+    );
     const paymentId = authentication && authentication.user && authentication.user.menu
       .find((item) => item.id === 'payments_menu_id');
     if (!paymentId && currentPacket === t('Нет выбранного пакета')) {
       return (
         <div style={{ color: '#0a1330', fontSize: '22px' }} className="payments-message">
-                    {t("Срок действия лицензии истек")}
+          {t('Срок действия лицензии истек')}
         </div>
       );
     }
@@ -393,13 +451,13 @@ class Index extends Component {
         <div id="divIdToPrint">
           <div className="row customer-seller">
             {authentication.user && <div className="col-md-4 col-12 customer">
-              <p>{t("Лицензиат")}: <strong>{authentication.user.companyName}</strong></p>
-              <p>{t("Представитель")}: <strong>
+              <p>{t('Лицензиат')}: <strong>{authentication.user.companyName}</strong></p>
+              <p>{t('Представитель')}: <strong>
                 {authentication.user.profile
                   ? authentication.user.profile.lastName
                   : ''} {authentication.user.profile.firstName}
               </strong></p>
-              <p>{t("Адрес")}: <strong>
+              <p>{t('Адрес')}: <strong>
                 {authentication.user.companyAddress1 || authentication.user.companyAddress2
                 || authentication.user.companyAddress3}
               </strong>
@@ -407,17 +465,17 @@ class Index extends Component {
             </div>}
 
             <div className="col-md-4 col-12 seller">
-              <p>{t("Лицензиар")}: <strong>{t("СОФТ-МЭЙК. УНП 191644633")}</strong></p>
-              <p>{t("Адрес")}: <strong>{t("220034, Беларусь, Минск, Марьевская 7а-1-6")}</strong></p>
-              <p>{t("Телефон")}: <strong>+375 44 5655557</strong></p>
+              <p>{t('Лицензиар')}: <strong>{t('СОФТ-МЭЙК. УНП 191644633')}</strong></p>
+              <p>{t('Адрес')}: <strong>{t('220034, Беларусь, Минск, Марьевская 7а-1-6')}</strong></p>
+              <p>{t('Телефон')}: <strong>+375 44 5655557</strong></p>
             </div>
 
             <div className="col-md-4 col-12 payments-type">
-              <p>{t("Способ оплаты")}: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
+              <p>{t('Способ оплаты')}: <strong>Credit Card / WebMoney / Bank Transfer</strong></p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <p>
-                              {t("Заплатить до")}: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
+                {t('Заплатить до')}: <strong>{moment(chosenInvoice.dueDateMillis).format('DD.MM.YYYY')}</strong>
               </p>}
-              <p>{t("Статус")}: <span
+              <p>{t('Статус')}: <span
                 className="status"
                 style={{ color: chosenInvoice.invoiceStatus === 'PAID' ? '#34C38F' : '#50A5F1' }}
               >
@@ -434,13 +492,13 @@ class Index extends Component {
 
           <div className="table">
             <div className="table-header row">
-              <div className="col-4 table-description"><p>{t("Описание")}:</p></div>
+              <div className="col-4 table-description"><p>{t('Описание')}:</p></div>
               <div className="col-4 table-count"><p
-                className="default">{t("Количество")}:</p>
-              <p
-                className="mob">{t("Количество")} {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
+                className="default">{t('Количество')}:</p>
+                <p
+                  className="mob">{t('Количество')} {chosenPacket.packetType !== 'SMS_PACKET' ? 'мес.' : ''}</p>
               </div>
-                <div className="col-4 table-price"><p>{t("Стоимость")}:</p></div>
+              <div className="col-4 table-price"><p>{t('Стоимость')}:</p></div>
             </div>
             {chosenInvoice && chosenInvoice.invoicePackets && chosenInvoice.invoicePackets.map((packet, i) => {
               const name = packets && packets.find((item) => item.packetId === packet.packetId);
@@ -467,7 +525,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>{t("Общая сумма")}:</p>
+                  <p>{t('Общая сумма')}:</p>
                 </div>
                 <div>
                   <p className="bold-text">{chosenInvoice.totalSum} {chosenInvoice.currency}</p>
@@ -477,7 +535,7 @@ class Index extends Component {
             <div className="col-12 col-md-4 result-price-container">
               <div className="result-price">
                 <div>
-                  <p>{t("Без НДС")}</p>
+                  <p>{t('Без НДС')}</p>
                 </div>
                 <div>
                   <p className="bold-text">0.00 {chosenInvoice.currency}</p>
@@ -486,18 +544,18 @@ class Index extends Component {
             </div>
             <div className="col-12 col-md-4 payment-button-container">
               <p className="download"
-                onClick={() => this.downloadInPdf(pdfMarkup)}>{t("Скачать в PDF")}</p>
+                 onClick={() => this.downloadInPdf(pdfMarkup)}>{t('Скачать в PDF')}</p>
               {chosenInvoice.invoiceStatus !== 'PAID' && <div className="row-status">
                 <button className="inv-date" style={{
                   backgroundColor: chosenInvoice.invoiceStatus === 'ISSUED' ? '#0a1232' : '#fff',
                   color: chosenInvoice.invoiceStatus === 'ISSUED' ? '#fff' : '#000',
                 }}
-                data-target=".make-payment-modal"
-                data-toggle="modal"
-                onClick={() => {
-                  this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId));
-                  this.repeatPayment(chosenInvoice.invoiceId);
-                }}>
+                        data-target=".make-payment-modal"
+                        data-toggle="modal"
+                        onClick={() => {
+                          this.props.dispatch(paymentsActions.makePayment(chosenInvoice.invoiceId));
+                          this.repeatPayment(chosenInvoice.invoiceId);
+                        }}>
                   {chosenInvoice.invoiceStatus === 'ISSUED' ? t('Оплатить') :
                     (chosenInvoice.invoiceStatus === 'PAID' ? t('Оплачено') :
                       (chosenInvoice.invoiceStatus === 'CANCELLED' ? t('Закрыто') : ''))
@@ -514,53 +572,56 @@ class Index extends Component {
     return (
       <React.Fragment>
         {isLoading &&
-                <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+        <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
         {!isLoading && <div className="h-100 retreats">
 
 
           <div className="tab-content">
             <div className={'tab-pane ' + (pathname === '/payments' ? 'active' : '')} id="payments">
 
-              <div className={'d-flex flex-column-reverse flex-md-row align-items-start'+
-                ' justify-content-between align-items-md-center mb-2'}
+              <div className={'d-flex flex-column-reverse flex-md-row align-items-start' +
+              ' justify-content-between align-items-md-center mb-2'}
               >
                 <div className="payments-license-block">
                   <a href={`${process.env.CONTEXT}public/_licenseDocument/license_agreement.pdf`} download>
-                    {t("Лицензионный договор")}
+                    {t('Лицензионный договор')}
                   </a>
                   <span data-toggle="modal" data-target=".accountant-modal-in">
-                      {t("Для бухгалтерии")}
+                      {t('Для бухгалтерии')}
                   </span>
                 </div>
 
                 {authentication.user &&
-                  <div className="current-packet-container">
-                    <div className="current-packet text-left text-md-right">{t("Текущий пакет")}: {currentPacket}</div>
-                    <div className="current-packet-timing text-left text-md-right">
-                      {activePacket
-                        ? t("Пакет действителен до") + ': ' +
-                          moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY')
-                        : ((moment(authentication.user.trialEndDateMillis).format('x')
-                          >= moment().format('x'))
-                          ? t("Пакет действителен до") + ': ' +
-                          moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
-                          : (authentication.user.forceActive ? t('Пробный период') + " " + t('продлён') : ''))
-                      }
-                    </div>
+                <div className="current-packet-container">
+                  <div className="current-packet text-left text-md-right">{t('Текущий пакет')}: {currentPacket}</div>
+                  <div className="current-packet-timing text-left text-md-right">
+                    {activePacket
+                      ? t('Пакет действителен до') + ': ' +
+                      moment(authentication.user.invoicePacket.endDateMillis).format('DD MMM YYYY')
+                      : ((moment(authentication.user.trialEndDateMillis).format('x')
+                        >= moment().format('x'))
+                        ? t('Пакет действителен до') + ': ' +
+                        moment(authentication.user.trialEndDateMillis).format('DD MMM YYYY')
+                        : (authentication.user.forceActive ? t('Пробный период') + ' ' + t('продлён') : ''))
+                    }
                   </div>
+                </div>
                 }
               </div>
 
               <div className="payments-inner d-flex flex-column flex-lg-row">
                 <div className="payments-list-block mb-2 mb-md-0">
-                  <p className="title-payments">{t("Пакеты системы")}</p>
+                  <p className="title-payments">{(companyTypeId === 2 || companyTypeId === 3)
+                    ? t('Количество рабочих мест')
+                    : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))
+                  }</p>
                   <div id="range-staff">
-                    <p className="subtitle-payments mb-3 d-md-none">
-                      {(companyTypeId === 2 || companyTypeId === 3)
-                        ? t('Количество рабочих мест')
-                        : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))
-                      }
-                    </p>
+                    {/*<p className="subtitle-payments mb-3 d-md-none">*/}
+                    {/*  {(companyTypeId === 2 || companyTypeId === 3)*/}
+                    {/*    ? t('Количество рабочих мест')*/}
+                    {/*    : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))*/}
+                    {/*  }*/}
+                    {/*</p>*/}
 
                     <ul className="range-labels">
                       {options.map((option, i) => (
@@ -607,151 +668,252 @@ class Index extends Component {
                     </div>
                   </div>
 
-                  <div className="radio-buttons">
-                    <p className="subtitle-payments d-none d-md-flex">
-                      {(companyTypeId === 2 || companyTypeId === 3)
-                        ? t('Количество рабочих мест')
-                        : (companyTypeId === 4 ? t("Количество врачей") : t('Количество сотрудников'))
-                      }
-                    </p>
+                  <div className="radio-buttons d-flex justify-content-center mb-0">
+                    {/*<p className="subtitle-payments d-none d-md-flex">*/}
+                    {/*  {(companyTypeId === 2 || companyTypeId === 3)*/}
+                    {/*    ? t('Количество рабочих мест')*/}
+                    {/*    : (companyTypeId === 4 ? t("Количество врачей") : t('Количество сотрудников'))*/}
+                    {/*  }*/}
+                    {/*</p>*/}
 
                     {(companyTypeId === 2) ? (
                       <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
                         <input type="radio" className="radio" id="radio2"
-                          name="staff-radio"
-                          checked={specialWorkersCount === 'to 30'}/>
-                        <label htmlFor="radio2">{t("Больше 5")}</label>
+                               name="staff-radio"
+                               checked={specialWorkersCount === 'to 30'}/>
+                        <label htmlFor="radio2">{t('Больше 5')}</label>
                       </div>
                     ) : (
                       <React.Fragment>
                         <div
                           onClick={() => ((staffCount) <= 20) && this.rateChangeSpecialWorkersCount('to 20')}>
                           <input type="radio" className="radio" id="radio"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'to 20'}/>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'to 20'}/>
                           <label className={(staffCount) <= 20 ? '' : 'disabledField'}
-                            htmlFor="radio">{t("До 20")}</label>
+                                 htmlFor="radio">{t('До 20')}</label>
                         </div>
                         <div
                           onClick={() => ((staffCount) <= 30) && this.rateChangeSpecialWorkersCount('to 30')}>
                           <input type="radio" className="radio" id="radio2"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'to 30'}/>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'to 30'}/>
                           <label className={(staffCount) <= 30 ? '' : 'disabledField'}
-                            htmlFor="radio2">{t("До 30")}</label>
+                                 htmlFor="radio2">{t('До 30')}</label>
                         </div>
                         <div onClick={() => this.rateChangeSpecialWorkersCount('from 30')}>
                           <input type="radio" className="radio" id="radio3"
-                            name="staff-radio"
-                            checked={specialWorkersCount === 'from 30'}/>
-                          <label htmlFor="radio3">{t("Больше 30")}</label>
+                                 name="staff-radio"
+                                 checked={specialWorkersCount === 'from 30'}/>
+                          <label htmlFor="radio3">{t('Больше 30')}</label>
                         </div>
                       </React.Fragment>)}
                   </div>
 
-                  <div id="range-month">
-                    <p className="subtitle-payments mb-3 d-md-none">{t("Срок действия лицензии")}</p>
+                  <hr style={{ maxWidth: 565 + 'px' }}/>
 
-                    <ul className="range-labels">
-                      <li className={period === '1' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '1',
-                          },
-                        })}>{t("3 месяца")}
-                      </li>
-                      <li className={period === '2' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '2',
-                          },
-                        })}>{t("6 месяцев")} <br/> ({t("+1 месяц бесплатно")})
-                      </li>
-                      <li className={period === '3' ? 'active selected' : ''}
-                        onClick={() => this.setState({
-                          rate: {
-                            ...this.state.rate,
-                            period: '3',
-                          },
-                        })}>{t("12 месяцев")} <br/> ({t("+3 бесплатно")})
-                      </li>
-                    </ul>
+                  <div className="row cards-container">
+                    <div className="col card">
+                      <div className="card-inner">
+                        <span className="label">{t('хит')}</span>
 
-                    <div className="range" style={{ position: 'relative' }}>
-                      <input type="range" min="1" max="3" value={period}
-                        onChange={(e) => this.rateChangePeriod(e)}/>
-                      <div className="rateLine" style={{ width: ((period - 1) * 50) + '%' }}/>
-                    </div>
+                        <img alt="24 месяца" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/24.svg`}/>
+                        <p className="unit">{t('Месяца')}</p>
+                        <p className="additional">(9 <span className="blue_text">{t('бесплатно')}</span>)</p>
 
-                  </div>
-                  <p className="subtitle-payments d-none d-md-flex">{t("Срок действия лицензии")}</p>
+                        <hr/>
 
-                </div>
-
-                <div className="payments-list-block2 mb-2 mb-md-0">
-                  <div className="payments-content">
-                    <p className="title-payments">{t("К оплате")}</p>
-                    <div>
-                      <p>{t("Срок действия лицензии")}: </p>
-                      <span style={{ textAlign: 'right' }}>
-                        {period === '1' ? t('3 месяца') : (period === '2') ? t('6 месяцев') : t('12 месяцев')}
-                      </span>
-                    </div>
-                    <div>
-                      <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>
-                      <span style={{ textAlign: 'right' }}>
-                        {finalPriceMonth} {countryCode ? (countryCode === 'BLR'
-                          ? t('руб')
-                          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
                         }
-                      </span>
-                    </div>
-
-                    {finalPriceMonthDiscount ? (
-                      <div>
-                        <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>
-                        <span style={{ color: '#F46A6A', textAlign: 'right' }}>
-                          {finalPriceMonthDiscount} {countryCode
-                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
-                              ? t('грн')
-                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                            : t('руб')
-                          }
-                        </span>
-                      </div>
-                    ) : ''}
-                    <div>
-                      <p className="total-price">{t("Итоговая стоимость")}:
-                        <span>
-                          {finalPrice} {countryCode
-                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
-                              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')
-                          }
-                        </span>
-                      </p>
-                    </div>
-
-                    <button className={'button ' + (workersCount === -1 ? 'disabledField' : '')}
-                      type="button"
-                      disabled={workersCount === -1}
-                      onClick={() => this.AddingInvoiceStaff()}>{t("Оплатить")}
-                    </button>
-
-                    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) &&
-                      <div>
-                        <p className="description">
-                          ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
                         </p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
                       </div>
-                    }
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff('4');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
+                    </div>
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="12 месяцев" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/12.svg`}/>
+                        <p className="unit">{t('Месяцев')}</p>
+                        <p className="additional">(3 <span className="blue_text">{t('бесплатно')}</span>)</p>
+
+                        <hr/>
+
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
+                      </div>
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff('3');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
+                    </div>
+
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="6 месяцев" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/6.svg`}/>
+                        <p className="unit">{t('Месяцев')}</p>
+                        <p className="additional">(1 <span className="blue_text">{t('бесплатно')}</span>)</p>
+
+                        <hr/>
+
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
+                      </div>
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff('2');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
+                    </div>
+
+                    <div className="col card">
+                      <div className="card-inner">
+                        <img alt="3 месяца" className="count-months"
+                             src={`${process.env.CONTEXT}public/img/svg_number/3.svg`}/>
+                        <p className="unit">{t('Месяца')}</p>
+                        <p className="additional"><br/></p>
+
+                        <hr/>
+
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>
+                        <p className="total"><span
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }</p>
+                      </div>
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff('1');
+                      }} className="card-button">{t('Оплатить пакет')} <img
+                        src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                        alt="Попробовать бесплатно"/></a>
+                    </div>
                   </div>
+                  {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                    <p className="description-currency">
+                      ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
+                    </p>
+                  </div>
+                  }
+
+
                 </div>
+
+                {/*<div className="payments-list-block2 mb-2 mb-md-0">*/}
+                {/*  <div className="payments-content">*/}
+                {/*    <p className="title-payments">{t("К оплате")}</p>*/}
+                {/*    <div>*/}
+                {/*      <p>{t("Срок действия лицензии")}: </p>*/}
+                {/*      <span style={{ textAlign: 'right' }}>*/}
+                {/*        {period === '1' ? t('3 месяца') : (period === '2') ? t('6 месяцев') : t('12 месяцев')}*/}
+                {/*      </span>*/}
+                {/*    </div>*/}
+                {/*    <div>*/}
+                {/*      <p>{t("Стоимость в месяц")}{finalPriceMonthDiscount ? ' ' + t("без скидки") + ' ' : ''}: </p>*/}
+                {/*      <span style={{ textAlign: 'right' }}>*/}
+                {/*        {finalPriceMonth} {countryCode ? (countryCode === 'BLR'*/}
+                {/*          ? t('руб')*/}
+                {/*          : (countryCode === 'UKR' ? t('грн') : (countryCode === 'RUS' ? 'руб' : 'руб'))) : t('руб')*/}
+                {/*        }*/}
+                {/*      </span>*/}
+                {/*    </div>*/}
+
+                {/*    {finalPriceMonthDiscount ? (*/}
+                {/*      <div>*/}
+                {/*        <p style={{ color: '#F46A6A' }}>{t("Стоимость в месяц со скидкой")}: </p>*/}
+                {/*        <span style={{ color: '#F46A6A', textAlign: 'right' }}>*/}
+                {/*          {finalPriceMonthDiscount} {countryCode*/}
+                {/*            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'*/}
+                {/*              ? t('грн')*/}
+                {/*              : (countryCode === 'RUS' ? t('руб') : t('руб'))))*/}
+                {/*            : t('руб')*/}
+                {/*          }*/}
+                {/*        </span>*/}
+                {/*      </div>*/}
+                {/*    ) : ''}*/}
+                {/*    <div>*/}
+                {/*      <p className="total-price">{t("Итоговая стоимость")}:*/}
+                {/*        <span>*/}
+                {/*          {finalPrice} {countryCode*/}
+                {/*            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'*/}
+                {/*              ? t('грн') : (countryCode === 'RUS' ? t('руб') : t('руб')))) : t('руб')*/}
+                {/*          }*/}
+                {/*        </span>*/}
+                {/*      </p>*/}
+                {/*    </div>*/}
+
+                {/*    <button className={'button ' + (workersCount === -1 ? 'disabledField' : '')}*/}
+                {/*      type="button"*/}
+                {/*      disabled={workersCount === -1}*/}
+                {/*      onClick={() => this.AddingInvoiceStaff()}>{t("Оплатить")}*/}
+                {/*    </button>*/}
+
+                {/*    {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) &&*/}
+                {/*      <div>*/}
+                {/*        <p className="description">*/}
+                {/*          ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})*/}
+                {/*        </p>*/}
+                {/*      </div>*/}
+                {/*    }*/}
+                {/*  </div>*/}
+                {/*</div>*/}
 
                 <div className="payments-list-block3 mb-1 mb-md-0">
                   <div className="payments-content buttons-change">
-                    <p className="title-payments">{t("SMS ПАКЕТЫ")}</p>
+                    <p className="title-payments">{t('SMS ПАКЕТЫ')}</p>
 
                     {packets && packets.filter((packet) => packet.packetType === 'SMS_PACKET')
                       .sort((a, b) => a.smsAmount - b.smsAmount)
@@ -766,7 +928,7 @@ class Index extends Component {
                                 className=""
                                 name="sms-price-radio"
                               />
-                              <span className="check-box-circle" />
+                              <span className="check-box-circle"/>
                               <span className="packets-container">
                                 <span className="packet-name">{packet.packetName}: <span className="sms-amount">
                                   {packet.smsAmount} SMS</span>
@@ -781,45 +943,45 @@ class Index extends Component {
 
                     {authentication && authentication.user && authentication.user.countryCode !== 'BLR' && (
                       <div style={{ color: '#d41316', fontSize: '16px', fontWeight: 'bold' }}>
-                        {t("Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.")}
+                        {t('Пожалуйста, свяжитесь с администрацией сайта перед покупкой смс пакетов, нажав на знак вопроса в правом верхнем углу.')}
                       </div>)
                     }
                   </div>
 
                   <div className="payments-content total-price">
                     {chosenAct.packetName &&
-                      <React.Fragment>
-                        <div>
-                          <p className="total-price">{t("Итоговая стоимость")}: <span>
+                    <React.Fragment>
+                      <div>
+                        <p className="total-price">{t('Итоговая стоимость')}: <span>
                             {chosenAct.price ? chosenAct.price : 0} {chosenAct.currency}
                           </span>
-                          </p>
-                        </div>
-                        <button className="button" type="button"
-                          onClick={() => this.AddingInvoice()}>{t("Оплатить")}
-                        </button>
-                        {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
-                          <p className="description">
-                            ({t("Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях")})
-                          </p>
-                        </div>
-                        }
-                      </React.Fragment>
+                        </p>
+                      </div>
+                      <button className="button" type="button"
+                              onClick={() => this.AddingInvoice()}>{t('Оплатить')}
+                      </button>
+                      {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                        <p className="description">
+                          ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
+                        </p>
+                      </div>
+                      }
+                    </React.Fragment>
                     }
                   </div>
                 </div>
               </div>
 
               <div id="acts">
-                <h2 className="acts-title">{t("Счета")}</h2>
+                <h2 className="acts-title">{t('Счета')}</h2>
                 <div className="invoice header-invoice">
                   <div className="inv-number">
-                    <p className="d-none d-md-inline">{t("Номер счета")}</p>
+                    <p className="d-none d-md-inline">{t('Номер счета')}</p>
                     <p className="d-md-none"># счета</p>
                   </div>
-                  <div className="inv-date"><p>{t("Дата")}</p></div>
-                  <div className="inv-date"><p>{t("Сумма")}</p></div>
-                  <div className="inv-status"><p>{t("Статус")}</p></div>
+                  <div className="inv-date"><p>{t('Дата')}</p></div>
+                  <div className="inv-date"><p>{t('Сумма')}</p></div>
+                  <div className="inv-status"><p>{t('Статус')}</p></div>
                 </div>
 
                 {list.length ? list.sort((a, b) => {
@@ -856,31 +1018,31 @@ class Index extends Component {
                     </div>
                   );
                 }) : (
-                  <div style={{ textAlign: 'center' }}>{t("Нет счетов для отображения")}</div>
+                  <div style={{ textAlign: 'center' }}>{t('Нет счетов для отображения')}</div>
                 )}
 
 
                 {invoiceSelected &&
-                  <div className="chosen-invoice-wrapper">
-                    <div className="chosen-invoice">
-                      <div className="modal-header">
-                        <h4 className="modal-title">
-                          {t("Счет")} {chosenInvoice.customId}; {
-                            moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
-                          }
-                        </h4>
-                        <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
-                          className="close" style={{ height: '50px' }}
-                          onClick={() => this.closeModalActs()}
-                        />
-                      </div>
-                      <div className="act-body-wrapper">
-                        <div className="acts-body">
-                          {pdfMarkup}
-                        </div>
+                <div className="chosen-invoice-wrapper">
+                  <div className="chosen-invoice">
+                    <div className="modal-header">
+                      <h4 className="modal-title">
+                        {t('Счет')} {chosenInvoice.customId}; {
+                        moment(chosenInvoice.createdDateMillis).format('DD.MM.YYYY')
+                      }
+                      </h4>
+                      <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt=""
+                           className="close" style={{ height: '50px' }}
+                           onClick={() => this.closeModalActs()}
+                      />
+                    </div>
+                    <div className="act-body-wrapper">
+                      <div className="acts-body">
+                        {pdfMarkup}
                       </div>
                     </div>
                   </div>
+                </div>
                 }
               </div>
             </div>
@@ -888,7 +1050,7 @@ class Index extends Component {
         </div>
         }
 
-        <ForAccountant />
+        <ForAccountant/>
         <MakePayment/>
       </React.Fragment>
     );
@@ -930,4 +1092,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default (withRouter(connect(mapStateToProps, null)(withTranslation("common")(Index))));
+export default (withRouter(connect(mapStateToProps, null)(withTranslation('common')(Index))));

@@ -104,6 +104,11 @@ class AddService extends React.Component {
         },
       });
     }
+
+    if (newProps.services.status === 200) {
+      setTimeout(() => this.closeModal(), 1000);
+    }
+
   }
 
   getUnitName(unit) {
@@ -239,14 +244,6 @@ class AddService extends React.Component {
                         </div>
                       </div>
                     </div>
-                    {/* <p>Специальная цена</p>*/}
-                    {/* <input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"*/}
-                    {/*       value={service.specialPrice===0?'':service.specialPrice}*/}
-
-                    {/* />*/}
-
-
-                    {/* Кнопка на материалы*/}
 
                     <hr/>
 
@@ -378,7 +375,7 @@ class AddService extends React.Component {
                       <div className="header-container">
                         <div className="row">
                           <div className="col-sm-12"><p
-                            className="title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t("Врачи") : t('Сотрудники'))}, {t('оказывающие услугу')}</p>
+                            className="title">{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'))}, {t('оказывающие услугу')}</p>
                           </div>
                         </div>
                         {allStaffs && allStaffs.length > 0 &&
@@ -481,7 +478,8 @@ class AddService extends React.Component {
                           } else {
                             this.addService();
                           }
-                          this.closeModal();
+
+
                         }
                       }}>{editServiceItem ? t('Сохранить') : t('Сохранить')}</button>
                   </div>
