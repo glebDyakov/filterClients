@@ -1,5 +1,6 @@
 import { materialService } from '../_services/material.service';
 import { materialConstants } from '../_constants/material.constants';
+import moment from 'moment';
 
 export const materialActions = {
   toggleCategory,
@@ -36,7 +37,7 @@ function toggleCategory(params, edit) {
       .then(
         (category) => {
           dispatch(success(category));
-          setTimeout(()=>dispatch(successTime(category)), 500);
+          setTimeout(() => dispatch(successTime(category)), 500);
           dispatch(materialActions.getCategories());
         },
       );
@@ -45,9 +46,11 @@ function toggleCategory(params, edit) {
   function request(category) {
     return { type: materialConstants.TOGGLE_CATEGORY, category };
   }
+
   function success(category) {
     return { type: materialConstants.TOGGLE_CATEGORY_SUCCESS, category };
   }
+
   function successTime(category) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, category };
   }
@@ -66,6 +69,7 @@ function getCategories() {
   function request(categories) {
     return { type: materialConstants.GET_CATEGORIES, categories };
   }
+
   function success(categories) {
     return { type: materialConstants.GET_CATEGORIES_SUCCESS, categories };
   }
@@ -97,7 +101,7 @@ function toggleBrand(params, edit) {
       .then(
         (brand) => {
           dispatch(success(brand));
-          setTimeout(()=>dispatch(successTime(brand)), 500);
+          setTimeout(() => dispatch(successTime(brand)), 500);
           dispatch(materialActions.getBrands());
         },
       );
@@ -106,9 +110,11 @@ function toggleBrand(params, edit) {
   function request(brand) {
     return { type: materialConstants.TOGGLE_BRAND, brand };
   }
+
   function success(brand) {
     return { type: materialConstants.TOGGLE_BRAND_SUCCESS, brand };
   }
+
   function successTime(brand) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, brand };
   }
@@ -127,6 +133,7 @@ function getBrands() {
   function request(brands) {
     return { type: materialConstants.GET_BRANDS, brands };
   }
+
   function success(brands) {
     return { type: materialConstants.GET_BRANDS_SUCCESS, brands };
   }
@@ -159,7 +166,7 @@ function toggleSupplier(params, edit) {
       .then(
         (supplier) => {
           dispatch(success(supplier));
-          setTimeout(()=>dispatch(successTime(supplier)), 500);
+          setTimeout(() => dispatch(successTime(supplier)), 500);
           dispatch(materialActions.getSuppliers());
         },
       );
@@ -168,9 +175,11 @@ function toggleSupplier(params, edit) {
   function request(supplier) {
     return { type: materialConstants.TOGGLE_SUPPLIER, supplier };
   }
+
   function success(supplier) {
     return { type: materialConstants.TOGGLE_SUPPLIER_SUCCESS, supplier };
   }
+
   function successTime(supplier) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, supplier };
   }
@@ -189,6 +198,7 @@ function getSuppliers() {
   function request(suppliers) {
     return { type: materialConstants.GET_SUPPLIERS, suppliers };
   }
+
   function success(suppliers) {
     return { type: materialConstants.GET_SUPPLIERS_SUCCESS, suppliers };
   }
@@ -220,7 +230,7 @@ function toggleProduct(params, edit) {
       .then(
         (product) => {
           dispatch(success(product));
-          setTimeout(()=>dispatch(successTime(product)), 500);
+          setTimeout(() => dispatch(successTime(product)), 500);
           dispatch(materialActions.getProducts());
         },
       );
@@ -229,9 +239,11 @@ function toggleProduct(params, edit) {
   function request(product) {
     return { type: materialConstants.TOGGLE_PRODUCT, product };
   }
+
   function success(product) {
     return { type: materialConstants.TOGGLE_PRODUCT_SUCCESS, product };
   }
+
   function successTime(product) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, product };
   }
@@ -249,6 +261,7 @@ function getProducts(pageNum = 1, searchValue) {
   function request(products) {
     return { type: materialConstants.GET_PRODUCT, products };
   }
+
   function success(products) {
     return { type: materialConstants.GET_PRODUCT_SUCCESS, products };
   }
@@ -280,7 +293,7 @@ function toggleUnit(params, edit) {
       .then(
         (unit) => {
           dispatch(success(unit));
-          setTimeout(()=>dispatch(successTime(unit)), 500);
+          setTimeout(() => dispatch(successTime(unit)), 500);
           dispatch(materialActions.getUnits());
         },
       );
@@ -289,9 +302,11 @@ function toggleUnit(params, edit) {
   function request(unit) {
     return { type: materialConstants.TOGGLE_UNIT, unit };
   }
+
   function success(unit) {
     return { type: materialConstants.TOGGLE_UNIT_SUCCESS, unit };
   }
+
   function successTime(unit) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, unit };
   }
@@ -309,6 +324,7 @@ function getUnits() {
   function request(units) {
     return { type: materialConstants.GET_UNITS, units };
   }
+
   function success(units) {
     return { type: materialConstants.GET_UNITS_SUCCESS, units };
   }
@@ -340,7 +356,7 @@ function expenditureProduct(params, edit, productPageNum = 1) {
       .then(
         (exProd) => {
           dispatch(success(exProd));
-          setTimeout(()=>dispatch(successTime(exProd)), 500);
+          setTimeout(() => dispatch(successTime(exProd)), 500);
           dispatch(materialActions.getExpenditureProducts());
           dispatch(materialActions.getProducts(productPageNum));
           dispatch(materialActions.getMovements(productPageNum));
@@ -351,9 +367,11 @@ function expenditureProduct(params, edit, productPageNum = 1) {
   function request(exProd) {
     return { type: materialConstants.EXPEND_PRODUCT, exProd };
   }
+
   function success(exProd) {
     return { type: materialConstants.EXPEND_PRODUCT_SUCCESS, exProd };
   }
+
   function successTime(exProd) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, exProd };
   }
@@ -366,7 +384,7 @@ function toggleStoreHouse(params, edit) {
       .then(
         (storeHouse) => {
           dispatch(success(storeHouse));
-          setTimeout(()=>dispatch(successTime(storeHouse)), 500);
+          setTimeout(() => dispatch(successTime(storeHouse)), 500);
           dispatch(materialActions.getStoreHouses());
         },
       );
@@ -375,9 +393,11 @@ function toggleStoreHouse(params, edit) {
   function request(storeHouse) {
     return { type: materialConstants.TOGGLE_STORE_HOUSE, storeHouse };
   }
+
   function success(storeHouse) {
     return { type: materialConstants.TOGGLE_STORE_HOUSE_SUCCESS, storeHouse };
   }
+
   function successTime(storeHouse) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, storeHouse };
   }
@@ -400,6 +420,7 @@ function getStoreHouses(companyName) {
   function request(storeHouses) {
     return { type: materialConstants.GET_STORE_HOUSES, storeHouses };
   }
+
   function success(storeHouses) {
     return { type: materialConstants.GET_STORE_HOUSES_SUCCESS, storeHouses };
   }
@@ -437,6 +458,7 @@ function getStoreHouseProducts() {
   function request(storeHouseProducts) {
     return { type: materialConstants.GET_STORE_HOUSE_PRODUCTS, storeHouseProducts };
   }
+
   function success(storeHouseProducts) {
     return { type: materialConstants.GET_STORE_HOUSES_PRODUCTS_SUCCESS, storeHouseProducts };
   }
@@ -454,15 +476,16 @@ function getExpenditureProducts() {
   function request(expenditureProducts) {
     return { type: materialConstants.GET_EXPENDITURE_PRODUCTS, expenditureProducts };
   }
+
   function success(expenditureProducts) {
     return { type: materialConstants.GET_EXPENDITURE_PRODUCTS_SUCCESS, expenditureProducts };
   }
 }
 
-function getMovements(pageNum = 1, searchValue="", pageSize = 11) {
+function getMovements(pageNum = 1, searchValue = '', pageSize = 11, dateFrom = moment().startOf('day').subtract(1, 'year').format('x'), dateTo = moment().endOf('day').format('x')) {
   return (dispatch) => {
     dispatch(request());
-    materialService.getMovements(pageNum, searchValue, pageSize)
+    materialService.getMovements(pageNum, searchValue, pageSize, dateFrom, dateTo)
       .then(
         (movements) => dispatch(success(movements)),
       );
@@ -471,6 +494,7 @@ function getMovements(pageNum = 1, searchValue="", pageSize = 11) {
   function request(movements) {
     return { type: materialConstants.GET_MOVEMENTS, movements };
   }
+
   function success(movements) {
     return { type: materialConstants.GET_MOVEMENTS_SUCCESS, movements };
   }
@@ -484,7 +508,7 @@ function storehouseProduct(params, edit, productPage = 1) {
       .then(
         (product) => {
           dispatch(success(product));
-          setTimeout(()=>dispatch(successTime(product)), 500);
+          setTimeout(() => dispatch(successTime(product)), 500);
           dispatch(materialActions.getStoreHouseProducts());
           dispatch(materialActions.getMovements(productPage));
           dispatch(materialActions.getProducts(productPage));
@@ -495,9 +519,11 @@ function storehouseProduct(params, edit, productPage = 1) {
   function request(product) {
     return { type: materialConstants.STORE_HOUSE_PRODUCT, product };
   }
+
   function success(product) {
     return { type: materialConstants.STORE_HOUSE_PRODUCT_SUCCESS, product };
   }
+
   function successTime(product) {
     return { type: materialConstants.MATERIAL_SUCCESS_TIME, product };
   }

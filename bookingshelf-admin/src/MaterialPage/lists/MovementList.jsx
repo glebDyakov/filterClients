@@ -22,7 +22,7 @@ class MovementList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (JSON.stringify(this.props.staffs) !== JSON.stringify(nextProps.staffs) && nextProps.movement.staffId) {
-      this.setState({staff: nextProps.staffs.find((staff) => staff.staffId === nextProps.movement.staffId) || undefined})
+      this.setState({ staff: nextProps.staffs.find((staff) => staff.staffId === nextProps.movement.staffId) || undefined });
     }
   }
 
@@ -41,8 +41,8 @@ class MovementList extends Component {
 
   componentDidMount() {
     this.setState({
-      staff: this.getStaff()
-    })
+      staff: this.getStaff(),
+    });
   }
 
   getUnitName(unit) {
@@ -67,21 +67,26 @@ class MovementList extends Component {
 
   render() {
     const { movement, deleteMovement, toggleStorehouseProduct, toggleExProd, activeUnit, t } = this.props;
-    const {staff} = this.state;
+    const { staff } = this.state;
     return (
       <div className="tab-content-list mb-2">
         <div className="plus-or-minus-field">
-          <div className={movement.movementType && movement.movementType === "ARRIVAL" ? 'plus' : 'minus'}/>
+          <div className={movement.movementType && movement.movementType === 'ARRIVAL' ? 'plus' : 'minus'}/>
         </div>
         <div className="staff-field">
           <div className="staff-container">
-            <img className="staff-image" src={staff && movement.staffId && staff.imageBase64 && staff.imageBase64 !== '' ? ('data:image/png;base64,' + staff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`} alt="staff image"/>
-            <p className="staff-credit">{staff && movement.staffId && staff.firstName && (staff.firstName.length >= 9 ? String(staff.firstName).slice(0, 8) + ".." : staff.firstName)} {staff && movement.staffId && staff.lastName ? (staff.lastName.length >= 9 ? String(staff.lastName).slice(0, 8) + ".." : staff.lastName) : ''}</p>
+            <img className="staff-image"
+                 src={staff && movement.staffId && staff.imageBase64 && staff.imageBase64 !== '' ? ('data:image/png;base64,' + staff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
+                 alt="staff image"/>
+            <p
+              className="staff-credit">{staff && movement.staffId && staff.firstName && (staff.firstName.length >= 9 ? String(staff.firstName).slice(0, 8) + '..' : staff.firstName)} {staff && movement.staffId && staff.lastName ? (staff.lastName.length >= 9 ? String(staff.lastName).slice(0, 8) + '..' : staff.lastName) : ''}</p>
           </div>
         </div>
         <div>
           <p><span
-            className="mob-title">{t('Код товара')}: </span>{movement && movement.productCode}
+            className="mob-title">{t('Код товара')} / <span className="red-text">{t("Партия")}</span>: </span>{movement && movement.productCode} /
+            <p className="red-text code_part">{movement && movement.storehouseProductExpenditureId ? movement.storehouseProductExpenditureId : movement.storehouseProductId}</p>
+
           </p>
         </div>
         <div>
@@ -95,15 +100,15 @@ class MovementList extends Component {
         {/*        <p style={{ width: "100%" }}><span className="mob-title">Склад: </span>
         {activeStorehouse && activeStorehouse.storehouseName}</p>*/}
         {/* </div>*/}
-        <div className={(movement && movement.targetTranslated) ? '' : 'movement-target-empty'}>
+        <div>
           <p><span
-            className="mob-title">{t('Причина списания')}: </span>{movement && movement.targetTranslated}
+            className="mob-title">{t('Операция')}: </span>{movement && movement.targetTranslated ? movement.targetTranslated : t("Поступление")}
           </p>
         </div>
 
         <div>
           <p><span
-            className="mob-title">{t('Количество списания / поступления')}: </span>{movement && movement.amount && (movement.amount + (activeUnit ? " " + this.getUnitName(activeUnit.unitName) : ''))}
+            className="mob-title">{t('Количество списания / поступления')}: </span>{movement && movement.amount && (movement.amount + ' ' + (t('шт')) + ' (' + (movement && movement.nominalAmount + (activeUnit ? ' ' + this.getUnitName(activeUnit.unitName) : '') + ')'))}
           </p>
         </div>
 
@@ -126,9 +131,7 @@ class MovementList extends Component {
         <div>
           <p>
             <span className="mob-title">{t('Дата')}: </span>
-            {movement && moment(movement.deliveryDateMillis
-              ? movement.deliveryDateMillis
-              : movement.expenditureDateMillis).format('DD.MM HH:mm')
+            {movement && moment(movement.date).format('DD.MM HH:mm')
             }
           </p>
         </div>
@@ -142,8 +145,8 @@ class MovementList extends Component {
             className="mob-title">{t('Остаток')} /<span className="red-text"> {t('Резерв')}</span>
                         <Hint hintMessage={t('Товары, зарезервированные на созданные визиты.')}
                         />: </span>{movement && movement.currentAmount} {t('шт')} ({movement && movement.currentNominalAmount} {activeUnit && this.getUnitName(activeUnit.unitName)}) {movement.reserve > 0 ?
-            <span
-              className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</span> : '/ -'}
+            <p
+              className="red-text">/ {Math.round(movement.reserve)} {activeUnit && this.getUnitName(activeUnit.unitName)}</p> : '/ -'}
           </p>
         </div>
         {/*<div className="delete clientEditWrapper">*/}

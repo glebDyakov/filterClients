@@ -5,6 +5,78 @@
   overflow: auto;
   height: 100%;
 
+  .analytics_list.returning-list {
+    overflow: hidden;
+
+    .list-group-statistics {
+      .header-container {
+      }
+      strong.group-title {
+        width: auto !important;
+      }
+
+      .select-container {
+        position: relative;
+
+        .custom-select {
+          height: auto;
+        }
+
+        &::after {
+          content: url("../img/icons/arrow.svg");
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 100%;
+        }
+
+      }
+
+
+      .staffs {
+        margin-top: 15px;
+
+        .staff-item {
+          margin-right: 30px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          align-content: stretch;
+          flex-direction: column;
+
+          .credit-container {
+            text-align: center;
+
+            img {
+              width: 32px;
+              height: 32px;
+            }
+
+            .staff-name {
+              text-align: center;
+              font-style: normal;
+              font-weight: normal;
+              font-size: 13px;
+              line-height: 18px;
+              color: #495057;
+            }
+          }
+
+          .percent {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 13px;
+            line-height: 18px;
+            color: #495057;
+
+          }
+
+
+        }
+      }
+    }
+  }
+
 
   .select-date {
     min-width: 75%;
@@ -357,7 +429,7 @@
           flex-direction: column;
           margin-bottom: 5px;
 
-          @media screen and (max-width: $mob-width){
+          @media screen and (max-width: $mob-width) {
             font-size: 40px;
             line-height: 52px;
           };
@@ -416,6 +488,7 @@
 
         position: relative;
         width: 180px;
+
         select {
           width: 100%;
         }
@@ -476,13 +549,13 @@
       .sum-container {
         display: flex;
 
-          flex-direction: column;
+        flex-direction: column;
 
-          .sum-payments,
-          .cash-payments,
-          .card-payments {
-            margin-left: 20px !important;
-          }
+        .sum-payments,
+        .cash-payments,
+        .card-payments {
+          margin-left: 20px !important;
+        }
 
         .sum-payments,
         .cash-payments,
@@ -583,7 +656,6 @@
             width: fit-content;
             margin: 0;
             padding: 0 20px 0 5px;
-
 
 
             &:focus {

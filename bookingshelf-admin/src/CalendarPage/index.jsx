@@ -116,7 +116,7 @@ class Index extends PureComponent {
       scrollableAppointmentAction: true,
       appointmentMarkerActionCalled: false,
       scrolledToRight: false,
-      language: 'ru',
+      language: 'ru'
     };
 
     this.newAppointment = this.newAppointment.bind(this);
@@ -193,7 +193,6 @@ class Index extends PureComponent {
       this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true);
     }
 
-    this.props.dispatch(staffActions.get());
     this.props.dispatch(staffActions.getClosedDates());
     this.refreshTable(startTime, endTime);
 
@@ -209,9 +208,13 @@ class Index extends PureComponent {
     }, 500);
   }
 
+
   updateAnalytic(date, staffId, isStaff = false) {
     if (isStaff) {
-      this.props.dispatch(calendarActions.getStaffCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x'), staffId));
+      console.log(date)
+      if (!this.props.analytic[moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")] || staffId !== this.props.analyticStaffId) {
+        this.props.dispatch(calendarActions.getStaffCalendarLoad(moment(date, "DD-MM-YYYY").startOf('month').format('x'), moment(date, "DD-MM-YYYY").endOf('month').format('x'), staffId));
+      }
     } else {
       this.props.dispatch(calendarActions.getCalendarLoad(moment().startOf('month').format('x'), moment().add(1, 'month').format('x')));
     }
@@ -311,7 +314,6 @@ class Index extends PureComponent {
         language: newProps.i18n.language,
       });
     }
-
 
     if (this.props.i18n.language !== newProps.i18n.language) {
       this.setState({
@@ -503,14 +505,12 @@ class Index extends PureComponent {
           redTitle = authentication.menu[0][titleKey].name;
         }
         if (redTitle === 'Сотрудники') {
-          redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : 'Сотрудники';
+          redTitle = (companyTypeId === 2 || companyTypeId === 3) ? 'Рабочие места' : (companyTypeId === 4 ? 'Врачи' : 'Сотрудники');
         }
       }
     }
     const isLoading = isLoadingCalendar || this.props.staff.isLoading || isLoadingAppointments ||
       isLoadingReservedTime || this.props.staff.isLoadingTimetable || this.props.staff.isLoadingAvailableTime;
-
-    console.log('PROPS: ', this.props);
 
     return (
       <React.Fragment>
@@ -580,7 +580,7 @@ class Index extends PureComponent {
                   type={type}
                 />
 
-                {company.settings && (
+                {company.settings && company.settings.booktimeStep && (
                   <TabScrollContent
                     company={company}
                     checkForCostaffs={this.checkForCostaffs}
@@ -1029,6 +1029,7 @@ function mapStateToProps(store) {
       isLoadingAppointments,
       isLoadingReservedTime,
       analytic,
+      analyticStaffId,
     },
     cell: {
       selectedDays,
@@ -1056,6 +1057,7 @@ function mapStateToProps(store) {
     isLoadingAppointments,
     isLoadingReservedTime,
     analytic,
+    analyticStaffId
   };
 }
 

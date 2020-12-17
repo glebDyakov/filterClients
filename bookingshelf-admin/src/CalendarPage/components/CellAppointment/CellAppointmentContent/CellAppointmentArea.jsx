@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { appointmentActions } from '../../../../_actions';
-import {withTranslation} from "react-i18next";
+import { withTranslation } from 'react-i18next';
 import { access } from '../../../../_helpers/access';
 
 class CellAppointmentArea extends React.PureComponent {
@@ -37,10 +37,20 @@ class CellAppointmentArea extends React.PureComponent {
 
     const dragVert = appointment.appointmentId &&
       ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && isWeekBefore && (
-      <p onMouseDown={this.handleMouseDown} className="drag-vert-wrapper">
-        <span className="drag-vert"/>
-      </p>
-    );
+        <p onMouseDown={this.handleMouseDown} className="drag-vert-wrapper">
+          <span className="drag-vert"/>
+        </p>
+      );
+    const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
+
+
+    const countAppointmentsText = () => {
+      if (clientAppointmentsCount >= 2 && clientAppointmentsCount <= 4) {
+        return 'визита сегодня';
+      } else {
+        return 'визитов сегодня';
+      }
+    };
 
     return (
       <React.Fragment>
@@ -59,21 +69,28 @@ class CellAppointmentArea extends React.PureComponent {
           <span className="notes-container-message">
             <span className="client-name w-100 d-flex justify-content-between">
               <span className="client-name">{appointment.clientFirstName
-                  ? (`${t('Клиент')}: ` + appointment.clientFirstName +
-                  (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')) + '\n'
-                  : t('Без клиента')}
-              </span>
-              {clientAppointmentsCount > 1 && <img title={`${t('У клиента')} ${clientAppointmentsCount} ${t('визитов сегодня')}`} className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`} alt=""/>}
+                ? (`${companyTypeId === 4 ? t("Пациент") : t('Клиент')}: ` + appointment.clientFirstName +
+                  (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
+                : t('Без клиента')}
+                {clientAppointmentsCount > 1 &&
+                <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
+                     className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
+                     alt=""/>}
 
-              <span style={{width: "43%"}} className="text-right client-name">{totalAmount} {appointment.currency}</span>
+              </span>
+
+              <span style={{ width: '43%' }}
+                    className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
-            {appointment.clientId && appointment.clientPhone && <span className="client-phone">{appointment.clientPhone}</span>}
+            {appointment.clientId && appointment.clientPhone &&
+            <span className="client-phone">{appointment.clientPhone}</span>}
 
             <ul>
               <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
             </ul>
             {extraServiceText}
-            {appointment.description.length > 0 && <p className="service client-name">{t("Заметка")}: {appointment.description}</p>}
+            {appointment.description.length > 0 &&
+            <p className="service client-name">{t('Заметка')}: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
             ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description
             ? `\nЗаметка: ${appointment.description}` : ''}`;*/}
@@ -89,6 +106,7 @@ class CellAppointmentArea extends React.PureComponent {
 function mapStateToProps(state) {
   const {
     services,
+    company,
     appointment: {
       movingVisit,
     },
@@ -97,6 +115,7 @@ function mapStateToProps(state) {
   return {
     services,
     movingVisit,
+    company
   };
 }
 

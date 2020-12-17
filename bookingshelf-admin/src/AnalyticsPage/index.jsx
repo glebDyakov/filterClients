@@ -10,10 +10,10 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { analiticsActions } from '../_actions';
+import { analiticsActions, staffActions } from '../_actions';
 import Hint from '../_components/Hint';
-import {compose} from "redux";
-import {withTranslation} from "react-i18next";
+import { compose } from 'redux';
+import { withTranslation } from 'react-i18next';
 
 
 function getDayRange(date) {
@@ -51,9 +51,13 @@ class Index extends Component {
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.queryInitData = this.queryInitData.bind(this);
+    this.chooseReturningPeriod = this.chooseReturningPeriod.bind(this);
 
 
-    let dateFrom; let dateTo; let dateFr; let dateNow;
+    let dateFrom;
+    let dateTo;
+    let dateFr;
+    let dateNow;
 
     dateFrom = moment().utc().toDate();
     dateTo = [getDayRange(moment()).from];
@@ -74,7 +78,7 @@ class Index extends Component {
       lastName: this.props.t('рабочие места'),
     } : {
       firstName: this.props.t('Работающие'),
-      lastName: this.props.t('сотрудники'),
+      lastName: companyTypeId === 4 ? this.props.t('врачи') : this.props.t('сотрудники')
     };
 
     this.state = {
@@ -94,6 +98,7 @@ class Index extends Component {
       currentSelectedStaff: staffOptions,
       currentSelectedStaffChart: staffOptions,
       initChartData: false,
+      chooseReturningPeriod: 3,
       chosenPeriod: 1,
       dateArray: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       recordsArray: [],
@@ -127,6 +132,7 @@ class Index extends Component {
     dateNowEndMill = parseInt(dateNowEndMill) - (3600 * 3 * 1000);
     this.props.dispatch(analiticsActions.getRecordsAndClientsCount(dateNowMill, dateNowEndMill));
     this.props.dispatch(analiticsActions.getStaffsAnalyticForAll(dateNowMill, dateNowEndMill));
+    this.props.dispatch(analiticsActions.getStaffsReturning(dateNow.subtract(this.state.chooseReturningPeriod, 'month').format('x'), dateNowEndMill));
     this.getChartData();
   }
 
@@ -138,6 +144,22 @@ class Index extends Component {
     this.props.dispatch(analiticsActions.getRecordsAndClientsChartCount(dateWeekBefore, dateNow));
     this.props.dispatch(analiticsActions.getStaffsAnalyticForAllChart(dateWeekBefore, dateNow));
     this.props.dispatch(analiticsActions.getFinancialAnalyticChart(dateMonthBefore, dateNow));
+  }
+
+  chooseReturningPeriod(e) {
+    const dateNow = moment().utc().startOf('day');
+    const dateNowEnd = moment().utc().endOf('day');
+    const dateNowEndMill = dateNowEnd.valueOf();
+
+    const { name, value } = e.target;
+
+    let period = 3;
+
+    period = parseInt(e.target.value[0]);
+
+    this.setState({ chooseReturningPeriod: period }, () => {
+      this.props.dispatch(analiticsActions.getStaffsReturning(dateNow.subtract(period, 'month').format('x'), dateNowEndMill));
+    });
   }
 
 
@@ -152,7 +174,8 @@ class Index extends Component {
   }
 
   setToday() {
-    let today; let todayEnd;
+    let today;
+    let todayEnd;
     today = moment().utc().startOf('day');
     todayEnd = moment().utc().endOf('day');
     this.setState({ ...this.state, selectedDay: today, dropdownFirst: false, chosenPeriod: 1, type: 'day' });
@@ -492,14 +515,17 @@ class Index extends Component {
     const { t } = this.props;
 
     const dateArrayChart = this.props.analitics.staffsAnalyticChart.dateArrayChart;
-    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart;
+    const recordsArrayChart = this.props.analitics.staffsAnalyticChart.recordsArrayChart.map(i => i.toFixed(1));
 
     const dateFinancialChart = this.props.analitics.financialAnalyticChart.dateArrayChart;
     const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
     const cashFinancialChart = this.props.analitics.financialAnalyticChart.cashPaymentChart;
     const cardFinancialChart = this.props.analitics.financialAnalyticChart.cardPaymentChart;
 
+
     const { analitics, staff } = this.props;
+
+
     const chartOptions = {
       fill: false,
       lineTension: 0,
@@ -608,11 +634,11 @@ class Index extends Component {
         <div className="timeContainer">
           <div className="calendar-switch">
             <div className="choisen"
-              onClick={() => this.setState({ dropdownFirst: !dropdownFirst })}>{chosenPeriod === 1 ? t('Сегодня') : chosenPeriod === 2 ? t('Вчера') : chosenPeriod === 3 ? t('Неделя') : ''}</div>
+                 onClick={() => this.setState({ dropdownFirst: !dropdownFirst })}>{chosenPeriod === 1 ? t('Сегодня') : chosenPeriod === 2 ? t('Вчера') : chosenPeriod === 3 ? t('Неделя') : ''}</div>
             {dropdownFirst && <ul className="dropdown">
-              <li onClick={() => this.setToday()}>{t("Сегодня")}</li>
-              <li onClick={() => this.setYesterday()}>{t("Вчера")}</li>
-              <li onClick={() => this.setWeek()}>{t("Неделя")}</li>
+              <li onClick={() => this.setToday()}>{t('Сегодня')}</li>
+              <li onClick={() => this.setYesterday()}>{t('Вчера')}</li>
+              <li onClick={() => this.setWeek()}>{t('Неделя')}</li>
             </ul>}
           </div>
           <DatePicker
@@ -635,7 +661,7 @@ class Index extends Component {
         <div className="group-container">
           <div className="analytics_list">
             <div className="list-group-statistics">
-              <strong className="container-title">{t("Всего записей")}</strong>
+              <strong className="container-title">{t('Всего записей')}</strong>
 
             </div>
             <div className="visitor-statistics">
@@ -645,30 +671,30 @@ class Index extends Component {
                   style={{ color: analitics.counter && (analitics.counter.allRecordsPercent > 0 ? '#34C38F' : '#F46A6A') }}
                   className="small">
                   {analitics.counter && ((analitics.counter.allRecordsPercent > 0 ? '+' : '')
-                                         + analitics.counter.allRecordsPercent.toFixed(2))}%
-                </span> {t("со вчера")}</span>
+                    + analitics.counter.allRecordsPercent.toFixed(2))}%
+                </span> {t('со вчера')}</span>
               </span>
 
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.approvedAllRecordsToday !== 0 ? (analitics.counter.approvedAllRecordsToday / analitics.counter.allRecordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.approvedAllRecordsToday !== 0 ? (analitics.counter.approvedAllRecordsToday / (analitics.counter.approvedAllRecordsToday + analitics.counter.allRecordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.allRecordsTodayCanceled !== 0 ? (analitics.counter.allRecordsTodayCanceled / analitics.counter.allRecordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.allRecordsToday | analitics.counter.allRecordsTodayCanceled !== 0 ? (analitics.counter.allRecordsTodayCanceled / (analitics.counter.approvedAllRecordsToday + analitics.counter.allRecordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
 
                 <div className="numbers-container">
                   <div className="stat-numbers">
-                    <p>{t("Выполнено")}:&nbsp;</p>
+                    <p>{t('Выполнено')}:&nbsp;</p>
                     <span
                       className="number-statistics">{analitics.counter && (analitics.counter.approvedAllRecordsToday)}</span>
                   </div>
                   <div className="stat-numbers">
-                    <p>{t("Отменено")}:&nbsp;</p>
+                    <p>{t('Отменено')}:&nbsp;</p>
                     <span className="number-statistics red">{analitics.counter &&
-                                        analitics.counter.allRecordsTodayCanceled}</span>
+                    analitics.counter.allRecordsTodayCanceled}</span>
                   </div>
                 </div>
               </div>
@@ -677,7 +703,7 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list">
             <div className="list-group-statistics">
-              <strong className="container-title">{t("Онлайн записей")}</strong>
+              <strong className="container-title">{t('Онлайн записей')}</strong>
 
             </div>
             <div className="visitor-statistics">
@@ -688,30 +714,30 @@ class Index extends Component {
                   style={{ color: analitics.counter && (analitics.counter.recordsOnlinePercent > 0 ? '#34C38F' : '#F46A6A') }}
                   className="small">
                   {analitics.counter && ((analitics.counter.allRecordsPercent > 0 ? '+' : '')
-                                         + analitics.counter.recordsOnlinePercent.toFixed(2))}%
-                </span> {t("со вчера")}</span>
+                    + analitics.counter.recordsOnlinePercent.toFixed(2))}%
+                </span> {t('со вчера')}</span>
               </span>
 
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.approvedRecordsOnlineToday / analitics.counter.recordsOnlineToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.approvedRecordsOnlineToday / (analitics.counter.approvedRecordsOnlineToday + analitics.counter.recordsOnlineTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.recordsOnlineTodayCanceled / analitics.counter.recordsOnlineToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsOnlineToday !== 0 ? (analitics.counter.recordsOnlineTodayCanceled / (analitics.counter.approvedRecordsOnlineToday + analitics.counter.recordsOnlineTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
                 <div className="numbers-container">
                   <div className="stat-numbers">
-                    <p>{t("Выполнено")}:&nbsp;</p>
+                    <p>{t('Выполнено')}:&nbsp;</p>
 
                     <span
                       className="number-statistics">{analitics.counter && (analitics.counter.approvedRecordsOnlineToday)}</span>
                   </div>
                   <div className="stat-numbers">
-                    <p>{t("Отменено")}:&nbsp;</p>
+                    <p>{t('Отменено')}:&nbsp;</p>
                     <span className="number-statistics red">{analitics.counter &&
-                                        analitics.counter.recordsOnlineTodayCanceled}</span>
+                    analitics.counter.recordsOnlineTodayCanceled}</span>
                   </div>
                 </div>
               </div>
@@ -720,7 +746,7 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list">
             <div className="list-group-statistics">
-              <strong className="container-title">{t("Записей в журнал")}</strong>
+              <strong className="container-title">{t('Записей в журнал')}</strong>
 
             </div>
             <div className="visitor-statistics">
@@ -731,34 +757,34 @@ class Index extends Component {
                   style={{ color: analitics.counter && (analitics.counter.recordsPercent > 0 ? '#34C38F' : '#F46A6A') }}
                   className="small">
                   {analitics.counter && ((analitics.counter.recordsPercent > 0 ? '+' : '')
-                                         + analitics.counter.recordsPercent.toFixed(2))}%
-                </span> {t("со вчера")}</span>
+                    + analitics.counter.recordsPercent.toFixed(2))}%
+                </span> {t('со вчера')}</span>
               </span>
 
 
               <div className="graph-container">
                 <div className="graph-stat">
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.approvedRecordsToday / analitics.counter.recordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.approvedRecordsToday / (analitics.counter.approvedRecordsToday + analitics.counter.recordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="green"></span>
                   <span
-                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.recordsTodayCanceled / analitics.counter.recordsToday) * 100 : 0) + '%' }}
+                    style={{ height: (analitics.counter && analitics.counter.recordsToday !== 0 ? (analitics.counter.recordsTodayCanceled / (analitics.counter.approvedRecordsToday + analitics.counter.recordsTodayCanceled)) * 100 : 0) + '%' }}
                     className="red"></span>
                 </div>
 
                 <div className="numbers-container">
                   <div className="stat-numbers">
-                    <p>{t("Выполнено")}:&nbsp;</p>
+                    <p>{t('Выполнено')}:&nbsp;</p>
 
                     <span className="number-statistics">
                       {analitics.counter &&
-                                    (analitics.counter.approvedRecordsToday)}</span>
+                      (analitics.counter.approvedRecordsToday)}</span>
                   </div>
                   <div className="stat-numbers">
-                    <p>{t("Отменено")}:&nbsp;</p>
+                    <p>{t('Отменено')}:&nbsp;</p>
 
                     <span className="number-statistics red">{analitics.counter &&
-                                        analitics.counter.recordsTodayCanceled}</span>
+                    analitics.counter.recordsTodayCanceled}</span>
                   </div>
                 </div>
               </div>
@@ -770,36 +796,36 @@ class Index extends Component {
         <div className="group-container">
           <div className="analytics_list tablet-right">
             <div className="list-group-statistics">
-              <strong>{t("Новые клиенты")}</strong>
+              <strong>{companyTypeId === 4 ? t('Новые пациенты') : t('Новые клиенты')}</strong>
               <span className="stat-number-small">
                 {analitics.counter && analitics.counter.newClientsToday}
                 <span
                   className="small">{analitics.counter && ((analitics.counter.newClientsPercent > 0 ? '+' : '')
-                                    + analitics.counter.newClientsPercent.toFixed(2))}% {t("со вчера")}</span>
+                  + analitics.counter.newClientsPercent.toFixed(2))}% {t('со вчера')}</span>
               </span>
             </div>
           </div>
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list tablet-right">
             <div className="list-group-statistics">
-              <strong>{t("Постоянные клиенты")}</strong>
+              <strong>{companyTypeId === 4 ? t('Постоянные пациенты') : t('Постоянные клиенты')}</strong>
               <span className="stat-number-small no-color">
                 {analitics.counter && analitics.counter.permanentClientsToday}
                 <span
                   className="small">{analitics.counter && ((analitics.counter.permanentClientsPercent > 0 ? '+' : '')
-                                    + analitics.counter.permanentClientsPercent.toFixed(2))}% {t("со вчера")}</span>
+                  + analitics.counter.permanentClientsPercent.toFixed(2))}% {t('со вчера')}</span>
               </span>
             </div>
           </div>
           {/* // <!--end analytics_list-->*/}
           <div className="analytics_list tablet-full">
             <div className="list-group-statistics">
-              <strong>{t("Без клиентов")}</strong>
+              <strong>{companyTypeId === 4 ? t('Без пациентов') : t('Без клиентов')}</strong>
               <span className="stat-number-small red">
                 {analitics.counter && analitics.counter.withoutClientToday}
                 <span
                   className="small">{analitics.counter && ((analitics.counter.withoutClientPercent > 0 ? '+' : '')
-                                    + analitics.counter.withoutClientPercent.toFixed(2))}% {t("со вчера")}</span>
+                  + analitics.counter.withoutClientPercent.toFixed(2))}% {t('со вчера')}</span>
               </span>
             </div>
           </div>
@@ -808,12 +834,12 @@ class Index extends Component {
           {/* // <!--end analytics_list-->*/}
           <div style={{ margin: '15px 0 0 15px' }} className="analytics_list tablet-full">
             <div className="list-group-statistics">
-              <strong>{t("Клиенты не пришли")}</strong>
+              <strong>{companyTypeId === 4 ? t('Пациенты не пришли') : t('Клиенты не пришли')}</strong>
               <span className="stat-number-small red">
                 {analitics.counter && analitics.counter.clientNotComeToday}
                 <span
                   className="small">{analitics.counter && ((analitics.counter.clientNotComePercent > 0 ? '+' : '')
-                                    + analitics.counter.clientNotComePercent.toFixed(2))}% {t("со вчера")}</span>
+                  + analitics.counter.clientNotComePercent.toFixed(2))}% {t('со вчера')}</span>
               </span>
             </div>
           </div>
@@ -821,49 +847,49 @@ class Index extends Component {
         </div>
         <div className="group-container">
 
-          <div style={{ width: '100%', marginRight: 0 }} className="analytics_list tablet-full">
+          <div style={{ marginRight: '15px' }} className="analytics_list w-100 tablet-full">
             <div className="list-group-statistics">
               <div className="dropdown">
-                <strong>{t("Загруженность")}</strong>
+                <strong>{t('Загруженность')}</strong>
                 <div className="bth dropdown-toggle rounded-button select-menu"
-                  data-toggle="dropdown" role="menu" aria-haspopup="true"
-                  aria-expanded="false">
-                  <p>{currentSelectedStaff.firstName + ' ' + currentSelectedStaff.lastName}</p>
+                     data-toggle="dropdown" role="menu" aria-haspopup="true"
+                     aria-expanded="false">
+                  <p>{currentSelectedStaff.firstName + (currentSelectedStaff.lastName ? ' ' + currentSelectedStaff.lastName : '')}</p>
                 </div>
                 <ul className="dropdown-menu">
                   <li onClick={() => this.setCurrentSelectedStaff(2)}>
                     <a>
-                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
+                      <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t('Работающие врачи')  : t('Работающие сотрудники'))}</p>
                     </a>
                   </li>
-                  {staff && staff.timetable && staff.timetable.map((staffEl) => {
-                    const activeStaff = staff && staff.staff && staff.staff.find((staffItem) => staffItem.staffId === staffEl.staffId);
-                    return (
-                      <li onClick={() => this.setCurrentSelectedStaff(staffEl)}>
-                        <a>
+                  {staff && staff.staff && staff.staff.map((staffEl) => {
+                      const activeStaff = staff && staff.staff && staff.staff.find((staffItem) => staffItem.staffId === staffEl.staffId);
+                      return (
+                        <li onClick={() => this.setCurrentSelectedStaff(staffEl)}>
+                          <a>
                           <span className="img-container">
                             <img className="rounded-circle"
-                              src={activeStaff && activeStaff.imageBase64
-                                ? 'data:image/png;base64,' +
-                                                             activeStaff.imageBase64
-                                                             // "1555020690000"
-                                : `${process.env.CONTEXT}public/img/avatar.svg`}
-                              alt=""/>
+                                 src={activeStaff && activeStaff.imageBase64
+                                   ? 'data:image/png;base64,' +
+                                   activeStaff.imageBase64
+                                   // "1555020690000"
+                                   : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                 alt=""/>
                           </span>
-                          <p>{staffEl.firstName + ' ' + staffEl.lastName}</p>
-                        </a>
-                      </li>
-                    );
-                  },
+                            <p>{staffEl.firstName + (staffEl.lastName ? ' ' + staffEl.lastName : '')}</p>
+                          </a>
+                        </li>
+                      );
+                    },
                   )}
                 </ul>
               </div>
               <span>
                 {analitics.staffsAnalytic ? (((analitics.staffsAnalytic.appointmentTime) / 3600000).toFixed(2)) + ' ч.' : '0 ч.'}
-                                ({analitics.staffsAnalytic ? analitics.staffsAnalytic.percentWorkload.toFixed(2) : '0'}%)
+                ({analitics.staffsAnalytic ? analitics.staffsAnalytic.percentWorkload.toFixed(2) : '0'}%)
                 <span className="small">
                   {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0 ? '+' : '')
-                                        + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% {t("со вчера")}
+                    + ((analitics.staffsAnalytic.ratioToYesterday).toFixed(2)))}% {t('со вчера')}
 
                   {/* {analitics.staffsAnalytic && ((analitics.staffsAnalytic.ratioToYesterday > 0?"+":"")*/}
                   {/*    + analitics.staffsAnalytic.ratioToYesterday.toFixed(2))}*/}
@@ -871,25 +897,70 @@ class Index extends Component {
               </span>
             </div>
           </div>
+
+          <div style={{ marginRight: 0 }} className="analytics_list returning-list w-100 tablet-full">
+            <div className="list-group-statistics d-flex flex-column">
+
+              <div className="header-container d-flex justify-content-between">
+                <strong className="group-title">{companyTypeId === 4 ? t('Возвращаемость пациентов') : t('Возвращаемость клиентов')}</strong>
+                <div className="select-container">
+                  <select id="returningSelect" onChange={e => this.chooseReturningPeriod(e)}
+                          className="custom-select mb-0">
+                    <option>1 {t("месяц")}</option>
+                    <option>2 {t("месяца")}</option>
+                    <option selected>3 {t("месяца")}</option>
+                    <option>4 {t("месяца")}</option>
+                    <option>5 {t("месяцев")}</option>
+                    <option>6 {t("месяцев")}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ overflowX: 'auto' }} className="staffs w-100 d-flex">
+                {this.props.staff && this.props.staff.staff && this.props.analitics.staffsReturning && this.props.analitics.staffsReturning.sort((a, b) => b.returningClientsPercent - a.returningClientsPercent).map(item => {
+                  const staff = this.props.staff && this.props.staff.staff.find(st => st.staffId === item.staffId);
+                  return (
+                    <div key={item.staffId} className="staff-item">
+                      <div className="credit-container">
+                        <img className="rounded-circle"
+                             src={staff && staff.imageBase64
+                               ? 'data:image/png;base64,' +
+                               staff.imageBase64
+                               // "1555020690000"
+                               : `${process.env.CONTEXT}public/img/avatar.svg`}
+                             alt=""/>
+                        <p className="staff-name">{staff.firstName + (staff.lastName ? ' ' + staff.lastName : '')}</p>
+
+                      </div>
+                      <p className="percent" style={{color: (item.returningClientsPercent < 30 ? "#F46A6A" : (item.returningClientsPercent <= 70 ? "#F1B44C": "#34C38F"))}}>{item.returningClientsPercent.toFixed(1)}%</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+
+          </div>
           {/* // <!--end analytics_list-->*/}
         </div>
+
         {/* // <!--end group-container-->*/}
         <div className="group-container">
           <div className="analytics_list analytics_chart">
             <div>
-              <span className="title-list">{t("Записи")}</span>
+              <span className="title-list">{t('Записи')}</span>
               <div className="dropdowns-container d-flex flex-column">
                 <div className="select-container">
                   <select className="custom-select" onChange={(e) => this.setTypeDataOfChar(e)}>
-                    <option>{t("Всего записей в журнал")}</option>
-                    <option>{t("Всего онлайн записей")}</option>
-                    <option selected>{t("Всего записей")}</option>
+                    <option>{t('Всего записей в журнал')}</option>
+                    <option>{t('Всего онлайн записей')}</option>
+                    <option selected>{t('Всего записей')}</option>
                   </select>
                 </div>
                 <div className="select-container">
                   <select className="custom-select" onChange={(e) => this.setCharData(e)}>
-                    <option selected="">{t("Неделя")}</option>
-                    <option>{t("Месяц")}</option>
+                    <option selected="">{t('Неделя')}</option>
+                    <option>{t('Месяц')}</option>
                     {/* <option>Год</option>*/}
                   </select>
                 </div>
@@ -903,57 +974,57 @@ class Index extends Component {
                   transform: 'translateX(-50%)',
                 }}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
                 {!isLoadingFirst &&
-                                <Line
-                                  data={data}
-                                  options={options}
-                                />}
+                <Line
+                  data={data}
+                  options={options}
+                />}
               </div>
             </div>
           </div>
           {/* // <!--end analytics_chart-->*/}
           <div className="analytics_list analytics_chart">
             <div>
-              <span className="title-list">{t("Загруженность")}, %</span>
+              <span className="title-list">{t('Загруженность')}, %</span>
 
               <div className="dropdowns-container d-flex flex-column">
                 <div className="dropdown">
                   <div className="bth dropdown-toggle rounded-button select-menu"
-                    data-toggle="dropdown" role="menu" aria-haspopup="true"
-                    aria-expanded="false">
+                       data-toggle="dropdown" role="menu" aria-haspopup="true"
+                       aria-expanded="false">
                     <p>{currentSelectedStaffChart.firstName + ' ' + currentSelectedStaffChart.lastName}</p>
                   </div>
                   <ul className="dropdown-menu">
                     <li onClick={() => this.setCurrentSelectedStaffChart(2)}>
                       <a>
-                        <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : t('Работающие сотрудники')}</p>
+                        <p>{(companyTypeId === 2 || companyTypeId === 3) ? t('Доступные рабочие места') : (companyTypeId === 4 ? t('Работающие врачи') : t('Работающие сотрудники'))}</p>
                       </a>
                     </li>
                     {staff && staff.timetable && staff.timetable.map((staffEl) => {
-                      const activeStaff = staff && staff.staff && staff.staff.find((staffItem) => staffItem.staffId === staffEl.staffId);
-                      return (
-                        <li onClick={() => this.setCurrentSelectedStaffChart(staffEl)}>
-                          <a>
+                        const activeStaff = staff && staff.staff && staff.staff.find((staffItem) => staffItem.staffId === staffEl.staffId);
+                        return (
+                          <li onClick={() => this.setCurrentSelectedStaffChart(staffEl)}>
+                            <a>
                             <span className="img-container">
                               <img className="rounded-circle"
-                                src={activeStaff && activeStaff.imageBase64
-                                  ? 'data:image/png;base64,' +
-                                                             activeStaff.imageBase64
-                                                             // "1555020690000"
-                                  : `${process.env.CONTEXT}public/img/avatar.svg`}
-                                alt=""/>
+                                   src={activeStaff && activeStaff.imageBase64
+                                     ? 'data:image/png;base64,' +
+                                     activeStaff.imageBase64
+                                     // "1555020690000"
+                                     : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                   alt=""/>
                             </span>
-                            <p>{staffEl.firstName + ' ' + staffEl.lastName}</p>
-                          </a>
-                        </li>
-                      );
-                    },
+                              <p>{staffEl.firstName + ' ' + staffEl.lastName}</p>
+                            </a>
+                          </li>
+                        );
+                      },
                     )}
                   </ul>
                 </div>
                 <div className="select-container">
                   <select className="custom-select" onChange={(e) => this.setCharDataStaff(e)}>
-                    <option selected="">{t("Неделя")}</option>
-                    <option>{t("Месяц")}</option>
+                    <option selected="">{t('Неделя')}</option>
+                    <option>{t('Месяц')}</option>
                   </select>
                 </div>
               </div>
@@ -980,13 +1051,12 @@ class Index extends Component {
         <div style={{ width: '99.9%' }} className="analytics_list analytics_chart">
           <div className="fin-analytic-container">
             <span className="title-container">
-              <span style={{ width: 'auto' }} className="title-list">{t("Финансовая аналитика")}</span>
-              <Hint hintMessage={t("Сумма стоимости визитов в журнале записи")}/>
+              <span style={{ width: 'auto' }} className="title-list">{t('Финансовая аналитика')}</span>
+              <Hint hintMessage={t('Сумма стоимости визитов в журнале записи')}/>
             </span>
 
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
-              <p className="staff-day-picker-title">{t("Начало")}</p>
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+              <p className="staff-day-picker-title">{t('Начало')}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
                 type="day"
@@ -996,10 +1066,8 @@ class Index extends Component {
                 language={this.props.i18n.language}
               />
             </div>
-
-            <div
-              className="staff-day-picker analytic-day-picker online-zapis-date-picker">
-              <p className="staff-day-picker-title">{t("Конец")}</p>
+            <div className="staff-day-picker analytic-day-picker online-zapis-date-picker">
+              <p className="staff-day-picker-title">{t('Конец')}</p>
               <DatePicker
                 // closedDates={staffAll.closedDates}
                 type="day"
@@ -1024,18 +1092,21 @@ class Index extends Component {
           <div className="sum-container mb-4">
             <div className="sum-payments">
               <span className="green-marker"></span>
-              <p className="sum-text">{t("Сумма")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && Math.floor(analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
+              <p className="sum-text">{t('Сумма')}: &nbsp;</p>
+              <p
+                className="sum">{analitics.financialAnalyticChart.recordsArrayChart.length > 0 && Math.floor(analitics.financialAnalyticChart.recordsArrayChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
             <div className="cash-payments">
               <span className="purple-marker"></span>
-              <p className="cash-text">{t("Наличный расчет")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
+              <p className="cash-text">{t('Наличный расчет')}: &nbsp;</p>
+              <p
+                className="sum">{analitics.financialAnalyticChart.cashPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cashPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
             <div className="card-payments">
               <span className="orange-marker"></span>
-              <p className="card-text">{t("Безналичный расчет")}: &nbsp;</p>
-              <p className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
+              <p className="card-text">{t('Безналичный расчет')}: &nbsp;</p>
+              <p
+                className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
 
           </div>
@@ -1047,49 +1118,49 @@ class Index extends Component {
                 transform: 'translateX(-50%)',
               }}><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
               {!isLoadingFirst &&
-                            <Line
-                              data={dataFinancial}
-                              options={options}
-                            />}
+              <Line
+                data={dataFinancial}
+                options={options}
+              />}
             </div>
           </div>
         </div>
 
         {!!0 &&
-                <div className="group-container">
-                  <div className="analytics_list save-statistics">
-                    <div>
-                      <p>{t("Желаете ли вы хранить статистику?")}</p>
-                      <button className={saveStatistics ? 'button' : 'button gray-button'} type="button"
-                        onClick={() => this.setState({ saveStatistics: true })}>{t("Да")}
-                      </button>
-                      <button className={!saveStatistics ? 'button' : 'button gray-button'} type="button"
-                        onClick={() => this.setState({ saveStatistics: false })}>{t("Нет")}
-                      </button>
-                    </div>
-                    <div>
-                      <span>{t("Сколько хранить статистику")}</span>
-                      <select className="custom-select">
-                        <option selected="">{t("Месяц")}</option>
-                        <option>{t("Год")}</option>
-                        <option>{t("12 недель")}</option>
-                        <option>{t("31 дней")}</option>
-                        <option>{t("Макс")}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>}
+        <div className="group-container">
+          <div className="analytics_list save-statistics">
+            <div>
+              <p>{t('Желаете ли вы хранить статистику?')}</p>
+              <button className={saveStatistics ? 'button' : 'button gray-button'} type="button"
+                      onClick={() => this.setState({ saveStatistics: true })}>{t('Да')}
+              </button>
+              <button className={!saveStatistics ? 'button' : 'button gray-button'} type="button"
+                      onClick={() => this.setState({ saveStatistics: false })}>{t('Нет')}
+              </button>
+            </div>
+            <div>
+              <span>{t('Сколько хранить статистику')}</span>
+              <select className="custom-select">
+                <option selected="">{t('Месяц')}</option>
+                <option>{t('Год')}</option>
+                <option>{t('12 недель')}</option>
+                <option>{t('31 дней')}</option>
+                <option>{t('Макс')}</option>
+              </select>
+            </div>
+          </div>
+        </div>}
         {!!0 &&
-                <div className="dropdown">
-                  <a className="delete-icon menu-delete float-right" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                        {t("Удалить всю статистику")}
-                  </a>
-                  <div className="dropdown-menu delete-menu p-3">
-                    <button type="button" className="button">{t("Да")}</button>
-                    <button type="button" className="gray-button">{t("Нет")}</button>
-                  </div>
-                </div>}
+        <div className="dropdown">
+          <a className="delete-icon menu-delete float-right" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            {t('Удалить всю статистику')}
+          </a>
+          <div className="dropdown-menu delete-menu p-3">
+            <button type="button" className="button">{t('Да')}</button>
+            <button type="button" className="gray-button">{t('Нет')}</button>
+          </div>
+        </div>}
 
 
       </div>
@@ -1098,7 +1169,8 @@ class Index extends Component {
   }
 
   setCharData(e) {
-    let dataFrom; let dataTo;
+    let dataFrom;
+    let dataTo;
 
     const { name, value } = e.target;
 
@@ -1138,7 +1210,8 @@ class Index extends Component {
   }
 
   setCharDataStaff(e) {
-    let dataFrom; let dataTo;
+    let dataFrom;
+    let dataTo;
 
     const { name, value } = e.target;
     const { currentSelectedStaffChart } = this.state;
@@ -1172,4 +1245,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default compose(connect(mapStateToProps), withRouter, withTranslation("common"))(Index);
+export default compose(connect(mapStateToProps), withRouter, withTranslation('common'))(Index);

@@ -370,7 +370,7 @@ class AddAppointment extends React.Component {
         }
         return true;
       })
-      .filter((service) => service.duration >= this.props.company.settings.booktimeStep);
+      .filter((service) => service.duration >= this.props.company.settings.booktimeStep && service.duration % this.props.company.settings.booktimeStep === 0);
   }
 
   handleTypeaheadInputChange(name, value) {
@@ -1255,10 +1255,10 @@ class AddAppointment extends React.Component {
 
                         <div className="row">
                           <div className="col-sm-12">
-                            <p className="add-helpers-text mobile-visible">{t('Добавление клиента')} <Hint
+                            <p className="add-helpers-text mobile-visible">{companyTypeId === 4 ? t('Добавление пациента') : t('Добавление клиента')} <Hint
                               hintMessage={t('Начните поиск. Если клиента нет в базе, заполните необходимые поля')}/>
                             </p>
-                            <p className="add-helpers-text mb-3 desktop-visible">{t('Добавление клиента')} <Hint
+                            <p className="add-helpers-text mb-3 desktop-visible">{companyTypeId === 4 ? t('Добавление пациента') : t('Добавление клиента')} <Hint
                               hintMessage={t('Начните поиск. Если клиента нет в базе, заполните необходимые поля')}/>
                             </p>
                           </div>

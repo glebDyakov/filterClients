@@ -5,6 +5,11 @@
   position: relative;
   background-color: #222736 !important;
 
+  .material .search {
+    border-color: #383D4A !important
+  }
+
+
   #payroll {
     .staffs-list {
       background-color: #2A3042;
@@ -45,7 +50,7 @@
             border-color: #3F4455;
           }
           .table-header-title {
-              color: #fff;
+            color: #fff;
           }
 
           .payroll-day, .payroll-day-list {
@@ -78,6 +83,10 @@
     }
   }
 
+  .material .search {
+    border-color: #383D4A !important
+  }
+
   .questions_dropdown {
     background: #2A3042 !important;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3) !important;
@@ -87,6 +96,18 @@
       color: #fff !important;
     }
 
+  }
+
+  .calendar .calendar-container {
+    .select-date {
+      span.percent {
+        background: #2A3042 !important;
+
+        &.default-percent {
+          color: #fff;
+        }
+      }
+    }
   }
 
   .status-modal {
@@ -1483,6 +1504,37 @@
 
   .analytics_container {
 
+    .analytics_list.returning-list {
+      .list-group-statistics {
+        .select-container {
+          select, option {
+            color: #fff;
+          }
+        }
+
+
+        .staffs {
+          .staff-item {
+            .credit-container {
+                img {
+                  border: 1px solid #3F4455;
+                  box-sizing: border-box;
+                }
+              .staff-name {
+                text-align: center;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 18px;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
+
     .dropdown-menu {
       background: #222736 !important;
 
@@ -1815,6 +1867,10 @@
 
 
   .material {
+
+    .mobile-movements-day-picker {
+      background-color: #2A3042 !important;
+    }
 
     .empty-content-img {
       filter: grayscale(1) invert(1);

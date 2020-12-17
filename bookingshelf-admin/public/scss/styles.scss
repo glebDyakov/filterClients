@@ -714,7 +714,7 @@ input {
 
       color: #FFFFFF;
       background: #50A5F1;
-      opacity: 0.35;
+      opacity: 1;
       border-radius: 30px;
       padding: 10px 64px;
       height: 42px;
@@ -722,7 +722,7 @@ input {
       border: none;
 
       &:hover {
-        opacity: 1;
+        opacity: 0.7;
         transition: 200ms linear;
       }
     }
@@ -803,7 +803,7 @@ input {
 
   .company_input {
     height: 100%;
-    padding-right: 40px;
+    padding-right: 60px !important;
   }
 
   .check-box-group2, .name_company_wrapper {
@@ -2317,6 +2317,17 @@ input {
       overflow: hidden;
       white-space: nowrap;
 
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        min-height: 36px;
+        vertical-align: bottom;
+
+      p {
+        margin-bottom: 0 !important;
+
+      }
+
       .phone_hint {
         font-size: 10px;
       }
@@ -2995,17 +3006,12 @@ input {
 
       button {
         background: #50A5F1;
-        opacity: 0.7;
+        opacity: 1;
         border-radius: 30px;
         padding: 10px 64px;
         border: none;
         transition: 400ms;
 
-      }
-
-      button:hover {
-        opacity: 1 !important;
-        transition: 100ms;
       }
     }
   }
@@ -7690,6 +7696,18 @@ textarea {
   background-color: #fff;
   z-index: 5;
   width: 100%;
+
+  &.green-percent {
+    color: #34C38F !important;
+  }
+
+  &.orange-percent {
+    color: #F3933A !important;
+  }
+
+  &.red-percent {
+    color: #F46A6A !important;
+  }
 }
 
 .hue-picker {

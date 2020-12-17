@@ -59,7 +59,6 @@ class DatePicker extends PureComponent {
       }
     }
 
-    console.log('DATE: ', date);
     if (type === 'day') {
       this.props.handleDayClick(date);
     } else {
@@ -101,7 +100,6 @@ class DatePicker extends PureComponent {
   }
 
   handleDayEnter(date) {
-    console.log('DATE: ', date);
     const hoverRange = getWeekRange(date);
     this.setState({
       hoverRange,
@@ -165,23 +163,6 @@ class DatePicker extends PureComponent {
     }
 
     const days = [];
-    // const daysToPercent = [];
-
-    // if (newSelectedDays && newSelectedDays.length > 0) {
-    //   const startOfMonth = moment(newSelectedDays[0]).startOf('month');
-    //   const endOfMonth = moment(newSelectedDays[newSelectedDays.length - 1]).endOf('month');
-    //
-    //   let day = startOfMonth;
-    //
-    //   while (day <= endOfMonth) {
-    //     if (!newSelectedDays.some(item => moment(item).utc().startOf('day').format('x') === day.utc().utc().startOf('day').format('x'))) {
-    //       days.push(day.utc().toDate());
-    //     } else {
-    //       daysToPercent.push(day.utc().toDate());
-    //     }
-    //     day = day.clone().add(1, 'd');
-    //   }
-    // }
 
     if (this.props.typeSelected && analytic) {
       Object.entries(analytic).forEach(([key, value]) => {
@@ -227,6 +208,11 @@ class DatePicker extends PureComponent {
       };
     }
 
+    modifiers = {
+      ...modifiers,
+      selected: selectedDay
+    }
+
 
     const renderDay = (day, dayModifiers) => {
       const date = day.getDate();
@@ -235,7 +221,7 @@ class DatePicker extends PureComponent {
       return (
         <React.Fragment>
           {date}
-          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span style={{color: (percent === 0 ? "#555B6D" : percent <= 40 ? "#34C38F" : (percent <= 80 ? "#F3933A" : "#F46A6A"))}} className="percent">{percent}%</span>}
+          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span className={"percent" + (percent === 0 ? " default-percent" : percent <= 40 ? " green-percent" : (percent <= 80 ? " orange-percent" : " red-percent"))}>{percent}%</span>}
         </React.Fragment>
       );
     };

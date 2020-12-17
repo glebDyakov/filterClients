@@ -5,7 +5,7 @@ const InputCounter = ({ disabled, title, extraWrapperClassName, name, value, typ
     <p>{title}</p>
     <input
       disabled={disabled}
-      style={{ paddingRight: '57px' }}
+      style={{ paddingRight: '65px' }}
       className={extraClassName + (disabled ? ' disabledField' : '')}
       type={type}
       placeholder={placeholder}

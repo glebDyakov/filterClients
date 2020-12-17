@@ -56,6 +56,7 @@ const MainIndex = React.lazy(() => import('../MainIndex'));
 const CalendarPrePage = React.lazy(() => import('../CalendarPrePage'));
 const FaqPage = React.lazy(() => import('../FaqPage'));
 const ActivationPageStaff = React.lazy(() => import('../ActivationPageStaff'));
+const ActivationPagePassword = React.lazy(() => import('../ActivationPagePassword'));
 const AnalyticsPage = React.lazy(() => import('../AnalyticsPage'));
 
 import '../../public/scss/styles.scss';
@@ -97,7 +98,7 @@ class Index extends React.Component {
         try {
             localStorageUser = JSON.parse(localStorage.getItem('user'));
             const isLightTheme = JSON.parse(localStorage.getItem('lightTheme'));
-            if(isLightTheme === false) $("body").addClass("dark-theme");
+            if (isLightTheme === false) $("body").addClass("dark-theme");
         } catch (e) {
 
         }
@@ -113,28 +114,21 @@ class Index extends React.Component {
 
     componentWillReceiveProps(newProps) {
 
-      if (newProps.company && newProps.company.settings) {
-        if (newProps.company.settings.lightTheme === true) {
-          $("body").removeClass("dark-theme")
-          localStorage.setItem("lightTheme", true);
-        } else if (newProps.company.settings.lightTheme === false) {
-          $("body").addClass("dark-theme")
-          localStorage.setItem("lightTheme", false);
+        if (newProps.company && newProps.company.settings) {
+            if (newProps.company.settings.lightTheme === true) {
+                $("body").removeClass("dark-theme")
+                localStorage.setItem("lightTheme", true);
+            } else if (newProps.company.settings.lightTheme === false) {
+                $("body").addClass("dark-theme")
+                localStorage.setItem("lightTheme", false);
+            }
         }
-      }
 
         if (this.props.authentication.i18nLanguage !== newProps.authentication.i18nLanguage) {
             this.setState({
                 language: newProps.authentication.i18nLanguage,
             })
         }
-
-        // if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
-        //     this.setState({
-        //         language: newProps.i18n.language
-        //     });
-        // }
-
 
         let localStorageUser;
         try {
@@ -291,6 +285,7 @@ class Index extends React.Component {
         }
 
 
+
         return (
             <Router history={history}>
                 <div>
@@ -349,6 +344,7 @@ class Index extends React.Component {
                             <PublicRoute path="/register" component={RegisterPage}/>
                             <PublicRoute path="/activation/company/:company" component={ActivationPage}/>
                             <PublicRoute path="/activation/staff/:staff" component={ActivationPageStaff}/>
+                            <PublicRoute path="/activation/password/:token" component={ActivationPagePassword}/>
                             <PublicRoute path="/login" component={LoginPage}/>
 
                             <PrivateRoute path="/denied" component={NoPageDenied}/>

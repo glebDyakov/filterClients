@@ -94,6 +94,7 @@ class ClientDetails extends React.Component {
     const { editClient, services, staff, company, t, wrapper = 'client-detail' }=this.props;
     const companyTypeId = company.settings && company.settings.companyTypeId;
 
+
     return (
 
       <div className={'modal fade ' + (wrapper)}>
@@ -101,7 +102,7 @@ class ClientDetails extends React.Component {
         <div className={'modal-dialog modal-lg modal-dialog-centered'}>
           <div className="modal-content">
             <div className="modal-header">
-              <h4 className="modal-title">{t("Информация о клиенте")}</h4>
+              <h4 className="modal-title">{companyTypeId === 4 ? t("Информация о пациенте") : t("Информация о клиенте")}</h4>
               <button type="button" className="close" data-dismiss="modal"></button>
             </div>
             <div className="client-info content-pages-bg">
@@ -150,14 +151,14 @@ class ClientDetails extends React.Component {
                         <div className="col-9 col-sm-8">
                           <p className="visit-detail">
                             <span className="timing"><strong>{t("Время")}: </strong>{moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}</span>
-                            <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочее место') : t('Сотрудник')}: </strong>{appointment.staffName}</span>
+                            <span className="staff-name"><strong>{(companyTypeId === 2 || companyTypeId === 3) ? t('Рабочее место') : (companyTypeId === 4 ? t('Врач') : t('Сотрудник'))}: </strong>{appointment.staffName}</span>
                             <span className="service"
                               style={{ fontSize: '13px' }}>{appointment.serviceName}</span>
                             {(activeService && activeService.details) ?
                               <span className="service">{activeService.details}</span> : ''}
                             {appointment.description ? <span
                               className="visit-description service">{t("Заметка")}: {appointment.description}</span> : ''}
-                            {appointment.clientNotCome ? <span className="visit-description" style={{ color: '#F46A6A' }}>{t("Клиент не пришел")}</span> : ''}
+                            {appointment.clientNotCome ? <span className="visit-description" style={{ color: '#F46A6A' }}>{companyTypeId === 4 ? t("Пациент не пришел") : t("Клиент не пришел")}</span> : ''}
                             <span className="price">{t("Цена")}: {appointment.priceFrom !== appointment.priceTo ? appointment.priceFrom + ' - ' + appointment.priceTo : Math.floor(appointment.price * 100) / 100} {appointment.currency}</span>
 
                           </p>
@@ -195,7 +196,7 @@ class ClientDetails extends React.Component {
                   $('.client-detail').modal('hide');
                   $('.header-client-detail').modal('hide');
                   editClient(client);
-                }}>{t("Редактировать клиента")}
+                }}>{companyTypeId === 4 ? t("Редактировать пациента") : t("Редактировать клиента")}
               </button>
             </div>
           </div>

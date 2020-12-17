@@ -1,4 +1,4 @@
-import { calendarConstants } from '../_constants';
+import {calendarConstants} from '../_constants';
 
 const initialState = {
   isLoading: false,
@@ -9,6 +9,7 @@ const initialState = {
   appointmentsCanceled: [],
   managers: [],
   analytic: {},
+  analyticStaffId: 0,
 };
 
 export function calendar(state = initialState, action) {
@@ -88,7 +89,7 @@ export function calendar(state = initialState, action) {
           item.push(appointment);
         });
 
-        updatedAppointments.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointments.push({staff: localAppointment.staff, appointments: item});
       });
 
       return {
@@ -138,14 +139,14 @@ export function calendar(state = initialState, action) {
             item.push(action.reservedTime);
           }
 
-          updatedReservedTime.push({ staff: localReservedTime.staff, reservedTimes: item });
+          updatedReservedTime.push({staff: localReservedTime.staff, reservedTimes: item});
         });
 
         if (!isIncluded) {
-          updatedReservedTime.push({ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] });
+          updatedReservedTime.push({staff: {staffId: action.staffId}, reservedTimes: [action.reservedTime]});
         }
       } else {
-        updatedReservedTime = [{ staff: { staffId: action.staffId }, reservedTimes: [action.reservedTime] }];
+        updatedReservedTime = [{staff: {staffId: action.staffId}, reservedTimes: [action.reservedTime]}];
       }
       $('.modal_calendar').modal('hide');
 
@@ -254,7 +255,7 @@ export function calendar(state = initialState, action) {
             item.push(localReservedTime);
           }
         });
-        reservedTime.push({ staff: app.staff, reservedTimes: item } );
+        reservedTime.push({staff: app.staff, reservedTimes: item});
       });
 
       return {
@@ -265,15 +266,15 @@ export function calendar(state = initialState, action) {
     case calendarConstants.EDIT_CALENDAR_APPOINTMENT_FAILURE:
     case calendarConstants.UPDATE_APPOINTMENT_FAILURE:
     case calendarConstants.EDIT_APPOINTMENT_2_FAILURE:
-      return { ...state, isLoading: false, adding: false, status: null };
+      return {...state, isLoading: false, adding: false, status: null};
     case calendarConstants.ADD_RESERVED_TIME_FAILURE:
-      return { ...state };
+      return {...state};
     case calendarConstants.EDIT_APPOINTMENT_FAILURE:
-      return { ...state };
+      return {...state};
     case calendarConstants.APPROVE_APPOINTMENT_FAILURE:
-      return { ...state };
+      return {...state};
     case calendarConstants.DELETE_APPOINTMENT_FAILURE:
-      return { ...state, isLoading: false, currentTime: null };
+      return {...state, isLoading: false, currentTime: null};
     case calendarConstants.GET_APPOINTMENT_REQUEST:
       return {
         ...state,
@@ -345,7 +346,7 @@ export function calendar(state = initialState, action) {
           }
         });
 
-        updatedAppointments.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointments.push({staff: localAppointment.staff, appointments: item});
       });
 
       let updatedAppointmentsCount = [];
@@ -357,7 +358,7 @@ export function calendar(state = initialState, action) {
           }
         });
 
-        updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointmentsCount.push({staff: localAppointment.staff, appointments: item});
       });
 
       newAppointmentsCanceled.push(newItem);
@@ -390,7 +391,7 @@ export function calendar(state = initialState, action) {
           item.push(newItem);
         }
 
-        updatedAppointments.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointments.push({staff: localAppointment.staff, appointments: item});
       });
 
       updatedAppointmentsCount = [];
@@ -404,7 +405,7 @@ export function calendar(state = initialState, action) {
           item.push(newItem);
         }
 
-        updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointmentsCount.push({staff: localAppointment.staff, appointments: item});
       });
 
 
@@ -443,7 +444,7 @@ export function calendar(state = initialState, action) {
           }
         });
 
-        updatedAppointments.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointments.push({staff: localAppointment.staff, appointments: item});
       });
 
       updatedAppointmentsCount = [];
@@ -455,7 +456,7 @@ export function calendar(state = initialState, action) {
           }
         });
 
-        updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointmentsCount.push({staff: localAppointment.staff, appointments: item});
       });
 
       newAppointmentsCanceled.push(appointmentsToDelete[0]);
@@ -477,7 +478,7 @@ export function calendar(state = initialState, action) {
     case calendarConstants.CANCEL_VISUAL_MOVE:
       newAppointment = state.appointments;
       newAppointmentsCount = state.appointmentsCount;
-      const { prevVisualVisit } = state;
+      const {prevVisualVisit} = state;
 
       if (prevVisualVisit) {
         newItem = {
@@ -510,16 +511,16 @@ export function calendar(state = initialState, action) {
           if (newItem.coStaffs && newItem.coStaffs
             .some((costaff) => costaff.staffId === localAppointment.staff.staffId)
           ) {
-            item.push( {
+            item.push({
               ...newItem,
               coappointment: true,
             });
           }
 
-          updatedAppointments.push({ staff: localAppointment.staff, appointments: item });
+          updatedAppointments.push({staff: localAppointment.staff, appointments: item});
         });
       } else {
-        updatedAppointments.push({ staff: { staffId: newItem.staffId }, appointments: [newItem] });
+        updatedAppointments.push({staff: {staffId: newItem.staffId}, appointments: [newItem]});
       }
 
 
@@ -539,13 +540,13 @@ export function calendar(state = initialState, action) {
         if (newItem.coStaffs && newItem.coStaffs
           .some((costaff) => costaff.staffId === localAppointment.staff.staffId)
         ) {
-          item.push( {
+          item.push({
             ...newItem,
             coappointment: true,
           });
         }
 
-        updatedAppointmentsCount.push({ staff: localAppointment.staff, appointments: item });
+        updatedAppointmentsCount.push({staff: localAppointment.staff, appointments: item});
       });
 
       return {
@@ -657,9 +658,15 @@ export function calendar(state = initialState, action) {
         managers: action.managers,
       };
     case calendarConstants.GET_USER_CALENDAR_LOAD_SUCCESS:
+
+      const analytic = state.analyticStaffId !== action.payload.staffId
+        ? action.payload.analytics
+        : {...state.analytic, ...action.payload.analytics}
+
       return {
         ...state,
-        analytic: action.analytics
+        analyticStaffId: action.payload.staffId,
+        analytic
       }
     case calendarConstants.GET_CALENDAR_LOAD_SUCCESS:
       return {

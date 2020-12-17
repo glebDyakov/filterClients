@@ -7,6 +7,7 @@ export const analiticsService = {
   getFinancialAnalyticChart,
   getStaffsAnalytic,
   getStaffsAnalyticForAll,
+  getStaffsReturning,
 };
 
 function getStaff() {
@@ -33,7 +34,21 @@ function getRecordsAndClientsCount(daySelected, dayLast) {
     },
     headers: authHeader(),
   };
-  return fetch(`${origin}${config.apiUrl}/analytics/staffs?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions)
+  return fetch(`${origin}${config.apiUrl}/analytics/company?dateFrom=${daySelected}&dateTo=${dayLast}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getStaffsReturning(dateFrom, dateTo) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+  return fetch(`${origin}${config.apiUrl}/analytics/staff?dateFrom=${dateFrom}&dateTo=${dateTo}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
