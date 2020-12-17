@@ -46,6 +46,26 @@ class Index extends Component {
         specialWorkersCount: '',
         period: '1',
       },
+
+      finalPriceObject: {
+        m3: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m6: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m12: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+        m24: {
+          finalPrice: 0,
+          finalPriceMonth: 0,
+        },
+      },
+
       finalPrice: this.props.company.settings ? ((this.props.company.settings.countryCode) ?
         ((this.props.company.settings.countryCode) === 'BLR' ?
           '15' : ((this.props.company.settings.countryCode) === 'UKR' ?
@@ -157,12 +177,12 @@ class Index extends Component {
     }
   }
 
-  AddingInvoiceStaff() {
+  AddingInvoiceStaff(period) {
     const { rate } = this.state;
     const { packets } = this.props.payments;
 
     let amount;
-    switch (rate.period) {
+    switch (period) {
       case '1':
         amount = 3;
         break;
@@ -314,6 +334,25 @@ class Index extends Component {
     }
 
     this.setState({
+      finalPriceObject: {
+        m3: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 3,
+          finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
+        },
+        m6: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 5,
+          finalPriceMonth: finalPriceMonth * 5 / 6,
+        },
+        m12: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 9,
+          finalPriceMonth: finalPriceMonth * 9 / 12,
+        },
+        m24: {
+          finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 15,
+          finalPriceMonth: finalPriceMonth * 15 / 24,
+        },
+      },
+
       finalPrice: finalPrice.toFixed(2),
       finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
       finalPriceMonthDiscount: finalPriceMonthDiscount && finalPriceMonthDiscount.toFixed(2),
@@ -564,14 +603,17 @@ class Index extends Component {
 
               <div className="payments-inner d-flex flex-column flex-lg-row">
                 <div className="payments-list-block mb-2 mb-md-0">
-                  <p className="title-payments">{t("Пакеты системы")}</p>
+                  <p className="title-payments">{(companyTypeId === 2 || companyTypeId === 3)
+                    ? t('Количество рабочих мест')
+                    : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))
+                  }</p>
                   <div id="range-staff">
-                    <p className="subtitle-payments mb-3 d-md-none">
-                      {(companyTypeId === 2 || companyTypeId === 3)
-                        ? t('Количество рабочих мест')
-                        : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))
-                      }
-                    </p>
+                    {/*<p className="subtitle-payments mb-3 d-md-none">*/}
+                    {/*  {(companyTypeId === 2 || companyTypeId === 3)*/}
+                    {/*    ? t('Количество рабочих мест')*/}
+                    {/*    : (companyTypeId === 4 ? t('Количество врачей') : t('Количество сотрудников'))*/}
+                    {/*  }*/}
+                    {/*</p>*/}
 
                     <ul className="range-labels">
                       {options.map((option, i) => (
@@ -618,13 +660,13 @@ class Index extends Component {
                     </div>
                   </div>
 
-                  <div className="radio-buttons">
-                    <p className="subtitle-payments d-none d-md-flex">
-                      {(companyTypeId === 2 || companyTypeId === 3)
-                        ? t('Количество рабочих мест')
-                        : (companyTypeId === 4 ? t("Количество врачей") : t('Количество сотрудников'))
-                      }
-                    </p>
+                  <div className="radio-buttons d-flex justify-content-center mb-0">
+                    {/*<p className="subtitle-payments d-none d-md-flex">*/}
+                    {/*  {(companyTypeId === 2 || companyTypeId === 3)*/}
+                    {/*    ? t('Количество рабочих мест')*/}
+                    {/*    : (companyTypeId === 4 ? t("Количество врачей") : t('Количество сотрудников'))*/}
+                    {/*  }*/}
+                    {/*</p>*/}
 
                     {(companyTypeId === 2) ? (
                       <div onClick={() => this.rateChangeSpecialWorkersCount('to 30')}>
@@ -660,53 +702,7 @@ class Index extends Component {
                       </React.Fragment>)}
                   </div>
 
-                  {/*<div id="range-month">*/}
-                  {/*  <p className="subtitle-payments mb-3 d-md-none">{t("Срок действия лицензии")}</p>*/}
-
-                  {/*  <ul className="range-labels">*/}
-                  {/*    <li className={period === '1' ? 'active selected' : ''}*/}
-                  {/*      onClick={() => this.setState({*/}
-                  {/*        rate: {*/}
-                  {/*          ...this.state.rate,*/}
-                  {/*          period: '1',*/}
-                  {/*        },*/}
-                  {/*      })}>{t("3 месяца")}*/}
-                  {/*    </li>*/}
-                  {/*    <li className={period === '2' ? 'active selected' : ''}*/}
-                  {/*      onClick={() => this.setState({*/}
-                  {/*        rate: {*/}
-                  {/*          ...this.state.rate,*/}
-                  {/*          period: '2',*/}
-                  {/*        },*/}
-                  {/*      })}>{t("6 месяцев")} <br/> ({t("+1 месяц бесплатно")})*/}
-                  {/*    </li>*/}
-                  {/*    <li className={period === '3' ? 'active selected' : ''}*/}
-                  {/*      onClick={() => this.setState({*/}
-                  {/*        rate: {*/}
-                  {/*          ...this.state.rate,*/}
-                  {/*          period: '3',*/}
-                  {/*        },*/}
-                  {/*      })}>{t("12 месяцев")} <br/> ({t("+3 бесплатно")})*/}
-                  {/*    </li>*/}
-                  {/*    <li className={period === '4' ? 'active selected' : ''}*/}
-                  {/*        onClick={() => this.setState({*/}
-                  {/*          rate: {*/}
-                  {/*            ...this.state.rate,*/}
-                  {/*            period: '4',*/}
-                  {/*          },*/}
-                  {/*        })}>{t("24 месяца")} <br/> ({t("+9 бесплатно")})*/}
-                  {/*    </li>*/}
-                  {/*  </ul>*/}
-                  {/*  */}
-                  {/*  <div className="range" style={{ position: 'relative' }}>*/}
-                  {/*    <input type="range" min="1" max="4" value={period}*/}
-                  {/*      onChange={(e) => this.rateChangePeriod(e)}/>*/}
-                  {/*    <div className="rateLine" style={{ width: ((period - 1) * 50) + '%' }}/>*/}
-                  {/*  </div>*/}
-
-                  {/*</div>*/}
-
-                  {/*<p className="subtitle-payments d-none d-md-flex">{t("Срок действия лицензии")}</p>*/}
+                  <hr style={{maxWidth: 565 + 'px'}}/>
 
                   <div className="row cards-container">
                     <div className="col card">
@@ -719,11 +715,23 @@ class Index extends Component {
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }</p>
                       </div>
-                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff("4")
+                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                            alt="Попробовать бесплатно"/></a>
                     </div>
                     <div className="col card">
@@ -734,11 +742,23 @@ class Index extends Component {
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('руб')
+                        }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('руб')
+                        }</p>
                       </div>
-                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff("3")
+                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
 
@@ -750,11 +770,23 @@ class Index extends Component {
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }</p>
                       </div>
-                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff("2")
+                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
 
@@ -766,11 +798,23 @@ class Index extends Component {
 
                         <hr/>
 
-                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{1} {1}
+                        <p className="month-price"><span className="blue_text">Стоимость в месяц: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }
                         </p>
-                        <p className="total"><span className="blue_text">Итого: </span>{1} {1}</p>
+                        <p className="total"><span className="blue_text">Итого: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
+                            ? (countryCode === 'BLR' ? t('руб') : (countryCode === 'UKR'
+                              ? t('грн')
+                              : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                            : t('руб')
+                          }</p>
                       </div>
-                      <a href="https://admin.online-zapis.com/register" className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
+                      <a onClick={() => {
+                        this.AddingInvoiceStaff("1")
+                      }} className="card-button">Оплатить пакет <img src={`${process.env.CONTEXT}public/img/icons/arrow-right.svg`}
                                                                                                                     alt="Попробовать бесплатно"/></a>
                     </div>
                   </div>

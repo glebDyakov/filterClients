@@ -89,7 +89,7 @@
     }
 
     .card-inner {
-      padding: 40px 20px 30px;
+      padding: 40px 16px 30px;
       height: 100%;
 
       .count-months {
@@ -225,7 +225,11 @@
   justify-content: space-between;
 
   .payments-list-block {
-    max-width: 1017px;
+    max-width: 1021px;
+
+    @media screen and (max-width: $laptop-width){
+      max-width: 820px;
+    }
 
   }
 
@@ -249,8 +253,12 @@
 
   .payments-list-block3 {
     margin-right: 0;
-    max-width: 337px;
+    max-width: 100%;
     height: min-content;
+
+    @media screen and (max-width: $laptop-width){
+      max-width: 100%;
+    }
 
     .payments-content {
 
@@ -749,6 +757,10 @@
     display: -webkit-flex;
     align-items: baseline;
     justify-content: space-between;
+
+    label {
+      margin-bottom: 0;
+    }
   }
 
   #range-staff {
@@ -1152,6 +1164,7 @@
 
 .current-packet-container {
   padding: 5px 18px;
+  display: flex;
 
   .current-packet {
     font-weight: normal;
@@ -1171,6 +1184,7 @@
     /* identical to box height */
 
     text-align: right;
+    margin-left: 20px;
 
     color: #F46A6A;
   }
