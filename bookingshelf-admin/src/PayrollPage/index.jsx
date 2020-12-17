@@ -532,7 +532,8 @@ class Index extends Component {
                                   material={this.props.material}
                                   serviceGroups={this.state.serviceGroups}
                                   handleSubmitPercents={this.handleSubmitPercents}
-                                  submitProduct={this.submitProduct}/>}
+                                  submitProduct={this.submitProduct}
+                                  staffId={this.state.selectedStaff}/>}
 
                 </div>
               </div>

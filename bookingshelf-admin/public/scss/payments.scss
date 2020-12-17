@@ -44,6 +44,11 @@
       position: relative;
       overflow: hidden;
       padding: 0;
+
+      @media screen and (max-width: $laptop-width){
+        width: 180px;
+      }
+
       .card-button {
         padding: 12px 23px 16px;
         display: flex;
@@ -58,6 +63,11 @@
         color: #FFFFFF;
         margin: 0;
         cursor: pointer;
+
+        @media screen and (max-width: $laptop-width){
+          font-size: 12px;
+          line-height: 18px;
+        }
 
         img {
           margin-left: 12px;
@@ -85,12 +95,19 @@
         align-items: center;
         padding-top: 7px;
         padding-bottom: 9px;
+
+
       }
     }
 
     .card-inner {
       padding: 40px 16px 30px;
       height: 100%;
+
+      @media screen and (max-width: $laptop-width){
+        padding: 30px 10px 20px;
+
+      }
 
       .count-months {
         margin-bottom: 15px;
@@ -103,6 +120,10 @@
         line-height: 22px;
         letter-spacing: 0.05em;
         color: #495057;
+        @media screen and (max-width: $laptop-width){
+          font-size: 12px;
+          line-height: 18px;
+        }
       }
 
       .additional {
@@ -111,12 +132,19 @@
         font-size: 13px;
         line-height: 25px;
         color: #495057;
+        @media screen and (max-width: $laptop-width){
+          font-size: 12px;
+          line-height: 18px;
+        }
       }
 
       hr {
         margin: 25px 0;
         background: #253053;
         opacity: 0.2;
+        @media screen and (max-width: $laptop-width){
+          margin: 15px 0;
+        }
       }
 
       .blue_text {
@@ -136,6 +164,7 @@
       font-size: 13px;
       line-height: 18px;
       color: #495057;
+
     }
   }
 
