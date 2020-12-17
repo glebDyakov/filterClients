@@ -244,14 +244,6 @@ class AddService extends React.Component {
                         </div>
                       </div>
                     </div>
-                    {/* <p>Специальная цена</p>*/}
-                    {/* <input type="number" placeholder="" onChange={this.handleChange} name="specialPrice"*/}
-                    {/*       value={service.specialPrice===0?'':service.specialPrice}*/}
-
-                    {/* />*/}
-
-
-                    {/* Кнопка на материалы*/}
 
                     <hr/>
 

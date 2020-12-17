@@ -1777,6 +1777,27 @@
 
   #payments {
 
+    .cards-container {
+      .card {
+        background-color: #222736;
+        border: none;
+        .card-inner {
+          img {
+            filter: gray(1) invert(1);
+            -webkit-filter: grayscale(1) invert(1);
+          }
+
+          .blue_text {
+            color: #50A5F1;
+          }
+        }
+      }
+
+      hr {
+        background-color: #fff;
+      }
+    }
+
     .chosen-invoice-wrapper {
       .chosen-invoice {
         background: #222736 !important;

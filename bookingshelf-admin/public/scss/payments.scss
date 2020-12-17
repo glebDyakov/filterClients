@@ -51,17 +51,14 @@
       background: #FFFFFF;
 
       border: 2px solid #F6F6F6;
-      //box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
 
-      //border-radius: 20px;
+      border-radius: 20px;
       min-height: 288px;
       justify-content: stretch;
       position: relative;
       overflow: hidden;
       padding: 0;
-
-      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
-      border-radius: 4px;
 
       @media screen and (max-width: $laptop-width){
         width: 180px;
@@ -82,8 +79,7 @@
         font-size: 16px;
         line-height: 22px;
         background: #50A5F1;
-        //border-radius: 0 0 20px 20px;
-        border-radius: 0 0 2px 2px;
+        border-radius: 0 0 20px 20px;
         color: #FFFFFF;
         margin: 0;
         cursor: pointer;
@@ -110,13 +106,14 @@
         font-size: 14.5806px;
         line-height: 17px;
         letter-spacing: 3.24014px;
+        text-transform: uppercase;
 
         color: #FFFFFF;
 
         position: absolute;
-        top: 13px;
-        width: 120px;
-        right: -30px;
+        top: 18px;
+        width: 130px;
+        right: -31px;
         background: #50A5F1;
         transform: rotate(45deg);
         display: flex;
