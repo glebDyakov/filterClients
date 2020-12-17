@@ -25,7 +25,7 @@ import '../../public/scss/staff.scss';
 import {withTranslation} from "react-i18next";
 import WorkTimeModal from '../_components/modals/WorkTimeModal';
 
-function getWeekDays(weekStart) {
+export function getWeekDays(weekStart) {
   const days = [weekStart];
   for (let i = 1; i < 7; i += 1) {
     days.push(

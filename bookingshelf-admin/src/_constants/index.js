@@ -13,3 +13,4 @@ export * from './notification.constants';
 export * from './analitics.constants';
 export * from './socket.constants';
 export * from './payments.constants';
+export * from './payroll.constants';
