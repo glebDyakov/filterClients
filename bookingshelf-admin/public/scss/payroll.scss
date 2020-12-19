@@ -6,6 +6,12 @@
   overflow-y: hidden;
   height: 100%;
 
+  .salary-loader {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: absolute;
+  }
+
   .calendar {
     margin-right: 20px;
 

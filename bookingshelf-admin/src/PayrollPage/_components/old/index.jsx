@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import StaffList from './_components/StaffList';
-import '../../public/scss/payroll.scss';
-import PayrollDay from './_components/PayrollDay';
+import StaffList from '../StaffSidebar/StaffList';
+import '../../../../public/scss/payroll.scss';
+import PayrollDay from './PayrollDay';
 import { withTranslation } from 'react-i18next';
-import PercentOfSales from './_components/PercentOfSales';
-import Hint from '../_components/Hint';
+import PercentOfSales from './PercentOfSales';
+import Hint from '../../../_components/Hint';
 import moment from 'moment';
-import { materialActions, payrollActions, servicesActions } from '../_actions';
+import { materialActions, payrollActions, servicesActions } from '../../../_actions';
 import DayPicker, { DateUtils } from 'react-day-picker';
-import { getWeekRange } from '../_helpers';
-import { getWeekDays } from '../StaffPage';
+import { getWeekRange } from '../../../_helpers';
+import { getWeekDays } from '../../../StaffPage';
 import MomentLocaleUtils from 'react-day-picker/moment';
+import IntervalInput from '../timeoutElements/IntervalInput';
 
 class Index extends Component {
   constructor(props) {
     super(props);
 
-    console.log("TAB", props.match.params.activeTab);
     if (props.match.params.activeTab &&
       props.match.params.activeTab !== 'setting' &&
       props.match.params.activeTab !== ''
@@ -97,8 +97,6 @@ class Index extends Component {
       });
     }
 
-    document.addEventListener('mousedown', this.handleClickOutsideCalendar);
-
     initializeJs();
   }
 
@@ -122,10 +120,6 @@ class Index extends Component {
     this.props.dispatch(payrollActions.updateOneServicePercent(this.state.selectedStaff, [service]));
   }
 
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutsideCalendar);
-  }
 
   handleClickOutsideCalendar(event) {
     if (this.calendarRef && !this.calendarRef.current.contains(event.target)) {
@@ -216,7 +210,6 @@ class Index extends Component {
     this.props.dispatch(payrollActions.getPercentServiceGroups(staffId));
     this.props.dispatch(payrollActions.getPercentServices(staffId));
 
-    console.log(this.state.from);
 
     this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
     this.props.dispatch(payrollActions.getPayoutByPeriod(staffId, moment(from).format('x'), moment(to).format('x')));
@@ -278,14 +271,6 @@ class Index extends Component {
     }
   }
 
-  handleOpenCalendar() {
-    this.setState((state) => {
-      return {
-        isOpenedDatePicker: !state.isOpenedDatePicker,
-      };
-    });
-  }
-
   handleDayClick(day) {
     const { from, to } = this.state;
     if (from && to && day >= from && day <= to) {
@@ -311,12 +296,6 @@ class Index extends Component {
     }
   }
 
-
-  isSelectingFirstDay(from, to, day) {
-    const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from);
-    const isRangeSelected = from && to;
-    return !from || isBeforeFirstDay || isRangeSelected;
-  }
 
   handleResetClick() {
     this.setState({
@@ -362,11 +341,6 @@ class Index extends Component {
     const { activeTab, analytic } = this.state;
     const { staff, t } = this.props;
 
-    const { from, to, enteredTo } = this.state;
-    const modifiersClosed = { start: from, end: enteredTo };
-    const disabledDays = { before: this.state.from };
-    const selectedDaysClosed = [from, { from, to: enteredTo }];
-
 
     return (
       <div id="payroll" className="d-flex">
@@ -390,32 +364,6 @@ class Index extends Component {
                 </li>
 
               </ul>
-              {this.state.activeTab === 'payroll' &&
-              <div className="calendar">
-                <div onClick={this.handleOpenCalendar} className="button-calendar">
-                  <input type="button" data-range="true"
-                         value={
-                           (from && from !== 0 ? moment(from).format('dd, DD MMMM YYYY') : '') +
-                           (to ? ' - ' + moment(to).format('dd DD MMMM') : '')
-                         }
-                         data-multiple-dates-separator=" - " name="date"
-                         ref={(input) => this.startClosedDate = input}/>
-                </div>
-
-                {this.state.isOpenedDatePicker &&
-                <DayPicker
-                  ref={(node) => this.calendarRef = node}
-                  className="SelectedWeekExample"
-                  fromMonth={from}
-                  selectedDays={selectedDaysClosed}
-                  disabledDays={[disabledDays, { after: moment().utc().toDate() }]}
-                  modifiers={modifiersClosed}
-                  onDayClick={this.handleDayClick}
-                  onDayMouseEnter={this.handleDayMouseEnter}
-                  localeUtils={MomentLocaleUtils}
-                  locale={this.props.i18n.language}
-                />}
-              </div>}
 
 
             </div>
@@ -461,26 +409,14 @@ class Index extends Component {
             </div>
             <div className="table-container">
               <table className="table">
-                <thead>
-                <tr>
-                  <td className="table-header-title text-center">{t('Время начала')}</td>
-                  <td className="table-header-title text-center">{t('Время услуги')}</td>
-                  <td className="table-header-title">{t('Услуга')}</td>
-                  <td className="table-header-title">% {t('от услуги')}</td>
-                  <td className="table-header-title">{t('Товар')}</td>
-                  <td className="table-header-title">% {t('от товара')}</td>
-                  <td className="table-header-title">{t('Доход Сотруд')}.</td>
-                  <td className="table-header-title">{t('Доход Компании')}</td>
-                </tr>
-                </thead>
+
                 <tbody>
                 {!this.props.payroll.isLoadingPeriod && !this.props.payroll.isLoadingPayoutStats ? this.state.payoutByPeriod.map(pb => {
                     return (
                       <PayrollDay payout={pb}/>
                     );
                   }) :
-                  <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`}
-                                                            alt=""/>
+                  <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
                   </div>}
                 </tbody>
               </table>
@@ -493,7 +429,12 @@ class Index extends Component {
               <div className="salary-settings">
                 <h2 className="settings-title">{t('Настройки зарплаты')}</h2>
 
+
                 <div className="salary-container">
+                  <label>
+                    <IntervalInput/>
+                  </label>
+
                   <label className="col"><p>{t('Выбор ставки')}</p>
                     <select onChange={this.handleChangeSettings} value={this.state.rate || 0}
                             className="custom-select mb-0 salary-input" name="rate"
@@ -525,12 +466,13 @@ class Index extends Component {
                            name="SERVICE_PERCENT"
                            className="salary-input" min="0" max="100" placeholder="0%"/>
                   </label>
+
                 </div>
                 <div className="button-container">
                   {this.props.payroll.statusSavePayouttypes === 200 &&
-                  <p className="alert-success p-1 rounded pl-3 mb-2">{t("Сохранено")}</p>}
+                  <p className="alert-success p-1 rounded pl-3 mb-2">{t('Сохранено')}</p>}
                   <button onClick={this.handleSubmitSettings} disabled={this.state.rate === 0}
-                          className={"button-save border-0" + (this.state.rate === 0 ? " disabledField" : '')}>Сохранить
+                          className={'button-save border-0' + (this.state.rate === 0 ? ' disabledField' : '')}>Сохранить
                   </button>
 
 
