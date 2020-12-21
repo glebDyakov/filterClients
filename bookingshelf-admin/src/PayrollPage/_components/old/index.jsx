@@ -271,39 +271,8 @@ class Index extends Component {
     }
   }
 
-  handleDayClick(day) {
-    const { from, to } = this.state;
-    if (from && to && day >= from && day <= to) {
-      this.handleResetClick();
-      return;
-    }
-    if (this.isSelectingFirstDay(from, to, day)) {
-      this.setState({
-        ...this.state,
-        from: day,
-        to: null,
-        enteredTo: day,
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        to: day,
-        enteredTo: day,
-      }, () => {
-        this.props.dispatch(payrollActions.getPayoutAnalytic(this.state.selectedStaff, moment(this.state.from).format('x'), moment(this.state.to).format('x')));
-        this.props.dispatch(payrollActions.getPayoutByPeriod(this.state.selectedStaff, moment(this.state.from).format('x'), moment(this.state.to).format('x')));
-      });
-    }
-  }
 
 
-  handleResetClick() {
-    this.setState({
-      ...this.state, from: null,
-      to: null,
-      enteredTo: null,
-    });
-  }
 
   handleSubmitPercents(type, arr) {
     switch (type) {

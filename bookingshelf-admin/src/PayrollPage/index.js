@@ -15,6 +15,7 @@ import { material } from '../_reducers/material.reducer';
 import { withRouter } from 'react-router';
 import { access } from '../_helpers/access';
 import { withTranslation } from 'react-i18next';
+import DatePicker from './_pages/PayrollPage/_components/DatePicker';
 
 
 class Index extends Component {
@@ -43,8 +44,15 @@ class Index extends Component {
       selectedStaffId: 0,
 
       date: {
-        from: moment().subtract(7, 'days').format('x'),
-        to: Date.now(),
+        from: moment().subtract(6, 'days').toDate(),
+        to: moment().toDate(),
+        enteredTo: moment().toDate(),
+      },
+
+      percent: {
+        servicesPercent: [],
+        serviceGroupsPercent: [],
+        productsPercent: [],
       },
     };
 
@@ -52,7 +60,16 @@ class Index extends Component {
     this.setTab = this.setTab.bind(this);
     this.queryInitData = this.queryInitData.bind(this);
     this.initStaffData = this.initStaffData.bind(this);
+    this.handleSelectDate = this.handleSelectDate.bind(this);
     this.updatePayoutType = this.updatePayoutType.bind(this);
+  }
+
+  handleSelectDate(date, isPeriod = false) {
+    this.setState({ date }, () => {
+      if (isPeriod) {
+        this.initStaffData(this.state.selectedStaffId);
+      }
+    });
   }
 
   setTab(tab) {
@@ -78,13 +95,14 @@ class Index extends Component {
   queryInitData() {
     this.props.dispatch(servicesActions.get());
     this.props.dispatch(materialActions.getCategories());
+    this.props.dispatch(materialActions.getProducts());
   }
 
   initStaffData(staffId) {
     const { from, to } = this.state.date;
 
-    this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, from, to));
-    this.props.dispatch(payrollActions.getPeriodAnalytic(staffId, from, to));
+    this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
+    this.props.dispatch(payrollActions.getPeriodAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
     this.props.dispatch(payrollActions.getPayoutTypes(staffId));
   }
 
@@ -115,7 +133,6 @@ class Index extends Component {
     }));
   }
 
-
   render() {
     const { selectedStaffId, activeTab } = this.state;
     const { staff, payroll, services, material } = this.props;
@@ -128,6 +145,7 @@ class Index extends Component {
       ? <SettingPage/>
       : <div className="loader salary-loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>;
 
+
     return (
       <div id="payroll" className="d-flex">
         <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
@@ -135,7 +153,10 @@ class Index extends Component {
         </StaffSidebarProvider>
 
         <div className="main-container col p-0">
-          <NavBar activeTab={activeTab} setTab={this.setTab}/>
+          <NavBar handleSelectDate={this.handleSelectDate}
+                  activeTab={activeTab}
+                  date={this.state.date}
+                  setTab={this.setTab}/>
 
           {this.state.activeTab === '' &&
           <PayrollProvider
@@ -146,8 +167,8 @@ class Index extends Component {
           {this.state.activeTab === 'setting' &&
           <SettingProvider
             value={{
-              serviceGroups: services.services,
-              categories: material.categories,
+              services: services.services,
+              material: material,
               payoutTypes: payroll.payoutTypes,
               updatePayoutTypeStatus:
               payroll.updatePayoutTypeStatus,

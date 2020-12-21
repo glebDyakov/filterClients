@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
+import DatePicker from '../_pages/PayrollPage/_components/DatePicker';
 
 class NavBar extends Component {
   render() {
@@ -21,10 +22,13 @@ class NavBar extends Component {
               </a>
             </li>
           </ul>
+          {activeTab === '' &&
+          <DatePicker date={this.props.date}
+                      handleSelectDate={this.props.handleSelectDate}/>}
         </div>
       </div>
     );
   }
 }
 
-export default withTranslation("common")(NavBar);
+export default withTranslation('common')(NavBar);
