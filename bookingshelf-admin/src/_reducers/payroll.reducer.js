@@ -9,11 +9,15 @@ const initialState = {
   isLoadingPeriod: false,
   isLoadingTypes: false,
 
+  isLoadingServicesPercent: false,
+  isLoadingServiceGroupsPercent: false,
+  isLoadingProductsPercent: false,
+
   updatePayoutTypeStatus: 0,
 
-  percentServiceGroups: [],
-  percentServices: [],
-  percentProducts: [],
+  servicesPercent: [],
+  serviceGroupsPercent: [],
+  productsPercent: [],
 };
 
 export function payroll(state = initialState, action) {
@@ -50,7 +54,6 @@ export function payroll(state = initialState, action) {
         ...state,
         isLoadingPeriod: true,
       };
-
     case payrollConstants.GET_PAYOUT_TYPES_SUCCESS:
       return {
         ...state,
@@ -67,8 +70,6 @@ export function payroll(state = initialState, action) {
         ...state,
         isLoadingTypes: true,
       };
-
-
     case payrollConstants.UPDATE_PAYOUT_TYPE_SUCCESS:
       return {
         ...state,
@@ -79,7 +80,6 @@ export function payroll(state = initialState, action) {
         ),
         updatePayoutTypeStatus: 200,
       };
-
     case payrollConstants.UPDATE_PAYOUT_TYPE_SUCCESS_TIME:
       return {
         ...state,
@@ -94,6 +94,107 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
         updatePayoutTypeStatus: 0,
+      };
+
+
+    case payrollConstants.GET_SERVICES_PERCENT_SUCCESS:
+      return {
+        ...state,
+        isLoadingServicesPercent: false,
+        servicesPercent: action.payload.servicesPercent,
+      };
+
+    case payrollConstants.GET_SERVICES_PERCENT_FAILURE:
+      return {
+        ...state,
+        isLoadingServicesPercent: false,
+      };
+
+    case payrollConstants.GET_SERVICES_PERCENT_REQUEST:
+      return {
+        ...state,
+        isLoadingServicesPercent: true,
+      };
+
+    case payrollConstants.GET_PRODUCTS_PERCENT_SUCCESS:
+      return {
+        ...state,
+        isLoadingProductsPercent: false,
+        productsPercent: action.payload.productsPercent,
+      };
+
+    case payrollConstants.GET_PRODUCTS_PERCENT_FAILURE:
+      return {
+        ...state,
+        isLoadingProductsPercent: false,
+      };
+
+    case payrollConstants.GET_PRODUCTS_PERCENT_REQUEST:
+      return {
+        ...state,
+        isLoadingProductsPercent: true,
+      };
+
+    case payrollConstants.GET_SERVICE_GROUPS_PERCENT_SUCCESS:
+      return {
+        ...state,
+        isLoadingServiceGroupsPercent: false,
+        serviceGroupsPercent: action.payload.serviceGroupsPercent,
+      };
+
+    case payrollConstants.GET_SERVICE_GROUPS_PERCENT_FAILURE:
+      return {
+        ...state,
+        isLoadingServiceGroupsPercent: false,
+      };
+
+    case payrollConstants.GET_SERVICE_GROUPS_PERCENT_REQUEST:
+      return {
+        ...state,
+        isLoadingServiceGroupsPercent: true,
+      };
+
+
+
+
+    case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS_TIME:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_PRODUCTS_PERCENT_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_PRODUCTS_PERCENT_REQUEST:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS_TIME:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_SERVICES_PERCENT_FAILURE:
+      return {
+        ...state,
+      };
+
+    case payrollConstants.UPDATE_SERVICES_PERCENT_REQUEST:
+      return {
+        ...state,
       };
     default:
       return state;

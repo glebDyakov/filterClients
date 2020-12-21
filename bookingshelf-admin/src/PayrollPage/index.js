@@ -11,11 +11,9 @@ import '../../public/scss/payroll.scss';
 import NavBar from './_components/NavBar';
 import { materialActions, payrollActions, servicesActions } from '../_actions';
 import moment from 'moment';
-import { material } from '../_reducers/material.reducer';
 import { withRouter } from 'react-router';
 import { access } from '../_helpers/access';
 import { withTranslation } from 'react-i18next';
-import DatePicker from './_pages/PayrollPage/_components/DatePicker';
 
 
 class Index extends Component {
@@ -62,6 +60,7 @@ class Index extends Component {
     this.initStaffData = this.initStaffData.bind(this);
     this.handleSelectDate = this.handleSelectDate.bind(this);
     this.updatePayoutType = this.updatePayoutType.bind(this);
+    this.handleDispatchPercents = this.handleDispatchPercents.bind(this);
   }
 
   handleSelectDate(date, isPeriod = false) {
@@ -104,6 +103,9 @@ class Index extends Component {
     this.props.dispatch(payrollActions.getPayoutAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
     this.props.dispatch(payrollActions.getPeriodAnalytic(staffId, moment(from).format('x'), moment(to).format('x')));
     this.props.dispatch(payrollActions.getPayoutTypes(staffId));
+    this.props.dispatch(payrollActions.getServicesPercent(staffId));
+    this.props.dispatch(payrollActions.getServiceGroupsPercent(staffId));
+    this.props.dispatch(payrollActions.getProductsPercent(staffId));
   }
 
   componentDidMount() {
@@ -119,6 +121,10 @@ class Index extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+    if (this.props.authentication.loginChecked !== nextProps.authentication.loginChecked) {
+      this.queryInitData();
+    }
+
     if (this.props.authentication.user !== nextProps.authentication.user) {
       this.setState({ selectedStaffId: nextProps.authentication.user.profile.staffId }, () => {
         this.initStaffData(this.state.selectedStaffId);
@@ -133,6 +139,20 @@ class Index extends Component {
     }));
   }
 
+  handleDispatchPercents(type, percents) {
+    if (type === 'services') {
+      this.props.dispatch(payrollActions.updateServicesPercent(
+        this.state.selectedStaffId,
+        percents.map(percent => ({ ...percent, staffId: this.state.selectedStaffId })),
+      ));
+    } else if (type === 'products') {
+      this.props.dispatch(payrollActions.updateProductsPercent(
+        this.state.selectedStaffId,
+        percents.map(percent => ({ ...percent, staffId: this.state.selectedStaffId })),
+      ));
+    }
+  }
+
   render() {
     const { selectedStaffId, activeTab } = this.state;
     const { staff, payroll, services, material } = this.props;
@@ -142,6 +162,11 @@ class Index extends Component {
       : <div className="loader salary-loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>;
 
     const settingsPage = !payroll.isLoadingTypes
+    && !material.isLoadingProducts
+    && !material.isLoadingCategories
+    && !payroll.isLoadingServicesPercent
+    && !payroll.isLoadingServiceGroupsPercent
+    && !payroll.isLoadingProductsPercent
       ? <SettingPage/>
       : <div className="loader salary-loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>;
 
@@ -168,10 +193,9 @@ class Index extends Component {
           <SettingProvider
             value={{
               services: services.services,
-              material: material,
-              payoutTypes: payroll.payoutTypes,
-              updatePayoutTypeStatus:
-              payroll.updatePayoutTypeStatus,
+              material,
+              payroll,
+              handleUpdatePercents: this.handleDispatchPercents,
               updatePayoutType: this.updatePayoutType,
             }}>
             {settingsPage}

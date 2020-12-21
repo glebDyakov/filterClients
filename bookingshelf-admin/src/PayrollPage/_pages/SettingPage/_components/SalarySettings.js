@@ -30,7 +30,7 @@ class SalarySettings extends Component {
   }
 
   componentDidMount() {
-    const { payoutTypes } = this.context;
+    const { payoutTypes } = this.context.payroll;
     this.setState((state) => ({
       settings: payoutTypes.reduce((acc, payout) => {
         acc[payout.payoutType] = {
@@ -97,55 +97,54 @@ class SalarySettings extends Component {
       <div className="salary-settings">
         <h2 className="settings-title">{t('Настройки зарплаты')}</h2>
         <div className="salary-container">
-          <label className="col"><p>{t('Выбор ставки')}</p>
-            <IntervalSelect value={rate}
-                            changeEvent={this.handleChangeRate}
-                            className="custom-select mb-0 salary-input"
-                            name="rate">
+          <span className="label col"><p>{t('Выбор ставки')}</p>
+            <select value={rate}
+                    onChange={this.handleChangeRate}
+                    className="custom-select mb-0 salary-input"
+                    name="rate">
               <option defaultChecked={true} value="0">{t('Выберите ставку')}</option>
               <option value="1.5">1.5 ставки - 12 часов</option>
               <option value="1">1 ставка - 8 часов</option>
               <option value="0.75">0.75 ставки - 6 часов</option>
               <option value="0.5">0.5 ставки - 4 часов</option>
               <option value="0.25">0.25 ставки - 2 часов</option>
-            </IntervalSelect>
-          </label>
-          <label className="col"><p>{t('Оклад за месяц')}</p>
-            <IntervalInput value={MONTHLY_SALARY.amount}
-                           action={this.handleSubmitType}
-                           type="number"
-                           changeEvent={this.handleChange}
-                           name="MONTHLY_SALARY"
-                           className="salary-input"
-                           disabled={this.state.rate === 0}
-                           placeholder={t('Введите оклад')}/>
-          </label>
-          <label className="col"><p>{t('Гарантированный оклад')}<Hint hintMessage={'message'}/></p>
-            <IntervalInput value={GUARANTEED_SALARY.amount}
-                           type="number"
-                           action={this.handleSubmitType}
-                           changeEvent={this.handleChange}
-                           name="GUARANTEED_SALARY"
-                           className="salary-input"
-                           disabled={this.state.rate === 0}
-                           placeholder={t('Введите оклад')}/>
-          </label>
-          <label className="col">
+            </select>
+          </span>
+          <span className="label col"><p>{t('Оклад за месяц')}</p>
+            <input value={MONTHLY_SALARY.amount}
+                   type="number"
+                   onChange={this.handleChange}
+                   name="MONTHLY_SALARY"
+                   className="salary-input"
+                   disabled={this.state.rate === 0}
+                   placeholder={t('Введите оклад')}/>
+          </span>
+          <span className="label col"><p>{t('Гарантированный оклад')}<Hint hintMessage={'message'}/></p>
+            <input value={GUARANTEED_SALARY.amount}
+                   type="number"
+                   onChange={this.handleChange}
+                   name="GUARANTEED_SALARY"
+                   className="salary-input"
+                   disabled={this.state.rate === 0}
+                   placeholder={t('Введите оклад')}/>
+          </span>
+          <span className="label col">
             <p>% {t('от реализации')}</p>
-            <IntervalInput value={SERVICE_PERCENT.amount}
-                           type="number"
-                           changeEvent={this.handleChange}
-                           action={this.handleSubmitType}
-                           className="salary-input"
-                           min="0"
-                           max="100"
-                           disabled={this.state.rate === 0}
-                           placeholder="0%"
-                           name="SERVICE_PERCENT"/>
-          </label>
+            <input value={SERVICE_PERCENT.amount}
+                   type="number"
+                   onChange={this.handleChange}
+                   className="salary-input"
+                   min="0"
+                   max="100"
+                   disabled={this.state.rate === 0}
+                   placeholder="0%"
+                   name="SERVICE_PERCENT"/>
+          </span>
         </div>
-        {this.context.updatePayoutTypeStatus === 200 &&
+        {this.context.payroll.updatePayoutTypeStatus === 200 &&
         <p className="alert-success p-1 rounded pl-3 mb-2">{t('Сохранено')}</p>}
+
+        <button className="save-button">Сохранить</button>
       </div>
     );
   }

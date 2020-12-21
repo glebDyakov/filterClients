@@ -8,13 +8,21 @@ class IntervalInput extends Component {
   }
 
   onChange(e) {
-    if (isNaN(e.target.value)) return;
+    const { value } = e.target;
 
-    this.props.changeEvent(e);
+
+    if (isNaN(parseFloat(value))) return;
+
+
+    this.props.changeEvent(this.props.typePercent, { ...this.props.item, amount: parseFloat(value) }, this.props.isNested);
+
     if (this.timer.current) clearTimeout(this.timer.current);
 
     this.timer.current = setTimeout(() => {
-      this.props.action(this.props.name);
+      this.props.action({
+        ...this.props.item,
+        amount: parseFloat(value),
+      });
       clearTimeout(this.timer.current);
     }, 2000);
   }
