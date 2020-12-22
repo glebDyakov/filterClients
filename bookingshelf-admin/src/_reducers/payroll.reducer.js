@@ -174,7 +174,7 @@ export function payroll(state = initialState, action) {
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS_TIME:
       return {
         ...state,
-        productsSaveStatus: 0
+        productsSaveStatus: 0,
       };
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_FAILURE:
@@ -196,13 +196,13 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
         servicesPercent: newSArr,
-        servicesSaveStatus: 200
+        servicesSaveStatus: 200,
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS_TIME:
       return {
         ...state,
-        servicesSaveStatus: 0
+        servicesSaveStatus: 0,
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_FAILURE:
@@ -231,18 +231,16 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
         serviceGroupsSaveStatus: 0,
-      }
+      };
     default:
       return state;
   }
 }
 
 function createOrUpdate(prevArr, item, field) {
-  console.log('prev', prevArr, 'item', item);
-  const find = prevArr.find(i => i[field] === item[field]);
+  const find = prevArr.find((i) => i[field] === item[field]);
   if (find) {
-    return prevArr.map(i => {
-      if (i[field] === item[field]) console.log(i[field] === item[field] ? item : i);
+    return prevArr.map((i) => {
       return i[field] === item[field] ? item : i;
     });
   } else {

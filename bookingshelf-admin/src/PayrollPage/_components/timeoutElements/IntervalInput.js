@@ -13,8 +13,7 @@ class IntervalInput extends Component {
     const { value } = e.target;
 
 
-    if (isNaN(parseFloat(value))) return;
-
+    if (isNaN(value)) return;
 
     this.props.changeEvent(this.props.typePercent, { ...this.props.item, amount: parseFloat(value) }, this.props.isNested);
 
