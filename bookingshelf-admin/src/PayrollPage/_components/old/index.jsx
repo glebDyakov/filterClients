@@ -272,8 +272,6 @@ class Index extends Component {
   }
 
 
-
-
   handleSubmitPercents(type, arr) {
     switch (type) {
       case 'percentServiceGroups':

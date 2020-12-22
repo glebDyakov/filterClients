@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import Hint from '../../../../_components/Hint';
-import IntervalInput from '../../../_components/timeoutElements/IntervalInput';
-import IntervalSelect from '../../../_components/timeoutElements/IntervalSelect';
 import SettingContext from '../../../_context/SettingContext';
 
 class SalarySettings extends Component {
@@ -26,7 +24,7 @@ class SalarySettings extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeRate = this.handleChangeRate.bind(this);
-    this.handleSubmitType = this.handleSubmitType.bind(this);
+    this.handleSubmitTypes = this.handleSubmitTypes.bind(this);
   }
 
   componentDidMount() {
@@ -70,21 +68,18 @@ class SalarySettings extends Component {
 
   // TODO:
 
-  handleSubmitType(type) {
-    const { updatePayoutType } = this.context;
-    const payoutType = this.state.settings[type];
+  handleSubmitTypes() {
+    const { updatePayoutTypes } = this.context;
 
-    if (isNaN(payoutType.amount)) return;
+    const settings = Object.keys(this.state.settings).map((type) => {
+      return {
+        ...this.state.settings[type],
+        rate: this.state.rate,
+        payoutType: type,
+      };
+    });
 
-    console.log(payoutType.amount);
-
-    const rqPayoutType = {
-      ...payoutType,
-      payoutType: type,
-      rate: this.state.rate,
-    };
-
-    updatePayoutType(rqPayoutType);
+    updatePayoutTypes(settings);
   }
 
   render() {
@@ -94,7 +89,7 @@ class SalarySettings extends Component {
     const { MONTHLY_SALARY, GUARANTEED_SALARY, SERVICE_PERCENT } = this.state.settings;
 
     return (
-      <div className="salary-settings">
+      <div className="">
         <h2 className="settings-title">{t('Настройки зарплаты')}</h2>
         <div className="salary-container">
           <span className="label col"><p>{t('Выбор ставки')}</p>
@@ -143,8 +138,7 @@ class SalarySettings extends Component {
         </div>
         {this.context.payroll.updatePayoutTypeStatus === 200 &&
         <p className="alert-success p-1 rounded pl-3 mb-2">{t('Сохранено')}</p>}
-
-        <button className="save-button">Сохранить</button>
+        <button onClick={this.handleSubmitTypes} className="save-button">Сохранить</button>
       </div>
     );
   }

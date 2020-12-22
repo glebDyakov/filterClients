@@ -18,7 +18,7 @@ class PercentListItem extends Component {
   }
 
   render() {
-    const { item, handleSubmit, handleChange } = this.props;
+    const { item, handleSubmit, handleChange, handleSubmitGroup } = this.props;
 
 
     return (
@@ -29,9 +29,15 @@ class PercentListItem extends Component {
                     className={(item.color !== '' ? item.color.toLowerCase() + 'ButtonEdit ' : '') + 'button-collapse' + (this.state.isOpen ? ' collapsed' : '')}/>
             <p className="service-group-name">{item.title}</p>
           </div>
-          <label className="percent"><input value={item.amount} onChange={(e) => {
-            console.log('change');
-          }} placeholder="%" type="number"/></label>
+          <label className="percent">
+            <IntervalInput value={item.amount}
+                           changeEvent={handleChange}
+                           isNested={false}
+                           typePercent={this.props.typePercent}
+                           item={item}
+                           placeholder="%"
+                           action={handleSubmitGroup}
+                           type="number"/></label>
         </li>
 
         {this.state.isOpen &&

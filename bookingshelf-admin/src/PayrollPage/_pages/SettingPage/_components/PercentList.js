@@ -34,7 +34,7 @@ class PercentList extends Component {
         {items.filter((item) =>
           item.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
           .map((item, index) => (
-            <PercentListItem typePercent={this.props.typePercent} handleChange={handleChange} handleSubmit={handleSubmit} key={index} item={item}/>
+            <PercentListItem handleSubmitGroup={this.props.handleSubmitGroup} typePercent={this.props.typePercent} handleChange={handleChange} handleSubmit={handleSubmit} key={index} item={item}/>
           ))}
       </ul>
     );

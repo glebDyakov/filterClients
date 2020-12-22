@@ -15,6 +15,7 @@ class PercentSettings extends Component {
     this.getPrevItem = this.getPrevItem.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.initData = this.initData.bind(this);
+    this.handleSubmitGroup = this.handleSubmitGroup.bind(this);
 
   }
 
@@ -32,7 +33,7 @@ class PercentSettings extends Component {
     const { material, services } = context;
 
     const servicesGroupsItems = services && services.map((serviceGroup) => {
-      const serviceGroupPercent = this.context.payroll.serviceGroupsPercent.find((serviceGroupPercent) => serviceGroupPercent.serviceGroupId === serviceGroup.serviceGroupId);
+      const serviceGroupPercent = context.payroll.serviceGroupsPercent.find((serviceGroupPercent) => serviceGroupPercent.serviceGroupId === serviceGroup.serviceGroupId);
       return {
         id: serviceGroup.serviceGroupId,
         title: serviceGroup.name,
@@ -40,7 +41,7 @@ class PercentSettings extends Component {
         amount: serviceGroupPercent ? serviceGroupPercent.percent : '',
         type: 'servicegroups',
         nestedItems: serviceGroup.services.map((service) => {
-          const servicesPercent = this.context.payroll.servicesPercent.find((servicePercent) => servicePercent.serviceId === service.serviceId);
+          const servicesPercent = context.payroll.servicesPercent.find((servicePercent) => servicePercent.serviceId === service.serviceId);
           return {
             nestedId: serviceGroup.serviceGroupId,
             id: service.serviceId,
@@ -62,7 +63,7 @@ class PercentSettings extends Component {
 
         type: 'category',
         nestedItems: products.map((product) => {
-          const productsPercent = this.context.payroll.productsPercent.find((productPercent) => productPercent.productId === product.productId);
+          const productsPercent = context.payroll.productsPercent.find((productPercent) => productPercent.productId === product.productId);
           return {
             id: product.productId,
             title: product.productName,
@@ -90,22 +91,56 @@ class PercentSettings extends Component {
     }
   }
 
-  handleSubmit(item) {
+  getIdType(type) {
+    switch (type) {
+      case 'servicegroups':
+        return 'serviceGroupId';
+      default:
+        return type.substr(0, type.length - 1) + 'Id';
+    }
+  }
+
+  getSubmitNestedItem(item) {
+    const prevItem = this.getPrevItem(item.type, item.id);
+
+    if (prevItem) {
+      return {
+        ...prevItem,
+        percent: item.amount,
+      };
+    } else {
+      return {
+        percent: item.amount,
+        [this.getIdType(item.type)]: item.id,
+      };
+    }
+  }
+
+  handleSubmit(item, type = 'services') {
     if (item.type === 'services' || item.type === 'products') {
-      const prevItem = this.getPrevItem(item.type, item.id);
-      if (prevItem) {
-        const newItem = {
-          ...prevItem,
-          percent: item.amount,
-        };
-        this.context.handleUpdatePercents(item.type, [newItem]);
-      } else {
-        const newItem = {
-          percent: item.amount,
-          [item.type.substr(0, item.type.length - 1) + "Id"]: item.id,
-        };
-        this.context.handleUpdatePercents(item.type, [newItem]);
-      }
+      const newItem = this.getSubmitNestedItem(item);
+
+      this.context.handleUpdatePercents(item.type, [newItem]);
+    }
+  }
+
+  getType(type) {
+    switch (type) {
+      case 'servicegroups':
+        return 'services';
+      case 'category':
+        return 'products';
+    }
+  }
+
+  handleSubmitGroup(item, type) {
+    const items = item.nestedItems.map(i => this.getSubmitNestedItem(i));
+    const itemType = this.getType(type);
+    if (itemType === 'services') {
+      this.context.handleUpdatePercents('servicegroups', [this.getSubmitNestedItem(item)]);
+      this.context.handleUpdatePercents('services', items);
+    } else {
+      this.context.handleUpdatePercents(this.getType(type), items);
     }
   }
 
@@ -126,7 +161,11 @@ class PercentSettings extends Component {
       }));
     } else {
       this.setState((state) => ({
-        [type]: state[type].map(i => i.id === item.id ? { ...i, amount: item.amount } : i),
+        [type]: state[type].map(i => i.id === item.id ? {
+          ...i,
+          amount: item.amount,
+          nestedItems: item.nestedItems.map(ni => ({ ...ni, amount: item.amount })),
+        } : i),
       }));
     }
   }
@@ -136,12 +175,19 @@ class PercentSettings extends Component {
       <div className="percent-of-sales-container">
         <div className="percent-of-sales">
           <div className="services-container col">
-            <PercentList typePercent="serviceGroups" handleChange={this.handleChange} handleSubmit={this.handleSubmit}
+            {(this.context.payroll.servicesSaveStatus === 200
+              || this.context.payroll.serviceGroupsSaveStatus === 200)
+            && <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>}
+            <PercentList typePercent="serviceGroups" handleChange={this.handleChange}
+                         handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
                          items={this.state.serviceGroups}/>
           </div>
           <div className="products-container col">
+            {(this.context.payroll.productsSaveStatus === 200)
+            && <p className="alert-success p-1 rounded pl-3 mb-2">Сохранено</p>}
             <PercentList typePercent="productCategories" handleChange={this.handleChange}
-                         handleSubmit={this.handleSubmit} items={this.state.productCategories}/>
+                         handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
+                         items={this.state.productCategories}/>
           </div>
         </div>
       </div>

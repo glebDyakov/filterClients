@@ -13,6 +13,10 @@ const initialState = {
   isLoadingServiceGroupsPercent: false,
   isLoadingProductsPercent: false,
 
+  productsSaveStatus: 0,
+  servicesSaveStatus: 0,
+  serviceGroupsSaveStatus: 0,
+
   updatePayoutTypeStatus: 0,
 
   servicesPercent: [],
@@ -155,16 +159,22 @@ export function payroll(state = initialState, action) {
       };
 
 
-
-
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS:
+      let newPArr = state.productsPercent;
+      action.payload.productsPercent.map(productPercent => {
+        newPArr = createOrUpdate(newPArr, productPercent, 'productId');
+      });
+
       return {
         ...state,
+        productsPercent: newPArr,
+        productsSaveStatus: 200,
       };
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS_TIME:
       return {
         ...state,
+        productsSaveStatus: 0
       };
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_FAILURE:
@@ -178,13 +188,21 @@ export function payroll(state = initialState, action) {
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS:
+      let newSArr = state.servicesPercent;
+      action.payload.servicesPercent.map(servicePercent => {
+        newSArr = createOrUpdate(newSArr, servicePercent, 'serviceId');
+      });
+
       return {
         ...state,
+        servicesPercent: newSArr,
+        servicesSaveStatus: 200
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS_TIME:
       return {
         ...state,
+        servicesSaveStatus: 0
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_FAILURE:
@@ -196,7 +214,39 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
       };
+
+    case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS:
+      let newSgArr = state.serviceGroupsPercent;
+      action.payload.serviceGroupsPercent.map(serviceGroupPercent => {
+        newSgArr = createOrUpdate(newSgArr, serviceGroupPercent, 'serviceGroupId');
+      });
+
+      return {
+        ...state,
+        serviceGroupsPercent: newSgArr,
+        serviceGroupsSaveStatus: 200,
+      };
+
+    case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS_TIME:
+      return {
+        ...state,
+        serviceGroupsSaveStatus: 0,
+      }
     default:
       return state;
   }
+}
+
+function createOrUpdate(prevArr, item, field) {
+  console.log('prev', prevArr, 'item', item);
+  const find = prevArr.find(i => i[field] === item[field]);
+  if (find) {
+    return prevArr.map(i => {
+      if (i[field] === item[field]) console.log(i[field] === item[field] ? item : i);
+      return i[field] === item[field] ? item : i;
+    });
+  } else {
+    prevArr.push(item);
+  }
+  return prevArr;
 }

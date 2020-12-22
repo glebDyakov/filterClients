@@ -6,6 +6,20 @@
   overflow-y: hidden;
   height: 100%;
 
+  .save-button {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+
+    color: #FFFFFF;
+    background: #50A5F1;
+    border-radius: 30px;
+    padding: 10px 64px;
+    border: none;
+    height: 42px;
+  }
+
   .salary-loader {
     left: 50% !important;
     transform: translateX(-50%) !important;

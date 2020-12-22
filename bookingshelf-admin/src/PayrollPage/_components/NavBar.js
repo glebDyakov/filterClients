@@ -16,8 +16,8 @@ class NavBar extends Component {
               >{t('Расчет зарплат')}</a>
             </li>
             <li className="nav-item">
-              <a onClick={setTab.bind(null, 'setting')}
-                 className={'nav-link' + (activeTab === 'setting' ? ' active' : '')}
+              <a onClick={setTab.bind(null, 'settings')}
+                 className={'nav-link' + (activeTab === 'settings' ? ' active' : '')}
               >{t('Настройки зарплат')}
               </a>
             </li>

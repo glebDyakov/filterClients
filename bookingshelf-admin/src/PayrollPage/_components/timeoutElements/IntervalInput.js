@@ -7,6 +7,8 @@ class IntervalInput extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
+
+
   onChange(e) {
     const { value } = e.target;
 
@@ -18,11 +20,13 @@ class IntervalInput extends Component {
 
     if (this.timer.current) clearTimeout(this.timer.current);
 
+    console.log(value, this.props.item.type);
+
     this.timer.current = setTimeout(() => {
       this.props.action({
         ...this.props.item,
         amount: parseFloat(value),
-      });
+      }, this.props.item.type);
       clearTimeout(this.timer.current);
     }, 2000);
   }

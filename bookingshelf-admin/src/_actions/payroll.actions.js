@@ -11,7 +11,8 @@ export const payrollActions = {
   getProductsPercent,
   getServiceGroupsPercent,
   updateProductsPercent,
-  updateServicesPercent
+  updateServicesPercent,
+  updateServiceGroupsPercent
 };
 
 function getPayoutTypes(staffId) {
@@ -92,7 +93,7 @@ function getPeriodAnalytic(staffId, dateFrom, dateTo) {
 function updatePayoutType(staffId, payoutType) {
   return (dispatch) => {
     dispatch(request());
-    payrollService.updatePayoutType(staffId, [payoutType])
+    payrollService.updatePayoutType(staffId, payoutType)
       .then(
         (payoutType) => {
           dispatch(success(payoutType));
@@ -204,7 +205,6 @@ function updateProductsPercent(staffId, productsPercent) {
       .then(
         (productsPercent) => {
           dispatch(success(productsPercent));
-          dispatch(payrollActions.getProductsPercent(staffId));
           setTimeout(() => {
             dispatch(success_time());
           }, 500);
@@ -236,7 +236,7 @@ function updateServicesPercent(staffId, servicesPercent) {
     payrollService.updatePercents(staffId, 'services', servicesPercent)
       .then(
         (servicesPercent) => {
-          dispatch(payrollActions.getServicesPercent(staffId));
+          dispatch(success(servicesPercent));
           setTimeout(() => {
             dispatch(success_time());
           }, 500);
@@ -259,5 +259,37 @@ function updateServicesPercent(staffId, servicesPercent) {
 
   function request() {
     return { type: payrollConstants.UPDATE_SERVICES_PERCENT_REQUEST };
+  }
+}
+
+function updateServiceGroupsPercent(staffId, serviceGroupsPercent) {
+  return (dispatch) => {
+    dispatch(request());
+    payrollService.updatePercents(staffId, 'servicegroups', serviceGroupsPercent)
+      .then(
+        (serviceGroupsPercent) => {
+          dispatch(success(serviceGroupsPercent));
+          setTimeout(() => {
+            dispatch(success_time());
+          }, 500);
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(serviceGroupsPercent) {
+    return { type: payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS, payload: { serviceGroupsPercent } };
+  }
+
+  function success_time() {
+    return { type: payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS_TIME };
+  }
+
+  function failure() {
+    return { type: payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_FAILURE };
+  }
+
+  function request() {
+    return { type: payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_REQUEST };
   }
 }

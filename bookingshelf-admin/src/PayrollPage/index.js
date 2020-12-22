@@ -25,7 +25,7 @@ class Index extends Component {
     }
 
     if (props.match.params.activeTab &&
-      props.match.params.activeTab !== 'setting'
+      props.match.params.activeTab !== 'settings'
     ) {
       props.history.push('/nopage');
     }
@@ -33,7 +33,7 @@ class Index extends Component {
     if (props.match.params.activeTab === undefined) {
       document.title = props.t('Расчет зарплат | Онлайн-запись');
     }
-    if (props.match.params.activeTab === 'setting') {
+    if (props.match.params.activeTab === 'settings') {
       document.title = props.t('Настройки зарплат | Онлайн-запись');
     }
 
@@ -59,7 +59,7 @@ class Index extends Component {
     this.queryInitData = this.queryInitData.bind(this);
     this.initStaffData = this.initStaffData.bind(this);
     this.handleSelectDate = this.handleSelectDate.bind(this);
-    this.updatePayoutType = this.updatePayoutType.bind(this);
+    this.updatePayoutTypes = this.updatePayoutTypes.bind(this);
     this.handleDispatchPercents = this.handleDispatchPercents.bind(this);
   }
 
@@ -132,26 +132,32 @@ class Index extends Component {
     }
   }
 
-  updatePayoutType(payoutType) {
-    this.props.dispatch(payrollActions.updatePayoutType(this.state.selectedStaffId, {
-      ...payoutType,
+  updatePayoutTypes(payoutTypes) {
+    this.props.dispatch(payrollActions.updatePayoutType(this.state.selectedStaffId, payoutTypes.map(pt => ({
+      ...pt,
       staffId: this.state.selectedStaffId,
-    }));
+    }))));
   }
 
   handleDispatchPercents(type, percents) {
     if (type === 'services') {
       this.props.dispatch(payrollActions.updateServicesPercent(
         this.state.selectedStaffId,
-        percents.map(percent => ({ ...percent, staffId: this.state.selectedStaffId })),
+        percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
       ));
     } else if (type === 'products') {
       this.props.dispatch(payrollActions.updateProductsPercent(
         this.state.selectedStaffId,
-        percents.map(percent => ({ ...percent, staffId: this.state.selectedStaffId })),
+        percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
+      ));
+    } else if (type === 'servicegroups') {
+      this.props.dispatch(payrollActions.updateServiceGroupsPercent(
+        this.state.selectedStaffId,
+        percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
       ));
     }
   }
+
 
   render() {
     const { selectedStaffId, activeTab } = this.state;
@@ -189,14 +195,14 @@ class Index extends Component {
             {payrollPage}
           </PayrollProvider>}
 
-          {this.state.activeTab === 'setting' &&
+          {this.state.activeTab === 'settings' &&
           <SettingProvider
             value={{
               services: services.services,
               material,
               payroll,
               handleUpdatePercents: this.handleDispatchPercents,
-              updatePayoutType: this.updatePayoutType,
+              updatePayoutTypes: this.updatePayoutTypes,
             }}>
             {settingsPage}
           </SettingProvider>}
