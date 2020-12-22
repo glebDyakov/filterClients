@@ -13,6 +13,12 @@ const initialState = {
   isLoadingServiceGroupsPercent: false,
   isLoadingProductsPercent: false,
 
+  isSavingServicesPercent: false,
+  isSavingServiceGroupsPercent: false,
+  isSavingProductsPercent: false,
+
+  isSavingPayoutTypes: false,
+
   productsSaveStatus: 0,
   servicesSaveStatus: 0,
   serviceGroupsSaveStatus: 0,
@@ -83,6 +89,7 @@ export function payroll(state = initialState, action) {
             : payoutType,
         ),
         updatePayoutTypeStatus: 200,
+        isSavingPayoutTypes: false,
       };
     case payrollConstants.UPDATE_PAYOUT_TYPE_SUCCESS_TIME:
       return {
@@ -93,11 +100,13 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
         updatePayoutTypeStatus: 400,
+        isSavingPayoutTypes: false,
       };
     case payrollConstants.UPDATE_PAYOUT_TYPE_REQUEST:
       return {
         ...state,
         updatePayoutTypeStatus: 0,
+        isSavingPayoutTypes: true,
       };
 
 
@@ -169,6 +178,7 @@ export function payroll(state = initialState, action) {
         ...state,
         productsPercent: newPArr,
         productsSaveStatus: 200,
+        isSavingProductsPercent: false,
       };
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS_TIME:
@@ -180,11 +190,13 @@ export function payroll(state = initialState, action) {
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_FAILURE:
       return {
         ...state,
+        isSavingProductsPercent: false,
       };
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_REQUEST:
       return {
         ...state,
+        isSavingProductsPercent: true,
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS:
@@ -197,6 +209,7 @@ export function payroll(state = initialState, action) {
         ...state,
         servicesPercent: newSArr,
         servicesSaveStatus: 200,
+        isSavingServicesPercent: false,
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_SUCCESS_TIME:
@@ -208,11 +221,15 @@ export function payroll(state = initialState, action) {
     case payrollConstants.UPDATE_SERVICES_PERCENT_FAILURE:
       return {
         ...state,
+        isSavingServicesPercent: false,
+
       };
 
     case payrollConstants.UPDATE_SERVICES_PERCENT_REQUEST:
       return {
         ...state,
+        isSavingServicesPercent: true,
+
       };
 
     case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS:
@@ -225,12 +242,26 @@ export function payroll(state = initialState, action) {
         ...state,
         serviceGroupsPercent: newSgArr,
         serviceGroupsSaveStatus: 200,
+        isSavingServiceGroupsPercent: false,
       };
 
     case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_SUCCESS_TIME:
       return {
         ...state,
         serviceGroupsSaveStatus: 0,
+
+      };
+
+    case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_REQUEST:
+      return {
+        ...state,
+        isSavingServiceGroupsPercent: true,
+      };
+
+    case payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_FAILURE:
+      return {
+        ...state,
+        isSavingServiceGroupsPercent: false,
       };
     default:
       return state;
