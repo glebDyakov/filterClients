@@ -20,11 +20,11 @@ class DatePicker extends Component {
   }
 
   componentDidMount() {
-    // document.addEventListener('click', this.handleOutsideClick, false);
+    document.addEventListener('click', this.handleOutsideClick, false);
   }
 
   componentWillUnmount() {
-    // document.removeEventListener('click', this.handleOutsideClick, false);
+    document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
   setCalendarRef(node) {
@@ -79,6 +79,9 @@ class DatePicker extends Component {
         to: day,
         enteredTo: day,
       }, true);
+      this.setState({
+        isOpen: false,
+      })
     }
   }
 
@@ -119,7 +122,7 @@ class DatePicker extends Component {
                  ref={(input) => this.startClosedDate = input}/>
         </div>
 
-        <span ref={this.setCalendarRef} style={{ display: this.state.isOpen ? 'block' : 'none' }}>
+        <span className="dp-wrapper" style={{ display: this.state.isOpen ? 'block' : 'none' }}>
           <DayPicker
             className="SelectedWeekExample"
             fromMonth={from}

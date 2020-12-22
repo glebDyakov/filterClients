@@ -59,6 +59,16 @@
       justify-content: center;
       align-items: center;
     }
+
+    .dp-wrapper {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 300px;
+      width: 100%;
+    }
+
     .SelectedWeekExample {
       position: absolute;
       right: 50%;
@@ -384,15 +394,15 @@
         .payroll-day {
           position: relative;
 
-          &::after {
-            content: '';
-            background: #50A5F1;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            position: absolute;
-            width: 4px;
-          }
+          //&::after {
+          //  content: '';
+          //  background: #50A5F1;
+          //  left: 0;
+          //  top: 0;
+          //  bottom: 0;
+          //  position: absolute;
+          //  width: 4px;
+          //}
 
           &:not(:last-of-type) {
             border-bottom: 1px solid #EAEBED;
@@ -603,6 +613,7 @@
 
           .dropdown_item {
             padding: 15px;
+            min-height: 67px;
 
             .percent {
               margin: 0;
