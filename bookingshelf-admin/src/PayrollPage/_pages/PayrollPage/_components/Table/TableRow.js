@@ -1,47 +1,36 @@
 import React, { Component } from 'react';
-import PayrollDayNestedItem from './PayrollDayNestedItem';
-import { withTranslation } from 'react-i18next';
-import moment from 'moment';
 import capitalize from 'react-bootstrap/lib/utils/capitalize';
+import moment from 'moment';
+import TableSubRow from './TableSubRow';
+import { withTranslation } from 'react-i18next';
 
-class PayrollDay extends Component {
+class TableRow extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isOpened: false,
-      payout: props.payout
+      isOpen: false,
     };
 
-    this.handleOpen = this.handleOpen.bind(this);
+    this.handleCollapse = this.handleCollapse.bind(this);
   }
 
-  handleOpen() {
-    this.setState(state => {
-      return {
-        isOpened: !state.isOpened,
-      };
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(this.props.payout) !== JSON.stringify(nextProps.payout)) {
-      this.setState({
-        payout: nextProps.payout,
-      });
-    }
+  handleCollapse() {
+    this.setState((state) => ({
+      isOpen: !state.isOpen,
+    }));
   }
 
   render() {
-    const { t } = this.props;
-    const { payout } = this.state;
+    const { payout, t } = this.props;
+    const { isOpen } = this.state;
 
     return (
-      <React.Fragment>
-        <tr className={'payroll-day' + (this.state.isOpened ? ' opened' : '')}>
+      <>
+        <tr className={'payroll-day' + (this.state.isOpen ? ' opened' : '')}>
           <td>
             <div className="open-handler-container">
-              <button onClick={this.handleOpen} className="open-handler"></button>
+              <button onClick={this.handleCollapse} className="open-handler"/>
             </div>
           </td>
           <td>
@@ -63,12 +52,12 @@ class PayrollDay extends Component {
             <p>{t('Доход компании')}: {payout.companyRevenue} BYN</p>
           </td>
         </tr>
-        {this.state.isOpened &&
-        payout.periodsSalary.map(ps => <PayrollDayNestedItem payout={ps}/>)
-        }
-      </React.Fragment>
+
+        {this.state.isOpen &&
+        payout.periodsSalary.map((ps, index) => <TableSubRow key={index} payout={ps}/>)}
+      </>
     );
   }
 }
 
-export default withTranslation('common')(PayrollDay);
+export default withTranslation('common')(TableRow);
