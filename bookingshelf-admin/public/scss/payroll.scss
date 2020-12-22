@@ -30,6 +30,7 @@
     margin-right: 20px;
 
     position: relative;
+
     .button-calendar {
       background: #F3F3F9;
       /* Drop Shadow */
@@ -51,6 +52,7 @@
         margin: 0;
 
       }
+
       height: 40px;
       width: 349px;
 
@@ -394,15 +396,20 @@
         .payroll-day {
           position: relative;
 
-          //&::after {
-          //  content: '';
-          //  background: #50A5F1;
-          //  left: 0;
-          //  top: 0;
-          //  bottom: 0;
-          //  position: absolute;
-          //  width: 4px;
-          //}
+
+          &:first-of-type {
+            position: relative;
+
+            &::after {
+              content: '';
+              background: #50A5F1;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              position: absolute;
+              width: 4px;
+            }
+          }
 
           &:not(:last-of-type) {
             border-bottom: 1px solid #EAEBED;
