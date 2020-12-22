@@ -24,9 +24,9 @@ class PercentSettings extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (JSON.stringify(this.context) !== JSON.stringify(nextContext)) {
-      this.initData(nextContext);
-    }
+    // if (JSON.stringify(this.context) !== JSON.stringify(nextContext)) {
+    //   this.initData(nextContext);
+    // }
   }
 
   initData(context = this.context) {
