@@ -380,14 +380,20 @@
         background: #fff;
         z-index: 2;
 
-        &::after {
-          content: '';
-          background-color: #EAEBED;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          position: absolute;
+        tr {
+          td {
+            position: relative;
+
+            &::after {
+              content: '';
+              background-color: #EAEBED;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              height: 1px;
+              position: absolute;
+            }
+          }
         }
 
       }
@@ -397,17 +403,20 @@
           position: relative;
 
 
-          &:first-of-type {
+          td {
             position: relative;
+            &:first-of-type {
+              position: relative;
 
-            &::after {
-              content: '';
-              background: #50A5F1;
-              left: 0;
-              top: 0;
-              bottom: 0;
-              position: absolute;
-              width: 4px;
+              &::after {
+                content: '';
+                background: #50A5F1;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                position: absolute;
+                width: 4px;
+              }
             }
           }
 
@@ -557,11 +566,12 @@
 
 
     .percent-of-sales-container {
-      border-bottom: 1px solid #EAEBED;
+      border-top: 1px solid #EAEBED;
       padding-bottom: 5px;
+      margin-top: 15px;
 
       &:not(:first-of-type) {
-        padding-top: 20px;
+        padding-top: 5px;
       }
 
 
