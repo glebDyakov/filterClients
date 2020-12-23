@@ -6,6 +6,10 @@
   overflow-y: hidden;
   height: 100%;
 
+  .questions_black {
+    z-index: 9;
+  }
+
   .save-button {
     font-style: normal;
     font-weight: normal;
@@ -72,6 +76,7 @@
     }
 
     .SelectedWeekExample {
+      background-color: #fff;
       position: absolute;
       right: 50%;
       left: 50%;
@@ -187,6 +192,10 @@
         .staff-credit {
           margin-left: 10px;
           color: #495057;
+
+          img {
+            border-radius: 50%;
+          }
 
           .staff-name {
             font-style: normal;
