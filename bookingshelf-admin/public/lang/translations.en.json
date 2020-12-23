@@ -799,9 +799,18 @@
   "Все услуги": "All services",
   "Все товары": "All products",
   "Введите название категории": "Enter category name",
-  "хит": "hit",
+  "хит": "best offer",
   "Месяца": "Of the month",
   "Месяцев": "Months",
   "бесплатно": "is free",
-  "Оплатить пакет": "Pay for package"
+  "Оплатить пакет": "Pay for package",
+
+  "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Salary paid if the employee's earnings are less than a specified value.",
+  "Проценты от реализации": "Percentage from sales",
+  "Рабочих дней": "Working days",
+  "Рабочих часов": "Working hours",
+  "ставка": "rate",
+  "ставки": "rates",
+  "часов": "hours"
+
 }

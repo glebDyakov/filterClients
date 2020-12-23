@@ -802,7 +802,14 @@
   "Месяца": "Miesiąca",
   "Месяцев": "Miesięcy",
   "бесплатно": "jest wolny",
-  "Оплатить пакет": "Zapłać za pakiet"
+  "Оплатить пакет": "Zapłać za pakiet",
+  "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Wynagrodzenie wypłacane, jeśli zarobki pracownika są niższe od określonej wartości.",
+  "Проценты от реализации": "Procent ze sprzedaży",
+  "Рабочих дней": "Dni robocze",
+  "Рабочих часов": "Godziny pracy",
+  "ставка": "oceniać",
+  "ставки": "stawki",
+  "часов": "godziny"
 }
 
 
