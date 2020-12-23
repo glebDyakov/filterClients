@@ -6,6 +6,8 @@
   overflow-y: hidden;
   height: 100%;
 
+
+
   .questions_black {
     z-index: 9;
   }
@@ -625,10 +627,12 @@
           }
         }
 
+
+
         .dropdown {
           position: absolute;
           width: 100%;
-          top: 70px;
+          top: 25px;
           left: 0;
           right: 0;
           background: #FFFFFF;
@@ -640,8 +644,19 @@
 
 
           .nested-dropdown {
-            .dropdown_item:last-of-type {
+            .dropdown_item {
               border-bottom: 1px solid #EEEFF1;
+            }
+          }
+
+          .dropdown_item:not(:last-of-type) {
+            border-bottom: 1px solid #EEEFF1;
+          }
+
+          .nested-dropdown {
+            .dropdown_item {
+              border-top: 1px solid #EEEFF1;
+              border-bottom: none;
             }
           }
 
@@ -668,9 +683,7 @@
               background-color: #fff;
             }
 
-            &:not(:last-of-type) {
-              border-bottom: 1px solid #EEEFF1;
-            }
+
 
             &.search-item {
               position: sticky;
@@ -711,6 +724,18 @@
         line-height: 18px;
         color: #50A5F1;
         cursor: pointer;
+      }
+
+      .percent-title {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 18px;
+        /* identical to box height */
+
+
+        color: #2A3042;
+
       }
 
       .percent-of-sales {

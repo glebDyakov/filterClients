@@ -743,7 +743,7 @@ class Index extends Component {
 
                         {this.state.finalPriceObject.m24.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -786,7 +786,7 @@ class Index extends Component {
 
                         {this.state.finalPriceObject.m12.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -829,7 +829,7 @@ class Index extends Component {
 
                         {this.state.finalPriceObject.m6.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))
@@ -872,7 +872,7 @@ class Index extends Component {
 
                         {this.state.finalPriceObject.m3.finalPriceMonthDiscount && this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {countryCode
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
                             ? t('грн')
                             : (countryCode === 'RUS' ? t('руб') : t('руб'))))

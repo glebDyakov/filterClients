@@ -99,11 +99,11 @@ class SalarySettings extends Component {
                     className="custom-select mb-0 salary-input"
                     name="rate">
               <option defaultChecked={true} value="0">{t('Выберите ставку')}</option>
-              <option value="1.5">1.5 ставки - 12 часов</option>
-              <option value="1">1 ставка - 8 часов</option>
-              <option value="0.75">0.75 ставки - 6 часов</option>
-              <option value="0.5">0.5 ставки - 4 часов</option>
-              <option value="0.25">0.25 ставки - 2 часов</option>
+              <option value="1.5">1.5 {t('ставки')} - 12 {t('часов')}</option>
+              <option value="1">1 {t('ставка')} - 8 {t('часов')}</option>
+              <option value="0.75">0.75 {t('ставки')} - 6 {t('часов')}</option>
+              <option value="0.5">0.5 {t('ставки')} - 4 {t('часов')}</option>
+              <option value="0.25">0.25 {t('ставки')} - 2 {t('часов')}</option>
             </select>
           </span>
           <span className="label col"><p>{t('Оклад за месяц')}</p>
@@ -115,7 +115,7 @@ class SalarySettings extends Component {
                    disabled={this.state.rate === 0}
                    placeholder={t('Введите оклад')}/>
           </span>
-          <span className="label col"><p>{t('Гарантированный оклад')}<Hint hintMessage={'message'}/></p>
+          <span className="label col"><p>{t('Гарантированный оклад')}<Hint hintMessage={t('Оклад, выплачиваемый если заработок сотрудника менее установленного значения.')}/></p>
             <input value={GUARANTEED_SALARY.amount}
                    type="number"
                    onChange={this.handleChange}
@@ -140,7 +140,7 @@ class SalarySettings extends Component {
 
 
         <button disabled={this.context.payroll.isSavingPayoutTypes} onClick={this.handleSubmitTypes}
-                className={'save-button' + (this.context.payroll.isSavingPayoutTypes ? ' disabledField' : '')}>Сохранить
+                className={'save-button' + (this.context.payroll.isSavingPayoutTypes ? ' disabledField' : '')}>{t('Сохранить')}
         </button>
         {this.context.payroll.isSavingPayoutTypes &&
         <img style={{ width: '57px' }}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PercentListItem from './PercentListItem';
+import { withTranslation } from 'react-i18next';
 
 class PercentList extends Component {
   constructor(props) {
@@ -19,14 +20,14 @@ class PercentList extends Component {
   }
 
   render() {
-    const { items, handleSubmit, handleChange } = this.props;
+    const { items, handleSubmit, handleChange, t } = this.props;
 
     return (
       <ul ref={(node) => (this.list = node)}
           className="dropdown d-flex flex-column">
         <li className="dropdown_item search-item">
           <input onChange={this.handleSearch}
-                 placeholder="Введите название категории"
+                 placeholder={t('Введите название категории')}
                  className="search-input"
                  type="text"/>
         </li>
@@ -41,4 +42,4 @@ class PercentList extends Component {
   }
 }
 
-export default PercentList;
+export default withTranslation('common')(PercentList);

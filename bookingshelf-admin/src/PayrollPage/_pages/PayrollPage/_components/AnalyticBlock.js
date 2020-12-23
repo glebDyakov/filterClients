@@ -10,11 +10,11 @@ class AnalyticBlock extends Component {
     return (
       <div className="stats-container d-flex">
         <div className="col">
-          <h3 className="title">{t('Отработано дней')}:</h3>
+          <h3 className="title">{t('Рабочих дней')}:</h3>
           <h2 className="stat">{analytic.workedDays ?? 0}</h2>
         </div>
         <div className="col">
-          <h3 className="title">{t('Отработано часов')}:</h3>
+          <h3 className="title">{t('Рабочих часов')}:</h3>
           <h2 className="stat">{analytic.workedHours ?? 0}</h2>
         </div>
         <div className="col">

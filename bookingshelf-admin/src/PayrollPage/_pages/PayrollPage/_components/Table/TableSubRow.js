@@ -16,13 +16,13 @@ class TableSubRow extends Component {
             className="list-text text-center">{moment('1900-01-01 00:00:00').add(payout.durationSec, 'seconds').format('H')}{t('ч')} {moment('1900-01-01 00:00:00').add(payout.durationSec, 'seconds').format('mm')} {t('минут')}</p>
         </td>
         <td>
-          <p className="list-text">{payout.serviceName} <br/> Цена: <span className="price">{payout.serviceCost} BYN</span></p>
+          <p className="list-text">{payout.serviceName} <br/> {t('Цена')}: <span className="price">{payout.serviceCost} BYN</span></p>
         </td>
         <td>
           <p className="list-text">{payout.servicePercent}%</p>
         </td>
         <td>
-          <p className="list-text">{payout.productPercent === 0 ? '-' : <> { payout.productName } <br/> Цена: <span className="price">{payout.productCost} BYN </span> </>}</p>
+          <p className="list-text">{payout.productPercent === 0 ? '-' : <> { payout.productName } <br/> {t('Цена')}: <span className="price">{payout.productCost} BYN </span> </>}</p>
         </td>
         <td>
           <p className="list-text">{payout.productPercent === 0 ? '-' : payout.productPercent + '%'}</p>
