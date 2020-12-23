@@ -74,6 +74,7 @@ class SalarySettings extends Component {
     const settings = Object.keys(this.state.settings).map((type) => {
       return {
         ...this.state.settings[type],
+        amount: this.state.settings[type].amount === null ? this.state.settings[type].amount : 0,
         rate: this.state.rate,
         payoutType: type,
       };
