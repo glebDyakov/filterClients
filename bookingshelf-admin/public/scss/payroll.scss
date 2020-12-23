@@ -426,7 +426,7 @@
 
 
           td {
-            padding: 13px 20px;
+            padding: 9px 20px;
             border-top: none;
             vertical-align: middle;
             white-space: pre-wrap;
@@ -541,6 +541,14 @@
               font-size: 13px;
               line-height: 18px;
               color: #495057;
+
+              .price {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 18px;
+                color: #495057;
+              }
             }
 
           }
