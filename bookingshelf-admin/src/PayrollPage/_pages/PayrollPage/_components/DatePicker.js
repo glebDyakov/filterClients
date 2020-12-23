@@ -19,20 +19,22 @@ class DatePicker extends Component {
     this.setCalendarRef = this.setCalendarRef.bind(this);
   }
 
-  componentDidMount() {
-    // document.addEventListener('click', this.handleOutsideClick, false);
+  componentDidUpdate() {
+    if (this.state.isOpen) {
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
   }
 
-  componentWillUnmount() {
-    // document.removeEventListener('click', this.handleOutsideClick, false);
-  }
 
   setCalendarRef(node) {
     this.calendarRef = node;
   }
 
   handleOutsideClick(e) {
-    if (this.calendarRef && !this.calendarRef.contains(e.target)) {
+    console.log(e.target.parentElement.className);
+    if (e.target.parentElement.className !== 'DayPicker-Week' && e.target.parentElement.className !== 'DayPicker-NavBar') {
       this.setState({
         isOpen: false,
       });
@@ -81,7 +83,7 @@ class DatePicker extends Component {
       }, true);
       this.setState({
         isOpen: false,
-      })
+      });
     }
   }
 

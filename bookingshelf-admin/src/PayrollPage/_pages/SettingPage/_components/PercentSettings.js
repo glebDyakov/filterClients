@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PercentList from './PercentList';
 import SettingContext from '../../../_context/SettingContext';
+import { withTranslation } from 'react-i18next';
 
 class PercentSettings extends Component {
   constructor(props) {
@@ -171,8 +172,11 @@ class PercentSettings extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className="percent-of-sales-container">
+        <h2 className="settings-title">{t('Проценты от реализации')}</h2>
         <div className="percent-of-sales">
           <div className="services-container col">
             {(this.context.payroll.servicesSaveStatus === 200
@@ -206,4 +210,4 @@ class PercentSettings extends Component {
 
 PercentSettings.contextType = SettingContext;
 
-export default PercentSettings;
+export default withTranslation('common')(PercentSettings);

@@ -11,6 +11,31 @@
 
 
   #payroll {
+
+    .SelectedWeekExample {
+      background: #2A3042 !important;
+
+      .DayPicker-NavButton {
+        filter: grayscale(1) invert(1);
+        -webkit-filter: grayscale(1) invert(1);
+      }
+
+      .DayPicker-Day--today {
+        color: #50A5F1;
+      }
+
+      .DayPicker-Day--selected {
+        color: #fff;
+      }
+
+      .DayPicker-Caption {
+        border-bottom: 1px solid lightgrey;
+      }
+      * {
+        color: #fff;
+      }
+    }
+
     .staffs-list {
       background-color: #2A3042 !important;
 
@@ -83,13 +108,30 @@
       }
     }
 
+
+
     .setting-tab {
       .salary-container {
         border-color: #3F4455;
       }
 
+
+
       .setting-container {
         background-color: #2A3042;
+
+        .dropdown {
+          background-color: #222736 !important;
+          input, select {
+            background-color: #2A3042;
+          }
+
+          .dropdown_item {
+            background-color: #222736 !important;
+            border-color: #3F4455 !important;
+          }
+        }
+
 
         .settings-title, p, label, input, select, option {
           color: #fff;

@@ -51,18 +51,22 @@ class Index extends Component {
         m3: {
           finalPrice: 0,
           finalPriceMonth: 0,
+          finalPriceMonthDiscount: 0,
         },
         m6: {
           finalPrice: 0,
           finalPriceMonth: 0,
+          finalPriceMonthDiscount: 0,
         },
         m12: {
           finalPrice: 0,
           finalPriceMonth: 0,
+          finalPriceMonthDiscount: 0,
         },
         m24: {
           finalPrice: 0,
           finalPriceMonth: 0,
+          finalPriceMonthDiscount: 0,
         },
       },
 
@@ -346,18 +350,22 @@ class Index extends Component {
         m3: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 3,
           finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
+          finalPriceMonthDiscount: finalPriceMonthDiscount && finalPriceMonthDiscount.toFixed(2),
         },
         m6: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 5,
           finalPriceMonth: finalPriceMonth * 5 / 6,
+          finalPriceMonthDiscount: finalPriceMonthDiscount * 5 / 6,
         },
         m12: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 9,
           finalPriceMonth: finalPriceMonth * 9 / 12,
+          finalPriceMonthDiscount: finalPriceMonthDiscount * 9 / 12,
         },
         m24: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 15,
           finalPriceMonth: finalPriceMonth * 15 / 24,
+          finalPriceMonthDiscount: finalPriceMonthDiscount * 15 / 24,
         },
       },
 
@@ -732,6 +740,18 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m24.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
@@ -763,6 +783,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m12.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
@@ -795,6 +826,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m6.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
@@ -827,6 +869,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m3.finalPriceMonthDiscount && this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
