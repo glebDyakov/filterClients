@@ -350,6 +350,7 @@ class Index extends Component {
         m3: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 3,
           finalPriceMonth: finalPriceMonth && finalPriceMonth.toFixed(2),
+          finalPriceMonthDiscount: finalPriceMonthDiscount && finalPriceMonthDiscount.toFixed(2),
         },
         m6: {
           finalPrice: (finalPriceMonthDiscount || finalPriceMonth) * 5,
@@ -869,15 +870,15 @@ class Index extends Component {
                         }
                         </p>
 
-                        {/*{this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&*/}
-                        {/*<p className="month-price"><span*/}
-                        {/*  className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount.toFixed(2)} {countryCode*/}
-                        {/*  ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'*/}
-                        {/*    ? t('грн')*/}
-                        {/*    : (countryCode === 'RUS' ? t('руб') : t('руб'))))*/}
-                        {/*  : t('BYN')*/}
-                        {/*}*/}
-                        {/*</p>}*/}
+                        {this.state.finalPriceObject.m3.finalPriceMonthDiscount && this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
 
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
