@@ -58,9 +58,9 @@ export function menu(state = initialState, action) {
             'name': 'Учет материалов',
           },
           {
-            'id': 'payroll_menu_id',
-            'url': '/payroll',
-            'icon': '20.svg',
+            'id': 'salary_menu_id',
+            'url': '/salary',
+            'icon': '21.svg',
             'name': 'Расчет зарплат',
           },
           {

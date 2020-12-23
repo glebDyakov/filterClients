@@ -20,7 +20,7 @@ class Index extends Component {
   constructor(props) {
     super(props);
 
-    if (!access(13)) { // TODO: change to 16
+    if (!access(16)) { // TODO: change to 16
       props.history.push('/denied');
     }
 
