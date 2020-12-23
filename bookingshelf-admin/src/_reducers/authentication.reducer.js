@@ -1,6 +1,6 @@
 import { userConstants } from '../_constants';
 import { userActions } from '../_actions/user.actions';
-import {i18next} from "i18next";
+import { i18next } from 'i18next';
 
 const user = JSON.parse(localStorage.getItem('user'));
 let initialState = {};
@@ -18,6 +18,12 @@ const menuList = [{
     'icon': '10.svg',
     'name': 'Настройки компании',
     'permission': -1,
+  },
+  'salary_menu_id': {
+    'url': '/salary',
+    'icon': '21.svg',
+    'name': 'Расчет зарплат',
+    'permission': 16,
   },
   'calendar_menu_id': {
     'url': '/calendar',
@@ -66,7 +72,8 @@ const menuList = [{
     'icon': 'payment.svg',
     'name': 'Оплата',
     'permission': -1,
-  } }];
+  },
+}];
 
 const times = [
   {
@@ -147,9 +154,11 @@ export function authentication(state = initialState, action) {
     case userConstants.UPDATE_PROFILE_SUCCESS:
       const profile = state.user;
 
-      const user = { ...action.user, password: null,
+      const user = {
+        ...action.user, password: null,
         newPasswordRepeat: null,
-        newPassword: null };
+        newPassword: null,
+      };
 
       const unify = { ...profile, profile: user };
 
@@ -181,7 +190,8 @@ export function authentication(state = initialState, action) {
 
       const newUserMenu = action.payload.user.menu;
 
-      const user4 = { ...action.payload.user, password: '',
+      const user4 = {
+        ...action.payload.user, password: '',
         newPasswordRepeat: '',
         newPassword: '',
         menu: newUserMenu,
