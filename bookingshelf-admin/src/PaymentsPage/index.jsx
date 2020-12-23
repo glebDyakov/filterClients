@@ -740,6 +740,16 @@ class Index extends Component {
                         }
                         </p>
 
+                        {this.state.finalPriceObject.m24.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
 
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
@@ -772,6 +782,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m12.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
@@ -804,6 +825,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {this.state.finalPriceObject.m6.finalPriceMonthDiscount !== 0 &&
+                        <p className="month-price"><span
+                          className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {countryCode
+                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
+                            ? t('грн')
+                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
+                          : t('BYN')
+                        }
+                        </p>}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
@@ -836,6 +868,17 @@ class Index extends Component {
                           : t('BYN')
                         }
                         </p>
+
+                        {/*{this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&*/}
+                        {/*<p className="month-price"><span*/}
+                        {/*  className="blue_text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount.toFixed(2)} {countryCode*/}
+                        {/*  ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'*/}
+                        {/*    ? t('грн')*/}
+                        {/*    : (countryCode === 'RUS' ? t('руб') : t('руб'))))*/}
+                        {/*  : t('BYN')*/}
+                        {/*}*/}
+                        {/*</p>}*/}
+
                         <p className="total"><span
                           className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
                           ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
