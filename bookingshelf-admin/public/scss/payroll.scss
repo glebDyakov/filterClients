@@ -640,8 +640,19 @@
 
 
           .nested-dropdown {
-            .dropdown_item:last-of-type {
+            .dropdown_item {
               border-bottom: 1px solid #EEEFF1;
+            }
+          }
+
+          .dropdown_item:not(:last-of-type) {
+            border-bottom: 1px solid #EEEFF1;
+          }
+
+          .nested-dropdown {
+            .dropdown_item {
+              border-top: 1px solid #EEEFF1;
+              border-bottom: none;
             }
           }
 
@@ -668,9 +679,7 @@
               background-color: #fff;
             }
 
-            &:not(:last-of-type) {
-              border-bottom: 1px solid #EEEFF1;
-            }
+
 
             &.search-item {
               position: sticky;

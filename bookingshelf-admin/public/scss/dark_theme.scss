@@ -120,6 +120,11 @@
       .setting-container {
         background-color: #2A3042;
 
+        .search-input {
+          color: #fff;
+          background-color: #222736 !important;
+        }
+
         .dropdown {
           background-color: #222736 !important;
           input, select {
