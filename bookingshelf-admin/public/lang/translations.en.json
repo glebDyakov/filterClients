@@ -807,10 +807,13 @@
 
   "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Salary paid if the employee's earnings are less than a specified value.",
   "Проценты от реализации": "Percentage from sales",
-  "Рабочих дней": "Working days",
+  "Рабочих": "Working",
+  "дней": "days",
+  "Часов на услуги": "Hours for services",
   "Рабочих часов": "Working hours",
   "ставка": "rate",
   "ставки": "rates",
-  "часов": "hours"
+  "часов": "hours",
+  "Количество дней по рабочему графику.": "The number of days according to the work schedule."
 
 }

@@ -805,11 +805,14 @@
   "Оплатить пакет": "Zapłać za pakiet",
   "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Wynagrodzenie wypłacane, jeśli zarobki pracownika są niższe od określonej wartości.",
   "Проценты от реализации": "Procent ze sprzedaży",
-  "Рабочих дней": "Dni robocze",
+  "Рабочих": "Dni",
+  "дней": "robocze",
+  "Часов на услуги": "Godziny na usługi",
   "Рабочих часов": "Godziny pracy",
   "ставка": "oceniać",
   "ставки": "stawki",
-  "часов": "godziny"
+  "часов": "godziny",
+  "Количество дней по рабочему графику.": "Liczba dni zgodnie z harmonogramem pracy."
 }
 
 
