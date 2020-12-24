@@ -27,6 +27,10 @@ class DatePicker extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick, false);
+  }
+
 
   setCalendarRef(node) {
     this.calendarRef = node;
