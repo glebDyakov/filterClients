@@ -301,10 +301,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
-
-        @media screen and (max-width: $laptop-width) {
-          justify-content: end;
-        }
+        justify-content: end;
 
         .title {
           font-style: normal;
