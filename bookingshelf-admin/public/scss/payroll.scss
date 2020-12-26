@@ -122,6 +122,57 @@
     }
   }
 
+  .select-staff-label {
+    display: none;
+
+
+
+    @media screen and (max-width: $mob-width){
+      display: flex;
+
+      margin-bottom: 10px;
+
+      padding: 20px 10px;
+      background-color: #fff;
+
+      flex-direction: column;
+      justify-content: center;
+
+      font-style: normal;
+      font-weight: normal;
+      font-size: 13px;
+      line-height: 18px;
+      color: #2A3042;
+
+      button {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        padding: 7px 5px;
+
+        border: none;
+
+        background: #F3F3F9;
+        border-radius: 2px;
+
+        .staff-image {
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+        }
+
+        .staff-name {
+          margin-left: 10px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 13px;
+          line-height: 18px;
+          color: #2A3042;
+        }
+      }
+    }
+  }
+
   .staffs-list-wrapper {
     max-width: 236px;
     width: 236px;
@@ -149,10 +200,62 @@
         max-height: 488px !important;
         background: #FFFFFF;
         border-radius: 5px;
+        overflow: hidden;
       }
     }
 
     .header-item {
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      &:hover {
+        background: #fff !important;
+        color: #2A3042 !important;
+      }
+
+      .close {
+        color: #2A3042;
+        position: absolute;
+        width: 24px !important;
+        height: 24px;
+        top: 50%;
+        min-width: unset;
+        right: 10px;
+        transform: translateY(-45%);
+
+        &::before {
+          content: '';
+          width: 24px;
+          height: 2px;
+          border-radius: 5px;
+          background: #2A3042;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(45deg);
+
+        }
+
+        &::after {
+          content: '';
+          width: 2px;
+          height: 24px;
+          border-radius: 5px;
+          background: #2A3042;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        span {
+          font-size: 2rem;
+        }
+      }
+
+
+
       display: none !important;
 
       @media screen and (max-width: $mob-width) {
@@ -163,7 +266,7 @@
     .staffs-list {
       background: #FFFFFF;
       max-height: calc(100vh - 80px);
-      overflow-x: auto;
+      overflow: hidden auto;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 2px;
 
@@ -290,11 +393,34 @@
 
     }
 
+    @media screen and (max-width: $mob-width) {
+      overflow-y: auto;
+    }
+
+
     .stats-container {
       background: #FFFFFF;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 2px;
       margin-bottom: 10px;
+
+      @media screen and (max-width: $mob-width) {
+        //margin-bottom: 0;
+        //padding-bottom: 10px;
+
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+
+        .col {
+          &::after {
+            display: none;
+          }
+        }
+      }
+
 
       .col {
         padding: 5px 12px;
@@ -459,6 +585,10 @@
             justify-content: center;
             align-items: center;
 
+            @media screen and (max-width: $mob-width) {
+              justify-content: flex-start;
+            }
+
             .open-handler {
               background: #50A5F1;
               border-radius: 5px;
@@ -499,6 +629,10 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+
+            @media screen and (max-width: $mob-width) {
+              align-items: flex-start;
+            }
 
             .weekday {
               font-style: normal;
@@ -562,6 +696,32 @@
           }
         }
       }
+
+
+      @media screen and (max-width: $mob-width) {
+        thead {
+          display: none;
+        }
+
+        tbody {
+          .payroll-day {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .payroll-day-list {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+
+           p {
+             text-align: left !important;
+           }
+          }
+        }
+      }
     }
 
   }
@@ -569,6 +729,7 @@
 
   .payroll-tab {
     height: 100%;
+
   }
 
   .setting-container {
