@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { PayrollProvider } from './_context/PayrollContext';
 import { SettingProvider } from './_context/SettingContext';
@@ -14,6 +13,7 @@ import moment from 'moment';
 import { withRouter } from 'react-router';
 import { access } from '../_helpers/access';
 import { withTranslation } from 'react-i18next';
+import MobileHandler from './_components/StaffSidebar/MobileHandler';
 
 
 class Index extends Component {
@@ -46,6 +46,8 @@ class Index extends Component {
         to: moment().toDate(),
         enteredTo: moment().toDate(),
       },
+
+      isOpenMobileSelectStaff: false,
 
       percent: {
         servicesPercent: [],
@@ -176,6 +178,8 @@ class Index extends Component {
       ? <SettingPage/>
       : <div className="loader salary-loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>;
 
+    const activeStaff = staff.staff && staff.staff.find(staff => staff.staffId === selectedStaffId);
+
 
     return (
       <div id="payroll" className="d-flex">
@@ -191,7 +195,7 @@ class Index extends Component {
 
           {this.state.activeTab === '' &&
           <PayrollProvider
-            value={{ analytic: payroll.payoutAnalytic, payoutPeriod: payroll.payoutByPeriod }}>
+            value={{ analytic: payroll.payoutAnalytic, payoutPeriod: payroll.payoutByPeriod, activeStaff: activeStaff }}>
             {payrollPage}
           </PayrollProvider>}
 
@@ -203,6 +207,7 @@ class Index extends Component {
               payroll,
               handleUpdatePercents: this.handleDispatchPercents,
               updatePayoutTypes: this.updatePayoutTypes,
+              activeStaff: activeStaff
             }}>
             {settingsPage}
           </SettingProvider>}

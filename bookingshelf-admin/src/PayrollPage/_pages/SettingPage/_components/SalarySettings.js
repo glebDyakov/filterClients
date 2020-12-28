@@ -15,9 +15,9 @@ class SalarySettings extends Component {
         GUARANTEED_SALARY: {
           amount: 0,
         },
-        SERVICE_PERCENT: {
-          amount: 0,
-        },
+        // SERVICE_PERCENT: {
+        //   amount: 0,
+        // },
       },
       rate: 0,
     };
@@ -74,7 +74,7 @@ class SalarySettings extends Component {
     const settings = Object.keys(this.state.settings).map((type) => {
       return {
         ...this.state.settings[type],
-        amount: this.state.settings[type].amount !== null ? this.state.settings[type].amount : 0,
+        amount: !isNaN(this.state.settings[type].amount) ? this.state.settings[type].amount : 0,
         rate: this.state.rate,
         payoutType: type,
       };
@@ -124,18 +124,18 @@ class SalarySettings extends Component {
                    disabled={this.state.rate === 0}
                    placeholder={t('Введите оклад')}/>
           </span>
-          <span className="label col">
-            <p>% {t('от реализации')}</p>
-            <input value={SERVICE_PERCENT.amount}
-                   type="number"
-                   onChange={this.handleChange}
-                   className="salary-input"
-                   min="0"
-                   max="100"
-                   disabled={this.state.rate === 0}
-                   placeholder="0%"
-                   name="SERVICE_PERCENT"/>
-          </span>
+          {/*<span className="label col">*/}
+          {/*  <p>% {t('от реализации')}</p>*/}
+          {/*  <input value={SERVICE_PERCENT.amount}*/}
+          {/*         type="number"*/}
+          {/*         onChange={this.handleChange}*/}
+          {/*         className="salary-input"*/}
+          {/*         min="0"*/}
+          {/*         max="100"*/}
+          {/*         disabled={this.state.rate === 0}*/}
+          {/*         placeholder="0%"*/}
+          {/*         name="SERVICE_PERCENT"/>*/}
+          {/*</span>*/}
         </div>
 
 
