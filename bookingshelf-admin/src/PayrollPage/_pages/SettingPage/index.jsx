@@ -15,7 +15,7 @@ class Index extends Component {
     return (
       <div className="setting-tab">
         <div className="setting-container">
-          <MobileHandler staff={activeStaff}/>
+          {/*<MobileHandler staff={activeStaff}/>*/}
           <SalarySettings/>
           <PercentSettings/>
         </div>

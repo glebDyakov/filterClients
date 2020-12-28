@@ -184,7 +184,7 @@ class Index extends Component {
     return (
       <div id="payroll" className="d-flex">
         <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
-          {/*<StaffList/>*/}
+          <StaffList/>
         </StaffSidebarProvider>
 
         <div className="main-container col p-0">

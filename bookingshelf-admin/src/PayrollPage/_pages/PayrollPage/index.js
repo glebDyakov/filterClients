@@ -13,7 +13,7 @@ class Index extends Component {
     const { activeStaff } = this.context;
     return (
       <div className="payroll-tab">
-        <MobileHandler staff={activeStaff}/>
+        {/*<MobileHandler staff={activeStaff}/>*/}
         <AnalyticBlock/>
         <Table/>
       </div>
