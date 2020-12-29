@@ -29,22 +29,22 @@ class AnalyticBlock extends Component {
         </div>
         <div className="col">
           <h3 className="title">{t('Сумма услуг')}:</h3>
-          <h2 className="stat with-currency">{(analytic.servicesCost ?? 0).toFixed(2)} <br/><br/><span
+          <h2 className="stat with-currency">{(analytic.servicesCost ?? 0).toFixed(2)} <span
             className="currency">(BYN)</span></h2>
         </div>
         <div className="col">
           <h3 className="title">{t('Товаров')}:</h3>
-          <h2 className="stat">{analytic.productsCount ?? 0}</h2>
+          <h2 className="stat">{analytic.staffProductsAmount ?? 0}</h2>
         </div>
         <div className="col">
           <h3 className="title">{t('Сумма товаров')}:</h3>
-          <h2 className="stat">{(analytic.productsCost ?? 0).toFixed(2)}</h2>
+          <h2 className="stat">{(analytic.staffProductsCost ?? 0).toFixed(2)}</h2>
         </div>
         <div className="col">
           <h3 className="title">{t('Доход')}</h3>
           <h2 className="stat">
-            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br/>(BYN) {t('сотруд')}.</p>
-            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br/>(BYN) {t('компан')}.</p>
+            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('сотруд')}.</p>
+            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('компан')}.</p>
           </h2>
         </div>
       </div>

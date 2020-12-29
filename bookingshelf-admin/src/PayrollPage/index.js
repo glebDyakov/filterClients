@@ -14,6 +14,7 @@ import { withRouter } from 'react-router';
 import { access } from '../_helpers/access';
 import { withTranslation } from 'react-i18next';
 import MobileHandler from './_components/StaffSidebar/MobileHandler';
+import SelectStaffMobile from './_components/StaffSidebar/SelectStaffModal';
 
 
 class Index extends Component {
@@ -46,8 +47,6 @@ class Index extends Component {
         to: moment().toDate(),
         enteredTo: moment().toDate(),
       },
-
-      isOpenMobileSelectStaff: false,
 
       percent: {
         servicesPercent: [],
@@ -187,11 +186,16 @@ class Index extends Component {
           <StaffList/>
         </StaffSidebarProvider>
 
+
         <div className="main-container col p-0">
           <NavBar handleSelectDate={this.handleSelectDate}
                   activeTab={activeTab}
                   date={this.state.date}
                   setTab={this.setTab}/>
+
+          <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
+            <MobileHandler staff={activeStaff}/>
+          </StaffSidebarProvider>
 
           {this.state.activeTab === '' &&
           <PayrollProvider

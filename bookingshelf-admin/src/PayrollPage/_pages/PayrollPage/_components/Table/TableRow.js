@@ -28,12 +28,17 @@ class TableRow extends Component {
     return (
       <>
         <tr className={'payroll-day' + (this.state.isOpen ? ' opened' : '')}>
-          <td>
+          <td className="weekday-header">
             <div className="open-handler-container">
               <button onClick={this.handleCollapse} className="open-handler"/>
             </div>
+
+            <div className="desk-hidden weekday-container">
+              <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
+              <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
+            </div>
           </td>
-          <td>
+          <td className="mob-hidden">
             <div className="weekday-container">
               <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
               <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
@@ -44,17 +49,21 @@ class TableRow extends Component {
             <p>{t('Сумма услуг')}: {payout.servicesCost} BYN</p>
           </td>
           <td className="product-container">
-            <p>{t('Продано товаров')}: {payout.productsAmount}</p>
-            <p>{t('Сумма товаров')}: {payout.productsCost} BYN</p>
+            <p>{t('Продано товаров')}: {payout.staffProductsAmount}</p>
+            <p>{t('Сумма товаров')}: {payout.staffProductsCost} BYN</p>
           </td>
           <td className="income-container" colSpan={4}>
-            <p>{t('Доход сотрудника')}: {payout.staffRevenue} BYN</p>
-            <p>{t('Доход компании')}: {payout.companyRevenue} BYN</p>
+            <p>{t('Доход сотрудника')}: {payout.staffProductsRevenue + payout.staffServiceRevenue} BYN</p>
+            <p>{t('Доход компании')}: {payout.staffProductsRevenue + payout.companyServiceRevenue} BYN</p>
           </td>
+
+            {this.state.isOpen &&
+            payout.appointmentsSalary.map((ps, index) => <TableSubRow className="desk-hidden" key={index} payout={ps}/>)}
         </tr>
 
-        {this.state.isOpen &&
-        payout.periodsSalary.map((ps, index) => <TableSubRow key={index} payout={ps}/>)}
+
+          {this.state.isOpen &&
+          payout.appointmentsSalary.map((ps, index) => <TableSubRow className="mob-hidden" key={index} payout={ps}/>)}
       </>
     );
   }
