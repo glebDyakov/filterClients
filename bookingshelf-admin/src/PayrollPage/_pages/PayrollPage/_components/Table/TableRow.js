@@ -49,8 +49,8 @@ class TableRow extends Component {
             <p>{t('Сумма услуг')}: {payout.servicesCost} BYN</p>
           </td>
           <td className="product-container">
-            <p>{t('Продано товаров')}: {payout.productsAmount}</p>
-            <p>{t('Сумма товаров')}: {payout.productsCost} BYN</p>
+            <p>{t('Продано товаров')}: {payout.staffProductsAmount}</p>
+            <p>{t('Сумма товаров')}: {payout.staffProductsCost} BYN</p>
           </td>
           <td className="income-container" colSpan={4}>
             <p>{t('Доход сотрудника')}: {payout.staffProductsRevenue + payout.staffServiceRevenue} BYN</p>

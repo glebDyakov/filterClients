@@ -27,11 +27,11 @@ class TableSubRow extends Component {
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Товар')}</h2>
-          <p className="list-text">{payout.productPercent === 0 ? '-' : <> { payout.productName } <br/> {t('Цена')}: <span className="price">{payout.productCost} BYN </span> </>}</p>
+          <p className="list-text">{payout.serviceProductPercent === 0 ? '-' : <> { payout.productName } <br/> {t('Цена')}: <span className="price">{payout.serviceProductCost} BYN </span> </>}</p>
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">% {t('от товара')}</h2>
-          <p className="list-text">{payout.productPercent === 0 ? '-' : payout.productPercent + '%'}</p>
+          <p className="list-text">{payout.serviceProductPercent === 0 ? '-' : payout.serviceProductPercent + '%'}</p>
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Доход Сотруд')}</h2>
