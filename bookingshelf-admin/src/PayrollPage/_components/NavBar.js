@@ -8,7 +8,7 @@ class NavBar extends Component {
 
     return (
       <div className="header-nav-tabs">
-        <div className="header-tabs-container d-flex align-items-center justify-content-center">
+        <div className="header-tabs-container flex-column flex-sm-row d-flex align-items-center justify-content-center">
           <ul className="nav nav-tabs">
             <li className="nav-item">
               <a onClick={setTab.bind(null, '')}

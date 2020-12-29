@@ -28,12 +28,17 @@ class TableRow extends Component {
     return (
       <>
         <tr className={'payroll-day' + (this.state.isOpen ? ' opened' : '')}>
-          <td>
+          <td className="weekday-header">
             <div className="open-handler-container">
               <button onClick={this.handleCollapse} className="open-handler"/>
             </div>
+
+            <div className="desk-hidden weekday-container">
+              <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
+              <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
+            </div>
           </td>
-          <td>
+          <td className="mob-hidden">
             <div className="weekday-container">
               <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
               <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>

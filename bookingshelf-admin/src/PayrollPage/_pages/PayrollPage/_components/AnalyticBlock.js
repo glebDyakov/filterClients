@@ -43,8 +43,8 @@ class AnalyticBlock extends Component {
         <div className="col">
           <h3 className="title">{t('Доход')}</h3>
           <h2 className="stat">
-            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br/>(BYN) {t('сотруд')}.</p>
-            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br/>(BYN) {t('компан')}.</p>
+            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('сотруд')}.</p>
+            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('компан')}.</p>
           </h2>
         </div>
       </div>

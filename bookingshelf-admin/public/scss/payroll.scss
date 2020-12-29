@@ -6,10 +6,30 @@
   overflow-y: hidden;
   height: 100%;
 
+  .desk-hidden {
+    display: none !important;
+  }
 
+
+  @media screen and (max-width: $mob-width) {
+    .mob-hidden {
+      display: none !important;
+    }
+
+    .desk-hidden {
+      display: flex !important;
+    }
+
+
+    .weekday-header {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+    }
+  }
 
   .questions_black {
-    z-index: 9;
+    z-index: 2;
   }
 
   .save-button {
@@ -35,6 +55,10 @@
   .calendar {
     margin-right: 20px;
 
+    @media screen and (max-width: $mob-width){
+      margin-right: 0;
+    }
+
     position: relative;
 
     .button-calendar {
@@ -43,6 +67,14 @@
 
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 5px;
+
+      @media screen and(max-width: $mob-width) {
+        border-top: 7px solid #F2F2F6;
+        font-size: 12px;
+        width: 100vw !important;
+        border-radius: 0;
+        background-color: #fff;
+      }
 
       input {
         cursor: pointer;
@@ -87,6 +119,14 @@
 
       transform: translate(-50%);
     }
+
+    @media screen and(max-width: $mob-width) {
+      height: 32px !important;
+      background: none !important;
+      line-height: 30px !important;
+      box-shadow: none !important;
+    }
+
   }
 
 
@@ -126,8 +166,7 @@
     display: none;
 
 
-
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       display: flex;
 
       margin-bottom: 10px;
@@ -209,6 +248,7 @@
       position: sticky;
       top: 0;
       z-index: 1;
+
       &:hover {
         background: #fff !important;
         color: #2A3042 !important;
@@ -253,7 +293,6 @@
           font-size: 2rem;
         }
       }
-
 
 
       display: none !important;
@@ -343,6 +382,11 @@
         width: 100%;
         overflow: hidden;
         margin-left: 20px;
+
+        @media screen and (max-width: $mob-width) {
+          margin-left: 0;
+        }
+
         margin-bottom: 0;
 
         .nav-item {
@@ -407,6 +451,8 @@
       @media screen and (max-width: $mob-width) {
         //margin-bottom: 0;
         //padding-bottom: 10px;
+        margin-top: 16px;
+        padding: 20px 0;
 
         display: grid !important;
         grid-template-columns: repeat(2, 1fr);
@@ -532,13 +578,31 @@
 
       }
 
+      .mobile-title {
+        margin-bottom: 15px;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 18px;
+        color: #2A3042;
+      }
+
       tbody {
         .payroll-day {
           position: relative;
 
 
+          @media screen and (max-width: $mob-width) {
+            .service-container, .product-container, .income-container {
+              p {
+                font-weight: normal !important;
+              }
+            }
+          }
+
           td {
             position: relative;
+
             &:first-of-type {
               position: relative;
 
@@ -631,7 +695,18 @@
             flex-direction: column;
 
             @media screen and (max-width: $mob-width) {
-              align-items: flex-start;
+              align-items: flex-end;
+              flex-direction: row;
+
+
+              .weekday {
+                margin-left: 15px;
+                line-height: 28px !important;
+              }
+
+              .weekday-date {
+                margin-left: 10px;
+              }
             }
 
             .weekday {
@@ -716,9 +791,9 @@
             grid-column-gap: 0px;
             grid-row-gap: 0px;
 
-           p {
-             text-align: left !important;
-           }
+            p {
+              text-align: left !important;
+            }
           }
         }
       }
@@ -752,13 +827,16 @@
       }
 
 
+
       .products-container, .services-container {
         position: relative;
 
         @media screen and (max-width: $mob-width) {
+          margin-bottom: 25px;
           flex-basis: unset;
           flex-direction: column;
           margin-right: 0 !important;
+
 
           & > .percent {
             text-align: left !important;
@@ -786,9 +864,8 @@
         }
 
 
-
         .dropdown {
-          position: absolute;
+          position: relative;
           width: 100%;
           top: 25px;
           left: 0;
@@ -799,6 +876,11 @@
           z-index: 1;
           max-height: 600px;
           overflow-y: auto;
+
+
+          @media screen and (max-width: $mob-width){
+            max-height: 300px;
+          }
 
 
           .nested-dropdown {
@@ -840,7 +922,6 @@
             &:active {
               background-color: #fff;
             }
-
 
 
             &.search-item {
