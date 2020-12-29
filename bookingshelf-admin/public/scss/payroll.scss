@@ -1038,6 +1038,7 @@
 
 
       @media screen and (max-width: $mob-width) {
+        grid-template-columns: 1fr;
         .salary-input {
           width: 100%;
         }
