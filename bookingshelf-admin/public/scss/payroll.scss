@@ -411,8 +411,8 @@
         display: grid !important;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(4, 1fr);
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
+        grid-column-gap: 0;
+        grid-row-gap: 0;
 
         .col {
           &::after {
@@ -427,7 +427,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        justify-content: flex-end;
 
         .title {
           font-style: normal;
@@ -1019,10 +1019,11 @@
 
     .salary-container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
+      grid-column-gap: 25px;
+      grid-row-gap: 0;
+      align-items: flex-end;
 
       .col {
         padding: 0;

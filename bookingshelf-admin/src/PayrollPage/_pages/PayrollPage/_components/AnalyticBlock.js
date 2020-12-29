@@ -29,7 +29,7 @@ class AnalyticBlock extends Component {
         </div>
         <div className="col">
           <h3 className="title">{t('Сумма услуг')}:</h3>
-          <h2 className="stat with-currency">{(analytic.servicesCost ?? 0).toFixed(2)} <br/><br/><span
+          <h2 className="stat with-currency">{(analytic.servicesCost ?? 0).toFixed(2)} <span
             className="currency">(BYN)</span></h2>
         </div>
         <div className="col">
