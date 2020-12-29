@@ -53,13 +53,17 @@ class TableRow extends Component {
             <p>{t('Сумма товаров')}: {payout.productsCost} BYN</p>
           </td>
           <td className="income-container" colSpan={4}>
-            <p>{t('Доход сотрудника')}: {payout.staffRevenue} BYN</p>
-            <p>{t('Доход компании')}: {payout.companyRevenue} BYN</p>
+            <p>{t('Доход сотрудника')}: {payout.staffProductsRevenue + payout.staffServiceRevenue} BYN</p>
+            <p>{t('Доход компании')}: {payout.staffProductsRevenue + payout.companyServiceRevenue} BYN</p>
           </td>
+
+            {this.state.isOpen &&
+            payout.appointmentsSalary.map((ps, index) => <TableSubRow className="desk-hidden" key={index} payout={ps}/>)}
         </tr>
 
-        {this.state.isOpen &&
-        payout.periodsSalary.map((ps, index) => <TableSubRow key={index} payout={ps}/>)}
+
+          {this.state.isOpen &&
+          payout.appointmentsSalary.map((ps, index) => <TableSubRow className="mob-hidden" key={index} payout={ps}/>)}
       </>
     );
   }

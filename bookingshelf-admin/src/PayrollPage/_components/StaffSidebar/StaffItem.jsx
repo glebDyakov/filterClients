@@ -29,7 +29,10 @@ class StaffItem extends Component {
 
 
     return (
-      <div key={this.props.key} onClick={selectStaff.bind(null, staff.staffId)}
+      <div key={this.props.key} onClick={() => {
+        selectStaff(staff.staffId);
+        this.props.onClose();
+      }}
            className={'list-item d-flex align-items-center' + (selectedStaffId === staff.staffId ? ' selected' : '')}>
         <img className="staff-image"
              src={

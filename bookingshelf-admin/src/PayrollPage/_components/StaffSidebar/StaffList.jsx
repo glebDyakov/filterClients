@@ -18,17 +18,9 @@ class StaffList extends Component {
     const { staffs } = this.context;
 
     return (
-      <div className="staffs-list-wrapper col p-0">
-        <div className="staffs-list">
-
-          <div className="list-item header-item d-flex align-items-center">
-            <h2 className="title mb-0">Выбор сотрубника</h2>
-            <button className='close'/>
-          </div>
-
-          {staffs && staffs.sort((staffA, staffB) => staffB.roleId - staffA.roleId)
-            .map((staff) => <StaffItem key={staff.staffId} staff={staff}/>)}
-        </div>
+      <div className="staffs-list">
+        {staffs && staffs.sort((staffA, staffB) => staffB.roleId - staffA.roleId)
+          .map((staff) => <StaffItem onClose={this.props.onClose} key={staff.staffId} staff={staff}/>)}
       </div>
     );
   }

@@ -7,7 +7,7 @@ class TableSubRow extends Component {
     const { payout, t } = this.props;
 
     return (
-      <tr className="payroll-day-list opened">
+      <tr className={this.props.className + ' payroll-day-list opened'}>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Время начала')}</h2>
           <p className="list-text text-center">{moment(payout.dateStart).format('HH:mm')}</p>
