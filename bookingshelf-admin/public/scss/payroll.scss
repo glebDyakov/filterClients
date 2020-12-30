@@ -26,7 +26,7 @@
   }
 
   .questions_black {
-    z-index: 0;
+    z-index: 1;
   }
 
   .header-tabs-container {
@@ -352,7 +352,7 @@
 
   .select-staff-label {
     overflow: visible;
-    z-index: 1;
+    z-index: 2;
     position: relative;
     height: fit-content;
 
@@ -369,6 +369,8 @@
     }
 
     .staffs-list {
+
+
       @media screen and (max-width: $mob-width) {
         display: block;
       }
@@ -391,8 +393,31 @@
 
     }
   }
+  .scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    z-index: 60;
+    width: 36px;
+    height: 36px;
+    min-width: unset;
+    border: none;
+    background: #50A5F1 url("../img/icons/white-arrow.svg") center no-repeat;
+    border-radius: 30px;
+    transition: .2s linear;
+
+
+    &.scrolled {
+      transform: translateY(-50%) scaleX(-1);
+      transition: .2s linear;
+    }
+  }
 
   .staffs-list {
+    position: relative;
+
+
 
     @media screen and (max-width: $mob-width) {
       display: none;
@@ -475,7 +500,7 @@
       .header-nav-tabs {
         position: sticky;
         top: 0;
-        z-index: 2;
+        z-index: 3;
       }
     }
 
@@ -1008,7 +1033,7 @@
           background: #FFFFFF;
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
           border-radius: 5px;
-          z-index: 1;
+          z-index: 2;
           max-height: 500px;
           overflow-y: auto;
 

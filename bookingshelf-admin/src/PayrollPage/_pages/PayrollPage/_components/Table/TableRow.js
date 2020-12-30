@@ -44,15 +44,15 @@ class TableRow extends Component {
               <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
             </div>
           </td>
-          <td className="service-container">
+          <td className="service-container" colSpan={2}>
             <p>{t('Услуг оказано')}: {payout.servicesAmount}</p>
             <p>{t('Сумма услуг')}: {payout.servicesCost} BYN</p>
           </td>
-          <td className="product-container">
+          <td className="product-container" colSpan={2}>
             <p>{t('Продано товаров')}: {payout.staffProductsAmount}</p>
             <p>{t('Сумма товаров')}: {payout.staffProductsCost} BYN</p>
           </td>
-          <td className="income-container" colSpan={4}>
+          <td className="income-container" colSpan={2}>
             <p>{t('Доход сотрудника')}: {payout.staffProductsRevenue + payout.staffServiceRevenue} BYN</p>
             <p>{t('Доход компании')}: {payout.staffProductsRevenue + payout.companyServiceRevenue} BYN</p>
           </td>

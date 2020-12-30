@@ -14,7 +14,6 @@ import { withRouter } from 'react-router';
 import { access } from '../_helpers/access';
 import { withTranslation } from 'react-i18next';
 import MobileHandler from './_components/StaffSidebar/MobileHandler';
-import SelectStaffMobile from './_components/StaffSidebar/SelectStaffModal';
 
 
 class Index extends Component {
@@ -191,7 +190,7 @@ class Index extends Component {
                   setTab={this.setTab}/>
 
           <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
-            <div className="mob-hidden">
+            <div className="mob-hidden position-relative">
               <StaffList/>
             </div>
 
