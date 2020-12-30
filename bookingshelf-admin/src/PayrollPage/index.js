@@ -182,9 +182,6 @@ class Index extends Component {
 
     return (
       <div id="payroll" className="d-flex">
-        <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
-          <StaffList/>
-        </StaffSidebarProvider>
 
 
         <div className="main-container col p-0">
@@ -194,12 +191,23 @@ class Index extends Component {
                   setTab={this.setTab}/>
 
           <StaffSidebarProvider value={{ selectedStaffId, selectStaff: this.selectStaff, staffs: staff.staff ?? [] }}>
-            <MobileHandler staff={activeStaff}/>
+            <div className="mob-hidden">
+              <StaffList/>
+            </div>
+
+            <div className="desk-hidden">
+              <MobileHandler staff={activeStaff}/>
+
+            </div>
           </StaffSidebarProvider>
 
           {this.state.activeTab === '' &&
           <PayrollProvider
-            value={{ analytic: payroll.payoutAnalytic, payoutPeriod: payroll.payoutByPeriod, activeStaff: activeStaff }}>
+            value={{
+              analytic: payroll.payoutAnalytic,
+              payoutPeriod: payroll.payoutByPeriod,
+              activeStaff: activeStaff,
+            }}>
             {payrollPage}
           </PayrollProvider>}
 
@@ -211,7 +219,7 @@ class Index extends Component {
               payroll,
               handleUpdatePercents: this.handleDispatchPercents,
               updatePayoutTypes: this.updatePayoutTypes,
-              activeStaff: activeStaff
+              activeStaff: activeStaff,
             }}>
             {settingsPage}
           </SettingProvider>}

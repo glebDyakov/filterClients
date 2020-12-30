@@ -12,7 +12,7 @@ class AnalyticBlock extends Component {
     return (
       <div className="stats-container d-flex">
         <div className="col">
-          <h3 className="title">{t("Рабочих")}<Hint hintMessage={t('Количество дней по рабочему графику.')}/> <br/>{t("дней")}:</h3>
+          <h3 className="title">{t("Рабочих")} {t("дней")}:<Hint hintMessage={t('Количество дней по рабочему графику.')}/></h3>
           <h2 className="stat position-relative">{analytic.workedDays ?? 0}</h2>
         </div>
         <div className="col">
@@ -43,8 +43,10 @@ class AnalyticBlock extends Component {
         <div className="col">
           <h3 className="title">{t('Доход')}</h3>
           <h2 className="stat">
-            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('сотруд')}.</p>
-            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('компан')}.</p>
+            <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} (BYN) {t('сотруд')}.</p>
+            <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} (BYN) {t('компан')}.</p>
+            {/*<p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('сотруд')}.</p>*/}
+            {/*<p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} <br className="mob-hidden"/>(BYN) {t('компан')}.</p>*/}
           </h2>
         </div>
       </div>

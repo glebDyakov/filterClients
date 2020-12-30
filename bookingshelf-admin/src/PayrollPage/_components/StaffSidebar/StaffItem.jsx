@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import StaffSidebarContext from '../../_context/StaffSidebarContext';
 import { withTranslation } from 'react-i18next';
+import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
-class StaffItem extends Component {
+class StaffItem extends PureComponent {
   constructor(props) {
     super(props);
     this.getStaffRoleStr = this.getStaffRoleStr.bind(this);
@@ -23,6 +24,8 @@ class StaffItem extends Component {
     }
   }
 
+  componen
+
   render() {
     const { selectedStaffId, selectStaff } = this.context;
     const { staff } = this.props;
@@ -31,7 +34,7 @@ class StaffItem extends Component {
     return (
       <div key={this.props.key} onClick={() => {
         selectStaff(staff.staffId);
-        this.props.onClose();
+        if (this.props.onClose) this.props.onClose();
       }}
            className={'list-item d-flex align-items-center' + (selectedStaffId === staff.staffId ? ' selected' : '')}>
         <img className="staff-image"

@@ -1,9 +1,6 @@
 @import "styles-group";
 
 #payroll {
-  max-height: calc(100vh - 80px);
-  overflow-x: hidden;
-  overflow-y: hidden;
   height: 100%;
 
   .desk-hidden {
@@ -250,7 +247,7 @@
     @media screen and (max-width: $mob-width) {
       display: flex;
       margin: 7px 0 7px;
-
+      width: 100%;
       padding: 20px 10px;
       background-color: #fff;
 
@@ -401,19 +398,28 @@
       display: none;
     }
     background: #FFFFFF;
-    max-height: calc(100vh - 80px);
-    overflow: hidden auto;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
     border-radius: 2px;
 
-    height: 100%;
+    display: flex;
+    margin-bottom: 10px;
+    overflow-x: auto;
+
+    height: 52px;
 
 
     .list-item {
-      padding: 15px 11px;
-      border-bottom: 1px solid #EAEBED;
+      min-width: 200px;
+      max-width: unset;
+      padding: 15px 10px;
       transition: 200ms linear;
       cursor: pointer;
+
+      box-sizing: border-box;
+
+      &:not(:last-of-type) {
+        border-right: 1px solid #EAEBED;
+      }
 
       &.selected, &:hover { // IF SELECTED OR HOVER
         background: #50A5F1;
@@ -444,6 +450,7 @@
           font-size: 13px;
           line-height: 18px;
           color: inherit;
+          white-space: nowrap;
         }
 
         .staff-role {
@@ -452,13 +459,14 @@
           font-size: 10px;
           line-height: 14px;
           color: inherit;
+          white-space: nowrap;
+
         }
       }
     }
   }
 
   .main-container {
-    margin-left: 13px;
     max-height: calc(100vh - 80px);
 
     @media screen and (max-width: $mob-width) {
@@ -476,7 +484,6 @@
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 2px;
       margin-bottom: 0;
-
 
 
       .nav-tabs {
@@ -550,6 +557,8 @@
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 2px;
       margin-bottom: 10px;
+      //max-height: 20%;
+      //height: 20%;
 
       @media screen and (max-width: $mob-width) {
         margin-bottom: 7px;
@@ -573,11 +582,11 @@
 
 
       .col {
-        padding: 5px 12px;
+        padding: 10px 12px;
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: flex-start;
 
         .title {
           font-style: normal;
@@ -638,14 +647,19 @@
   }
 
   .table-container {
-    background: #FFFFFF;
-    box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
-    border-radius: 5px 0px 0px 0px;
-    overflow-y: auto;
-    max-height: calc(100% - 260px);
+    max-height: 80%;
+    height: 100%;
+    position: relative;
 
     .table {
+      border-radius: 5px 0px 0px 0px;
+      box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+      background: #FFFFFF;
+      max-height: content-box;
       margin-bottom: 0;
+      overflow-y: auto;
+      display: block;
+      max-height: 100%;
 
       .table-header-title {
         padding: 13px 20px;
@@ -692,11 +706,10 @@
       }
 
       tbody {
-        max-height: calc(80vh - 60px);
-        overflow-y: auto;
         @media screen and (max-width: $mob-width) {
           overflow-y: unset;
         }
+
         .payroll-day {
           position: relative;
 
@@ -850,8 +863,8 @@
             p {
               font-style: normal;
               font-weight: 600;
-              font-size: 13px;
-              line-height: 18px;
+              font-size: 11px;
+              line-height: 15px;
               color: #50A5F1;
 
               &:not(:last-of-type) {
@@ -873,15 +886,15 @@
             .list-text {
               font-style: normal;
               font-weight: normal;
-              font-size: 13px;
-              line-height: 18px;
+              font-size: 11px;
+              line-height: 15px;
               color: #495057;
 
               .price {
                 font-style: normal;
                 font-weight: 600;
-                font-size: 13px;
-                line-height: 18px;
+                font-size: 11px;
+                line-height: 15px;
                 color: #495057;
               }
             }
@@ -921,15 +934,16 @@
 
 
   .payroll-tab {
-    height: unset;
+    max-height: calc(100% - 128px);
+    height: 100%;
   }
 
   .setting-container {
     background: #FFFFFF;
     box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
     border-radius: 2px;
-    max-height: calc(100% - 70px);
-    height: 100%;
+    height: 80%;
+    max-height: calc(100% - 108px);
     padding: 20px 15px;
     overflow-y: auto;
 
@@ -995,7 +1009,7 @@
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
           border-radius: 5px;
           z-index: 1;
-          max-height: 600px;
+          max-height: 500px;
           overflow-y: auto;
 
 
