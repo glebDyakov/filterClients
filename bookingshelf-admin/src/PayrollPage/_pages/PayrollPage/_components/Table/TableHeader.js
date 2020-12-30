@@ -7,8 +7,8 @@ class TableHeader extends Component {
     return (
       <thead>
       <tr>
-        <td className="table-header-title text-center">{t('Время начала')}</td>
-        <td className="table-header-title text-center">{t('Время услуги')}</td>
+        <td style={{width: 8 + '%'}} className="table-header-title text-center">{t('Время начала')}</td>
+        <td style={{width: 10 + '%'}} className="table-header-title text-center">{t('Время услуги')}</td>
         <td className="table-header-title">{t('Услуга')}</td>
         <td className="table-header-title">% {t('от услуги')}</td>
         <td className="table-header-title">{t('Товар')}</td>
