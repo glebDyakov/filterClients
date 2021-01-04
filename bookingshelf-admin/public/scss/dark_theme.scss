@@ -75,9 +75,10 @@
       }
 
       .table-container {
-        background-color: #2A3042;
 
         .table {
+          background-color: #2A3042;
+
           thead {
             background-color: #2A3042;
             border-color: #3F4455 !important;
@@ -97,6 +98,11 @@
           .payroll-day, .payroll-day-list {
             border-color: #3F4455;
           }
+
+            td, tr td {
+              background-color: #2A3042 !important;
+
+            }
 
           .list-text {
             color: #fff !important;
