@@ -96,11 +96,28 @@
           }
 
           .payroll-day, .payroll-day-list {
-            border-color: #3F4455;
+            border-color: #3F4455 !important;
+          }
+
+          .payroll-day {
+            border: none;
+            td {
+              &::before {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                background-color: #3F4455;
+                content: '';
+              }
+            }
           }
 
             td, tr td {
               background-color: #2A3042 !important;
+              border-color: #3F4455 !important;
 
             }
 

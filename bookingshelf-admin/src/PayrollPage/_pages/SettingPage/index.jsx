@@ -10,8 +10,6 @@ class Index extends Component {
   }
 
   render() {
-    const { activeStaff } = this.context;
-
     return (
       <div className="setting-tab">
         <div className="setting-container">

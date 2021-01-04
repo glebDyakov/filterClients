@@ -25,6 +25,13 @@ class PercentList extends Component {
     return (
       <ul ref={(node) => (this.list = node)}
           className="dropdown d-flex flex-column">
+        {this.props.onClose &&
+        <li className="dropdown_item close-item">
+          <p>% от реализации</p>
+          <button onClick={() => {
+            this.props.onClose();
+          }} className="close"></button>
+        </li>}
         <li className="dropdown_item search-item">
           <input onChange={this.handleSearch}
                  placeholder={t('Введите название категории')}
@@ -35,7 +42,9 @@ class PercentList extends Component {
         {items.filter((item) =>
           item.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
           .map((item, index) => (
-            <PercentListItem haveNested={this.props.haveNested} handleSubmitGroup={this.props.handleSubmitGroup} typePercent={this.props.typePercent} handleChange={handleChange} handleSubmit={handleSubmit} key={index} item={item}/>
+            <PercentListItem haveNested={this.props.haveNested} handleSubmitGroup={this.props.handleSubmitGroup}
+                             typePercent={this.props.typePercent} handleChange={handleChange}
+                             handleSubmit={handleSubmit} key={index} item={item}/>
           ))}
       </ul>
     );
