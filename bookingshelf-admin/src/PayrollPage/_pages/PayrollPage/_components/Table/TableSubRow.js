@@ -19,7 +19,7 @@ class TableSubRow extends Component {
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Услуга')}</h2>
-          <p className="list-text">{payout.serviceName} <br/> {t('Цена')}: <span className="price">{payout.serviceCost} BYN</span></p>
+          <p className="list-text">{payout.serviceName} <br/> {t('Цена')}: <span className="price">{payout.serviceCost.toFixed(2)} BYN</span></p>
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">% {t('от услуги')}</h2>
@@ -35,11 +35,11 @@ class TableSubRow extends Component {
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Доход Сотруд')}</h2>
-          <p className="list-text">{payout.staffRevenue} BYN</p>
+          <p className="list-text">{payout.staffRevenue.toFixed(2)} BYN</p>
         </td>
         <td>
           <h2 className="mobile-title desk-hidden">{t('Доход Компании')}</h2>
-          <p className="list-text">{payout.companyRevenue} BYN</p>
+          <p className="list-text">{payout.companyRevenue.toFixed(2)} BYN</p>
         </td>
 
       </tr>
