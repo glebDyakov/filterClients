@@ -82,7 +82,7 @@ class CellAppointmentArea extends React.PureComponent {
               <span style={{ width: '43%' }}
                     className="text-right client-name">{totalAmount} {appointment.currency}</span>
             </span>
-            {appointment.clientId && appointment.clientPhone &&
+            {access(12) && appointment.clientId && appointment.clientPhone &&
             <span className="client-phone">{appointment.clientPhone}</span>}
 
             <ul>
