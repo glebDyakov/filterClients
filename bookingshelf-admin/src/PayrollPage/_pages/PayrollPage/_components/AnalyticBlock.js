@@ -34,11 +34,11 @@ class AnalyticBlock extends Component {
         </div>
         <div className="col">
           <h3 className="title">{t('Товаров')}:</h3>
-          <h2 className="stat">{analytic.staffProductsAmount ?? 0}</h2>
+          <h2 className="stat">{analytic.productsCount ?? 0}</h2>
         </div>
         <div className="col">
           <h3 className="title">{t('Сумма товаров')}:</h3>
-          <h2 className="stat">{(analytic.staffProductsCost ?? 0).toFixed(2)}</h2>
+          <h2 className="stat">{(analytic.productsCost ?? 0).toFixed(2)}</h2>
         </div>
         <div className="col">
           <h3 className="title">{t('Доход')}</h3>
