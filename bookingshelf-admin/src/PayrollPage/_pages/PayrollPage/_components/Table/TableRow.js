@@ -46,15 +46,15 @@ class TableRow extends Component {
           </td>
           <td className="service-container" colSpan={2}>
             <p>{t('Услуг оказано')}: {payout.servicesAmount}</p>
-            <p>{t('Сумма услуг')}: {payout.servicesCost} BYN</p>
+            <p>{t('Сумма услуг')}: {payout.servicesCost.toFixed(2)} BYN</p>
           </td>
           <td className="product-container" colSpan={2}>
             <p>{t('Продано товаров')}: {payout.staffProductsAmount}</p>
-            <p>{t('Сумма товаров')}: {payout.staffProductsCost} BYN</p>
+            <p>{t('Сумма товаров')}: {payout.staffProductsCost.toFixed(2)} BYN</p>
           </td>
           <td className="income-container" colSpan={2}>
-            <p>{t('Доход сотрудника')}: {payout.staffProductsRevenue + payout.staffServiceRevenue} BYN</p>
-            <p>{t('Доход компании')}: {payout.staffProductsRevenue + payout.companyServiceRevenue} BYN</p>
+            <p>{t('Доход сотрудника')}: {(payout.staffProductsRevenue + payout.staffServiceRevenue).toFixed(2)} BYN</p>
+            <p>{t('Доход компании')}: {(payout.staffProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
           </td>
 
             {this.state.isOpen &&
