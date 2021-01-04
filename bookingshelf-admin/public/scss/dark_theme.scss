@@ -11,7 +11,9 @@
 
 
   #payroll {
-
+    .mobile-title {
+      color: #fff !important;
+    }
 
     .SelectedWeekExample {
       background: #2A3042 !important;
@@ -50,6 +52,8 @@
       }
     }
 
+
+
     .main-container {
       .header-nav-tabs {
         background-color: #2A3042;
@@ -69,7 +73,9 @@
       }
 
       .calendar .button-calendar {
-        background-color: #222736 !important;
+        border-color: #222736;;
+        background-color: #2A3042 !important;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
         input {
           color: #fff !important;
         }

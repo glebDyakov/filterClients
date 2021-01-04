@@ -59,6 +59,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 2;
 
         p {
           font-style: normal;
@@ -865,9 +868,17 @@
         @media screen and (max-width: $mob-width) {
           overflow-y: unset;
           border-left: 4px solid #50A5F1;
+          display: block;
 
+          .payroll-day {
+            td {
+              &::before {
+                background-color: unset !important;
+              }
+            }
+
+          }
         }
-
 
         .payroll-day {
           position: relative;
@@ -1229,6 +1240,10 @@
               background-color: #fff;
               border-bottom: 1px solid #EEEFF1;
               height: 67px;
+
+              @media screen and (max-width: $mob-width){
+                top: 67px;
+              }
 
               .search-input {
                 margin-bottom: 0;
