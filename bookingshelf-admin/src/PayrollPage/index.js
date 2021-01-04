@@ -50,6 +50,7 @@ class Index extends Component {
       percent: {
         servicesPercent: [],
         serviceGroupsPercent: [],
+        categoriesPercent: [],
         productsPercent: [],
       },
     };
@@ -106,6 +107,7 @@ class Index extends Component {
     this.props.dispatch(payrollActions.getServicesPercent(staffId));
     this.props.dispatch(payrollActions.getServiceGroupsPercent(staffId));
     this.props.dispatch(payrollActions.getProductsPercent(staffId));
+    this.props.dispatch(payrollActions.getCategoriesPercent(staffId));
   }
 
   componentDidMount() {
@@ -145,8 +147,12 @@ class Index extends Component {
         this.state.selectedStaffId,
         percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
       ));
-    } else if (type === 'products') {
-      this.props.dispatch(payrollActions.updateProductsPercent(
+    } else if (type === 'categories') {
+      // this.props.dispatch(payrollActions.updateProductsPercent(
+      //   this.state.selectedStaffId,
+      //   percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
+      // ));
+      this.props.dispatch(payrollActions.updateCategoriesPercent(
         this.state.selectedStaffId,
         percents.map((percent) => ({ ...percent, staffId: this.state.selectedStaffId })),
       ));

@@ -11,10 +11,12 @@ const initialState = {
 
   isLoadingServicesPercent: false,
   isLoadingServiceGroupsPercent: false,
+  isLoadingCategoriesPercent: false,
   isLoadingProductsPercent: false,
 
   isSavingServicesPercent: false,
   isSavingServiceGroupsPercent: false,
+  isSavingCategoriesPercent: false,
   isSavingProductsPercent: false,
 
   isSavingPayoutTypes: false,
@@ -22,11 +24,13 @@ const initialState = {
   productsSaveStatus: 0,
   servicesSaveStatus: 0,
   serviceGroupsSaveStatus: 0,
+  categoriesSaveStatus: 0,
 
   updatePayoutTypeStatus: 0,
 
   servicesPercent: [],
   serviceGroupsPercent: [],
+  categoriesPercent: [],
   productsPercent: [],
 };
 
@@ -167,6 +171,25 @@ export function payroll(state = initialState, action) {
         isLoadingServiceGroupsPercent: true,
       };
 
+    case payrollConstants.GET_CATEGORIES_PERCENT_SUCCESS:
+      return {
+        ...state,
+        isLoadingCategoriesPercent: false,
+        categoriesPercent: action.payload.categoriesPercent,
+      };
+
+    case payrollConstants.GET_CATEGORIES_PERCENT_FAILURE:
+      return {
+        ...state,
+        isLoadingCategoriesPercent: false,
+      };
+
+    case payrollConstants.GET_CATEGORIES_PERCENT_REQUEST:
+      return {
+        ...state,
+        isLoadingCategoriesPercent: true,
+      };
+
 
     case payrollConstants.UPDATE_PRODUCTS_PERCENT_SUCCESS:
       let newPArr = state.productsPercent;
@@ -262,6 +285,38 @@ export function payroll(state = initialState, action) {
       return {
         ...state,
         isSavingServiceGroupsPercent: false,
+      };
+
+
+    case payrollConstants.UPDATE_CATEGORIES_PERCENT_SUCCESS:
+      let newCArr = state.categoriesPercent;
+      action.payload.categoriesPercent.map((categoryPercent) => {
+        newCArr = createOrUpdate(newCArr, categoryPercent, 'categoryId');
+      });
+
+      return {
+        ...state,
+        categoriesPercent: newCArr,
+        categoriesSaveStatus: 200,
+        isSavingCategoriesPercent: false,
+      };
+
+    case payrollConstants.UPDATE_CATEGORIES_PERCENT_SUCCESS_TIME:
+      return {
+        ...state,
+        categoriesSaveStatus: 0,
+      };
+
+    case payrollConstants.UPDATE_CATEGORIES_PERCENT_REQUEST:
+      return {
+        ...state,
+        isSavingCategoriesPercent: true,
+      };
+
+    case payrollConstants.UPDATE_CATEGORIES_PERCENT_FAILURE:
+      return {
+        ...state,
+        isSavingCategoriesPercent: false,
       };
     default:
       return state;

@@ -25,21 +25,15 @@ class StaffList extends Component {
   }
 
   scrollHandler() {
-    const { staffs } = this.context;
-
-    const countStaffs = staffs && staffs.length || 0;
-
     if (this.wrapperRef) {
-      if (this.wrapperRef.scrollLeft + this.wrapperRef.clientWidth >= this.wrapperRef.scrollLeftMax) {
+      if (this.wrapperRef.scrollLeft + this.wrapperRef.clientWidth >= this.wrapperRef.scrollWidth - this.wrapperRef.clientWidth) {
         this.setState({ scrollBack: true });
-        console.log('STATE', this.state.scrollBack);
       }
 
-      if (this.wrapperRef.scrollLeft >= this.wrapperRef.scrollLeftMax) {
+      if (this.wrapperRef.scrollLeft >= this.wrapperRef.scrollWidth - this.wrapperRef.clientWidth) {
         $(this.wrapperRef).animate({ scrollLeft: 0 }, { duration: 370 });
         this.setState({ scrollBack: false });
       } else {
-        // this.wrapperRef.scrollLeft += this.wrapperRef.clientWidth;
         $(this.wrapperRef).animate({ scrollLeft: this.wrapperRef.scrollLeft + this.wrapperRef.clientWidth }, { duration: 370 });
       }
     }
