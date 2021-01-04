@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PercentList from './PercentList';
 import SettingContext from '../../../_context/SettingContext';
 import { withTranslation } from 'react-i18next';
+import MobilePercentHandler from './MobilePercentHandler';
 
 class PercentSettings extends Component {
   constructor(props) {
@@ -197,6 +198,8 @@ class PercentSettings extends Component {
             <PercentList haveNested={true} typePercent="serviceGroups" handleChange={this.handleChange}
                          handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
                          items={this.state.serviceGroups}/>
+
+            {/*<MobilePercentHandler/>*/}
           </div>
           <div className="products-container col">
             <p className="percent-title">{t('Товары')}</p>
