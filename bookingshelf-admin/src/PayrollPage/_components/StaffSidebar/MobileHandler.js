@@ -34,12 +34,13 @@ class MobileHandler extends Component {
                 className="staff-name">{staff && staff.firstName + (staff && staff.lastName ? ' ' + staff.lastName : '')}</p>
             </>}
 
-            {this.state.isOpen && <div><StaffList onClose={() => {
-              this.setState({
-                isOpen: false,
-              });
-            }} isMob={true}/></div>}
+
           </button>
+          {this.state.isOpen && <div><StaffList onClose={() => {
+            this.setState({
+              isOpen: false,
+            });
+          }} isMob={true}/></div>}
         </label>
 
       </>

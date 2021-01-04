@@ -13,24 +13,23 @@ class MobilePercentHandler extends Component {
   }
 
   handleModal(isOpen) {
+    console.log("handleModal", isOpen);
     this.setState(() => ({
       isOpen,
     }));
+
   }
 
   render() {
     return (
-      <>
-        <button onClick={this.handleModal.bind(null, true)} className="select-staff-button">
-          <>
-            <p>Нажмите чтобы задать %</p>
-          </>
-
-          {this.state.isOpen && <MobilePercentList onClose={this.handleModal.bind(null, false)}/>}
+      <div className="select-container">
+        <button onClick={this.handleModal.bind(null, true)} className="select-percent-button desk-hidden">
+          <p>Нажмите чтобы задать %</p>
         </button>
-
-      </>
-
+        {this.state.isOpen && <MobilePercentList {...this.props} onClose={() => {
+          this.handleModal(false)
+        }}/>}
+      </div>
     );
   }
 }

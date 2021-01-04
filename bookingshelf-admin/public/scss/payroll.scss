@@ -7,13 +7,116 @@
     display: none !important;
   }
 
+
+
+
+  .select-percent-button {
+    background: #F3F3F9;
+    border-radius: 2px;
+    padding: 9px 10px;
+
+    border: none;
+    height: 36px;
+    width: 100%;
+    text-align: left;
+    margin-top: 7px;
+
+
+    &:hover {
+      opacity: 1;
+    }
+
+    position: relative;
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #8E919D !important;
+
+    &::before, &::after {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      content: '';
+      width: 16px;
+      height: 1px;
+      background-color: #8E919D;
+    }
+
+    &::after {
+      right: 17.5px;
+      height: 16px;
+      width: 1px;
+    }
+  }
+
+  .select-container {
+    .dropdown {
+
+      .close-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 22px;
+          color: #495057;
+        }
+
+        .close {
+          width: 15px;
+          height: 15px;
+          min-height: unset;
+          min-width: unset;
+          position: relative;
+
+          &::before, &::after {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%) rotate(45deg);
+            content: '';
+            width: 20px;
+            height: 2px;
+            background-color: #2A3042;;
+          }
+
+          &::after {
+            transform: translate(-50%) rotate(-45deg);
+
+          }
+        }
+      }
+
+      width: 302px !important;
+      max-height: 80vh !important;
+      background: #FFFFFF;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+
+    }
+
+  }
+
   .list-modal-wrapper {
+    z-index: 1050;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-      .list-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .list-modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
     }
   }
@@ -47,6 +150,8 @@
 
     }
   }
+
+
 
   .header-tabs-mob {
     margin-left: 10px;
@@ -82,7 +187,7 @@
       display: flex !important;
       flex-direction: column !important;
       padding: 0 !important;
-      background: #FFFFFF !important;
+      background: #FFFFFF;
       /* Drop Shadow */
       margin-bottom: 7px !important;
       z-index: 2;
@@ -111,7 +216,7 @@
           padding: 0 !important;
 
           opacity: 1 !important;
-          color: #555B6D !important;
+          color: #555B6D;
 
 
         }
@@ -254,6 +359,10 @@
   .select-staff-label {
     display: none;
 
+    .scroll-button {
+      display: none;
+    }
+
 
     @media screen and (max-width: $mob-width) {
       display: flex;
@@ -384,11 +493,12 @@
 
       @media screen and (max-width: $mob-width) {
         display: block;
+
       }
       position: absolute;
       right: 10px;
       left: 10px;
-      top: 85px;
+      top: 90px;
       z-index: 2;
       max-height: 300px;
       height: unset;
@@ -398,12 +508,19 @@
         text-align: left;
       }
 
+      .list-item {
+        &:not(:last-of-type) {
+          border-bottom: 1px solid #EAEBED;
+        }
+      }
+
       background: #FFFFFF;
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       border-radius: 5px;
 
     }
   }
+
   .scroll-button {
     position: absolute;
     top: 50%;
@@ -427,7 +544,6 @@
 
   .staffs-list {
     position: relative;
-
 
 
     @media screen and (max-width: $mob-width) {
@@ -687,6 +803,10 @@
     height: 100%;
     position: relative;
 
+    @media screen and (max-width: $mob-width){
+      height: unset;
+    }
+
     .table {
       border-radius: 5px 0px 0px 0px;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
@@ -744,14 +864,19 @@
       tbody {
         @media screen and (max-width: $mob-width) {
           overflow-y: unset;
+          border-left: 4px solid #50A5F1;
+
         }
+
 
         .payroll-day {
           position: relative;
+          border-bottom: 1px solid #EAEBED;
+
 
           @media screen and (max-width: $mob-width) {
             content: none;
-            border-left: 4px solid #50A5F1;
+            border-left: none;
           }
 
 
@@ -783,10 +908,6 @@
                 }
               }
             }
-          }
-
-          &:not(:last-of-type) {
-            border-bottom: 1px solid #EAEBED;
           }
 
 
@@ -949,6 +1070,7 @@
           .payroll-day {
             display: flex;
             flex-direction: column;
+
           }
 
           .payroll-day-list {
@@ -982,6 +1104,16 @@
     max-height: calc(100% - 108px);
     padding: 20px 15px;
     overflow-y: auto;
+
+    @media screen and (max-width: $mob-width){
+      .dropdown {
+        display: none !important;
+      }
+
+      .select-container .dropdown {
+        display: block !important;
+      }
+    }
 
 
     @media screen and (max-width: $mob-width) {
@@ -1057,20 +1189,13 @@
 
 
           .nested-dropdown {
-            .dropdown_item {
+            .dropdown_item:last-of-type {
               border-bottom: 1px solid #EEEFF1;
             }
           }
 
           .dropdown_item:not(:last-of-type) {
             border-bottom: 1px solid #EEEFF1;
-          }
-
-          .nested-dropdown {
-            .dropdown_item {
-              border-top: 1px solid #EEEFF1;
-              border-bottom: none;
-            }
           }
 
           .dropdown_item {

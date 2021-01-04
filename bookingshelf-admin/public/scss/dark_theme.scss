@@ -12,6 +12,7 @@
 
   #payroll {
 
+
     .SelectedWeekExample {
       background: #2A3042 !important;
 
@@ -96,11 +97,28 @@
           }
 
           .payroll-day, .payroll-day-list {
-            border-color: #3F4455;
+            border-color: #3F4455 !important;
+          }
+
+          .payroll-day {
+            border: none;
+            td {
+              &::before {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                background-color: #3F4455;
+                content: '';
+              }
+            }
           }
 
             td, tr td {
               background-color: #2A3042 !important;
+              border-color: #3F4455 !important;
 
             }
 
@@ -170,6 +188,62 @@
 
     * {
       color: #fff !important;
+    }
+
+  }
+
+  .select-percent-button {
+    background: #222736 !important;
+
+  }
+
+  .list-modal-wrapper {
+    .list-modal {
+      .close-item {
+        p {
+          color: #fff !important;
+        }
+
+        .close {
+          &::before, &::after {
+            background-color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+
+  .header-tabs-mob {
+    .dropdown-button {
+      color: #fff !important;
+    }
+
+    .dropdown-buttons {
+      background: #2A3042 !important;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
+
+      .nav-item {
+        border-color: #3F4455 !important;
+
+        .nav-link {
+          color: #fff !important;
+
+        }
+      }
+    }
+  }
+
+  .select-staff-label {
+    color: #fff !important;
+
+    background: #2A3042 !important;
+    label, p {
+      color: #fff !important;
+    }
+
+    .select-staff-button {
+      background: #222736 !important;
+
     }
 
   }

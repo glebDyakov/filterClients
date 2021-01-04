@@ -198,16 +198,23 @@ class PercentSettings extends Component {
             <PercentList haveNested={true} typePercent="serviceGroups" handleChange={this.handleChange}
                          handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
                          items={this.state.serviceGroups}/>
-
-            {/*<MobilePercentHandler/>*/}
+            <MobilePercentHandler
+              haveNested={true} typePercent="serviceGroups" handleChange={this.handleChange}
+              handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
+              items={this.state.serviceGroups}/>
           </div>
           <div className="products-container col">
             <p className="percent-title">{t('Товары')}</p>
             <PercentList haveNested={false} typePercent="productCategories" handleChange={this.handleChange}
                          handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
                          items={this.state.productCategories}/>
+            <MobilePercentHandler
+              haveNested={false} typePercent="productCategories" handleChange={this.handleChange}
+              handleSubmitGroup={this.handleSubmitGroup} handleSubmit={this.handleSubmit}
+              items={this.state.productCategories}/>
           </div>
         </div>
+
       </div>
     );
   }
