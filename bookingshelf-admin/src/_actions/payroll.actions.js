@@ -12,7 +12,9 @@ export const payrollActions = {
   getServiceGroupsPercent,
   updateProductsPercent,
   updateServicesPercent,
-  updateServiceGroupsPercent
+  updateServiceGroupsPercent,
+  updateCategoriesPercent,
+  getCategoriesPercent
 };
 
 function getPayoutTypes(staffId) {
@@ -197,6 +199,31 @@ function getServiceGroupsPercent(staffId) {
   }
 }
 
+function getCategoriesPercent(staffId) {
+  return (dispatch) => {
+    dispatch(request());
+    payrollService.getPercents(staffId, 'categories')
+      .then(
+        (categoriesPercent) => {
+          dispatch(success(categoriesPercent));
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(categoriesPercent) {
+    return { type: payrollConstants.GET_CATEGORIES_PERCENT_SUCCESS, payload: { categoriesPercent } };
+  }
+
+  function failure() {
+    return { type: payrollConstants.GET_CATEGORIES_PERCENT_FAILURE };
+  }
+
+  function request() {
+    return { type: payrollConstants.GET_CATEGORIES_PERCENT_REQUEST };
+  }
+}
+
 
 function updateProductsPercent(staffId, productsPercent) {
   return (dispatch) => {
@@ -291,5 +318,38 @@ function updateServiceGroupsPercent(staffId, serviceGroupsPercent) {
 
   function request() {
     return { type: payrollConstants.UPDATE_SERVICE_GROUPS_PERCENT_REQUEST };
+  }
+}
+
+
+function updateCategoriesPercent(staffId, categoriesPercent) {
+  return (dispatch) => {
+    dispatch(request());
+    payrollService.updatePercents(staffId, 'categories', categoriesPercent)
+      .then(
+        (categoriesPercent) => {
+          dispatch(success(categoriesPercent));
+          setTimeout(() => {
+            dispatch(success_time());
+          }, 500);
+        },
+        () => dispatch(failure()),
+      );
+  };
+
+  function success(categoriesPercent) {
+    return { type: payrollConstants.UPDATE_CATEGORIES_PERCENT_SUCCESS, payload: { categoriesPercent } };
+  }
+
+  function success_time() {
+    return { type: payrollConstants.UPDATE_CATEGORIES_PERCENT_SUCCESS_TIME };
+  }
+
+  function failure() {
+    return { type: payrollConstants.UPDATE_CATEGORIES_PERCENT_FAILURE };
+  }
+
+  function request() {
+    return { type: payrollConstants.UPDATE_CATEGORIES_PERCENT_REQUEST };
   }
 }

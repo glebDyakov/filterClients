@@ -24,8 +24,6 @@ class StaffItem extends PureComponent {
     }
   }
 
-  componen
-
   render() {
     const { selectedStaffId, selectStaff } = this.context;
     const { staff } = this.props;
