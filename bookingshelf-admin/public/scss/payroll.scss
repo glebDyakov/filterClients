@@ -151,6 +151,8 @@
     }
   }
 
+
+
   .header-tabs-mob {
     margin-left: 10px;
     z-index: 2;
@@ -185,7 +187,7 @@
       display: flex !important;
       flex-direction: column !important;
       padding: 0 !important;
-      background: #FFFFFF !important;
+      background: #FFFFFF;
       /* Drop Shadow */
       margin-bottom: 7px !important;
       z-index: 2;
@@ -214,7 +216,7 @@
           padding: 0 !important;
 
           opacity: 1 !important;
-          color: #555B6D !important;
+          color: #555B6D;
 
 
         }
@@ -356,6 +358,10 @@
 
   .select-staff-label {
     display: none;
+
+    .scroll-button {
+      display: none;
+    }
 
 
     @media screen and (max-width: $mob-width) {
