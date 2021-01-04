@@ -926,10 +926,10 @@ class AddAppointment extends React.Component {
           <span style={labelKey === visibleKeys[0] ? {} : { color: 'grey' }}>{option[visibleKeys[0]]}</span>
           <span style={labelKey === visibleKeys[1] ? {} : { color: 'grey' }}>{option[visibleKeys[1]]}</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {access(12) && <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={labelKey === visibleKeys[2] ? {} : { color: 'grey' }}>{option[visibleKeys[2]]}</span>
           <span style={labelKey === visibleKeys[3] ? {} : { color: 'grey' }}>{option[visibleKeys[3]]}</span>
-        </div>
+        </div>}
         {companyTypeId === 2 && <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={labelKey === visibleKeys[4] ? {} : { color: 'grey' }}>{option[visibleKeys[4]]}</span>
           <span style={labelKey === visibleKeys[5] ? {} : { color: 'grey' }}>{option[visibleKeys[5]]}</span>

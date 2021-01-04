@@ -13,6 +13,7 @@ import ManagerSettings from './modals/ManagerSettings';
 import LogoutPage from '../LogoutPage';
 import {compose} from "redux";
 import {withTranslation} from "react-i18next";
+import { access } from '../_helpers/access';
 
 
 class SidebarMain extends React.Component {
@@ -358,7 +359,7 @@ class SidebarMain extends React.Component {
                   {appointment.clientFirstName ? <React.Fragment><p>
                     <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
-                  {appointment.clientPhone &&
+                  {access(12) && appointment.clientPhone &&
                                     <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
                   {companyTypeId === 2 && appointment.carBrand &&
                                     <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
@@ -508,7 +509,7 @@ class SidebarMain extends React.Component {
                   {appointment.clientFirstName ? <React.Fragment><p>
                     <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
-                  {appointment.clientPhone &&
+                  {access(12) && appointment.clientPhone &&
                                     <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
                   {companyTypeId === 2 && appointment.carBrand &&
                                     <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
@@ -809,7 +810,7 @@ class SidebarMain extends React.Component {
                                                       {appointment.clientFirstName ? <React.Fragment><p>
                                                         <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                                                       </p></React.Fragment> : ''}
-                                                      {appointment.clientPhone &&
+                                                      {access(12) && appointment.clientPhone &&
                                                             <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
                                                       {companyTypeId === 2 && appointment.carBrand &&
                                                             <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
