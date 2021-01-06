@@ -10,6 +10,7 @@ class TableRow extends Component {
 
     this.state = {
       isOpen: false,
+      nestedItems: [],
     };
 
     this.handleCollapse = this.handleCollapse.bind(this);
@@ -19,6 +20,16 @@ class TableRow extends Component {
     this.setState((state) => ({
       isOpen: !state.isOpen,
     }));
+  }
+
+  componentDidMount() {
+    const { appointmentsSalary, productsSalary } = this.props.payout;
+    this.setState({
+      nestedItems: [
+        ...appointmentsSalary,
+        ...productsSalary.map(ps => ({ ...ps, dateStart: ps.date })),
+      ].sort((a, b) => a.dateStart - b.dateStart),
+    });
   }
 
   render() {
@@ -34,14 +45,14 @@ class TableRow extends Component {
             </div>
 
             <div className="desk-hidden weekday-container">
-              <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
-              <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
+              <h2 className="weekday">{capitalize(moment(payout.date, 'YYYY-MM-DD').format('dd'))}</h2>
+              <p className="weekday-date">{moment(payout.date, 'YYYY-MM-DD').format('D MMMM')}</p>
             </div>
           </td>
           <td className="mob-hidden">
             <div className="weekday-container">
-              <h2 className="weekday">{capitalize(moment(payout.workDate, 'YYYY-MM-DD').format('dd'))}</h2>
-              <p className="weekday-date">{moment(payout.workDate, 'YYYY-MM-DD').format('D MMMM')}</p>
+              <h2 className="weekday">{capitalize(moment(payout.date, 'YYYY-MM-DD').format('dd'))}</h2>
+              <p className="weekday-date">{moment(payout.date, 'YYYY-MM-DD').format('D MMMM')}</p>
             </div>
           </td>
           <td className="service-container" colSpan={2}>
@@ -49,21 +60,21 @@ class TableRow extends Component {
             <p>{t('Сумма услуг')}: {payout.servicesCost.toFixed(2)} BYN</p>
           </td>
           <td className="product-container" colSpan={2}>
-            <p>{t('Продано товаров')}: {payout.staffProductsAmount}</p>
-            <p>{t('Сумма товаров')}: {payout.staffProductsCost.toFixed(2)} BYN</p>
+            <p>{t('Продано товаров')}: {payout.productsAmount}</p>
+            <p>{t('Сумма товаров')}: {payout.productsCost.toFixed(2)} BYN</p>
           </td>
           <td className="income-container" colSpan={2}>
             <p>{t('Доход сотрудника')}: {(payout.staffProductsRevenue + payout.staffServiceRevenue).toFixed(2)} BYN</p>
-            <p>{t('Доход компании')}: {(payout.staffProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
+            <p>{t('Доход компании')}: {(payout.companyProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
           </td>
 
-            {this.state.isOpen &&
-            payout.appointmentsSalary.map((ps, index) => <TableSubRow className="desk-hidden" key={index} payout={ps}/>)}
+          {this.state.isOpen &&
+          this.state.nestedItems.map((ps, index) => <TableSubRow className="desk-hidden" key={index} payout={ps}/>)}
         </tr>
 
 
-          {this.state.isOpen &&
-          payout.appointmentsSalary.map((ps, index) => <TableSubRow className="mob-hidden" key={index} payout={ps}/>)}
+        {this.state.isOpen &&
+        this.state.nestedItems.map((ps, index) => <TableSubRow className="mob-hidden" key={index} payout={ps}/>)}
       </>
     );
   }
