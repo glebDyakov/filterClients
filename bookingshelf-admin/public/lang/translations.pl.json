@@ -812,7 +812,12 @@
   "ставка": "oceniać",
   "ставки": "stawki",
   "часов": "godziny",
-  "Количество дней по рабочему графику.": "Liczba dni zgodnie z harmonogramem pracy."
+  "Количество дней по рабочему графику.": "Liczba dni zgodnie z harmonogramem pracy.",
+
+  "от товара": "z towarów",
+
+  "Товаров продано": "Przedmioty sprzedane",
+  "Выручка": "Dochód"
 }
 
 
