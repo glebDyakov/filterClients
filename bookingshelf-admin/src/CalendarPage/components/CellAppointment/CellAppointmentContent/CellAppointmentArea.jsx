@@ -38,7 +38,7 @@ class CellAppointmentArea extends React.PureComponent {
     const dragVert = appointment.appointmentId &&
       ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && isWeekBefore && (
         <p onMouseDown={this.handleMouseDown} className="drag-vert-wrapper">
-          <span className="drag-vert"/>
+          {/*<span className="drag-vert"/>*/}
         </p>
       );
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;

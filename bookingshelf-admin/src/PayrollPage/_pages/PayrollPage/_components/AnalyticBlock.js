@@ -33,7 +33,7 @@ class AnalyticBlock extends Component {
             className="currency">(BYN)</span></h2>
         </div>
         <div className="col">
-          <h3 className="title">{t('Товаров')}:</h3>
+          <h3 className="title">{t('Товаров продано')}:</h3>
           <h2 className="stat">{analytic.productsCount ?? 0}</h2>
         </div>
         <div className="col">

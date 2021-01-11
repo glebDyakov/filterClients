@@ -805,6 +805,9 @@
   "бесплатно": "is free",
   "Оплатить пакет": "Pay for package",
 
+  "Товаров продано": "Items sold",
+  "Выручка": "Revenue",
+
   "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Salary paid if the employee's earnings are less than a specified value.",
   "Проценты от реализации": "Percentage from sales",
   "Рабочих": "Working",
@@ -814,6 +817,8 @@
   "ставка": "rate",
   "ставки": "rates",
   "часов": "hours",
-  "Количество дней по рабочему графику.": "The number of days according to the work schedule."
+  "Количество дней по рабочему графику.": "The number of days according to the work schedule.",
+
+  "от товара": "from products"
 
 }
