@@ -65,7 +65,7 @@ class TableRow extends Component {
           </td>
           <td className="income-container" colSpan={2}>
             <p>{t('Доход сотрудника')}: {(payout.staffProductsRevenue + payout.staffServiceRevenue).toFixed(2)} BYN</p>
-            <p>{t('Выручка')}: {(payout.companyProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
+            <p>{t('Выручка')} {t('компании')}: {(payout.companyProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
           </td>
 
           {this.state.isOpen &&

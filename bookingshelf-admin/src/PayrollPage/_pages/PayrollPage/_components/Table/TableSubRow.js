@@ -45,7 +45,7 @@ class TableSubRow extends Component {
           <p className="list-text">{payout.date ? payout.staffProductRevenue.toFixed(2)  : payout.staffServiceRevenue.toFixed(2)} BYN</p>
         </td>
         <td>
-          <h2 className="mobile-title desk-hidden">{t('Доход Компании')}</h2>
+          <h2 className="mobile-title desk-hidden">{t('Выручка')} {t('компании')}</h2>
           <p className="list-text">{payout.date ? payout.companyProductRevenue.toFixed(2)  : payout.companyServiceRevenue.toFixed(2)} BYN</p>
         </td>
 

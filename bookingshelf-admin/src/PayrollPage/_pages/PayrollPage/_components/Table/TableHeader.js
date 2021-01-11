@@ -14,7 +14,7 @@ class TableHeader extends Component {
         <td className="table-header-title">{t('Товар')}</td>
         <td className="table-header-title">% {t('от товара')}</td>
         <td className="table-header-title">{t('Доход Сотруд')}</td>
-        <td className="table-header-title">{t('Выручка')}</td>
+        <td className="table-header-title">{t('Выручка')} {t('компании')}</td>
       </tr>
       </thead>
     );

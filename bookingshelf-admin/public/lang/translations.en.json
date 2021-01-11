@@ -819,6 +819,8 @@
   "часов": "hours",
   "Количество дней по рабочему графику.": "The number of days according to the work schedule.",
 
-  "от товара": "from products"
+  "от товара": "from products",
+  "Новое": "New",
+  "компании": "company"
 
 }

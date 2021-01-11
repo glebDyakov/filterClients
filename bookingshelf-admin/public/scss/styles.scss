@@ -23,9 +23,8 @@
 
   &::after {
     position: absolute;
-    content: 'Beta';
+    content: attr(data-text);
     top: -5px;
-    right: -20px;
     font-style: normal;
     font-weight: normal;
     font-size: 10px;

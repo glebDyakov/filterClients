@@ -11,8 +11,8 @@ import { HeaderMain } from './HeaderMain';
 import AppointmentFromSocket from './modals/AppointmentFromSocket';
 import ManagerSettings from './modals/ManagerSettings';
 import LogoutPage from '../LogoutPage';
-import {compose} from "redux";
-import {withTranslation} from "react-i18next";
+import { compose } from 'redux';
+import { withTranslation } from 'react-i18next';
 import { access } from '../_helpers/access';
 
 
@@ -31,7 +31,7 @@ class SidebarMain extends React.Component {
       isOpenDropdownButtons: false,
       openManager: false,
       openUserSettings: true,
-      language: "ru"
+      language: 'ru',
 
     };
 
@@ -90,7 +90,7 @@ class SidebarMain extends React.Component {
 
     if (this.props.i18n.language !== newProps.i18n.language || this.state.language !== newProps.i18n.language) {
       this.setState({
-        language: newProps.i18n.language
+        language: newProps.i18n.language,
       });
     }
 
@@ -102,7 +102,7 @@ class SidebarMain extends React.Component {
     if (JSON.stringify(this.props.company) !== JSON.stringify(newProps.company)) {
       const companyTypeId = newProps.company.settings && newProps.company.settings.companyTypeId;
       if (newProps.match.params.activeTab === 'staff') {
-        document.title = (companyTypeId === 2 || companyTypeId === 3) ? this.props.t('Рабочие места | Онлайн-запись') : (companyTypeId === 4 ? t("Врачи | Онлайн-запись") : t('Сотрудники | Онлайн-запись'));
+        document.title = (companyTypeId === 2 || companyTypeId === 3) ? this.props.t('Рабочие места | Онлайн-запись') : (companyTypeId === 4 ? t('Врачи | Онлайн-запись') : t('Сотрудники | Онлайн-запись'));
       }
       this.setState({
         company: newProps.company,
@@ -117,7 +117,7 @@ class SidebarMain extends React.Component {
 
     if (this.props.i18n.language !== newProps.i18n.language || JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
       const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
-          ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
+        ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
 
       if (activeStaff) {
         this.props.i18n.changeLanguage(activeStaff.languageCode);
@@ -151,8 +151,8 @@ class SidebarMain extends React.Component {
     const { user } = this.props.authentication;
 
     if (user && (user.forceActive
-            || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
-            || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
+      || (moment(user.trialEndDateMillis).format('x') >= moment().format('x'))
+      || (user.invoicePacket && moment(user.invoicePacket.endDateMillis).format('x') >= moment().format('x'))
     )) {
     } else {
       this.props.dispatch(menuActions.getMenu());
@@ -172,7 +172,7 @@ class SidebarMain extends React.Component {
     }
 
     const activeStaff = this.props.staff && this.props.staff.staff && this.props.staff.staff.find((item) =>
-        ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
+      ((item.staffId) === (this.props.authentication.user && this.props.authentication.user.profile && this.props.authentication.user.profile.staffId)));
 
     if (activeStaff && activeStaff.languageCode !== this.props.i18n.language) {
       this.props.i18n.changeLanguage(activeStaff.languageCode);
@@ -269,22 +269,22 @@ class SidebarMain extends React.Component {
     const path = '/' + location.pathname.split('/')[1];
 
     const companyTypeId = company.settings && company.settings.companyTypeId;
-    const {t} = this.props;
+    const { t } = this.props;
 
 
     const activeStaff = staff && staff.staff && staff.staff.find((item) =>
       ((item.staffId) === (authentication.user && authentication.user.profile && authentication.user.profile.staffId)));
 
 
-
     const { invoicePacket, forceActive, trialEndDateMillis } = authentication.user;
-    let packetEnd; let packetEndText;
+    let packetEnd;
+    let packetEndText;
     if (invoicePacket) {
       packetEnd = Math.ceil((invoicePacket.endDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1;
 
       packetEndText = packetEnd === 0
         ? this.props.t('Сегодня система будет отключена')
-        : `${this.props.t("До окончания действия пакета")} ${packetEnd === 1 ? this.props.t('остался 1 день') : `${this.props.t("осталось")} ${packetEnd} ${this.props.t("дня")}`}`;
+        : `${this.props.t('До окончания действия пакета')} ${packetEnd === 1 ? this.props.t('остался 1 день') : `${this.props.t('осталось')} ${packetEnd} ${this.props.t('дня')}`}`;
     } else if (!forceActive) {
       packetEnd = Math.ceil((trialEndDateMillis - moment().format('x')) / 3600 / 24 / 1000) - 1;
       if (packetEnd < 0) {
@@ -292,7 +292,7 @@ class SidebarMain extends React.Component {
       } else {
         packetEndText = packetEnd === 0
           ? this.props.t('Сегодня система будет отключена')
-          : `${this.props.t("До окончания действия пакета")} ${packetEnd === 1 ? this.props.t('остался 1 день') : `${this.props.t("осталось")} ${packetEnd} ${this.props.t("дня")}`}`;
+          : `${this.props.t('До окончания действия пакета')} ${packetEnd === 1 ? this.props.t('остался 1 день') : `${this.props.t('осталось')} ${packetEnd} ${this.props.t('дня')}`}`;
       }
     }
 
@@ -330,7 +330,7 @@ class SidebarMain extends React.Component {
         }
         const extraServiceText = this.getExtraServiceText(appointmentsCount, appointment);
 
-        const {t} = this.props;
+        const { t } = this.props;
 
         if (condition && !appointment.coAppointmentId) {
           resultMarkup = (
@@ -347,7 +347,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -357,22 +357,24 @@ class SidebarMain extends React.Component {
                 </div>
                 <div className="d-flex flex-column" style={{ wordBreak: 'break-word' }}>
                   {appointment.clientFirstName ? <React.Fragment><p>
-                    <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                    <strong>{companyTypeId === 4 ? t('Пациент') : t('Клиент')}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
                   {access(12) && appointment.clientPhone &&
-                                    <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
+                  <p><strong>{t('Телефон')}: </strong> {appointment.clientPhone}</p>}
                   {companyTypeId === 2 && appointment.carBrand &&
-                                    <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
+                  <p style={{ textDecoration: 'underline' }}><strong>{t('Марка авто')}: </strong> {appointment.carBrand}
+                  </p>}
                   {companyTypeId === 2 && appointment.carNumber &&
-                                    <p style={{ textDecoration: 'underline' }}><strong>{t("Гос номер")}: </strong> {appointment.carNumber}</p>}
+                  <p style={{ textDecoration: 'underline' }}><strong>{t('Гос номер')}: </strong> {appointment.carNumber}
+                  </p>}
                   <p className="service_time" style={{ textTransform: 'capitalize' }}
                     // style={{width: "30%", textAlign: "left"}}
                   >
-                    <strong>{t("Время")}: </strong>
+                    <strong>{t('Время')}: </strong>
                     {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
                   </p>
                   <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
-                    {t("Просмотреть запись")} →
+                    {t('Просмотреть запись')} →
                   </p>
 
                 </div>
@@ -389,7 +391,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -398,7 +400,7 @@ class SidebarMain extends React.Component {
                   </div>
                   <br/>
                   <p style={{ color: '#50A5F1' }}>
-                    {t("Просмотреть запись")} →
+                    {t('Просмотреть запись')} →
                   </p>
                 </div>
               </div>
@@ -497,7 +499,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -507,22 +509,24 @@ class SidebarMain extends React.Component {
                 </div>
                 <div className="d-flex flex-column" style={{ wordBreak: 'break-word' }}>
                   {appointment.clientFirstName ? <React.Fragment><p>
-                    <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                    <strong>{companyTypeId === 4 ? t('Пациент') : t('Клиент')}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
                   </p></React.Fragment> : ''}
                   {access(12) && appointment.clientPhone &&
-                                    <p><strong>{t("Телефон")}: </strong> {appointment.clientPhone}</p>}
+                  <p><strong>{t('Телефон')}: </strong> {appointment.clientPhone}</p>}
                   {companyTypeId === 2 && appointment.carBrand &&
-                                    <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
+                  <p style={{ textDecoration: 'underline' }}><strong>{t('Марка авто')}: </strong> {appointment.carBrand}
+                  </p>}
                   {companyTypeId === 2 && appointment.carNumber &&
-                                    <p style={{ textDecoration: 'underline' }}><strong>{t("Гос. номер")}: </strong> {appointment.carNumber}</p>}
+                  <p style={{ textDecoration: 'underline' }}>
+                    <strong>{t('Гос. номер')}: </strong> {appointment.carNumber}</p>}
                   <p className="service_time" style={{ textTransform: 'capitalize' }}
                     // style={{width: "30%", textAlign: "left"}}
                   >
-                    <strong>{t("Время")}: </strong>
+                    <strong>{t('Время')}: </strong>
                     {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
                   </p>
                   <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
-                                        {t("Просмотреть запись")} →
+                    {t('Просмотреть запись')} →
                   </p>
 
                 </div>
@@ -539,7 +543,7 @@ class SidebarMain extends React.Component {
                         <img
                           src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                           className="img"/></div>
-                      <strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
+                      <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{appointmentInfo.staff.firstName + ' ' + (appointmentInfo.staff.lastName ? appointmentInfo.staff.lastName : '')}
                     </p>
                     <p className="service_name"
                     >{appointment.serviceName}&nbsp;{extraServiceText}
@@ -548,7 +552,7 @@ class SidebarMain extends React.Component {
                   </div>
                   <br/>
                   <p style={{ color: '#50A5F1' }}>
-                                        {t("Просмотреть запись")} →
+                    {t('Просмотреть запись')} →
                   </p>
                 </div>
               </div>
@@ -585,11 +589,11 @@ class SidebarMain extends React.Component {
 
               <div className="img-container">
                 <img className="rounded-circle" style={{ opacity: '1' }}
-                  src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ('data:image/png;base64,' + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
-                  alt=""/>
+                     src={activeStaff && activeStaff.imageBase64 && authentication.user.profile.imageBase64 !== '' ? ('data:image/png;base64,' + activeStaff.imageBase64) : `${process.env.CONTEXT}public/img/avatar.svg`}
+                     alt=""/>
               </div>
               <p onClick={() => this.openModalUserSettings()} className="firm-name"
-                style={{ float: 'left', fontWeight: 600 }}>
+                 style={{ float: 'left', fontWeight: 600 }}>
                 {authentication && authentication.user.profile && authentication.user.profile.firstName} {authentication && authentication.user.profile.lastName}
                 <p style={{ fontSize: '14px', fontWeight: 300 }}>{staffType}</p>
 
@@ -608,75 +612,76 @@ class SidebarMain extends React.Component {
           </li>
 
           <li className="arrow_collapse sidebar_list_collapse" onClick={() => this.toggleCollapse('true')}
-            style={{ 'display': collapse ? 'none' : 'block' }}/>
+              style={{ 'display': collapse ? 'none' : 'block' }}/>
           <li className="arrow_collapse sidebar_list_collapse-out"
-            onClick={() => this.toggleCollapse('false')} style={{ 'display': collapse ? 'block' : 'none' }}/>
+              onClick={() => this.toggleCollapse('false')} style={{ 'display': collapse ? 'block' : 'none' }}/>
           {authentication && authentication.menu && authentication.user && authentication.user.menu &&
-                    menu && menu.menuList && menu.menuList.map((item, keyStore) => {
+          menu && menu.menuList && menu.menuList.map((item, keyStore) => {
             return (
               authentication.user.menu.map((localItem, i) => {
                 return (
                   localItem.id === item.id &&
-                                    <li className={path === item.url ? 'active' : ''}
-                                      style={item.id === 'calendar_menu_id' ? { marginTop: '30px' } : {}}
-                                      key={keyStore}>
-                                      <a onClick={(e) => this.handleClick(item.url, e)}>
-                                        <img
-                                          src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
-                                          alt=""/>
-                                        <span className={item.id === 'warehouse_menu_id' ? "beta": ''}>{item.id === 'staff_menu_id' ? (
-                                          (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t("Врачи") : t('Сотрудники'))
-                                        ) : (item.id === 'clients_menu_id' && companyTypeId === 4 ? t('Пациенты') : t(item.name))}</span>
+                  <li className={path === item.url ? 'active' : ''}
+                      style={item.id === 'calendar_menu_id' ? { marginTop: '30px' } : {}}
+                      key={keyStore}>
+                    <a onClick={(e) => this.handleClick(item.url, e)}>
+                      <img
+                        src={`${process.env.CONTEXT}public/img/icons/` + item.icon}
+                        alt=""/>
+                      <span data-text={item.id === 'warehouse_menu_id' ? 'Beta' : t('Новое')}
+                            className={item.id === 'warehouse_menu_id' || item.id === 'salary_menu_id' ? 'beta' : ''}>{item.id === 'staff_menu_id' ? (
+                        (companyTypeId === 2 || companyTypeId === 3) ? t('Рабочие места') : (companyTypeId === 4 ? t('Врачи') : t('Сотрудники'))
+                      ) : (item.id === 'clients_menu_id' && companyTypeId === 4 ? t('Пациенты') : t(item.name))}</span>
 
-                                        {keyStore === 0 &&
-                                            ((count && count.appointments && count.appointments.count > 0) ||
-                                                (count && count.canceled && count.canceled.count > 0) ||
-                                                (count && count.moved && count.moved.count > 0))
-                                            && <span className="sidebar-notification-wrapper"><span
-                                              className="sidebar-notification"
-                                              onClick={(event) => this.openAppointments(event)} data-toggle="modal"
-                                              data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count) + parseInt(count && count.canceled && count.canceled.count) + parseInt(count && count.moved && count.moved.count)}</span></span>}
+                      {keyStore === 0 &&
+                      ((count && count.appointments && count.appointments.count > 0) ||
+                        (count && count.canceled && count.canceled.count > 0) ||
+                        (count && count.moved && count.moved.count > 0))
+                      && <span className="sidebar-notification-wrapper"><span
+                        className="sidebar-notification"
+                        onClick={(event) => this.openAppointments(event)} data-toggle="modal"
+                        data-target=".modal_counts">{parseInt(count && count.appointments && count.appointments.count) + parseInt(count && count.canceled && count.canceled.count) + parseInt(count && count.moved && count.moved.count)}</span></span>}
 
-                                        {item.id === 'email_menu_id' && (
-                                          <div className="sidebar-notification-wrapper"
-                                            onClick={() => this.toggleDropdown('isNotificationDropdown')}>
+                      {item.id === 'email_menu_id' && (
+                        <div className="sidebar-notification-wrapper"
+                             onClick={() => this.toggleDropdown('isNotificationDropdown')}>
 
-                                            {(notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
-                                                        || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
-                                                    && <React.Fragment>
-                                                      <span className="sidebar-notification red-notification">!</span>
-                                                      {isNotificationDropdown &&
-                                                        <ul className="sidebar-notification-dropdown">
-                                                          {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
-                                                            <li>{t("Баланс SMS ниже")} {(localStorage.getItem('notifyCount') || 200)}</li>
-                                                          }
-                                                          {notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200) &&
-                                                            <li>{t("Баланс Email ниже")} {(localStorage.getItem('notifyCount') || 200)}</li>
-                                                          }
-                                                        </ul>}
-                                                    </React.Fragment>}
+                          {(notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200)
+                            || notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200))
+                          && <React.Fragment>
+                            <span className="sidebar-notification red-notification">!</span>
+                            {isNotificationDropdown &&
+                            <ul className="sidebar-notification-dropdown">
+                              {notification.balance && notification.balance.smsAmount < (localStorage.getItem('notifyCount') || 200) &&
+                              <li>{t('Баланс SMS ниже')} {(localStorage.getItem('notifyCount') || 200)}</li>
+                              }
+                              {notification.balance && notification.balance.emailAmount < (localStorage.getItem('notifyCount') || 200) &&
+                              <li>{t('Баланс Email ниже')} {(localStorage.getItem('notifyCount') || 200)}</li>
+                              }
+                            </ul>}
+                          </React.Fragment>}
 
-                                          </div>
-                                        )}
+                        </div>
+                      )}
 
-                                        {item.id === 'payments_menu_id' && (
-                                          <div className="sidebar-notification-wrapper"
-                                            onClick={() => this.toggleDropdown('isPaymentDropdown')}>
+                      {item.id === 'payments_menu_id' && (
+                        <div className="sidebar-notification-wrapper"
+                             onClick={() => this.toggleDropdown('isPaymentDropdown')}>
 
-                                            {packetShowCondition && <React.Fragment>
-                                              <span className="sidebar-notification">!</span>
-                                              {isPaymentDropdown && (
-                                                <ul className="sidebar-notification-dropdown">
-                                                  <li>{packetEndText}</li>
-                                                </ul>
-                                              )}
-                                            </React.Fragment>
-                                            }
+                          {packetShowCondition && <React.Fragment>
+                            <span className="sidebar-notification">!</span>
+                            {isPaymentDropdown && (
+                              <ul className="sidebar-notification-dropdown">
+                                <li>{packetEndText}</li>
+                              </ul>
+                            )}
+                          </React.Fragment>
+                          }
 
-                                          </div>
-                                        )}
-                                      </a>
-                                    </li>
+                        </div>
+                      )}
+                    </a>
+                  </li>
                 );
               })
 
@@ -685,25 +690,25 @@ class SidebarMain extends React.Component {
 
 
           {authentication && authentication.user && authentication.user && authentication.user.bookingPage &&
-                    <div
-                      className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && this.props.t("Id компании") + ': '}
-                      <a target="_blank"
-                        href={'https://online-zapis.com/online/' + authentication.user.bookingPage}
-                        className="">{authentication.user.bookingPage}
-                      </a>
-                    </div>}
+          <div
+            className={classNames('id_company', { 'id_company_collapse': collapse })}>{!collapse && this.props.t('Id компании') + ': '}
+            <a target="_blank"
+               href={'https://online-zapis.com/online/' + authentication.user.bookingPage}
+               className="">{authentication.user.bookingPage}
+            </a>
+          </div>}
           <div className="questions"><Link to="/faq">
             <img className="rounded-circle" src={`${process.env.CONTEXT}public/img/information.svg`}
-              alt=""/>
+                 alt=""/>
           </Link></div>
 
         </ul>
         <div className="sidebar-modal modal fade modal_counts" tabIndex="-1" role="dialog" aria-hidden="true">
           <div style={{ maxWidth: '761px' }} className="modal-dialog modal-dialog-lg modal-dialog-centered"
-            role="document">
+               role="document">
             <div className="modal-content modal-height">
               <div className="modal-header">
-                <h4 className="modal-title">{t("Уведомления")}</h4>
+                <h4 className="modal-title">{t('Уведомления')}</h4>
 
 
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -717,52 +722,52 @@ class SidebarMain extends React.Component {
               <div className="modal-inner count-modal modal-not-approved">
                 <div className="button-field">
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'new' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'new' })}>{t("Новые записи")} <span
-                      className="counter">
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'new' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'new' })}>{t('Новые записи')} <span
+                    className="counter">
                       {count && count.appointments && count.appointments.count}
                     </span></button>
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'deleted' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'deleted' })}>{t("Удаленные записи")}<span
-                      className="counter">{count && count.canceled && count.canceled.count}</span>
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'deleted' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'deleted' })}>{t('Удаленные записи')}<span
+                    className="counter">{count && count.canceled && count.canceled.count}</span>
                   </button>
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'moved' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'moved' })}>{t("Перемещенные записи")}<span
-                      className="counter">{count && count.moved && count.moved.count}</span></button>
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'moved' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'moved' })}>{t('Перемещенные записи')}<span
+                    className="counter">{count && count.moved && count.moved.count}</span></button>
                 </div>
 
                 <div className="button-field-mob">
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'new' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'new' })}>{t("Новые записи")} <span
-                      className="counter">
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'new' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'new' })}>{t('Новые записи')} <span
+                    className="counter">
                       {count && count.appointments && count.appointments.count}
                     </span></button>
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'deleted' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'deleted' })}>{t("Удаленные записи")}<span
-                      className="counter">{count && count.canceled && count.canceled.count}</span>
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'deleted' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'deleted' })}>{t('Удаленные записи')}<span
+                    className="counter">{count && count.canceled && count.canceled.count}</span>
                   </button>
                   <button type="button"
-                    className={'float-left button small-button approve-tab ' + (openedTab === 'moved' ? '' : 'disabled')}
-                    onClick={() => this.setState({ openedTab: 'moved' })}>{t("Перемещенные записи")}<span
-                      className="counter">{count && count.moved && count.moved.count}</span></button>
+                          className={'float-left button small-button approve-tab ' + (openedTab === 'moved' ? '' : 'disabled')}
+                          onClick={() => this.setState({ openedTab: 'moved' })}>{t('Перемещенные записи')}<span
+                    className="counter">{count && count.moved && count.moved.count}</span></button>
                 </div>
 
                 {openedTab === 'new' && <React.Fragment>
                   <div className="not-approved-list">
                     {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentCountMarkup}
                     {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
-                                        && <div className="loader"
-                                          style={{ left: '0', width: '100%', height: '74%', top: '120px' }}><img
-                                            src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                    && <div className="loader"
+                            style={{ left: '0', width: '100%', height: '74%', top: '120px' }}><img
+                      src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                   </div>
                   <div className="down-button">
                     <button className="button approveAll"
-                      onClick={() => this.approveAllAppointment(true, false)}>{t("Отметить всё как прочитано")}
+                            onClick={() => this.approveAllAppointment(true, false)}>{t('Отметить всё как прочитано')}
                     </button>
                   </div>
                 </React.Fragment>
@@ -770,99 +775,105 @@ class SidebarMain extends React.Component {
                 {openedTab === 'deleted' && <React.Fragment>
                   <div className="not-approved-list">
                     {appointmentsCanceled && !(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) &&
-                                        appointmentsCanceled.map((appointment) => {
-                                          const activeStaff = staff && staff.staff && staff.staff.find((item) =>
-                                            ((item.staffId) === (appointment.staffId)));
-                                          const { roleId } = authentication.user.profile;
-                                          let condition;
-                                          if (roleId === 3 || roleId === 4) {
-                                            condition = !appointment.adminApproved;
-                                          } else {
-                                            condition = !appointment.approved;
-                                          }
-                                          return (condition &&
-                                                <li className="opacity0">
-                                                  <div className="service_item">
-                                                    <div className="left-block d-none d-md-flex">
-                                                      <div className="img-container d-none d-md-flex">
-                                                        <img
-                                                          src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
-                                                          className="img"/></div>
+                    appointmentsCanceled.map((appointment) => {
+                      const activeStaff = staff && staff.staff && staff.staff.find((item) =>
+                        ((item.staffId) === (appointment.staffId)));
+                      const { roleId } = authentication.user.profile;
+                      let condition;
+                      if (roleId === 3 || roleId === 4) {
+                        condition = !appointment.adminApproved;
+                      } else {
+                        condition = !appointment.approved;
+                      }
+                      return (condition &&
+                        <li className="opacity0">
+                          <div className="service_item">
+                            <div className="left-block d-none d-md-flex">
+                              <div className="img-container d-none d-md-flex">
+                                <img
+                                  src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                  className="img"/></div>
 
-                                                      <div className="d-flex flex-column">
-                                                        <p><strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
+                              <div className="d-flex flex-column">
+                                <p>
+                                  <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}
+                                </p>
 
-                                                        <p style={{ float: 'none' }}
-                                                          className="user-name d-flex align-items-center">
-                                                          <div className="img-container d-md-none">
-                                                            <img
-                                                              src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
-                                                              className="img"/></div>
-                                                        </p>
-                                                        <p className="service_name"
-                                                        >{appointment.serviceName}
+                                <p style={{ float: 'none' }}
+                                   className="user-name d-flex align-items-center">
+                                  <div className="img-container d-md-none">
+                                    <img
+                                      src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                      className="img"/></div>
+                                </p>
+                                <p className="service_name"
+                                >{appointment.serviceName}
 
-                                                        </p>
-                                                      </div>
-                                                    </div>
-                                                    <div className="d-flex flex-column"
-                                                      style={{ wordBreak: 'break-word' }}>
-                                                      {appointment.clientFirstName ? <React.Fragment><p>
-                                                        <strong>{companyTypeId === 4 ? t("Пациент") :t("Клиент")}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
-                                                      </p></React.Fragment> : ''}
-                                                      {access(12) && appointment.clientPhone &&
-                                                            <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
-                                                      {companyTypeId === 2 && appointment.carBrand &&
-                                                            <p style={{ textDecoration: 'underline' }}><strong>{t("Марка авто")}: </strong> {appointment.carBrand}</p>}
-                                                      {companyTypeId === 2 && appointment.carNumber &&
-                                                            <p style={{ textDecoration: 'underline' }}><strong>{t("Гос номер")}: </strong> {appointment.carNumber}</p>}
-                                                      <p className="service_time"
-                                                        style={{ textTransform: 'capitalize' }}
-                                                        // style={{width: "30%", textAlign: "left"}}
-                                                      >
-                                                        <strong>{t("Время")}: </strong>
-                                                        {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
-                                                      </p>
-                                                      <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
-                                                        {appointment.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником')}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="d-flex flex-column"
+                                 style={{ wordBreak: 'break-word' }}>
+                              {appointment.clientFirstName ? <React.Fragment><p>
+                                <strong>{companyTypeId === 4 ? t('Пациент') : t('Клиент')}:</strong> {appointment.clientFirstName + (appointment.clientLastName ? ` ${appointment.clientLastName}` : '')}
+                              </p></React.Fragment> : ''}
+                              {access(12) && appointment.clientPhone &&
+                              <p><strong>Телефон: </strong> {appointment.clientPhone}</p>}
+                              {companyTypeId === 2 && appointment.carBrand &&
+                              <p style={{ textDecoration: 'underline' }}>
+                                <strong>{t('Марка авто')}: </strong> {appointment.carBrand}</p>}
+                              {companyTypeId === 2 && appointment.carNumber &&
+                              <p style={{ textDecoration: 'underline' }}>
+                                <strong>{t('Гос номер')}: </strong> {appointment.carNumber}</p>}
+                              <p className="service_time"
+                                 style={{ textTransform: 'capitalize' }}
+                                // style={{width: "30%", textAlign: "left"}}
+                              >
+                                <strong>{t('Время')}: </strong>
+                                {moment(appointment.appointmentTimeMillis, 'x').format('dd, DD MMMM YYYY, HH:mm')}
+                              </p>
+                              <p className="d-none d-md-flex" style={{ color: '#50A5F1' }}>
+                                {appointment.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником')}
 
-                                                      </p>
+                              </p>
 
-                                                    </div>
+                            </div>
 
-                                                    <div className="left-block d-flex d-md-none flex-column">
-                                                      <br/>
-                                                      <div className="img-container d-none d-md-flex">
-                                                        <img
-                                                          src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
-                                                          className="img"/></div>
+                            <div className="left-block d-flex d-md-none flex-column">
+                              <br/>
+                              <div className="img-container d-none d-md-flex">
+                                <img
+                                  src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                  className="img"/></div>
 
-                                                      <div>
-                                                        <p style={{ float: 'none' }}
-                                                          className="user-name d-flex align-items-center">
-                                                          <div className="img-container d-md-none">
-                                                            <img
-                                                              src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
-                                                              className="img"/></div>
-                                                          <p><strong>{companyTypeId === 4 ? t("Врач") : t("Мастер")}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}</p>
-                                                        </p>
-                                                      </div>
-                                                      <p className="service_name">
-                                                        {appointment.serviceName}
-                                                      </p>
+                              <div>
+                                <p style={{ float: 'none' }}
+                                   className="user-name d-flex align-items-center">
+                                  <div className="img-container d-md-none">
+                                    <img
+                                      src={activeStaff && activeStaff.imageBase64 ? 'data:image/png;base64,' + activeStaff.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                      className="img"/></div>
+                                  <p>
+                                    <strong>{companyTypeId === 4 ? t('Врач') : t('Мастер')}:&nbsp;</strong>{activeStaff.firstName + ' ' + (activeStaff.lastName ? activeStaff.lastName : '')}
+                                  </p>
+                                </p>
+                              </div>
+                              <p className="service_name">
+                                {appointment.serviceName}
+                              </p>
 
-                                                      <p style={{ color: '#50A5F1' }}>
-                                                        {appointment.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником')}
-                                                      </p>
-                                                    </div>
-                                                  </div>
-                                                </li>
-                                          );
-                                        })}
+                              <p style={{ color: '#50A5F1' }}>
+                                {appointment.canceledOnline ? t('Удален клиентом') : t('Удален сотрудником')}
+                              </p>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </div>
                   <div className="down-button">
                     <button className="button approveAll"
-                      onClick={() => this.approveAllAppointment(true, true)}>{t("Отметить всё как прочитано")}
+                            onClick={() => this.approveAllAppointment(true, true)}>{t('Отметить всё как прочитано')}
                     </button>
                   </div>
                 </React.Fragment>
@@ -871,16 +882,16 @@ class SidebarMain extends React.Component {
                   <div className="not-approved-list">
                     {!(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled) && appointmentMovedMarkup}
                     {(isLoadingModalAppointment || isLoadingModalCount || isLoadingModalCanceled)
-                                        && <div className="loader"
-                                          style={{ left: '0', width: '100%', height: '74%', top: '120px' }}><img
-                                            src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+                    && <div className="loader"
+                            style={{ left: '0', width: '100%', height: '74%', top: '120px' }}><img
+                      src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
 
                   </div>
                   <div className="down-button">
                     <button className="button approveAll"
-                      onClick={() => {
-                        this.approveMovedAppointment();
-                      }}>{t("Отметить всё как прочитано")}
+                            onClick={() => {
+                              this.approveMovedAppointment();
+                            }}>{t('Отметить всё как прочитано')}
                     </button>
                   </div>
                 </React.Fragment>
@@ -891,9 +902,9 @@ class SidebarMain extends React.Component {
         </div>
 
         {this.state.openManager &&
-                <ManagerSettings
-                  onClose={this.handleOpenManagerMenu}
-                />}
+        <ManagerSettings
+          onClose={this.handleOpenManagerMenu}
+        />}
       </React.Fragment>
 
 
@@ -1020,4 +1031,4 @@ SidebarMain.proptypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default compose(connect(mapStateToProps), withRouter, withTranslation("common"))(SidebarMain);
+export default compose(connect(mapStateToProps), withRouter, withTranslation('common'))(SidebarMain);
