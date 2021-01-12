@@ -40,16 +40,16 @@ class AnalyticBlock extends Component {
         </div>
         <div className="col">
           <h3 className="title">{t('Сумма товаров')}:</h3>
-          <h2 className="stat with-currency">{(analytic.companyProductRevenue ?? 0).toFixed(2)} <span
+          <h2 className="stat with-currency">{(analytic.productsCost ?? 0).toFixed(2)} <span
             className="currency">(BYN)</span></h2>
         </div>
         <div className="col">
-          <h3 className="title">{t('Доход сотрудника')}</h3>
+          <h3 className="title staff-revenue">{t('Доход сотрудника')}:</h3>
           {/*<h2 className="stat">*/}
             <p className="income">{(analytic.staffRevenue ?? 0).toFixed(2)} (BYN)</p>
           {/*</h2>*/}
 
-          <h3 className="title">{t('Доход компании')}</h3>
+          <h3 className="title company-revenue">{t('Выручка')} {t('компании')}:</h3>
           {/*<h2 className="stat">*/}
             <p className="income">{(analytic.companyRevenue ?? 0).toFixed(2)} (BYN)</p>
           {/*</h2>*/}

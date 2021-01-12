@@ -8,8 +8,6 @@
   }
 
 
-
-
   .select-percent-button {
     background: #F3F3F9;
     border-radius: 2px;
@@ -153,7 +151,6 @@
 
     }
   }
-
 
 
   .header-tabs-mob {
@@ -829,6 +826,14 @@
           }
         }
 
+        .staff-revenue, .company-revenue {
+          margin-bottom: 0;
+        }
+
+        .company-revenue {
+          margin-top: 5px;
+        }
+
         &::after {
           content: '';
           position: absolute;
@@ -851,7 +856,7 @@
     height: 100%;
     position: relative;
 
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       height: unset;
     }
 
@@ -1161,7 +1166,7 @@
     padding: 20px 15px;
     overflow-y: auto;
 
-    @media screen and (max-width: $mob-width){
+    @media screen and (max-width: $mob-width) {
       .dropdown {
         display: none !important;
       }
@@ -1286,7 +1291,7 @@
               border-bottom: 1px solid #EEEFF1;
               height: 67px;
 
-              @media screen and (max-width: $mob-width){
+              @media screen and (max-width: $mob-width) {
                 top: 67px;
               }
 
