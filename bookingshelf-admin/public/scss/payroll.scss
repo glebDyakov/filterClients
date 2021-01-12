@@ -566,6 +566,7 @@
 
     &::-webkit-scrollbar {
       width: 2px;
+      -webkit-appearance: none;
     }
 
     /* Track */
@@ -584,10 +585,11 @@
       background: #b30000;
     }
 
-    scrollbar-color: #2A3042 !important;
-    scrollbar-width: thin !important;
-
-    scrollbar-track-color: #2A3042;
+    //::-webkit-scrollbar-thumb {
+    //  border-radius: 4px;
+    //  background-color: rgba(0,0,0,.5);
+    //  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    //}
 
     /* Track */
     &::-webkit-scrollbar-track {
