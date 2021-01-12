@@ -507,6 +507,7 @@
       max-height: 300px;
       height: unset;
 
+
       .staff-role, .staff-name {
         margin-left: 5px;
         text-align: left;
@@ -562,6 +563,47 @@
     overflow-x: auto;
 
     height: 52px;
+
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #2A3042;
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #b30000;
+    }
+
+    scrollbar-color: #2A3042 !important;
+    scrollbar-width: thin !important;
+
+    scrollbar-track-color: #2A3042;
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #2A3042;
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #b30000;
+    }
 
 
     .list-item {
