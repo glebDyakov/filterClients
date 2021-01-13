@@ -704,8 +704,7 @@
   "см": "cm",
   "Цена ед. / ед. объема": "Unit price / unit amount",
 
-  "Цена партии. / ед.": "Lot price. / unit",
-
+  "Цена партии. / ед. / ед. объема": "Lot price. / unit / unit volume",
 
   "Невозможно использовать услугу на текущем интервале календаря": "Unable to use the service during the current calendar interval",
   "Измените время услуги, или выберите другой интервал календаря": "Change the service time, or choose a different calendar interval",
