@@ -982,7 +982,8 @@ class Index extends Component {
                           <p>{companyTypeId === 4 ? t('Врач') : t('Сотрудник')}</p>
                         </div>
                         <div>
-                          <p>{t('Код товара')} / <span className="red-text">{t('Партия')}</span></p>
+                          {/*<p>{t('Код товара')} / <span className="red-text">{t('Партия')}</span></p>*/}
+                          <p>{t('Код товара')} / <span className="red-text">ID</span></p>
                         </div>
                         <div>
                           <p>{t('Наименование')}</p>
@@ -997,7 +998,7 @@ class Index extends Component {
                           <p>{t('Количество списания / поступления')}</p>
                         </div>
                         <div>
-                          <p>{t('Цена ед. / ед. объема')}</p>
+                          <p>{t('Цена парт. / ед.')}</p>
                         </div>
                         <div>
                           <p>{t('Единицы измерения')}</p>
