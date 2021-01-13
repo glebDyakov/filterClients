@@ -114,7 +114,7 @@ class MovementList extends Component {
 
         <div className={(movement && movement.retailPrice) ? '' : 'retail-price-empty'}>
           <p><span
-            className="mob-title">{t('Цена ед. / ед. объема')}: </span>{movement && movement.retailPrice && (movement.retailPrice + ' / ' + movement.nominalUnitPrice)}
+            className="mob-title">{t('Цена ед. / ед. объема')}: </span>{movement && movement.retailPrice && (movement.retailPrice.toFixed(2) + ' / ' + movement.unitRetailPrice.toFixed(2))}
           </p>
         </div>
         {/* <div className={(movement && movement.specialPrice)? "": "retail-price-empty"}>*/}
