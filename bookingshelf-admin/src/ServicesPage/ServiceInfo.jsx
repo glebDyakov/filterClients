@@ -74,7 +74,7 @@ class ServiceInfo extends Component {
           </span>
           {item2 && item2.details.length > 0 &&
           <span className="item-detail"><br/>{t('Детали')}: {item2.details.length !== 0 && item2.details}</span>}
-          {item2 && company && item2.duration < company.settings.booktimeStep &&
+          {item2 && (company && item2.duration % company.settings.booktimeStep) !== 0 &&
             <span style={{display: "block"}} className="false-time-service red-text">{t("Невозможно использовать услугу на текущем интервале календаря")} <Hint hintMessage={t("Измените время услуги, или выберите другой интервал календаря")}/></span>
           }
           <span className="hide-item">

@@ -31,6 +31,7 @@ class ActionModal extends Component {
   render() {
     const { title, closeHandler, buttons } = this.props;
 
+
     return (
       <span className="action-modal-wrapper">
         <span ref={this.setWrapperRef} className="action-modal">

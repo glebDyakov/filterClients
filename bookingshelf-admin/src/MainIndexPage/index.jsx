@@ -360,7 +360,7 @@ class Index extends Component {
                 <div className="row">
                   <div className="col-sm-4">
                     <p className="phone_hint_wrapper">
-                      <p>{t("Номер телефона")}</p>
+                      <p>{t("Номер телефона")} ({t("Владельца")})</p>
                       {subcompany.defaultPhone===1 && <p>({t("Будет указан в автоуведомлениях")})</p>}
                     </p>
 

@@ -9,6 +9,10 @@
   height: 100%;
 }
 
+.red-text {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+}
 
 .tab-content {
   max-height: 100%;
@@ -103,7 +107,7 @@
       .label {
         font-style: normal;
         font-weight: normal;
-        font-size: 14.5806px;
+        font-size: 8px;
         line-height: 17px;
         letter-spacing: 3.24014px;
         text-transform: uppercase;

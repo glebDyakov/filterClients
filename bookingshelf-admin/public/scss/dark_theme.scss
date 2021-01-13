@@ -11,17 +11,48 @@
 
 
   #payroll {
+    .mobile-title {
+      color: #fff !important;
+    }
+
+    .SelectedWeekExample {
+      background: #2A3042 !important;
+
+      .DayPicker-NavButton {
+        filter: grayscale(1) invert(1);
+        -webkit-filter: grayscale(1) invert(1);
+      }
+
+      .DayPicker-Day--today {
+        color: #50A5F1;
+      }
+
+      .DayPicker-Day--selected {
+        color: #fff;
+      }
+
+      .DayPicker-Caption {
+        border-bottom: 1px solid lightgrey;
+      }
+      * {
+        color: #fff;
+      }
+    }
+
     .staffs-list {
-      background-color: #2A3042;
+      background-color: #2A3042 !important;
 
       .list-item {
-        border-color: #3F4455;
+        border-color: #3F4455 !important;
+
 
         div {
-          color: #fff;
+          color: #fff !important;
         }
       }
     }
+
+
 
     .main-container {
       .header-nav-tabs {
@@ -41,38 +72,107 @@
         }
       }
 
+      .calendar .button-calendar {
+        border-color: #222736;;
+        background-color: #2A3042 !important;
+        box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+        input {
+          color: #fff !important;
+        }
+      }
+
       .table-container {
-        background-color: #2A3042;
 
         .table {
+          background-color: #2A3042;
+
           thead {
             background-color: #2A3042;
-            border-color: #3F4455;
+            border-color: #3F4455 !important;
           }
+
+
           .table-header-title {
             color: #fff;
+
+              border: none !important;
+
+            &::after {
+              background-color: #3F4455;
+            }
           }
 
           .payroll-day, .payroll-day-list {
-            border-color: #3F4455;
+            border-color: #3F4455 !important;
           }
+
+          .payroll-day {
+            border: none;
+            td {
+              &::before {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                background-color: #3F4455;
+                content: '';
+              }
+            }
+          }
+
+            td, tr td {
+              background-color: #2A3042 !important;
+              border-color: #3F4455 !important;
+
+            }
 
           .list-text {
             color: #fff !important;
+            .price {
+              color: #fff !important;
+            }
           }
         }
       }
     }
+
+
+    .percent-of-sales-container {
+      border-color: #3F4455 !important;
+    }
+
 
     .setting-tab {
       .salary-container {
         border-color: #3F4455;
       }
 
+
+
       .setting-container {
         background-color: #2A3042;
 
-        .settings-title, label, input, select, option {
+        .search-input {
+          color: #fff;
+          background-color: #222736 !important;
+        }
+
+        .dropdown {
+          background-color: #222736 !important;
+          input, select {
+            background-color: #2A3042;
+          }
+
+          .dropdown_item {
+            background-color: #222736 !important;
+            border-color: #3F4455 !important;
+          }
+        }
+
+
+        .settings-title, p, label, input, select, option {
           color: #fff;
         }
 
@@ -94,6 +194,62 @@
 
     * {
       color: #fff !important;
+    }
+
+  }
+
+  .select-percent-button {
+    background: #222736 !important;
+
+  }
+
+  .list-modal-wrapper {
+    .list-modal {
+      .close-item {
+        p {
+          color: #fff !important;
+        }
+
+        .close {
+          &::before, &::after {
+            background-color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+
+  .header-tabs-mob {
+    .dropdown-button {
+      color: #fff !important;
+    }
+
+    .dropdown-buttons {
+      background: #2A3042 !important;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1) !important;
+
+      .nav-item {
+        border-color: #3F4455 !important;
+
+        .nav-link {
+          color: #fff !important;
+
+        }
+      }
+    }
+  }
+
+  .select-staff-label {
+    color: #fff !important;
+
+    background: #2A3042 !important;
+    label, p {
+      color: #fff !important;
+    }
+
+    .select-staff-button {
+      background: #222736 !important;
+
     }
 
   }

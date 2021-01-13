@@ -703,6 +703,9 @@
   "Все": "Wszyscy",
   "Клиент подтвердил": "Klient potwierdził",
   "Цена ед. / ед. объема": "Cena jednostkowa / jednostka nominalna",
+  "Владельца": "Właściciel",
+  "Цена партии. / ед. / ед. объема": "Cena partii. / jednostka / jednostka nominalna",
+
   "Невозможно использовать услугу на текущем интервале календаря": "Nie można korzystać z usługi w bieżącym okresie kalendarzowym",
   "Измените время услуги, или выберите другой интервал календаря": "Zmień czas obsługi lub wybierz inny okres w kalendarzu",
   "Детали": "Szczegóły",
@@ -802,7 +805,24 @@
   "Месяца": "Miesiąca",
   "Месяцев": "Miesięcy",
   "бесплатно": "jest wolny",
-  "Оплатить пакет": "Zapłać za pakiet"
+  "Оплатить пакет": "Zapłać za pakiet",
+  "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Wynagrodzenie wypłacane, jeśli zarobki pracownika są niższe od określonej wartości.",
+  "Проценты от реализации": "Procent ze sprzedaży",
+  "Рабочих": "Dni",
+  "дней": "robocze",
+  "Часов на услуги": "Godziny na usługi",
+  "Рабочих часов": "Godziny pracy",
+  "ставка": "oceniać",
+  "ставки": "stawki",
+  "часов": "godziny",
+  "Количество дней по рабочему графику.": "Liczba dni zgodnie z harmonogramem pracy.",
+
+  "от товара": "z towarów",
+
+  "Товаров продано": "Przedmioty sprzedane",
+  "Выручка": "Dochód",
+  "Новое": "Nowy",
+  "компании": "firma"
 }
 
 

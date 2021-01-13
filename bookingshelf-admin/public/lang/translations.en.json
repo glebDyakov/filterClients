@@ -514,6 +514,7 @@
   "Номер телефона владельца": "Owner’s phone number",
   "Будет указан в автоуведомлениях": "Will be indicated in auto notifications",
   "Введите номер телефона владельца": "Enter the owner’s phone number",
+  "Владельца": "Owner's",
   "Адрес компании": "The company’s address",
   "Введите название города": "Enter the name of the city",
   "Фото компании": "The company’s picture",
@@ -703,6 +704,9 @@
   "Сантиметр": "Centimeter",
   "см": "cm",
   "Цена ед. / ед. объема": "Unit price / unit amount",
+
+  "Цена партии. / ед. / ед. объема": "Lot price. / unit / unit volume",
+
   "Невозможно использовать услугу на текущем интервале календаря": "Unable to use the service during the current calendar interval",
   "Измените время услуги, или выберите другой интервал календаря": "Change the service time, or choose a different calendar interval",
   "Детали": "Details",
@@ -799,9 +803,28 @@
   "Все услуги": "All services",
   "Все товары": "All products",
   "Введите название категории": "Enter category name",
-  "хит": "hit",
+  "хит": "best offer",
   "Месяца": "Of the month",
   "Месяцев": "Months",
   "бесплатно": "is free",
-  "Оплатить пакет": "Pay for package"
+  "Оплатить пакет": "Pay for package",
+
+  "Товаров продано": "Items sold",
+  "Выручка": "Revenue",
+
+  "Оклад, выплачиваемый если заработок сотрудника менее установленного значения.": "Salary paid if the employee's earnings are less than a specified value.",
+  "Проценты от реализации": "Percentage from sales",
+  "Рабочих": "Working",
+  "дней": "days",
+  "Часов на услуги": "Hours for services",
+  "Рабочих часов": "Working hours",
+  "ставка": "rate",
+  "ставки": "rates",
+  "часов": "hours",
+  "Количество дней по рабочему графику.": "The number of days according to the work schedule.",
+
+  "от товара": "from products",
+  "Новое": "New",
+  "компании": "company"
+
 }

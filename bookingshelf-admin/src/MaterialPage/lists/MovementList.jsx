@@ -84,8 +84,11 @@ class MovementList extends Component {
         </div>
         <div>
           <p><span
-            className="mob-title">{t('Код товара')} / <span className="red-text">{t("Партия")}</span>: </span>{movement && movement.productCode} /
-            <p className="red-text code_part">{movement && movement.storehouseProductExpenditureId ? movement.storehouseProductExpenditureId : movement.storehouseProductId}</p>
+            // className="mob-title">{t('Код товара')} / <span className="red-text">{t("Партия")}</span>: </span>{movement && movement.productCode} /
+            className="mob-title">{t('Код товара')} / <span
+            className="red-text">ID</span>: </span>{movement && movement.productCode} /
+            <p
+              className="red-text code_part">{movement && movement.storehouseProductExpenditureId ? movement.storehouseProductExpenditureId : movement.storehouseProductId}</p>
 
           </p>
         </div>
@@ -102,7 +105,7 @@ class MovementList extends Component {
         {/* </div>*/}
         <div>
           <p><span
-            className="mob-title">{t('Операция')}: </span>{movement && movement.targetTranslated ? movement.targetTranslated : t("Поступление")}
+            className="mob-title">{t('Операция')}: </span>{movement && movement.targetTranslated ? movement.targetTranslated : t('Поступление')}
           </p>
         </div>
 
@@ -114,7 +117,7 @@ class MovementList extends Component {
 
         <div className={(movement && movement.retailPrice) ? '' : 'retail-price-empty'}>
           <p><span
-            className="mob-title">{t('Цена ед. / ед. объема')}: </span>{movement && movement.retailPrice && (movement.retailPrice + ' / ' + movement.nominalUnitPrice)}
+            className="mob-title">{t('Цена партии. / ед. / ед. объема')}: </span>{movement && movement.retailPrice && (movement.retailPrice.toFixed(2) + ' / ' + movement.unitRetailPrice.toFixed(2) + ' / ' + movement.nominalUnitPrice)}
           </p>
         </div>
         {/* <div className={(movement && movement.specialPrice)? "": "retail-price-empty"}>*/}
