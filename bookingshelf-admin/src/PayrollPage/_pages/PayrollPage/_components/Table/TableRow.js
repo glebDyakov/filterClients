@@ -64,7 +64,7 @@ class TableRow extends Component {
             <p>{t('Сумма товаров')}: {payout.productsCost.toFixed(2)} BYN</p>
           </td>
           <td className="income-container" colSpan={2}>
-            <p>{t('Доход сотрудника')}: {(payout.staffProductsRevenue + payout.staffServiceRevenue).toFixed(2)} BYN</p>
+            <p>{t('Доход сотрудника')}: {payout.guaranteedPayment > 0 && (payout.guaranteedPayment.toFixed(2) + ' BYN (')}{(payout.staffProductsRevenue + payout.staffServiceRevenue).toFixed(2)} BYN{payout.guaranteedPayment > 0 && ')'}</p>
             <p>{t('Выручка')} {t('компании')}: {(payout.companyProductsRevenue + payout.companyServiceRevenue).toFixed(2)} BYN</p>
           </td>
 
