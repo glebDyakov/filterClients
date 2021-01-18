@@ -33,7 +33,7 @@ export const calendarActions = {
   sendMessage,
   getManagers,
   getCalendarLoad,
-  getStaffCalendarLoad
+  getStaffCalendarLoad,
 
 };
 
@@ -202,6 +202,7 @@ function editAppointment2(params, id) {
     return { type: calendarConstants.EDIT_APPOINTMENT_2_FAILURE, error };
   }
 }
+
 
 function updateAppointment(id, params, withoutNotify, isAppointmentUpdated) {
   return (dispatch) => {
@@ -400,11 +401,11 @@ function getReservedTime(dateFrom, dateTo) {
   }
 }
 
-function deleteAppointment(appointment, withoutNotify) {
+function deleteAppointment(appointment, withoutNotify, propogate) {
   return (dispatch) => {
     dispatch(makeVisualDeleting());
     // dispatch(request())
-    calendarService.deleteAppointment(appointment.appointmentId, withoutNotify)
+    calendarService.deleteAppointment(appointment.appointmentId, withoutNotify, propogate)
       .then(
         () => {
           dispatch(success());

@@ -184,7 +184,7 @@ function approveMovedAppointment(params) {
     .then((data) => handleResponse(data, requestOptions));
 }
 
-function deleteAppointment(appointmentId, withoutNotify) {
+function deleteAppointment(appointmentId, withoutNotify, propogate = true) {
   const requestOptions = {
     method: 'DELETE',
     crossDomain: true,
@@ -196,7 +196,7 @@ function deleteAppointment(appointmentId, withoutNotify) {
   };
 
   return fetch(
-    `${origin}${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`,
+    `${origin}${config.apiUrl}/appointments/${appointmentId}?notify=${withoutNotify ? 'false' : 'true'}&propogate=${propogate}`,
     requestOptions,
   ).then((data) => handleResponse(data, requestOptions));
 }
