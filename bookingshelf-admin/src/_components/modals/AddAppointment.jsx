@@ -465,29 +465,32 @@ class AddAppointment extends React.Component {
   }
 
   removeService(index) {
-    const { appointmentsToDelete, appointment, serviceCurrent, services } = this.state;
+    const { appointmentsToDelete, propogatedAppointment, appointment, serviceCurrent, services } = this.state;
     console.log('APPOINTMENT: ', appointment[0]);
-    if (appointment[index].appointmentId) {
-      appointmentsToDelete.push(appointment[index]);
-    }
+    // if (appointment[index].appointmentId) {
+    //   appointmentsToDelete.push(appointment[index]);
+    // }
+    let updatedPropogatedAppointment;
 
     if (index === 0 && appointment.length !== 1) {
+      if (!propogatedAppointment) {
+        updatedPropogatedAppointment = appointment[0];
+      }
       appointment[1].hasCoAppointments = true;
       delete appointment[1].coAppointmentId;
 
       const times = appointment.map((item) => item.appointmentTimeMillis);
 
-      appointment.forEach((item, index) => {
-        if (index > 0) {
-          item.appointmentTimeMillis = times[index - 1];
+      appointment.forEach((item, localIndex) => {
+        if (localIndex > 0) {
+          item.appointmentTimeMillis = item.appointmentTimeMillis - appointment[0].duration * 1000;
         }
 
-        if (index > 1) {
+        if (localIndex > 1) {
           item.coAppointmentId = appointment[1].appointmentId;
         }
       });
     }
-
 
     if (appointment.length !== 1) {
       appointment.splice(index, 1);
@@ -501,6 +504,7 @@ class AddAppointment extends React.Component {
     this.updateAvailableCoStaffs(updatedAppointments.newAppointments);
 
     this.setState({
+      propogatedAppointment: updatedPropogatedAppointment,
       appointmentsToDelete,
       serviceCurrent,
       services,
@@ -1705,11 +1709,11 @@ class AddAppointment extends React.Component {
   }
 
   editAppointment() {
-    const { appointment, coStaffs, isAddCostaff, availableCoStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff } = this.state;
+    const { appointment, coStaffs, propogatedAppointment, isAddCostaff, availableCoStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff } = this.state;
 
     const finalCoStaffs = coStaffs.filter((item) => availableCoStaffs.some((availableCoStaff) => item.staffId === availableCoStaff.staffId));
 
-    const appointmentNew = appointment.filter((item) => !appointmentsToDelete.includes(item)).map((item, i) => {
+    const appointmentNew = appointment.map((item, i) => {
       return {
         ...item,
         coStaffs: isAddCostaff ? finalCoStaffs : [],
@@ -1724,11 +1728,23 @@ class AddAppointment extends React.Component {
 
     setTimeout(() => this.closeModal(), 500);
 
-    appointmentsToDelete.forEach(appointment => {
-      this.props.dispatch(calendarActions.deleteAppointment(appointment, true, false));
-    });
+    // const nextUpdatingData = {
+    //   appointmentNew: JSON.stringify(appointmentNew),
+    //   appointmentId: propogatedAppointment.appointmentId,
+    // };
 
-    this.props.dispatch(calendarActions.editAppointment2(JSON.stringify(appointmentNew), appointment[0].appointmentId));
+    // if (propogatedAppointment) {
+    //   appointment.forEach((item, i) => {
+    //     this.props.dispatch(calendarActions.deleteAppointment(
+    //       propogatedAppointment, true, false, (i === (appointment.length - 1)) ? nextUpdatingData : null)
+    //     );
+    //   });
+    // } else {
+      this.props.dispatch(calendarActions.editAppointment2(
+        JSON.stringify(appointmentNew),
+        propogatedAppointment ? propogatedAppointment.appointmentId : appointment[0].appointmentId)
+      );
+    // }
   }
 
 

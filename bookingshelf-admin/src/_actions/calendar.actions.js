@@ -401,7 +401,7 @@ function getReservedTime(dateFrom, dateTo) {
   }
 }
 
-function deleteAppointment(appointment, withoutNotify, propogate) {
+function deleteAppointment(appointment, withoutNotify, propogate, nextUpdatingData) {
   return (dispatch) => {
     dispatch(makeVisualDeleting());
     // dispatch(request())
@@ -410,6 +410,9 @@ function deleteAppointment(appointment, withoutNotify, propogate) {
         () => {
           dispatch(success());
           dispatch(clearVisualDeleting());
+          if (nextUpdatingData) {
+            dispatch(calendarActions.editAppointment2(nextUpdatingData.appointmentNew, nextUpdatingData.appointmentId));
+          }
         },
         (error) => {
           dispatch(cancelVisualDeleting());
