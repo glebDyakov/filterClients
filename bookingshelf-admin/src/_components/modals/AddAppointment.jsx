@@ -683,32 +683,51 @@ class AddAppointment extends React.Component {
   }
 
   removeService(index) {
-    const {
-      appointmentsToDelete,
-      appointment,
-      serviceCurrent,
-      services,
-    } = this.state;
-    if (appointment[index].appointmentId) {
-      appointmentsToDelete.push(appointment[index]);
+    const { appointmentsToDelete, propogatedAppointmentId, appointment, serviceCurrent, services } = this.state;
+    console.log('APPOINTMENT: ', appointment[0]);
+    // if (appointment[index].appointmentId) {
+    //   appointmentsToDelete.push(appointment[index]);
+    // }
+    let updatedPropogatedAppointmentId = propogatedAppointmentId;
+
+    if (index === 0 && appointment.length !== 1) {
+      if (!propogatedAppointmentId) {
+        updatedPropogatedAppointmentId = appointment[0].appointmentId;
+      }
+      appointment[1].hasCoAppointments = true;
+      delete appointment[1].coAppointmentId;
+
+      const times = appointment.map((item) => item.appointmentTimeMillis);
+
+      appointment.forEach((item, localIndex) => {
+        if (localIndex > 0) {
+          item.appointmentTimeMillis = item.appointmentTimeMillis - appointment[0].duration * 1000;
+        }
+
+        if (localIndex > 1) {
+          item.coAppointmentId = appointment[1].appointmentId;
+        }
+      });
     }
+
     if (appointment.length !== 1) {
       appointment.splice(index, 1);
       serviceCurrent.splice(index, 1);
       services.splice(index, 1);
     }
 
+
     const updatedAppointments = this.getAppointments(appointment);
 
     this.updateAvailableCoStaffs(updatedAppointments.newAppointments);
 
     this.setState({
+      propogatedAppointmentId: updatedPropogatedAppointmentId,
       appointmentsToDelete,
       serviceCurrent,
       services,
       appointment: updatedAppointments.newAppointments,
-      appointmentMessage: updatedAppointments.appointmentMessage,
-    });
+    })
   }
 
   handleDurationChange(e, appointment, index) {
@@ -1700,12 +1719,10 @@ class AddAppointment extends React.Component {
                                 </div>
                               </div>
                             </div>
-                            {index !== 0 && (
-                              <button
-                                className="close removeService-button"
-                                onClick={() => this.removeService(index)}
-                              ></button>
-                            )}
+                            <button
+                              className="close removeService-button"
+                              onClick={() => this.removeService(index)}
+                            ></button>
                             <div className="row">
                               <div className="appointment-timing">
                                 <p
