@@ -493,12 +493,13 @@ class AddAppointment extends React.Component {
           startTime,
           endTime,
           activeStaffTimetable,
-          (appointmentsFromProps|| []).map(item => {
-            return {
-              ...item,
-              appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
-            }
-          }),
+          [],
+          // (appointmentsFromProps|| []).map(item => {
+          //   return {
+          //     ...item,
+          //     appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
+          //   }
+          // }),
           reservedTimeFromProps,
           staff,
           (i) => edit_appointment && i < lastAppointmentEndTime
@@ -551,12 +552,13 @@ class AddAppointment extends React.Component {
             startTime,
             endTime,
             user,
-            (appointmentsFromProps|| []).map(item => {
-              return {
-                ...item,
-                appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
-              }
-            }),
+            [],
+            // (appointmentsFromProps|| []).map(item => {
+            //   return {
+            //     ...item,
+            //     appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
+            //   }
+            // }),
             reservedTimeFromProps,
             staff,
             (i) => visitFreeMinutes.some((freeMinute) => freeMinute === i)
@@ -2965,7 +2967,8 @@ class AddAppointment extends React.Component {
           startTime,
           endTime,
           user,
-          appointmentsFromProps,
+          [],
+          // appointmentsFromProps,
           reservedTimeFromProps,
           staff,
           (i) => visitFreeMinutes.some((freeMinute) => freeMinute === i)
