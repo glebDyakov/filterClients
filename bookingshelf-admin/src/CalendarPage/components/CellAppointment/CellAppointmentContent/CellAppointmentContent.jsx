@@ -18,7 +18,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       appointment,
       staff,
-      appointments,
+      appointments: [],
       timetable,
       reservedTime,
       workingStaffElement,
