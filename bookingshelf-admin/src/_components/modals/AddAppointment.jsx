@@ -404,7 +404,7 @@ class AddAppointment extends React.Component {
           if (isAlreadyCostaff) {
             const staffWithAppointments =
               appointmentsFromProps &&
-              appointmentsFromProps.find(
+              appointmentsFromProps?.find(
                 (item) => item.staff.staffId === coStaff.staffId
               );
             const ownRelatedAppointments =
@@ -493,10 +493,10 @@ class AddAppointment extends React.Component {
           startTime,
           endTime,
           activeStaffTimetable,
-          appointmentsFromProps.map(item => {
+          (appointmentsFromProps|| []).map(item => {
             return {
               ...item,
-              appointments: item?.appointments?.filter(localAppointment => localAppointment.intersected)
+              appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
             }
           }),
           reservedTimeFromProps,
@@ -551,10 +551,10 @@ class AddAppointment extends React.Component {
             startTime,
             endTime,
             user,
-            appointmentsFromProps.map(item => {
+            (appointmentsFromProps|| []).map(item => {
               return {
                 ...item,
-                appointments: item?.appointments?.filter(localAppointment => localAppointment.intersected)
+                appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
               }
             }),
             reservedTimeFromProps,

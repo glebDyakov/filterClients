@@ -79,10 +79,10 @@ class DragVertController extends React.Component {
       (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i;
 
     const shouldDrag = isAvailableTime(
-      startTime, endTime, staffWithTimetable, appointments.map(item => {
+      startTime, endTime, staffWithTimetable, (appointments || []).map(item => {
         return {
           ...item,
-          appointments: item?.appointments?.filter(localAppointment => localAppointment.intersected)
+          appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
         }
       }), reservedTime, staff, isOwnInterval
     );
