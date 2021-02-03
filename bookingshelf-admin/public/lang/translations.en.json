@@ -233,6 +233,8 @@
   "Сообщение отправлено": "Message is sent",
   "Перенести выбранный визит?": "Reschedule the chosen visit?",
   "Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?": "The incumbent doesn't provide the service or one of the chosen services. Are you sure you want to reschedule the visit?",
+  "Это время занято, вы уверены что хотите создать еще один визит?": "\nThis time is busy, are you sure you want to create another visit?",
+  "Подтвердить": "Confirm",
   "Перенести": "Reschedule",
   "Новый клиент": "New client",
   "Редактирование клиента": "Client’s editing",

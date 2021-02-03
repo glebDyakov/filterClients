@@ -989,7 +989,7 @@ class Index extends PureComponent {
             parseInt(moment(moment(time.startTimeMillis, 'x').format('DD/MM/YYYY') + ' ' +
               hoursPart, 'DD/MM/YYYY HH:mm').format('x')) === formattedDayPart
           ) {
-            const isOnAnotherVisit = checkIsOnAnotherVisit(newStaff, currentTime);
+            const isOnAnotherVisit = checkIsOnAnotherVisit({appointemnts: newStaff?.appointments?.filter(item => item.intersected)}, currentTime);
             if (!isOnAnotherVisit) {
               const isOnAnotherReservedTime = checkIsOnAnotherReservedTime(staffWithReservedTime, currentTime);
 

@@ -43,7 +43,7 @@ function addAppointment(params, serviceId, staffId, clientId, coStaffs) {
     extraStaffIds +=`,${item.staffId}`;
   });
 
-  return fetch(`${origin}${config.apiUrl}/staffs/${staffId}${extraStaffIds}/appointments`, requestOptions)
+  return fetch(`${origin}${config.apiUrl}/staffs/${staffId}${extraStaffIds}/appointments?existingAppointmentsIgnored=true`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -109,7 +109,7 @@ function editAppointment2(params, id) {
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
 
-  return fetch(`${origin}${config.apiUrlv2}/appointments/${id}`, requestOptions)
+  return fetch(`${origin}${config.apiUrlv2}/appointments/${id}?existingAppointmentsIgnored=true`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -142,7 +142,7 @@ function updateAppointment(appointmentId, params, withoutNotify) {
   };
 
   return fetch(
-    `${origin}${config.apiUrl}/appointments/${appointmentId}${withoutNotify ? '?notify=false' : ''}`,
+    `${origin}${config.apiUrl}/appointments/${appointmentId}?existingAppointmentsIgnored=true${withoutNotify ? '&notify=false' : ''}`,
     requestOptions,
   ).then((data) => handleResponse(data, requestOptions));
 }

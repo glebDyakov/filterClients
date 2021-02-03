@@ -10,6 +10,7 @@ import { getCurrentCellTime } from '../../../_helpers';
 import CellAppointmentModal from './CellAppointmentModal';
 import CellAppointmentContent from './CellAppointmentContent/CellAppointmentContent';
 import { access } from '../../../_helpers/access';
+import { checkIsOnAnotherVisit } from '../../../_helpers/available-time';
 
 class CellAppointment extends React.PureComponent {
   constructor(props) {
@@ -24,7 +25,7 @@ class CellAppointment extends React.PureComponent {
   updateAppointmentInfo(props) {
     const {
       services, appointment, appointments, blickClientId, selectedNote,
-      selectedDays, selectedDaysKey, time, step, workingStaffElement,
+      selectedDays, selectedDaysKey, time, step, workingStaffElement
     } = props;
     const currentAppointments = [appointment];
 
@@ -79,7 +80,11 @@ class CellAppointment extends React.PureComponent {
         appointment.appointmentTimeMillis + '_' +
         moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'));
 
-    const contentClassName = 'cell notes ' + appointment.appointmentId + ' ' +
+    const staffAppointment = appointments.find((item) => item.staff.staffId === workingStaffElement.staffId)
+    const resultAppointments = staffAppointment?.appointments?.filter(item => item.appointmentId !== appointment.appointmentId)
+    const isOnAnotherVisit = resultAppointments && appointment.intersected && checkIsOnAnotherVisit({ appointments: resultAppointments }, appointment.appointmentTimeMillis);
+
+    const contentClassName = 'cell notes ' + (appointment.intersected ? (isOnAnotherVisit ? 'notes-right ' : 'notes-left ') : '') + appointment.appointmentId + ' ' +
       (parseInt(moment(currentTime + appointment.duration * 1000).format('H')) >= 20 && 'notes-bottom' + ' ' +
         (parseInt(moment(currentTime).format('H')) === 23 && ' last-hour-notes')
       )
@@ -156,7 +161,7 @@ class CellAppointment extends React.PureComponent {
       contentClassName, wrapperClassName, currentTime, contentId,
     } = this.updateAppointmentInfo({
       services, appointment, appointments, blickClientId, selectedNote,
-      selectedDays, selectedDaysKey, time, step, workingStaffElement,
+      selectedDays, selectedDaysKey, time, step, workingStaffElement, staffKey
     });
 
     const content = (
