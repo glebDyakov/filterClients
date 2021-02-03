@@ -18,7 +18,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       appointment,
       staff,
-      appointments: [],
+      appointments,
       timetable,
       reservedTime,
       workingStaffElement,
@@ -40,7 +40,7 @@ class CellAppointmentContent extends React.PureComponent {
       (totalDuration * 1000)) > i;
     const nearestAvailableMillis = getNearestAvailableTime(
       appointment.appointmentTimeMillis, appointment.appointmentTimeMillis, timetableItems,
-      appointments, reservedTime, staff, isOwnInterval,
+      [], reservedTime, staff, isOwnInterval,
     );
     const maxTextAreaCellCount = (nearestAvailableMillis - (appointment.appointmentTimeMillis + (step * 60000)))
       / 1000 / 60 / step;
