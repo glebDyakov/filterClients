@@ -64,10 +64,10 @@ class CellAppointmentContent extends React.PureComponent {
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
       appointment,
       staff,
-      appointments: appointments.map(item => {
+      appointments: appointments && appointments.map(item => {
         return {
           ...item,
-          appointments: item?.appointments?.filter(localAppointment => localAppointment.intersected)
+          appointments: item?.appointments && item?.appointments?.filter(localAppointment => localAppointment.intersected)
         }
       }),
       timetable,

@@ -80,7 +80,7 @@ class CellAppointment extends React.PureComponent {
         appointment.appointmentTimeMillis + '_' +
         moment(appointment.appointmentTimeMillis, 'x').add(appointment.duration, 'seconds').format('x'));
 
-    const staffAppointment = appointments.find((item) => item.staff.staffId === workingStaffElement.staffId)
+    const staffAppointment = (appointments || []).find((item) => item.staff.staffId === workingStaffElement.staffId)
     const resultAppointments = staffAppointment?.appointments?.filter(item => item.appointmentId !== appointment.appointmentId)
     const isOnAnotherVisit = resultAppointments && appointment.intersected && checkIsOnAnotherVisit({ appointments: resultAppointments }, appointment.appointmentTimeMillis);
 
