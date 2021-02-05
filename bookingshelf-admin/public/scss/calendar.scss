@@ -847,9 +847,9 @@
 
       .tab-content-list {
         div {
-          &.selectedNote {
-            z-index: 9999;
-          }
+          //&.selectedNote {
+          //  z-index: 9999;
+          //}
 
           -moz-user-select: none;
           -khtml-user-select: none;
