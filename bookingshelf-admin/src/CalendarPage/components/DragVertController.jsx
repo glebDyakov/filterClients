@@ -1,18 +1,23 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { appointmentActions, calendarActions } from '../../_actions';
 import { isAvailableTime } from '../../_helpers/available-time';
 import moment from 'moment';
+import CheckModal from '../../_components/modals/CheckModal';
 
 class DragVertController extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      clientSubmitModal: false,
+    }
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.changingVisit) {
+  componentDidUpdate() {
+    if (this.props.changingVisit && !this.state.clientSubmitModal) {
       document.addEventListener('mousemove', this.handleMouseMove, false);
       document.addEventListener('mouseup', this.handleMouseUp, false);
     } else {
@@ -49,10 +54,11 @@ class DragVertController extends React.Component {
     }
   }
 
-  handleMouseUp() {
+  handleMouseUp({ makeMouseUpUpdating }) {
     const {
       appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step, booktimeStep,
     } = this.props;
+    const { clientSubmitModal } = this.state;
     const newOffsetHeight = document.getElementById(textAreaId).offsetHeight;
     const offsetDifference = Math.round((newOffsetHeight - offsetHeight) / cellHeight);
 
@@ -79,9 +85,14 @@ class DragVertController extends React.Component {
       (changingVisit.appointmentTimeMillis + (currentTotalDuration * 1000)) > i;
 
     const shouldDrag = isAvailableTime(
-      startTime, endTime, staffWithTimetable, appointments, reservedTime, staff, isOwnInterval
+      startTime, endTime, staffWithTimetable,
+      appointments,
+      reservedTime, staff, isOwnInterval
     );
-    if (shouldDrag) {
+    if (!shouldDrag && !clientSubmitModal) {
+      this.setState({ clientSubmitModal: true })
+    } else if (shouldDrag || makeMouseUpUpdating) {
+      this.setState({ clientSubmitModal: false })
       if (changingVisit.hasCoAppointments) {
         const coAppointments = [];
         appointments.map((staffAppointment) => {
@@ -140,21 +151,50 @@ class DragVertController extends React.Component {
           true,
         ));
       }
-    }
 
-    this.props.dispatch(appointmentActions.togglePayload({
-      changingVisit: null,
-      currentTarget: null,
-      changingPos: null,
-      offsetHeight: null,
-      minTextAreaHeight: null,
-      maxTextAreaHeight: null,
-      textAreaId: null,
-    }));
+      this.props.dispatch(appointmentActions.togglePayload({
+        changingVisit: null,
+        currentTarget: null,
+        changingPos: null,
+        offsetHeight: null,
+        minTextAreaHeight: null,
+        maxTextAreaHeight: null,
+        textAreaId: null,
+      }));
+    }
   }
 
   render() {
-    return null;
+    const { clientSubmitModal } = this.state
+    return (
+      clientSubmitModal && ReactDOM.createPortal(
+        <div className="check-client-submit-container">
+          <CheckModal
+            title="У клиента уже есть запись в эти часы. Уверенны что хотите добавить?"
+            closeHandler={() => this.setState({ clientSubmitModal: false })}
+            submitHandler={() => this.handleMouseUp({ makeMouseUpUpdating: true })}
+            // buttons={[
+            //   {
+            //     handler: this.addAppointment,
+            //     params: this.props,
+            //     innerText: "Подтвердить",
+            //     className: "button",
+            //     additionalHandler: () => this.setState({ clientSubmitModal: false }),
+            //   },
+            //   {
+            //     handler: () => this.setState({ clientSubmitModal: false }),
+            //     innerText: t("Отмена"),
+            //     className: "gray-button",
+            //   },
+            // ]}
+          />
+          <div onClick={() => this.setState({ clientSubmitModal: false })}>
+            <div className="check-submit-mask" />
+          </div>
+        </div>,
+        document.getElementById('modal-root')
+      )
+    );
   }
 }
 

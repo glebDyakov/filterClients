@@ -79,7 +79,7 @@ function makeMovingVisitQuery(data) {
         );
 
         return isAvailableTime(
-          movingVisitMillis, movingVisitEndTime, timetableItem, appointments, reservedTimes, staff, checkOnMovingVisit,
+          movingVisitMillis, movingVisitEndTime, timetableItem, [], reservedTimes, staff, checkOnMovingVisit,
         );
       });
     }

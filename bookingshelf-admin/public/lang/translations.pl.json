@@ -233,6 +233,8 @@
   "Сообщение отправлено": "Wiadomość została wysłana",
   "Перенести выбранный визит?": "Przełożyć wybraną wizytę?",
   "Данный сотрудник не оказывает услугу или одну из выбранных услуг, вы уверены что хотите перенести визит?": "Ten pracownik nie świadczy usługi lub jednej z wybranych usług, czy na pewno chcesz przełożyć wizytę?",
+  "Это время занято, вы уверены что хотите создать еще один визит?": "Ten czas jest zajęty, czy na pewno chcesz utworzyć kolejną wizytę?",
+  "Подтвердить": "Potwierdzać",
   "Перенести": "Przełóż",
   "Новый клиент": "Nowy klient",
   "Редактирование клиента": "Edytuj klienta",
