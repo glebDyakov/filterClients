@@ -1153,8 +1153,8 @@ class AddAppointment extends React.Component {
                       <span
                         className={service.color && service.color.toLowerCase()}
                       >
-                        <span className="items-color">
-                          <span className="name-service" style={service.grey ? { opacity: '0.4'} : {}}>
+                        <span className="items-color" style={service.grey ? { opacity: '0.4'} : {}}>
+                          <span className="name-service">
                             {service.name} <br />
                             <span>{service.details}</span>
                           </span>
