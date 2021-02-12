@@ -624,8 +624,9 @@ class IndexPage extends PureComponent {
     selectService (e, service) {
         const {selectedStaff, staffs}=this.state;
         const {selectedServices, nearestTime} = this.state;
-        const { checked } = e.target;
-
+        const { checked } = e.target;  
+        
+        // 
         if (checked) {
             selectedServices.push(service);
         } else {

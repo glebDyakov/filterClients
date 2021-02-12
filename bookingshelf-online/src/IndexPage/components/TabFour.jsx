@@ -111,7 +111,7 @@ class TabFour extends  PureComponent {
 
         return (
             <div className="service_selection screen1">
-                <div className="title_block">
+                <div className="title_block staff_title">
                             <span className="prev_block" onClick={()=> {
                                 setScreen(3);
                                 //if (!isStartMovingVisit) {
@@ -119,7 +119,7 @@ class TabFour extends  PureComponent {
                                 //}
                             }}><span className="title_block_text">{t("Назад")}</span>
                             </span>
-                    <p className="modal_title">{t("Выбор времени")}</p>
+                    <p className="modal_title">{t("Выберите времени")}</p>
                     {selectedTime && !isStartMovingVisit && <span className="next_block" onClick={()=>{
                         if (flagAllStaffs) {
                             setScreen(1);
