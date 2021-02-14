@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import { ClientDetails } from "./ClientDetails";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
-
 class TabSix extends PureComponent {
     constructor(props) {
         super(props);
@@ -68,7 +67,7 @@ class TabSix extends PureComponent {
                 </div>
             )
         }
-
+        
         return (
             <div className="service_selection final-screen">
                 <div className="final-screen-block">

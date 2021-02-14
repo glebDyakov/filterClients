@@ -92,7 +92,8 @@ class TabOne extends PureComponent {
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
                 <div className="skip_employee-block">
-                    {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>}
+                {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>}
+                    {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                 </div>
                 <div className="title_block n staff_title">
                     {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
@@ -121,7 +122,7 @@ class TabOne extends PureComponent {
                 {!this.state.staff && (
                     <React.Fragment>
                         <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                            {flagAllStaffs && (
+                            {/* {flagAllStaffs && (
                                 <li className={'nb'}
                                     onClick={() => {
                                         this.handleNoStaffClick()
@@ -139,7 +140,7 @@ class TabOne extends PureComponent {
 
                                     </span>
                                 </li>
-                            )}
+                            )} */}
                             {staffs && staffs.length > 0 && staffs
                                 .filter(staff => {
                                     const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];
@@ -239,7 +240,7 @@ class TabOne extends PureComponent {
                                 )}
                         </ul>
                         <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                            {flagAllStaffs && (
+                            {/* {flagAllStaffs && (
                                 <li className={'nb'}
                                     onClick={() => {
                                         this.handleNoStaffClick()
@@ -252,7 +253,7 @@ class TabOne extends PureComponent {
                                         </div>
                                     </span>
                                 </li>
-                            )}
+                            )} */}
                             {staffs && !!staffs.length && staffs
                                 .filter(staff => {
                                     const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];

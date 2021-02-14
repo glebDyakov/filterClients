@@ -429,7 +429,7 @@ q:before, q:after {
     float: right;
 }*/
 
-.next_block {
+/* .next_block {
     background: url(../img/icons/back.svg) no-repeat;
     display: block;
     width: auto;
@@ -444,7 +444,7 @@ q:before, q:after {
     font-size: 17px;
     background-position: left center;
     padding-left: 30px;
-}
+} */
 
 .prev_block {
     background: url(../img/icons/back.svg) no-repeat;
@@ -478,14 +478,6 @@ q:before, q:after {
         margin: 24px 8px;
         background: none;
     }
-    .next_block {
-        padding: 16px;
-        box-sizing: content-box;
-        margin: 0;
-    }
-    .next_block {
-        padding-right: 30px;
-    }
 }
 
 .next_block-btn {
@@ -508,13 +500,25 @@ q:before, q:after {
 }
 
 .next_block {
-    background: url(../img/icons/next.svg) no-repeat;
+    background: url(../img/icons/skip-arrow.svg) no-repeat;
     right: 15px;
     background-size: 20px;
     left: auto;
     background-position: right center;
     padding-left: 0;
     padding-right: 30px;
+    background-color: white;
+    width: 165px;
+height: 42px;
+border-radius: 5px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.next_block span{ 
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
 }
 
 .modal_title {
@@ -558,8 +562,6 @@ q:before, q:after {
 
 .specialist {
     position: fixed;
-    display: flex;
-    justify-content: center;
     min-height: 72px;
     left: 0;
     right: 0;
@@ -568,21 +570,19 @@ q:before, q:after {
     width: 100%;
     z-index: 10;
 }
-
+.specialist-block{
+    display: flex;
+    justify-content: space-between;
+    width: 700px;
+    margin: auto;
+    align-items: center;
+}
 .supperVisDet {
     position: relative;
     cursor: pointer;
 }
 
-.specialist .supperVisDet_info {
-    display: none;
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    width: 100%;
-    margin: 0 !important;
-}
+
 
 .tap-service-icon {
     height: 20px;
@@ -593,20 +593,8 @@ q:before, q:after {
     transform: translateX(-50%);
 }
 
-.specialist .supperVisDet_info p {
-    display: flex !important;
-    float: none !important;
-    justify-content: flex-start;
-    margin-top: 4px;
-    font-size: 15px;
-}
 
-.specialist .supperVisDet .supperVisDet_info_title {
-    text-align: center;
-    justify-content: flex-start;
-    font-size: 20px;
-    font-weight: bold;
-}
+
 
 .img_container {
     /* width: 100%; */
@@ -704,7 +692,29 @@ q:before, q:after {
     text-align: left;
     text-align-last: left;
 }
-
+.service_footer-block{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.service_footer_price{
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.service_footer_price span{
+    font-weight: 600;
+font-size: 13px;
+line-height: 18px;
+color: #FFFFFF;
+}
+.service_footer_price p{
+    font-size: 36px;
+line-height: 49px;
+color: #FFFFFF;
+}
 .service_item_price {
     font-size: 14px !important;
 }
@@ -2251,19 +2261,7 @@ input[type="search"]::-moz-placeholder {
     border: 1px solid red!important;
 }
 
-.specialist .supperVisDet {
-    display: flex;
-    justify-content: center;
-    /*flex-direction: column;*/
-    align-items: center;
-}
 
-.specialist .supperVisDet p {
-    display: flex;
-    justify-content: flex-start;
-    /*flex-direction: column;*/
-    align-items: center;
-}
 
 .supperVisDet .supperVisDet p {
     text-align: left;

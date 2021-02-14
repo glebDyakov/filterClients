@@ -64,6 +64,7 @@ class TabThird extends PureComponent {
                     }><span className="title_block_text">{t("Назад")}</span>
                     </span>
                     <p className="modal_title">{t("Выберите дату")}</p>
+                    
                     {selectedDay && <span className="next_block" onClick={() => {
                         setScreen(4);
                         //if (!isStartMovingVisit) {

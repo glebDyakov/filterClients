@@ -6,7 +6,6 @@ import { origin } from "../../_helpers/handle-response";
 import { withTranslation } from "react-i18next";
 import 'react-phone-input-2/lib/style.css';
 
-
 class TabFive extends PureComponent {
   constructor(props) {
     super(props);

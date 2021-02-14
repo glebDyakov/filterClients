@@ -59,26 +59,45 @@ class TabTwo extends Component {
             })
 
             serviceInfo = (
-                <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
-                    {(selectedServices.length === 1) ? <p>{selectedServices[0].name}</p> :
-                        (<p>{t("Выбрано услуг")}: <strong
-                            className="service_item_price">{selectedServices.length}</strong></p>)}
-                    <p className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow'}>
-                        <strong
-                            className="service_item_price">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</strong>
-                        <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
-                    <span style={{ width: '100%' }} className="runtime">
-                        <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
-                    </span>
-                    <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
+                <div className="supperVisDet service_footer-block">
+                    {/* {(selectedServices.length === 1) ?  */}
+                    {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
+                    {/* : */}
+                    {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
+                    <div className="service_footer_price">
+                        <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                    </div>
+                    <p style={{
+                        color: 'white',
+                        fontSize: "13px",
+                        lineHeight: "18px",
+                    }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
+                    {/* } */}
+
+
+                    <p style={{
+                        color: 'white',
+                        fontSize: "13px",
+                        lineHeight: "18px",
+                    }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                    </p>
+                    {!!selectedServices.length && <button className="next_block" onClick={() => {
+                            if (selectedServices.length) {
+                                setScreen(3);
+                            }
+                            refreshTimetable();
+                        }}>
+                            <span className="title_block_text">{t("Продолжить")}</span></button>}
+                    {/* <div className="supperVisDet_info">
+                        <p className="supperVisDet_info_title" style={{ color: 'white' }}>{t("Список услуг")}:</p>
                         {selectedServices.map(service => (
-                            <p>• {service.name}</p>
+                            <p style={{ color: 'white' }}>• {service.name}</p>
                         ))}
                         <span className="supperVisDet_closer" />
                     </div>
-                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`} />
-                </div>
+                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`} /> */}
+                </div >
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
@@ -105,6 +124,7 @@ class TabTwo extends Component {
                             }
                         }}><span className="title_block_text">{t("Назад")}</span></span>}
                     <p className="modal_title">{t("Выберите услугу")}</p>
+
                     {/* сюда перенес поисковик */}
                     <div className="row align-items-center content clients mb-2 search-block">
                         <div className="search col-12">
@@ -127,16 +147,14 @@ class TabTwo extends Component {
                                 onChange={(e) => this.setState({ searchValue: e.target.value })} />
                         </div>
                     </div>
-                    {!!selectedServices.length && <span className="next_block" onClick={() => {
-                        if (selectedServices.length) {
-                            setScreen(3);
-                        }
-                        refreshTimetable();
-                    }}>
-                        <span className="title_block_text">{t("Далее")}</span></span>}
+
                 </div>
-                {selectedStaff.staffId && <div className="specialist">
-                    <div>
+                {/* {selectedStaff.staffId &&  */}
+                <div className="specialist">
+                    <div className="specialist-block">
+
+
+                        {/* <div>
                         <p className="img_container">
                             <img
                                 src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
@@ -145,10 +163,12 @@ class TabTwo extends Component {
                                 <br />{selectedStaff.lastName ? selectedStaff.lastName : ''}</span>
                         </p>
 
+                    </div> */}
+                        {serviceInfo && serviceInfo}
+                       
                     </div>
-                    {serviceInfo && serviceInfo}
-
-                </div>}
+                </div>
+                {/* } */}
 
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>
@@ -174,7 +194,6 @@ class TabTwo extends Component {
 
 
                                 if (searchValue && searchValue.length > 0) {
-                                    console.log(finalServices)
                                     finalServices = finalServices && finalServices.filter(service =>
                                         service.name.toLowerCase().includes(this.search.value.toLowerCase())
                                         || service.details.toLowerCase().includes(this.search.value.toLowerCase())
@@ -275,6 +294,7 @@ class TabTwo extends Component {
                         <button style={{ marginTop: '4px', marginBottom: '20px' }}
                             className="button load">{t("Продолжить")}</button>
                     </div>}
+
             </div>
         );
     }

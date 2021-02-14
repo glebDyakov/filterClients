@@ -4,7 +4,6 @@ import moment from 'moment'
 import DayPicker from "react-day-picker";
 import {staffActions} from "../../_actions";
 import {withTranslation} from "react-i18next";
-
 class TabFour extends  PureComponent {
     constructor(props) {
         super(props)
