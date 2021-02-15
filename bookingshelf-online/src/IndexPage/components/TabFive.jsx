@@ -45,22 +45,34 @@ class TabFive extends PureComponent {
       })
 
       serviceInfo = (
-        <div style={{ display: 'inline-block' }} className="supperVisDet service_item">
-          {(selectedServices.length === 1) ? <p>{selectedServices[0].name}</p> :
-            (<p>{t("Выбрано услуг")}: <strong className="service_item_price">{selectedServices.length}</strong></p>)}
-          <p className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow'}><strong className="service_item_price">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</strong> <span>{selectedServices[0] && selectedServices[0].currency}</span></p>
-          <span style={{ width: '100%' }} className="runtime">
-            <strong>{moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong>
-          </span>
-          <div className="supperVisDet_info">
-            <p className="supperVisDet_info_title">{t("Список услуг")}:</p>
-            {selectedServices.map(service => (
-              <p>• {service.name}</p>
-            ))}
-            <span className="supperVisDet_closer" />
+        <div className="last_list_block">
+          <div className="last_list_caption">
+            <div className="last_list_img">
+              <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
+              <div className="last_list_name">
+                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
+                <p>Time</p>
+              </div>
+            </div>
+            <p style={{
+              fontSize: "13px",
+              marginRight: "17px",
+            }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
           </div>
-          <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`} />
-        </div>
+          <div className="last_list_services">
+            <p>Список услуг:</p>
+            {selectedServices.map((service, id) => (
+              <p>{id + 1}. <span> {service.name}&nbsp;</span>
+                <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
+              </p>
+            ))}
+          </div>
+          <div className="last_list_price">
+            <p>Итого:</p>
+            <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+            <span>{selectedServices[0] && selectedServices[0].currency}</span>
+          </div>
+        </div >
       )
     }
 
@@ -80,28 +92,12 @@ class TabFive extends PureComponent {
           >
             <span className="title_block_text">{t("Назад")}</span>
           </span>
-          <p className="modal_title">{t("Запись")}</p>
+          {/* <p className="modal_title">{t("Запись")}</p> */}
         </div>
-        <div className="specialist">
-          {selectedStaff.staffId &&
-            <div>
-              <p className="img_container">
-                <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
-                <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-              </p>
-            </div>
-          }
+        <div className="last_list">
+
           {serviceInfo && serviceInfo}
-          {selectedDay &&
-            <div className="date_item_popup">
-              <strong>{moment(selectedDay).format('DD MMMM YYYY')}</strong>
-            </div>
-          }
-          {selectedTime &&
-            <div className="date_item_popup">
-              <strong>{moment(selectedTime, 'x').format('HH:mm')}</strong>
-            </div>
-          }
+
         </div>
         {clientActivationId ? (
           <React.Fragment>
@@ -173,23 +169,31 @@ class TabFive extends PureComponent {
               </div>
             </React.Fragment>
           )}
-        <input
-          className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
-          disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-          type="submit" value={clientActivationId ? t("Подтвердить код") : t('ЗАПИСАТЬСЯ')} onClick={
-            () => {
-              if (clientActivationId) {
-                handleSave({
-                  clientActivationId,
-                  clientVerificationCode: enteredCode
-                })
-              } else {
-                $('.phones_country').css({ display: 'none' })
-                if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
-                  handleSave()
-                }
-              }
-            }} />
+        <div className="specialist">
+          <div className="last_footer_block">
+            <p>
+              Нажимая кнопку записаться, вы соглашаетесь<br />
+            с условиями пользовательского соглашения
+          </p>
+            <input
+              className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + "next_block book_button"}
+              disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
+              type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                () => {
+                  if (clientActivationId) {
+                    handleSave({
+                      clientActivationId,
+                      clientVerificationCode: enteredCode
+                    })
+                  } else {
+                    $('.phones_country').css({ display: 'none' })
+                    if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
+                      handleSave()
+                    }
+                  }
+                }} />
+          </div>
+        </div>
       </div>
     );
   }

@@ -9,7 +9,6 @@ class TabTwo extends Component {
         super(props);
         this.state = {
             searchValue: '',
-            color: "#09093A",
         }
     }
 
@@ -47,7 +46,41 @@ class TabTwo extends Component {
                 )
         })
 
-        let serviceInfo = null
+        let serviceInfo = null;
+        let padding_left = "21px";
+        let padding_right = "39px";
+        let sizeWords = "36px";
+        let serviceInfoNull = (
+            <div className="supperVisDet service_footer-block">
+                {/* {(selectedServices.length === 1) ?  */}
+                {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
+                {/* : */}
+                {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
+                <div className="service_footer_price">
+                    <p style={{
+                        color: 'white',
+                        fontSize: `${sizeWords}`,
+                        lineHeight: "49px",
+                    }}>0&nbsp;</p>
+                    <span>BYN</span>
+                </div>
+                <p style={{
+                    color: 'white',
+                    fontSize: "13px",
+                    lineHeight: "18px",
+                    letterSpacing: "0.1px",
+                    paddingLeft: `${padding_left}`,
+                }}>{t("Выбрано услуг")}:</p>
+                <p style={{
+                    color: 'white',
+                    fontSize: "13px",
+                    lineHeight: "18px",
+                    letterSpacing: "0.1px",
+                    paddingRight: `${padding_right}`,
+                }} >{t("Длительность")}:
+                </p>
+            </div >
+        );
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -58,6 +91,52 @@ class TabTwo extends Component {
                 duration += parseInt(getDurationForCurrentStaff(service))
             })
 
+            const priceFrom100 = priceFrom / 100;
+            const priceTo100 = priceTo / 100;
+            const priceFrom1000 = priceFrom / 1000;
+            const priceTo1000 = priceTo / 1000;
+
+            if (priceFrom1000 > 1 || priceTo1000 > 1) {
+                sizeWords = "24px"
+                padding_left = "0px";
+                padding_right = "0px";
+            }
+            else if (priceFrom100 > 1 || priceTo100 > 1) {
+                sizeWords = "32px"
+                padding_left = "0px";
+                padding_right = "0px";
+            }
+            serviceInfoNull = (
+                <div className="supperVisDet service_footer-block">
+                    {/* {(selectedServices.length === 1) ?  */}
+                    {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
+                    {/* : */}
+                    {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
+                    <div className="service_footer_price">
+                        <p style={{
+                            color: 'white',
+                            fontSize: `${sizeWords}`,
+                            lineHeight: "49px",
+                        }}>0</p>
+                        <span>BYN</span>
+                    </div>
+                    <p style={{
+                        color: 'white',
+                        fontSize: "13px",
+                        lineHeight: "18px",
+                        letterSpacing: "0.1px",
+                        paddingLeft: `${padding_left}`,
+                    }}>{t("Выбрано услуг")}:</p>
+                    <p style={{
+                        color: 'white',
+                        fontSize: "13px",
+                        lineHeight: "18px",
+                        letterSpacing: "0.1px",
+                        paddingRight: `${padding_right}`,
+                    }} >{t("Длительность")}:
+                    </p>
+                </div >
+            )
             serviceInfo = (
                 <div className="supperVisDet service_footer-block">
                     {/* {(selectedServices.length === 1) ?  */}
@@ -65,38 +144,35 @@ class TabTwo extends Component {
                     {/* : */}
                     {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
                     <div className="service_footer_price">
-                        <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                        <p style={{
+                            color: 'white',
+                            fontSize: `${sizeWords}`,
+                            lineHeight: "49px",
+                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                     </div>
                     <p style={{
                         color: 'white',
                         fontSize: "13px",
                         lineHeight: "18px",
+                        letterSpacing: "0.1px",
+                        paddingLeft: `${padding_left}`,
                     }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                    {/* } */}
-
-
                     <p style={{
                         color: 'white',
                         fontSize: "13px",
                         lineHeight: "18px",
+                        letterSpacing: "0.1px",
+                        paddingRight: `${padding_right}`,
                     }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                     </p>
                     {!!selectedServices.length && <button className="next_block" onClick={() => {
-                            if (selectedServices.length) {
-                                setScreen(3);
-                            }
-                            refreshTimetable();
-                        }}>
-                            <span className="title_block_text">{t("Продолжить")}</span></button>}
-                    {/* <div className="supperVisDet_info">
-                        <p className="supperVisDet_info_title" style={{ color: 'white' }}>{t("Список услуг")}:</p>
-                        {selectedServices.map(service => (
-                            <p style={{ color: 'white' }}>• {service.name}</p>
-                        ))}
-                        <span className="supperVisDet_closer" />
-                    </div>
-                    <img className="tap-service-icon" src={`${process.env.CONTEXT}public/img/tap-service.svg`} /> */}
+                        if (selectedServices.length) {
+                            setScreen(3);
+                        }
+                        refreshTimetable();
+                    }}>
+                        <span className="title_block_text">{t("Продолжить")}</span></button>}
                 </div >
             )
         }
@@ -124,8 +200,6 @@ class TabTwo extends Component {
                             }
                         }}><span className="title_block_text">{t("Назад")}</span></span>}
                     <p className="modal_title">{t("Выберите услугу")}</p>
-
-                    {/* сюда перенес поисковик */}
                     <div className="row align-items-center content clients mb-2 search-block">
                         <div className="search col-12">
                             <img style={{ position: 'absolute', right: '26px' }}
@@ -152,27 +226,12 @@ class TabTwo extends Component {
                 {/* {selectedStaff.staffId &&  */}
                 <div className="specialist">
                     <div className="specialist-block">
-
-
-                        {/* <div>
-                        <p className="img_container">
-                            <img
-                                src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                alt="" />
-                            <span style={userNameStyle}>{selectedStaff.firstName}
-                                <br />{selectedStaff.lastName ? selectedStaff.lastName : ''}</span>
-                        </p>
-
-                    </div> */}
-                        {serviceInfo && serviceInfo}
-                       
+                        {/* {this.serviceInfoNull} */}
+                        {!selectedServices[0] ? serviceInfoNull : serviceInfo}
                     </div>
                 </div>
-                {/* } */}
-
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>
-                        {/* отсюда перенес поисковик */}
                         <div style={{ marginTop: "17px", }}>
                             {serviceGroups.map(serviceGroup => {
                                 let { services } = serviceGroup
@@ -231,8 +290,6 @@ class TabTwo extends Component {
                                                                             type="checkbox"
                                                                             checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)} />
                                                                     </div>
-
-                                                                    {/* <span className="checkHelper" /> */}
                                                                     <button className="next_block-btn"
                                                                     // onClick={e=>{selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)?
                                                                     //     selectService(false, service,false):
@@ -291,8 +348,6 @@ class TabTwo extends Component {
                         }
                         refreshTimetable();
                     }}>
-                        <button style={{ marginTop: '4px', marginBottom: '20px' }}
-                            className="button load">{t("Продолжить")}</button>
                     </div>}
 
             </div>

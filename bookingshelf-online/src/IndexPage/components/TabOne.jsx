@@ -71,7 +71,109 @@ class TabOne extends PureComponent {
     }
 
     render() {
-        const { t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown } = this.props;
+        const { t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices,selectedService, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown } = this.props;
+        let padding_left = "21px";
+        let padding_right = "39px";
+        let sizeWords = "36px";
+        let serviceInfo = null;
+        serviceInfo = (
+            <div className="supperVisDet service_footer-block">
+                {/* {(selectedServices.length === 1) ?  */}
+                {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
+                {/* : */}
+                {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
+                <div className="service_footer_price">
+                    <p style={{
+                        color: 'white',
+                        fontSize: `${sizeWords}`,
+                        lineHeight: "49px",
+                    }}>0&nbsp;</p>
+                    <span>BYN</span>
+                </div>
+                <p style={{
+                    color: 'white',
+                    fontSize: "13px",
+                    lineHeight: "18px",
+                    letterSpacing: "0.1px",
+                    paddingLeft: `${padding_left}`,
+                }}>{t("Выбрано услуг")}:</p>
+                <p style={{
+                    color: 'white',
+                    fontSize: "13px",
+                    lineHeight: "18px",
+                    letterSpacing: "0.1px",
+                    paddingRight: `${padding_right}`,
+                }} >{t("Длительность")}:
+                    </p>
+            </div >
+        );
+        console.log(selectedService)
+        if (selectedServices.length >= 1) {
+            // if (selectedService.serviceId) {
+                let priceFrom = 0;
+                let priceTo = 0;
+                let duration = 0;
+                selectedServices.forEach((service) => {
+                    priceFrom += parseInt(service.priceFrom)
+                    priceTo += parseInt(service.priceTo)
+                    console.log(service)
+                    console.log(getDurationForCurrentStaff(service))
+                    duration += parseInt(getDurationForCurrentStaff(service))
+                })
+
+                const priceFrom100 = priceFrom / 100;
+                const priceTo100 = priceTo / 100;
+                const priceFrom1000 = priceFrom / 1000;
+                const priceTo1000 = priceTo / 1000;
+
+                if (priceFrom1000 > 1 || priceTo1000 > 1) {
+                    sizeWords = "24px"
+                    padding_left = "0px";
+                    padding_right = "0px";
+                }
+                else if (priceFrom100 > 1 || priceTo100 > 1) {
+                    sizeWords = "32px"
+                    padding_left = "0px";
+                    padding_right = "0px";
+                }
+                serviceInfo = (
+                    <div className="supperVisDet service_footer-block">
+
+                        <div className="service_footer_price">
+                            <p style={{
+                                color: 'white',
+                                fontSize: `${sizeWords}`,
+                                lineHeight: "49px",
+                            }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                            <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                        </div>
+                        <p style={{
+                            color: 'white',
+                            fontSize: "13px",
+                            lineHeight: "18px",
+                            letterSpacing: "0.1px",
+                            paddingLeft: `${padding_left}`,
+                        }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
+                        <p style={{
+                            color: 'white',
+                            fontSize: "13px",
+                            lineHeight: "18px",
+                            letterSpacing: "0.1px",
+                            paddingRight: `${padding_right}`,
+                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                        </p>
+                        {!!selectedServices.length && <button className="next_block" onClick={() => {
+                            if (selectedServices.length) {
+                                setScreen(3);
+                            }
+                            refreshTimetable();
+                        }}>
+                            <span className="title_block_text">{t("Продолжить")}</span></button>}
+                    </div >
+                )
+            // }
+        }
+
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
@@ -91,8 +193,14 @@ class TabOne extends PureComponent {
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
+                <div className="specialist">
+                    <div className="specialist-block">
+                        {/* {this.serviceInfoNull} */}
+                        {serviceInfo}
+                    </div>
+                </div>
                 <div className="skip_employee-block">
-                {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>}
+                    {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                     {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                 </div>
                 <div className="title_block n staff_title">
@@ -113,34 +221,10 @@ class TabOne extends PureComponent {
                         }}><span className="title_block_text">{t("Назад")}</span></span>
                     )}
                     <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : (info.companyTypeId === 4 ? t('Выбор врача') : t('Выберите сотрудника'))}</p>
-                    {staffId &&
-                        <span className="next_block" onClick={() => {
-                            setScreen(isStartMovingVisit ? 3 : 2);
-                            refreshTimetable();
-                        }}><span className="title_block_text">{t("Далее")}</span></span>}
                 </div>
                 {!this.state.staff && (
                     <React.Fragment>
                         <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                            {/* {flagAllStaffs && (
-                                <li className={'nb'}
-                                    onClick={() => {
-                                        this.handleNoStaffClick()
-                                    }}
-                                >
-                                    <span className="staff_popup_item">
-                                        <div style={{ width: '100%' }} className="img_container">
-
-                                            <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Рабочее место не важно') : t('Сотрудник не важен')}<br />
-
-
-                                            </span>
-
-                                        </div>
-
-                                    </span>
-                                </li>
-                            )} */}
                             {staffs && staffs.length > 0 && staffs
                                 .filter(staff => {
                                     const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];
@@ -197,7 +281,7 @@ class TabOne extends PureComponent {
                                                                 starDimension="20px"
                                                                 starSpacing="0"
                                                             />
-                                                        ) : <p style={{ fontSize: '13px', lineHeight: "20px", opacity: "0.5"}}>{t("Нет отзывов")}</p>}
+                                                        ) : <p style={{ fontSize: '13px', lineHeight: "20px", opacity: "0.5" }}>{t("Нет отзывов")}</p>}
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,21 +323,8 @@ class TabOne extends PureComponent {
                                     </li>
                                 )}
                         </ul>
-                        <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                            {/* {flagAllStaffs && (
-                                <li className={'nb'}
-                                    onClick={() => {
-                                        this.handleNoStaffClick()
-                                    }}
-                                >
-                                    <span className="staff_popup_item">
-                                        <div style={{ width: '100%' }} className="img_container">
-                                            <span className="staff_popup_name no-staff">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Рабочее место не важно') : t('Сотрудник не важен')}<br />
-                                            </span>
-                                        </div>
-                                    </span>
-                                </li>
-                            )} */}
+                        {/* <ul className={`mobile-visible staff_popup ${staffs && staffs.length <= 50 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                          
                             {staffs && !!staffs.length && staffs
                                 .filter(staff => {
                                     const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];
@@ -306,10 +377,8 @@ class TabOne extends PureComponent {
                                                         <span>{t("Ближ. запись")}</span>
                                                         <div className="stars" style={{ textTransform: 'capitalize' }}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                                     </div>
-                                                    <div className="mobile_block desktop-visible" key={'time' + id}>
+                                                    <div className="mobile_block desktop-visible" key={'time' + id}></div>
                                                         <span className="nearest_appointment">{t("Ближайшая запись")}</span>
-                                                        {/* <div className="stars" style={{ textTransform: 'capitalize' }}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div> */}
-                                                    </div>
                                                 </React.Fragment>
 
                                             )}
@@ -325,7 +394,7 @@ class TabOne extends PureComponent {
                                             }
                                         </span>
                                     </li>)}
-                        </ul>
+                        </ul> */}
                     </React.Fragment>
                 )
                 }
