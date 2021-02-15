@@ -407,6 +407,7 @@ class IndexPage extends PureComponent {
                         selectService={this.selectService}
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />}
                     {screen === 'staff-comments' &&
                     <TabStaffComments
@@ -625,7 +626,7 @@ class IndexPage extends PureComponent {
         const {selectedStaff, staffs}=this.state;
         const {selectedServices, nearestTime} = this.state;
         const { checked } = e.target;  
-        
+        console.log(service)
         // 
         if (checked) {
             selectedServices.push(service);

@@ -5,11 +5,13 @@ import { staffActions } from "../../_actions";
 import moment from 'moment';
 import { withTranslation } from "react-i18next";
 import i_icon from "../../../public/img/icons/i.svg"
+import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            staff: null
+            staff: null,
+            openList: false,
         }
         this.handleStaffCommentsClick = this.handleStaffCommentsClick.bind(this);
         this.handleSelectStaff = this.handleSelectStaff.bind(this);
@@ -71,108 +73,98 @@ class TabOne extends PureComponent {
     }
 
     render() {
-        const { t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices,selectedService, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown } = this.props;
+        const { t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
+        const { openList } = this.state;
+        let serviceInfo = null;
         let padding_left = "21px";
         let padding_right = "39px";
         let sizeWords = "36px";
-        let serviceInfo = null;
+
+        let priceFrom = 0;
+        let priceTo = 0;
+        let duration = 0;
+        selectedServices.forEach((service) => {
+            priceFrom += parseInt(service.priceFrom)
+            priceTo += parseInt(service.priceTo)
+            duration += parseInt(getDurationForCurrentStaff(service))
+        })
+
+        const priceFrom100 = priceFrom / 100;
+        const priceTo100 = priceTo / 100;
+        const priceFrom1000 = priceFrom / 1000;
+        const priceTo1000 = priceTo / 1000;
+
+        if (priceFrom1000 > 1 || priceTo1000 > 1) {
+            sizeWords = "24px"
+            padding_left = "0px";
+            padding_right = "0px";
+        }
+        else if (priceFrom100 > 1 || priceTo100 > 1) {
+            sizeWords = "32px"
+            padding_left = "0px";
+            padding_right = "0px";
+        }
+
         serviceInfo = (
-            <div className="supperVisDet service_footer-block">
-                {/* {(selectedServices.length === 1) ?  */}
-                {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
-                {/* : */}
-                {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
-                <div className="service_footer_price">
-                    <p style={{
-                        color: 'white',
-                        fontSize: `${sizeWords}`,
-                        lineHeight: "49px",
-                    }}>0&nbsp;</p>
-                    <span>BYN</span>
-                </div>
-                <p style={{
-                    color: 'white',
-                    fontSize: "13px",
-                    lineHeight: "18px",
-                    letterSpacing: "0.1px",
-                    paddingLeft: `${padding_left}`,
-                }}>{t("Выбрано услуг")}:</p>
-                <p style={{
-                    color: 'white',
-                    fontSize: "13px",
-                    lineHeight: "18px",
-                    letterSpacing: "0.1px",
-                    paddingRight: `${padding_right}`,
-                }} >{t("Длительность")}:
-                    </p>
-            </div >
-        );
-        console.log(selectedService)
-        if (selectedServices.length >= 1) {
-            // if (selectedService.serviceId) {
-                let priceFrom = 0;
-                let priceTo = 0;
-                let duration = 0;
-                selectedServices.forEach((service) => {
-                    priceFrom += parseInt(service.priceFrom)
-                    priceTo += parseInt(service.priceTo)
-                    console.log(service)
-                    console.log(getDurationForCurrentStaff(service))
-                    duration += parseInt(getDurationForCurrentStaff(service))
-                })
-
-                const priceFrom100 = priceFrom / 100;
-                const priceTo100 = priceTo / 100;
-                const priceFrom1000 = priceFrom / 1000;
-                const priceTo1000 = priceTo / 1000;
-
-                if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                    sizeWords = "24px"
-                    padding_left = "0px";
-                    padding_right = "0px";
-                }
-                else if (priceFrom100 > 1 || priceTo100 > 1) {
-                    sizeWords = "32px"
-                    padding_left = "0px";
-                    padding_right = "0px";
-                }
-                serviceInfo = (
-                    <div className="supperVisDet service_footer-block">
-
-                        <div className="service_footer_price">
+            <div className="specialist">
+                <div className="specialist-block">
+                    {openList ?
+                        <div className="specialist_big">
+                            <div className="service_list_block">
+                                <div className="setvice_list_items">
+                                    <p>Услуги:</p>
+                                    {selectedServices.map((element) =>
+                                        <div className="setvice_list_item">
+                                            <div className="cansel_btn_small"> </div>
+                                            <p>{element.name}</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="cansel_btn_big" onClick={event => this.setState({
+                                    openList: !openList,
+                                })}> </div>
+                            </div>
+                        </div>
+                        :
+                        <div className="supperVisDet service_footer-block">
+                            <div className="service_footer_price">
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: `${sizeWords}`,
+                                    lineHeight: "49px",
+                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp; </p>
+                                <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                            </div>
                             <p style={{
                                 color: 'white',
-                                fontSize: `${sizeWords}`,
-                                lineHeight: "49px",
-                            }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                            <span>{selectedServices[0] && selectedServices[0].currency}</span>
-                        </div>
-                        <p style={{
-                            color: 'white',
-                            fontSize: "13px",
-                            lineHeight: "18px",
-                            letterSpacing: "0.1px",
-                            paddingLeft: `${padding_left}`,
-                        }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                        <p style={{
-                            color: 'white',
-                            fontSize: "13px",
-                            lineHeight: "18px",
-                            letterSpacing: "0.1px",
-                            paddingRight: `${padding_right}`,
-                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                        </p>
-                        {!!selectedServices.length && <button className="next_block" onClick={() => {
-                            if (selectedServices.length) {
-                                setScreen(3);
-                            }
-                            refreshTimetable();
-                        }}>
-                            <span className="title_block_text">{t("Продолжить")}</span></button>}
-                    </div >
-                )
-            // }
-        }
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                letterSpacing: "0.1px",
+                                paddingLeft: `${padding_left}`,
+                            }} onClick={event => this.setState({
+                                openList: !openList,
+                            })}>{t("Выбрано услуг")}: {selectedServices.length} &nbsp; <img src={arrow_down} alt="arrou"></img></p>
+                            <p style={{
+                                color: 'white',
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                letterSpacing: "0.1px",
+                                paddingRight: `${padding_right}`,
+                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                            </p>
+                            {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                if (selectedServices.length) {
+                                    setScreen(3);
+                                }
+                                refreshTimetable();
+                            }}>
+                                <span className="title_block_text">{t("Продолжить")}</span></button>}
+                        </div >
+                    }
+
+                </div>
+            </div>
+        )
 
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
@@ -193,12 +185,9 @@ class TabOne extends PureComponent {
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen1">
-                <div className="specialist">
-                    <div className="specialist-block">
-                        {/* {this.serviceInfoNull} */}
-                        {serviceInfo}
-                    </div>
-                </div>
+                {/* футер услуг */}
+                {selectedServices[0] && serviceInfo}
+
                 <div className="skip_employee-block">
                     {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                     {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}

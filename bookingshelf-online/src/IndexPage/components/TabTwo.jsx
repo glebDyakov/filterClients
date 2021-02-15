@@ -4,11 +4,12 @@ import { getFirstScreen } from "../../_helpers/common";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
+
 class TabTwo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: '',
+            searchValue: ''
         }
     }
 
@@ -50,37 +51,6 @@ class TabTwo extends Component {
         let padding_left = "21px";
         let padding_right = "39px";
         let sizeWords = "36px";
-        let serviceInfoNull = (
-            <div className="supperVisDet service_footer-block">
-                {/* {(selectedServices.length === 1) ?  */}
-                {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
-                {/* : */}
-                {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
-                <div className="service_footer_price">
-                    <p style={{
-                        color: 'white',
-                        fontSize: `${sizeWords}`,
-                        lineHeight: "49px",
-                    }}>0&nbsp;</p>
-                    <span>BYN</span>
-                </div>
-                <p style={{
-                    color: 'white',
-                    fontSize: "13px",
-                    lineHeight: "18px",
-                    letterSpacing: "0.1px",
-                    paddingLeft: `${padding_left}`,
-                }}>{t("Выбрано услуг")}:</p>
-                <p style={{
-                    color: 'white',
-                    fontSize: "13px",
-                    lineHeight: "18px",
-                    letterSpacing: "0.1px",
-                    paddingRight: `${padding_right}`,
-                }} >{t("Длительность")}:
-                </p>
-            </div >
-        );
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -106,74 +76,44 @@ class TabTwo extends Component {
                 padding_left = "0px";
                 padding_right = "0px";
             }
-            serviceInfoNull = (
-                <div className="supperVisDet service_footer-block">
-                    {/* {(selectedServices.length === 1) ?  */}
-                    {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
-                    {/* : */}
-                    {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
-                    <div className="service_footer_price">
-                        <p style={{
-                            color: 'white',
-                            fontSize: `${sizeWords}`,
-                            lineHeight: "49px",
-                        }}>0</p>
-                        <span>BYN</span>
-                    </div>
-                    <p style={{
-                        color: 'white',
-                        fontSize: "13px",
-                        lineHeight: "18px",
-                        letterSpacing: "0.1px",
-                        paddingLeft: `${padding_left}`,
-                    }}>{t("Выбрано услуг")}:</p>
-                    <p style={{
-                        color: 'white',
-                        fontSize: "13px",
-                        lineHeight: "18px",
-                        letterSpacing: "0.1px",
-                        paddingRight: `${padding_right}`,
-                    }} >{t("Длительность")}:
-                    </p>
-                </div >
-            )
+
             serviceInfo = (
-                <div className="supperVisDet service_footer-block">
-                    {/* {(selectedServices.length === 1) ?  */}
-                    {/* <p style={{ color: 'white' }}>{selectedServices[0].name}</p>  */}
-                    {/* : */}
-                    {/* <div className={selectedServices.some((service) => service.priceFrom !== service.priceTo) && 'sow service_footer_price'}> */}
-                    <div className="service_footer_price">
-                        <p style={{
-                            color: 'white',
-                            fontSize: `${sizeWords}`,
-                            lineHeight: "49px",
-                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                <div className="specialist">
+                    <div className="specialist-block">
+                        <div className="supperVisDet service_footer-block">
+                            <div className="service_footer_price">
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: `${sizeWords}`,
+                                    lineHeight: "49px",
+                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                            </div>
+                            <p style={{
+                                color: 'white',
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                letterSpacing: "0.1px",
+                                paddingLeft: `${padding_left}`,
+                            }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
+                            <p style={{
+                                color: 'white',
+                                fontSize: "13px",
+                                lineHeight: "18px",
+                                letterSpacing: "0.1px",
+                                paddingRight: `${padding_right}`,
+                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                            </p>
+                            {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                if (selectedServices.length) {
+                                    setScreen(3);
+                                }
+                                refreshTimetable();
+                            }}>
+                                <span className="title_block_text">{t("Продолжить")}</span></button>}
+                        </div >
                     </div>
-                    <p style={{
-                        color: 'white',
-                        fontSize: "13px",
-                        lineHeight: "18px",
-                        letterSpacing: "0.1px",
-                        paddingLeft: `${padding_left}`,
-                    }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                    <p style={{
-                        color: 'white',
-                        fontSize: "13px",
-                        lineHeight: "18px",
-                        letterSpacing: "0.1px",
-                        paddingRight: `${padding_right}`,
-                    }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                    </p>
-                    {!!selectedServices.length && <button className="next_block" onClick={() => {
-                        if (selectedServices.length) {
-                            setScreen(3);
-                        }
-                        refreshTimetable();
-                    }}>
-                        <span className="title_block_text">{t("Продолжить")}</span></button>}
-                </div >
+                </div>
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
@@ -223,13 +163,13 @@ class TabTwo extends Component {
                     </div>
 
                 </div>
-                {/* {selectedStaff.staffId &&  */}
-                <div className="specialist">
-                    <div className="specialist-block">
-                        {/* {this.serviceInfoNull} */}
-                        {!selectedServices[0] ? serviceInfoNull : serviceInfo}
-                    </div>
-                </div>
+                {/* {selectedStaff.staffId && */}
+
+
+                {selectedServices[0] && serviceInfo}
+
+
+
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>
                         <div style={{ marginTop: "17px", }}>
@@ -271,35 +211,68 @@ class TabTwo extends Component {
                                         </div>
                                         <div className="service_items">
                                             {finalServices
-                                                .map((service, serviceKey) =>
-                                                    <li
-                                                        className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}
-
-                                                    >
-                                                        <div className="service_item">
-                                                            <label className="service-block">
-                                                                <p >{service.name}</p>
-                                                                <span className="runtime">{service.details}</span>
-                                                                <span
-                                                                    className="runtime black-fone"><strong>{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                <div className="service-price">
-                                                                    <div className="service-price-text">
-                                                                        <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                        <span>{service.currency}</span>
-                                                                        <input onChange={(e) => selectService(e, service)}
-                                                                            type="checkbox"
-                                                                            checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)} />
+                                                .map((service, serviceKey) => {
+                                                    let select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
+                                                    if (select) {
+                                                        return <li
+                                                            className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
+                                                            style={{
+                                                                backgroundColor: "rgba(62, 80, 247)"
+                                                            }}
+                                                        >
+                                                            <div className="service_item" >
+                                                                <label className="service-block">
+                                                                    <p className="white_text" >{service.name}</p>
+                                                                    <span className="runtime white_text" >{service.details}</span>
+                                                                    <span
+                                                                        className="runtime black-fone" style={{
+                                                                            opacity: `1`,
+                                                                            backgroundColor: "rgba(255, 255, 255, 0.07)"
+                                                                        }}><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                    <div className="service-price">
+                                                                        <div className="service-price-text">
+                                                                            <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                            <span className="white_text">{service.currency}</span>
+                                                                            <input onChange={(e) => selectService(e, service)}
+                                                                                type="checkbox"
+                                                                                checked={select} />
+                                                                        </div>
+                                                                        <button className="next_block-btn white_border"
+                                                                            onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                        > Выбрать</button>
                                                                     </div>
-                                                                    <button className="next_block-btn"
-                                                                    // onClick={e=>{selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)?
-                                                                    //     selectService(false, service,false):
-                                                                    //     selectService(true, service,true)
-                                                                    // }}
-                                                                    > Выбрать</button>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    </li>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    } else {
+                                                        return <li
+                                                            className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
+                                                        >
+                                                            <div className="service_item" >
+                                                                <label className="service-block">
+                                                                    <p >{service.name}</p>
+                                                                    <span className="runtime" >{service.details}</span>
+                                                                    <span
+                                                                        className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                    <div className="service-price">
+                                                                        <div className="service-price-text" >
+                                                                            <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                            <span >{service.currency}</span>
+                                                                            <input onChange={(e) => selectService(e, service)}
+                                                                                type="checkbox"
+                                                                                checked={select} />
+                                                                        </div>
+                                                                        <button className="next_block-btn"
+                                                                            onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                        > Выбрать</button>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    }
+
+                                                }
+
                                                 )}
                                         </div>
 
@@ -339,18 +312,21 @@ class TabTwo extends Component {
                     <div className="final-book">
                         <p>{t("Нет доступных услуг")}</p>
                     </div>
-                    )}
+                    )
+                }
 
-                {!!selectedServices.length &&
+                {
+                    !!selectedServices.length &&
                     <div className="button_block" onClick={() => {
                         if (selectedServices.length) {
                             setScreen(3);
                         }
                         refreshTimetable();
                     }}>
-                    </div>}
+                    </div>
+                }
 
-            </div>
+            </div >
         );
     }
 }
