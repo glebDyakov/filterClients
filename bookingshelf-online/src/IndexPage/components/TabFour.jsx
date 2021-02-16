@@ -16,10 +16,14 @@ class TabFour extends PureComponent {
 
     render() {
 
-        const { t, selectedTime, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
+        const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
         const availableTimes = []
-
+        let currentDay = moment(selectedDay).format('MMMM,DD');
+        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
+        currentDay=  currentDay.split(",")
+        currentDay = currentDay.reverse()
+        currentDay= currentDay.join(" ")
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
@@ -90,7 +94,8 @@ class TabFour extends PureComponent {
                 duration += parseInt(getDurationForCurrentStaff(service))
             })
 
-            let margin_right = "22px";
+            let margin_right1 = "25px";
+            let margin_right2 = "53px";
             let sizeWords = "36px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
@@ -99,11 +104,13 @@ class TabFour extends PureComponent {
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
                 sizeWords = "24px"
-                margin_right = "0px";
+                margin_right1 = "0px";
+                margin_right2 = "0px";
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
                 sizeWords = "32px"
-                margin_right = "0px";
+                margin_right1 = "0px";
+                margin_right2 = "0px";
             }
             serviceInfo = (
                 <div className="specialist-block">
@@ -135,8 +142,8 @@ class TabFour extends PureComponent {
                                 }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                 <span>{selectedServices[0] && selectedServices[0].currency}</span>
                             </div>
-                            <div className="time-footer" style={{
-                                marginRight: `${margin_right}`
+                            <div className="time-footer hover" style={{
+                                marginRight: `${margin_right1}`
                             }}>
                                 <p style={{
                                     color: 'white',
@@ -156,7 +163,7 @@ class TabFour extends PureComponent {
                                 </p>
                             </div>
                             <div className="time-footer" style={{
-                                marginRight: `${margin_right}`
+                                marginRight: `${margin_right2}`
                             }}>
                                 <p style={{
                                     color: 'white',
@@ -169,7 +176,7 @@ class TabFour extends PureComponent {
                                     fontSize: "13px",
                                     lineHeight: "18px",
                                     letterSpacing: "0.1px",
-                                }} >{moment(selectedDay).utc().format('DD MMMM YYYY')}</p>
+                                }} >{currentDay}</p>
                             </div>
                             {!!selectedServices.length && <button className="next_block" onClick={() => {
                                 if (selectedServices.length) {

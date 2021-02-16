@@ -57,13 +57,13 @@ class TabThird extends PureComponent {
                         <div className="specialist_big">
                             <div className="service_list_block">
                                 <div className="setvice_list_items">
-                                        <p>Услуги:</p>
-                                        {selectedServices.map((element) =>
-                                            <div className="setvice_list_item">
-                                                <div className="cansel_btn_small"> </div>
-                                                <p>{element.name}</p>
-                                            </div>
-                                        )}
+                                    <p>Услуги:</p>
+                                    {selectedServices.map((element) =>
+                                        <div className="setvice_list_item">
+                                            <div className="cansel_btn_small"> </div>
+                                            <p>{element.name}</p>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="cansel_btn_big" onClick={event => this.setState({
                                     openList: !openList,
@@ -81,7 +81,7 @@ class TabThird extends PureComponent {
                                 }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                 <span>{selectedServices[0] && selectedServices[0].currency}</span>
                             </div>
-                            <div className="time-footer" style={{
+                            <div className="time-footer hover" style={{
                                 marginRight: `${margin_right}`
                             }}>
                                 <p style={{

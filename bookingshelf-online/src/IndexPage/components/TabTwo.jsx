@@ -161,14 +161,9 @@ class TabTwo extends Component {
                                 onChange={(e) => this.setState({ searchValue: e.target.value })} />
                         </div>
                     </div>
-
                 </div>
                 {/* {selectedStaff.staffId && */}
-
-
                 {selectedServices[0] && serviceInfo}
-
-
 
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>

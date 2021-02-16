@@ -1,12 +1,12 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import StarRatings from 'react-star-ratings';
-import {staffActions} from "../../_actions";
+import { staffActions } from "../../_actions";
 import moment from "moment";
 import Paginator from "./Paginator";
-import {withTranslation} from "react-i18next";
+import { withTranslation } from "react-i18next";
 
-class TabStaffComments extends  PureComponent{
+class TabStaffComments extends PureComponent {
     constructor(props) {
         super(props);
         const group = {
@@ -33,7 +33,7 @@ class TabStaffComments extends  PureComponent{
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
 
-        return(
+        return (
             <div className="service_selection screen1 screen5">
                 <div className="title_block n">
                     <span className="prev_block" onClick={() => {
@@ -49,9 +49,9 @@ class TabStaffComments extends  PureComponent{
                                 <div className="img_container">
                                     <img
                                         src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        alt=""/>
-                                    <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br/>
-                                                    <span style={{ fontSize: "13px"}}>{staffCommentsStaff.description}</span>
+                                        alt="" />
+                                    <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br />
+                                        <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span>
                                         <StarRatings
                                             rating={staffCommentsStaff.rating}
                                             starHoverColor={'#ff9500'}
@@ -59,7 +59,7 @@ class TabStaffComments extends  PureComponent{
                                             starDimension="18px"
                                             starSpacing="0"
                                         />
-                                                </span>
+                                    </span>
                                 </div>
 
                             </div>
@@ -68,36 +68,36 @@ class TabStaffComments extends  PureComponent{
                             {staffComments && staffComments.length > 0
                                 ? staffComments.map((staff) =>
                                     <li className={('staff_comment selected')}>
-                                <span className="staff_popup_item">
-                                    <div style={{ width: '100%' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                            <p style={{ fontSize: '16px', fontWeight: 'bold' }}>{staff.clientName}</p>
-                                        </div>
+                                        <span className="staff_popup_item">
+                                            <div style={{ width: '100%' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <p style={{ fontSize: '16px', fontWeight: 'bold' }}>{staff.clientName}</p>
+                                                </div>
 
-                                        <div style={{ display: 'flex' }}>
-                                            <StarRatings
-                                                rating={staff.rating}
-                                                starHoverColor={'#ff9500'}
-                                                starRatedColor={'#ff9500'}
-                                                starDimension="18px"
-                                                starSpacing="0"
-                                            />
-                                            <p style={{ marginLeft: '6px' }}>{moment(staff.feedbackDate).format('DD MMMM YYYY, HH:mm')}</p>
+                                                <div style={{ display: 'flex' }}>
+                                                    <StarRatings
+                                                        rating={staff.rating}
+                                                        starHoverColor={'#ff9500'}
+                                                        starRatedColor={'#ff9500'}
+                                                        starDimension="18px"
+                                                        starSpacing="0"
+                                                    />
+                                                    <p style={{ marginLeft: '6px' }}>{moment(staff.feedbackDate).format('DD MMMM YYYY, HH:mm')}</p>
 
-                                        </div>
-                                        <div style={{ marginTop: '6px' }}>
-                                            <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
-                                        </div>
-                                    </div>
-                                </span>
+                                                </div>
+                                                <div style={{ marginTop: '6px' }}>
+                                                    <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
+                                                </div>
+                                            </div>
+                                        </span>
                                     </li>)
                                 : (
                                     <div className="final-book">
                                         <p style={{ fontSize: '18px' }}>
                                             {t('Пока нет ни одного отзыва.')} <span
-                                            style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px'}}
-                                            onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
-                                    </span>
+                                                style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px' }}
+                                                onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
+                                            </span>
                                         </p>
                                     </div>
                                 )}
@@ -112,14 +112,14 @@ class TabStaffComments extends  PureComponent{
                     />
                 </div>
 
-                <p className="skip_employee" onClick={() =>  setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p>
+                <p className="skip_employee" onClick={() => setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p>
             </div>
         );
     }
 }
 
 function mapStateToProps(store) {
-    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff } }=store;
+    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff } } = store;
 
     return {
         staffComments, staffCommentsTotalPages, staffCommentsStaff

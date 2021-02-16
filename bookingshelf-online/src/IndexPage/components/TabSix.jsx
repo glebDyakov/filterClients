@@ -154,7 +154,7 @@ class TabSix extends PureComponent {
                     {/*    setDefaultFlag();*/}
                     {/*}}> Создать запись</p>*/}
                 </div>
-                <Footer/>
+                <Footer />
             </div >
         );
     }

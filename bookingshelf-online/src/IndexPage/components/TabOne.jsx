@@ -6,6 +6,7 @@ import moment from 'moment';
 import { withTranslation } from "react-i18next";
 import i_icon from "../../../public/img/icons/i.svg"
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
+import { compose } from 'redux';
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -73,13 +74,20 @@ class TabOne extends PureComponent {
     }
 
     render() {
-        const { t, staffId, isLoading, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
+        const { t, staffId, isLoading, selectedDay, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
         const { openList } = this.state;
         let serviceInfo = null;
+
+        let currentDay = moment(selectedDay).format('MMMM,DD');
+        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
+        currentDay = currentDay.split(",")
+        currentDay = currentDay.reverse()
+        currentDay = currentDay.join(" ")
+
         let padding_left = "21px";
         let padding_right = "39px";
         let sizeWords = "36px";
-
+        let margin_right = "22px";
         let priceFrom = 0;
         let priceTo = 0;
         let duration = 0;
@@ -98,11 +106,13 @@ class TabOne extends PureComponent {
             sizeWords = "24px"
             padding_left = "0px";
             padding_right = "0px";
+            margin_right = "0px";
         }
         else if (priceFrom100 > 1 || priceTo100 > 1) {
             sizeWords = "32px"
             padding_left = "0px";
             padding_right = "0px";
+            margin_right = "0px";
         }
 
         serviceInfo = (
@@ -127,41 +137,57 @@ class TabOne extends PureComponent {
                         </div>
                         :
                         <div className="supperVisDet service_footer-block">
+
                             <div className="service_footer_price">
                                 <p style={{
                                     color: 'white',
                                     fontSize: `${sizeWords}`,
                                     lineHeight: "49px",
-                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp; </p>
+                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                 <span>{selectedServices[0] && selectedServices[0].currency}</span>
                             </div>
-                            <p style={{
-                                color: 'white',
-                                fontSize: "13px",
-                                lineHeight: "18px",
-                                letterSpacing: "0.1px",
-                                paddingLeft: `${padding_left}`,
-                            }} onClick={event => this.setState({
-                                openList: !openList,
-                            })}>{t("Выбрано услуг")}: {selectedServices.length} &nbsp; <img src={arrow_down} alt="arrou"></img></p>
-                            <p style={{
-                                color: 'white',
-                                fontSize: "13px",
-                                lineHeight: "18px",
-                                letterSpacing: "0.1px",
-                                paddingRight: `${padding_right}`,
-                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                            </p>
-                            {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                if (selectedServices.length) {
-                                    setScreen(3);
-                                }
-                                refreshTimetable();
+                            <div className="time-footer hover" style={{
+                                marginRight: `${margin_right}`
                             }}>
-                                <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: "13px",
+                                    lineHeight: "29px",
+                                    letterSpacing: "0.1px",
+                                }} onClick={event => this.setState({
+                                    openList: !openList,
+                                })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                {/* } */}
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: "13px",
+                                    lineHeight: "18px",
+                                    letterSpacing: "0.1px",
+                                }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                </p>
+                            </div>
+                            <div className="time-footer" style={{
+                                marginRight: `${margin_right}`
+                            }}>
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: "13px",
+                                    lineHeight: "29px",
+                                    letterSpacing: "0.1px",
+                                }} >{t("Дата")}:</p>
+                                <p style={{
+                                    color: 'white',
+                                    fontSize: "13px",
+                                    lineHeight: "18px",
+                                    letterSpacing: "0.1px",
+                                }} >{currentDay} {moment(time).format('LT')}</p>
+                            </div>
+                            <span style={{
+                                width: "161px",
+                                height: "30px",
+                            }}></span>
                         </div >
                     }
-
                 </div>
             </div>
         )

@@ -512,6 +512,10 @@ button, button:active, button:focus {
     margin: 0px 0px 4px -2px;
 }
 
+.hover:hover {
+    cursor: pointer;
+}
+
 .time-footer img {
     margin-left: 6px;
     margin-top: 1px;
@@ -566,7 +570,8 @@ button, button:active, button:focus {
     width: 100%;
     z-index: 10;
 }
-.specialist_big{
+
+.specialist_big {
     position: fixed;
     left: 0;
     right: 0;
@@ -584,11 +589,6 @@ button, button:active, button:focus {
     margin: auto;
     align-items: center;
     min-height: 72px;
-}
-
-.supperVisDet {
-    position: relative;
-    cursor: pointer;
 }
 
 .tap-service-icon {
@@ -648,13 +648,15 @@ button, button:active, button:focus {
     display: flex;
 }
 
-.white_text{
+.white_text {
     color: #FFFFFF !important;
     opacity: 1 !important;
 }
-.white_border{
-    border : 2px solid #FFFFFF;
+
+.white_border {
+    border: 2px solid #FFFFFF;
 }
+
 .service_item label input {
     display: none;
     /* <--скрываем дефолтный чекбокс */
@@ -743,7 +745,7 @@ button, button:active, button:focus {
     align-items: center;
 }
 
-.service_list_block{
+.service_list_block {
     display: flex;
     justify-content: space-between;
     width: 700px;
@@ -752,49 +754,57 @@ button, button:active, button:focus {
     max-height: 204px;
     padding: 20px 0px 5px;
 }
-.setvice_list_items p{
+
+.setvice_list_items p {
     font-size: 16px;
-line-height: 22px;
-color: #FFFFFF;
-margin-bottom: 16px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin-bottom: 16px;
 }
-.setvice_list_items{
+
+.setvice_list_items {
     display: flex;
     flex-direction: column;
-    overflow:auto;
+    overflow: auto;
 }
-.setvice_list_items::-webkit-scrollbar { 
-    display: none; 
+
+.setvice_list_items::-webkit-scrollbar {
+    display: none;
 }
-.setvice_list_item{
+
+.setvice_list_item {
     display: flex;
-margin-bottom: 10px;
-align-items: center;
+    margin-bottom: 10px;
+    align-items: center;
 }
-.setvice_list_item p{
+
+.setvice_list_item p {
     font-weight: 400;
     font-size: 13px;
-line-height: 18px;
-color: #FFFFFF;
-margin-bottom: 0px;
-
+    line-height: 18px;
+    color: #FFFFFF;
+    margin-bottom: 0px;
 }
-.cansel_btn_big{
+
+.cansel_btn_big {
     width: 19px;
-height: 19px;
-margin-top: auto;
+    height: 19px;
+    margin-top: auto;
     margin-bottom: auto;
     background-image: url(../img/icons/cancel-white.svg);
 }
-.cansel_btn_big:hover{
+
+.cansel_btn_big:hover {
     cursor: pointer;
 }
-.cansel_btn_small{
+
+.cansel_btn_small {
     width: 9px;
-height: 9px;
+    height: 9px;
     background-image: url(../img/icons/cancel-white.svg);
     margin-right: 10px;
 }
+
 .service-price-text {
     display: flex;
     margin: 0px 0px -16px 0px;
@@ -1516,7 +1526,8 @@ input[type="search"]::-moz-placeholder {
 .service-title {
     justify-content: space-between;
 }
-.service-title .modal_title{
+
+.service-title .modal_title {
     margin-left: 40px;
 }
 
