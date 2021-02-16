@@ -173,7 +173,7 @@ class TabFive extends PureComponent {
           <div className="last_footer_block">
             <p>
               Нажимая кнопку записаться, вы соглашаетесь<br />
-            с условиями пользовательского соглашения
+            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
           </p>
             <input
               className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}

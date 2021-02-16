@@ -14,12 +14,12 @@ html label {
     display: inline;
 }
 
-a {
+/* a {
     text-decoration: none;
     color: #000;
     cursor: pointer;
     outline: none;
-}
+} */
 
 textarea {
     outline: none;
@@ -505,7 +505,9 @@ button, button:active, button:focus {
     line-height: 19px;
     margin-left: -27px;
 }
-
+a{
+    text-decoration: none;
+}
 .time-footer {
     display: flex;
     flex-direction: column;
@@ -1979,7 +1981,14 @@ input[type="search"]::-moz-placeholder {
     align-items: center;
     margin: auto;
 }
-
+.last_footer_block a{
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 400;
+    text-align: right;
+    color: #FFFFFF;
+}
 .last_footer_block p {
     font-size: 13px;
     line-height: 20px;
