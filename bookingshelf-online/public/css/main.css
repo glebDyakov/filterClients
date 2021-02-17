@@ -101,15 +101,20 @@ q:before, q:after {
 }
 
 .approveF {
-    border: solid 1px rgba(172, 172, 172, 0.2);
-    width: 700px;
-    margin: auto;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9000;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.3;
 }
-
+.modal_window{
+    width: 441px;
+    margin: auto;
+    border-radius: 10px;
+}
 .all-visits {
     cursor: pointer;
     text-align: center;
@@ -2003,7 +2008,7 @@ input[type="search"]::-moz-placeholder {
 }
 
 .cansel-visit {
-    background: url(../img/icons/skip-arrow-blue.svg) no-repeat;
+    background: url(../img/icons/skip-arrow.svg) no-repeat;
     background-size: 18px;
     left: auto;
     background-position: right center;

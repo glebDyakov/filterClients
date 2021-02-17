@@ -21,9 +21,9 @@ class TabFour extends PureComponent {
         const availableTimes = []
         let currentDay = moment(selectedDay).format('MMMM,DD');
         currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
-        currentDay=  currentDay.split(",")
+        currentDay = currentDay.split(",")
         currentDay = currentDay.reverse()
-        currentDay= currentDay.join(" ")
+        currentDay = currentDay.join(" ")
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
@@ -118,13 +118,13 @@ class TabFour extends PureComponent {
                         <div className="specialist_big">
                             <div className="service_list_block">
                                 <div className="setvice_list_items">
-                                        <p>Услуги:</p>
-                                        {selectedServices.map((element) =>
-                                            <div className="setvice_list_item">
-                                                <div className="cansel_btn_small"> </div>
-                                                <p>{element.name}</p>
-                                            </div>
-                                        )}
+                                    <p>Услуги:</p>
+                                    {selectedServices.map((element) =>
+                                        <div className="setvice_list_item">
+                                            <div className="cansel_btn_small"> </div>
+                                            <p>{element.name}</p>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="cansel_btn_big" onClick={event => this.setState({
                                     openList: !openList,
@@ -193,48 +193,77 @@ class TabFour extends PureComponent {
 
         return (
             <div className="service_selection screen1">
-                <div className="title_block staff_title">
-                    <span className="prev_block" onClick={() => {
-                        setScreen(3);
-                        //if (!isStartMovingVisit) {
-                        refreshTimetable()
-                        //}
-                    }}><span className="title_block_text">{t("Назад")}</span>
-                    </span>
-                    <p className="modal_title">{t("Выберите время")}</p>
-                </div>
-                <div className="specialist">
-
-                    {serviceInfo && serviceInfo}
-
-                </div>
-                {!!this.state.arrayTime && (
+                { this.state.arrayTime ? (
                     <React.Fragment>
-                        <p className="modal_title">{t("Перенести визит?")}</p>
-                        <div className="approveF">
+                        <div className="title_block staff_title">
+                            <span className="prev_block" onClick={() => {
+                                setScreen(3);
+                                //if (!isStartMovingVisit) {
+                                refreshTimetable()
+                                //}
+                            }}><span className="title_block_text">{t("Назад")}</span>
+                            </span>
+                            <p className="modal_title">{t("Выберите время")}</p>
+                        </div>
+                        <div className="specialist">
 
-                            <button className="approveFYes" onClick={() => {
-                                setTime(this.state.arrayTime, true)
-                                this.setState({ arrayTime: 0 })
-                            }}>{t("Да")}
-                            </button>
-                            <button className="approveFNo" onClick={() => {
-                                const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                selectStaff(activeStaff)
-                                handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                setScreen(6)
-                            }}>{t("Нет")}
-                            </button>
+                            {serviceInfo && serviceInfo}
+
+                        </div>
+                        {
+                            !this.state.arrayTime && (
+                                <div className="choise_time">
+                                    {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                                </div>
+                            )
+                        }
+                        <div className="approveF">
+                            <p className="modal_title">{t("Перенести визит?")}</p>
+                            <div className="modal_window">
+                                <button className="approveFYes" onClick={() => {
+                                    setTime(this.state.arrayTime, true)
+                                    this.setState({ arrayTime: 0 })
+                                }}>{t("Да")}
+                                </button>
+                                <button className="approveFNo" onClick={() => {
+                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                    selectStaff(activeStaff)
+                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                    setScreen(6)
+                                }}>{t("Нет")}
+                                </button>
+                            </div>
                         </div>
                     </React.Fragment>
-                )}
-                {!this.state.arrayTime && (
-                    <div className="choise_time">
-                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
-                    </div>
-                )}
+                ) : (
+                        <div>
+                            <div className="title_block staff_title">
+                                <span className="prev_block" onClick={() => {
+                                    setScreen(3);
+                                    //if (!isStartMovingVisit) {
+                                    refreshTimetable()
+                                    //}
+                                }}><span className="title_block_text">{t("Назад")}</span>
+                                </span>
+                                <p className="modal_title">{t("Выберите время")}</p>
+                            </div>
+                            <div className="specialist">
+
+                                {serviceInfo && serviceInfo}
+
+                            </div>
+                            {
+                                !this.state.arrayTime && (
+                                    <div className="choise_time">
+                                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                                    </div>
+                                )
+                            }
+                        </div>
+                    )
+                }
             </div>
         );
     }

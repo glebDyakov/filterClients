@@ -132,15 +132,20 @@ class TabFive extends PureComponent {
                   </div>
                   {info.companyTypeId === 2 && (
                     <React.Fragment>
-                      <p>{t("Марка авто")}</p>
-                      <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
-                        value={group.carBrand && group.carBrand}
-                      />
-
-                      <p>{t("Гос. номер")}</p>
-                      <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
-                        value={group.carNumber && group.carNumber}
-                      />
+                      <div className="entry_form-item">
+                        <p>{t("Марка авто")}</p>
+                        <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
+                          value={group.carBrand && group.carBrand}
+                          className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                        />
+                      </div>
+                      <div className="entry_form-item">
+                        <p>{t("Гос. номер")}</p>
+                        <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
+                          value={group.carNumber && group.carNumber}
+                          className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                        />
+                      </div>
                     </React.Fragment>
                   )}
                   <div className="entry_form-item">
@@ -174,7 +179,7 @@ class TabFive extends PureComponent {
             <p>
               Нажимая кнопку записаться, вы соглашаетесь<br />
             с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
-          </p>
+            </p>
             <input
               className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}
               disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
