@@ -101,12 +101,13 @@ q:before, q:after {
 }
 
 .approveF {
-    border: 1px solid #80808061;
-    padding: 23px;
-    text-align: center;
+    border: solid 1px rgba(172, 172, 172, 0.2);
+    width: 700px;
+    margin: auto;
+    padding: 20px;
     display: flex;
-    margin: 21px 0;
-    color: white;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .all-visits {
@@ -273,7 +274,7 @@ q:before, q:after {
     font-size: 24px;
     letter-spacing: 0.4;
     line-height: 30px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .final-screen-block span p {
@@ -461,7 +462,7 @@ q:before, q:after {
     width: 82px;
     height: 34px;
     margin: 3px -1px 0px 0px;
-    background: #3E50F7;
+    background: #3B4B5C;
     border-radius: 3px;
     text-align: center;
     font-size: 13px;
@@ -476,7 +477,7 @@ button, button:active, button:focus {
 
 .next_block-btn:hover {
     cursor: pointer;
-    background-color: red;
+    background-color:rgb(77, 87, 97);
 }
 
 .next_block {
@@ -568,7 +569,7 @@ a{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(62, 80, 247, 1);
+    background-color: rgba(59, 75, 92, 1);
     width: 100%;
     z-index: 10;
 }
@@ -578,7 +579,7 @@ a{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(62, 80, 247, 1);
+    background-color: rgba(59, 75, 92, 1);
     width: 100%;
     z-index: 10;
     max-height: 210px;
@@ -632,7 +633,7 @@ a{
     font-weight: 600;
     font-size: 29.3878px;
     line-height: 40px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .service_item p span {
@@ -680,7 +681,7 @@ a{
 }
 
 .blue-fone {
-    background: #3E50F7 !important;
+    background: #3B4B5C !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #FFFFFF !important;
 }
@@ -815,7 +816,7 @@ a{
 .service-price-text strong {
     font-size: 29.3878px;
     line-height: 40px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .service-price-text span {
@@ -824,7 +825,7 @@ a{
 }
 
 .black-fone {
-    background: rgba(62, 80, 247, 0.07);
+    background: rgba(59, 75, 92, 0.07);
     width: 100%;
     width: 89px;
     height: 28px;
@@ -1171,7 +1172,7 @@ a{
 .nearest_appointment {
     font-size: 13px;
     line-height: 20px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 /* .staff_popup.staff_popup_large .mobile_block .nearest_appointment {
@@ -1201,7 +1202,7 @@ a{
 .staff-comments {
     width: 15px;
     height: 15px;
-    background: rgba(62, 80, 247, 1);
+    background: rgba(59, 75, 92, 1);
     opacity: 0.7;
     border-radius: 50%;
     padding: 4px 6px;
@@ -1210,13 +1211,11 @@ a{
 
 .staff-comments:hover {
     cursor: pointer;
-    background-color: red;
 }
 
 .no-staff {
     text-decoration: underline;
     width: 100%;
-    color: red;
     text-align: center;
 }
 
@@ -1459,7 +1458,7 @@ input[type="search"]::-moz-placeholder {
     align-items: center;
     font-size: 16px;
     line-height: 22px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .calendar_modal {
@@ -1932,7 +1931,7 @@ input[type="search"]::-moz-placeholder {
 .last_list_services p strong {
     font-size: 13px;
     line-height: 18px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .last_list_services p span {
@@ -1955,7 +1954,7 @@ input[type="search"]::-moz-placeholder {
     margin-left: 10px;
     font-size: 20px;
     line-height: 27px;
-    color: #3E50F7;
+    color: #3B4B5C;
 }
 
 .last_list_price span {
@@ -2016,7 +2015,7 @@ input[type="search"]::-moz-placeholder {
     justify-content: center;
     border: 0;
     font-size: 14px;
-    color: #3E50F7;
+    color: #3B4B5C;
     line-height: 19px;
     padding: 0px 0px 2px 0px;
     background-position-x: 154px;
@@ -2029,396 +2028,6 @@ input[type="search"]::-moz-placeholder {
 
 /*--media--*/
 
-/*
-@media screen and (max-width: 1650px){
-    .container_popups * {
-        font-size: 14px;
-    }
-    .modal_menu {
-        padding: 10px 10px;
-    }
-    .modal_title {
-        font-size: 16px;
-        padding: 16px 0 18px;
-    }
-    .staff_popup .img_container span {
-        line-height: 20px;
-        font-size: 18px;
-    }
-    .staff_popup .affiliate_item, .service_list li a {
-        padding: 10px;
-    }
-    .container_popups {
-        max-width: 630px;
-        padding-bottom: 60px;
-
-    }
-    .firm_name {
-        font-size: 18px;
-        padding: 0 4px 6px 24px;
-    }
-    .modal_menu .work_time {
-        width: 34%;
-        margin-right: 0;
-    }
-    .staff_popup .mobile_block span {
-        font-size: 16px;
-    }
-    .staff_popup strong {
-        font-size: 18px;
-    }
-    .img_container span, .service_item p {
-        font-size: 18px;
-    }
-    .service_item p {
-        font-size: 18px;
-    }
-    .runtime {
-        padding-top: 2px;
-    }
-    .service_item p strong {
-        font-size: 18px;
-    }
-    .calendar_modal th {
-        font-size: 18px;
-    }
-    .calendar_modal td {
-        font-size: 20px;
-    }
-    .calendar_modal table {
-        margin-bottom: 22px;
-    }
-    .calendar_modal tr {
-        padding-bottom: 10px;
-    }
-    .date_item_popup strong {
-        font-size: 18px;
-    }
-    .choise_time span {
-        font-size: 18px;
-    }
-    .choise_time td {
-        margin-bottom: 45px;
-    }
-    .book_button {
-        width: 230px;
-        height: 50px;
-    }
-    .screen5 .term{
-        margin: 15px auto 15px;
-    }
-    .screen5 input[type="text"], input[type="search"] , .screen5 textarea {
-        height: 40px;
-    }
-    .screen5 textarea {
-        padding-top: 11px;
-    }
-    .modal_menu,
-    .footer_modal,
-    .skip_employee,
-    .title_block{
-        max-width: 628px;
-    }
-    .title_block .next_block{
-        right: 10px;
-    }
-    .title_block .prev_block{
-        left: 10px;
-    }
-    .title_block{
-        min-height: 50px;
-    }
-    .container_popups {
-        padding-top: 150px;
-    }
-    .title_block2 {
-        min-height: 55px;
-    }
-}
-@media screen and (max-width: 900px){
-    .staff_popup {
-        margin-bottom: 20px;
-        padding-bottom: 40px;
-    }
-}
-@media screen and (min-width: 621px) {
-    .adress-text-wrapper {
-        display: block !important;
-    }
-}
-@media screen and (max-width: 620px){
-    .modal_menu .firm_name {
-        font-size: 16px;
-        width: calc(65% - 30px);
-    }
-    .mobile-visible {
-        display: block;
-    }
-    .desktop-visible, .desktop-visible-flex {
-        display: none;
-    }
-    .adress-icon {
-        display: block;
-    }
-    .adress-phones {
-        width: 100px;
-    }
-    .adress-text {
-        color: black;
-        min-height: 40px !important;
-        height: 100% !important;
-    }
-    .adress-text-wrapper {
-        display: none;
-        position: absolute;
-        color: #3b4b5c;
-        z-index: 1;
-        width: 94%;
-        top: 5px;
-        margin: auto;
-        max-width: 100%;
-        background: #fff;
-        border-radius: 6px;
-        box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
-        border: solid 1px rgba(172, 172, 172, 0.2);
-        text-align: center;
-        padding: 20px 0 20px;
-        height: 70px;
-        right: 0;
-        left: 0;
-    }
-    .modal_menu {
-        padding: 10px 20px;
-    }
-    .title_block .prev_block, .title_block .next_block,
-    .title_block2 .prev_block, .title_block2 .next_block{
-        overflow: hidden;
-    }
-    .title_block .prev_block,
-    .title_block2 .prev_block{
-        right: auto;
-    }
-    .modal_title {
-        padding: 20px 0 20px;
-        font-size: 20px;
-    }
-
-    .img_container span, .service_item p,.service_item p{
-        font-size: 18px;
-    }
-    .service_item span{
-        font-size: 16px;
-    }
-    .service_item p:first-of-type {
-        width: 50%;
-    }
-    .calendar_modal th {
-        font-size: 20px;
-    }
-    .calendar_modal td {
-        font-size: 24px;
-    }
-    .calendar_modal tr {
-        padding-bottom: 0;
-    }
-    .calendar_modal table {
-        margin-bottom: 20px;
-    }
-    .container_popups{
-        top: 0;
-        padding-bottom: 40px;
-    }
-    .work_time > span, .work_time > span > span {
-        font-size: 14px;
-    }
-    .specialist .stars {
-        border: none;
-        background: none;
-        height: auto;
-        padding: 0;
-        margin: 0;
-        display: block;
-    }
-    .service_item p strong {
-        font-size: 19px;
-    }
-    .service_list .service_item p:first-of-type {
-        white-space: normal;
-        line-height: 18px;
-    }
-    .service_list li {
-        height: 95px;
-        overflow: hidden;
-    }
-    .service_list .runtime{
-        padding-top: 5px;
-    }
-    .staff_popup strong{
-        font-size: 16px;
-    }
-    .staff_popup .mobile_block span{
-        font-size: 14px;
-    }
-    .staff_popup .img_container span {
-        line-height: 24px;
-        font-size: 18px;
-    }
-    .skip_employee {
-        font-size: 16px;
-        margin-top: 25px;
-    }
-    .date_item_popup strong {
-        font-size: 18px;
-    }
-    .specialist div {
-        width: 47%;
-    }
-    .choise_time span {
-        font-size: 16px;
-    }
-    .final-book p {
-        margin: 0 0 20px;
-    }
-    .cansel-visit{
-        margin-top: 0;
-    }
-    .final-screen {
-        margin-bottom: 100px;
-    }
-}
-
-
-
-@media screen and (max-width: 520px){
-    .date_item_popup strong {
-        align-items: center;
-    }
-    .specialist div {
-        width: 100%;
-        padding: 12px 12px;
-        min-height: 65px;
-        height: auto;
-        margin-bottom: 8px;
-        box-shadow: none;
-    }
-    .service_selection {
-        padding: 0 12px 0;
-    }
-    .firm_name {
-        font-size: 18px;
-        padding: 0 8px 6px;
-    }
-    .modal_menu {
-        padding: 12px 12px;
-    }
-    .specialist {
-        height: auto;
-        flex-direction: column;
-        margin-bottom: 15px;
-    }
-    .img_container span, .service_item p {
-        font-size: 16px;
-        font-weight: normal;
-        font-family: 'helvetica_roman';
-        text-align: left;
-        background-color: white;
-    }
-
-    .img_container img {
-        margin-right: 15px;
-        height: 32px;
-        width: 32px;
-    }
-    .modal_menu .work_time{
-        display: none;
-    }
-    .work_time.mobile_block {
-        display: block;
-        max-width: 150px;
-        width: auto;
-        margin: auto;
-        float: none;
-        clear: both;
-        text-align: left;
-        max-width: 200px;
-    }
-    .work_time.mobile_block *{
-        color: rgba(65, 76, 88, 0.4);
-    }
-    .calendar_modal th, .calendar_modal td {
-        font-size: 16px;
-        width: 30px;
-        height: 30px;
-    }
-    .dark_blue_text, .gray_text {
-        padding-left: 15px;
-        font-size: 14px;
-    }
-    .dark_blue_text {
-        right: 5%;
-    }
-    .round {
-        width: 10px;
-        height: 10px;
-    }
-    .specialist strong{
-        font-size: 16px;
-    }
-    .footer_modal p, .footer_modal strong, .service_item span, .runtime strong{
-        font-size: 14px;
-    }
-    .img_container {
-        width: 50%;
-        float: left;
-    }
-    .runtime {
-        padding-top: 4px;
-    }
-    .container_popups {
-        height: 100%;
-        min-height: 480px;
-        position:relative;
-    }
-    .specialist div .mobile_block{
-        display: block;
-        border: none;
-        width: 48%;
-        float: right;
-        height: auto;
-        padding: 0;
-        max-width: 110px;
-    }
-    .mobile_block span{
-        font-size: 14px;
-        letter-spacing: 0.2px;
-    }
-    .service_item p strong {
-        font-size: 14px;
-    }
-    .service_list li a {
-        padding: 10px 10px;
-    }
-    .service_list li {
-        height: auto;
-        overflow: hidden;
-    }
-    .service_list .service_item p:first-of-type {
-        width: 45%;
-    }
-    .staff_popup .affiliate_item {
-        padding: 14px 12px;
-    }
-    .staff_popup .img_container span {
-        line-height: 20px;
-        font-size: 17px;
-    }
-    .staff_popup .img_container img {
-        margin-right: 5px;
-    }
-    .staff_popup .mobile_block {
-        /*min-width: 200px;*/
-
-/* } */
 
 .date_item_popup strong {
     height: 37px;

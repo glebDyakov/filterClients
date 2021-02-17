@@ -212,7 +212,7 @@ class TabTwo extends Component {
                                                         return <li
                                                             className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
                                                             style={{
-                                                                backgroundColor: "rgba(62, 80, 247)"
+                                                                backgroundColor: "rgba(59, 75, 92)"
                                                             }}
                                                         >
                                                             <div className="service_item" >
@@ -234,7 +234,7 @@ class TabTwo extends Component {
                                                                         </div>
                                                                         <button className="next_block-btn white_border"
                                                                             onClick={e => selectService({ target: { checked: !select } }, service)}
-                                                                        > Выбрать</button>
+                                                                        > Выбрано</button>
                                                                     </div>
                                                                 </label>
                                                             </div>
