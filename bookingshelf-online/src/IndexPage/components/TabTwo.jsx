@@ -222,10 +222,10 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <MediaQuery maxWidth={2000}>
+                                                                    <MediaQuery maxWidth={709}>
                                                                         <div className="service_half_block">
                                                                             <p className="white_text" >{service.name}</p>
-                                                                            <span className="runtime white_text" >{service.details}</span>
+                                                                            <span className="white_text" >{service.details}</span>
                                                                         </div>
                                                                         <div className="service_half_block">
                                                                             <span
@@ -244,7 +244,7 @@ class TabTwo extends Component {
                                                                             </div>
                                                                         </div>
                                                                     </MediaQuery>
-                                                                    <MediaQuery minWidth={2000}>
+                                                                    <MediaQuery minWidth={709}>
                                                                         <p className="white_text" >{service.name}</p>
                                                                         <span className="runtime white_text" >{service.details}</span>
                                                                         <span
@@ -274,10 +274,10 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <MediaQuery maxWidth={2000}>
+                                                                    <MediaQuery maxWidth={709}>
                                                                         <div className="service_half_block">
                                                                             <p >{service.name}</p>
-                                                                            <span className="runtime" ><p >{service.details}</p></span>
+                                                                            <span  ><p >{service.details}</p></span>
                                                                         </div>
                                                                         <div className="service_half_block">
                                                                             <span
@@ -294,7 +294,7 @@ class TabTwo extends Component {
                                                                         </div>
 
                                                                     </MediaQuery>
-                                                                    <MediaQuery minWidth={2000}>
+                                                                    <MediaQuery minWidth={709}>
                                                                         <p >{service.name}</p>
                                                                         <span className="runtime" >{service.details}</span>
                                                                         <span

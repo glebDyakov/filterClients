@@ -188,7 +188,7 @@
     outline: none;
 }
 
-@media screen and (max-width: 2000px) {
+@media screen and (max-width: 709px) {
     .calendar_modal {
         width: 330px;
         margin-top: -14px;
@@ -228,6 +228,10 @@
         width: 31px;
     height: 31px;
     margin: 0px 8px;
+    }
+    .arrow-left{
+left: 16px;
+top: -1px;
     }
 }
 

@@ -193,77 +193,54 @@ class TabFour extends PureComponent {
 
         return (
             <div className="service_selection screen1">
-                { this.state.arrayTime ? (
-                    <React.Fragment>
-                        <div className="title_block staff_title">
-                            <span className="prev_block" onClick={() => {
-                                setScreen(3);
-                                //if (!isStartMovingVisit) {
-                                refreshTimetable()
-                                //}
-                            }}><span className="title_block_text">{t("Назад")}</span>
-                            </span>
-                            <p className="modal_title">{t("Выберите время")}</p>
-                        </div>
-                        <div className="specialist">
 
-                            {serviceInfo && serviceInfo}
 
-                        </div>
-                        {
-                            !this.state.arrayTime && (
-                                <div className="choise_time">
-                                    {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
-                                </div>
-                            )
-                        }
-                        <div className="approveF">
-                            <p className="modal_title">{t("Перенести визит?")}</p>
-                            <div className="modal_window">
-                                <button className="approveFYes" onClick={() => {
-                                    setTime(this.state.arrayTime, true)
-                                    this.setState({ arrayTime: 0 })
-                                }}>{t("Да")}
-                                </button>
-                                <button className="approveFNo" onClick={() => {
-                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                    selectStaff(activeStaff)
-                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                    setScreen(6)
-                                }}>{t("Нет")}
-                                </button>
-                            </div>
-                        </div>
-                    </React.Fragment>
-                ) : (
-                        <div>
-                            <div className="title_block staff_title">
-                                <span className="prev_block" onClick={() => {
-                                    setScreen(3);
-                                    //if (!isStartMovingVisit) {
-                                    refreshTimetable()
-                                    //}
-                                }}><span className="title_block_text">{t("Назад")}</span>
-                                </span>
-                                <p className="modal_title">{t("Выберите время")}</p>
-                            </div>
-                            <div className="specialist">
+                <div className="title_block staff_title">
+                    <span className="prev_block" onClick={() => {
+                        setScreen(3);
+                        //if (!isStartMovingVisit) {
+                        refreshTimetable()
+                        //}
+                    }}><span className="title_block_text">{t("Назад")}</span>
+                    </span>
+                    <p className="modal_title">{t("Выберите время")}</p>
+                </div>
+                <div className="specialist">
 
-                                {serviceInfo && serviceInfo}
+                    {serviceInfo && serviceInfo}
 
-                            </div>
-                            {
-                                !this.state.arrayTime && (
-                                    <div className="choise_time">
-                                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
-                                    </div>
-                                )
-                            }
+                </div>
+                {
+                    !this.state.arrayTime && (
+                        <div className="choise_time">
+                            {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
                         </div>
                     )
                 }
+                {this.state.arrayTime && (
+                    <div className="approveF">
+                        <div className="modal_window_block">
+                            <p className="modal_title">{t("Перенести визит?")}</p>
+                        <div className="modal_window">
+                            <button className="approveFYes" onClick={() => {
+                                setTime(this.state.arrayTime, true)
+                                this.setState({ arrayTime: 0 })
+                            }}>{t("Да")}
+                            </button>
+                            <button className="approveFNo" onClick={() => {
+                                const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                selectStaff(activeStaff)
+                                handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                setScreen(6)
+                            }}>{t("Нет")}
+                            </button>
+                        </div>
+                             </div>
+                        
+                    </div>
+                )}
             </div>
         );
     }

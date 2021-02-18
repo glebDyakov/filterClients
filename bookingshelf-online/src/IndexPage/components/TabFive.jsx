@@ -123,7 +123,7 @@ class TabFive extends PureComponent {
                       className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
                   </div>
-                  <MediaQuery maxWidth={2000}>
+                  <MediaQuery maxWidth={709}>
                     <div className="entry_form-item">
                       <p>{t("Телефон")}</p>
                       {/* <p style={{ display: 'flex' }}>
@@ -169,7 +169,7 @@ class TabFive extends PureComponent {
                       />
                     </div>
                   </MediaQuery>
-                  <MediaQuery minWidth={2000}>
+                  <MediaQuery minWidth={709}>
                     <div className="entry_form-item">
                       <p>Email</p>
                       <input type="text" placeholder={t("Hello@gmail.com")} name="email" onChange={handleChange}
@@ -225,7 +225,7 @@ class TabFive extends PureComponent {
               </div>
             </React.Fragment>
           )}
-        <MediaQuery maxWidth={2000}>
+        <MediaQuery maxWidth={709}>
             <div className="last_footer_block">
               <input
                 className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
@@ -251,7 +251,7 @@ class TabFive extends PureComponent {
             </div>
         </MediaQuery>
 
-        <MediaQuery minWidth={2000}>
+        <MediaQuery minWidth={709}>
           <div className="specialist">
             <div className="last_footer_block">
               <p>
