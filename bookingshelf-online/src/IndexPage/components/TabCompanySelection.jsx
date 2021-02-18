@@ -3,7 +3,7 @@ import { staffActions } from "../../_actions";
 import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
 import { withTranslation } from "react-i18next";
-
+import search_icon from "../../../public/img/icons/header-search.svg";
 
 
 class TabCompanySelection extends PureComponent {
@@ -42,12 +42,10 @@ class TabCompanySelection extends PureComponent {
             <div className="service_selection screen1">
                 <div className="title_block n affiliate_title">
                     <p className="modal_title">{t("Выберите филиал")}</p>
-                    {staffId &&
-                        <span className="next_block" onClick={() => {
-                            setScreen(getFirstScreen(selectedSubcompany.firstScreen));
-                            this.props.history.push(`/${selectedSubcompany.bookingPage}`)
-                            //refreshTimetable();
-                        }}>{t("Далее")}</span>}
+                    <div className="desktop_invisible">
+                        <img className="media_search" alt="search" src={search_icon} />
+                    </div>
+
                 </div>
                 <ul className={` affiliate`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
@@ -66,32 +64,21 @@ class TabCompanySelection extends PureComponent {
                                         alt="" />
 
                                     <div>
-
                                         <div className="affiliate_name">{subcompany.companyName}</div>
-                                        {/* <div style={{ textAlign: 'left' }} className="mobile_block mobile-visible">
-                                            <div className="stars" style={{ textTransform: 'capitalize' }}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                        </div> */}
-                                          <div className="stars" style={{ textTransform: 'capitalize' }}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                        <div className="stars desktop_visible" style={{ textTransform: 'capitalize' }}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
                                     </div>
                                 </div>
 
-
-
-                                {/* <div className="mobile_block desktop-visible">
-                                    <div className="stars" style={{ textTransform: 'capitalize' }}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                </div> */}
-                                {/* <div style={{ position: 'relative', width: '30px', height: '54px' }}> */}
-                                    {/* <span style={{ right: 0 }} className="next_block" /> */}
-                                    <button className="next_block-btn"> Выбрать</button>
-                                {/* </div> */}
+                                <button className="next_block-btn desktop_visible"> Выбрать</button>
 
                             </span>
+                            <div className="stars desktop_invisible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
                             {subcompany.city && (
                                 <iframe
-                                    style={{ padding: "0px 0px 0px 0px",
-                                        width: "660px",
-                                        height: "240px",
-                                        borderRadius: "10px" }}
+                                    style={{
+                                        padding: "0px 0px 10px 0px",
+                                        borderRadius: "5px"
+                                    }}
                                     id={`google-map-${i}`}
                                     width="100%"
                                     height="250"
@@ -101,6 +88,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
+                            <button className="next_block-btn desktop_invisible"> Выбрать</button>
                         </li>
                     )}
                 </ul>

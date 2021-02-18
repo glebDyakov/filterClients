@@ -73,7 +73,6 @@
     font-size: 20px;
     line-height: 27px;
     text-align: center;
-    color: #3E50F7;
 }
 
 .DayPicker-Weekday abbr[title] {
@@ -181,7 +180,7 @@
 .DayPicker-Day--today {
     width: 47px;
     height: 47px;
-    border: 1.5px solid #3E50F7;
+    border: 1.5px solid #3B4B5C;
 }
 
 .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover, .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus {
@@ -189,21 +188,50 @@
     outline: none;
 }
 
-@media screen and (max-width: 1650px) {
-    .DayPicker-Caption>div, .DayPicker-Weekday abbr[title], .DayPicker-Day--outside {
-        font-size: 20px;
+@media screen and (max-width: 2000px) {
+    .calendar_modal {
+        width: 330px;
+        margin-top: -14px;
+    }
+    .DayPicker-Body, .DayPicker-Weekdays {
+        width: 359px;
+    margin-left: -14px;
+    }
+    .DayPicker-Caption div {
+        height: 54px;
+        font-size: 16px;
+        line-height: 22px;
+    }
+    .DayPicker-Weekday abbr[title] {
+        font-size: 14px;
+        line-height: 19px;
+        height: 23px;
     }
     .DayPicker-Day {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
+        font-size: 14px;
+        line-height: 19px;
+    }
+    .DayPicker-Caption {
+        margin-bottom: 20px;
+    }
+    .DayPicker-Weekdays {
+        margin-bottom: 1px;
     }
     .DayPicker-Week {
-        height: 50px;
-        margin-bottom: 10px;
+        height: 41px;
+    }
+    .arrow-right{
+        right: 16px;
+    top: 14px;
+    }
+    .DayPicker-Day--today{
+        width: 31px;
+    height: 31px;
+    margin: 0px 8px;
     }
 }
 
+/*
 @media screen and (max-width: 620px) {
     .DayPicker-Week {
         font-size: 24px;
@@ -219,4 +247,4 @@
     .DayPicker-Week {
         height: 30px;
     }
-}
+} */

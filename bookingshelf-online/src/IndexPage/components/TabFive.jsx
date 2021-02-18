@@ -5,6 +5,7 @@ import { isValidNumber } from "libphonenumber-js";
 import { origin } from "../../_helpers/handle-response";
 import { withTranslation } from "react-i18next";
 import 'react-phone-input-2/lib/style.css';
+import MediaQuery from 'react-responsive'
 
 class TabFive extends PureComponent {
   constructor(props) {
@@ -54,7 +55,7 @@ class TabFive extends PureComponent {
                 <p>Time</p>
               </div>
             </div>
-            <p style={{
+            <p className="desktop_visible" style={{
               fontSize: "13px",
               marginRight: "17px",
             }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
@@ -122,83 +123,161 @@ class TabFive extends PureComponent {
                       className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
                   </div>
-                  <div className="entry_form-item">
-                    <p>Email</p>
-                    <input type="text" placeholder={t("Hello@gmail.com")} name="email" onChange={handleChange}
-                      onKeyUp={() => setterEmail()}
-                      value={group.email}
-                      className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
-                    />
-                  </div>
-                  {info.companyTypeId === 2 && (
-                    <React.Fragment>
-                      <div className="entry_form-item">
-                        <p>{t("Марка авто")}</p>
-                        <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
-                          value={group.carBrand && group.carBrand}
-                          className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
-                        />
-                      </div>
-                      <div className="entry_form-item">
-                        <p>{t("Гос. номер")}</p>
-                        <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
-                          value={group.carNumber && group.carNumber}
-                          className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
-                        />
-                      </div>
-                    </React.Fragment>
-                  )}
-                  <div className="entry_form-item">
-                    <p>{t("Телефон")}</p>
-                    {/* <p style={{ display: 'flex' }}>
+                  <MediaQuery maxWidth={2000}>
+                    <div className="entry_form-item">
+                      <p>{t("Телефон")}</p>
+                      {/* <p style={{ display: 'flex' }}>
                       <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                       />  */}
-                    {/* <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span> */}
-                    {/* </p> */}
-                    <div className="phones_country">
-                      <ReactPhoneInput
-                        regions={['america', 'europe']}
-                        disableAreaCodes={true}
-                        inputClass={((!group.phone && group.email && group.email !== '' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={group.phone} country={'by'} onChange={phone => setterPhone(phone)}
-                      />
+                      {/* <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span> */}
+                      {/* </p> */}
+                      <div className="phones_country">
+                        <ReactPhoneInput
+                          regions={['america', 'europe']}
+                          disableAreaCodes={true}
+                          inputClass={((!group.phone && group.email && group.email !== '' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={group.phone} country={'by'} onChange={phone => setterPhone(phone)}
+                        />
 
+                      </div>
+                      <span>На этот номер вы получите SMS с кодом <br /> подтверждения и информацию о записи</span>
                     </div>
-                  </div>
+
+                    {info.companyTypeId === 2 && (
+                      <React.Fragment>
+                        <div className="entry_form-item">
+                          <p>{t("Марка авто")}</p>
+                          <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
+                            value={group.carBrand && group.carBrand}
+                            className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                          />
+                        </div>
+                        <div className="entry_form-item">
+                          <p>{t("Гос. номер")}</p>
+                          <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
+                            value={group.carNumber && group.carNumber}
+                            className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
+                    <div className="entry_form-item">
+                      <p>Email</p>
+                      <input type="text" placeholder={t("Hello@gmail.com")} name="email" onChange={handleChange}
+                        onKeyUp={() => setterEmail()}
+                        value={group.email}
+                        className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                      />
+                    </div>
+                  </MediaQuery>
+                  <MediaQuery minWidth={2000}>
+                    <div className="entry_form-item">
+                      <p>Email</p>
+                      <input type="text" placeholder={t("Hello@gmail.com")} name="email" onChange={handleChange}
+                        onKeyUp={() => setterEmail()}
+                        value={group.email}
+                        className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                      />
+                    </div>
+                    {info.companyTypeId === 2 && (
+                      <React.Fragment>
+                        <div className="entry_form-item">
+                          <p>{t("Марка авто")}</p>
+                          <input type="text" placeholder={t("Введите марку авто")} name="carBrand" onChange={handleChange}
+                            value={group.carBrand && group.carBrand}
+                            className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                          />
+                        </div>
+                        <div className="entry_form-item">
+                          <p>{t("Гос. номер")}</p>
+                          <input type="text" placeholder={t("Введите гос. номер")} name="carNumber" onChange={handleChange}
+                            value={group.carNumber && group.carNumber}
+                            className={'' + ((group.email && group.email !== '' && !isValidEmailAddress(group.email)) ? ' redBorder' : '')}
+                          />
+                        </div>
+                      </React.Fragment>
+                    )}
+                    <div className="entry_form-item">
+                      <p>{t("Телефон")}</p>
+                      {/* <p style={{ display: 'flex' }}>
+                      <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                      />  */}
+                      {/* <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span> */}
+                      {/* </p> */}
+                      <div className="phones_country">
+                        <ReactPhoneInput
+                          regions={['america', 'europe']}
+                          disableAreaCodes={true}
+                          inputClass={((!group.phone && group.email && group.email !== '' && !isValidNumber(group.phone)) ? ' redBorder' : '')} value={group.phone} country={'by'} onChange={phone => setterPhone(phone)}
+                        />
+
+                      </div>
+                      <span>На этот номер вы получите SMS с кодом <br /> подтверждения и информацию о записи</span>
+                    </div>
+                  </MediaQuery>
+
                   <div className="entry_form-item">
                     <p>{t("Комментарии")}</p>
                     <textarea placeholder={t("Напишите комментарий")} name="description" onChange={handleChange} value={group.description} />
                     {/* <p className="term">{t("Нажимая кнопку записаться, вы соглашаетесь с")} <a href={`${origin}/user_agreement`} target="_blank">{t("условиями пользовательского соглашения")}</a></p> */}
                   </div>
                 </div>
-                <span>На этот номер вы получите SMS с кодом <br /> подтверждения и информацию о записи</span>
+
               </div>
             </React.Fragment>
           )}
-        <div className="specialist">
-          <div className="last_footer_block">
-            <p>
-              Нажимая кнопку записаться, вы соглашаетесь<br />
-            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
-            </p>
-            <input
-              className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}
-              disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-              type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
-                () => {
-                  if (clientActivationId) {
-                    handleSave({
-                      clientActivationId,
-                      clientVerificationCode: enteredCode
-                    })
-                  } else {
-                    $('.phones_country').css({ display: 'none' })
-                    if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
-                      handleSave()
+        <MediaQuery maxWidth={2000}>
+            <div className="last_footer_block">
+              <input
+                className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
+                disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
+                type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                  () => {
+                    if (clientActivationId) {
+                      handleSave({
+                        clientActivationId,
+                        clientVerificationCode: enteredCode
+                      })
+                    } else {
+                      $('.phones_country').css({ display: 'none' })
+                      if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
+                        handleSave()
+                      }
                     }
-                  }
-                }} />
+                  }} /> 
+                  <p>
+                Нажимая кнопку записаться, вы соглашаетесь<br />
+            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              </p>
+            </div>
+        </MediaQuery>
+
+        <MediaQuery minWidth={2000}>
+          <div className="specialist">
+            <div className="last_footer_block">
+              <p>
+                Нажимая кнопку записаться, вы соглашаетесь<br />
+            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              </p>
+              <input
+                className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}
+                disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
+                type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                  () => {
+                    if (clientActivationId) {
+                      handleSave({
+                        clientActivationId,
+                        clientVerificationCode: enteredCode
+                      })
+                    } else {
+                      $('.phones_country').css({ display: 'none' })
+                      if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
+                        handleSave()
+                      }
+                    }
+                  }} />
+            </div>
           </div>
-        </div>
+        </MediaQuery>
       </div>
     );
   }

@@ -316,7 +316,11 @@ class TabOne extends PureComponent {
                                                             {/* <span className="staff_popup_name"> */}
                                                             <div className="staff_popup-name-stars">
                                                                 <div className="staff_popup-name">
-                                                                    <p >{staff.firstName} {staff.lastName ? staff.lastName : ''}</p>
+                                                                    <p style={
+                                                                        {
+                                                                            letterSpacing: "0.3px",
+                                                                        }
+                                                                    }>{staff.firstName} {staff.lastName ? staff.lastName : ''}</p>
                                                                     <div className="mobile_block mobile-visible">
                                                                         <div className="staff-comments">
                                                                             <img onClick={() => this.handleStaffCommentsClick(staff)} src={i_icon}

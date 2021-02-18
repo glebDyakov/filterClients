@@ -54,7 +54,7 @@ class TabSix extends PureComponent {
                                 <p>Time</p>
                             </div>
                         </div>
-                        <p style={{
+                        <p className="desktop_visible" style={{
                             fontSize: "13px",
                             marginRight: "32px",
                         }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>

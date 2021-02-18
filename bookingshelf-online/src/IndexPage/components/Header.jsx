@@ -4,6 +4,7 @@ import tiktok from "../../../public/img/icons/header-tiktok.svg";
 import instagram from "../../../public/img/icons/header-instagram.svg";
 import telephone from "../../../public/img/icons/header-telephone.svg";
 import arrow_down from "../../../public/img/arrow_down.png";
+import burger_close from "../../../public/img/icons/burger-close.svg";
 // import { findSourceMap } from 'module';
 
 class Header extends PureComponent {
@@ -32,7 +33,7 @@ class Header extends PureComponent {
                             <div className="adress-text-wrapper">
                                 <img src={tiktok} alt='tiktok'/>
                                 <img src={facebook} alt='facebook'/>
-                                <img src={instagram} alt=''/>
+                                <img src={instagram} alt='instagram'/>
                             </div>
                         </div>
                         <div className="header-lang">
@@ -43,7 +44,9 @@ class Header extends PureComponent {
                         <div className="mobile-icon-wrapper">
                             <img src={telephone} alt="telephone"/>
                         </div>
-                        
+                        <div className="burger_menu">
+                            <img src={burger_close} alt="telephone"/>
+                        </div>
                        
                     </div>
                     </React.Fragment>

@@ -4,7 +4,7 @@ import { getFirstScreen } from "../../_helpers/common";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
-
+import MediaQuery from 'react-responsive'
 class TabTwo extends Component {
     constructor(props) {
         super(props);
@@ -140,7 +140,7 @@ class TabTwo extends Component {
                             }
                         }}><span className="title_block_text">{t("Назад")}</span></span>}
                     <p className="modal_title">{t("Выберите услугу")}</p>
-                    <div className="row align-items-center content clients mb-2 search-block">
+                    <div className="row align-items-center content clients mb-2 search-block desktop_visible">
                         <div className="search col-12">
                             <img style={{ position: 'absolute', right: '26px' }}
                                 // src={`${process.env.CONTEXT}public/img/header-search.svg`} />
@@ -161,13 +161,17 @@ class TabTwo extends Component {
                                 onChange={(e) => this.setState({ searchValue: e.target.value })} />
                         </div>
                     </div>
+                    <div className="desktop_invisible">
+                        <img className="media_search" alt="search" src={search_icon} />
+                    </div>
+
                 </div>
                 {/* {selectedStaff.staffId && */}
                 {selectedServices[0] && serviceInfo}
 
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>
-                        <div style={{ marginTop: "17px", }}>
+                        <div className="service_list_items">
                             {serviceGroups.map(serviceGroup => {
                                 let { services } = serviceGroup
                                 let condition =
@@ -208,6 +212,7 @@ class TabTwo extends Component {
                                             {finalServices
                                                 .map((service, serviceKey) => {
                                                     let select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
+
                                                     if (select) {
                                                         return <li
                                                             className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
@@ -217,25 +222,49 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <p className="white_text" >{service.name}</p>
-                                                                    <span className="runtime white_text" >{service.details}</span>
-                                                                    <span
-                                                                        className="runtime black-fone" style={{
-                                                                            opacity: `1`,
-                                                                            backgroundColor: "rgba(255, 255, 255, 0.07)"
-                                                                        }}><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                    <div className="service-price">
-                                                                        <div className="service-price-text">
-                                                                            <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                            <span className="white_text">{service.currency}</span>
-                                                                            <input onChange={(e) => selectService(e, service)}
-                                                                                type="checkbox"
-                                                                                checked={select} />
+                                                                    <MediaQuery maxWidth={2000}>
+                                                                        <div className="service_half_block">
+                                                                            <p className="white_text" >{service.name}</p>
+                                                                            <span className="runtime white_text" >{service.details}</span>
                                                                         </div>
-                                                                        <button className="next_block-btn white_border"
-                                                                            onClick={e => selectService({ target: { checked: !select } }, service)}
-                                                                        > Выбрано</button>
-                                                                    </div>
+                                                                        <div className="service_half_block">
+                                                                            <span
+                                                                                className="runtime black-fone" style={{
+                                                                                    opacity: `1`,
+                                                                                    backgroundColor: "rgba(255, 255, 255, 0.07)"
+                                                                                }}><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                            <div className="service-price">
+                                                                                <div className="service-price-text">
+                                                                                    <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                                    <span className="white_text">{service.currency}</span>
+                                                                                    <input onChange={(e) => selectService(e, service)}
+                                                                                        type="checkbox"
+                                                                                        checked={select} />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </MediaQuery>
+                                                                    <MediaQuery minWidth={2000}>
+                                                                        <p className="white_text" >{service.name}</p>
+                                                                        <span className="runtime white_text" >{service.details}</span>
+                                                                        <span
+                                                                            className="runtime black-fone" style={{
+                                                                                opacity: `1`,
+                                                                                backgroundColor: "rgba(255, 255, 255, 0.07)"
+                                                                            }}><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                        <div className="service-price">
+                                                                            <div className="service-price-text">
+                                                                                <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                                <span className="white_text">{service.currency}</span>
+                                                                                <input onChange={(e) => selectService(e, service)}
+                                                                                    type="checkbox"
+                                                                                    checked={select} />
+                                                                            </div>
+                                                                            <button className="next_block-btn white_border "
+                                                                                onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                            > Выбрано</button>
+                                                                        </div>
+                                                                    </MediaQuery>
                                                                 </label>
                                                             </div>
                                                         </li>
@@ -245,22 +274,44 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <p >{service.name}</p>
-                                                                    <span className="runtime" >{service.details}</span>
-                                                                    <span
-                                                                        className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                    <div className="service-price">
-                                                                        <div className="service-price-text" >
-                                                                            <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                            <span >{service.currency}</span>
-                                                                            <input onChange={(e) => selectService(e, service)}
-                                                                                type="checkbox"
-                                                                                checked={select} />
+                                                                    <MediaQuery maxWidth={2000}>
+                                                                        <div className="service_half_block">
+                                                                            <p >{service.name}</p>
+                                                                            <span className="runtime" ><p >{service.details}</p></span>
                                                                         </div>
-                                                                        <button className="next_block-btn"
-                                                                            onClick={e => selectService({ target: { checked: !select } }, service)}
-                                                                        > Выбрать</button>
-                                                                    </div>
+                                                                        <div className="service_half_block">
+                                                                            <span
+                                                                                className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                            <div className="service-price">
+                                                                                <div className="service-price-text" >
+                                                                                    <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                                    <span >{service.currency}</span>
+                                                                                    <input onChange={(e) => selectService(e, service)}
+                                                                                        type="checkbox"
+                                                                                        checked={select} />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </MediaQuery>
+                                                                    <MediaQuery minWidth={2000}>
+                                                                        <p >{service.name}</p>
+                                                                        <span className="runtime" >{service.details}</span>
+                                                                        <span
+                                                                            className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                        <div className="service-price">
+                                                                            <div className="service-price-text" >
+                                                                                <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
+                                                                                <span >{service.currency}</span>
+                                                                                <input onChange={(e) => selectService(e, service)}
+                                                                                    type="checkbox"
+                                                                                    checked={select} />
+                                                                            </div>
+                                                                            <button className="next_block-btn "
+                                                                                onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                            > Выбрать</button>
+                                                                        </div>
+                                                                    </MediaQuery>
                                                                 </label>
                                                             </div>
                                                         </li>
@@ -270,33 +321,6 @@ class TabTwo extends Component {
 
                                                 )}
                                         </div>
-
-                                        {/*{!servicesForStaff && selectedStaff && selectedStaff.length === 0 && services && services.map((service, serviceKey) =>*/}
-                                        {/*    <li*/}
-                                        {/*        className={selectedService && selectedService.serviceId === service.serviceId && 'selected'}*/}
-                                        {/*    >*/}
-                                        {/*        <div className="service_item">*/}
-                                        {/*            <label>*/}
-
-                                        {/*                <p>{service.name}</p>*/}
-                                        {/*                <p>*/}
-                                        {/*                    <strong>{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>*/}
-                                        {/*                    <span>{service.currency}</span>*/}
-                                        {/*                    <input onChange={(e) => selectService(e, service)} type="checkbox"*/}
-                                        {/*                           checked={selectedServices.some(selectedService => selectedService.serviceId === service.serviceId)}/>*/}
-                                        {/*                    <span className="checkHelper"/>*/}
-                                        {/*                </p>*/}
-                                        {/*                <span className="runtime">{service.details}</span>*/}
-
-                                        {/*                <span*/}
-                                        {/*                    className="runtime"><strong>{moment.duration(parseInt(service.duration), "seconds").format("h[ ч] m[ мин]")}</strong></span>*/}
-
-                                        {/*            </label>*/}
-                                        {/*        </div>*/}
-                                        {/*    </li>*/}
-                                        {/*)}*/}
-
-
                                     </ul>
                                 )
                             })

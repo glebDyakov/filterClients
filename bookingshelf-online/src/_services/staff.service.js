@@ -186,6 +186,5 @@ function getByCustomId(id) {
         method: 'GET',
         headers: {'Content-Type': 'application/json' }
     };
-
     return fetch(`${origin}/rest/visits/v1/${id}`, requestOptions).then(handleResponse);
 }
