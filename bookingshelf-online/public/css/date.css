@@ -114,7 +114,8 @@
 }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
-    color: #3b4b5c;
+    color: white;
+    background-color: #3B4B5C;
 }
 
 .DayPicker-NavButton:hover {
@@ -183,10 +184,10 @@
     border: 1.5px solid #3B4B5C;
 }
 
-.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover, .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus {
+/* .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover, .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus {
     background-color: rgba(38, 78, 134, 0.09) !important;
     outline: none;
-}
+} */
 
 @media screen and (max-width: 709px) {
     .calendar_modal {

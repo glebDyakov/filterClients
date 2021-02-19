@@ -5,6 +5,7 @@ import DayPicker from "react-day-picker";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
+import MediaQuery from 'react-responsive'
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -18,8 +19,11 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
+        const desctop=710;
+        const mob=709;
         const availableTimes = []
         let currentDay = moment(selectedDay).format('MMMM,DD');
+        let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
         currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
         currentDay = currentDay.split(",")
         currentDay = currentDay.reverse()
@@ -113,81 +117,159 @@ class TabFour extends PureComponent {
                 margin_right2 = "0px";
             }
             serviceInfo = (
-                <div className="specialist-block">
-                    {openList ?
-                        <div className="specialist_big">
-                            <div className="service_list_block">
-                                <div className="setvice_list_items">
-                                    <p>Услуги:</p>
-                                    {selectedServices.map((element) =>
-                                        <div className="setvice_list_item">
-                                            <div className="cansel_btn_small"> </div>
-                                            <p>{element.name}</p>
+                <div>
+                    <MediaQuery maxWidth={mob}>
+                        <div className="specialist">
+                            <div className="specialist-block">
+
+                                <div className="supperVisDet service_footer-block">
+
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `13px`,
+                                            lineHeight: "18px",
+                                            fontWeight: "400",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <div className="time-footer hover" style={{
+                                        // marginRight: `${margin_right}`
+                                    }}>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            letterSpacing: "0.1px",
+                                            fontWeight: "400",
+                                        }} onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}>{t("Услуги")}: {selectedServices.length} <img 
+                                        style={{
+                                            marginLeft:"3px",
+                                            marginTop:"0px"
+                                         }}src={arrow_down} alt="arrou"></img></p>
+                                    </div>
+                                    <div className="time-footer" style={{
+                                        // marginRight: `${margin_right}`
+                                    }}>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            letterSpacing: "0.1px",
+                                            fontWeight: "400",
+                                        }} >{t("Дата")}:</p>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            letterSpacing: "0.1px",
+                                            fontWeight: "400",
+                                        }} >&nbsp;{currentDayMob}</p>
+                                    </div>
+                                </div >
+                                {openList && (
+                                    <div className="service_list_block">
+                                        <div className="setvice_list_items">
+                                            {selectedServices.map((element) =>
+                                                <div className="setvice_list_item">
+                                                    <div className="cansel_btn_small"> </div>
+                                                    <p>{element.name}</p>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                <div className="cansel_btn_big" onClick={event => this.setState({
-                                    openList: !openList,
-                                })}> </div>
+                                    </div>
+                                )}
+                                {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                    if (selectedServices.length) {
+                                        setScreen(3);
+                                    }
+                                    refreshTimetable();
+                                }}>
+                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
-                        :
-                        <div className="supperVisDet service_footer-block">
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="specialist-block">
+                            {openList ?
+                                <div className="specialist_big">
+                                    <div className="service_list_block">
+                                        <div className="setvice_list_items">
+                                            <p>Услуги:</p>
+                                            {selectedServices.map((element) =>
+                                                <div className="setvice_list_item">
+                                                    <div className="cansel_btn_small"> </div>
+                                                    <p>{element.name}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="cansel_btn_big" onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}> </div>
+                                    </div>
+                                </div>
+                                :
+                                <div className="supperVisDet service_footer-block">
 
-                            <div className="service_footer_price">
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: `${sizeWords}`,
-                                    lineHeight: "49px",
-                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                <span>{selectedServices[0] && selectedServices[0].currency}</span>
-                            </div>
-                            <div className="time-footer hover" style={{
-                                marginRight: `${margin_right1}`
-                            }}>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "29px",
-                                    letterSpacing: "0.1px",
-                                }} onClick={event => this.setState({
-                                    openList: !openList,
-                                })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
-                                {/* } */}
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "18px",
-                                    letterSpacing: "0.1px",
-                                }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                                </p>
-                            </div>
-                            <div className="time-footer" style={{
-                                marginRight: `${margin_right2}`
-                            }}>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "29px",
-                                    letterSpacing: "0.1px",
-                                }} >{t("Дата")}:</p>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "18px",
-                                    letterSpacing: "0.1px",
-                                }} >{currentDay}</p>
-                            </div>
-                            {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                if (selectedServices.length) {
-                                    setScreen(3);
-                                }
-                                refreshTimetable();
-                            }}>
-                                <span className="title_block_text">{t("Продолжить")}</span></button>}
-                        </div >
-                    }
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `${sizeWords}`,
+                                            lineHeight: "49px",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <div className="time-footer hover" style={{
+                                        marginRight: `${margin_right1}`
+                                    }}>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "29px",
+                                            letterSpacing: "0.1px",
+                                        }} onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                        {/* } */}
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            letterSpacing: "0.1px",
+                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
+                                    </div>
+                                    <div className="time-footer" style={{
+                                        marginRight: `${margin_right2}`
+                                    }}>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "29px",
+                                            letterSpacing: "0.1px",
+                                        }} >{t("Дата")}:</p>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            letterSpacing: "0.1px",
+                                        }} >{currentDay}</p>
+                                    </div>
+                                    {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                        if (selectedServices.length) {
+                                            setScreen(4);
+                                        }
+                                        refreshTimetable();
+                                    }}>
+                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                </div >
+                            }
+                        </div>
+                    </MediaQuery>
                 </div>
+
             )
         }
 
@@ -221,24 +303,24 @@ class TabFour extends PureComponent {
                     <div className="approveF">
                         <div className="modal_window_block">
                             <p className="modal_title">{t("Перенести визит?")}</p>
-                        <div className="modal_window">
-                            <button className="approveFYes" onClick={() => {
-                                setTime(this.state.arrayTime, true)
-                                this.setState({ arrayTime: 0 })
-                            }}>{t("Да")}
-                            </button>
-                            <button className="approveFNo" onClick={() => {
-                                const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                selectStaff(activeStaff)
-                                handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                setScreen(6)
-                            }}>{t("Нет")}
-                            </button>
+                            <div className="modal_window">
+                                <button className="approveFYes" onClick={() => {
+                                    setTime(this.state.arrayTime, true)
+                                    this.setState({ arrayTime: 0 })
+                                }}>{t("Да")}
+                                </button>
+                                <button className="approveFNo" onClick={() => {
+                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                    selectStaff(activeStaff)
+                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                    setScreen(6)
+                                }}>{t("Нет")}
+                                </button>
+                            </div>
                         </div>
-                             </div>
-                        
+
                     </div>
                 )}
             </div>

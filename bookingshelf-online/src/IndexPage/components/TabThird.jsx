@@ -4,16 +4,15 @@ import DayPicker from "react-day-picker";
 import MomentLocaleUtils from 'react-day-picker/moment';
 import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
-
+import MediaQuery from 'react-responsive'
 
 class TabThird extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            openList: '',
+            openList: false,
         }
     }
-
 
     componentDidMount() {
         if (this.props.isStartMovingVisit) {
@@ -26,6 +25,14 @@ class TabThird extends PureComponent {
         const { setScreen, setDefaultFlag, refreshTimetable, isStartMovingVisit, selectedDay, selectedStaff, selectedServices, getDurationForCurrentStaff, selectedService, disabledDays, month, handleDayClick, showPrevWeek, showNextWeek, t } = this.props;
         const { openList } = this.state;
 
+        const desctop = 710;
+        const mob = 709;
+        let currentDay = moment(selectedDay).format('MMMM,DD');
+        let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
+        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
+        currentDay = currentDay.split(",")
+        currentDay = currentDay.reverse()
+        currentDay = currentDay.join(" ")
         let serviceInfo = null
         if (selectedService.serviceId) {
             let priceFrom = 0;
@@ -52,81 +59,157 @@ class TabThird extends PureComponent {
                 margin_right = "0px";
             }
             serviceInfo = (
-                <div className="specialist-block">
-                    {openList ?
-                        <div className="specialist_big">
-                            <div className="service_list_block">
-                                <div className="setvice_list_items">
-                                    <p>Услуги:</p>
-                                    {selectedServices.map((element) =>
-                                        <div className="setvice_list_item">
-                                            <div className="cansel_btn_small"> </div>
-                                            <p>{element.name}</p>
+                <div>
+                    <MediaQuery maxWidth={mob}>
+                        <div className="specialist">
+                            <div className="specialist-block">
+
+                                <div className="supperVisDet service_footer-block">
+
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `13px`,
+                                            lineHeight: "18px",
+                                            fontWeight: "400",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <div className="time-footer hover" style={{
+                                        // marginRight: `${margin_right}`
+                                    }}>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            fontWeight: "400",
+                                            letterSpacing: "0.1px",
+                                        }} onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}>{t("Услуги")}: {selectedServices.length}
+                                            <img style={{
+                                                marginLeft: "7px",
+                                                marginTop: "0px"
+                                            }} src={arrow_down} alt="arrou"></img></p>
+                                    </div>
+                                    <div className="time-footer">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            fontWeight: "400",
+                                            letterSpacing: "0.1px",
+                                        }} >{t("Дата")}:</p>
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: "13px",
+                                            lineHeight: "18px",
+                                            fontWeight: "400",
+                                            letterSpacing: "0.1px",
+                                        }} >{currentDayMob}</p>
+                                    </div>
+                                </div >
+                                {openList && (
+                                    <div className="service_list_block">
+                                        <div className="setvice_list_items">
+                                            {selectedServices.map((element) =>
+                                                <div className="setvice_list_item">
+                                                    <div className="cansel_btn_small"> </div>
+                                                    <p>{element.name}</p>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                <div className="cansel_btn_big" onClick={event => this.setState({
-                                    openList: !openList,
-                                })}> </div>
+                                    </div>
+                                )}
+                                {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {
+                                    if (selectedServices.length) {
+                                        setScreen(4);
+                                    }
+                                    refreshTimetable();
+                                }}>
+                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
-                        :
-                        <div className="supperVisDet service_footer-block">
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="specialist">
+                            <div className="specialist-block">
+                                {openList ?
+                                    <div className="specialist_big">
+                                        <div className="service_list_block">
+                                            <div className="setvice_list_items">
+                                                <p>Услуги:</p>
+                                                {selectedServices.map((element) =>
+                                                    <div className="setvice_list_item">
+                                                        <div className="cansel_btn_small"> </div>
+                                                        <p>{element.name}</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="cansel_btn_big" onClick={event => this.setState({
+                                                openList: !openList,
+                                            })}> </div>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div className="supperVisDet service_footer-block">
 
-                            <div className="service_footer_price">
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: `${sizeWords}`,
-                                    lineHeight: "49px",
-                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                <span>{selectedServices[0] && selectedServices[0].currency}</span>
-                            </div>
-                            <div className="time-footer hover" style={{
-                                marginRight: `${margin_right}`
-                            }}>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "29px",
-                                    letterSpacing: "0.1px",
-                                }} onClick={event => this.setState({
-                                    openList: !openList,
-                                })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                        <div className="service_footer_price">
+                                            <p style={{
+                                                color: 'white',
+                                                fontSize: `${sizeWords}`,
+                                                lineHeight: "49px",
+                                            }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                            <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                        </div>
+                                        <div className="time-footer hover" style={{
+                                            marginRight: `${margin_right}`
+                                        }}>
+                                            <p style={{
+                                                color: 'white',
+                                                fontSize: "13px",
+                                                lineHeight: "29px",
+                                                letterSpacing: "0.1px",
+                                            }} onClick={event => this.setState({
+                                                openList: !openList,
+                                            })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
 
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "18px",
-                                    letterSpacing: "0.1px",
-                                }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                                </p>
-                            </div>
-                            <div className="time-footer" style={{
-                                marginRight: `${margin_right}`
-                            }}>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "18px",
-                                    letterSpacing: "0.1px",
-                                }} >{t("Дата")}:</p>
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: "13px",
-                                    lineHeight: "18px",
-                                    letterSpacing: "0.1px",
-                                    opacity: "0",
-                                }} >Еще не выбрана</p>
-                            </div>
-                            {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                if (selectedServices.length) {
-                                    setScreen(3);
+                                            <p style={{
+                                                color: 'white',
+                                                fontSize: "13px",
+                                                lineHeight: "18px",
+                                                letterSpacing: "0.1px",
+                                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                            </p>
+                                        </div>
+                                        <div className="time-footer" style={{
+                                            marginRight: `${margin_right}`
+                                        }}>
+                                            <p style={{
+                                                color: 'white',
+                                                fontSize: "13px",
+                                                lineHeight: "29px",
+                                                letterSpacing: "0.1px",
+                                            }} >{t("Дата")}:</p>
+                                            <p style={{
+                                                color: 'white',
+                                                fontSize: "13px",
+                                                lineHeight: "18px",
+                                                letterSpacing: "0.1px",
+                                            }} >{currentDay}</p>
+                                        </div>
+                                        {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {
+                                            if (selectedServices.length) {
+                                                setScreen(4);
+                                            }
+                                            refreshTimetable();
+                                        }}>
+                                            <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                    </div >
                                 }
-                                refreshTimetable();
-                            }}>
-                                <span className="title_block_text">{t("Продолжить")}</span></button>}
-                        </div >
-                    }
+                            </div>
+                        </div>
+                    </MediaQuery>
                 </div>
             )
         }
@@ -143,12 +226,7 @@ class TabThird extends PureComponent {
                     </span>
                     <p className="modal_title">{t("Выберите дату")}</p>
                 </div>
-                <div className="specialist">
-
-
-                    {serviceInfo && serviceInfo}
-
-                </div>
+                {serviceInfo && serviceInfo}
                 <div className="calendar_modal">
                     {parseInt(moment(month).utc().format('x')) > parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek} />}
                     <span className="arrow-right" onClick={showNextWeek} />

@@ -149,141 +149,142 @@ class TabCreateComment extends PureComponent {
                     }}><span className="title_block_text">{t("Назад")}</span></span>
                     <p className="modal_title">{t("Отзывы")}</p>
                 </div>
-
-                <div className="staff_popup staff_popup_large">
-                    <div className="staff_popup_item">
-                        <div className="img_container">
-                            <img
-                                src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                alt="" />
-                            <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br />
-                                <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span>
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
-
-                {clientCookie ? (
-                    <div>
-                        <div style={{ textAlign: 'right' }}>
-                            <p>{t("Вы вошли как")} {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
-                            <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => this.props.dispatch(staffActions.clearClientLogin())}>{t("Сменить аккаунт")}</p>
-                        </div>
-                        <br />
-                        <p>{t("Рейтинг")}</p>
-                        <StarRatings
-                            rating={group.rating}
-                            changeRating={this.changeRating}
-                            starHoverColor={'#ff9500'}
-                            starRatedColor={'#ff9500'}
-                            name='rating'
-                            starDimension="20px"
-                            starSpacing="5px"
-                        />
-
-                        <p style={{ marginTop: '15px' }}>{t("Комментарии")}</p>
-                        <textarea placeholder="" name="comment" onChange={this.handleCommentChange} value={group.comment} />
-
-                        <input
-                            style={{ marginBottom: '20px' }}
-                            className={((!group.comment || !group.rating) ? 'disabledField' : '') + " book_button"}
-                            disabled={!group.comment || !group.rating}
-                            type="submit" value={group.clientPassword ? t('Добавить отзыв') : t('Добавить отзыв')} onClick={this.handleSave}
-                        />
-                    </div>
-                ) : (
-                        <React.Fragment>
-                            <div style={{ display: 'flex', marginBottom: '20px' }}>
-                                <input
-                                    style={{ backgroundColor: tab === 'login_tab' ? '#39434f' : 'grey' }}
-                                    className="book_button book_button_tab"
-                                    type="button" value={t("Вход")} onClick={() => this.updateTab('login_tab')}
-                                />
-                                <input
-                                    style={{ backgroundColor: tab === 'sms_tab' ? '#39434f' : 'grey' }}
-                                    className="book_button book_button_tab"
-                                    type="button" value={t("SMS авторизация")} onClick={() => this.updateTab('sms_tab')}
-                                />
+                <div className="create_comments">
+                    <div className="staff_popup staff_popup_large">
+                        <div className="staff_popup_item">
+                            <div className="img_container">
+                                <img
+                                    src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                    alt="" />
+                                <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br />
+                                    <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span>
+                                </span>
                             </div>
 
-                            {!isLoading && (
-                                <React.Fragment>
-                                    {tab === 'login_tab' && (
-                                        <React.Fragment>
-                                            <p>{t("Телефон")}</p>
-                                            <div className="phones_country">
-                                                <PhoneInput
-                                                    value={loginPhone}
-                                                    handleChange={clientPhone => this.handleChange({ target: { name: 'loginPhone', value: clientPhone[0] === "+" ? clientPhone : "+" + clientPhone } })}
-                                                    getIsValidPhone={isValidLoginPhone => this.setState({ isValidLoginPhone })}
-                                                />
-                                            </div>
-                                            <br />
+                        </div>
+                    </div>
 
-                                            <p>{t("Персональный пароль")}</p>
-                                            <p style={{ display: 'flex' }}>
-                                                <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                /> <span>{t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации")}</span>
-                                            </p>
-                                            <input type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
-                                            {clientLoginMessage && (
+                    {clientCookie ? (
+                        <div>
+                            <div style={{ textAlign: 'right' }}>
+                                <p>{t("Вы вошли как")} {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
+                                <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => this.props.dispatch(staffActions.clearClientLogin())}>{t("Сменить аккаунт")}</p>
+                            </div>
+                            <br />
+                            <p>{t("Рейтинг")}</p>
+                            <StarRatings
+                                rating={group.rating}
+                                changeRating={this.changeRating}
+                                starHoverColor={'#ff9500'}
+                                starRatedColor={'#ff9500'}
+                                name='rating'
+                                starDimension="20px"
+                                starSpacing="5px"
+                            />
+
+                            <p style={{ marginTop: '15px' }}>{t("Комментарии")}</p>
+                            <textarea placeholder="" name="comment" onChange={this.handleCommentChange} value={group.comment} />
+
+                            <input
+                                style={{ marginBottom: '20px' }}
+                                className={((!group.comment || !group.rating) ? 'disabledField' : '') + " book_button"}
+                                disabled={!group.comment || !group.rating}
+                                type="submit" value={group.clientPassword ? t('Добавить отзыв') : t('Добавить отзыв')} onClick={this.handleSave}
+                            />
+                        </div>
+                    ) : (
+                            <React.Fragment>
+                                <div className="comment_sms_btn_block">
+                                    <input
+                                        // style={{ backgroundColor: tab === 'login_tab' ? '#39434f' : 'grey' }}
+                                        className="comment_sms_btn"
+                                        type="button" value={t("Вход")} onClick={() => this.updateTab('login_tab')}
+                                    />
+                                    <input
+                                        // style={{ backgroundColor: tab === 'sms_tab' ? '#39434f' : 'grey' }}
+                                        className="comment_sms_btn"
+                                        type="button" value={t("SMS авторизация")} onClick={() => this.updateTab('sms_tab')}
+                                    />
+                                </div>
+
+                                {!isLoading && (
+                                    <React.Fragment>
+                                        {tab === 'login_tab' && (
+                                            <React.Fragment>
+                                                <p>{t("Телефон")}</p>
+                                                <div className="phones_country">
+                                                    <PhoneInput
+                                                        value={loginPhone}
+                                                        handleChange={clientPhone => this.handleChange({ target: { name: 'loginPhone', value: clientPhone[0] === "+" ? clientPhone : "+" + clientPhone } })}
+                                                        getIsValidPhone={isValidLoginPhone => this.setState({ isValidLoginPhone })}
+                                                    />
+                                                </div>
+                                                <br />
+
+                                                <p>{t("Персональный пароль")}</p>
                                                 <p style={{ display: 'flex' }}>
                                                     <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                    /> <span style={{ color: 'red' }}>{clientLoginMessage}</span>
+                                                    /> <span>{t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку SMS авторизации")}</span>
                                                 </p>
-                                            )}
-                                            <input
-                                                style={{ margin: '20px auto' }}
-                                                className={((!isValidLoginPhone || !loginPassword) ? 'disabledField' : '') + " book_button"}
-                                                disabled={!isValidLoginPhone || !loginPassword}
-                                                type="submit" value={t("Войти")} onClick={this.handleLogin}
-                                            />
-                                        </React.Fragment>
-                                    )}
-                                    {tab === 'sms_tab' && (
-                                        <React.Fragment>
-                                            <p>{t("Телефон")}</p>
-                                            <p style={{ display: 'flex' }}>
-                                                <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                /> <span>
-                                                    {t("Введите номер телефона, на него будет отправлено SMS с паролем для входа.")}
-                                                </span>
-                                            </p>
-                                            <div className="phones_country">
-                                                <PhoneInput
-                                                    value={sendPasswordPhone}
-                                                    handleChange={sendPasswordPhone => this.setState({ sendPasswordPhone: sendPasswordPhone === "+" ? sendPasswordPhone : "+" + sendPasswordPhone })}
-                                                    getIsValidPhone={isValidSendPasswordPhone => this.setState({ isValidSendPasswordPhone })}
+                                                <input type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
+                                                {clientLoginMessage && (
+                                                    <p style={{ display: 'flex' }}>
+                                                        <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                                        /> <span style={{ color: 'red' }}>{clientLoginMessage}</span>
+                                                    </p>
+                                                )}
+                                                <input
+                                                    style={{ margin: '20px auto' }}
+                                                    className={((!isValidLoginPhone || !loginPassword) ? 'disabledField' : '') + " book_button"}
+                                                    disabled={!isValidLoginPhone || !loginPassword}
+                                                    type="submit" value={t("Войти")} onClick={this.handleLogin}
                                                 />
-                                            </div>
-
-                                            {commentPassword && (
-                                                <p style={{ display: 'flex', marginTop: '10px' }}>
+                                            </React.Fragment>
+                                        )}
+                                        {tab === 'sms_tab' && (
+                                            <React.Fragment>
+                                                <p>{t("Телефон")}</p>
+                                                <p style={{ display: 'flex' }}>
                                                     <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                    /> <span style={{ color: 'red' }}>{commentPassword}</span>
+                                                    /> <span>
+                                                        {t("Введите номер телефона, на него будет отправлено SMS с паролем для входа.")}
+                                                    </span>
                                                 </p>
-                                            )}
+                                                <div className="phones_country">
+                                                    <PhoneInput
+                                                        value={sendPasswordPhone}
+                                                        handleChange={sendPasswordPhone => this.setState({ sendPasswordPhone: sendPasswordPhone === "+" ? sendPasswordPhone : "+" + sendPasswordPhone })}
+                                                        getIsValidPhone={isValidSendPasswordPhone => this.setState({ isValidSendPasswordPhone })}
+                                                    />
+                                                </div>
 
-                                            {timeExpires && (
-                                                <p style={{ display: 'flex', marginTop: '10px' }}>
-                                                    <span>{t("Осталось времени")}: {timeExpires}</span>
-                                                </p>
-                                            )}
+                                                {commentPassword && (
+                                                    <p style={{ display: 'flex', marginTop: '10px' }}>
+                                                        <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                                        /> <span style={{ color: 'red' }}>{commentPassword}</span>
+                                                    </p>
+                                                )}
 
-                                            <input
-                                                style={{ margin: '20px auto' }}
-                                                className={((!isValidSendPasswordPhone || sendSmsTimer) ? 'disabledField' : '') + " book_button"}
-                                                disabled={!isValidSendPasswordPhone || sendSmsTimer}
-                                                type="submit" value={t("Отправить")} onClick={this.handleSendPassword}
-                                            />
-                                        </React.Fragment>
-                                    )}
-                                </React.Fragment>
-                            )}
-                        </React.Fragment>
-                    )
-                }
+                                                {timeExpires && (
+                                                    <p style={{ display: 'flex', marginTop: '10px' }}>
+                                                        <span>{t("Осталось времени")}: {timeExpires}</span>
+                                                    </p>
+                                                )}
+
+                                                <input
+                                                    style={{ margin: '20px auto' }}
+                                                    className={((!isValidSendPasswordPhone || sendSmsTimer) ? 'disabledField' : '') + " book_button"}
+                                                    disabled={!isValidSendPasswordPhone || sendSmsTimer}
+                                                    type="submit" value={t("Отправить")} onClick={this.handleSendPassword}
+                                                />
+                                            </React.Fragment>
+                                        )}
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
+                        )
+                    }
+                </div>
             </div>
         );
     }

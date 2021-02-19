@@ -4,19 +4,23 @@ import { getFirstScreen } from "../../_helpers/common";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
+import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
 class TabTwo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchValue: ''
+            searchValue: '',
+            openList: false,
         }
     }
 
     render() {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
-        const { searchValue } = this.state;
+        const { searchValue, openList } = this.state;
+        const desctop=710;
+        const mob=709;
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
@@ -78,42 +82,95 @@ class TabTwo extends Component {
             }
 
             serviceInfo = (
-                <div className="specialist">
-                    <div className="specialist-block">
-                        <div className="supperVisDet service_footer-block">
-                            <div className="service_footer_price">
-                                <p style={{
-                                    color: 'white',
-                                    fontSize: `${sizeWords}`,
-                                    lineHeight: "49px",
-                                }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                <div>
+                    <MediaQuery maxWidth={mob}>
+                        <div className="specialist">
+                            <div className="specialist-block">
+                                <div className="supperVisDet service_footer-block">
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `12px`,
+                                            lineHeight: "18px",
+                                            fontWeight:"400",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <p style={{
+                                        color: 'white',
+                                        fontSize: "12px",
+                                        lineHeight: "18px",
+                                        letterSpacing: "0.1px",
+                                        fontWeight:"400",
+                                        paddingLeft: `${padding_left}`,
+                                    }} onClick={event => this.setState({
+                                        openList: !openList,
+                                    })}>{t("Услуги")}: {selectedServices.length}
+                                        <img alt="arrow_down_white" src={arrow_down_white}></img>
+                                    </p>
+                                </div >
+                                {openList && (
+
+                                    <div className="service_list_block">
+                                        <div className="setvice_list_items">
+                                            {selectedServices.map((element) =>
+                                                <div className="setvice_list_item">
+                                                    <div className="cansel_btn_small"> </div>
+                                                    <p>{element.name}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                                {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                    if (selectedServices.length) {
+                                        setScreen(3);
+                                    }
+                                    refreshTimetable();
+                                }}>
+                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
-                            <p style={{
-                                color: 'white',
-                                fontSize: "13px",
-                                lineHeight: "18px",
-                                letterSpacing: "0.1px",
-                                paddingLeft: `${padding_left}`,
-                            }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                            <p style={{
-                                color: 'white',
-                                fontSize: "13px",
-                                lineHeight: "18px",
-                                letterSpacing: "0.1px",
-                                paddingRight: `${padding_right}`,
-                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                            </p>
-                            {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                if (selectedServices.length) {
-                                    setScreen(3);
-                                }
-                                refreshTimetable();
-                            }}>
-                                <span className="title_block_text">{t("Продолжить")}</span></button>}
-                        </div >
-                    </div>
-                </div>
+                        </div>
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="specialist">
+                            <div className="specialist-block">
+                                <div className="supperVisDet service_footer-block">
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `${sizeWords}`,
+                                            lineHeight: "49px",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <p style={{
+                                        color: 'white',
+                                        fontSize: "13px",
+                                        lineHeight: "18px",
+                                        letterSpacing: "0.1px",
+                                        paddingLeft: `${padding_left}`,
+                                    }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
+                                    <p style={{
+                                        color: 'white',
+                                        fontSize: "13px",
+                                        lineHeight: "18px",
+                                        letterSpacing: "0.1px",
+                                        paddingRight: `${padding_right}`,
+                                    }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                    </p>
+                                    {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                        if (selectedServices.length) {
+                                            setScreen(3);
+                                        }
+                                        refreshTimetable();
+                                    }}>
+                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                </div >
+                            </div>
+                        </div>
+                    </MediaQuery>
+                </div >
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
@@ -222,7 +279,7 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <MediaQuery maxWidth={709}>
+                                                                    <MediaQuery maxWidth={mob}>
                                                                         <div className="service_half_block">
                                                                             <p className="white_text" >{service.name}</p>
                                                                             <span className="white_text" >{service.details}</span>
@@ -244,7 +301,7 @@ class TabTwo extends Component {
                                                                             </div>
                                                                         </div>
                                                                     </MediaQuery>
-                                                                    <MediaQuery minWidth={709}>
+                                                                    <MediaQuery minWidth={desctop}>
                                                                         <p className="white_text" >{service.name}</p>
                                                                         <span className="runtime white_text" >{service.details}</span>
                                                                         <span
@@ -274,7 +331,7 @@ class TabTwo extends Component {
                                                         >
                                                             <div className="service_item" >
                                                                 <label className="service-block">
-                                                                    <MediaQuery maxWidth={709}>
+                                                                    <MediaQuery maxWidth={mob}>
                                                                         <div className="service_half_block">
                                                                             <p >{service.name}</p>
                                                                             <span  ><p >{service.details}</p></span>
@@ -294,7 +351,7 @@ class TabTwo extends Component {
                                                                         </div>
 
                                                                     </MediaQuery>
-                                                                    <MediaQuery minWidth={709}>
+                                                                    <MediaQuery minWidth={desctop}>
                                                                         <p >{service.name}</p>
                                                                         <span className="runtime" >{service.details}</span>
                                                                         <span

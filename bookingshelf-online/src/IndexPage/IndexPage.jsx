@@ -288,6 +288,7 @@ class IndexPage extends PureComponent {
 
 
     handleDayClick(day, modifiers = {}) {
+        
         const { isStartMovingVisit } = this.props.staff
         if (modifiers.disabled) {
             return;
@@ -298,10 +299,10 @@ class IndexPage extends PureComponent {
 
         this.setState({
             selectedDay: daySelected ? daySelected.toDate() : this.state.selectedDay,
-            screen: 4
+            // screen: 4
         })
         //if (!isStartMovingVisit) {
-            this.refreshTimetable();
+            // this.refreshTimetable();
         //}
     }
 

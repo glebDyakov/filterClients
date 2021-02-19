@@ -25,7 +25,9 @@ class TabFive extends PureComponent {
     const { setScreen, info, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
       group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
     const { enteredCode } = this.state;
-
+    const desctop = 710;
+    const mob = 709;
+    let currentDay = moment(selectedDay).format('DD MMMM YYYY, h:mm');
     if (!clientActivationId) {
       $('.phones_country').css({ display: 'flex' })
     }
@@ -52,7 +54,7 @@ class TabFive extends PureComponent {
               <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
               <div className="last_list_name">
                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                <p>Time</p>
+                <p>{currentDay}</p>
               </div>
             </div>
             <p className="desktop_visible" style={{
@@ -123,7 +125,7 @@ class TabFive extends PureComponent {
                       className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                     />
                   </div>
-                  <MediaQuery maxWidth={709}>
+                  <MediaQuery maxWidth={mob}>
                     <div className="entry_form-item">
                       <p>{t("Телефон")}</p>
                       {/* <p style={{ display: 'flex' }}>
@@ -169,7 +171,7 @@ class TabFive extends PureComponent {
                       />
                     </div>
                   </MediaQuery>
-                  <MediaQuery minWidth={709}>
+                  <MediaQuery minWidth={desctop}>
                     <div className="entry_form-item">
                       <p>Email</p>
                       <input type="text" placeholder={t("Hello@gmail.com")} name="email" onChange={handleChange}
@@ -225,33 +227,33 @@ class TabFive extends PureComponent {
               </div>
             </React.Fragment>
           )}
-        <MediaQuery maxWidth={709}>
-            <div className="last_footer_block">
-              <input
-                className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
-                disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-                type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
-                  () => {
-                    if (clientActivationId) {
-                      handleSave({
-                        clientActivationId,
-                        clientVerificationCode: enteredCode
-                      })
-                    } else {
-                      $('.phones_country').css({ display: 'none' })
-                      if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
-                        handleSave()
-                      }
+        <MediaQuery maxWidth={mob}>
+          <div className="last_footer_block">
+            <input
+              className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
+              disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
+              type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                () => {
+                  if (clientActivationId) {
+                    handleSave({
+                      clientActivationId,
+                      clientVerificationCode: enteredCode
+                    })
+                  } else {
+                    $('.phones_country').css({ display: 'none' })
+                    if (selectedStaff.staffId && serviceId && selectedDay && group.phone && isValidNumber(group.phone) && selectedTime && group.clientName) {
+                      handleSave()
                     }
-                  }} /> 
-                  <p>
-                Нажимая кнопку записаться, вы соглашаетесь<br />
+                  }
+                }} />
+            <p>
+              Нажимая кнопку записаться, вы соглашаетесь<br />
             с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
-              </p>
-            </div>
+            </p>
+          </div>
         </MediaQuery>
 
-        <MediaQuery minWidth={709}>
+        <MediaQuery minWidth={desctop}>
           <div className="specialist">
             <div className="last_footer_block">
               <p>
