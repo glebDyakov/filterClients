@@ -10,6 +10,9 @@ import arrow_down from "../../../public/img/arrow_down.png";
 import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import burger_close from "../../../public/img/icons/burger-close.svg";
 import burger_open from "../../../public/img/icons/burger-open.svg";
+import rus_img from "../../../public/img/icons/rus.jpg";
+import eng_img from "../../../public/img/icons/eng.jpg";
+import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 // import { findSourceMap } from 'module';
 
@@ -19,6 +22,7 @@ class Header extends PureComponent {
 
         this.state = {
             burger: true,
+            mobile: false,
         };
         this.changeBurger = this.changeBurger.bind(this);
     }
@@ -31,10 +35,10 @@ class Header extends PureComponent {
     render() {
 
         const { info, screen, selectedSubcompany } = this.props;
-        const { burger } = this.state
+        const { burger, mobile } = this.state
         const desctop = 710;
         const mob = 709;
-
+        console.log(info)
         return (
             <div className="modal_menu">
                 <React.Fragment>
@@ -69,6 +73,19 @@ class Header extends PureComponent {
                                 <div className="header-lang">
                                     <p>RU</p>
                                     <img src={arrow_down_white} alt="arrou"></img>
+                                    <div className="leng_list">
+                                        <div className="leng_list_item">
+                                            <img src={rus_img} alt="" />
+                                            <p>Русский</p>
+                                            <div className="leng_btn"></div>
+                                        </div>
+                                        <div className="leng_list_item">
+                                            <img src={eng_img} alt="" />
+                                            <p>English</p>
+                                            <div></div>
+                                            <div className="leng_btn"></div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="burger_menu_btn_on">
                                     <img onClick={(event) => this.changeBurger()} src={burger_open} alt="telephone" />
@@ -119,10 +136,36 @@ class Header extends PureComponent {
                             <div className="header-lang">
                                 <p>RU</p>
                                 <img src={arrow_down} alt="arrou"></img>
+                                <div className="leng_list">
+                                    <div className="leng_list_item">
+                                        <img src={rus_img} alt="" />
+                                        <p>Русский</p>
+                                        <div className="leng_btn"></div>
+                                    </div>
+                                    <div className="leng_list_item">
+                                        <img src={eng_img} alt="" />
+                                        <p>English</p>
+                                        <div></div>
+                                        <div className="leng_btn"></div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="separation"></div>
-                            <div className="mobile-icon-wrapper">
-                                <img src={telephone} alt="telephone" />
+                            <div className="mobile-icon-block">
+                                <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
+                                    <div>
+                                        <p>{selectedSubcompany.companyPhone1}</p>
+                                        <p>{selectedSubcompany.companyPhone2}</p>
+                                        <p>{selectedSubcompany.companyPhone3}</p>
+                                    </div>
+
+                                    <img src={telephone_btn} onClick={e => this.setState({
+                                        mobile: !mobile
+                                    })} alt="close" />
+                                </div>
+                                <img src={telephone} onClick={e => this.setState({
+                                    mobile: !mobile
+                                })} alt="telephone" />
                             </div>
                         </div>
                     </MediaQuery>

@@ -6,10 +6,9 @@ import moment from 'moment';
 import { withTranslation } from "react-i18next";
 import i_icon from "../../../public/img/icons/i.svg"
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
+import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
-import TabCreateComment from "./TabCreateComment"
-import TabStaffComments from "./TabStaffComments"
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -64,11 +63,12 @@ class TabOne extends PureComponent {
     }
 
     handleSelectStaff(e, staff) {
+        console.log(e.target.className)
         const { selectStaff, forceUpdateStaff, flagAllStaffs, setScreen, isStartMovingVisit } = this.props;
         if (isStartMovingVisit && flagAllStaffs) {
             forceUpdateStaff(staff)
             this.setState({ staff })
-        } else if (e.target.className !== 'staff-comments') {
+        } else if (e.target.className !== 'staff-comments' && e.target.className !== 's') {
             selectStaff(staff)
             if (flagAllStaffs) {
                 setScreen(5)
@@ -79,8 +79,8 @@ class TabOne extends PureComponent {
     render() {
         const { t, staffId, isLoading, selectedDay, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
         const { openList } = this.state;
-        const desctop=710;
-        const mob=709;
+        const desctop = 710;
+        const mob = 709;
         let serviceInfo = null;
 
         let currentDay = moment(selectedDay).format('MMMM,DD');
@@ -90,8 +90,6 @@ class TabOne extends PureComponent {
         currentDay = currentDay.reverse()
         currentDay = currentDay.join(" ")
 
-        let padding_left = "21px";
-        let padding_right = "39px";
         let sizeWords = "36px";
         let margin_right = "22px";
         let priceFrom = 0;
@@ -110,14 +108,10 @@ class TabOne extends PureComponent {
 
         if (priceFrom1000 > 1 || priceTo1000 > 1) {
             sizeWords = "24px"
-            padding_left = "0px";
-            padding_right = "0px";
             margin_right = "0px";
         }
         else if (priceFrom100 > 1 || priceTo100 > 1) {
             sizeWords = "32px"
-            padding_left = "0px";
-            padding_right = "0px";
             margin_right = "0px";
         }
 
@@ -294,167 +288,183 @@ class TabOne extends PureComponent {
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
-          
-          
+
+
             <div className="service_selection screen1">
                 {this.state.staff && (
                     <div className="approveF">
                         <div className="modal_window_block">
-                            <p className="modal_title">{t("Перенести визит?")}</p>
-                            <div className="modal_window">
-                            <button className="approveFYes" onClick={() => {
-                                selectStaff(this.state.staff)
-                                handleMoveVisit()
-                                setDefaultFlag()
-                                this.setState({ staff: null })
-                            }}>{t("Да")}
-                            </button>
-                            <button className="approveFNo" onClick={() => {
-                                const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                selectStaff(activeStaff)
-                                handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                setScreen(6)
-                                setDefaultFlag()
-                                this.setState({ staff: null })
-                            }}>{t("Нет")}
-                            </button>
+                            <div className="modal_window_text">
+                                <p className="modal_title">{t("Перенести визит?")}</p>
+                                <img src={cansel} alt="cansel" />
                             </div>
+                            <div className="modal_window_btn">
+                                <button className="approveFYes" onClick={() => {
+                                    selectStaff(this.state.staff)
+                                    handleMoveVisit()
+                                    setDefaultFlag()
+                                    this.setState({ staff: null })
+                                }}>{t("Да")}
+                                </button>
+                                <div style={{
+                                    height: "38px",
+                                    width: "1px",
+                                    backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                }}></div>
+                                <button className="approveFNo" onClick={() => {
+                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                    selectStaff(activeStaff)
+                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                    setScreen(6)
+                                    setDefaultFlag()
+                                    this.setState({ staff: null })
+                                }}>{t("Нет")}
+                                </button>
+                            </div>
+
                         </div>
 
                     </div>
                 )}
 
-                        <div>
-                            <div className="skip_employee-block">
-                                {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow"></div></p>}
-                                {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
-                            </div>
-                            <div className="title_block n staff_title">
-                                {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
-                                    <span className="prev_block" onClick={() => {
-                                        if (flagAllStaffs) {
-                                            setScreen(4);
-                                        } else if (isStartMovingVisit && newAppointments && newAppointments.length) {
-                                            setScreen(6);
-                                        } else {
-                                            clearStaff();
-                                            setDefaultFlag();
-                                            setScreen(0);
-                                            let { company } = match.params;
-                                            let url = company.includes('_') ? company.split('_')[0] : company
-                                            history.push(`/${url}`)
-                                        }
-                                    }}><span className="title_block_text">{t("Назад")}</span></span>
-                                )}
-                                <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : (info.companyTypeId === 4 ? t('Выбор врача') : t('Выберите сотрудника'))}</p>
-                            </div>
-                                <React.Fragment>
-                                    <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
-                                        {staffs && staffs.length > 0 && staffs
-                                            .filter(staff => {
-                                                const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];
-                                                return flagAllStaffs || (movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true)
-                                            })
-                                            .filter(staff => {
-                                                return isStartMovingVisit || (flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true)
-                                            })
-                                            .filter(staff => {
-                                                if (flagAllStaffs) {
-                                                    return timetableAvailable.filter(timetableItem =>
-                                                        timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
-                                                            return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
-                                                        })))
-                                                        .some(item => item.staffId === staff.staffId);
-                                                }
-                                                return true
-                                            })
-                                            .map((staff, idStaff) =>
-                                                <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
-                                                    onClick={(e) => this.handleSelectStaff(e, staff)}
-                                                    key={idStaff}
-                                                >
-                                                    <span className="staff_popup_item">
-                                                        <div className="img_container_block">
+                <div>
+                    <div className="skip_employee-block">
+                        {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow"></div></p>}
+                        {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
+                    </div>
+                    <div className="title_block n staff_title">
+                        {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
+                            <span className="prev_block" onClick={() => {
+                                if (flagAllStaffs) {
+                                    setScreen(4);
+                                } else if (isStartMovingVisit && newAppointments && newAppointments.length) {
+                                    setScreen(6);
+                                } else {
+                                    clearStaff();
+                                    setDefaultFlag();
+                                    setScreen(0);
+                                    let { company } = match.params;
+                                    let url = company.includes('_') ? company.split('_')[0] : company
+                                    history.push(`/${url}`)
+                                }
+                            }}><span className="title_block_text">{t("Назад")}</span></span>
+                        )}
+                        <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : (info.companyTypeId === 4 ? t('Выбор врача') : t('Выберите сотрудника'))}</p>
+                    </div>
+                    <React.Fragment>
+                        <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>
+                            {staffs && staffs.length > 0 && staffs
+                                .filter(staff => {
+                                    const activeServices = movingVisit ? services.filter(item => movingVisit.some(visit => item.serviceId === visit.serviceId)) : [];
+                                    return flagAllStaffs || (movingVisit ? (activeServices && activeServices.every(item => (item.staffs && item.staffs.some(localStaff => localStaff.staffId === staff.staffId)))) : true)
+                                })
+                                .filter(staff => {
+                                    return isStartMovingVisit || (flagAllStaffs ? selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => selectedServStaff.staffId === staff.staffId)) : true)
+                                })
+                                .filter(staff => {
+                                    if (flagAllStaffs) {
+                                        return timetableAvailable.filter(timetableItem =>
+                                            timetableItem.availableDays && timetableItem.availableDays.some(avDayItem => avDayItem.availableTimes.some(avTimeItem => {
+                                                return avTimeItem.startTimeMillis <= time && time <= avTimeItem.endTimeMillis
+                                            })))
+                                            .some(item => item.staffId === staff.staffId);
+                                    }
+                                    return true
+                                })
+                                .map((staff, idStaff) =>
+                                    <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
+                                        onClick={(e) => this.handleSelectStaff(e, staff)}
+                                        key={idStaff}
+                                    >
+                                        <span className="staff_popup_item">
+                                            <div className="img_container_block">
 
-                                                            <img className="img_container_staff"
-                                                                src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                                alt="" />
+                                                <img className="img_container_staff"
+                                                    src={staff.imageBase64 ? "data:image/png;base64," + staff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt="" />
 
-                                                            {/* <span className="staff_popup_name"> */}
-                                                            <div className="staff_popup-name-stars">
-                                                                <div className="staff_popup-name">
-                                                                    <p style={
-                                                                        {
-                                                                            letterSpacing: "0.3px",
-                                                                        }
-                                                                    }>{staff.firstName} {staff.lastName ? staff.lastName : ''}</p>
-                                                                    <div className="mobile_block mobile-visible">
-                                                                        <div className="staff-comments">
-                                                                            <img onClick={() => this.handleStaffCommentsClick(staff)} src={i_icon}
-                                                                            /></div>
-                                                                    </div>
-                                                                    <div className="mobile_block desktop-visible">
-                                                                        <div className="staff-comments">
-                                                                            <img onClick={() => this.handleStaffCommentsClick(staff)} src={i_icon}
-                                                                            /></div>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div>
-                                                                    {staff.rating ? (
-                                                                        <StarRatings
-                                                                            rating={staff.rating}
-                                                                            starHoverColor={'#ff9500'}
-                                                                            starRatedColor={'#ff9500'}
-                                                                            starDimension="20px"
-                                                                            starSpacing="0"
-                                                                        />
-                                                                    ) : <p style={{ fontSize: '13px', lineHeight: "20px", opacity: "0.5" }}>{t("Нет отзывов")}</p>}
-                                                                </div>
-                                                            </div>
+                                                {/* <span className="staff_popup_name"> */}
+                                                <div className="staff_popup-name-stars">
+                                                    <div className="staff_popup-name">
+                                                        <p style={
+                                                            {
+                                                                letterSpacing: "0.3px",
+                                                            }
+                                                        }>{staff.firstName} {staff.lastName ? staff.lastName : ''}</p>
+                                                        {/* <div  onClick={() => this.handleStaffCommentsClick(staff)} className="mobile_block mobile-visible">
+                                                            <div className="staff-comments">
+                                                                <img src={i_icon}
+                                                                /></div>
+                                                        </div> */}
+                                                        <div onClick={() => this.handleStaffCommentsClick(staff)} className="mobile_block desktop-visible">
+                                                            <div className="staff-comments">
+                                                                <img className="s" src={i_icon}
+                                                                /></div>
                                                         </div>
-                                                        {staff.description && <p style={{
-                                                            fontFamily: "Open Sans",
-                                                            fontStyle: "normal",
-                                                            fontWeight: "normal",
-                                                            fontSize: "13px",
-                                                            lineHeight: "20px",
-                                                            color: "#09093A",
-                                                            opacity: "0.5",
-                                                            overflow: "hidden",
-                                                            margin: "-21px 0px 0px 0px",
-                                                        }}>{staff.description} <br /></p>}
-                                                        {nearestTime && nearestTime.map((time, id) =>
-                                                            time.staffId === staff.staffId && time.availableDays.length !== 0 &&
-                                                            <React.Fragment>
-                                                                <div className="mobile-visible" key={'time' + id}>
-                                                                    <span>{t("Ближ. запись")}</span>
-                                                                    <div className="stars" style={{ textTransform: 'capitalize' }}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                                                </div>
+                                                    </div>
 
-                                                                <span className="nearest_appointment">{t("Ближайшая запись")} - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
 
-                                                            </React.Fragment>
-
-                                                        )}
-                                                        {nearestTime && !nearestTime.some((time, id) =>
-                                                            time.staffId === staff.staffId && time.availableDays.length !== 0
-
-                                                        ) && <div className="">
-                                                                <span style={{ fontSize: '13px', lineHeight: '20px', opacity: '0.5' }}>{t("Нет записи")}</span>
+                                                    <div>
+                                                        {staff.rating ? (
+                                                            <div style={{
+                                                                display: "flex",
+                                                            }}>
+                                                                <StarRatings
+                                                                    rating={staff.rating}
+                                                                    starHoverColor={'#ff9500'}
+                                                                    starRatedColor={'#ff9500'}
+                                                                    starDimension="19px"
+                                                                    starSpacing="3.5px"
+                                                                />
+                                                                <p className="rating_text">
+                                                                    &nbsp;{staff.rating}
+                                                                </p>
                                                             </div>
-                                                        }
+                                                        ) : <p style={{ fontSize: '13px', lineHeight: "20px", opacity: "0.5" }}>{t("Нет отзывов")}</p>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {staff.description && <p style={{
+                                                fontFamily: "Open Sans",
+                                                fontStyle: "normal",
+                                                fontWeight: "normal",
+                                                fontSize: "13px",
+                                                lineHeight: "20px",
+                                                color: "#09093A",
+                                                opacity: "0.5",
+                                                overflow: "hidden",
+                                                margin: "-21px 0px 0px 0px",
+                                            }}>{staff.description} <br /></p>}
+                                            {nearestTime && nearestTime.map((time, id) =>
+                                                time.staffId === staff.staffId && time.availableDays.length !== 0 &&
+                                                <React.Fragment>
+                                                    <div className="mobile-visible" key={'time' + id}>
+                                                        <span>{t("Ближ. запись")}</span>
+                                                        <div className="stars" style={{ textTransform: 'capitalize' }}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                                    </div>
 
-                                                        {/* </span> */}
-                                                    </span>
-                                                </li>
+                                                    <span className="nearest_appointment">{t("Ближайшая запись")} - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
+
+                                                </React.Fragment>
+
                                             )}
-                                    </ul>
-                                </React.Fragment>
-                        </div>
+                                            {nearestTime && !nearestTime.some((time, id) =>
+                                                time.staffId === staff.staffId && time.availableDays.length !== 0
+
+                                            ) && <div className="">
+                                                    <span style={{ fontSize: '13px', lineHeight: '20px', opacity: '0.5' }}>{t("Нет записи")}</span>
+                                                </div>
+                                            }
+
+                                            {/* </span> */}
+                                        </span>
+                                    </li>
+                                )}
+                        </ul>
+                    </React.Fragment>
+                </div>
                 {/* футер услуг */}
                 {selectedServices[0] && serviceInfo}
                 {/*  */}

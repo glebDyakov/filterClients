@@ -12,15 +12,29 @@ class TabTwo extends Component {
         this.state = {
             searchValue: '',
             openList: false,
+            catigor: [],
         }
     }
+    bag = [];
+    componentDidMount(){
+            this.setState({
+                catigor:this.bag,
+            })
+    }
+    componentWillReceiveProps(state,props){
 
+    }
     render() {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
-        const { searchValue, openList } = this.state;
-        const desctop=710;
-        const mob=709;
+        const { searchValue, openList, catigor } = this.state;
+
+        console.log("catigor")
+        console.log(catigor)
+        console.log(this.bag)
+
+        const desctop = 710;
+        const mob = 709;
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
@@ -92,7 +106,7 @@ class TabTwo extends Component {
                                             color: 'white',
                                             fontSize: `12px`,
                                             lineHeight: "18px",
-                                            fontWeight:"400",
+                                            fontWeight: "400",
                                         }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
@@ -101,7 +115,7 @@ class TabTwo extends Component {
                                         fontSize: "12px",
                                         lineHeight: "18px",
                                         letterSpacing: "0.1px",
-                                        fontWeight:"400",
+                                        fontWeight: "400",
                                         paddingLeft: `${padding_left}`,
                                     }} onClick={event => this.setState({
                                         openList: !openList,
@@ -229,7 +243,9 @@ class TabTwo extends Component {
                 {isServiceList ? serviceGroups.length > 0 && (
                     <React.Fragment>
                         <div className="service_list_items">
-                            {serviceGroups.map(serviceGroup => {
+                            {serviceGroups.map((serviceGroup, index) => {
+                                this.bag.push(0)
+                            
                                 let { services } = serviceGroup
                                 let condition =
                                     services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
@@ -262,10 +278,15 @@ class TabTwo extends Component {
 
                                 return condition && finalServices && finalServices.length > 0 && (
                                     <ul className="service_list">
-                                        <div className="service_list_name">
+                                        <div className="service_list_name" onClick={event => 
+                                            this.setState({
+                                                catigor:!catigor[index]
+                                            })}>
                                             <h3>{serviceGroup.name}</h3>
                                         </div>
-                                        <div className="service_items">
+                                        <div 
+                                        // className={!this.catigor[index] ? "service_items service_items_active" : "service_items"}
+                                        >
                                             {finalServices
                                                 .map((service, serviceKey) => {
                                                     let select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
@@ -378,6 +399,7 @@ class TabTwo extends Component {
 
                                                 )}
                                         </div>
+
                                     </ul>
                                 )
                             })

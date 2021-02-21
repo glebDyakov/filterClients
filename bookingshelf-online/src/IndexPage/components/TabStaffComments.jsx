@@ -32,87 +32,107 @@ class TabStaffComments extends PureComponent {
 
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
-
         return (
-            <div className="service_selection screen1 screen5">
-                <div className="title_block n">
+            <div className="service_selection">
+                <div className="title_block n data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen(1);
 
                     }}><span className="title_block_text">{t("Назад")}</span></span>
-                    <p className="modal_title">{t("Отзывы")}</p>
+                    <p className="modal_title">{t("Отзывы клиентов")}</p>
                 </div>
-                {!isLoading && (
-                    <React.Fragment>
-                        <div className="staff_popup staff_popup_large">
-                            <div className="staff_popup_item">
-                                <div className="img_container">
-                                    <img
-                                        src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        alt="" />
-                                    <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br />
-                                        <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span>
-                                        <StarRatings
-                                            rating={staffCommentsStaff.rating}
-                                            starHoverColor={'#ff9500'}
-                                            starRatedColor={'#ff9500'}
-                                            starDimension="18px"
-                                            starSpacing="0"
-                                        />
-                                    </span>
-                                </div>
+                <div className="comments">
+                    {!isLoading && (
+                        <React.Fragment>
+                            <div className="staff_popup staff_popup_large">
+                                <div className="staff_popup_item">
+                                    <div className="img_container">
 
-                            </div>
-                        </div>
-                        <ul style={{ marginTop: '20px' }} className={`staff_popup`}>
-                            {staffComments && staffComments.length > 0
-                                ? staffComments.map((staff) =>
-                                    <li className={('staff_comment selected')}>
-                                        <span className="staff_popup_item">
-                                            <div style={{ width: '100%' }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <p style={{ fontSize: '16px', fontWeight: 'bold' }}>{staff.clientName}</p>
-                                                </div>
+                                        <span className="staff_popup_name">
+                                            <img
+                                                src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                alt="" />
+                                            <p>
+                                                {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                            </p>
+                                            {/* <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span> */}
 
-                                                <div style={{ display: 'flex' }}>
+                                        </span>
+                                        {staffCommentsStaff.rating !== 0 ? (
+                                            <div className="comments_rating">
+                                                <p>Усредненный рейтинг:</p>
+                                                <div style={{
+                                                    display: "flex",
+                                                }}>
                                                     <StarRatings
-                                                        rating={staff.rating}
+                                                        rating={staffCommentsStaff.rating}
                                                         starHoverColor={'#ff9500'}
                                                         starRatedColor={'#ff9500'}
-                                                        starDimension="18px"
-                                                        starSpacing="0"
+                                                        starDimension="20px"
+                                                        starSpacing="3px"
                                                     />
-                                                    <p style={{ marginLeft: '6px' }}>{moment(staff.feedbackDate).format('DD MMMM YYYY, HH:mm')}</p>
+                                                    <p className="rating_text">
+                                                        &nbsp;{staffCommentsStaff.rating}
+                                                    </p>
+                                                </div>
 
-                                                </div>
-                                                <div style={{ marginTop: '6px' }}>
-                                                    <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
-                                                </div>
                                             </div>
-                                        </span>
-                                    </li>)
-                                : (
-                                    <div className="final-book">
-                                        <p style={{ fontSize: '18px' }}>
-                                            {t('Пока нет ни одного отзыва.')} <span
-                                                style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px' }}
+                                        ) : (
+                                                <div className="comments_rating">
+                                                    <p>Рейтинг отсутствует</p>
+                                                </div>
+                                            )
+                                        }
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <ul >
+                                {staffComments && staffComments.length > 0
+                                    ? staffComments.map((staff) =>
+                                        <li className="staff_popup_comment">
+                                            <p >{staff.clientName}</p>
+                                            <div style={{
+                                                    display: "flex",
+                                                }}>
+                                                <StarRatings
+                                                    rating={staff.rating}
+                                                    starHoverColor={'#ff9500'}
+                                                    starRatedColor={'#ff9500'}
+                                                    starDimension="17px"
+                                                    starSpacing="0px"
+                                                />
+                                                <p className="rating_text">&nbsp;{staff.rating}</p>
+                                            </div>
+                                            <span >
+                                                <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
+                                            </span>
+                                        </li>)
+                                    : (
+                                        <div className="final-book">
+                                            <p >
+                                                {t('Нет ни одного отзыва')}
+                                            </p>
+                                            <span
                                                 onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
                                             </span>
-                                        </p>
-                                    </div>
-                                )}
-                        </ul>
-                    </React.Fragment>
-                )}
+                                        </div>
+                                    )}
+                            </ul>
+                        </React.Fragment>
+                    )}
 
-                <div style={{ display: isLoading ? 'none' : 'block', marginBottom: '50px' }}>
-                    <Paginator
-                        finalTotalPages={staffCommentsTotalPages}
-                        onPageChange={this.handlePageChange}
-                    />
+                    {/* <div style={{ display: isLoading ? 'none' : 'block', marginBottom: '50px' }}>
+                        <Paginator
+                            finalTotalPages={staffCommentsTotalPages}
+                            onPageChange={this.handlePageChange}
+                        />
+                    </div>
+
+                    <p className="skip_employee" onClick={() => setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p> */}
                 </div>
-
-                <p className="skip_employee" onClick={() => setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p>
             </div>
         );
     }
