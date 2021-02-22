@@ -22,12 +22,12 @@ class TabFive extends PureComponent {
 
   render() {
 
-    const { setScreen, info, changeBackToRandomStaff, backToRandomStaff, refreshTimetable, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
+    const { setScreen, info, changeBackToRandomStaff, backToRandomStaff,selectedTime: time, refreshTimetable, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
       group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
     const { enteredCode } = this.state;
     const desctop = 710;
     const mob = 709;
-    let currentDay = moment(selectedDay).format('DD MMMM YYYY, h:mm');
+    let currentDay = moment(selectedDay).format('DD MMMM YYYY,');
     if (!clientActivationId) {
       $('.phones_country').css({ display: 'flex' })
     }
@@ -54,7 +54,7 @@ class TabFive extends PureComponent {
               <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
               <div className="last_list_name">
                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                <p>{currentDay}</p>
+                <p>{currentDay} {moment(time).format('LT')}</p>
               </div>
             </div>
             <p className="desktop_visible" style={{

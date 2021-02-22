@@ -13,8 +13,8 @@ html, body, h1, html h2, h3, h4, h5, h6, html p, ol, ul, li, pre, code, address,
 html label {
     display: inline;
 }
-.langNotActive{
-    overflow: hidden;
+.leng_btn.langNotActive{
+    opacity: 0
 }
 /* a {
     text-decoration: none;
@@ -121,7 +121,9 @@ q:before, q:after {
     height: 98px;
     border-bottom: 1px solid rgba(9, 9, 58, 0.1);
 }
-
+.modal_window_text img:hover{
+    cursor: pointer;
+}
 .modal_window_text .modal_title {
     text-align: center;
     font-size: 18px;
@@ -221,7 +223,27 @@ q:before, q:after {
     z-index: 995;
     background-color: #FFF;
 }
-
+.minus_rotate{
+    transform: rotate(90deg);
+    margin-top: -2px;
+}
+.minus{
+    width:16px ;
+    height: 2px;
+    background-color: rgba(172, 172, 172, 1);
+}
+.minus_hover{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    margin: 0px -7px 27px 0px;
+}
+.minus_hover:hover{
+cursor: pointer;
+}
+    
 .modal_menu p a:hover {
     text-decoration: underline;
 }
@@ -366,6 +388,7 @@ q:before, q:after {
     justify-content: space-between;
     align-items: center;
     margin: 3px 0px 0px 0px;
+    
 }
 
 .header-lang p {
@@ -389,13 +412,6 @@ q:before, q:after {
     background: #09093A;
     opacity: 0.1;
     border-radius: 5px;
-}
-
-.modal_menu .firm_name.not-selected {
-    /* width: calc(100% - 120px);
-    border: none;
-    justify-content: center;
-    padding: 0; */
 }
 
 .place-card-hide {
@@ -1137,8 +1153,6 @@ a {
 }
 
 .service_list_name {
-    max-width: 708px;
-    margin: auto;
     margin-bottom: 22px;
 }
 
@@ -1446,13 +1460,14 @@ overflow: visible !important;  */
     top: 75px;
     background: #FFFFFF;
     box-shadow: 0px 5px 15px rgba(18, 38, 63, 0.12);
-    transition: height 0.4s linear;
+    transition: height 0.1s linear;
     border-radius: 3px;
+    z-index: 1500;
 }
 
-.header-lang:hover .leng_list {
-    height: 127px !important;
-    overflow: visible !important;
+.leng_list.leng_list_active {
+    height: 127px ;
+    overflow: visible ;
 }
 
 .header-lang:hover {
@@ -1601,12 +1616,14 @@ overflow: visible !important;  */
     height: auto;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 1s linear;
+    transition: max-height 0.4s linear;
+    margin-bottom: -9px;
+    margin-top: -9px;
 }
 
 .service_items.service_items_active {
     overflow: visible;
-    max-height: 4000px !important;
+    max-height: 1000px !important;
 }
 
 .service_items li {
@@ -2049,6 +2066,9 @@ overflow: visible !important;  */
 }
 
 .last_list_name p {
+    font-weight: normal;
+font-size: 13px;
+line-height: 18px;
     opacity: 0.5;
 }
 
@@ -2881,6 +2901,10 @@ overflow: visible !important;  */
     }
     .modal_title {
         font-size: 14px;
+    }
+    .leng_list{
+        left: 101px;
+        top: 87px;
     }
 }
 

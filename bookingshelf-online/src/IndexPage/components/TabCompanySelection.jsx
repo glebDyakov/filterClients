@@ -69,7 +69,7 @@ class TabCompanySelection extends PureComponent {
                                     </div>
                                 </div>
 
-                                <button className="next_block-btn desktop_visible"> Выбрать</button>
+                                <button className="next_block-btn desktop_visible"> {t("Выбрать")}</button>
 
                             </span>
                             <div className="stars desktop_invisible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
@@ -88,7 +88,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <button className="next_block-btn desktop_invisible"> Выбрать</button>
+                            <button className="next_block-btn desktop_invisible"> {t("Выбрать")}</button>
                         </li>
                     )}
                 </ul>

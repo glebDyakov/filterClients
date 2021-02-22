@@ -6,6 +6,7 @@ import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
+import cansel from "../../../public/img/icons/cansel_black.svg";
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -19,8 +20,8 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
-        const desctop=710;
-        const mob=709;
+        const desctop = 710;
+        const mob = 709;
         const availableTimes = []
         let currentDay = moment(selectedDay).format('MMMM,DD');
         let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
@@ -36,7 +37,7 @@ class TabFour extends PureComponent {
             })
         }
 
-        if (!this.state.arrayTime && timetableAvailable) {
+        if (timetableAvailable) {
             timetableAvailable.map(timetableItem =>
                 timetableItem.availableDays && timetableItem.availableDays.map((workingStaffElement, i) =>
                     parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x')) === parseInt(moment(selectedDay).startOf('day').format('x')) &&
@@ -78,8 +79,8 @@ class TabFour extends PureComponent {
                                     )
                                 })
                             }
-                            //}
-                        })
+                        }
+                        )
                     }
                     )
                 )
@@ -144,11 +145,11 @@ class TabFour extends PureComponent {
                                             fontWeight: "400",
                                         }} onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}: {selectedServices.length} <img 
-                                        style={{
-                                            marginLeft:"3px",
-                                            marginTop:"0px"
-                                         }}src={arrow_down} alt="arrou"></img></p>
+                                        })}>{t("Услуги")}: {selectedServices.length} <img
+                                            style={{
+                                                marginLeft: "3px",
+                                                marginTop: "0px"
+                                            }} src={arrow_down} alt="arrou"></img></p>
                                     </div>
                                     <div className="time-footer" style={{
                                         // marginRight: `${margin_right}`
@@ -292,23 +293,28 @@ class TabFour extends PureComponent {
                     {serviceInfo && serviceInfo}
 
                 </div>
-                {
-                    !this.state.arrayTime && (
-                        <div className="choise_time">
-                            {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
-                        </div>
-                    )
-                }
-                {this.state.arrayTime && (
-                    <div className="approveF">
+
+
+                {this.state.arrayTime ?
+                    (<div className="approveF">
                         <div className="modal_window_block">
-                            <p className="modal_title">{t("Перенести визит?")}</p>
-                            <div className="modal_window">
+                            <div className="modal_window_text">
+                                <p className="modal_title">{t("Перенести визит?")}</p>
+                                <img src={cansel} onClick={e => this.setState({
+                                    arrayTime: 0,
+                                })} alt="cansel" />
+                            </div>
+                            <div className="modal_window_btn">
                                 <button className="approveFYes" onClick={() => {
                                     setTime(this.state.arrayTime, true)
                                     this.setState({ arrayTime: 0 })
                                 }}>{t("Да")}
                                 </button>
+                                <div style={{
+                                    height: "38px",
+                                    width: "1px",
+                                    backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                }}></div>
                                 <button className="approveFNo" onClick={() => {
                                     const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
                                     selectStaff(activeStaff)
@@ -320,9 +326,13 @@ class TabFour extends PureComponent {
                                 </button>
                             </div>
                         </div>
+                    </div>) : ""
 
-                    </div>
-                )}
+                }
+
+                <div className="choise_time">
+                            {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                        </div>
             </div>
         );
     }

@@ -29,10 +29,10 @@ class TabSix extends PureComponent {
     }
     render() {
 
-        const { selectedStaff, selectedService, selectedServices, selectedDay, selectedTime, newAppointments, getDurationForCurrentStaff,
+        const { selectedStaff, selectedService, selectedServices, selectedDay,selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        let currentDay = moment(selectedDay).format('DD MMMM YYYY, h:mm');
+        let currentDay = moment(selectedDay).format('DD MMMM YYYY,');
         let serviceInfo = null
         if (selectedServices[0]) {
             let priceFrom = 0;
@@ -51,7 +51,7 @@ class TabSix extends PureComponent {
                             <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
                             <div className="last_list_name">
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                                <p>{currentDay}</p>
+                                <p>{currentDay} {moment(time).format('LT')}</p>
                             </div>
                         </div>
                         <p className="desktop_visible" style={{
