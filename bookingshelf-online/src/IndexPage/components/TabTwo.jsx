@@ -15,24 +15,11 @@ class TabTwo extends Component {
             catigor: [],
         }
     }
-    bag = [];
-    componentDidMount(){
-            this.setState({
-                catigor:this.bag,
-            })
-    }
-    componentWillReceiveProps(state,props){
-
-    }
+    startOpenservice = false;
     render() {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor } = this.state;
-
-        console.log("catigor")
-        console.log(catigor)
-        console.log(this.bag)
-
         const desctop = 710;
         const mob = 709;
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
@@ -244,8 +231,7 @@ class TabTwo extends Component {
                     <React.Fragment>
                         <div className="service_list_items">
                             {serviceGroups.map((serviceGroup, index) => {
-                                this.bag.push(0)
-                            
+
                                 let { services } = serviceGroup
                                 let condition =
                                     services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
@@ -275,17 +261,27 @@ class TabTwo extends Component {
                                 if (condition && info && finalServices && finalServices.length > 0) {
                                     finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                 }
+                                if (finalServices) {
+                                    if (finalServices.length >= 10) {
+                                        this.startOpenservice = true
+                                    }
+                                }
 
                                 return condition && finalServices && finalServices.length > 0 && (
                                     <ul className="service_list">
-                                        <div className="service_list_name" onClick={event => 
+                                        <div className="service_list_name" onClick={event => {
+                                            const newArray = catigor;
+                                            newArray[index] = !newArray[index]
                                             this.setState({
-                                                catigor:!catigor[index]
-                                            })}>
+                                                catigor: newArray.concat()
+                                            })
+                                        }
+                                        }
+                                        >
                                             <h3>{serviceGroup.name}</h3>
                                         </div>
-                                        <div 
-                                        // className={!this.catigor[index] ? "service_items service_items_active" : "service_items"}
+                                        <div
+                                            className={this.startOpenservice ? (catigor[index] ? "service_items service_items_active" : "service_items") : (!catigor[index] ? "service_items service_items_active" : "service_items")}
                                         >
                                             {finalServices
                                                 .map((service, serviceKey) => {

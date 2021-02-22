@@ -40,8 +40,8 @@ class TabCompanySelection extends PureComponent {
 
         return (
             <div className="service_selection screen1">
-                <div className="title_block n affiliate_title">
-                    <p className="modal_title">{t("Выберите филиал")}</p>
+                <div className="title_block n affiliate_title" >
+                    <p className="modal_title" >{t("Выберите филиал")}</p>
                     <div className="desktop_invisible">
                         <img className="media_search" alt="search" src={search_icon} />
                     </div>

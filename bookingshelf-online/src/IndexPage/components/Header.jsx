@@ -14,6 +14,7 @@ import rus_img from "../../../public/img/icons/rus.jpg";
 import eng_img from "../../../public/img/icons/eng.jpg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
+import { withTranslation } from "react-i18next";
 // import { findSourceMap } from 'module';
 
 class Header extends PureComponent {
@@ -23,10 +24,19 @@ class Header extends PureComponent {
         this.state = {
             burger: true,
             mobile: false,
+            currentLang: this.props.i18n.language,
         };
         this.changeBurger = this.changeBurger.bind(this);
+        this.changeLang = this.changeLang.bind(this);
     }
+    changeLang(lang) {
+        const { i18n } = this.props;
 
+        i18n.changeLanguage(lang);
+        this.setState({
+            currentLang: lang,
+        })
+    }
     changeBurger() {
         this.setState({
             burger: !this.state.burger,
@@ -35,12 +45,18 @@ class Header extends PureComponent {
     render() {
 
         const { info, screen, selectedSubcompany } = this.props;
-        const { burger, mobile } = this.state
+        const { burger, mobile, currentLang } = this.state
+        const currentTextLeng = this.props.i18n.language.toUpperCase();
         const desctop = 710;
         const mob = 709;
-        console.log(info)
+        let hiddenMenu;
+
+        mobile ? hiddenMenu = "hidden" : hiddenMenu = "visible";
         return (
-            <div className="modal_menu">
+            <div className="modal_menu"
+                style={{
+                    overflow: `${hiddenMenu}`,
+                }}>
                 <React.Fragment>
 
                     <MediaQuery maxWidth={mob}>
@@ -53,8 +69,8 @@ class Header extends PureComponent {
                                 <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
                             </div>
                         </div>
-                        <div className="header-lang">
-                            <p>RU</p>
+                        <div className="header-lang" >
+                            <p>{currentTextLeng}</p>
                             <img src={arrow_down} alt="arrou"></img>
                         </div>
                         <div className="burger_menu_btn_off">
@@ -71,19 +87,20 @@ class Header extends PureComponent {
                                     <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
                                 </div>
                                 <div className="header-lang">
-                                    <p>RU</p>
+                                    <p>{currentTextLeng}</p>
                                     <img src={arrow_down_white} alt="arrou"></img>
                                     <div className="leng_list">
-                                        <div className="leng_list_item">
+                                        <div className="leng_list_item" onClick={(e) => changeLang("ru")}>
                                             <img src={rus_img} alt="" />
                                             <p>Русский</p>
-                                            <div className="leng_btn"></div>
+                                            <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}
+                                            ></div>
                                         </div>
-                                        <div className="leng_list_item">
+                                        <div className="leng_list_item" onClick={(e) => changeLang("en")}>
                                             <img src={eng_img} alt="" />
                                             <p>English</p>
                                             <div></div>
-                                            <div className="leng_btn"></div>
+                                            <div className={currentLang === "en" ? "leng_btn" : " leng_btn langNotActive"}></div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,19 +151,19 @@ class Header extends PureComponent {
                                 </div>
                             </div>
                             <div className="header-lang">
-                                <p>RU</p>
+                                <p>{currentTextLeng}</p>
                                 <img src={arrow_down} alt="arrou"></img>
                                 <div className="leng_list">
-                                    <div className="leng_list_item">
+                                    <div className="leng_list_item" onClick={(e) => this.changeLang("ru")}>
                                         <img src={rus_img} alt="" />
                                         <p>Русский</p>
-                                        <div className="leng_btn"></div>
+                                        <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}></div>
                                     </div>
-                                    <div className="leng_list_item">
+                                    <div className="leng_list_item" onClick={(e) => this.changeLang("en")}>
                                         <img src={eng_img} alt="" />
                                         <p>English</p>
                                         <div></div>
-                                        <div className="leng_btn"></div>
+                                        <div className={currentLang === "en" ? "leng_btn" : "leng_btn langNotActive"}></div>
                                     </div>
                                 </div>
                             </div>
@@ -175,4 +192,4 @@ class Header extends PureComponent {
         );
     }
 }
-export default Header;
+export default withTranslation("common")(Header);

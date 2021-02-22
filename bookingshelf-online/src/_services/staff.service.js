@@ -10,6 +10,7 @@ export const staffService = {
     getServiceGroups,
     getSubcompanies,
     getInfo,
+    getInfoSocial,
     getStaffComments,
     clientLogin,
     createComment,
@@ -47,6 +48,14 @@ function getInfo(id) {
     };
 
     return fetch(`${origin}${config.apiUrl}/${id}`, requestOptions).then(handleResponse);
+}
+function getInfoSocial(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`${origin}${config.apiUrl}/${id}/socialnetwork`, requestOptions).then(handleResponse);
 }
 
 function getStaffComments(companyId, staffId, pageNum = 1) {
