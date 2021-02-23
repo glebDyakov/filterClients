@@ -53,7 +53,7 @@ class ServiceInfo extends Component {
     }
   }
 
-  getServiceProducs = (data) => data.map(({ productName, amount, unitName }) => <> {`${productName}, ${amount} ${this.getUnit(unitName)};`} </>)
+  getServiceProducs = (data) => data.map(({ productName, amount, unitName }, index) => <React.Fragment key={index}> {`${productName}, ${amount} ${this.getUnit(unitName)};`} </React.Fragment>)
 
   render() {
     const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup, t, company } = this.props;
