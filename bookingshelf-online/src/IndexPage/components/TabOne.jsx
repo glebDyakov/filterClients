@@ -63,7 +63,6 @@ class TabOne extends PureComponent {
     }
 
     handleSelectStaff(e, staff) {
-        console.log(e.target.className)
         const { selectStaff, forceUpdateStaff, flagAllStaffs, setScreen, isStartMovingVisit } = this.props;
         if (isStartMovingVisit && flagAllStaffs) {
             forceUpdateStaff(staff)
@@ -79,7 +78,6 @@ class TabOne extends PureComponent {
     render() {
         const { t, staffId, isLoading, selectedDay, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
         const { openList } = this.state;
-        console.log(t("Работает на"))
         const desctop = 710;
         const mob = 709;
         let serviceInfo = null;
@@ -172,8 +170,8 @@ class TabOne extends PureComponent {
                             {openList && (
                                 <div className="service_list_block">
                                     <div className="setvice_list_items">
-                                        {selectedServices.map((element) =>
-                                            <div className="setvice_list_item">
+                                        {selectedServices.map((element,index ) =>
+                                            <div key={index} className="setvice_list_item">
                                                 <div className="cansel_btn_small"> </div>
                                                 <p>{element.name}</p>
                                             </div>
@@ -199,8 +197,8 @@ class TabOne extends PureComponent {
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
                                             <p>Услуги:</p>
-                                            {selectedServices.map((element) =>
-                                                <div className="setvice_list_item">
+                                            {selectedServices.map((element,index) =>
+                                                <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
                                                     <p>{element.name}</p>
                                                 </div>
@@ -297,7 +295,7 @@ class TabOne extends PureComponent {
                         <div className="modal_window_block">
                             <div className="modal_window_text">
                                 <p className="modal_title">{t("Перенести визит?")}</p>
-                                <img src={cansel} onClick={e=>this.setState({ staff: null })} alt="cansel" />
+                                <img src={cansel} onClick={e => this.setState({ staff: null })} alt="cansel" />
                             </div>
                             <div className="modal_window_btn">
                                 <button className="approveFYes" onClick={() => {
@@ -427,7 +425,7 @@ class TabOne extends PureComponent {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {staff.description && <p style={{
+                                            {staff.description ? (<p style={{
                                                 fontFamily: "Open Sans",
                                                 fontStyle: "normal",
                                                 fontWeight: "normal",
@@ -437,7 +435,18 @@ class TabOne extends PureComponent {
                                                 opacity: "0.5",
                                                 overflow: "hidden",
                                                 margin: "-21px 0px 0px 0px",
-                                            }}>{staff.description} <br /></p>}
+                                            }}>{staff.description}</p>)
+                                                : (<p style={{
+                                                    fontFamily: "Open Sans",
+                                                    fontStyle: "normal",
+                                                    fontWeight: "normal",
+                                                    fontSize: "13px",
+                                                    lineHeight: "20px",
+                                                    color: "#09093A",
+                                                    opacity: "0.5",
+                                                    overflow: "hidden",
+                                                    margin: "-21px 0px 0px 0px",
+                                                }}>{t("Нет описания")}</p>)}
                                             {nearestTime && nearestTime.map((time, id) =>
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0 &&
                                                 <React.Fragment>

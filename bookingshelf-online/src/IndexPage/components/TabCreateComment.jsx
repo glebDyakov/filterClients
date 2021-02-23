@@ -198,16 +198,16 @@ class TabCreateComment extends PureComponent {
                                 {tab === 'login_tab' ? (
                                     <div className="comment_sms_btn_block">
                                         <button
-                                            className=" comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>Вход</button>
+                                            className=" comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>{t("Вход")}</button>
                                         <button
-                                            className="comment_sms_btn" onClick={() => this.updateTab('sms_tab')}>Sms авторизация</button>
+                                            className="comment_sms_btn" onClick={() => this.updateTab('sms_tab')}>{t("Sms авторизация")}</button>
                                         <img onClick={() => this.updateTab('sms_tab')} src={skip_arrow} alt="" />
                                     </div>) : (
                                         <div className="comment_sms_btn_block">
                                             <button className="comment_sms_btn_active" onClick={() => this.updateTab('sms_tab')}
-                                            >Sms авторизация</button>
+                                            >{t("Sms авторизация")}</button>
                                             <button className="comment_sms_btn" onClick={() => this.updateTab('login_tab')}
-                                            >Вход</button>
+                                            >{t("Вход")}</button>
                                             <img onClick={() => this.updateTab('login_tab')} src={skip_arrow} alt="" />
                                         </div>
                                     )}
@@ -228,7 +228,7 @@ class TabCreateComment extends PureComponent {
 
                                                     <p>{t("Персональный пароль")}</p>
                                                     <input  className="tel" type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
-                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>SMS авторизации</a><img src={skip_arrow} alt="" /> </span>
+                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a><img src={skip_arrow} alt="" /> </span>
                                                     {clientLoginMessage && (
                                                         <p style={{
                                                             display: 'flex',
@@ -261,7 +261,10 @@ class TabCreateComment extends PureComponent {
                                                             getIsValidPhone={isValidSendPasswordPhone => this.setState({ isValidSendPasswordPhone })}
                                                         />
                                                     </div>
-                                                    <span>
+                                                    <span style={{
+                                                        marginTop:"0px",
+                                                        marginBottom:"22px"
+                                                    }}>
                                                         {t("Введите номер телефона, на него будет отправлено SMS с паролем для входа.")}
                                                     </span>
                                                     {commentPassword && (
@@ -276,7 +279,7 @@ class TabCreateComment extends PureComponent {
                                                         </p>
                                                     )}
                                                     <input
-                                                      className={" comments_book_button" }
+                                                      className={" comments_book_button comments_sub_btn" }
                                                         disabled={!isValidSendPasswordPhone || sendSmsTimer}
                                                         type="submit" value={t("Отправить")} onClick={this.handleSendPassword}
                                                     />

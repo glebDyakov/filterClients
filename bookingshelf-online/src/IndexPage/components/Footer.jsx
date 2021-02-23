@@ -19,17 +19,8 @@ class Footer extends PureComponent {
         const { t } = this.props;
         return (
             <div className="footer_modal d-flex justify-content-between align-items-center px-2">
-                <p>{t("Программа онлайн записи")} <a href="https://online-zapis.com"
+                <p>{t("Программа онлайн записи")} <a rel="nofollow" href="https://online-zapis.com"
                     target="_blank">Online-zapis.com</a></p>
-
-                {/* <select onChange={(e) => {
-                    this.changeLang(e.target.value)
-                }} value={this.props.i18n.language.toLowerCase() } className="custom-select">
-                    <option value="ru">RU</option>
-                    <option value="en">EN</option>
-                    <option value="uk">UA</option>
-                    <option value="pl">PL</option>
-                </select> */}
             </div>
         );
     }

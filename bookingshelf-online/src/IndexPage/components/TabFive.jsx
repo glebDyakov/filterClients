@@ -63,7 +63,7 @@ class TabFive extends PureComponent {
             }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
           </div>
           <div className="last_list_services">
-            <p>Список услуг:</p>
+            <p>{t("Список услуг:")}</p>
             {selectedServices.map((service, id) => (
               <p>{id + 1}. <span> {service.name}&nbsp;</span>
                 <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
@@ -71,7 +71,7 @@ class TabFive extends PureComponent {
             ))}
           </div>
           <div className="last_list_price">
-            <p>Итого:</p>
+            <p>{t("Итого:")}</p>
             <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
             <span>{selectedServices[0] && selectedServices[0].currency}</span>
           </div>
@@ -141,7 +141,7 @@ class TabFive extends PureComponent {
                         />
 
                       </div>
-                      <span>На этот номер вы получите SMS с кодом <br /> подтверждения и информацию о записи</span>
+                      <span> {t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span>
                     </div>
 
                     {info.companyTypeId === 2 && (
@@ -247,8 +247,8 @@ class TabFive extends PureComponent {
                   }
                 }} />
             <p>
-              Нажимая кнопку записаться, вы соглашаетесь<br />
-            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp; 
+              <a rel="nofollow" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
             </p>
           </div>
         </MediaQuery>
@@ -257,8 +257,8 @@ class TabFive extends PureComponent {
           <div className="specialist">
             <div className="last_footer_block">
               <p>
-                Нажимая кнопку записаться, вы соглашаетесь<br />
-            с <a href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp; 
+              <a rel="nofollow" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
               </p>
               <input
                 className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}

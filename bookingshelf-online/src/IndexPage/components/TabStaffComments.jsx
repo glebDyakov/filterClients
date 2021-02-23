@@ -60,7 +60,7 @@ class TabStaffComments extends PureComponent {
                                         </span>
                                         {staffCommentsStaff.rating !== 0 ? (
                                             <div className="comments_rating">
-                                                <p>Усредненный рейтинг:</p>
+                                                <p>{t("Усредненный рейтинг:")}</p>
                                                 <div style={{
                                                     display: "flex",
                                                 }}>
@@ -79,7 +79,7 @@ class TabStaffComments extends PureComponent {
                                             </div>
                                         ) : (
                                                 <div className="comments_rating">
-                                                    <p>Рейтинг отсутствует</p>
+                                                    <p>{t("Рейтинг отсутствует")}</p>
                                                 </div>
                                             )
                                         }

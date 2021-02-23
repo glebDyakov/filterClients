@@ -60,7 +60,7 @@ class TabSix extends PureComponent {
                         }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
                     </div>
                     <div className="last_list_services">
-                        <p>Список услуг:</p>
+                        <p>{t("Список услуг:")}</p>
                         {selectedServices.map((service, id) => (
                             <p>{id + 1}. <span> {service.name}&nbsp;</span>
                                 <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
@@ -68,7 +68,7 @@ class TabSix extends PureComponent {
                         ))}
                     </div>
                     <div className="last_list_price">
-                        <p>Итого:</p>
+                        <p>{t("Итого:")}</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                     </div>
@@ -91,7 +91,7 @@ class TabSix extends PureComponent {
                             //if (!isStartMovingVisit) {
                             refreshTimetable()
                             //}
-                        }}><span className="title_block_text"><a href={`/online/${this.props.match.params.company}`} onClick={() => {
+                        }}><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
                             this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                         }} className="title_block_text" >{t("Создать новую запись")}</a></span>
                         </span>
@@ -102,7 +102,7 @@ class TabSix extends PureComponent {
                         <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                     </div>
 
-                    <span><p>Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.</p></span>
+                    <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
 
                     {info && info.appointmentMessage && <p style={{
                         color: 'red',
@@ -128,7 +128,7 @@ class TabSix extends PureComponent {
                                 _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
                             }} />
                         }
-                        <input type="submit" className="cansel-visit" value="Отменить визит" onClick={() => this.onCancelVisit()} />
+                        <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                     </div>
                     {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                         <button className="approveFYes" onClick={() => {

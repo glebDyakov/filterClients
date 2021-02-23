@@ -3,7 +3,6 @@ import { staffActions } from "../../_actions";
 import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
 import { withTranslation } from "react-i18next";
-import search_icon from "../../../public/img/icons/header-search.svg";
 
 
 class TabCompanySelection extends PureComponent {
@@ -42,10 +41,6 @@ class TabCompanySelection extends PureComponent {
             <div className="service_selection screen1">
                 <div className="title_block n affiliate_title" >
                     <p className="modal_title" >{t("Выберите филиал")}</p>
-                    <div className="desktop_invisible">
-                        <img className="media_search" alt="search" src={search_icon} />
-                    </div>
-
                 </div>
                 <ul className={` affiliate`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
