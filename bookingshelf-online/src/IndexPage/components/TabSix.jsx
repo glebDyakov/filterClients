@@ -32,7 +32,7 @@ class TabSix extends PureComponent {
         const { selectedStaff, selectedService, selectedServices, selectedDay,selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        let currentDay = moment(selectedDay).format('DD MMMM YYYY,');
+        const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
         let serviceInfo = null
         if (selectedServices[0]) {
             let priceFrom = 0;
@@ -78,9 +78,7 @@ class TabSix extends PureComponent {
         return (
             <div className="service_selection final-screen">
                 <div className="last_list">
-
-                    {serviceInfo && serviceInfo}
-
+                    {serviceInfo}
                 </div>
                 <div className="final-screen-block">
 

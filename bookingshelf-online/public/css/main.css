@@ -1039,12 +1039,7 @@ a {
 .staff_popup li:hover{
     cursor: pointer;
 }
-/* .desktop-visible {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    flex-basis: auto;
-} */
+
 .comments_book_button.comments_sub_btn{
     background-position-x: 118px;
 }

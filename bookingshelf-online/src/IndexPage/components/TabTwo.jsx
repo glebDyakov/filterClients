@@ -301,8 +301,8 @@ class TabTwo extends Component {
                             <div className="service_list_items">
                                 {serviceGroups.map((serviceGroup, index) => {
 
-                                    let { services } = serviceGroup
-                                    let condition =
+                                    const { services } = serviceGroup
+                                    const condition =
                                         services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
                                         flagAllStaffs
 
@@ -378,7 +378,7 @@ class TabTwo extends Component {
                                                 >
                                                     {finalServices
                                                         .map((service, serviceKey) => {
-                                                            let select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
+                                                            const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
 
                                                             if (select) {
                                                                 return <li

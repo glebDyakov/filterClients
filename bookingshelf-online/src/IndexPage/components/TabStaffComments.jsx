@@ -23,7 +23,7 @@ class TabStaffComments extends PureComponent {
     }
 
     handlePageChange(data) {
-        const { company } = this.props.match.params;
+        let { company } = this.props.match.params;
         const { staffCommentsStaff } = this.props;
         const { selected } = data;
         const currentPage = selected + 1;

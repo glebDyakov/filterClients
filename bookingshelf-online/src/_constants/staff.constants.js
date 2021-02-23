@@ -80,3 +80,43 @@ export const staffConstants = {
 
     CHANGE_LANG: 'CHANGE_LANG'
 };
+export const requestConstants = {
+    DEFAULT_REQUEST_OPTIONS_GET: {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    },
+    DEFAULT_REQUEST_OPTIONS_DELETE: {
+        method: 'DELETE'
+    },
+    DEFAULT_REQUEST_OPTIONS_PATCH: function (time, staffId, coStaffs) {
+        return {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                coStaffs,
+                appointmentTimeMillis: time,
+                staffId,
+                adminApproved: true,
+                adminMoved: true,
+                approved: true,
+                moved: true,
+                movedOnline: true
+            }),
+            withCredentials: true
+        }
+    },
+    DEFAULT_REQUEST_OPTIONS_POST_JSON: function (params) {
+        return {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        }
+    },
+    DEFAULT_REQUEST_OPTIONS_POST: function (params) {
+        return {
+            method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            body: params
+        }
+    },
+};

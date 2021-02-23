@@ -27,7 +27,7 @@ class TabFive extends PureComponent {
     const { enteredCode } = this.state;
     const desctop = 710;
     const mob = 709;
-    let currentDay = moment(selectedDay).format('DD MMMM YYYY,');
+    const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
     if (!clientActivationId) {
       $('.phones_country').css({ display: 'flex' })
     }
@@ -99,7 +99,7 @@ class TabFive extends PureComponent {
         </div>
         <div className="last_list">
 
-          {serviceInfo && serviceInfo}
+          {serviceInfo}
 
         </div>
         {clientActivationId ? (

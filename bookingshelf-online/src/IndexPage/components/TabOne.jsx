@@ -9,6 +9,7 @@ import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
+import {culcDay} from "../../_helpers/data-calc"
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -82,12 +83,8 @@ class TabOne extends PureComponent {
         const mob = 709;
         let serviceInfo = null;
 
-        let currentDay = moment(selectedDay).format('MMMM,DD');
-        let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
-        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
-        currentDay = currentDay.split(",")
-        currentDay = currentDay.reverse()
-        currentDay = currentDay.join(" ")
+        let currentDay = culcDay(selectedDay,"desctop") ;
+        let currentDayMob = culcDay(selectedDay,"mob");
 
         let sizeWords = "36px";
         let margin_right = "22px";

@@ -11,7 +11,7 @@ class TabCompanySelection extends PureComponent {
         this.getPlace = this.getPlace.bind(this);
     }
     componentDidMount() {
-        let { company } = this.props.match.params
+        const { company } = this.props.match.params
 
         this.props.dispatch(staffActions.getInfo(company, true));
     }

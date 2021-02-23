@@ -57,7 +57,7 @@ class Header extends PureComponent {
 
         if (this.state.langList) {
             event.path.forEach(element => {
-                if (element.className == "header-lang") { flagLang = true }
+                if (element.className === "header-lang") { flagLang = true }
             });
             if (!flagLang) {
                 this.setState({
@@ -67,8 +67,8 @@ class Header extends PureComponent {
         }
         if (this.state.burger) {
             event.path.forEach(element => {
-                if (element.className == "burger_menu active" ) { flagBurger = true }
-                if (element.className == "burger_menu_btn_off" ) { burgerBtn = true }
+                if (element.className === "burger_menu active" ) { flagBurger = true }
+                if (element.className === "burger_menu_btn_off" ) { burgerBtn = true }
             });
 
             if (!flagBurger && !burgerBtn) {
@@ -79,8 +79,11 @@ class Header extends PureComponent {
         }
 
     }
-    componentDidUpdate() {
+    componentDidMount(){
         document.addEventListener('click', this.outsideClickListener)
+    }
+    componentWillUnmount() {
+        document.removeEventListener('click', this.outsideClickListener)  
     }
     render() {
         const { info, screen, selectedSubcompany } = this.props;
@@ -88,9 +91,8 @@ class Header extends PureComponent {
         const currentTextLeng = this.props.i18n.language.toUpperCase();
         const desctop = 710;
         const mob = 709;
-        let hiddenMenu;
 
-        mobile ? hiddenMenu = "hidden" : hiddenMenu = "visible";
+        const hiddenMenu = mobile ? "hidden" : "visible";
         return (
             <div className="modal_menu"
                 style={{
@@ -115,14 +117,14 @@ class Header extends PureComponent {
                                 <div className="leng_list_item" onClick={(e) => this.changeLang("ru")}>
                                     <img src={rus_img} alt="" />
                                     <p>Русский</p>
-                                    <div className={currentLang == "ru" ? "leng_btn" : "leng_btn langNotActive"}
+                                    <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}
                                     ></div>
                                 </div>
                                 <div className="leng_list_item" onClick={(e) => this.changeLang("en")}>
                                     <img src={eng_img} alt="" />
                                     <p>English</p>
                                     <div></div>
-                                    <div className={currentLang == "en" ? "leng_btn" : " leng_btn langNotActive"}></div>
+                                    <div className={currentLang === "en" ? "leng_btn" : " leng_btn langNotActive"}></div>
                                 </div>
                             </div>
                         </div>
@@ -196,13 +198,13 @@ class Header extends PureComponent {
                                     <div className="leng_list_item" onClick={(e) => this.changeLang("ru")}>
                                         <img src={rus_img} alt="" />
                                         <p>Русский</p>
-                                        <div className={currentLang == "ru" ? "leng_btn" : "leng_btn langNotActive"}></div>
+                                        <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}></div>
                                     </div>
                                     <div className="leng_list_item" onClick={(e) => this.changeLang("en")}>
                                         <img src={eng_img} alt="" />
                                         <p>English</p>
                                         <div></div>
-                                        <div className={currentLang == "en" ? "leng_btn" : "leng_btn langNotActive"}></div>
+                                        <div className={currentLang === "en" ? "leng_btn" : "leng_btn langNotActive"}></div>
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
+import {culcDay} from "../../_helpers/data-calc"
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -23,12 +24,10 @@ class TabFour extends PureComponent {
         const desctop = 710;
         const mob = 709;
         const availableTimes = []
-        let currentDay = moment(selectedDay).format('MMMM,DD');
-        let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
-        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
-        currentDay = currentDay.split(",")
-        currentDay = currentDay.reverse()
-        currentDay = currentDay.join(" ")
+
+        let currentDay = culcDay(selectedDay, "desctop");
+        let currentDayMob = culcDay(selectedDay, "mob");
+
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
@@ -151,9 +150,7 @@ class TabFour extends PureComponent {
                                                 marginTop: "0px"
                                             }} src={arrow_down} alt="arrou"></img></p>
                                     </div>
-                                    <div className="time-footer" style={{
-                                        // marginRight: `${margin_right}`
-                                    }}>
+                                    <div className="time-footer">
                                         <p style={{
                                             color: 'white',
                                             fontSize: "13px",
@@ -290,7 +287,7 @@ class TabFour extends PureComponent {
                 </div>
                 <div className="specialist">
 
-                    {serviceInfo && serviceInfo}
+                    {serviceInfo}
 
                 </div>
 
@@ -331,8 +328,8 @@ class TabFour extends PureComponent {
                 }
 
                 <div className="choise_time">
-                            {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
-                        </div>
+                    {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                </div>
             </div>
         );
     }

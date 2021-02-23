@@ -5,6 +5,7 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
+import {culcDay} from "../../_helpers/data-calc"
 
 class TabThird extends PureComponent {
     constructor(props) {
@@ -27,12 +28,8 @@ class TabThird extends PureComponent {
 
         const desctop = 710;
         const mob = 709;
-        let currentDay = moment(selectedDay).format('MMMM,DD');
-        let currentDayMob = moment(selectedDay).format('DD MMM YYYY');
-        currentDay = currentDay[0].toUpperCase() + currentDay.slice(1);
-        currentDay = currentDay.split(",")
-        currentDay = currentDay.reverse()
-        currentDay = currentDay.join(" ")
+        let currentDay = culcDay(selectedDay,"desctop") ;
+        let currentDayMob = culcDay(selectedDay,"mob");
         let serviceInfo = null
         if (selectedService.serviceId) {
             let priceFrom = 0;
@@ -226,7 +223,7 @@ class TabThird extends PureComponent {
                     </span>
                     <p className="modal_title">{t("Выберите дату")}</p>
                 </div>
-                {serviceInfo && serviceInfo}
+                {serviceInfo}
                 <div className="calendar_modal">
                     {parseInt(moment(month).utc().format('x')) > parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek} />}
                     <span className="arrow-right" onClick={showNextWeek} />
