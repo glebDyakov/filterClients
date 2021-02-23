@@ -25,8 +25,8 @@ class TabFour extends PureComponent {
         const mob = 709;
         const availableTimes = []
 
-        let currentDay = culcDay(selectedDay, "desctop");
-        let currentDayMob = culcDay(selectedDay, "mob");
+        const currentDay = culcDay(selectedDay, "desctop");
+        const currentDayMob = culcDay(selectedDay, "mob");
 
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
@@ -61,7 +61,7 @@ class TabFour extends PureComponent {
 
                         arrayTimes.forEach(arrayTime => {
                             //if (arrayTime >= currentTime) {
-                            let isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
+                                const isAdded = availableTimes.find(availableTime => availableTime.time === moment(arrayTime).format('HH:mm'))
                             if (!isAdded) {
                                 availableTimes.push({
                                     time: moment(arrayTime).format('HH:mm'),

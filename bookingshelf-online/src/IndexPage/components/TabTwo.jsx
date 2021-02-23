@@ -32,8 +32,8 @@ class TabTwo extends Component {
                         <button onClick={() => {
                             setScreen(0)
                             this.props.dispatch(staffActions.clearError());
-                            let { company } = match.params;
-                            let url = company.includes('_') ? company.split('_')[0] : company
+                            const { company } = match.params;
+                            const url = company.includes('_') ? company.split('_')[0] : company
                             history.push(`/${url}`)
                         }} style={{ marginTop: '4px', marginBottom: '20px' }}
                             className="book_button">{t("На страницу выбора филиалов")}</button>
@@ -218,8 +218,8 @@ class TabTwo extends Component {
                                         }
                                         setDefaultFlag();
                                         setScreen(0);
-                                        let { company } = match.params;
-                                        let url = company.includes('_') ? company.split('_')[0] : company
+                                        const { company } = match.params;
+                                        const url = company.includes('_') ? company.split('_')[0] : company
                                         history.push(`/${url}`)
                                     } else {
                                         setScreen(1);
@@ -254,8 +254,8 @@ class TabTwo extends Component {
                                     }
                                     setDefaultFlag();
                                     setScreen(0);
-                                    let { company } = match.params;
-                                    let url = company.includes('_') ? company.split('_')[0] : company
+                                    const { company } = match.params;
+                                    const url = company.includes('_') ? company.split('_')[0] : company
                                     history.push(`/${url}`)
                                 } else {
                                     setScreen(1);

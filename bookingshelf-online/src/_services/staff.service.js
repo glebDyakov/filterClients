@@ -35,8 +35,8 @@ function getServices(id) {
 function getInfo(id) {
     return fetch(`${origin}${config.apiUrl}/${id}`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
 }
-function getInfoSocial(id) {
-    return fetch(`${origin}${config.apiUrl}/${id}/socialnetwork`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
+function getInfoSocial() {
+    return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
 }
 
 function getStaffComments(companyId, staffId, pageNum = 1) {
@@ -79,6 +79,7 @@ function getTimetableAvailable(id, staffId, date1, date2, service, appointmentsI
 }
 
 function add(id, staff, service, params) {
+
     return fetch(`${origin}${config.apiUrl}/${id}/staffs/${staff}/appointments`, requestConstants.DEFAULT_REQUEST_OPTIONS_POST(params)).then(handleResponse);
 }
 
@@ -93,7 +94,7 @@ function clientLogin(companyId, params) {
 }
 
 function _move(appointment, time, staffId, companyId, coStaffs) {
-    return fetch(`${origin}${config.apiUrl}/${companyId}/appointments/${appointment[0].appointmentId}`, requestConstants.DEFAULT_REQUEST_OPTIONS_PATCH(coStaffs,time,staffId)).then(handleResponse);
+    return fetch(`${origin}${config.apiUrl}/${companyId}/appointments/${appointment[0].appointmentId}`, requestConstants.DEFAULT_REQUEST_OPTIONS_PATCH(time,staffId,coStaffs)).then(handleResponse);
 }
 
 
