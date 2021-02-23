@@ -53,9 +53,10 @@ class ServiceInfo extends Component {
     }
   }
 
+  getServiceProducs = (data) => data.map(({ productName, amount, unitName }) => <> {`${productName}, ${amount} ${this.getUnit(unitName)};`} </>)
+
   render() {
     const { dragHandleProps, keyService, item2, item, newService, deleteService, keyGroup, t, company } = this.props;
-
 
     return (
       <div {...dragHandleProps} className="services_items" key={keyService}
@@ -69,7 +70,7 @@ class ServiceInfo extends Component {
             {item2 && item2.serviceProducts &&
             // eslint-disable-next-line max-len
             <span
-              className="item-detail"><br/>{t('Учет материалов')}: {item2.serviceProducts[0].productName}, {item2.serviceProducts[0].amount} {this.getUnit(item2.serviceProducts[0].unitName)}.</span>
+              className="item-detail"><br/>{t('Учет материалов')}: {this.getServiceProducs(item2.serviceProducts)}</span>
             }
           </span>
           {item2 && item2.details.length > 0 &&
