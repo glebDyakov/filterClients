@@ -150,8 +150,8 @@ class TabOne extends PureComponent {
                                         }} src={arrow_down} alt="arrou"></img></p>
                                 </div>
                                 <div className="time-footer">
-                                    <p lassName="time_footer_p" >{t("Дата")}:</p>
-                                    <p lassName="time_footer_p" >&nbsp;{currentDayMob}</p>
+                                    <p className="time_footer_p" >{t("Дата")}:</p>
+                                    <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
                                 </div>
                             </div >
                             {openList && (

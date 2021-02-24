@@ -337,6 +337,9 @@ q:before, q:after {
     line-height: 23px;
     width: 414px;
 }
+.final-screen-block span p {
+    width: 384px;
+}
 
 .firm-text {
     display: flex;
@@ -499,15 +502,15 @@ q:before, q:after {
 
 @media screen and (max-width: 480px) {
     .modal_menu .firm_name.not-selected {
-        width: calc(100% - 60px)
+       width: 124px;
     }
     .prev_block:hover, .next_block:hover {
         opacity: 1;
     }
     .title_block .prev_block, .title_block .next_block {
-        padding: 0;
-        margin: 24px 8px;
-        background: none;
+        padding-left: 13px;
+    padding-bottom: 0px;
+    margin: -3px 0px 0px -5px;
     }
 }
 
@@ -1241,7 +1244,19 @@ a {
     width: 70px;
     height: 70px;
 }
-
+.final-book_hz{
+    color: red;
+    text-decoration: underline;
+    font-weight: bold;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+.final-book_hz_hz{
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
 .star-container {
     padding-right: 5px;
 }
@@ -2235,7 +2250,7 @@ overflow: visible !important;  */
     line-height: 19px;
     padding: 0px 0px 2px 0px;
     background-position-x: 158px;
-    background-position-y: 18px;
+    background-position-y: 17px;
 }
 
 .cansel-visit:hover {
@@ -2541,6 +2556,9 @@ overflow: visible !important;  */
     .regist_block_login_p {
         display: flex;
     }
+    .title_block_text{
+        margin-left: 14px;
+    }
     .regist_block span .regist_block_sms_span {
         margin-top: 0px;
         margin-bottom: 22px;
@@ -2584,6 +2602,7 @@ overflow: visible !important;  */
         font-weight: 600;
         font-size: 14px;
         line-height: 19px;
+        width: 124px;
     }
     .burger_menu p {
         color: #fff;
@@ -2602,7 +2621,7 @@ overflow: visible !important;  */
         margin-left: 7px;
     }
     .burger_menu_btn_on {
-        margin-left: 37px;
+        margin-left: 49px;
     }
     .burger_menu .firm-icons {
         display: flex;
@@ -2635,7 +2654,7 @@ overflow: visible !important;  */
         padding: 0px 53px 35px 76px;
     }
     .final-screen-block span p {
-        width: 384px;
+        width: 339px;
     }
     .stars {
         margin-bottom: 26px;
@@ -2721,7 +2740,7 @@ overflow: visible !important;  */
         margin: -3px 5px 0px 0px;
     }
     .staff_title .prev_block {
-        flex-grow: 0.29;
+        flex-grow: 0.25;
     }
     .skip-arrow {
         margin-left: 11px;
@@ -2919,6 +2938,7 @@ overflow: visible !important;  */
         text-align: center;
         margin-top: 15px;
         margin-right: 0px;
+        width: 243px;
     }
     .footer_modal {
         width: 360px;
@@ -2964,6 +2984,7 @@ overflow: visible !important;  */
     }
     .final-screen .last_list {
         margin-top: 2px;
+        margin-bottom: 25px;
     }
     .specialist {
         margin: auto;
@@ -3008,7 +3029,7 @@ overflow: visible !important;  */
         line-height: 19px;
     }
     .modal_title {
-        font-size: 14px;
+        font-size: 13px;
     }
     .leng_list {
         left: 101px;
@@ -3072,9 +3093,6 @@ overflow: visible !important;  */
 @media screen and (max-width: 520px) {
     .container_popups {
         padding-bottom: 10px;
-    }
-    .container_popups .book_button {
-        margin: 40px auto;
     }
 }
 

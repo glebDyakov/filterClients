@@ -40,7 +40,8 @@ class TabThird extends PureComponent {
                 priceTo += parseInt(service.priceTo)
                 duration += parseInt(getDurationForCurrentStaff(service))
             })
-            let margin_right = "53px";
+            let margin_right2 = "53px";
+            let margin_right1 = "25px";
             let sizeWords = "36px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
@@ -49,11 +50,13 @@ class TabThird extends PureComponent {
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
                 sizeWords = "24px"
-                margin_right = "0px";
+                margin_right1 = "0px";
+                margin_right2 = "0px";
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
                 sizeWords = "32px"
-                margin_right = "0px";
+                margin_right1 = "0px";
+                margin_right2 = "0px";
             }
             serviceInfo = (
                 <div>
@@ -64,24 +67,13 @@ class TabThird extends PureComponent {
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: `13px`,
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <p className="time_footer_p">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
                                     <div className="time-footer hover" style={{
                                         // marginRight: `${margin_right}`
                                     }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                            letterSpacing: "0.1px",
-                                        }} onClick={event => this.setState({
+                                        <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Услуги")}: {selectedServices.length}
                                             <img style={{
@@ -90,20 +82,8 @@ class TabThird extends PureComponent {
                                             }} src={arrow_down} alt="arrou"></img></p>
                                     </div>
                                     <div className="time-footer">
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                            letterSpacing: "0.1px",
-                                        }} >{t("Дата")}:</p>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                            letterSpacing: "0.1px",
-                                        }} >{currentDayMob}</p>
+                                        <p className="time_footer_p" >{t("Дата")}:</p>
+                                        <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -160,40 +140,20 @@ class TabThird extends PureComponent {
                                             <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                         </div>
                                         <div className="time-footer hover" style={{
-                                            marginRight: `${margin_right}`
+                                            marginRight: `${margin_right1}`
                                         }}>
-                                            <p style={{
-                                                color: 'white',
-                                                fontSize: "13px",
-                                                lineHeight: "29px",
-                                                letterSpacing: "0.1px",
-                                            }} onClick={event => this.setState({
+                                            <p className="time-footer_desctop_p" onClick={event => this.setState({
                                                 openList: !openList,
                                             })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
 
-                                            <p style={{
-                                                color: 'white',
-                                                fontSize: "13px",
-                                                lineHeight: "18px",
-                                                letterSpacing: "0.1px",
-                                            }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                            <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                             </p>
                                         </div>
                                         <div className="time-footer" style={{
-                                            marginRight: `${margin_right}`
+                                            marginRight: `${margin_right2}`
                                         }}>
-                                            <p style={{
-                                                color: 'white',
-                                                fontSize: "13px",
-                                                lineHeight: "29px",
-                                                letterSpacing: "0.1px",
-                                            }} >{t("Дата")}:</p>
-                                            <p style={{
-                                                color: 'white',
-                                                fontSize: "13px",
-                                                lineHeight: "18px",
-                                                letterSpacing: "0.1px",
-                                            }} >{currentDay}</p>
+                                            <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                            <p className="service_footer_price_small_text" >{currentDay}</p>
                                         </div>
                                         {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {
                                             if (selectedServices.length) {
