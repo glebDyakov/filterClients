@@ -121,6 +121,9 @@ class Index extends React.Component {
       case 'GBR':
         formattedLang = 'EN';
         break;
+      case 'KAZ':
+        formattedLang = 'RU';
+        break;
       default:
     }
     this.props.i18n.changeLanguage(formattedLang);
@@ -257,6 +260,7 @@ class Index extends React.Component {
                         <option value='BLR'>{t("Беларусь")}</option>
                         <option value='UKR'>{t("Украина")}</option>
                         <option value='RUS'>{t("Россия")}</option>
+                        <option value='KAZ'>{t("Казахстан")}</option>
                         <option value='POL'>{t("Польша")}</option>
                         <option value='CZE'>{t("Чехия")}</option>
                         <option value='GBR'>{t("UK")}</option>
@@ -355,6 +359,22 @@ class Index extends React.Component {
                       >
                         <option value=''>-</option>
                         <option value='Europe/London'>Europe/London</option>
+                      </select>
+                      }
+                      {user.countryCode === 'KAZ' &&
+                      <select
+                        className={'custom-select' + ((invalidFields.timezoneId ? ' redBorder' : ''))}
+                        onBlur={this.handleBlur} value={user.timezoneId}
+                        name="timezoneId" onChange={this.handleChange}
+                      >
+                        <option value=''>-</option>
+                        <option value='Asia/Almaty'>Asia/Almaty</option>
+                        <option value='Asia/Aqtau'>Asia/Aqtau</option>
+                        <option value='Asia/Aqtobe'>Asia/Aqtobe</option>
+                        <option value='Asia/Atyrau'>Asia/Atyrau</option>
+                        <option value='Asia/Oral'>Asia/Oral</option>
+                        <option value='Asia/Qostanay'>Asia/Qostanay</option>
+                        <option value='Asia/Qyzylorda'>Asia/Qyzylorda</option>
                       </select>
                       }
                     </div>
